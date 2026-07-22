@@ -37,6 +37,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 concurrency:
   group: v6-stable-prediction-generation
@@ -51,15 +52,15 @@ jobs:
       - name: Check scheduled or mobile request
         id: decide
         shell: pwsh
-        env:
-          V6_PUBLISH_SECRET: ${{ secrets.V6_PUBLISH_SECRET }}
         run: |
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
           $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -ne '7,22,37,52 * * * *'
           if (!$shouldRun) {
             try {
-              $headers = @{ Authorization = "Bearer $env:V6_PUBLISH_SECRET" }
+              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
+              $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
+              $headers = @{ Authorization = "Bearer $oidc" }
               $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.sound-heron-8161.chatgpt.site/api/v6-sync/request' -Headers $headers
               $shouldRun = [bool]$response.run_requested
             } catch {
@@ -140,8 +141,6 @@ jobs:
 
       - name: Publish V6 data to smart ledger
         shell: pwsh
-        env:
-          V6_PUBLISH_SECRET: ${{ secrets.V6_PUBLISH_SECRET }}
         run: |
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
           $predictions = @{}
@@ -154,5 +153,7 @@ jobs:
             manifest = $manifest
             predictions = $predictions
           } | ConvertTo-Json -Depth 100 -Compress
-          $headers = @{ Authorization = "Bearer $env:V6_PUBLISH_SECRET" }
+          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
+          $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
+          $headers = @{ Authorization = "Bearer $oidc" }
           Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.sound-heron-8161.chatgpt.site/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
