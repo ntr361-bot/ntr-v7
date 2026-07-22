@@ -158,6 +158,18 @@ namespace 六合分析软件
         {
             table.Rows.Clear();
 
+            Color[] issueColors =
+            {
+                Color.FromArgb(255, 235, 130),
+                Color.FromArgb(184, 222, 255),
+                Color.FromArgb(190, 235, 190),
+                Color.FromArgb(246, 195, 214),
+                Color.FromArgb(218, 201, 247),
+                Color.FromArgb(255, 207, 160)
+            };
+            var issueColorIndexes = new System.Collections.Generic.Dictionary<string, int>(StringComparer.Ordinal);
+            int nextIssueColor = 0;
+
             var records = DatabaseHelper.GetPredictionHistory(100);
             var (total, hits, top6Hits, rate, top6Rate) = DatabaseHelper.GetAIPredictStats();
 
@@ -172,7 +184,7 @@ namespace 六合分析软件
             {
                 string hitResult = string.IsNullOrEmpty(r.HitResult) ? "未开奖" : r.HitResult;
 
-                table.Rows.Add(new object[]
+                int rowIndex = table.Rows.Add(new object[]
                 {
                     r.Issue,
                     r.AnalysisPeriods > 0 ? $"{r.AnalysisPeriods}期" : "旧记录",
@@ -186,6 +198,24 @@ namespace 六合分析软件
                     r.ModelVersion,
                     r.PredictTime
                 });
+
+                string issueKey = Convert.ToString(r.Issue) ?? string.Empty;
+                if (!issueColorIndexes.TryGetValue(issueKey, out int colorIndex))
+                {
+                    colorIndex = nextIssueColor++ % issueColors.Length;
+                    issueColorIndexes[issueKey] = colorIndex;
+                }
+                table.Rows[rowIndex].DefaultCellStyle.BackColor = issueColors[colorIndex];
+                table.Rows[rowIndex].Cells["Issue"].Style.BackColor = ControlPaint.Dark(issueColors[colorIndex], 0.08f);
+                table.Rows[rowIndex].Cells["Issue"].Style.Font = new Font("微软雅黑", 9, FontStyle.Bold);
+            }
+
+            for (int rowIndex = 0; rowIndex < table.Rows.Count - 1; rowIndex++)
+            {
+                string currentIssue = Convert.ToString(table.Rows[rowIndex].Cells["Issue"].Value) ?? string.Empty;
+                string nextIssue = Convert.ToString(table.Rows[rowIndex + 1].Cells["Issue"].Value) ?? string.Empty;
+                if (!string.Equals(currentIssue, nextIssue, StringComparison.Ordinal))
+                    table.Rows[rowIndex].DividerHeight = 3;
             }
 
             if (records.Count == 0)
