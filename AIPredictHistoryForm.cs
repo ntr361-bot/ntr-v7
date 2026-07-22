@@ -14,6 +14,7 @@ namespace 六合分析软件
         Label statsLabel;
         Button btnRefresh;
         Button btnVerify;
+        private static readonly Font NumberHitFont = new Font("微软雅黑", 10, FontStyle.Bold);
 
         public AIPredictHistoryForm()
         {
@@ -134,6 +135,26 @@ namespace 六合分析软件
 
         private void Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            int predictNumberIndex = table.Columns["PredictNumber"].Index;
+            if (e.RowIndex >= 0 && e.ColumnIndex == predictNumberIndex && e.Value != null)
+            {
+                string actualText = Convert.ToString(table.Rows[e.RowIndex].Cells["ActualNumber"].Value) ?? string.Empty;
+                if (int.TryParse(actualText, out int actualNumber))
+                {
+                    char[] separators = { ',', '，', '、', ' ', ';', '；' };
+                    bool numberHit = e.Value.ToString()!
+                        .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                        .Any(value => int.TryParse(value.Trim(), out int number) && number == actualNumber);
+                    if (numberHit)
+                    {
+                        Color numberHitColor = Color.FromArgb(0, 105, 45);
+                        e.CellStyle.ForeColor = numberHitColor;
+                        e.CellStyle.SelectionForeColor = numberHitColor;
+                        e.CellStyle.Font = NumberHitFont;
+                    }
+                }
+            }
+
             if ((e.ColumnIndex == table.Columns["HitResult"].Index ||
                  e.ColumnIndex == table.Columns["Top6HitResult"].Index) && e.Value != null)
             {
