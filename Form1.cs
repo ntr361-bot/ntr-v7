@@ -79,13 +79,13 @@ namespace 六合分析软件
 
         private void InitUI()
         {
-            this.Text = "六合智能分析系统 V3.5";
+            this.Text = "六合智能分析系统 V6.0";
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // 标题
             titleLabel = new Label();
-            titleLabel.Text = "六合智能分析系统 V3.5";
+            titleLabel.Text = "六合智能分析系统 V6.0";
             titleLabel.Font = new Font("微软雅黑", 22);
             titleLabel.Location = new Point(300, 20);
             titleLabel.AutoSize = true;
@@ -235,7 +235,7 @@ namespace 六合分析软件
 
             // ===== 标题 =====
             Label title = new Label();
-            title.Text = "六合智能分析系统 V3.5";
+            title.Text = "六合智能分析系统 V6.0";
             title.Font = new Font("微软雅黑", 18, FontStyle.Bold);
             title.ForeColor = Color.FromArgb(30, 30, 60);
             title.Location = new Point(20, y);
