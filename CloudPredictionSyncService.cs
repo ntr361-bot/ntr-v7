@@ -22,7 +22,6 @@ public static class CloudPredictionSyncService
 
     public static async Task<CloudSyncResult> SyncAsync(CancellationToken cancellationToken = default)
     {
-        DatabaseHelper.InitializeDatabase();
         int newDraws = await SyncHistoryAsync(cancellationToken);
         CloudManifest manifest = await DownloadAsync<CloudManifest>(
             $"{RootUrl}/manifest?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}",
