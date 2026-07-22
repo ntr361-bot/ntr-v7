@@ -31,6 +31,7 @@ namespace 六合分析软件
         RadioButton rbDownload500;
 
         // AI 预测缓存（统一使用 AIEngine）
+        const int HomePredictionPeriods = 200;
         AIEngine.PredictResult? _cachedPredict;
         EnsemblePredictionService.PredictionReport? _cachedEnsemble;
         bool _cloudSyncRunning;
@@ -276,7 +277,7 @@ namespace 六合分析软件
             mainPanel.Controls.Add(section2);
 
             Label s2Title = new Label();
-            s2Title.Text = "🤖 生肖预测 - " + AIEngine.Version;
+            s2Title.Text = $"🤖 生肖预测（{HomePredictionPeriods}期） - {AIEngine.Version}";
             s2Title.Font = new Font("微软雅黑", 12, FontStyle.Bold);
             s2Title.ForeColor = Color.FromArgb(155, 89, 182);
             s2Title.Location = new Point(15, 10);
@@ -604,7 +605,7 @@ namespace 六合分析软件
 
             Label title = new Label
             {
-                Text = "📜 近10期预测验证记录（优先显示200期模型）",
+                Text = $"📜 近10期预测验证记录（{HomePredictionPeriods}期模型）",
                 Font = new Font("微软雅黑", 11, FontStyle.Bold),
                 ForeColor = Color.FromArgb(80, 80, 110), Location = new Point(12, 8), AutoSize = true
             };
@@ -627,11 +628,11 @@ namespace 六合分析软件
             section.Controls.Add(list);
 
             var records = DatabaseHelper.GetPredictionHistory(200)
+                .Where(r => r.AnalysisPeriods == HomePredictionPeriods)
                 .GroupBy(r => r.Issue)
                 .OrderByDescending(g => int.TryParse(g.Key, out int issue) ? issue : 0)
                 .Take(10)
-                .Select(g => g.FirstOrDefault(r => r.AnalysisPeriods == 200)
-                    ?? g.OrderByDescending(r => r.AnalysisPeriods).First())
+                .Select(g => g.OrderByDescending(r => r.Id).First())
                 .ToList();
 
             if (records.Count == 0)
@@ -664,15 +665,7 @@ namespace 六合分析软件
             string resultText = record.HitResult == "命中" ? "前3命中"
                 : record.Top6HitResult == "命中" ? "前6命中"
                 : record.HitResult == "未命中" ? "未命中" : "未开奖";
-            Label header = new Label
-            {
-                Text = $"{record.Issue}期  |  {record.AnalysisPeriods}期模型  |  实际：" +
-                    $"{(string.IsNullOrEmpty(record.ActualNumber) ? "?" : record.ActualNumber)} " +
-                    $"{(string.IsNullOrEmpty(record.ActualZodiac) ? "?" : record.ActualZodiac)}  |  {resultText}",
-                Font = new Font("微软雅黑", 10, FontStyle.Bold), ForeColor = Color.FromArgb(55, 55, 70),
-                Location = new Point(8, 6), AutoSize = true
-            };
-            card.Controls.Add(header);
+            AddPredictionHistoryHeader(card, record, resultText);
 
             var ranked = ParseRankedZodiacs(record);
             var seven = ranked.Take(7).ToList();
@@ -685,11 +678,47 @@ namespace 六合分析软件
             var threeNumbers = GetTierNumbers(numbers, three, 3);
             var oneNumber = GetTierNumbers(numbers, one, 1);
 
-            AddHistoryTierLine(card, 34, "七肖", seven, "⑦码", numbers.Take(7));
-            AddHistoryTierLine(card, 68, "五肖", five, "⑤码", numbers.Take(5));
-            AddHistoryTierLine(card, 102, "三肖", three, "③码", threeNumbers);
-            AddHistoryTierLine(card, 136, "一肖", one, "①码", oneNumber);
+            AddHistoryTierLine(card, 34, "七肖", seven, "⑦码", numbers.Take(7), record.ActualZodiac);
+            AddHistoryTierLine(card, 68, "五肖", five, "⑤码", numbers.Take(5), record.ActualZodiac);
+            AddHistoryTierLine(card, 102, "三肖", three, "③码", threeNumbers, record.ActualZodiac);
+            AddHistoryTierLine(card, 136, "一肖", one, "①码", oneNumber, record.ActualZodiac);
             return card;
+        }
+
+        private void AddPredictionHistoryHeader(Control parent, DatabaseHelper.PredictionRecord record, string resultText)
+        {
+            var header = new FlowLayoutPanel
+            {
+                Location = new Point(8, 4), Size = new Size(585, 26), AutoSize = false,
+                FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = Padding.Empty
+            };
+            header.Controls.Add(CreateHistoryText(
+                $"{record.Issue}期  |  {record.AnalysisPeriods}期模型  |  实际：" +
+                $"{(string.IsNullOrEmpty(record.ActualNumber) ? "?" : record.ActualNumber)} ",
+                Color.FromArgb(55, 55, 70), true));
+
+            bool zodiacHit = record.HitResult == "命中" || record.Top6HitResult == "命中";
+            header.Controls.Add(CreateHistoryText(
+                string.IsNullOrEmpty(record.ActualZodiac) ? "?" : record.ActualZodiac,
+                zodiacHit ? Color.FromArgb(0, 120, 50) : Color.FromArgb(55, 55, 70), zodiacHit));
+            header.Controls.Add(CreateHistoryText("  |  ", Color.FromArgb(55, 55, 70), true));
+
+            Color resultColor = record.HitResult == "命中" ? Color.FromArgb(0, 135, 55)
+                : record.Top6HitResult == "命中" ? Color.FromArgb(0, 90, 190)
+                : record.HitResult == "未命中" ? Color.FromArgb(210, 35, 35)
+                : Color.Gray;
+            header.Controls.Add(CreateHistoryText(resultText, resultColor, true));
+            parent.Controls.Add(header);
+        }
+
+        private Label CreateHistoryText(string text, Color color, bool bold)
+        {
+            return new Label
+            {
+                Text = text, AutoSize = true, Margin = Padding.Empty,
+                Font = new Font("微软雅黑", 10, bold ? FontStyle.Bold : FontStyle.Regular),
+                ForeColor = color, TextAlign = ContentAlignment.MiddleLeft
+            };
         }
 
         private List<string> ParseRankedZodiacs(DatabaseHelper.PredictionRecord record)
@@ -703,16 +732,24 @@ namespace 六合分析软件
         }
 
         private void AddHistoryTierLine(Control parent, int y, string tier, IEnumerable<string> zodiacs,
-            string numberTier, IEnumerable<int> numbers)
+            string numberTier, IEnumerable<int> numbers, string actualZodiac)
         {
-            Label label = new Label
+            var line = new FlowLayoutPanel
             {
-                Text = $"{tier}：{string.Join(" ", zodiacs)}    {numberTier}：{string.Join(" ", numbers.Select(n => n.ToString("D2")))}",
-                Font = new Font("微软雅黑", 10, FontStyle.Bold), ForeColor = Color.FromArgb(185, 45, 38),
                 Location = new Point(10, y), AutoSize = false, Size = new Size(575, 28),
-                TextAlign = ContentAlignment.MiddleLeft, AutoEllipsis = true
+                FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = Padding.Empty
             };
-            parent.Controls.Add(label);
+            line.Controls.Add(CreateHistoryText($"{tier}：", Color.FromArgb(80, 55, 55), true));
+            foreach (string zodiac in zodiacs)
+            {
+                bool hit = !string.IsNullOrEmpty(actualZodiac) && zodiac.Trim() == actualZodiac.Trim();
+                line.Controls.Add(CreateHistoryText(zodiac + " ",
+                    hit ? Color.FromArgb(0, 120, 50) : Color.FromArgb(185, 45, 38), hit));
+            }
+            line.Controls.Add(CreateHistoryText(
+                $"   {numberTier}：{string.Join(" ", numbers.Select(n => n.ToString("D2")))}",
+                Color.FromArgb(185, 45, 38), true));
+            parent.Controls.Add(line);
         }
 
         private List<int> GetTierNumbers(IEnumerable<int> candidates, IEnumerable<string> requiredZodiacs, int count)
@@ -739,7 +776,7 @@ namespace 六合分析软件
         {
             if (_cachedPredict == null)
             {
-                _cachedPredict = AIEngine.Predict();
+                _cachedPredict = AIEngine.Predict(HomePredictionPeriods);
             }
             if (_cachedEnsemble == null)
             {
