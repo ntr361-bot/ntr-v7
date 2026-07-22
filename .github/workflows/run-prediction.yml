@@ -1,0 +1,109 @@
+name: Run V6 Stable Prediction
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Optional target issue"
+        required: false
+        type: string
+      start_issue:
+        description: "Backfill from this issue (default 2026197)"
+        required: false
+        default: "2026197"
+        type: string
+      force:
+        description: "Overwrite an existing prediction"
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: "Validate only; do not write files"
+        required: false
+        default: false
+        type: boolean
+      refresh_data:
+        description: "Fetch and validate the latest draw data before prediction"
+        required: false
+        default: true
+        type: boolean
+  # 数据源约北京时间21:40更新；21:45抓取，22:00和22:15重试。GitHub cron 使用 UTC。
+  schedule:
+    - cron: "45 13 * * *"
+    - cron: "0 14 * * *"
+    - cron: "15 14 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: v6-stable-prediction-generation
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore PredictionRunner/PredictionRunner.csproj
+
+      - name: Build prediction runner
+        run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+
+      - name: Refresh latest draw data
+        if: ${{ github.event_name == 'schedule' || inputs.refresh_data == true }}
+        shell: pwsh
+        run: |
+          $arguments = @('--refresh-data', '--refresh-only')
+          if ('${{ inputs.dry_run }}' -eq 'true') { $arguments += '--dry-run' }
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
+
+      - name: Validate historical data
+        shell: pwsh
+        run: |
+          $arguments = @('--dry-run', '--generate-all')
+          if ('${{ inputs.issue }}') { $arguments += @('--issue', '${{ inputs.issue }}') }
+          $startIssue = '${{ inputs.start_issue }}'
+          if (!$startIssue) { $startIssue = '2026197' }
+          $arguments += @('--start-issue', $startIssue)
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
+
+      - name: Generate prediction
+        if: ${{ inputs.dry_run != true }}
+        shell: pwsh
+        run: |
+          $arguments = @('--generate-all')
+          if ('${{ inputs.issue }}') { $arguments += @('--issue', '${{ inputs.issue }}') }
+          $startIssue = '${{ inputs.start_issue }}'
+          if (!$startIssue) { $startIssue = '2026197' }
+          $arguments += @('--start-issue', $startIssue)
+          if ('${{ inputs.force }}' -eq 'true') { $arguments += '--force' }
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
+
+      - name: Run tests
+        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release
+
+      - name: Commit generated files
+        if: ${{ inputs.dry_run != true }}
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.db site/data/history.json site/data/predictions site/data/daily-records
+          if (git diff --cached --quiet) {
+            Write-Host "No prediction changes to commit."
+            exit 0
+          }
+          $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
+          git commit -m "chore: update V6 stable prediction for issue $issue"
+          git push origin HEAD:${{ github.ref_name }}
