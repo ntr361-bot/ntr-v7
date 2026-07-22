@@ -32,6 +32,8 @@ on:
     - cron: "45 13 * * *"
     - cron: "0 14 * * *"
     - cron: "15 14 * * *"
+    # 手机账本的“运行V6”请求每15分钟检查一次，避开上述三个固定时间。
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   contents: write
@@ -41,7 +43,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+    steps:
+      - name: Check scheduled or mobile request
+        id: decide
+        shell: pwsh
+        env:
+          V6_PUBLISH_SECRET: ${{ secrets.V6_PUBLISH_SECRET }}
+        run: |
+          $eventName = '${{ github.event_name }}'
+          $schedule = '${{ github.event.schedule }}'
+          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -ne '7,22,37,52 * * * *'
+          if (!$shouldRun) {
+            try {
+              $headers = @{ Authorization = "Bearer $env:V6_PUBLISH_SECRET" }
+              $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.sound-heron-8161.chatgpt.site/api/v6-sync/request' -Headers $headers
+              $shouldRun = [bool]$response.run_requested
+            } catch {
+              Write-Warning "Mobile trigger check failed: $($_.Exception.Message)"
+              $shouldRun = $false
+            }
+          }
+          "should_run=$($shouldRun.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+
   predict:
+    needs: check-trigger
+    if: ${{ needs.check-trigger.outputs.should_run == 'true' }}
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -107,3 +137,22 @@ jobs:
           $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
           git commit -m "chore: update V6 stable prediction for issue $issue"
           git push origin HEAD:${{ github.ref_name }}
+
+      - name: Publish V6 data to smart ledger
+        shell: pwsh
+        env:
+          V6_PUBLISH_SECRET: ${{ secrets.V6_PUBLISH_SECRET }}
+        run: |
+          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
+          $predictions = @{}
+          foreach ($file in $manifest.records) {
+            $predictions[$file] = Get-Content "site/data/daily-records/$file" -Raw | ConvertFrom-Json
+          }
+          $payload = @{
+            history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
+            dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
+            manifest = $manifest
+            predictions = $predictions
+          } | ConvertTo-Json -Depth 100 -Compress
+          $headers = @{ Authorization = "Bearer $env:V6_PUBLISH_SECRET" }
+          Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.sound-heron-8161.chatgpt.site/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload

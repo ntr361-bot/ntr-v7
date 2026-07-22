@@ -13,7 +13,7 @@ public sealed record CloudSyncResult(
 
 public static class CloudPredictionSyncService
 {
-    private const string RootUrl = "https://ntr361-bot.github.io/ntr-v6/data";
+    private const string RootUrl = "https://smart-ledger-2026.sound-heron-8161.chatgpt.site/api/v6-sync";
     private static readonly HttpClient Client = CreateClient();
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -25,7 +25,7 @@ public static class CloudPredictionSyncService
         DatabaseHelper.InitializeDatabase();
         int newDraws = await SyncHistoryAsync(cancellationToken);
         CloudManifest manifest = await DownloadAsync<CloudManifest>(
-            $"{RootUrl}/daily-records/manifest.json?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}",
+            $"{RootUrl}/manifest?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}",
             cancellationToken);
         if (manifest.Status != "success" || manifest.Records.Count == 0)
             throw new InvalidDataException("云端预测清单为空");
@@ -41,7 +41,7 @@ public static class CloudPredictionSyncService
             try
             {
                 prediction = await DownloadAsync<CloudDailyPrediction>(
-                    $"{RootUrl}/daily-records/{fileName}?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}",
+                    $"{RootUrl}/prediction?file={Uri.EscapeDataString(fileName)}&t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}",
                     cancellationToken);
                 AtomicWrite(localFile, prediction);
             }
@@ -82,7 +82,7 @@ public static class CloudPredictionSyncService
     private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)
     {
         CloudHistoryArchive archive = await DownloadAsync<CloudHistoryArchive>(
-            $"{RootUrl}/history.json?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}", cancellationToken);
+            $"{RootUrl}/history?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}", cancellationToken);
         if (archive.Status != "success" || archive.Records.Count == 0)
             throw new InvalidDataException("云端开奖档案为空");
         var records = archive.Records.Select(item => new DataCrawler.CrawlRecord
