@@ -129,32 +129,13 @@ namespace 六合分析软件
             table.Columns["Top6Zodiac"].DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold);
 
             table.CellFormatting += Table_CellFormatting;
+            table.CellPainting += Table_CellPainting;
 
             this.Controls.Add(table);
         }
 
         private void Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            int predictNumberIndex = table.Columns["PredictNumber"].Index;
-            if (e.RowIndex >= 0 && e.ColumnIndex == predictNumberIndex && e.Value != null)
-            {
-                string actualText = Convert.ToString(table.Rows[e.RowIndex].Cells["ActualNumber"].Value) ?? string.Empty;
-                if (int.TryParse(actualText, out int actualNumber))
-                {
-                    char[] separators = { ',', '，', '、', ' ', ';', '；' };
-                    bool numberHit = e.Value.ToString()!
-                        .Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                        .Any(value => int.TryParse(value.Trim(), out int number) && number == actualNumber);
-                    if (numberHit)
-                    {
-                        Color numberHitColor = Color.FromArgb(0, 105, 45);
-                        e.CellStyle.ForeColor = numberHitColor;
-                        e.CellStyle.SelectionForeColor = numberHitColor;
-                        e.CellStyle.Font = NumberHitFont;
-                    }
-                }
-            }
-
             if ((e.ColumnIndex == table.Columns["HitResult"].Index ||
                  e.ColumnIndex == table.Columns["Top6HitResult"].Index) && e.Value != null)
             {
@@ -173,6 +154,75 @@ namespace 六合分析软件
                     e.CellStyle.ForeColor = Color.Gray;
                 }
             }
+        }
+
+        private void Table_CellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != table.Columns["PredictNumber"].Index)
+                return;
+
+            string text = Convert.ToString(e.FormattedValue) ?? string.Empty;
+            string actualText = Convert.ToString(table.Rows[e.RowIndex].Cells["ActualNumber"].Value) ?? string.Empty;
+            if (!int.TryParse(actualText, out int actualNumber))
+                return;
+
+            char[] separators = { ',', '，', '、', ' ', ';', '；' };
+            string[] numbers = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            bool numberHit = numbers.Any(value =>
+                int.TryParse(value.Trim(), out int number) && number == actualNumber);
+            if (!numberHit)
+                return;
+
+            e.PaintBackground(e.CellBounds, true);
+            e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
+
+            bool selected = (e.State & DataGridViewElementStates.Selected) != 0;
+            Color normalColor = selected ? e.CellStyle.SelectionForeColor : e.CellStyle.ForeColor;
+            Color hitColor = selected ? Color.Yellow : Color.FromArgb(0, 105, 45);
+            Font normalFont = e.CellStyle.Font ?? table.Font;
+            TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix;
+            int left = e.CellBounds.Left + 3;
+            int right = e.CellBounds.Right - 3;
+            int x = left;
+            int y = e.CellBounds.Top + 2;
+            int lineHeight = Math.Max(
+                TextRenderer.MeasureText("00", normalFont, Size.Empty, flags).Height,
+                TextRenderer.MeasureText("00", NumberHitFont, Size.Empty, flags).Height);
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                string numberText = numbers[i].Trim();
+                string prefix = i == 0 ? string.Empty : ",";
+                bool isHit = int.TryParse(numberText, out int number) && number == actualNumber;
+                Font numberFont = isHit ? NumberHitFont : normalFont;
+                int prefixWidth = TextRenderer.MeasureText(prefix, normalFont, Size.Empty, flags).Width;
+                int numberWidth = TextRenderer.MeasureText(numberText, numberFont, Size.Empty, flags).Width;
+
+                if (x > left && x + prefixWidth + numberWidth > right)
+                {
+                    x = left;
+                    y += lineHeight;
+                    prefix = string.Empty;
+                    prefixWidth = 0;
+                }
+
+                if (prefix.Length > 0)
+                {
+                    TextRenderer.DrawText(e.Graphics, prefix, normalFont, new Point(x, y), normalColor, flags);
+                    x += prefixWidth;
+                }
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    numberText,
+                    numberFont,
+                    new Point(x, y),
+                    isHit ? hitColor : normalColor,
+                    flags);
+                x += numberWidth;
+            }
+
+            e.Handled = true;
         }
 
         private void LoadData()
