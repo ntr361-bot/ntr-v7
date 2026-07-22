@@ -33,7 +33,7 @@ namespace 六合分析软件
         public static string DatabasePath { get; } = ResolveDatabasePath();
 
         private static readonly string connString =
-            $"Data Source={DatabasePath};Version=3;";
+            $"Data Source={DatabasePath};Version=3;Default Timeout=30;Journal Mode=WAL;";
 
         private static string ResolveDatabasePath()
         {
@@ -138,6 +138,8 @@ namespace 六合分析软件
                 new SQLiteConnection(connString);
 
             conn.Open();
+            using (var busyTimeout = new SQLiteCommand("PRAGMA busy_timeout=30000", conn))
+                busyTimeout.ExecuteNonQuery();
 
             return conn;
         }
