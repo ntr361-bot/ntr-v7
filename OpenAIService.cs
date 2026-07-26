@@ -17,7 +17,7 @@ namespace 六合分析软件
         // ===== 配置项 =====
         public static string ApiKey { get; set; } = "";
         public static string ApiBaseUrl { get; set; } = "https://api.openai.com/v1";
-        public static string Model { get; set; } = "gpt-5.5-mini";
+        public static string Model { get; set; } = "gpt-5.6-sol";
 
         private static readonly HttpClient _httpClient = new HttpClient();
 

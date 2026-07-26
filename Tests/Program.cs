@@ -15,6 +15,7 @@ var tests = new (string Name, Action Run)[]
     ("号码统计正确", CountNumbers),
     ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
     ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
+    ("V6.3使用GPT-5.6 Sol", V63UsesGpt56Sol),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
     ("已存在文件时跳过", ExistingFileSkips),
@@ -108,6 +109,12 @@ void PredictionScoreUsesTargetYearMap()
         "综合评分仍在使用旧年份静态映射");
     Assert(result.Predictions.Single(item => item.Zodiac == "虎").Number == "05,17,29,41",
         "综合评分虎肖号码未按2026马年轮转");
+}
+
+void V63UsesGpt56Sol()
+{
+    Assert(AIEngine.Version == "AI生肖预测 V6.3", "预测模型不是V6.3");
+    Assert(OpenAIService.Model == "gpt-5.6-sol", "V6.3外部分析模型不是GPT-5.6 Sol");
 }
 
 void AutoDetectNextIssue()
