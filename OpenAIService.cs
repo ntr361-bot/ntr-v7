@@ -15,7 +15,8 @@ namespace 六合分析软件
     public static class OpenAIService
     {
         // ===== 配置项 =====
-        public static string ApiKey { get; set; } = "";
+        public static string ApiKey { get; set; } =
+            Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
         public static string ApiBaseUrl { get; set; } = "https://api.openai.com/v1";
         public static string Model { get; set; } = "gpt-5.6-sol";
 
@@ -163,8 +164,8 @@ namespace 六合分析软件
                     new { role = "system", content = "你是六合彩特码生肖分析专家，擅长根据历史数据统计规律进行预测分析。" },
                     new { role = "user", content = prompt }
                 },
-                temperature = 0.7,
-                max_tokens = 1000
+                reasoning_effort = "medium",
+                max_completion_tokens = 2000
             };
 
             _httpClient.DefaultRequestHeaders.Clear();

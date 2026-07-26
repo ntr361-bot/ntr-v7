@@ -115,6 +115,8 @@ void V63UsesGpt56Sol()
 {
     Assert(AIEngine.Version == "AI生肖预测 V6.3", "预测模型不是V6.3");
     Assert(OpenAIService.Model == "gpt-5.6-sol", "V6.3外部分析模型不是GPT-5.6 Sol");
+    Assert(OpenAIService.ApiKey == (Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? ""),
+        "OpenAI API Key未从云端环境变量读取");
 }
 
 void AutoDetectNextIssue()

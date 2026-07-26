@@ -139,7 +139,7 @@ namespace 六合分析软件
         public static PredictResult GenerateForAutomation(int periodCount = -1, string? targetPeriod = null)
         {
             int periods = ResolveRequestedPeriods(periodCount);
-            PredictResult result = RunPrediction(periods, includeExternalAnalysis: false, targetPeriod);
+            PredictResult result = RunPrediction(periods, includeExternalAnalysis: true, targetPeriod);
             if (!string.IsNullOrWhiteSpace(targetPeriod))
                 result.PredictPeriod = targetPeriod.Trim();
             return result;

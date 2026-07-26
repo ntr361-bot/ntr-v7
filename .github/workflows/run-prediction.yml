@@ -77,6 +77,8 @@ jobs:
     needs: check-trigger
     if: ${{ needs.check-trigger.outputs.should_run == 'true' }}
     runs-on: windows-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
