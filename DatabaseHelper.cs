@@ -61,8 +61,19 @@ namespace 六合分析软件
             var dir = new DirectoryInfo(startDir);
             while (dir != null)
             {
-                if (dir.GetFiles("*.csproj").Any())
-                    return dir.FullName;
+                try
+                {
+                    if (dir.GetFiles("*.csproj").Any())
+                        return dir.FullName;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    break;
+                }
+                catch (IOException)
+                {
+                    break;
+                }
                 dir = dir.Parent;
             }
 
@@ -228,7 +239,9 @@ namespace 六合分析软件
                     ActualNumber TEXT DEFAULT '',
                     ActualZodiac TEXT DEFAULT '',
                     HitResult TEXT DEFAULT '',
-                    Top6HitResult TEXT DEFAULT ''
+                    Top6HitResult TEXT DEFAULT '',
+                    ReviewDetails TEXT DEFAULT '',
+                    LearningDetails TEXT DEFAULT ''
                 )";
                 SQLiteCommand predCmd = new SQLiteCommand(predSql, conn);
                 predCmd.ExecuteNonQuery();
@@ -243,9 +256,11 @@ namespace 六合分析软件
                     "ScoreDetails TEXT DEFAULT ''",
                     "ActualNumber TEXT DEFAULT ''",
                     "ActualZodiac TEXT DEFAULT ''",
-                    "Top6HitResult TEXT DEFAULT ''");
+                    "Top6HitResult TEXT DEFAULT ''",
+                    "ReviewDetails TEXT DEFAULT ''",
+                    "LearningDetails TEXT DEFAULT ''");
 
-                // 每个期号固定保留50/100/200/500期四套结果，同期同周期只保留一条。
+                // 每个期号按分析周期去重；V6.3正式版使用50/100/200/全部历史。
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue", conn).ExecuteNonQuery();
                 new SQLiteCommand(@"DELETE FROM PredictionHistory
                     WHERE Id NOT IN (
@@ -800,6 +815,8 @@ namespace 六合分析软件
             public string ActualZodiac { get; set; } = "";   // 实际生肖
             public string HitResult { get; set; } = "";      // 命中结果：未开奖/命中/未命中
             public string Top6HitResult { get; set; } = "";  // 前6命中结果
+            public string ReviewDetails { get; set; } = ""; // 开奖后的错因复盘
+            public string LearningDetails { get; set; } = ""; // 预测时采用的学习状态
         }
 
         /// <summary>
@@ -855,7 +872,8 @@ namespace 六合分析软件
         }
 
         public static void SavePrediction(string issue, string predictZodiac, string top6Zodiac,
-            string predictNumber, string modelVersion, int analysisPeriods, string scoreDetails)
+            string predictNumber, string modelVersion, int analysisPeriods, string scoreDetails,
+            string learningDetails = "")
         {
             using (SQLiteConnection conn = GetConnection())
             {
@@ -872,7 +890,7 @@ namespace 六合分析软件
                 {
                     string sql = @"UPDATE PredictionHistory
                     SET PredictTime=@time, PredictNumber=@num, PredictZodiac=@zodiac, Top6Zodiac=@top6,
-                        ModelVersion=@model, ScoreDetails=@scores, HitResult='未开奖', Top6HitResult='未开奖',
+                        ModelVersion=@model, ScoreDetails=@scores, LearningDetails=@learning, ReviewDetails='', HitResult='未开奖', Top6HitResult='未开奖',
                         ActualNumber='', ActualZodiac='', PredictionGroupId=@groupId
                     WHERE Issue=@issue AND AnalysisPeriods=@periods";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
@@ -882,6 +900,7 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@top6", top6Zodiac);
                     cmd.Parameters.AddWithValue("@model", modelVersion);
                     cmd.Parameters.AddWithValue("@scores", scoreDetails);
+                    cmd.Parameters.AddWithValue("@learning", learningDetails);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@periods", analysisPeriods);
@@ -892,8 +911,8 @@ namespace 六合分析软件
                 {
                     string sql = @"INSERT INTO PredictionHistory
                     (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods, ScoreDetails,
-                     ModelVersion, HitResult, Top6HitResult)
-                    VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, '未开奖', '未开奖')";
+                     ModelVersion, LearningDetails, HitResult, Top6HitResult)
+                    VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning, '未开奖', '未开奖')";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
@@ -904,6 +923,7 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@periods", analysisPeriods);
                     cmd.Parameters.AddWithValue("@scores", scoreDetails);
                     cmd.Parameters.AddWithValue("@model", modelVersion);
+                    cmd.Parameters.AddWithValue("@learning", learningDetails);
                     cmd.ExecuteNonQuery();
                     Console.WriteLine($"[数据库] 新建预测记录（期号:{issue}）");
                 }
@@ -949,16 +969,16 @@ namespace 六合分析软件
         {
             using (SQLiteConnection conn = GetConnection())
             {
-                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac FROM PredictionHistory WHERE Issue=@issue AND (HitResult='未开奖' OR HitResult='')";
+                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac, ScoreDetails FROM PredictionHistory WHERE Issue=@issue AND (HitResult='未开奖' OR HitResult='')";
                 SQLiteCommand findCmd = new SQLiteCommand(findSql, conn);
                 findCmd.Parameters.AddWithValue("@issue", issue);
 
-                var pending = new List<(int id, string top3, string top6)>();
+                var pending = new List<(int id, string top3, string top6, string scores)>();
                 using (SQLiteDataReader reader = findCmd.ExecuteReader())
                 {
                     while (reader.Read())
                         pending.Add((reader.GetInt32(0), reader.IsDBNull(1) ? "" : reader.GetString(1),
-                            reader.IsDBNull(2) ? "" : reader.GetString(2)));
+                            reader.IsDBNull(2) ? "" : reader.GetString(2), reader.IsDBNull(3) ? "" : reader.GetString(3)));
                 }
 
                 foreach (var item in pending)
@@ -968,16 +988,18 @@ namespace 六合分析软件
                                item.top3.Split(',').Contains(actualZodiac);
                     bool top6Hit = !string.IsNullOrEmpty(item.top6) &&
                                    !string.IsNullOrEmpty(actualZodiac) &&
-                                   item.top6.Split(',').Contains(actualZodiac);
+                               item.top6.Split(',').Contains(actualZodiac);
+                    string review = PredictionLearningService.BuildReview(item.scores, item.top3, actualZodiac);
 
                     string updateSql = @"UPDATE PredictionHistory
-                    SET ActualNumber=@num, ActualZodiac=@zodiac, HitResult=@result, Top6HitResult=@top6Result
+                    SET ActualNumber=@num, ActualZodiac=@zodiac, HitResult=@result, Top6HitResult=@top6Result, ReviewDetails=@review
                     WHERE Id=@id";
                     SQLiteCommand updateCmd = new SQLiteCommand(updateSql, conn);
                     updateCmd.Parameters.AddWithValue("@num", actualNumber);
                     updateCmd.Parameters.AddWithValue("@zodiac", actualZodiac);
                     updateCmd.Parameters.AddWithValue("@result", hit ? "命中" : "未命中");
                     updateCmd.Parameters.AddWithValue("@top6Result", top6Hit ? "命中" : "未命中");
+                    updateCmd.Parameters.AddWithValue("@review", review);
                     updateCmd.Parameters.AddWithValue("@id", item.id);
                     updateCmd.ExecuteNonQuery();
 
@@ -1042,7 +1064,7 @@ namespace 六合分析软件
             {
                 string sql = $@"
                 SELECT Id, Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods,
-                       ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult
+                       ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult, ReviewDetails, LearningDetails
                 FROM PredictionHistory
                 ORDER BY CAST(Issue AS INTEGER) DESC, AnalysisPeriods ASC
                 LIMIT {limit}";
@@ -1068,6 +1090,8 @@ namespace 六合分析软件
                             ActualZodiac = reader.IsDBNull(11) ? "" : reader.GetString(11),
                             HitResult = reader.IsDBNull(12) ? "" : reader.GetString(12)
                             ,Top6HitResult = reader.IsDBNull(13) ? "" : reader.GetString(13)
+                            ,ReviewDetails = reader.IsDBNull(14) ? "" : reader.GetString(14)
+                            ,LearningDetails = reader.IsDBNull(15) ? "" : reader.GetString(15)
                         });
                     }
                 }
@@ -1136,24 +1160,27 @@ namespace 六合分析软件
             catch (Exception ex) { AppLogger.Error("检查今日 AI 预测", ex); return false; }
         }
 
-        public static (int Total, int Top3Hits, int Top6Hits, double Top3Rate, double Top6Rate) GetAIPredictStats()
+        public static (int Total, int Top3Hits, int Top6Hits, double Top3Rate, double Top6Rate) GetAIPredictStats(
+            int? analysisPeriods = null)
         {
             try
             {
                 int total = 0, hits = 0, top6Hits = 0;
                 using (SQLiteConnection conn = GetConnection())
                 {
+                    string periodFilter = analysisPeriods.HasValue
+                        ? " AND AnalysisPeriods=@analysisPeriods"
+                        : "";
                     string sql = @"
                     WITH Ranked AS (
                         SELECT Issue, HitResult, Top6HitResult,
                                ROW_NUMBER() OVER (
                                    PARTITION BY Issue
-                                   ORDER BY CASE WHEN AnalysisPeriods=500 THEN 0 ELSE 1 END,
-                                            AnalysisPeriods DESC,
+                                   ORDER BY AnalysisPeriods DESC,
                                             Id DESC
                                ) AS rn
                         FROM PredictionHistory
-                        WHERE Issue != '' AND HitResult IN ('命中','未命中')
+                        WHERE Issue != '' AND HitResult IN ('命中','未命中')" + periodFilter + @"
                     )
                     SELECT COUNT(*),
                            SUM(CASE WHEN HitResult='命中' THEN 1 ELSE 0 END),
@@ -1161,6 +1188,8 @@ namespace 六合分析软件
                     FROM Ranked
                     WHERE rn = 1";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
+                    if (analysisPeriods.HasValue)
+                        cmd.Parameters.AddWithValue("@analysisPeriods", analysisPeriods.Value);
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -1273,7 +1302,7 @@ namespace 六合分析软件
 
         public static string GetCurrentModelVersion()
         {
-            return "V3";
+            return "V6.3";
         }
 
     }

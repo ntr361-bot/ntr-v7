@@ -267,9 +267,9 @@ void CloudPredictionImportsFourPeriods()
         Status = "success",
         AiZodiac = new Dictionary<string, CloudAiPrediction>()
     };
-    foreach (int period in new[] { 50, 100, 200, 500 })
+    foreach (string period in new[] { "50", "100", "200", "all" })
     {
-        prediction.AiZodiac[period.ToString()] = new CloudAiPrediction
+        prediction.AiZodiac[period] = new CloudAiPrediction
         {
             Top3 = new() { "马", "蛇", "龙" },
             Top6 = new() { "马", "蛇", "龙", "兔", "虎", "牛" },

@@ -66,13 +66,16 @@ public static class CloudPredictionSyncService
         int saved = 0;
         foreach ((string periodText, CloudAiPrediction item) in prediction.AiZodiac)
         {
-            if (!int.TryParse(periodText, out int periods) || periods <= 0 ||
+            int periods = periodText.Equals("all", StringComparison.OrdinalIgnoreCase)
+                ? AISettings.AllHistoryModeValue
+                : int.TryParse(periodText, out int parsedPeriods) ? parsedPeriods : -1;
+            if (periods < 0 ||
                 item.Top3.Count == 0 || item.Top6.Count == 0 || item.Numbers.Count == 0)
                 throw new InvalidDataException($"第{prediction.Issue}期 AI 预测内容不完整");
             DatabaseHelper.SaveCloudPrediction(prediction.Issue.ToString(), prediction.GeneratedAt,
                 string.Join(',', item.Top3), string.Join(',', item.Top6),
                 string.Join(',', item.Numbers.Select(number => number.ToString("D2"))),
-                "云端V6稳定版", periods, $"{item.Confidence}信心 | {item.BestModel}");
+                "云端V6.3正式版", periods, $"{item.Confidence}信心 | {item.BestModel}");
             saved++;
         }
         return saved;

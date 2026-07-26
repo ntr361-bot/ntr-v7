@@ -43,14 +43,14 @@ function resultBadge(hit) {
 
 function renderAiPeriods(results) {
   const parent = document.querySelector('#ai-periods');
-  const periods = ['50', '100', '200', '500'];
+  const periods = ['50', '100', '200', 'all'];
   parent.replaceChildren(...periods.map(period => {
     const result = results?.[period];
-    if (!result) throw new Error(`缺少 ${period} 期AI预测`);
+    if (!result) throw new Error(`缺少 ${period === 'all' ? '全部历史' : `${period}期`}AI预测`);
     const block = document.createElement('article');
     block.className = 'period-result';
     const heading = document.createElement('h3');
-    heading.textContent = `${period}期`;
+    heading.textContent = period === 'all' ? '全部历史' : `${period}期`;
     const meta = document.createElement('p');
     meta.className = 'period-meta';
     meta.textContent = `${result.confidence || '未标注可信度'} · ${result.best_model || '综合模型'}`;
@@ -114,7 +114,7 @@ async function loadPrediction() {
     text('generated-at', new Date(result.generated_at).toLocaleString('zh-CN'));
     text('status', '生成成功');
     text('source-issue', `第 ${result.source_issue} 期`);
-    text('model-version', result.model_version || 'AI生肖预测 V6.0');
+    text('model-version', result.model_version || 'AI生肖预测 V6.3');
     const verification = result.verification || { status: 'pending' };
     text('verification-status', verification.status === 'verified'
       ? `已验算：${verification.actual_number || '-'} ${verification.actual_zodiac || ''}`

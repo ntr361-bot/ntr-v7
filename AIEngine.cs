@@ -11,8 +11,44 @@ namespace 六合分析软件
     /// </summary>
     public static class AIEngine
     {
-        public const string Version = "AI生肖预测 V6.0";
-        private const int DefaultPeriods = 500; // 默认分析500期
+        public const string Version = "AI生肖预测 V6.3";
+        private const int DefaultPeriods = AISettings.AllHistoryModeValue;
+        private static readonly ZodiacPredictEngineV2.WeightConfig Period50Weights = new()
+        {
+            FrequencyWeight = 0.16,
+            RecentTrendWeight = 0.16,
+            OmissionWeight = 0.20,
+            HotColdWeight = 0.16,
+            PeriodPatternWeight = 0.32,
+            ConsecutiveWeight = 0
+        };
+        private static readonly ZodiacPredictEngineV2.WeightConfig Period100Weights = new()
+        {
+            FrequencyWeight = 0.16,
+            RecentTrendWeight = 0.16,
+            OmissionWeight = 0.20,
+            HotColdWeight = 0.16,
+            PeriodPatternWeight = 0.32,
+            ConsecutiveWeight = 0
+        };
+        private static readonly ZodiacPredictEngineV2.WeightConfig Period200Weights = new()
+        {
+            FrequencyWeight = 0.17,
+            RecentTrendWeight = 0.17,
+            OmissionWeight = 0.15,
+            HotColdWeight = 0.17,
+            PeriodPatternWeight = 0.34,
+            ConsecutiveWeight = 0
+        };
+        private static readonly ZodiacPredictEngineV2.WeightConfig AllHistoryWeights = new()
+        {
+            FrequencyWeight = 0.17,
+            RecentTrendWeight = 0.17,
+            OmissionWeight = 0.15,
+            HotColdWeight = 0.17,
+            PeriodPatternWeight = 0.34,
+            ConsecutiveWeight = 0
+        };
 
         /// <summary>
         /// 统一预测结果
@@ -48,10 +84,11 @@ namespace 六合分析软件
         /// </summary>
         /// <param name="periodCount">使用真实特码生肖数据的分析期数</param>
         /// <param name="forceRefresh">是否强制重新预测（忽略缓存）</param>
-        public static PredictResult Predict(int periodCount = 0, bool forceRefresh = false)
+        public static PredictResult Predict(int periodCount = -1, bool forceRefresh = false)
         {
-            int periods = periodCount > 0 ? periodCount : AISettings.AnalysisPeriods;
-            string cacheKey = $"{periods}_{DatabaseHelper.GetLatestPeriod()}";
+            int periods = ResolveRequestedPeriods(periodCount);
+            string cacheKey = $"prediction-v2|{Version}|{periods}|{DatabaseHelper.GetLatestPeriod()}";
+            string cacheName = $"ai-prediction-{periods}";
 
             // 如果缓存有效且未强制刷新，直接返回
             if (!forceRefresh && _memoryCache != null && _memoryCacheKey == cacheKey)
@@ -59,20 +96,12 @@ namespace 六合分析软件
                 return _memoryCache;
             }
 
-            // 尝试从数据库加载缓存
-            if (!forceRefresh && periodCount == 0)
+            // 跨进程缓存保留完整评分、号码和分析文本。
+            if (!forceRefresh && JsonFileCache.TryLoad<PredictResult>(cacheName, cacheKey, out var persistedCache))
             {
-                var dbCache = LoadFromDatabase();
-                if (dbCache != null && dbCache.AnalysisPeriods == AISettings.AnalysisPeriods)
-                {
-                    // 检查数据库最新期号是否变化
-                    if (_memoryCache == null || _memoryCacheKey != cacheKey)
-                    {
-                        _memoryCache = dbCache;
-                        _memoryCacheKey = cacheKey;
-                        return dbCache;
-                    }
-                }
+                _memoryCache = persistedCache;
+                _memoryCacheKey = cacheKey;
+                return persistedCache!;
             }
 
             // 执行预测
@@ -84,16 +113,32 @@ namespace 六合分析软件
             // 更新内存缓存
             _memoryCache = result;
             _memoryCacheKey = cacheKey;
+            JsonFileCache.Save(cacheName, cacheKey, result);
 
             return result;
         }
 
         /// <summary>
+        /// 强制刷新正式版的全部分析周期，并将每个周期的结果分别保存到预测历史。
+        /// 字典键使用配置周期值，其中 0 表示全部历史。
+        /// </summary>
+        public static Dictionary<int, PredictResult> RefreshAllPeriodPredictions()
+        {
+            int[] periods = { 50, 100, 200, AISettings.AllHistoryModeValue };
+            var results = new Dictionary<int, PredictResult>();
+
+            foreach (int period in periods)
+                results[period] = Predict(period, forceRefresh: true);
+
+            return results;
+        }
+
+        /// <summary>
         /// 执行实际预测
         /// </summary>
-        public static PredictResult GenerateForAutomation(int periodCount = 0, string? targetPeriod = null)
+        public static PredictResult GenerateForAutomation(int periodCount = -1, string? targetPeriod = null)
         {
-            int periods = periodCount > 0 ? periodCount : AISettings.AnalysisPeriods;
+            int periods = ResolveRequestedPeriods(periodCount);
             PredictResult result = RunPrediction(periods, includeExternalAnalysis: false, targetPeriod);
             if (!string.IsNullOrWhiteSpace(targetPeriod))
                 result.PredictPeriod = targetPeriod.Trim();
@@ -102,21 +147,38 @@ namespace 六合分析软件
 
         public static void SavePredictionHistory(PredictResult result) => SaveToDatabase(result);
 
-        private static PredictResult RunPrediction(int periods, bool includeExternalAnalysis, string? targetPeriod)
+        private static int ResolveRequestedPeriods(int requestedPeriods)
+        {
+            int periods = requestedPeriods < 0 ? AISettings.AnalysisPeriods : requestedPeriods;
+            // 旧设置中的500期已取消，自动迁移为全部历史。
+            return periods == 500 ? AISettings.AllHistoryModeValue : periods;
+        }
+
+        private static ZodiacPredictEngineV2.WeightConfig GetWeightsForPeriods(int periods)
+        {
+            return periods switch
+            {
+                50 => Period50Weights,
+                100 => Period100Weights,
+                200 => Period200Weights,
+                AISettings.AllHistoryModeValue => AllHistoryWeights,
+                _ => periods < 100 ? Period50Weights
+                    : periods < 200 ? Period100Weights
+                    : AllHistoryWeights
+            };
+        }
+
+        private static PredictResult RunPrediction(
+            int periods, bool includeExternalAnalysis, string? targetPeriod)
         {
             var engine = new ZodiacPredictEngineV2();
-            var optimizedWeights = WeightOptimizationService.FindBestWeights(
-                Math.Min(300, Math.Max(50, periods - 100)),
-                Math.Min(50, Math.Max(20, periods - Math.Min(300, Math.Max(50, periods - 100)))));
-            var v2Result = optimizedWeights.TotalTests > 0
-                ? engine.Predict(periods, optimizedWeights.Weights)
-                : engine.Predict(periods);
-            var rollingBacktest = includeExternalAnalysis
-                ? RollingBacktestService.Run(500)
-                : new RollingBacktestResult();
-            var modelCompetition = includeExternalAnalysis
-                ? ModelCompetitionService.RunCompetition(500)
-                : new List<ModelScoreResult>();
+            int historyLimit = AISettings.ResolveHistoryLimit(periods);
+            ZodiacPredictEngineV2.WeightConfig selectedWeights = GetWeightsForPeriods(periods);
+            var v2Result = engine.Predict(periods, selectedWeights);
+            string learningDetails = PredictionLearningService.ApplyCalibration(v2Result, v2Result.AnalysisPeriods);
+            // 回测只用于验证，不参与使用固定分周期权重的正式预测。
+            var rollingBacktest = new RollingBacktestResult();
+            var modelCompetition = new List<ModelScoreResult>();
 
             // 计算预测期号（最新期号 + 1）
             string nextPeriod = "";
@@ -153,23 +215,19 @@ namespace 六合分析软件
             // 构建 GPT 分析提示词
             var hotZodiacs = engine.GetHotZodiacs(periods);
             var coldZodiacs = engine.GetColdZodiacs(periods);
-            var recentZodiacs = DatabaseHelper.GetLatestHistory(periods)
+            var recentZodiacs = DatabaseHelper.GetLatestHistory(historyLimit)
                 .Where(r => !string.IsNullOrEmpty(r.SpecialZodiac))
                 .Select(r => r.SpecialZodiac)
                 .Take(10)
                 .ToList();
 
             var prompt = new System.Text.StringBuilder();
-            prompt.AppendLine("你是六合彩特码生肖分析专家。请根据以下 V6 自动权重优化、多模型竞争和滚动回测数据，预测下一期最可能出现的特码生肖。");
+            prompt.AppendLine("你是六合彩特码生肖分析专家。请根据以下 V6.3 固定权重及错因学习数据，预测下一期最可能出现的特码生肖。");
             prompt.AppendLine();
             prompt.AppendLine($"分析周期：{v2Result.AnalysisPeriods} 期");
             prompt.AppendLine($"可信度：{v2Result.Confidence}");
             prompt.AppendLine($"最佳模型：{v2Result.BestModel}");
-            if (optimizedWeights.TotalTests > 0)
-            {
-                prompt.AppendLine($"自动权重：频率{optimizedWeights.Weights.FrequencyWeight:P0} 趋势{optimizedWeights.Weights.RecentTrendWeight:P0} 遗漏{optimizedWeights.Weights.OmissionWeight:P0} 模式{(optimizedWeights.Weights.PeriodPatternWeight + optimizedWeights.Weights.ConsecutiveWeight):P0}");
-                prompt.AppendLine($"权重训练回测：Top3 {optimizedWeights.Top3HitRate:F2}% Top6 {optimizedWeights.Top6HitRate:F2}% 综合评分{optimizedWeights.CombinedScore:F1}");
-            }
+            prompt.AppendLine($"正式V6.3分周期权重：频率{selectedWeights.FrequencyWeight:P0} 趋势{selectedWeights.RecentTrendWeight:P0} 遗漏{selectedWeights.OmissionWeight:P0} 冷热{selectedWeights.HotColdWeight:P0} 周期{selectedWeights.PeriodPatternWeight + selectedWeights.ConsecutiveWeight:P0}");
             if (rollingBacktest.TotalTests > 0)
                 prompt.AppendLine($"滚动回测：平均Top3 {rollingBacktest.AverageTop3HitRate:F2}% 平均Top6 {rollingBacktest.AverageTop6HitRate:F2}% 稳定性{rollingBacktest.StabilityGrade}级");
             if (modelCompetition.Count > 0)
@@ -192,7 +250,8 @@ namespace 六合分析软件
             prompt.AppendLine("【推荐6生肖】【重点关注3个】【风险生肖】【分析理由】");
 
             // 调用 GPT（可能降级为本地）
-            string v6LocalReport = PredictionExplanationService.BuildReport(v2Result, optimizedWeights, rollingBacktest, modelCompetition);
+            string v6LocalReport = PredictionExplanationService.BuildReport(v2Result, null, rollingBacktest, modelCompetition);
+            v6LocalReport += Environment.NewLine + learningDetails;
             if (includeExternalAnalysis)
             {
                 var gptResult = OpenAIService.Analyze(prompt.ToString(), null);
@@ -280,7 +339,9 @@ namespace 六合分析软件
                     predictNumbers,                                // PredictNumber 推荐号码
                     DatabaseHelper.GetCurrentModelVersion(),       // ModelVersion（来自AIModels表）
                     result.AnalysisPeriods,
-                    scoreDetails + "#重点号码:" + result.NumberScoreDetails);
+                    scoreDetails + "#重点号码:" + result.NumberScoreDetails,
+                    result.AnalysisText.Split(Environment.NewLine)
+                        .LastOrDefault(line => line.StartsWith("错因学习：", StringComparison.Ordinal)) ?? "");
             }
             catch { }
         }
@@ -292,6 +353,7 @@ namespace 六合分析软件
         {
             _memoryCache = null;
             _memoryCacheKey = "";
+            JsonFileCache.RemoveByPrefix("ai-prediction-");
         }
 
         /// <summary>
@@ -312,7 +374,8 @@ namespace 六合分析软件
                 if (string.IsNullOrEmpty(yearPet) || result.Top3.Count == 0) return;
 
                 var map = DataCrawler.BuildShengXiaoMapPublic(yearPet);
-                var history = DatabaseHelper.GetLatestHistory(periods)
+                int historyLimit = AISettings.ResolveHistoryLimit(periods);
+                var history = DatabaseHelper.GetLatestHistory(historyLimit)
                     .Select(h => int.TryParse(h.SpecialNumber, out int n) && n >= 1 && n <= 49 ? (int?)n : null)
                     .ToList();
                 var zodiacScores = result.AllScores.ToDictionary(s => s.Zodiac, s => s.TotalScore);

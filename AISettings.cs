@@ -11,8 +11,10 @@ namespace 六合分析软件
     /// </summary>
     public static class AISettings
     {
+        public const int AllHistoryModeValue = 0;
+
         private static readonly string SettingsFile = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
+            AppPaths.DataDirectory,
             "ai_settings.json");
 
         /// <summary>
@@ -20,9 +22,10 @@ namespace 六合分析软件
         /// </summary>
         public enum AnalysisPeriodOption
         {
+            Period50 = 50,
             Period100 = 100,
             Period200 = 200,
-            Period500 = 500
+            AllHistory = AllHistoryModeValue
         }
 
         /// <summary>
@@ -30,8 +33,8 @@ namespace 六合分析软件
         /// </summary>
         public class Settings
         {
-            public int AnalysisPeriods { get; set; } = 500;  // 默认500期
-            public string ModelVersion { get; set; } = "AI生肖预测 V3.5";
+            public int AnalysisPeriods { get; set; } = AllHistoryModeValue;
+            public string ModelVersion { get; set; } = "AI生肖预测 V6.3";
             public DateTime LastPredictTime { get; set; }
             public string AnalysisMethod { get; set; } = "热度+遗漏+周期+关联";
         }
@@ -77,6 +80,20 @@ namespace 六合分析软件
             Save();
         }
 
+        public static int ResolveHistoryLimit(int configuredPeriods)
+        {
+            return configuredPeriods == AllHistoryModeValue
+                ? int.MaxValue
+                : Math.Max(0, configuredPeriods);
+        }
+
+        public static string GetPeriodLabel(int configuredPeriods)
+        {
+            return configuredPeriods == AllHistoryModeValue
+                ? "全部历史"
+                : $"{configuredPeriods}期";
+        }
+
         /// <summary>
         /// 更新模型版本
         /// </summary>
@@ -102,9 +119,10 @@ namespace 六合分析软件
         {
             return new List<(int, string)>
             {
+                (50, "最近50期"),
                 (100, "最近100期"),
                 (200, "最近200期"),
-                (500, "最近500期（推荐）")
+                (AllHistoryModeValue, "全部历史（推荐）")
             };
         }
 
@@ -119,7 +137,13 @@ namespace 六合分析软件
                 {
                     string json = File.ReadAllText(SettingsFile);
                     var settings = JsonSerializer.Deserialize<Settings>(json);
-                    return settings ?? new Settings();
+                    if (settings != null)
+                    {
+                        settings.ModelVersion = "AI生肖预测 V6.3";
+                        if (settings.AnalysisPeriods == 500)
+                            settings.AnalysisPeriods = AllHistoryModeValue;
+                        return settings;
+                    }
                 }
             }
             catch { }

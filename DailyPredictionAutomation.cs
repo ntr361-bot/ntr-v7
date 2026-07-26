@@ -14,7 +14,7 @@ public sealed record DailyAiPrediction(
 
 public static class DailyPredictionAutomation
 {
-    private static readonly int[] Periods = { 50, 100, 200, 500 };
+    private static readonly int[] Periods = { 50, 100, 200, AISettings.AllHistoryModeValue };
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static string Generate(long targetIssue, string outputDirectory, bool force = false, bool dryRun = false)
@@ -39,7 +39,8 @@ public static class DailyPredictionAutomation
             if (result.Top3.Count == 0 || result.Top6.Count == 0)
                 throw new InvalidDataException($"{period}期 AI 预测结果为空");
             AIEngine.SavePredictionHistory(result);
-            ai[period.ToString()] = new DailyAiPrediction(period, result.Top3.ToArray(),
+            string periodKey = period == AISettings.AllHistoryModeValue ? "all" : period.ToString();
+            ai[periodKey] = new DailyAiPrediction(result.AnalysisPeriods, result.Top3.ToArray(),
                 result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
         }
 
