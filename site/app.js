@@ -45,7 +45,7 @@ function renderAiPeriods(results) {
   const parent = document.querySelector('#ai-periods');
   const periods = ['50', '100', '200', 'all'];
   parent.replaceChildren(...periods.map(period => {
-    const result = results?.[period];
+    const result = results?.[period] ?? (period === 'all' ? results?.['500'] : undefined);
     if (!result) throw new Error(`缺少 ${period === 'all' ? '全部历史' : `${period}期`}AI预测`);
     const block = document.createElement('article');
     block.className = 'period-result';
