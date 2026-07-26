@@ -44,7 +44,8 @@ public static class DailyPredictionAutomation
         }
 
         ZodiacRulePrediction rule = ZodiacRulePredictionService.Predict(targetIssue);
-        PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(500);
+        int targetYear = checked((int)(targetIssue / 1000));
+        PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(500, targetYear);
         EnsemblePredictionService.PredictionReport ensemble = EnsemblePredictionService.Predict(500);
         if (score.Predictions.Count == 0 || ensemble.Predictions.Count == 0 || rule.Zodiacs.Count == 0)
             throw new InvalidDataException("综合预测或特码规律结果为空");

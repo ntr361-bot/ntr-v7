@@ -13,6 +13,8 @@ var tests = new (string Name, Action Run)[]
     ("解析有效开奖 JSON", ParseValidJson),
     ("拒绝失败 API 响应", RejectFailedResponse),
     ("号码统计正确", CountNumbers),
+    ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
+    ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
     ("已存在文件时跳过", ExistingFileSkips),
@@ -78,6 +80,34 @@ void CountNumbers()
 {
     var counts = AnalysisEngine.CountNumbers(new List<string> { "01", "02", "03", "02", "03", "04" });
     Assert(counts["02"] == 2 && counts["04"] == 1, "号码频次计算不正确");
+}
+
+void ZodiacNumberMapFor2026IsCorrect()
+{
+    var map = DataCrawler.BuildShengXiaoMapPublic("马");
+    Assert(string.Join(",", map["马"]) == "01,13,25,37,49", "马肖号码错误");
+    Assert(string.Join(",", map["蛇"]) == "02,14,26,38", "蛇肖号码错误");
+    Assert(string.Join(",", map["龙"]) == "03,15,27,39", "龙肖号码错误");
+    Assert(string.Join(",", map["兔"]) == "04,16,28,40", "兔肖号码错误");
+    Assert(string.Join(",", map["虎"]) == "05,17,29,41", "虎肖号码错误");
+    Assert(string.Join(",", map["牛"]) == "06,18,30,42", "牛肖号码错误");
+    Assert(string.Join(",", map["鼠"]) == "07,19,31,43", "鼠肖号码错误");
+    Assert(string.Join(",", map["猪"]) == "08,20,32,44", "猪肖号码错误");
+    Assert(string.Join(",", map["狗"]) == "09,21,33,45", "狗肖号码错误");
+    Assert(string.Join(",", map["鸡"]) == "10,22,34,46", "鸡肖号码错误");
+    Assert(string.Join(",", map["猴"]) == "11,23,35,47", "猴肖号码错误");
+    Assert(string.Join(",", map["羊"]) == "12,24,36,48", "羊肖号码错误");
+    Assert(map.Values.SelectMany(numbers => numbers).Distinct().Count() == 49,
+        "生肖映射必须完整覆盖01至49且不能重复");
+}
+
+void PredictionScoreUsesTargetYearMap()
+{
+    var result = PredictionScoreService.Predict(500, 2026);
+    Assert(result.Predictions.Single(item => item.Zodiac == "马").Number == "01,13,25,37,49",
+        "综合评分仍在使用旧年份静态映射");
+    Assert(result.Predictions.Single(item => item.Zodiac == "虎").Number == "05,17,29,41",
+        "综合评分虎肖号码未按2026马年轮转");
 }
 
 void AutoDetectNextIssue()

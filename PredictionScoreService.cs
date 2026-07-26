@@ -36,13 +36,14 @@ namespace 六合分析软件
         /// <summary>
         /// 综合评分预测
         /// </summary>
-        public static ScoreResult Predict(int periodRange = 500)
+        public static ScoreResult Predict(int periodRange = 500, int? targetYear = null)
         {
             var result = new ScoreResult
             {
                 AnalysisPeriods = periodRange,
                 PredictTime = DateTime.Now
             };
+            string yearPet = ResolveYearPet(targetYear);
 
             // 获取基础统计数据
             var zodiacStats = ZodiacStatisticsService.Calculate(periodRange);
@@ -137,8 +138,8 @@ namespace 六合分析软件
                 prediction.Reason = $"频率{freq:F1}% | 趋势:{zStat.TrendLabel} | " +
                     $"遗漏{zStat.CurrentMissing}期(均{zMissing?.AvgMissing ?? 0:F1}) | 近10期{zStat.Recent10Count}次";
 
-                // 号码映射：每个生肖对应4个号码
-                prediction.Number = GetZodiacNumbers(zodiac);
+                // 号码映射必须随预测年份生肖轮转，年份生肖额外包含49号。
+                prediction.Number = GetZodiacNumbers(zodiac, yearPet);
 
                 result.Predictions.Add(prediction);
             }
@@ -191,25 +192,32 @@ namespace 六合分析软件
         /// <summary>
         /// 获取生肖对应的号码范围
         /// </summary>
-        private static string GetZodiacNumbers(string zodiac)
+        private static string GetZodiacNumbers(string zodiac, string yearPet)
         {
-            // 简化的生肖-号码映射
-            var map = new Dictionary<string, string>
+            if (string.IsNullOrEmpty(yearPet))
+                return "";
+
+            Dictionary<string, List<string>> map = DataCrawler.BuildShengXiaoMapPublic(yearPet);
+            return map.TryGetValue(zodiac, out List<string>? numbers)
+                ? string.Join(",", numbers)
+                : "";
+        }
+
+        private static string ResolveYearPet(int? targetYear)
+        {
+            if (targetYear.HasValue)
+                return DatabaseHelper.GetYearPetPublic(targetYear.Value.ToString());
+
+            DatabaseHelper.HistoryRecord? latest = DatabaseHelper.GetLatestHistory(1).FirstOrDefault();
+            string date = latest?.OpenTime ?? latest?.Date ?? "";
+            if (date.Length >= 4)
             {
-                { "鼠", "01,13,25,37,49" },
-                { "牛", "02,14,26,38" },
-                { "虎", "03,15,27,39" },
-                { "兔", "04,16,28,40" },
-                { "龙", "05,17,29,41" },
-                { "蛇", "06,18,30,42" },
-                { "马", "07,19,31,43" },
-                { "羊", "08,20,32,44" },
-                { "猴", "09,21,33,45" },
-                { "鸡", "10,22,34,46" },
-                { "狗", "11,23,35,47" },
-                { "猪", "12,24,36,48" }
-            };
-            return map.ContainsKey(zodiac) ? map[zodiac] : "";
+                string pet = DatabaseHelper.GetYearPetPublic(date.Substring(0, 4));
+                if (!string.IsNullOrEmpty(pet))
+                    return pet;
+            }
+
+            return DatabaseHelper.GetYearPetPublic(DateTime.Now.Year.ToString());
         }
     }
 }

@@ -76,7 +76,7 @@ namespace 六合分析软件
             }
 
             // 执行预测
-            var result = RunPrediction(periods, includeExternalAnalysis: true);
+            var result = RunPrediction(periods, includeExternalAnalysis: true, targetPeriod: null);
 
             // 每次预测都按目标期号和分析周期留档，开奖后自动验证。
             SaveToDatabase(result);
@@ -94,7 +94,7 @@ namespace 六合分析软件
         public static PredictResult GenerateForAutomation(int periodCount = 0, string? targetPeriod = null)
         {
             int periods = periodCount > 0 ? periodCount : AISettings.AnalysisPeriods;
-            PredictResult result = RunPrediction(periods, includeExternalAnalysis: false);
+            PredictResult result = RunPrediction(periods, includeExternalAnalysis: false, targetPeriod);
             if (!string.IsNullOrWhiteSpace(targetPeriod))
                 result.PredictPeriod = targetPeriod.Trim();
             return result;
@@ -102,7 +102,7 @@ namespace 六合分析软件
 
         public static void SavePredictionHistory(PredictResult result) => SaveToDatabase(result);
 
-        private static PredictResult RunPrediction(int periods, bool includeExternalAnalysis)
+        private static PredictResult RunPrediction(int periods, bool includeExternalAnalysis, string? targetPeriod)
         {
             var engine = new ZodiacPredictEngineV2();
             var optimizedWeights = WeightOptimizationService.FindBestWeights(
@@ -148,7 +148,7 @@ namespace 六合分析软件
                 WindowResults = v2Result.WindowResults
             };
 
-            BuildRecommendedNumbers(result, periods);
+            BuildRecommendedNumbers(result, periods, targetPeriod: targetPeriod);
 
             // 构建 GPT 分析提示词
             var hotZodiacs = engine.GetHotZodiacs(periods);
@@ -297,12 +297,15 @@ namespace 六合分析软件
         /// <summary>
         /// 在重点生肖对应号码中，根据真实特码历史做二次筛选。
         /// </summary>
-        private static void BuildRecommendedNumbers(PredictResult result, int periods, int takeCount = 8)
+        private static void BuildRecommendedNumbers(
+            PredictResult result, int periods, int takeCount = 8, string? targetPeriod = null)
         {
             try
             {
                 var latest = DatabaseHelper.GetLatestHistory(1);
-                string year = latest.FirstOrDefault()?.OpenTime?.Length >= 4
+                string year = targetPeriod?.Length >= 4
+                    ? targetPeriod.Substring(0, 4)
+                    : latest.FirstOrDefault()?.OpenTime?.Length >= 4
                     ? latest[0].OpenTime.Substring(0, 4)
                     : latest.FirstOrDefault()?.Date?.Length >= 4 ? latest[0].Date.Substring(0, 4) : "";
                 string yearPet = string.IsNullOrEmpty(year) ? "" : DatabaseHelper.GetYearPetPublic(year);
