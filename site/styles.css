@@ -1,0 +1,63 @@
+:root {
+  color-scheme: light;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  color: #18211c;
+  background: #eef1ed;
+  letter-spacing: 0;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+main { width: min(920px, 100%); margin: 0 auto; padding: 28px 22px 56px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 2px solid #18211c; padding-bottom: 18px; }
+.eyebrow { margin: 0 0 5px; color: #9b2d30; font-weight: 700; }
+h1 { margin: 0; font-size: clamp(28px, 7vw, 48px); line-height: 1.08; }
+h2 { margin: 0 0 14px; font-size: 18px; }
+button { width: 42px; height: 42px; border: 1px solid #18211c; border-radius: 4px; background: #fff; color: #18211c; font-size: 26px; cursor: pointer; }
+button:disabled { opacity: .45; cursor: wait; }
+.state { padding: 40px 0; color: #526058; }
+.state.error { color: #9b2d30; font-weight: 700; }
+.summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid #c6cdc8; }
+.summary div { padding: 18px 0; display: grid; gap: 6px; }
+.summary span { color: #667269; font-size: 13px; }
+.summary strong { overflow-wrap: anywhere; }
+.result-nav { position: sticky; top: 0; z-index: 5; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 0 -1px; padding: 10px 0; background: #eef1ed; }
+.result-nav a { min-height: 42px; display: grid; place-items: center; padding: 6px; border: 1px solid #aeb8b1; background: #fff; color: #18211c; font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; }
+.result-nav a:hover, .result-nav a:focus-visible { border-color: #28706b; color: #28706b; outline: none; }
+.result-section { padding: 28px 0; border-bottom: 1px solid #c6cdc8; }
+.period-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.period-result { border: 1px solid #b7c0b9; border-top: 4px solid #28706b; border-radius: 6px; background: #fff; padding: 18px; }
+.period-result h3 { margin: 0; font-size: 22px; }
+.period-result b { display: block; margin: 16px 0 8px; font-size: 13px; color: #526058; }
+.period-meta { min-height: 38px; margin: 5px 0 0; color: #667269; font-size: 13px; }
+.tokens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.token { min-height: 72px; display: grid; place-items: center; border: 1px solid #b7c0b9; border-radius: 6px; background: #fff; font-size: 25px; font-weight: 800; }
+.numbers { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.numbers .token { color: #9b2d30; }
+.secondary { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.secondary .token { min-height: 54px; font-size: 18px; }
+.compact { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+.compact .token { min-height: 38px; font-size: 15px; }
+.rule-section { border-left: 4px solid #b47b16; padding-left: 18px; }
+.detail-line { color: #59665e; line-height: 1.6; }
+.ranking { border-top: 1px solid #c6cdc8; }
+.rank-row { display: grid; grid-template-columns: 36px 70px minmax(0, 1fr) 72px 66px; gap: 12px; align-items: center; min-height: 54px; border-bottom: 1px solid #d7ddd9; }
+.rank { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: #18211c; color: #fff; }
+.rank-row span { color: #667269; overflow-wrap: anywhere; }
+.score { text-align: right; color: #9b2d30; }
+.result-badge { min-width: 58px; display: inline-grid; place-items: center; padding: 4px 7px; border: 1px solid #98a49c; border-radius: 4px; color: #59665e; background: #fff; font-size: 12px; font-weight: 700; }
+.result-badge.hit { border-color: #23764c; color: #17613b; background: #e7f5ed; }
+.result-badge.miss { border-color: #a34144; color: #8d292d; background: #fbeaec; }
+.result-badge.pending { margin-top: 12px; }
+.ensemble-section { border-left: 4px solid #315f91; padding-left: 18px; }
+
+@media (max-width: 560px) {
+  main { padding: 20px 16px 40px; }
+  .summary { grid-template-columns: 1fr; }
+  .summary div { border-bottom: 1px solid #d7ddd9; }
+  .secondary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .period-grid { grid-template-columns: 1fr; }
+  .result-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rank-row { grid-template-columns: 32px 44px minmax(0, 1fr) 58px; gap: 8px; }
+  .rank-row .result-badge { grid-column: 3 / 5; justify-self: end; margin: 0 0 7px; }
+}
