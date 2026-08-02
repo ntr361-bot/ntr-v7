@@ -66,7 +66,12 @@ public static class CloudPredictionSyncService
         int saved = 0;
         foreach ((string periodText, CloudAiPrediction item) in prediction.AiZodiac)
         {
-            if (!int.TryParse(periodText, out int periods) || periods <= 0)
+            // The all-history window is serialized as "all" in cloud JSON and
+            // represented internally by AISettings.AllHistoryModeValue (0).
+            int periods = periodText.Equals("all", StringComparison.OrdinalIgnoreCase)
+                ? AISettings.AllHistoryModeValue
+                : int.TryParse(periodText, out int parsedPeriods) ? parsedPeriods : -1;
+            if (periods < 0)
                 throw new InvalidDataException($"第{prediction.Issue}期 AI 预测周期无效：{periodText}");
 
             // V6.3 已取消500期模型；旧云端档案保留但不再导入该周期。

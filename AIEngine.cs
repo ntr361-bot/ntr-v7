@@ -11,7 +11,9 @@ namespace 六合分析软件
     /// </summary>
     public static class AIEngine
     {
-        public const string Version = "AI生肖预测 V6.3.1";
+        // Keep the public model identifier aligned with the V6.3 formal release.
+        // The external reasoning model is tracked separately by OpenAIService.
+        public const string Version = "AI生肖预测 V6.3";
         private const int DefaultPeriods = AISettings.AllHistoryModeValue;
         private static readonly ZodiacPredictEngineV2.WeightConfig Period50Weights = new()
         {
