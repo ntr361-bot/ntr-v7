@@ -34,6 +34,7 @@ var tests = new (string Name, Action Run)[]
     ,("预测清单包含全部期号", PredictionManifestContainsAllIssues)
     ,("云端预测导入四周期历史", CloudPredictionImportsFourPeriods)
     ,("云端开奖档案导出", CloudHistoryExportIsValid)
+    ,("开奖记录未变化时不重复改写云端档案", UnchangedCloudHistoryIsNotRewritten)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
@@ -305,6 +306,17 @@ void CloudHistoryExportIsValid()
     Assert(document.RootElement.GetProperty("records").GetArrayLength() >= 3, "开奖档案记录不完整");
 }
 
+void UnchangedCloudHistoryIsNotRewritten()
+{
+    string output = Path.Combine(FreshDirectory(), "history.json");
+    CloudHistoryAutomation.Export(output);
+    string first = File.ReadAllText(output);
+    Thread.Sleep(20);
+    CloudHistoryAutomation.Export(output);
+    Assert(File.ReadAllText(output) == first,
+        "开奖记录没有增加时不应只因更新时间变化而制造新的Git提交");
+}
+
 void PublishedPredictionVerificationIsRecorded()
 {
     string output = FreshDirectory();
@@ -343,6 +355,8 @@ void AllHistoryLearningUsesStableBucket()
 {
     Assert(PredictionLearningService.IsSameAnalysisBucket(1313, 1306),
         "全部历史每期增长后仍应复用以前的已开奖学习样本");
+    Assert(PredictionLearningService.IsSameAnalysisBucket(0, 1313),
+        "云端使用的全部历史标识0应与本地实际样本数归入同一学习组");
     Assert(!PredictionLearningService.IsSameAnalysisBucket(200, 1313),
         "固定200期样本不能与全部历史样本混用");
     Assert(!PredictionLearningService.IsSameAnalysisBucket(500, 1313),

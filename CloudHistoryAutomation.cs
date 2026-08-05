@@ -25,6 +25,12 @@ public static class CloudHistoryAutomation
             .ToArray();
         if (records.Length == 0) throw new InvalidDataException("没有可发布的开奖记录");
 
+        if (HasSameRecords(outputFile, records))
+        {
+            Console.WriteLine($"[INFO] 云端开奖档案无变化：{records.Length}期，最新{records[^1].Issue}期");
+            return outputFile;
+        }
+
         var document = new
         {
             status = "success",
@@ -35,6 +41,22 @@ public static class CloudHistoryAutomation
         AtomicWrite(outputFile, document);
         Console.WriteLine($"[SUCCESS] 云端开奖档案已更新：{records.Length}期，最新{records[^1].Issue}期");
         return outputFile;
+    }
+
+    private static bool HasSameRecords(string outputFile, CloudHistoryRecord[] records)
+    {
+        if (!File.Exists(outputFile)) return false;
+        try
+        {
+            using JsonDocument existing = JsonDocument.Parse(File.ReadAllBytes(outputFile));
+            CloudHistoryRecord[]? saved = existing.RootElement.GetProperty("records")
+                .Deserialize<CloudHistoryRecord[]>(JsonOptions);
+            return saved is not null && saved.SequenceEqual(records);
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static void AtomicWrite<T>(string path, T value)

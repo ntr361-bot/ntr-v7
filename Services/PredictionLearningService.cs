@@ -79,8 +79,8 @@ namespace 六合分析软件
 
         public static bool IsSameAnalysisBucket(int storedPeriods, int requestedPeriods)
         {
-            bool storedIsAllHistory = storedPeriods > AllHistoryThreshold;
-            bool requestedIsAllHistory = requestedPeriods > AllHistoryThreshold;
+            bool storedIsAllHistory = storedPeriods == AISettings.AllHistoryModeValue || storedPeriods > AllHistoryThreshold;
+            bool requestedIsAllHistory = requestedPeriods == AISettings.AllHistoryModeValue || requestedPeriods > AllHistoryThreshold;
             return storedIsAllHistory && requestedIsAllHistory || storedPeriods == requestedPeriods;
         }
 
