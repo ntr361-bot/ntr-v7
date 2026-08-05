@@ -34,6 +34,7 @@ namespace 六合分析软件
         const int HomePredictionPeriods = 100;
         AIEngine.PredictResult? _cachedPredict;
         bool _cloudSyncRunning;
+        bool _predictionLoading;
         System.Windows.Forms.Timer? _cloudSyncTimer;
 
         public Form1()
@@ -269,7 +270,12 @@ namespace 六合分析软件
             }
 
             y += 145;
-            EnsurePredictCached();
+            // 预测可能包含本地计算和 GPT 网络请求，不能阻塞 UI 线程。
+            if (_cachedPredict == null && !_predictionLoading)
+            {
+                _predictionLoading = true;
+                _ = LoadHomePredictionAsync();
+            }
 
             Panel section2 = CreateSectionPanel(y, 385);
             mainPanel.Controls.Add(section2);
@@ -325,7 +331,9 @@ namespace 六合分析软件
             }
             else
             {
-                AddInfoLine(section2, 15, sy, "数据不足，请先更新历史数据（至少10期）");
+                AddInfoLine(section2, 15, sy, _predictionLoading
+                    ? "正在后台计算预测，界面不会被网络请求阻塞..."
+                    : "数据不足，请先更新历史数据（至少10期）");
             }
 
             y += 400;
@@ -721,12 +729,17 @@ namespace 六合分析软件
 
         private List<string> ParseRankedZodiacs(DatabaseHelper.PredictionRecord record)
         {
+            var top6 = record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(zodiac => zodiac.Trim())
+                .Where(zodiac => !string.IsNullOrEmpty(zodiac));
             var ranked = record.ScoreDetails.Split('#')[0].Split(';', StringSplitOptions.RemoveEmptyEntries)
                 .Select(part => part.Split(':')[0].Trim()).Where(z => !string.IsNullOrEmpty(z)).ToList();
-            if (ranked.Count >= 7) return ranked;
-            return record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            // 前六判定使用 Top6Zodiac，显示也必须以同一顺序为准，避免判定与卡片内容不一致。
+            var aligned = top6
+                .Concat(ranked)
                 .Concat(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 .Distinct().ToList();
+            return aligned;
         }
 
         private void AddHistoryTierLine(Control parent, int y, string tier, IEnumerable<string> zodiacs,
@@ -769,12 +782,21 @@ namespace 六合分析软件
             return selected.Take(count).ToList();
         }
 
-        // 确保AI预测已缓存
-        private void EnsurePredictCached()
+        // 在后台生成首页预测，完成后回到 UI 线程刷新页面。
+        private async Task LoadHomePredictionAsync()
         {
-            if (_cachedPredict == null)
+            try
             {
-                _cachedPredict = AIEngine.Predict(HomePredictionPeriods);
+                var prediction = await Task.Run(() => AIEngine.Predict(HomePredictionPeriods));
+                _cachedPredict = prediction;
+                _predictionLoading = false;
+                if (!IsDisposed && IsHandleCreated)
+                    BeginInvoke(new Action(ShowHome));
+            }
+            catch (Exception ex)
+            {
+                _predictionLoading = false;
+                AppLogger.Error("后台生成首页预测失败", ex);
             }
         }
 

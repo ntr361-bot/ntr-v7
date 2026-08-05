@@ -13,6 +13,8 @@ namespace 六合分析软件
         private const int MinimumSamples = 12;
         private const int MaximumSamples = 60;
         private const double MaximumScoreAdjustment = 3.0;
+        // 旧版曾有独立的固定500期模型；全部历史记录从其实际样本数（>500）归为稳定桶。
+        private const int AllHistoryThreshold = 500;
 
         private static readonly (string Key, string Name, Func<ZodiacPredictEngineV2.ZodiacScoreV2, double> Value)[] Factors =
         {
@@ -26,7 +28,7 @@ namespace 六合分析软件
         public static string ApplyCalibration(ZodiacPredictEngineV2.PredictResultV2 result, int analysisPeriods)
         {
             var samples = DatabaseHelper.GetPredictionHistory(500)
-                .Where(record => record.AnalysisPeriods == analysisPeriods)
+                .Where(record => IsSameAnalysisBucket(record.AnalysisPeriods, analysisPeriods))
                 .Where(record => record.HitResult is "命中" or "未命中")
                 .Where(record => !string.IsNullOrWhiteSpace(record.ActualZodiac))
                 .Select(record => (Record: record, Scores: ParseScores(record.ScoreDetails)))
@@ -73,6 +75,13 @@ namespace 六合分析软件
             string strongest = Factors.OrderByDescending(factor => coefficients[factor.Key]).First().Name;
             string weakest = Factors.OrderBy(factor => coefficients[factor.Key]).First().Name;
             return $"错因学习：依据最近{samples.Count}条已开奖复盘，小幅校正不超过±{MaximumScoreAdjustment:F0}分；近期较有效={strongest}，较弱={weakest}";
+        }
+
+        public static bool IsSameAnalysisBucket(int storedPeriods, int requestedPeriods)
+        {
+            bool storedIsAllHistory = storedPeriods > AllHistoryThreshold;
+            bool requestedIsAllHistory = requestedPeriods > AllHistoryThreshold;
+            return storedIsAllHistory && requestedIsAllHistory || storedPeriods == requestedPeriods;
         }
 
         public static string BuildReview(string scoreDetails, string predictedTop3, string actualZodiac)

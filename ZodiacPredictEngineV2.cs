@@ -191,21 +191,9 @@ namespace 六合分析软件
             score.AvgOmission = intervals.Count > 0 ? intervals.Average() : total;
             score.OmissionPosition = score.AvgOmission > 0 ? (double)score.CurrentOmission / score.AvgOmission : 1;
 
-            // 遗漏评分：考虑当前位置和平均位置的比值
-            if (score.CurrentOmission < 0)
-            {
-                score.OmissionScore = 100; // 从未出现
-            }
-            else if (score.OmissionPosition >= 1.0)
-            {
-                // 当前遗漏已超过平均值，即将出现
-                score.OmissionScore = Math.Min(50 + score.OmissionPosition * 30, 100);
-            }
-            else
-            {
-                // 还未到平均周期
-                score.OmissionScore = Math.Min(score.OmissionPosition * 50, 50);
-            }
+            // 遗漏只描述历史位置，不代表“欠开”。接近历史平均间隔时分数最高，
+            // 超过平均值后逐步衰减，避免同一生肖越不中反而得分越高。
+            score.OmissionScore = CalculateOmissionScore(score.CurrentOmission, score.AvgOmission);
 
             // 4. 冷热转换（15%）
             int half = total / 2;
@@ -302,12 +290,28 @@ namespace 六合分析软件
         private double GetEightZodiacBonus(string lastZodiac)
         {
             double rate = EightZodiacHitRates.TryGetValue(lastZodiac, out double value) ? value : 0.7154;
+            return CalculateEightZodiacBonus(rate);
+        }
 
-            if (rate >= 0.80) return 8;
-            if (rate >= 0.75) return 7;
-            if (rate >= 0.70) return 6;
-            if (rate >= 0.65) return 5;
-            return 4;
+        public static double CalculateOmissionScore(int currentOmission, double averageOmission)
+        {
+            if (currentOmission < 0 || averageOmission <= 0) return 50;
+
+            double ratio = currentOmission / averageOmission;
+            if (ratio <= 1.0)
+                return Math.Clamp(ratio * 60, 0, 60);
+
+            return Math.Clamp(60 - (ratio - 1.0) * 20, 20, 60);
+        }
+
+        public static double CalculateEightZodiacBonus(double historicalHitRate)
+        {
+            // 八肖覆盖本身很宽，只允许作为弱信号，不能单独改变榜首。
+            if (historicalHitRate >= 0.80) return 3;
+            if (historicalHitRate >= 0.75) return 2.5;
+            if (historicalHitRate >= 0.70) return 2;
+            if (historicalHitRate >= 0.65) return 1.5;
+            return 1;
         }
 
         private static readonly Dictionary<string, HashSet<string>> EightZodiacRules = new Dictionary<string, HashSet<string>>

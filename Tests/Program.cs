@@ -35,6 +35,9 @@ var tests = new (string Name, Action Run)[]
     ,("云端预测导入四周期历史", CloudPredictionImportsFourPeriods)
     ,("云端开奖档案导出", CloudHistoryExportIsValid)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
+    ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
+    ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
+    ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
 };
 
 int failures = 0;
@@ -326,6 +329,32 @@ void PublishedPredictionVerificationIsRecorded()
     Assert(root.GetProperty("ai_zodiac").GetProperty("100").GetProperty("top3_hit").GetBoolean(), "应记录前三命中");
     Assert(root.GetProperty("comprehensive_score")[0].GetProperty("result").GetString() == "命中", "应逐项记录综合评分命中");
     Assert(root.GetProperty("ensemble")[0].GetProperty("result").GetString() == "未命中", "应逐项记录集成模型未命中");
+}
+
+void ExtremeOmissionDoesNotKeepRising()
+{
+    double nearAverage = ZodiacPredictEngineV2.CalculateOmissionScore(12, 12);
+    double extreme = ZodiacPredictEngineV2.CalculateOmissionScore(36, 12);
+    Assert(extreme < nearAverage,
+        "遗漏达到平均值数倍后不应继续加分，否则会让同一生肖越不中越霸榜");
+}
+
+void AllHistoryLearningUsesStableBucket()
+{
+    Assert(PredictionLearningService.IsSameAnalysisBucket(1313, 1306),
+        "全部历史每期增长后仍应复用以前的已开奖学习样本");
+    Assert(!PredictionLearningService.IsSameAnalysisBucket(200, 1313),
+        "固定200期样本不能与全部历史样本混用");
+    Assert(!PredictionLearningService.IsSameAnalysisBucket(500, 1313),
+        "旧版固定500期样本不能与全部历史样本混用");
+    Assert(PredictionLearningService.IsSameAnalysisBucket(100, 100),
+        "固定周期应继续严格匹配");
+}
+
+void EightZodiacBonusIsBounded()
+{
+    Assert(ZodiacPredictEngineV2.CalculateEightZodiacBonus(0.82) <= 3,
+        "八肖关联加分不应大到单独改变榜首");
 }
 
 AIEngine.PredictResult FakePrediction(long issue) => new()

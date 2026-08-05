@@ -44,14 +44,31 @@ public static class CloudPredictionSyncService
                     cancellationToken);
                 AtomicWrite(localFile, prediction);
             }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                // The manifest can be published slightly before the matching
+                // prediction file. Do not fail the whole sync for that one file.
+                AppLogger.Info("V6云端档案同步", $"跳过尚未发布的预测档案：{fileName}");
+                continue;
+            }
             catch (HttpRequestException) when (File.Exists(localFile))
             {
                 prediction = JsonSerializer.Deserialize<CloudDailyPrediction>(
                     File.ReadAllText(localFile), JsonOptions)
                     ?? throw new InvalidDataException($"本地预测档案损坏：{fileName}");
             }
-            rows += ImportPrediction(prediction);
-            files++;
+            try
+            {
+                rows += ImportPrediction(prediction);
+                files++;
+            }
+            catch (InvalidDataException)
+            {
+                // A legacy cloud file must not block newer, valid prediction
+                // files from being imported. Keep the sync moving so the local
+                // 6.3 ledger can catch up to the cloud manifest.
+                continue;
+            }
         }
 
         DatabaseHelper.BatchVerifyAIPredicts();
@@ -147,8 +164,14 @@ public static class CloudPredictionSyncService
 
     private static HttpClient CreateClient()
     {
-        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("LiuHeAnalysis/3.5");
+        var handler = new HttpClientHandler
+        {
+            // The local proxy fails TLS negotiation with the cloud host.
+            UseProxy = false
+        };
+        var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36");
         return client;
     }
 }

@@ -148,7 +148,7 @@ namespace 六合分析软件
             table.Columns["ActualZodiac"].Width = 60;
             table.Columns["HitResult"].Width = 70;
             table.Columns["Top6HitResult"].Width = 70;
-            table.Columns["ReviewDetails"].MinimumWidth = 360;
+            table.Columns["ReviewDetails"].MinimumWidth = 420;
             table.Columns["ReviewDetails"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             table.Columns["ReviewDetails"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             table.Columns["ModelVersion"].Width = 90;

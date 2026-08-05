@@ -37,6 +37,8 @@ namespace 六合分析软件
                 return;
             }
 
+            DatabaseHelper.RecalculateVerifiedPredictionResults();
+
             Application.Run(new Form1());
 
         }

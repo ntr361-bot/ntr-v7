@@ -949,7 +949,8 @@ namespace 六合分析软件
                     PredictZodiac=excluded.PredictZodiac,
                     Top6Zodiac=excluded.Top6Zodiac,
                     ScoreDetails=excluded.ScoreDetails,
-                    ModelVersion=excluded.ModelVersion", conn);
+                    ModelVersion=excluded.ModelVersion,
+                    ActualNumber='', ActualZodiac='', HitResult='未开奖', Top6HitResult='未开奖', ReviewDetails=''", conn);
             cmd.Parameters.AddWithValue("@issue", issue);
             cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
             cmd.Parameters.AddWithValue("@time", predictTime);
@@ -960,6 +961,7 @@ namespace 六合分析软件
             cmd.Parameters.AddWithValue("@scores", scoreDetails);
             cmd.Parameters.AddWithValue("@model", modelVersion);
             cmd.ExecuteNonQuery();
+            RecalculateVerifiedPredictionResults();
         }
 
         /// <summary>
@@ -967,11 +969,20 @@ namespace 六合分析软件
         /// </summary>
         public static void VerifyPrediction(string issue, string actualNumber, string actualZodiac)
         {
+            VerifyPrediction(issue, null, actualNumber, actualZodiac);
+        }
+
+        private static void VerifyPrediction(string issue, int? analysisPeriods, string actualNumber, string actualZodiac)
+        {
             using (SQLiteConnection conn = GetConnection())
             {
-                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac, ScoreDetails FROM PredictionHistory WHERE Issue=@issue AND (HitResult='未开奖' OR HitResult='')";
+                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac, ScoreDetails FROM PredictionHistory WHERE Issue=@issue" +
+                    (analysisPeriods.HasValue ? " AND AnalysisPeriods=@periods" : "") +
+                    " AND (HitResult='未开奖' OR HitResult='')";
                 SQLiteCommand findCmd = new SQLiteCommand(findSql, conn);
                 findCmd.Parameters.AddWithValue("@issue", issue);
+                if (analysisPeriods.HasValue)
+                    findCmd.Parameters.AddWithValue("@periods", analysisPeriods.Value);
 
                 var pending = new List<(int id, string top3, string top6, string scores)>();
                 using (SQLiteDataReader reader = findCmd.ExecuteReader())
@@ -1040,8 +1051,11 @@ namespace 六合分析软件
                     if (!periodMap.ContainsKey(issue)) continue;
                     var (actualNum, actualZodiac) = periodMap[issue];
                     if (string.IsNullOrEmpty(actualZodiac)) continue;
-                    VerifyPrediction(issue, actualNum, actualZodiac);
-                    verified += unverified.Count(r => r.Issue == issue);
+                    foreach (var prediction in unverified.Where(r => r.Issue == issue))
+                    {
+                        VerifyPrediction(issue, prediction.AnalysisPeriods, actualNum, actualZodiac);
+                        verified++;
+                    }
                 }
 
                 if (verified > 0)
@@ -1052,6 +1066,56 @@ namespace 六合分析软件
                 Console.WriteLine($"[预测验证] 批量验证失败: {ex.Message}");
             }
             return verified;
+        }
+
+        /// <summary>
+        /// Recomputes stored outcomes from the current prediction lists and the
+        /// recorded actual zodiac, preventing stale results after a prediction update.
+        /// </summary>
+        public static int RecalculateVerifiedPredictionResults()
+        {
+            int changed = 0;
+            using (SQLiteConnection conn = GetConnection())
+            {
+                string selectSql = @"SELECT Id, PredictZodiac, Top6Zodiac, ActualZodiac
+                                     FROM PredictionHistory
+                                     WHERE ActualZodiac IS NOT NULL AND ActualZodiac <> ''";
+                using SQLiteCommand selectCmd = new SQLiteCommand(selectSql, conn);
+                using SQLiteDataReader reader = selectCmd.ExecuteReader();
+                var rows = new List<(int Id, string Top3, string Top6, string Actual)>();
+                while (reader.Read())
+                {
+                    rows.Add((reader.GetInt32(0),
+                        reader.IsDBNull(1) ? "" : reader.GetString(1),
+                        reader.IsDBNull(2) ? "" : reader.GetString(2),
+                        reader.IsDBNull(3) ? "" : reader.GetString(3)));
+                }
+
+                foreach (var row in rows)
+                {
+                    bool top3Hit = ContainsZodiac(row.Top3, row.Actual);
+                    bool top6Hit = ContainsZodiac(row.Top6, row.Actual);
+                    string result = top3Hit ? "命中" : "未命中";
+                    string top6Result = top6Hit ? "命中" : "未命中";
+                    using SQLiteCommand updateCmd = new SQLiteCommand(@"
+                        UPDATE PredictionHistory
+                        SET HitResult=@result, Top6HitResult=@top6Result
+                        WHERE Id=@id AND (HitResult<>@result OR Top6HitResult<>@top6Result)", conn);
+                    updateCmd.Parameters.AddWithValue("@result", result);
+                    updateCmd.Parameters.AddWithValue("@top6Result", top6Result);
+                    updateCmd.Parameters.AddWithValue("@id", row.Id);
+                    changed += updateCmd.ExecuteNonQuery();
+                }
+            }
+            return changed;
+        }
+
+        private static bool ContainsZodiac(string candidates, string actual)
+        {
+            if (string.IsNullOrWhiteSpace(candidates) || string.IsNullOrWhiteSpace(actual)) return false;
+            return candidates.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(value => value.Trim())
+                .Contains(actual.Trim(), StringComparer.Ordinal);
         }
 
         /// <summary>
