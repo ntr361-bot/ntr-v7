@@ -1,6 +1,7 @@
 const state = document.querySelector('#state');
 const panel = document.querySelector('#prediction');
 const refreshButton = document.querySelector('#refresh');
+const cloudApi = 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync';
 
 function text(id, value) {
   document.querySelector(`#${id}`).textContent = value;
@@ -86,9 +87,27 @@ function renderRanking(id, values, scoreKey) {
 }
 
 async function fetchJson(path) {
-  const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store' });
+  const separator = path.includes('?') ? '&' : '?';
+  const response = await fetch(`${path}${separator}v=${Date.now()}`, { cache: 'no-store' });
   if (!response.ok) throw new Error(`${path} 返回 HTTP ${response.status}`);
   return response.json();
+}
+
+async function fetchLatestPrediction() {
+  try {
+    const manifest = await fetchJson(`${cloudApi}/manifest`);
+    if (manifest.status !== 'success' || !manifest.latest_issue) {
+      throw new Error('云端清单无效');
+    }
+    return await fetchJson(`${cloudApi}/prediction?file=${manifest.latest_issue}.json`);
+  } catch (cloudError) {
+    console.warn('云端接口暂不可用，改读站点快照。', cloudError);
+    const latest = await fetchJson('data/daily-records/latest.json');
+    if (latest.status === 'generating') return latest;
+    if (latest.status === 'failed') throw new Error('生成失败，请查看 GitHub Actions 运行日志');
+    if (!latest.prediction_file) throw new Error('latest.json 缺少 prediction_file');
+    return fetchJson(`data/daily-records/${latest.prediction_file}`);
+  }
 }
 
 async function loadPrediction() {
@@ -98,14 +117,11 @@ async function loadPrediction() {
   state.hidden = false;
   panel.hidden = true;
   try {
-    const latest = await fetchJson('data/daily-records/latest.json');
-    if (latest.status === 'generating') {
+    const result = await fetchLatestPrediction();
+    if (result.status === 'generating') {
       state.textContent = '预测正在生成，请稍后刷新。';
       return;
     }
-    if (latest.status === 'failed') throw new Error('生成失败，请查看 GitHub Actions 运行日志');
-    if (!latest.prediction_file) throw new Error('latest.json 缺少 prediction_file');
-    const result = await fetchJson(`data/daily-records/${latest.prediction_file}`);
     if (result.status !== 'success' || !result.validation?.passed) {
       throw new Error('最新预测文件状态无效');
     }
