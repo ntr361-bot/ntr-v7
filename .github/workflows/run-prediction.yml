@@ -29,16 +29,12 @@ on:
         type: boolean
   # 数据源约北京时间21:40更新。多次错峰重试，降低 GitHub cron 延迟或丢任务的影响；cron 使用 UTC。
   schedule:
-    - cron: "45 13 * * *"
     - cron: "0 14 * * *"
-    - cron: "15 14 * * *"
-    - cron: "30 14 * * *"
-    - cron: "45 14 * * *"
-    - cron: "5 15 * * *"
+    - cron: "0 15 * * *"
     # 手机账本的“运行V6”请求每15分钟检查一次，避开上述三个固定时间。
-    - cron: "7,22,37,52 * * * *"
 
 permissions:
+  actions: read
   contents: write
   id-token: write
 
@@ -52,26 +48,46 @@ jobs:
     outputs:
       should_run: ${{ steps.decide.outputs.should_run }}
     steps:
-      - name: Check scheduled or mobile request
+      - name: Check primary run or failed-run retry
         id: decide
         shell: pwsh
         run: |
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
-          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -ne '7,22,37,52 * * * *'
-          if (!$shouldRun) {
+          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *'
+          if ($schedule -eq '0 15 * * *') {
             try {
-              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
-              $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
-              $headers = @{ "X-V6-GitHub-OIDC" = "Bearer $oidc" }
-              $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/request' -Headers $headers
-              $shouldRun = [bool]$response.run_requested
+              $headers = @{
+                Authorization = "Bearer $env:GITHUB_TOKEN"
+                Accept = 'application/vnd.github+json'
+                'X-GitHub-Api-Version' = '2022-11-28'
+              }
+              $uri = 'https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-prediction.yml/runs?event=schedule&per_page=20'
+              $runs = (Invoke-RestMethod -Uri $uri -Headers $headers).workflow_runs
+              $windowStart = [DateTimeOffset]::UtcNow.Date.AddHours(13.5)
+              $currentRunId = [long]'${{ github.run_id }}'
+              $primary = $runs |
+                Where-Object {
+                  [long]$_.id -ne $currentRunId -and
+                  [DateTimeOffset]::Parse($_.run_started_at) -ge $windowStart -and
+                  [DateTimeOffset]::Parse($_.run_started_at) -lt [DateTimeOffset]::UtcNow
+                } |
+                Sort-Object { [DateTimeOffset]::Parse($_.run_started_at) } -Descending |
+                Select-Object -First 1
+              $shouldRun = $null -eq $primary -or $primary.conclusion -ne 'success'
+              if ($null -ne $primary) {
+                Write-Host "22:00 run $($primary.id) conclusion: $($primary.conclusion)"
+              } else {
+                Write-Host 'No 22:00 run found; enabling the 23:00 retry.'
+              }
             } catch {
-              Write-Warning "Mobile trigger check failed: $($_.Exception.Message)"
-              $shouldRun = $false
+              Write-Warning "Could not inspect the 22:00 run; enabling the safe retry: $($_.Exception.Message)"
+              $shouldRun = $true
             }
           }
           "should_run=$($shouldRun.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
   predict:
     needs: check-trigger

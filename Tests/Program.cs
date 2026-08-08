@@ -67,6 +67,7 @@ var tests = new (string Name, Action Run)[]
     ,("V7 predictions are saved without overwriting V6 history", V7PredictionsAreSavedToHistory)
     ,("automatic-learning prediction is a formal fifth history row", AutoLearningPredictionIsFormalHistoryRow)
     ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
+    ,("cloud workflow runs at 22:00 with one failed-run retry", CloudWorkflowUsesSingleDailyRunAndFailedRetry)
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
     ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
     ,("200-period prediction model entry points are removed", Removed200PeriodModelHasNoEntryPoints)
@@ -775,6 +776,21 @@ void CloudSiteUsesAutoLearningSlot()
         "cloud site does not display the automatic-learning slot");
     Assert(!script.Contains("['50', '100', '200', 'all']"),
         "cloud site still displays the removed 200-period slot");
+}
+
+void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
+{
+    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "run-prediction.yml"));
+    string[] cronLines = workflow.Split('\n')
+        .Select(line => line.Trim())
+        .Where(line => line.StartsWith("- cron:", StringComparison.Ordinal))
+        .ToArray();
+    Assert(cronLines.SequenceEqual(new[] { "- cron: \"0 14 * * *\"", "- cron: \"0 15 * * *\"" }),
+        "cloud workflow should only schedule 22:00 and the 23:00 retry");
+    Assert(workflow.Contains("$primary.conclusion -ne 'success'", StringComparison.Ordinal),
+        "23:00 retry is not conditioned on the 22:00 result");
+    Assert(!workflow.Contains("7,22,37,52 * * * *", StringComparison.Ordinal),
+        "frequent mobile polling schedule is still enabled");
 }
 
 void V7HistoryUsesV6Layout()
