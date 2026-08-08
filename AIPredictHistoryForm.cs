@@ -428,6 +428,12 @@ namespace 六合分析软件
                 rowValues.Add(r.PredictTime);
                 int rowIndex = table.Rows.Add(rowValues.ToArray());
 
+                if (newModelOnly && IsVerifiedColorHit(r.ReviewDetails))
+                {
+                    table.Rows[rowIndex].Cells["ColorPrediction"].Style.Font =
+                        new Font("微软雅黑", 12, FontStyle.Bold);
+                }
+
                 string issueKey = Convert.ToString(r.Issue) ?? string.Empty;
                 if (!issueColorIndexes.TryGetValue(issueKey, out int colorIndex))
                 {
@@ -450,6 +456,11 @@ namespace 六合分析软件
             if (records.Count == 0)
                 statsLabel.Text = "📊 暂无预测记录。请先进行AI预测，记录会自动保存。";
         }
+
+        private static bool IsVerifiedColorHit(string? reviewDetails) =>
+            !string.IsNullOrWhiteSpace(reviewDetails) &&
+            (reviewDetails.Contains("主波命中", StringComparison.Ordinal) ||
+             reviewDetails.Contains("双波命中", StringComparison.Ordinal));
 
         private void BtnVerify_Click(object sender, EventArgs e)
         {

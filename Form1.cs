@@ -18,7 +18,6 @@ namespace 六合分析软件
         Button btnLive;
         Button btnAnalyze;
         Button btnPredict;
-        Button btnChart;
         Button btnCheck;
         Button btnMlBacktest;
         Button btnV7Models;
@@ -128,11 +127,10 @@ namespace 六合分析软件
             btnLive.ForeColor = Color.White;
             btnAnalyze = CreateButton("📊 数据中心", 320);
             btnPredict = CreateButton("走势预测", 370);
-            btnChart = CreateButton("统计图表", 440);
-            btnMlBacktest = CreateButton("🧪 ML滚动回测", 495);
-            btnV7Models = CreateButton("🧠 智能模型实验", 545);
-            btnV7History = CreateButton("📜 智能预测历史", 600);
-            btnCheck = CreateButton("📐 自用规律", 655);
+            btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
+            btnV7Models = CreateButton("🧠 智能模型实验", 490);
+            btnV7History = CreateButton("📜 智能预测历史", 545);
+            btnCheck = CreateButton("📐 自用规律", 600);
 
             menuPanel.Controls.Add(btnHome);
             menuPanel.Controls.Add(btnHistory);
@@ -141,7 +139,6 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnLive);
             menuPanel.Controls.Add(btnAnalyze);
             menuPanel.Controls.Add(btnPredict);
-            menuPanel.Controls.Add(btnChart);
             menuPanel.Controls.Add(btnMlBacktest);
             menuPanel.Controls.Add(btnV7Models);
             menuPanel.Controls.Add(btnV7History);
@@ -154,7 +151,6 @@ namespace 六合分析软件
             btnLive.Click += BtnLive_Click;
             btnAnalyze.Click += BtnAnalyze_Click;
             btnPredict.Click += BtnPredict_Click;
-            btnChart.Click += BtnChart_Click;
             btnMlBacktest.Click += BtnMlBacktest_Click;
             btnV7Models.Click += BtnV7Models_Click;
             btnV7History.Click += (_, _) => new V7PredictionHistoryForm().ShowDialog(this);
@@ -1022,13 +1018,6 @@ namespace 六合分析软件
         private void BtnPredict_Click(object sender, EventArgs e)
         {
             TrendPredictionForm form = new TrendPredictionForm();
-            form.ShowDialog();
-        }
-
-        // 图表
-        private void BtnChart_Click(object sender, EventArgs e)
-        {
-            StatisticsChartForm form = new StatisticsChartForm();
             form.ShowDialog();
         }
 

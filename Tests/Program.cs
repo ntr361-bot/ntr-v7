@@ -64,11 +64,14 @@ var tests = new (string Name, Action Run)[]
     ,("V7 color engine is independent", V7ColorEngineWorks)
     ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
     ,("V7 AI report explains model state", V7AiReportExplainsState)
+    ,("V7 AI report omits repeated implementation notes", V7AiReportOmitsRepeatedImplementationNotes)
     ,("V7 predictions are saved without overwriting V6 history", V7PredictionsAreSavedToHistory)
     ,("automatic-learning prediction is a formal fifth history row", AutoLearningPredictionIsFormalHistoryRow)
     ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
     ,("cloud workflow runs at 22:00 with one failed-run retry", CloudWorkflowUsesSingleDailyRunAndFailedRetry)
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
+    ,("verified color hits are visually emphasized", VerifiedColorHitsAreVisuallyEmphasized)
+    ,("main menu omits duplicate statistics chart", MainMenuOmitsDuplicateStatisticsChart)
     ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
     ,("200-period prediction model entry points are removed", Removed200PeriodModelHasNoEntryPoints)
     ,("database initialization removes retired compatibility predictions", DatabaseInitializationRemovesRetiredPredictions)
@@ -718,6 +721,57 @@ void V7AiReportExplainsState()
     Assert(report.Items.Count >= 3, "AI report should explain multiple signals");
     Assert(report.Text.Contains("短周期") && report.Text.Contains("波色"), "AI report missing state explanations");
     Assert(report.IsPrediction == false, "AI report layer must not be marked as prediction");
+}
+
+void V7AiReportOmitsRepeatedImplementationNotes()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 30; i++)
+        records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("D2"), i % 2 == 0 ? "鼠" : "牛"));
+
+    var report = AIReportEngine.Generate(records,
+        new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) },
+        MLPredictEngine.Predict(records), ColorEngine.Predict(records));
+
+    Assert(!report.Text.Contains("三套周期模型已独立完成", StringComparison.Ordinal),
+        "AI report still repeats the three-engine implementation note");
+    Assert(!report.Text.Contains("ML评分层已生成", StringComparison.Ordinal),
+        "AI report still repeats the ML implementation note");
+}
+
+void VerifiedColorHitsAreVisuallyEmphasized()
+{
+    DatabaseHelper.SaveVerifiedValidationPrediction("999303", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇",
+        "鼠", "01", 1, V7PredictionHistoryService.AutoLearningValidationHistoryKey,
+        "V7 AutoLearning Validation", "波色排除:绿;主:红;防:蓝", true, true, "红");
+
+    using var form = new V7PredictionHistoryForm();
+    var grid = FindControl<System.Windows.Forms.DataGridView>(form);
+    var row = grid!.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
+        .Single(item => Convert.ToString(item.Cells["Issue"].Value) == "999303");
+    var style = row.Cells["ColorPrediction"].Style;
+
+    Assert(style.Font != null && style.Font.Bold && style.Font.Size >= 12,
+        "verified color hit should use a large bold font in the color column");
+}
+
+void MainMenuOmitsDuplicateStatisticsChart()
+{
+    using var form = new Form1();
+    var buttonTexts = Descendants(form).OfType<System.Windows.Forms.Button>()
+        .Select(button => button.Text)
+        .ToArray();
+    Assert(buttonTexts.Contains("走势预测"), "trend prediction entry was removed unexpectedly");
+    Assert(!buttonTexts.Contains("统计图表"), "duplicate statistics chart entry is still visible");
+
+    static IEnumerable<System.Windows.Forms.Control> Descendants(System.Windows.Forms.Control root)
+    {
+        foreach (System.Windows.Forms.Control child in root.Controls)
+        {
+            yield return child;
+            foreach (var nested in Descendants(child)) yield return nested;
+        }
+    }
 }
 
 void V7PredictionsAreSavedToHistory()

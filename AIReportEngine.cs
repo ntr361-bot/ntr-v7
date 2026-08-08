@@ -37,10 +37,6 @@ public static class AIReportEngine
             : $"波色信号相对集中：{color.Main}为主波色，{color.Defense}为防波色，{color.Excluded}为排除波色。";
         items.Add(colorState);
 
-        if (engines.Count > 0)
-            items.Add($"三套周期模型已独立完成：{string.Join("、", engines.Select(x => x.Engine))}；本报告仅汇总其状态，不改变模型结果。");
-        items.Add($"ML评分层已生成{ml.Model}概率结果，AI分析层不重新调整概率。");
-
         var builder = new StringBuilder("本期分析：");
         foreach (var item in items) builder.AppendLine().Append(items.IndexOf(item) + 1).Append(". ").Append(item);
         return new AIAnalysisReport { Items = items, Text = builder.ToString() };
