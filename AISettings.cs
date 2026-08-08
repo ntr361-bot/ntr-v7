@@ -24,7 +24,6 @@ namespace 六合分析软件
         {
             Period50 = 50,
             Period100 = 100,
-            Period200 = 200,
             AllHistory = AllHistoryModeValue
         }
 
@@ -34,7 +33,7 @@ namespace 六合分析软件
         public class Settings
         {
             public int AnalysisPeriods { get; set; } = AllHistoryModeValue;
-            public string ModelVersion { get; set; } = "AI生肖预测 V6.3";
+            public string ModelVersion { get; set; } = "AI生肖预测 V6.5";
             public DateTime LastPredictTime { get; set; }
             public string AnalysisMethod { get; set; } = "热度+遗漏+周期+关联";
         }
@@ -121,7 +120,6 @@ namespace 六合分析软件
             {
                 (50, "最近50期"),
                 (100, "最近100期"),
-                (200, "最近200期"),
                 (AllHistoryModeValue, "全部历史（推荐）")
             };
         }
@@ -139,8 +137,8 @@ namespace 六合分析软件
                     var settings = JsonSerializer.Deserialize<Settings>(json);
                     if (settings != null)
                     {
-                        settings.ModelVersion = "AI生肖预测 V6.3";
-                        if (settings.AnalysisPeriods == 500)
+                        settings.ModelVersion = "AI生肖预测 V6.5";
+                        if (settings.AnalysisPeriods is 200 or 500)
                             settings.AnalysisPeriods = AllHistoryModeValue;
                         return settings;
                     }

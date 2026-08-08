@@ -77,7 +77,7 @@ namespace 六合分析软件
             cboPeriods.Location = new Point(450, 18);
             cboPeriods.Size = new Size(140, 30);
             cboPeriods.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboPeriods.Items.AddRange(new string[] { "50期", "100期", "200期", "全部历史" });
+            cboPeriods.Items.AddRange(new string[] { "50期", "100期", "全部历史" });
             cboPeriods.SelectedIndex = 2;
             topBar.Controls.Add(cboPeriods);
 
@@ -114,7 +114,7 @@ namespace 六合分析软件
             Button btnHelp = CreateToolButton("统计口径", 630, 65, Color.FromArgb(90, 100, 110));
             btnHelp.Click += (s, e) => MessageBox.Show(
                 "本模块只使用真实开奖记录中的特码生肖（SpecialZodiac）。\n\n" +
-                "50/100/200期表示从最新一期向前取对应数量的有效记录，6个平码不参与预测、趋势或验证。\n" +
+                "50/100期表示从最新一期向前取对应数量的有效记录，6个平码不参与预测、趋势或验证。\n" +
                 "预测会按目标期号和分析周期自动留档，开奖后用实际特码生肖验证。",
                 "统计口径", MessageBoxButtons.OK, MessageBoxIcon.Information);
             topBar.Controls.Add(btnHelp);
@@ -167,7 +167,7 @@ namespace 六合分析软件
             panel.Controls.Add(welcome);
 
             Label hint = new Label();
-            hint.Text = "💡 每次会刷新50期、100期、200期和全部历史，并分别保存到预测历史记录\n当前下拉框只决定页面显示哪一套结果；预测只使用真实特码生肖，不使用平码数据";
+            hint.Text = "💡 每次会刷新50期、100期和全部历史，并分别保存到预测历史记录\n当前下拉框只决定页面显示哪一套结果；预测只使用真实特码生肖，不使用平码数据";
             hint.Font = new Font("微软雅黑", 10);
             hint.ForeColor = Color.Gray;
             hint.Location = new Point(30, 70);
@@ -181,9 +181,8 @@ namespace 六合分析软件
             {
                 case 0: return 50;
                 case 1: return 100;
-                case 2: return 200;
-                case 3: return AISettings.AllHistoryModeValue;
-                default: return 200;
+                case 2: return AISettings.AllHistoryModeValue;
+                default: return AISettings.AllHistoryModeValue;
             }
         }
 
@@ -449,9 +448,9 @@ namespace 六合分析软件
 
         private void ShowMultiPeriodComparison()
         {
-            int[] periods = { 50, 100, 200, AISettings.AllHistoryModeValue };
+            int[] periods = { 50, 100, AISettings.AllHistoryModeValue };
             var results = periods.ToDictionary(p => p, p => AIEngine.GenerateForAutomation(p));
-            Form dialog = new Form { Text = "50/100/200/全部历史多周期预测对比", Size = new Size(1000, 570), StartPosition = FormStartPosition.CenterParent };
+            Form dialog = new Form { Text = "50/100/全部历史多周期预测对比", Size = new Size(1000, 570), StartPosition = FormStartPosition.CenterParent };
             DataGridView grid = new DataGridView
             {
                 Dock = DockStyle.Fill, ReadOnly = true, RowHeadersVisible = false,
@@ -536,12 +535,12 @@ namespace 六合分析软件
         private void RenderMultiPeriodBacktest()
         {
             backtestPanel.Controls.Clear();
-            int[] periods = { 50, 100, 200 };
+            int[] periods = { 50, 100 };
             var reports = periods.Select(p => AIBacktestV2.Run(trainPeriods: p, testCount: 30)).ToList();
 
             Label title = new Label
             {
-                Text = "📊 50/100/200期回测对比（训练区间与验证区间严格分离）",
+                Text = "📊 50/100期回测对比（训练区间与验证区间严格分离）",
                 Font = new Font("微软雅黑", 13, FontStyle.Bold),
                 ForeColor = Color.FromArgb(46, 139, 87),
                 Location = new Point(20, 10), AutoSize = true

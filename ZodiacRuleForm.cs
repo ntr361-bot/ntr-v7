@@ -247,7 +247,7 @@ namespace 六合分析软件
             lblPeriods.AutoSize = true;
             this.Controls.Add(lblPeriods);
 
-            int[] periods = { 50, 100, 150, 200 };
+            int[] periods = { 50, 100, 150 };
             for (int i = 0; i < periods.Length; i++)
             {
                 int p = periods[i];

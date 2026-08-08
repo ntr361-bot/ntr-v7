@@ -80,31 +80,10 @@ public static class CloudPredictionSyncService
     {
         if (prediction.Status != "success" || prediction.Issue <= 0)
             throw new InvalidDataException("云端预测档案状态或期号无效");
-        int saved = 0;
-        foreach ((string periodText, CloudAiPrediction item) in prediction.AiZodiac)
-        {
-            // The all-history window is serialized as "all" in cloud JSON and
-            // represented internally by AISettings.AllHistoryModeValue (0).
-            int periods = periodText.Equals("all", StringComparison.OrdinalIgnoreCase)
-                ? AISettings.AllHistoryModeValue
-                : int.TryParse(periodText, out int parsedPeriods) ? parsedPeriods : -1;
-            if (periods < 0)
-                throw new InvalidDataException($"第{prediction.Issue}期 AI 预测周期无效：{periodText}");
 
-            // V6.3 已取消500期模型；旧云端档案保留但不再导入该周期。
-            if (periods == 500)
-                continue;
-
-            if (item.Top3.Count == 0 || item.Top6.Count == 0 || item.Numbers.Count == 0)
-                throw new InvalidDataException($"第{prediction.Issue}期 AI 预测内容不完整：{periodText}");
-
-            DatabaseHelper.SaveCloudPrediction(prediction.Issue.ToString(), prediction.GeneratedAt,
-                string.Join(',', item.Top3), string.Join(',', item.Top6),
-                string.Join(',', item.Numbers.Select(number => number.ToString("D2"))),
-                "云端 V6.3", periods, $"{item.Confidence}信心 | {item.BestModel}");
-            saved++;
-        }
-        return saved;
+        // 云端旧档案只有结果、信心和模型名，没有12生肖完整分项评分。
+        // 这类记录无法参与错因分析或校准，继续导入只会产生无效历史行。
+        return 0;
     }
 
     private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)

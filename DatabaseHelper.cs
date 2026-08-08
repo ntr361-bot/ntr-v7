@@ -196,32 +196,6 @@ namespace 六合分析软件
                 new SQLiteCommand(@"CREATE UNIQUE INDEX IF NOT EXISTS idx_history_period
                     ON History(Period) WHERE Period != ''", conn).ExecuteNonQuery();
 
-                // 创建 AI 预测历史表
-                string aiSql = @"
-                CREATE TABLE IF NOT EXISTS AIPredictHistory
-                (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    PredictPeriod TEXT DEFAULT '',
-                    PredictDate TEXT DEFAULT '',
-                    ModelVersion TEXT DEFAULT '',
-                    AnalysisPeriods INTEGER DEFAULT 500,
-                    Recommended6 TEXT DEFAULT '',
-                    Focus3 TEXT DEFAULT '',
-                    GptAnalysis TEXT DEFAULT '',
-                    ActualZodiac TEXT DEFAULT '',
-                    Top3Hit INTEGER DEFAULT -1,
-                    Top6Hit INTEGER DEFAULT -1
-                )";
-                new SQLiteCommand(aiSql, conn).ExecuteNonQuery();
-
-                // 兼容旧表结构：添加缺失的列
-                EnsureColumns(conn, "AIPredictHistory",
-                    "PredictPeriod TEXT DEFAULT ''",
-                    "ModelVersion TEXT DEFAULT ''",
-                    "ActualZodiac TEXT DEFAULT ''",
-                    "Top3Hit INTEGER DEFAULT -1",
-                    "Top6Hit INTEGER DEFAULT -1");
-
                 // 创建新版预测历史表（每期唯一一条记录）
                 string predSql = @"
                 CREATE TABLE IF NOT EXISTS PredictionHistory
@@ -258,9 +232,17 @@ namespace 六合分析软件
                     "ActualZodiac TEXT DEFAULT ''",
                     "Top6HitResult TEXT DEFAULT ''",
                     "ReviewDetails TEXT DEFAULT ''",
-                    "LearningDetails TEXT DEFAULT ''");
+                    "LearningDetails TEXT DEFAULT ''",
+                    "FinalRankingJson TEXT DEFAULT ''",
+                    "BaseModelScoresJson TEXT DEFAULT ''",
+                    "FeatureSnapshotJson TEXT DEFAULT ''",
+                    "WeightSnapshotJson TEXT DEFAULT ''",
+                    "ActualRank INTEGER DEFAULT 0",
+                    "LearningStatus TEXT DEFAULT 'Pending'",
+                    "LearnedAt TEXT DEFAULT ''");
+                EnsureAutoLearningSchema(conn);
 
-                // 每个期号按分析周期去重；V6.3正式版使用50/100/200/全部历史。
+                // 每个期号按分析周期去重；正式版使用50/100/全部历史。
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue", conn).ExecuteNonQuery();
                 new SQLiteCommand(@"DELETE FROM PredictionHistory
                     WHERE Id NOT IN (
@@ -302,9 +284,88 @@ namespace 六合分析软件
                 // 种子数据：默认模型版本
                 SeedAIModels(conn);
 
-                // 从旧 AIPredictHistory 迁移数据到 PredictionHistory（按 Issue 去重）
-                MigrateOldPredictions();
+                // 已停用的兼容记录、200期模型及缺少分项评分的云端预测
+                // 不参与当前预测、回测或学习。
+                new SQLiteCommand(@"DELETE FROM PredictionHistory
+                    WHERE AnalysisPeriods IN (0, 200) OR ModelVersion='云端 V6.3'", conn)
+                    .ExecuteNonQuery();
+                new SQLiteCommand("DROP TABLE IF EXISTS AIPredictHistory", conn).ExecuteNonQuery();
             }
+
+            TryRestoreSiblingLegacyPredictionHistory();
+        }
+
+        private static void TryRestoreSiblingLegacyPredictionHistory()
+        {
+            try
+            {
+                string? activeDirectory = Path.GetDirectoryName(DatabasePath);
+                if (activeDirectory is null ||
+                    !string.Equals(Path.GetFileName(activeDirectory), "V7History", StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                string projectDirectory = FindProjectDirectory(activeDirectory);
+                string[] sources =
+                {
+                    Path.GetFullPath(Path.Combine(activeDirectory, "..", "Debug", "net10.0-windows", "history.db")),
+                    Path.Combine(projectDirectory, "data", "history.db")
+                };
+                foreach (string source in sources.Distinct(StringComparer.OrdinalIgnoreCase))
+                    ImportLegacyPredictionHistory(source);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("恢复旧预测历史", ex);
+            }
+        }
+
+        public static int ImportLegacyPredictionHistory(string sourceDatabasePath)
+        {
+            if (string.IsNullOrWhiteSpace(sourceDatabasePath) || !File.Exists(sourceDatabasePath)) return 0;
+            if (Path.GetFullPath(sourceDatabasePath).Equals(Path.GetFullPath(DatabasePath), StringComparison.OrdinalIgnoreCase)) return 0;
+
+            int imported = 0;
+            using var source = new SQLiteConnection($"Data Source={sourceDatabasePath};Version=3;Read Only=True;");
+            source.Open();
+            using var exists = new SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='PredictionHistory'", source);
+            if (Convert.ToInt32(exists.ExecuteScalar()) == 0) return 0;
+
+            const string columns = "Issue,PredictTime,PredictNumber,PredictZodiac,Top6Zodiac,PredictionGroupId," +
+                                   "AnalysisPeriods,ScoreDetails,ModelVersion,ActualNumber,ActualZodiac,HitResult," +
+                                   "Top6HitResult,ReviewDetails,LearningDetails";
+            using var read = new SQLiteCommand($@"SELECT {columns} FROM PredictionHistory
+                WHERE AnalysisPeriods NOT IN (0,200)
+                  AND ModelVersion NOT LIKE 'V7%'
+                  AND ModelVersion <> '云端 V6.3'
+                ORDER BY Id", source);
+            using SQLiteDataReader reader = read.ExecuteReader();
+            using SQLiteConnection target = GetConnection();
+            using SQLiteTransaction transaction = target.BeginTransaction();
+            while (reader.Read())
+            {
+                using var insert = new SQLiteCommand($@"INSERT OR IGNORE INTO PredictionHistory ({columns})
+                    VALUES (@issue,@time,@number,@zodiac,@top6,@group,@periods,@scores,@model,
+                            @actualNumber,@actualZodiac,@hit,@top6Hit,@review,@learning)", target, transaction);
+                string issue = Convert.ToString(reader["Issue"]) ?? "";
+                insert.Parameters.AddWithValue("@issue", issue);
+                insert.Parameters.AddWithValue("@time", Convert.ToString(reader["PredictTime"]) ?? "");
+                insert.Parameters.AddWithValue("@number", Convert.ToString(reader["PredictNumber"]) ?? "");
+                insert.Parameters.AddWithValue("@zodiac", Convert.ToString(reader["PredictZodiac"]) ?? "");
+                insert.Parameters.AddWithValue("@top6", Convert.ToString(reader["Top6Zodiac"]) ?? "");
+                insert.Parameters.AddWithValue("@group", string.IsNullOrWhiteSpace(Convert.ToString(reader["PredictionGroupId"])) ? GetPredictionGroupId(issue) : Convert.ToString(reader["PredictionGroupId"]));
+                insert.Parameters.AddWithValue("@periods", Convert.ToInt32(reader["AnalysisPeriods"]));
+                insert.Parameters.AddWithValue("@scores", Convert.ToString(reader["ScoreDetails"]) ?? "");
+                insert.Parameters.AddWithValue("@model", Convert.ToString(reader["ModelVersion"]) ?? "");
+                insert.Parameters.AddWithValue("@actualNumber", Convert.ToString(reader["ActualNumber"]) ?? "");
+                insert.Parameters.AddWithValue("@actualZodiac", Convert.ToString(reader["ActualZodiac"]) ?? "");
+                insert.Parameters.AddWithValue("@hit", Convert.ToString(reader["HitResult"]) ?? "");
+                insert.Parameters.AddWithValue("@top6Hit", Convert.ToString(reader["Top6HitResult"]) ?? "");
+                insert.Parameters.AddWithValue("@review", Convert.ToString(reader["ReviewDetails"]) ?? "");
+                insert.Parameters.AddWithValue("@learning", Convert.ToString(reader["LearningDetails"]) ?? "");
+                imported += insert.ExecuteNonQuery();
+            }
+            transaction.Commit();
+            return imported;
         }
 
         private static void EnsureColumns(SQLiteConnection connection, string tableName, params string[] definitions)
@@ -326,6 +387,30 @@ namespace 六合分析软件
                 new SQLiteCommand($"ALTER TABLE [{tableName}] ADD COLUMN {definition}", connection).ExecuteNonQuery();
                 AppLogger.Info("数据库迁移", $"{tableName} 新增列 {columnName}");
             }
+        }
+
+        public static void EnsureAutoLearningSchema(SQLiteConnection connection)
+        {
+            EnsureColumns(connection, "PredictionHistory",
+                "FinalRankingJson TEXT DEFAULT ''",
+                "BaseModelScoresJson TEXT DEFAULT ''",
+                "FeatureSnapshotJson TEXT DEFAULT ''",
+                "WeightSnapshotJson TEXT DEFAULT ''",
+                "ActualRank INTEGER DEFAULT 0",
+                "LearningStatus TEXT DEFAULT 'Pending'",
+                "LearnedAt TEXT DEFAULT ''");
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS ModelMemory
+                (MemoryKey TEXT PRIMARY KEY, MemoryJson TEXT NOT NULL DEFAULT '', UpdatedAt TEXT NOT NULL DEFAULT '')", connection)
+                .ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS LearningAdjustmentHistory
+                (Id INTEGER PRIMARY KEY AUTOINCREMENT, Issue TEXT NOT NULL DEFAULT '', AdjustedAt TEXT NOT NULL DEFAULT '',
+                 OldWeightsJson TEXT NOT NULL DEFAULT '', NewWeightsJson TEXT NOT NULL DEFAULT '',
+                 FeatureContributionJson TEXT NOT NULL DEFAULT '', Reason TEXT NOT NULL DEFAULT '')", connection)
+                .ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE INDEX IF NOT EXISTS idx_prediction_learning_status
+                ON PredictionHistory(LearningStatus, Issue)", connection).ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE INDEX IF NOT EXISTS idx_learning_adjustment_issue
+                ON LearningAdjustmentHistory(Issue)", connection).ExecuteNonQuery();
         }
 
         // ===== 兼容旧接口 =====
@@ -817,50 +902,13 @@ namespace 六合分析软件
             public string Top6HitResult { get; set; } = "";  // 前6命中结果
             public string ReviewDetails { get; set; } = ""; // 开奖后的错因复盘
             public string LearningDetails { get; set; } = ""; // 预测时采用的学习状态
-        }
-
-        /// <summary>
-        /// 从旧 AIPredictHistory 迁移数据到 PredictionHistory（按 Issue 去重）
-        /// </summary>
-        private static void MigrateOldPredictions()
-        {
-            try
-            {
-                using (SQLiteConnection conn = GetConnection())
-                {
-                    string checkSql = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='AIPredictHistory'";
-                    SQLiteCommand checkCmd = new SQLiteCommand(checkSql, conn);
-                    long tableExists = (long)checkCmd.ExecuteScalar();
-                    if (tableExists == 0) return;
-
-                    string newCountSql = "SELECT COUNT(*) FROM PredictionHistory";
-                    SQLiteCommand newCountCmd = new SQLiteCommand(newCountSql, conn);
-                    long newCount = (long)newCountCmd.ExecuteScalar();
-                    if (newCount > 0) return;
-
-                    string migrateSql = @"
-                    INSERT OR IGNORE INTO PredictionHistory (Issue, PredictionGroupId, PredictTime, PredictZodiac, ModelVersion, ActualZodiac, HitResult)
-                    SELECT PredictPeriod, 'PRED-' || PredictPeriod, PredictDate, Focus3, ModelVersion, ActualZodiac,
-                        CASE
-                            WHEN Top3Hit = 1 THEN '命中'
-                            WHEN Top3Hit = 0 THEN '未命中'
-                            ELSE '未开奖'
-                        END
-                    FROM AIPredictHistory
-                    WHERE PredictPeriod != ''
-                    GROUP BY PredictPeriod
-                    ORDER BY Id DESC";
-
-                    SQLiteCommand migrateCmd = new SQLiteCommand(migrateSql, conn);
-                    int migrated = migrateCmd.ExecuteNonQuery();
-                    if (migrated > 0)
-                        Console.WriteLine($"[数据库] 旧预测数据迁移完成：{migrated} 条（已按期号去重）");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[数据库] 预测数据迁移失败: {ex.Message}");
-            }
+            public string FinalRankingJson { get; set; } = "";
+            public string BaseModelScoresJson { get; set; } = "";
+            public string FeatureSnapshotJson { get; set; } = "";
+            public string WeightSnapshotJson { get; set; } = "";
+            public int ActualRank { get; set; }
+            public string LearningStatus { get; set; } = "Pending";
+            public string LearnedAt { get; set; } = "";
         }
 
         /// <summary>
@@ -873,7 +921,8 @@ namespace 六合分析软件
 
         public static void SavePrediction(string issue, string predictZodiac, string top6Zodiac,
             string predictNumber, string modelVersion, int analysisPeriods, string scoreDetails,
-            string learningDetails = "")
+            string learningDetails = "", string finalRankingJson = "", string baseModelScoresJson = "",
+            string featureSnapshotJson = "", string weightSnapshotJson = "")
         {
             using (SQLiteConnection conn = GetConnection())
             {
@@ -891,7 +940,10 @@ namespace 六合分析软件
                     string sql = @"UPDATE PredictionHistory
                     SET PredictTime=@time, PredictNumber=@num, PredictZodiac=@zodiac, Top6Zodiac=@top6,
                         ModelVersion=@model, ScoreDetails=@scores, LearningDetails=@learning, ReviewDetails='', HitResult='未开奖', Top6HitResult='未开奖',
-                        ActualNumber='', ActualZodiac='', PredictionGroupId=@groupId
+                        ActualNumber='', ActualZodiac='', PredictionGroupId=@groupId,
+                        FinalRankingJson=@ranking, BaseModelScoresJson=@baseScores,
+                        FeatureSnapshotJson=@features, WeightSnapshotJson=@weights,
+                        ActualRank=0, LearningStatus='Pending', LearnedAt=''
                     WHERE Issue=@issue AND AnalysisPeriods=@periods";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@time", now);
@@ -902,6 +954,10 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@scores", scoreDetails);
                     cmd.Parameters.AddWithValue("@learning", learningDetails);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
+                    cmd.Parameters.AddWithValue("@ranking", finalRankingJson);
+                    cmd.Parameters.AddWithValue("@baseScores", baseModelScoresJson);
+                    cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
+                    cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@periods", analysisPeriods);
                     cmd.ExecuteNonQuery();
@@ -911,8 +967,10 @@ namespace 六合分析软件
                 {
                     string sql = @"INSERT INTO PredictionHistory
                     (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods, ScoreDetails,
-                     ModelVersion, LearningDetails, HitResult, Top6HitResult)
-                    VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning, '未开奖', '未开奖')";
+                     ModelVersion, LearningDetails, HitResult, Top6HitResult, FinalRankingJson,
+                     BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, LearningStatus)
+                    VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning, '未开奖', '未开奖',
+                            @ranking, @baseScores, @features, @weights, 'Pending')";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
@@ -924,6 +982,10 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@scores", scoreDetails);
                     cmd.Parameters.AddWithValue("@model", modelVersion);
                     cmd.Parameters.AddWithValue("@learning", learningDetails);
+                    cmd.Parameters.AddWithValue("@ranking", finalRankingJson);
+                    cmd.Parameters.AddWithValue("@baseScores", baseModelScoresJson);
+                    cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
+                    cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
                     cmd.ExecuteNonQuery();
                     Console.WriteLine($"[数据库] 新建预测记录（期号:{issue}）");
                 }
@@ -962,6 +1024,36 @@ namespace 六合分析软件
             cmd.Parameters.AddWithValue("@model", modelVersion);
             cmd.ExecuteNonQuery();
             RecalculateVerifiedPredictionResults();
+        }
+
+        public static void SaveVerifiedValidationPrediction(string issue, string top3Zodiac, string top6Zodiac,
+            string actualZodiac, string actualNumber, int actualRank, int analysisPeriods, string modelVersion,
+            string scoreDetails, bool mainColorHit, bool dualColorHit, string actualColor)
+        {
+            using (SQLiteConnection schema = GetConnection()) EnsureAutoLearningSchema(schema);
+            string[] ranking = top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            SavePrediction(issue, top3Zodiac, top6Zodiac, "", modelVersion, analysisPeriods, scoreDetails,
+                "严格滚动验证记录，不参与在线重复学习", System.Text.Json.JsonSerializer.Serialize(ranking));
+            bool top3Hit = top3Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Contains(actualZodiac);
+            bool top6Hit = ranking.Contains(actualZodiac);
+            using SQLiteConnection conn = GetConnection();
+            using var cmd = new SQLiteCommand(@"UPDATE PredictionHistory SET ActualNumber=@number, ActualZodiac=@actual,
+                HitResult=@top3, Top6HitResult=@top6, ReviewDetails=@review, ActualRank=@rank,
+                LearningStatus='Backtest', LearnedAt=@time
+                WHERE Issue=@issue AND AnalysisPeriods=@periods", conn);
+            cmd.Parameters.AddWithValue("@actual", actualZodiac);
+            cmd.Parameters.AddWithValue("@number", actualNumber);
+            cmd.Parameters.AddWithValue("@top3", top3Hit ? "命中" : "未命中");
+            cmd.Parameters.AddWithValue("@top6", top6Hit ? "命中" : "未命中");
+            cmd.Parameters.AddWithValue("@review", $"2026严格滚动验证：实际排名{actualRank}，TOP3{(top3Hit ? "命中" : "未命中")}，" +
+                $"TOP6{(top6Hit ? "命中" : "未命中")}；实际波色{actualColor}，" +
+                $"主波{(mainColorHit ? "命中" : "未命中")}，双波{(dualColorHit ? "命中" : "未命中")}");
+            cmd.Parameters.AddWithValue("@rank", actualRank);
+            cmd.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@issue", issue);
+            cmd.Parameters.AddWithValue("@periods", analysisPeriods);
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -1013,6 +1105,9 @@ namespace 六合分析软件
                     updateCmd.Parameters.AddWithValue("@review", review);
                     updateCmd.Parameters.AddWithValue("@id", item.id);
                     updateCmd.ExecuteNonQuery();
+
+                    ApplyAutomaticLearningForPrediction(item.id, actualZodiac);
+                    ApplyColorLearningForPrediction(item.id, actualNumber);
 
                     Console.WriteLine($"[预测验证] 期号:{issue} 实际:{actualNumber} {actualZodiac} {(hit ? "命中" : "未命中")}");
                 }
@@ -1128,7 +1223,9 @@ namespace 六合分析软件
             {
                 string sql = $@"
                 SELECT Id, Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods,
-                       ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult, ReviewDetails, LearningDetails
+                       ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult, ReviewDetails, LearningDetails,
+                       FinalRankingJson, BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson,
+                       ActualRank, LearningStatus, LearnedAt
                 FROM PredictionHistory
                 ORDER BY CAST(Issue AS INTEGER) DESC, AnalysisPeriods ASC
                 LIMIT {limit}";
@@ -1156,6 +1253,13 @@ namespace 六合分析软件
                             ,Top6HitResult = reader.IsDBNull(13) ? "" : reader.GetString(13)
                             ,ReviewDetails = reader.IsDBNull(14) ? "" : reader.GetString(14)
                             ,LearningDetails = reader.IsDBNull(15) ? "" : reader.GetString(15)
+                            ,FinalRankingJson = reader.IsDBNull(16) ? "" : reader.GetString(16)
+                            ,BaseModelScoresJson = reader.IsDBNull(17) ? "" : reader.GetString(17)
+                            ,FeatureSnapshotJson = reader.IsDBNull(18) ? "" : reader.GetString(18)
+                            ,WeightSnapshotJson = reader.IsDBNull(19) ? "" : reader.GetString(19)
+                            ,ActualRank = reader.IsDBNull(20) ? 0 : reader.GetInt32(20)
+                            ,LearningStatus = reader.IsDBNull(21) ? "Pending" : reader.GetString(21)
+                            ,LearnedAt = reader.IsDBNull(22) ? "" : reader.GetString(22)
                         });
                     }
                 }
@@ -1299,6 +1403,157 @@ namespace 六合分析软件
             public double Accuracy { get; set; }
         }
 
+        public static string? LoadModelMemoryJson(string key)
+        {
+            using SQLiteConnection conn = GetConnection();
+            EnsureAutoLearningSchema(conn);
+            using var cmd = new SQLiteCommand("SELECT MemoryJson FROM ModelMemory WHERE MemoryKey=@key", conn);
+            cmd.Parameters.AddWithValue("@key", key);
+            object? value = cmd.ExecuteScalar();
+            return value is null or DBNull ? null : Convert.ToString(value);
+        }
+
+        public static LearningOutcome ApplyAutomaticLearningForPrediction(int predictionId, string actualZodiac)
+        {
+            if (predictionId <= 0 || string.IsNullOrWhiteSpace(actualZodiac))
+                return new LearningOutcome(false, false, 0, ModelWeights.Default, "实际开奖无效");
+            try
+            {
+                string snapshotJson;
+                string finalRankingJson;
+                using (SQLiteConnection claim = GetConnection())
+                {
+                    EnsureAutoLearningSchema(claim);
+                    using var claimCmd = new SQLiteCommand(@"UPDATE PredictionHistory SET LearningStatus='Processing'
+                        WHERE Id=@id AND (LearningStatus='Pending' OR LearningStatus='' OR LearningStatus IS NULL)", claim);
+                    claimCmd.Parameters.AddWithValue("@id", predictionId);
+                    if (claimCmd.ExecuteNonQuery() != 1)
+                        return new LearningOutcome(false, false, 0, new ModelMemory().LoadOrCreate().Weights, "该期已经学习");
+                    using var read = new SQLiteCommand("SELECT FeatureSnapshotJson, FinalRankingJson FROM PredictionHistory WHERE Id=@id", claim);
+                    read.Parameters.AddWithValue("@id", predictionId);
+                    using var reader = read.ExecuteReader();
+                    if (!reader.Read()) throw new InvalidDataException("找不到预测记录");
+                    snapshotJson = reader.IsDBNull(0) ? "" : reader.GetString(0);
+                    finalRankingJson = reader.IsDBNull(1) ? "" : reader.GetString(1);
+                }
+
+                if (string.IsNullOrWhiteSpace(snapshotJson))
+                {
+                    SetPredictionLearningState(predictionId, "SkippedLegacy", 0);
+                    return new LearningOutcome(false, false, 0, new ModelMemory().LoadOrCreate().Weights, "旧记录没有完整评分，跳过学习");
+                }
+
+                MetaPredictionInput? input = System.Text.Json.JsonSerializer.Deserialize<MetaPredictionInput>(snapshotJson);
+                if (input is null || input.Zodiacs.Count != 12)
+                    throw new InvalidDataException("自动学习快照不完整");
+                var memoryStore = new ModelMemory();
+                ModelMemoryState memory = memoryStore.LoadOrCreate();
+                string[] savedRanking = System.Text.Json.JsonSerializer.Deserialize<string[]>(finalRankingJson) ?? Array.Empty<string>();
+                int actualRank = Array.FindIndex(savedRanking, item => item == actualZodiac) + 1;
+                ZodiacMetaFeatures? actual = input.Zodiacs.FirstOrDefault(item => item.Zodiac == actualZodiac);
+                if (actualRank == 0 || actual is null) throw new InvalidDataException("实际生肖不在12生肖快照中");
+
+                string[] sources = { "AI", "ML", "State", "Rule" };
+                var baseRanks = sources.ToDictionary(source => source, source =>
+                    input.Zodiacs.OrderByDescending(item => item.BaseScores.GetValueOrDefault(source))
+                        .Select((item, index) => (item.Zodiac, Rank: index+1))
+                        .First(item => item.Zodiac == actualZodiac).Rank,
+                    StringComparer.OrdinalIgnoreCase);
+                new MetaPredictionEngine().Learn(input, actualZodiac, memory);
+                LearningOutcome outcome = new AutoLearningEngine().ApplyFeedback(memory,
+                    new PredictionFeedback(input.Issue, actualRank, baseRanks, actual.FeatureGroups));
+                memoryStore.Save(memory);
+                if (outcome.FailureAnalysisTriggered && memory.RecentAdjustments.Count > 0)
+                    SaveLearningAdjustment(memory.RecentAdjustments[^1]);
+                SetPredictionLearningState(predictionId, "Learned", actualRank);
+                return outcome;
+            }
+            catch (Exception ex)
+            {
+                SetPredictionLearningState(predictionId, "Error", 0);
+                AppLogger.Error("自动学习开奖反馈", ex);
+                return new LearningOutcome(false, false, 0, new ModelMemory().LoadOrCreate().Weights, ex.Message);
+            }
+        }
+
+        public static ColorLearningOutcome ApplyColorLearningForPrediction(int predictionId, string actualNumber)
+        {
+            var memoryStore = new ModelMemory();
+            ModelMemoryState memory = memoryStore.LoadOrCreate();
+            string actualColor = ColorEngine.ColorOf(actualNumber);
+            if (predictionId <= 0 || string.IsNullOrWhiteSpace(actualColor))
+                return new ColorLearningOutcome(false, false, false, false, memory.ColorLearning.Weights,
+                    "实际波色无效，跳过学习");
+            try
+            {
+                string scoreDetails;
+                using (SQLiteConnection conn = GetConnection())
+                {
+                    using var cmd = new SQLiteCommand("SELECT ScoreDetails FROM PredictionHistory WHERE Id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", predictionId);
+                    scoreDetails = Convert.ToString(cmd.ExecuteScalar()) ?? "";
+                }
+                if (!ColorPredictionSnapshotCodec.TryDecode(scoreDetails, out ColorPredictionSnapshot snapshot))
+                    return new ColorLearningOutcome(false, false, false, false, memory.ColorLearning.Weights,
+                        "记录没有波色学习快照");
+                var feedback = new ColorPredictionFeedback(snapshot.Issue, actualColor,
+                    snapshot.MainColor, snapshot.DefenseColor,
+                    snapshot.FeatureSignals.ToDictionary(pair => pair.Key,
+                        pair => (IReadOnlyDictionary<string, double>)pair.Value,
+                        StringComparer.OrdinalIgnoreCase));
+                ColorLearningOutcome outcome = new ColorAutoLearningEngine().ApplyFeedback(memory.ColorLearning, feedback);
+                if (outcome.Updated) memoryStore.Save(memory);
+                return outcome;
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("波色自动学习开奖反馈", ex);
+                return new ColorLearningOutcome(false, false, false, false, memory.ColorLearning.Weights, ex.Message);
+            }
+        }
+
+        private static void SetPredictionLearningState(int id, string status, int actualRank)
+        {
+            using SQLiteConnection conn = GetConnection();
+            EnsureAutoLearningSchema(conn);
+            using var cmd = new SQLiteCommand(@"UPDATE PredictionHistory
+                SET LearningStatus=@status, ActualRank=@rank, LearnedAt=@time WHERE Id=@id", conn);
+            cmd.Parameters.AddWithValue("@status", status);
+            cmd.Parameters.AddWithValue("@rank", actualRank);
+            cmd.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void SaveModelMemoryJson(string key, string json)
+        {
+            using SQLiteConnection conn = GetConnection();
+            EnsureAutoLearningSchema(conn);
+            using var cmd = new SQLiteCommand(@"INSERT INTO ModelMemory(MemoryKey,MemoryJson,UpdatedAt)
+                VALUES(@key,@json,@time)
+                ON CONFLICT(MemoryKey) DO UPDATE SET MemoryJson=excluded.MemoryJson, UpdatedAt=excluded.UpdatedAt", conn);
+            cmd.Parameters.AddWithValue("@key", key);
+            cmd.Parameters.AddWithValue("@json", json);
+            cmd.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void SaveLearningAdjustment(LearningAdjustmentRecord record)
+        {
+            using SQLiteConnection conn = GetConnection();
+            EnsureAutoLearningSchema(conn);
+            using var cmd = new SQLiteCommand(@"INSERT INTO LearningAdjustmentHistory
+                (Issue,AdjustedAt,OldWeightsJson,NewWeightsJson,FeatureContributionJson,Reason)
+                VALUES(@issue,@time,@old,@new,@features,@reason)", conn);
+            cmd.Parameters.AddWithValue("@issue", record.Issue);
+            cmd.Parameters.AddWithValue("@time", record.AdjustedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@old", System.Text.Json.JsonSerializer.Serialize(record.OldWeights));
+            cmd.Parameters.AddWithValue("@new", System.Text.Json.JsonSerializer.Serialize(record.NewWeights));
+            cmd.Parameters.AddWithValue("@features", System.Text.Json.JsonSerializer.Serialize(record.FeatureContribution));
+            cmd.Parameters.AddWithValue("@reason", record.Reason);
+            cmd.ExecuteNonQuery();
+        }
+
         private static void SeedAIModels(SQLiteConnection conn)
         {
             string checkSql = "SELECT COUNT(*) FROM AIModels";
@@ -1366,7 +1621,7 @@ namespace 六合分析软件
 
         public static string GetCurrentModelVersion()
         {
-            return "V6.3";
+            return "V6.5";
         }
 
     }

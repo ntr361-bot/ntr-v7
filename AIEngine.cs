@@ -11,9 +11,9 @@ namespace 六合分析软件
     /// </summary>
     public static class AIEngine
     {
-        // Keep the public model identifier aligned with the V6.3 formal release.
+        // Keep the public model identifier aligned with the V6.5 formal release.
         // The external reasoning model is tracked separately by OpenAIService.
-        public const string Version = "AI生肖预测 V6.3";
+        public const string Version = "AI生肖预测 V6.5";
         private const int DefaultPeriods = AISettings.AllHistoryModeValue;
         private static readonly ZodiacPredictEngineV2.WeightConfig Period50Weights = new()
         {
@@ -31,15 +31,6 @@ namespace 六合分析软件
             OmissionWeight = 0.20,
             HotColdWeight = 0.16,
             PeriodPatternWeight = 0.32,
-            ConsecutiveWeight = 0
-        };
-        private static readonly ZodiacPredictEngineV2.WeightConfig Period200Weights = new()
-        {
-            FrequencyWeight = 0.17,
-            RecentTrendWeight = 0.17,
-            OmissionWeight = 0.15,
-            HotColdWeight = 0.17,
-            PeriodPatternWeight = 0.34,
             ConsecutiveWeight = 0
         };
         private static readonly ZodiacPredictEngineV2.WeightConfig AllHistoryWeights = new()
@@ -126,7 +117,7 @@ namespace 六合分析软件
         /// </summary>
         public static Dictionary<int, PredictResult> RefreshAllPeriodPredictions()
         {
-            int[] periods = { 50, 100, 200, AISettings.AllHistoryModeValue };
+            int[] periods = { 50, 100, AISettings.AllHistoryModeValue };
             var results = new Dictionary<int, PredictResult>();
 
             foreach (int period in periods)
@@ -152,8 +143,8 @@ namespace 六合分析软件
         private static int ResolveRequestedPeriods(int requestedPeriods)
         {
             int periods = requestedPeriods < 0 ? AISettings.AnalysisPeriods : requestedPeriods;
-            // 旧设置中的500期已取消，自动迁移为全部历史。
-            return periods == 500 ? AISettings.AllHistoryModeValue : periods;
+            // 旧设置中的200/500期模型已取消，自动迁移为全部历史。
+            return periods is 200 or 500 ? AISettings.AllHistoryModeValue : periods;
         }
 
         private static ZodiacPredictEngineV2.WeightConfig GetWeightsForPeriods(int periods)
@@ -162,11 +153,9 @@ namespace 六合分析软件
             {
                 50 => Period50Weights,
                 100 => Period100Weights,
-                200 => Period200Weights,
                 AISettings.AllHistoryModeValue => AllHistoryWeights,
                 _ => periods < 100 ? Period50Weights
-                    : periods < 200 ? Period100Weights
-                    : AllHistoryWeights
+                    : Period100Weights
             };
         }
 
@@ -224,12 +213,12 @@ namespace 六合分析软件
                 .ToList();
 
             var prompt = new System.Text.StringBuilder();
-            prompt.AppendLine("你是六合彩特码生肖分析专家。请根据以下 V6.3 固定权重及错因学习数据，预测下一期最可能出现的特码生肖。");
+            prompt.AppendLine("你是六合彩特码生肖分析专家。请根据以下 V6.5 自适应权重及错因学习数据，预测下一期最可能出现的特码生肖。");
             prompt.AppendLine();
             prompt.AppendLine($"分析周期：{v2Result.AnalysisPeriods} 期");
             prompt.AppendLine($"可信度：{v2Result.Confidence}");
             prompt.AppendLine($"最佳模型：{v2Result.BestModel}");
-            prompt.AppendLine($"正式V6.3分周期权重：频率{selectedWeights.FrequencyWeight:P0} 趋势{selectedWeights.RecentTrendWeight:P0} 遗漏{selectedWeights.OmissionWeight:P0} 冷热{selectedWeights.HotColdWeight:P0} 周期{selectedWeights.PeriodPatternWeight + selectedWeights.ConsecutiveWeight:P0}");
+            prompt.AppendLine($"正式V6.5分周期权重：频率{selectedWeights.FrequencyWeight:P0} 趋势{selectedWeights.RecentTrendWeight:P0} 遗漏{selectedWeights.OmissionWeight:P0} 冷热{selectedWeights.HotColdWeight:P0} 周期{selectedWeights.PeriodPatternWeight + selectedWeights.ConsecutiveWeight:P0}");
             if (rollingBacktest.TotalTests > 0)
                 prompt.AppendLine($"滚动回测：平均Top3 {rollingBacktest.AverageTop3HitRate:F2}% 平均Top6 {rollingBacktest.AverageTop6HitRate:F2}% 稳定性{rollingBacktest.StabilityGrade}级");
             if (modelCompetition.Count > 0)
@@ -263,7 +252,7 @@ namespace 六合分析软件
                 var gptResult = OpenAIService.Analyze(prompt.ToString(), null, v6LocalReport);
                 result.AnalysisText = gptResult.UsedFallback
                     ? gptResult.AnalysisText
-                    : "【分析来源】GPT润色（预测排序由本地V6.3算法确定）" +
+                    : "【分析来源】GPT润色（预测排序由本地V6.5算法确定）" +
                       Environment.NewLine + Environment.NewLine + gptResult.AnalysisText;
                 result.UsedGpt = !gptResult.UsedFallback;
             }
@@ -335,6 +324,18 @@ namespace 六合分析软件
                 if (string.IsNullOrEmpty(nextPeriod))
                     return;
 
+                result.PredictPeriod = nextPeriod;
+                ModelMemoryState memory = AutoLearningTrainer.EnsureInitialTraining();
+                AutoLearningSnapshot snapshot = AutoLearningSnapshotBuilder.Build(result, memory);
+                if (!snapshot.Result.UsedFallback)
+                {
+                    result.Top3 = snapshot.Result.Ranking.Take(3).Select(item => item.Zodiac).ToList();
+                    result.Top6 = snapshot.Result.Ranking.Take(6).Select(item => item.Zodiac).ToList();
+                    result.Bottom3 = snapshot.Result.Ranking.TakeLast(3).Select(item => item.Zodiac).ToList();
+                    result.RecommendedNumbers.Clear();
+                    BuildRecommendedNumbers(result, result.AnalysisPeriods);
+                }
+
                 string predictNumbers = string.Join(",", result.RecommendedNumbers.Select(n => n.ToString("D2")));
 
                 string scoreDetails = string.Join(";", result.AllScores
@@ -350,7 +351,11 @@ namespace 六合分析软件
                     result.AnalysisPeriods,
                     scoreDetails + "#重点号码:" + result.NumberScoreDetails,
                     result.AnalysisText.Split(Environment.NewLine)
-                        .LastOrDefault(line => line.StartsWith("错因学习：", StringComparison.Ordinal)) ?? "");
+                        .LastOrDefault(line => line.StartsWith("错因学习：", StringComparison.Ordinal)) ?? "",
+                    snapshot.FinalRankingJson,
+                    snapshot.BaseModelScoresJson,
+                    snapshot.FeatureSnapshotJson,
+                    snapshot.WeightSnapshotJson);
             }
             catch { }
         }

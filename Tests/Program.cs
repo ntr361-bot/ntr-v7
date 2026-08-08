@@ -1,6 +1,19 @@
 using System.Text.Json;
 using 六合分析软件;
 
+if (args.Contains("--evaluate-auto-learning", StringComparer.OrdinalIgnoreCase))
+{
+    string dataDirectory = Environment.GetEnvironmentVariable("LIUHE_EVAL_DATA_DIR")
+        ?? Path.Combine(Directory.GetCurrentDirectory(), "data");
+    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
+    var evaluation = AutoLearningEvaluation.Run(DatabaseHelper.GetHistory());
+    AutoLearningEvaluation.SaveReports(evaluation, Directory.GetCurrentDirectory());
+    if (args.Contains("--persist-latest50", StringComparer.OrdinalIgnoreCase))
+        AutoLearningEvaluation.SaveLatest50ToPredictionHistory(evaluation);
+    Console.WriteLine(JsonSerializer.Serialize(evaluation, new JsonSerializerOptions { WriteIndented=true }));
+    return evaluation.FutureDataLeakageDetected || evaluation.TestSamples == 0 ? 1 : 0;
+}
+
 string testData = Path.Combine(AppContext.BaseDirectory, "TestData");
 if (Directory.Exists(testData)) Directory.Delete(testData, recursive: true);
 Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", testData);
@@ -15,7 +28,7 @@ var tests = new (string Name, Action Run)[]
     ("号码统计正确", CountNumbers),
     ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
     ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
-    ("V6.3使用GPT-5.6 Sol", V63UsesGpt56Sol),
+    ("V6.5使用GPT-5.6 Sol", V63UsesGpt56Sol),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
     ("已存在文件时跳过", ExistingFileSkips),
@@ -32,13 +45,49 @@ var tests = new (string Name, Action Run)[]
     ("有效抓取数据校验", ValidCrawlDataPasses),
     ("损坏抓取数据拒绝", InvalidCrawlDataFails)
     ,("预测清单包含全部期号", PredictionManifestContainsAllIssues)
-    ,("云端预测导入四周期历史", CloudPredictionImportsFourPeriods)
+    ,("云端预测不再导入200期模型", CloudPredictionSkipsRemoved200Period)
     ,("云端开奖档案导出", CloudHistoryExportIsValid)
     ,("开奖记录未变化时不重复改写云端档案", UnchangedCloudHistoryIsNotRewritten)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
+    ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
+    ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
+    ,("ML rolling backtest records metrics", MlRollingBacktestRecordsMetrics)
+    ,("ML selects the highest-gain split feature", MlSelectsHighestGainFeature)
+    ,("FeatureEngine exposes 30+ finite non-five-element features", FeatureEngineExposesThirtyPlusFeatures)
+    ,("Five-element signals are removed from prediction", FiveElementSignalsAreRemoved)
+    ,("V7 feature engine exposes independent windows", V7FeatureEngineExposesIndependentWindows)
+    ,("V7 engines are independent and filter short repeats", V7EnginesAreIndependent)
+    ,("V7 ML prediction facade returns probabilities", V7MlPredictionFacadeWorks)
+    ,("V7 color engine is independent", V7ColorEngineWorks)
+    ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
+    ,("V7 AI report explains model state", V7AiReportExplainsState)
+    ,("V7 predictions are saved without overwriting V6 history", V7PredictionsAreSavedToHistory)
+    ,("automatic-learning prediction is a formal fifth history row", AutoLearningPredictionIsFormalHistoryRow)
+    ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
+    ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
+    ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
+    ,("200-period prediction model entry points are removed", Removed200PeriodModelHasNoEntryPoints)
+    ,("database initialization removes retired compatibility predictions", DatabaseInitializationRemovesRetiredPredictions)
+    ,("V8.2 market state probabilities are normalized and leakage safe", V82MarketStateIsNormalizedAndLeakageSafe)
+    ,("V8.2 cross features are named finite and leakage safe", V82CrossFeaturesAreNamedFiniteAndLeakageSafe)
+    ,("V8.2 pairwise ranker returns one normalized 12-zodiac ranking", V82PairwiseRankerReturnsNormalizedRanking)
+    ,("V8.3 state probabilities condition the pairwise ranker without hard routing", V83StateProbabilitiesConditionRanking)
+    ,("V8.3 ranking exposes stability metrics", V83RankingExposesStabilityMetrics)
+    ,("V8.3 audit can ablate state-missing without changing other features", V83CanAblateStateMissingForAudit)
+    ,("V8.2 color backtest is independent from zodiac predictions", V82ColorBacktestIsIndependentFromZodiac)
+    ,("automatic learning weights stay bounded", AutomaticLearningWeightsStayBounded)
+    ,("meta ranking uses safe fallback and normalized probabilities", MetaRankingIsSafeAndNormalized)
+    ,("automatic learning uses top3 five and top6 three miss thresholds", AutomaticLearningUsesDualMissThresholds)
+    ,("prediction feedback is persisted exactly once", PredictionFeedbackIsPersistedExactlyOnce)
+    ,("automatic learning evaluation is chronological", AutomaticLearningEvaluationIsChronological)
+    ,("color learning weights stay bounded", ColorLearningWeightsStayBounded)
+    ,("color learning uses independent main and dual miss thresholds", ColorLearningUsesIndependentMissThresholds)
+    ,("color feedback is idempotent", ColorFeedbackIsIdempotent)
+    ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
+    ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
 };
 
 int failures = 0;
@@ -117,8 +166,8 @@ void PredictionScoreUsesTargetYearMap()
 
 void V63UsesGpt56Sol()
 {
-    Assert(AIEngine.Version == "AI生肖预测 V6.3", "预测模型不是V6.3");
-    Assert(OpenAIService.Model == "gpt-5.6-sol", "V6.3外部分析模型不是GPT-5.6 Sol");
+    Assert(AIEngine.Version == "AI生肖预测 V6.5", "预测模型不是V6.5");
+    Assert(OpenAIService.Model == "gpt-5.6-sol", "V6.5外部分析模型不是GPT-5.6 Sol");
     Assert(OpenAIService.ApiKey == (Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? ""),
         "OpenAI API Key未从云端环境变量读取");
 }
@@ -271,7 +320,7 @@ void PredictionManifestContainsAllIssues()
     Assert(history.RootElement.GetProperty("predictions").GetArrayLength() == 2, "预测历史页面档案应包含全部期号");
 }
 
-void CloudPredictionImportsFourPeriods()
+void CloudPredictionSkipsRemoved200Period()
 {
     var prediction = new CloudDailyPrediction
     {
@@ -291,10 +340,11 @@ void CloudPredictionImportsFourPeriods()
             BestModel = "测试模型"
         };
     }
-    Assert(CloudPredictionSyncService.ImportPrediction(prediction) == 4, "应导入四个分析周期");
+    Assert(CloudPredictionSyncService.ImportPrediction(prediction) == 0,
+        "缺少12生肖完整分项评分的云端预测不应写入学习历史");
     int count = DatabaseHelper.GetPredictionHistory(int.MaxValue)
         .Count(record => record.Issue == "2026203");
-    Assert(count == 4, "本地每期应保存四条固定周期记录");
+    Assert(count == 0, "无效云端预测仍被写入本地历史");
 }
 
 void CloudHistoryExportIsValid()
@@ -371,6 +421,664 @@ void EightZodiacBonusIsBounded()
         "八肖关联加分不应大到单独改变榜首");
 }
 
+void MlFeaturesAreLeakageSafe()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>
+    {
+        History("1", "01", "鼠"), History("2", "02", "鼠"), History("3", "01", "牛"),
+        History("4", "03", "虎"), History("5", "01", "鼠"), History("6", "04", "兔")
+    };
+    var before = MachineLearningPredictionService.BuildFeatures(records, 5, "鼠");
+    var after = MachineLearningPredictionService.BuildFeatures(records, 4, "鼠");
+    Assert(before.Recent5Count == 3, "recent 5 count should only use prior records");
+    Assert(after.Recent5Count == 2, "feature extraction used future records");
+    Assert(before.Gap1RepeatCount >= 1, "gap-1 feature missing");
+    Assert(after.Gap2RepeatCount >= 0, "gap-2 feature missing");
+}
+
+void MlModelsReturnRankedProbabilities()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    string[] z = { "鼠", "牛", "鼠", "虎", "鼠", "兔", "鼠", "龙", "牛", "鼠", "蛇", "鼠" };
+    for (int i = 0; i < z.Length; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), z[i]));
+    var result = MachineLearningPredictionService.Predict(records, 10, MlModelKind.LightGbmStyle);
+    Assert(result.Count == 12, "one probability per zodiac is required");
+    Assert(result.All(x => x.Probability is >= 0 and <= 1), "probability outside [0,1]");
+    Assert(result.SequenceEqual(result.OrderByDescending(x => x.Probability)), "results are not ranked");
+    Assert(result.Take(3).Count() == 3 && result.Take(6).Count() == 6, "TOP3/TOP6 unavailable");
+}
+
+void MlRollingBacktestRecordsMetrics()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    string[] z = { "鼠", "牛", "鼠", "虎", "鼠", "兔", "鼠", "龙", "牛", "鼠", "蛇", "鼠", "马", "鼠" };
+    for (int i = 0; i < z.Length; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), z[i]));
+    var report = MachineLearningPredictionService.RollingBacktest(records, 5, 3, MlModelKind.XgBoostStyle);
+    Assert(report.Predictions.Count == records.Count - 5, "rolling backtest count is incorrect");
+    Assert(report.Top3HitRate is >= 0 and <= 1 && report.Top6HitRate is >= 0 and <= 1, "invalid hit rate");
+    Assert(report.MaximumConsecutiveMisses >= 0, "missing max consecutive misses");
+    Assert(report.Predictions.All(x => x.TrainingCount <= x.TargetIndex), "backtest used future data");
+}
+
+void MlSelectsHighestGainFeature()
+{
+    var method = typeof(MachineLearningPredictionService).GetMethod(
+        "SelectBestSplitFeature", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+    Assert(method != null, "ML scorer does not expose the production split selector for regression testing");
+    int width = MachineLearningPredictionService.FeatureNames.Count;
+    var samples = Enumerable.Range(0, 5).Select(_ => new double[width]).ToArray();
+    samples[0][0] = 0; samples[1][0] = 0; samples[2][0] = 0; samples[3][0] = 1; samples[4][0] = 1;
+    int distractor = width - 1;
+    samples[0][distractor] = 0; samples[1][distractor] = 1; samples[2][distractor] = 0;
+    samples[3][distractor] = 1; samples[4][distractor] = 0;
+    var labels = new double[] { 0, 0, 0, 1, 1 };
+    string selected = Convert.ToString(method!.Invoke(null, new object[] { samples, labels })) ?? "";
+    Assert(selected == MachineLearningPredictionService.FeatureNames[0],
+        $"expected highest-gain {MachineLearningPredictionService.FeatureNames[0]}, got {selected}");
+}
+
+void FeatureEngineExposesThirtyPlusFeatures()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    for (int i = 0; i < 140; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 7) % 49 + 1).ToString("00"), zodiacs[(i * 5 + i / 9) % 12]));
+    var ruleFeature = FeatureEngine.BuildFeatures(records).Single(x => x.Zodiac == "鼠");
+    var mlFeature = MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠");
+    Assert(FeatureEngine.FeatureNames.Count >= 30, $"FeatureEngine only exposes {FeatureEngine.FeatureNames.Count} features");
+    Assert(MachineLearningPredictionService.FeatureNames.Count == FeatureEngine.FeatureNames.Count,
+        "ML and FeatureEngine feature dimensions differ");
+    Assert(ruleFeature.ToVector().Length == FeatureEngine.FeatureNames.Count && mlFeature.ToVector().Length == FeatureEngine.FeatureNames.Count,
+        "feature vector length differs from feature names");
+    Assert(ruleFeature.ToVector().All(double.IsFinite) && mlFeature.ToVector().All(double.IsFinite),
+        "feature vector contains NaN or Infinity");
+    Assert(!FeatureEngine.FeatureNames.Any(x => x.Contains("five_element", StringComparison.OrdinalIgnoreCase)),
+        "five-element feature was reintroduced");
+}
+
+void FiveElementSignalsAreRemoved()
+{
+    Assert(!MachineLearningPredictionService.FeatureNames.Any(x => x.Contains("five_element", StringComparison.OrdinalIgnoreCase)),
+        "five-element feature is still present in ML input");
+    Assert(!typeof(ZodiacFeature).GetProperties().Any(x => x.Name.Contains("FiveElement", StringComparison.OrdinalIgnoreCase)),
+        "five-element fields are still present in rule features");
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 40; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), i % 3 == 0 ? "鼠" : "牛"));
+    Assert(MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠").ToVector().Length >= 30,
+        "ML vector should contain at least thirty non-five-element features");
+    var engines = new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) };
+    var report = AIReportEngine.Generate(records, engines, MLPredictEngine.Predict(records), ColorEngine.Predict(records));
+    Assert(!report.Text.Contains("五行", StringComparison.Ordinal), "AI report still exposes five-element analysis");
+}
+
+void V7FeatureEngineExposesIndependentWindows()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 120; i++) records.Add(History((i + 1).ToString(), "01", i < 70 ? "牛" : (i % 3 == 0 ? "鼠" : "牛")));
+    var shortFeatures = FeatureEngine.BuildFeatures(records, 50);
+    var mediumFeatures = FeatureEngine.BuildFeatures(records, 100);
+    Assert(shortFeatures.Count == 12 && mediumFeatures.Count == 12, "feature engine should return all zodiacs");
+    Assert(shortFeatures.Single(x => x.Zodiac == "鼠").MaximumOmission < mediumFeatures.Single(x => x.Zodiac == "鼠").MaximumOmission, "window engines are sharing data");
+    Assert(shortFeatures.All(x => x.CurrentOmission >= 0 && x.MaximumOmission >= x.CurrentOmission), "omission features invalid");
+}
+
+void V7EnginesAreIndependent()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 120; i++) records.Add(History((i + 1).ToString(), "01", i % 2 == 0 ? "鼠" : "牛"));
+    var shortResult = ShortTermEngine.Predict(records);
+    var mediumResult = MediumTermEngine.Predict(records);
+    var longResult = LongTermEngine.Predict(records);
+    Assert(shortResult.Engine == "ShortTermEngine" && shortResult.Window == 50, "short engine metadata incorrect");
+    Assert(mediumResult.Engine == "MediumTermEngine" && mediumResult.Window == 100, "medium engine metadata incorrect");
+    Assert(longResult.Engine == "LongTermEngine" && longResult.Window == 0, "long engine metadata incorrect");
+    Assert(shortResult.Top6.Count <= 6 && mediumResult.Top6.Count <= 6 && longResult.Top6.Count <= 6, "TOP6 output invalid");
+    Assert(shortResult.Features.All(x => !(x.ShortForbidden && shortResult.Top6.Contains(x.Zodiac))), "short-forbidden zodiac was not filtered");
+}
+
+void V7MlPredictionFacadeWorks()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 40; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), i % 4 == 0 ? "鼠" : "牛"));
+    var result = MLPredictEngine.Predict(records, MlModelKind.LightGbmStyle);
+    Assert(result.Probabilities.Count == 12 && result.Top6.Count == 6, "ML facade output is incomplete");
+    Assert(result.Probabilities.Values.All(x => x is >= 0 and <= 1), "ML facade probability invalid");
+}
+
+void V82MarketStateIsNormalizedAndLeakageSafe()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 140; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 11) % 49 + 1).ToString("00"), zodiacs[(i * 7 + i / 8) % 12]));
+    var before = MarketStateEngine.Detect(records, 100);
+    records.Add(History("2099999", "49", "鼠"));
+    var after = MarketStateEngine.Detect(records, 100);
+    Assert(before.Probabilities.Count == 4, "state model must return four states");
+    Assert(Math.Abs(before.Probabilities.Values.Sum() - 1d) < 1e-9, "state probabilities must sum to one");
+    Assert(before.Probabilities.Values.All(double.IsFinite), "state probabilities contain invalid values");
+    Assert(before.PrimaryState == after.PrimaryState && Math.Abs(before.Confidence - after.Confidence) < 1e-12,
+        "state model used a record after the target boundary");
+    Assert(before.Evidence.Count > 0, "state decision must remain auditable");
+}
+
+void V82CrossFeaturesAreNamedFiniteAndLeakageSafe()
+{
+    string[] expected =
+    {
+        "omission_x_momentum_5_20", "omission_x_momentum_10_50", "recent_7_x_short_forbidden",
+        "repeat_x_omission", "long_x_short_trend", "omission_ratio_x_repeat_trend",
+        "recent_10_rate_x_historical_rate", "color_affinity_x_color_trend"
+    };
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 130; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 13) % 49 + 1).ToString("00"), zodiacs[(i * 3 + i / 11) % 12]));
+    var before = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
+    records.Add(History("2099999", "49", "鼠"));
+    var after = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
+    Assert(expected.All(FeatureEngine.FeatureNames.Contains), "one or more V8.2 cross features are missing");
+    Assert(FeatureEngine.FeatureNames.Count >= 50, "V8.2 should expose at least 50 total features");
+    Assert(before.Length == FeatureEngine.FeatureNames.Count && before.All(double.IsFinite), "cross feature vector is invalid");
+    Assert(before.SequenceEqual(after), "cross feature extraction used data after the target boundary");
+}
+
+void V82PairwiseRankerReturnsNormalizedRanking()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 90; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 17) % 49 + 1).ToString("00"), zodiacs[(i * 5 + i / 6) % 12]));
+    var before = ZodiacRankingEngine.Predict(records, 80, minimumTraining: 30);
+    records.Add(History("2099999", "49", "鼠"));
+    var after = ZodiacRankingEngine.Predict(records, 80, minimumTraining: 30);
+    Assert(before.Items.Count == 12 && before.Items.Select(x => x.Zodiac).Distinct().Count() == 12,
+        "ranking must contain twelve unique zodiacs");
+    Assert(before.Items.Select(x => x.Rank).SequenceEqual(Enumerable.Range(1, 12)), "ranking positions must be 1 through 12");
+    Assert(Math.Abs(before.Items.Sum(x => x.Probability) - 1d) < 1e-9, "ranking probabilities must sum to one");
+    Assert(before.Items.All(x => double.IsFinite(x.Score) && double.IsFinite(x.Probability)), "ranking contains invalid values");
+    Assert(before.Top3.SequenceEqual(before.Items.Take(3).Select(x => x.Zodiac)) &&
+           before.Top6.SequenceEqual(before.Items.Take(6).Select(x => x.Zodiac)), "TOP3/TOP6 are not ranking prefixes");
+    Assert(before.Items.Select(x => x.Zodiac).SequenceEqual(after.Items.Select(x => x.Zodiac)),
+        "ranker used a record after the target boundary");
+}
+
+void V83StateProbabilitiesConditionRanking()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 80; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 19) % 49 + 1).ToString("00"), zodiacs[(i * 5 + i / 7) % 12]));
+    var states = Enum.GetValues<MarketStateKind>().Select(state => new MarketStateResult
+    {
+        PrimaryState = state,
+        Confidence = 1,
+        Probabilities = Enum.GetValues<MarketStateKind>().ToDictionary(x => x, x => x == state ? 1d : 0d)
+    }).ToList();
+    var features = FeatureEngine.BuildFeatures(records);
+    var model = new ZodiacRankingModel();
+    foreach (var state in states)
+        model.Update(features, records[^1].SpecialZodiac, state.Probabilities);
+    var ranking = model.Rank(features, states[0].Probabilities);
+    Assert(model.FeatureWeights().Keys.Count(x => x.StartsWith("state_", StringComparison.Ordinal)) == 4,
+        "ranker should expose four learned state-conditioned features");
+    Assert(ranking.Items.Count == 12 && Math.Abs(ranking.Items.Sum(x => x.Probability) - 1d) < 1e-9,
+        "state-conditioned ranking must remain complete and normalized");
+}
+
+void V83RankingExposesStabilityMetrics()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 90; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 19) % 49 + 1).ToString("00"), zodiacs[(i * 5 + i / 7) % 12]));
+    var state = MarketStateEngine.Detect(records);
+    var model = new ZodiacRankingModel();
+    var features = FeatureEngine.BuildFeatures(records);
+    model.Update(features, records[^1].SpecialZodiac, state.Probabilities);
+    var first = model.Rank(features, state.Probabilities);
+    var second = model.Rank(features, state.Probabilities, first);
+    Assert(double.IsFinite(second.Top3Margin) && second.Top3Margin >= 0, "top3 margin is invalid");
+    Assert(second.RankConfidence is >= 0 and <= 1, "rank confidence must be normalized");
+    Assert(second.MeanAbsoluteRankChange == 0, "unchanged ranking should have zero rank change");
+}
+
+void V83CanAblateStateMissingForAudit()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 100; i++)
+        records.Add(History((2023001 + i).ToString(), ((i * 11) % 49 + 1).ToString("00"), zodiacs[(i * 7 + i / 9) % 12]));
+    var state = MarketStateEngine.Detect(records);
+    var all = new ZodiacRankingModel();
+    var ablated = new ZodiacRankingModel(includeStateMissingFeature: false);
+    var features = FeatureEngine.BuildFeatures(records);
+    all.Update(features, records[^1].SpecialZodiac, state.Probabilities);
+    ablated.Update(features, records[^1].SpecialZodiac, state.Probabilities);
+    Assert(Math.Abs(ablated.FeatureWeights()["state_missing"]) < 1e-12 &&
+           Math.Abs(all.FeatureWeights()["state_missing"]) > 1e-12,
+        "state-missing ablation did not keep the audited feature disabled");
+    Assert(FeatureEngine.FeatureNames.All(name => ablated.FeatureWeights().ContainsKey(name)),
+        "state-missing ablation removed unrelated base features");
+    var ranking = ablated.Rank(features, state.Probabilities);
+    Assert(ranking.Items.Count == 12 && ranking.Items.Select(x => x.Zodiac).Distinct().Count() == 12,
+        "state-missing ablation produced an invalid ranking");
+}
+
+void V82ColorBacktestIsIndependentFromZodiac()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var first = new List<DatabaseHelper.HistoryRecord>();
+    var second = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 90; i++)
+    {
+        string number = ((i * 23) % 49 + 1).ToString("00");
+        first.Add(History((2023001 + i).ToString(), number, zodiacs[i % 12]));
+        second.Add(History((2023001 + i).ToString(), number, zodiacs[(i * 7 + 3) % 12]));
+    }
+    var a = ColorBacktestEngine.Run(first, 20);
+    var b = ColorBacktestEngine.Run(second, 20);
+    Assert(a.Samples == 70 && b.Samples == 70, "color backtest sample count is incorrect");
+    Assert(a.MainHitRate is >= 0 and <= 1 && a.MainDefenseHitRate is >= 0 and <= 1 && a.ExclusionSuccessRate is >= 0 and <= 1,
+        "color backtest returned invalid rates");
+    Assert(a.MainHits == b.MainHits && a.MainDefenseHits == b.MainDefenseHits && a.ExclusionSuccesses == b.ExclusionSuccesses,
+        "color backtest incorrectly depends on zodiac values");
+    Assert(a.MaximumConsecutiveMainDefenseMisses >= 0, "color miss-run metric is invalid");
+}
+
+void V7ColorEngineWorks()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 30; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), "鼠"));
+    var result = ColorEngine.Predict(records);
+    Assert(result.Main != result.Defense && result.Excluded != result.Main && result.Excluded != result.Defense, "color roles must be distinct");
+    Assert(result.Probabilities.Count == 3, "color model must be independent red/blue/green");
+}
+
+void V7AutoOptimizerWorks()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 30; i++) records.Add(History((i + 1).ToString(), (i % 10 + 1).ToString("00"), i % 2 == 0 ? "鼠" : "牛"));
+    var result = AutoOptimizeEngine.Optimize(records, 8);
+    Assert(result.Candidates.Count >= 2 && result.Best != null, "optimizer did not compare schemes");
+    Assert(result.Candidates.All(x => x.Top6HitRate is >= 0 and <= 1), "optimizer metric invalid");
+}
+
+void V7AiReportExplainsState()
+{
+    var records = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 30; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), i % 2 == 0 ? "鼠" : "牛"));
+    var shortResult = ShortTermEngine.Predict(records);
+    var mediumResult = MediumTermEngine.Predict(records);
+    var longResult = LongTermEngine.Predict(records);
+    var ml = MLPredictEngine.Predict(records);
+    var color = ColorEngine.Predict(records);
+    var report = AIReportEngine.Generate(records, new[] { shortResult, mediumResult, longResult }, ml, color);
+    Assert(report.Items.Count >= 3, "AI report should explain multiple signals");
+    Assert(report.Text.Contains("短周期") && report.Text.Contains("波色"), "AI report missing state explanations");
+    Assert(report.IsPrediction == false, "AI report layer must not be marked as prediction");
+}
+
+void V7PredictionsAreSavedToHistory()
+{
+    SeedHistory();
+    var history = DatabaseHelper.GetLatestHistory(100);
+    V7PredictionHistoryService.SaveAll("103", history);
+    V7PredictionHistoryService.SaveAll("103", history);
+    var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
+    Assert(records.Count(x => x.ModelVersion.StartsWith("V7")) == 5, "new history should contain five independent model rows without duplicates");
+    Assert(records.Any(x => x.ModelVersion == "V7 ShortTerm" && x.AnalysisPeriods == 7050), "V7 50-period row missing");
+    Assert(records.Any(x => x.ModelVersion == "V7 MediumTerm" && x.AnalysisPeriods == 7100), "V7 100-period row missing");
+    Assert(records.Any(x => x.ModelVersion == "V7 LongTerm" && x.AnalysisPeriods == 7000), "V7 long-term row missing");
+    Assert(records.Any(x => x.ModelVersion == "V7 ML LightGBM" && x.AnalysisPeriods == 7200), "V7 ML row missing");
+    Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "automatic-learning row missing");
+    var mlRecord = records.Single(x => x.ModelVersion == "V7 ML LightGBM");
+    Assert(V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("主：") &&
+           V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("防：") &&
+           !V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("排除"),
+        "V7 color history should display only main and defense colors");
+    Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
+        "color history display format is incorrect");
+    var colorMethod = typeof(AIPredictHistoryForm).GetMethod("GetWaveColorForDisplay",
+        System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+    Assert(colorMethod != null, "wave-color display mapping is missing");
+    Assert((System.Drawing.Color)colorMethod!.Invoke(null, new object[] { "红" })! == System.Drawing.Color.FromArgb(220, 30, 30) &&
+           (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "蓝" })! == System.Drawing.Color.FromArgb(30, 90, 210) &&
+           (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "绿" })! == System.Drawing.Color.FromArgb(0, 150, 70),
+        "wave-color text should use its real red/blue/green display color");
+    Assert(V7PredictionHistoryService.GetHistory(100).All(x => x.ModelVersion.StartsWith("V7")), "V7 history window source included non-V7 rows");
+    var orderedModels = V7PredictionHistoryService.GetHistory(100)
+        .Where(x => x.Issue == "103")
+        .Select(x => x.ModelVersion)
+        .ToArray();
+    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 ML LightGBM", "V7 AutoLearning", "V7 LongTerm" }), "automatic learning should be displayed before long-term at the bottom of each issue group");
+}
+
+void AutoLearningPredictionIsFormalHistoryRow()
+{
+    var record = V7PredictionHistoryService.GetHistory(100)
+        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+    Assert(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 3,
+        "automatic-learning TOP3 was not saved");
+    Assert(record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 6,
+        "automatic-learning TOP6 was not saved");
+    Assert(!string.IsNullOrWhiteSpace(record.FinalRankingJson) &&
+           !string.IsNullOrWhiteSpace(record.FeatureSnapshotJson) &&
+           !string.IsNullOrWhiteSpace(record.WeightSnapshotJson),
+        "automatic-learning row is missing learnable snapshots");
+}
+
+void CloudSiteUsesAutoLearningSlot()
+{
+    string script = File.ReadAllText(Path.Combine(ProjectRoot(), "site", "app.js"));
+    Assert(script.Contains("['50', '100', 'auto', 'all']"),
+        "cloud site does not display the automatic-learning slot");
+    Assert(!script.Contains("['50', '100', '200', 'all']"),
+        "cloud site still displays the removed 200-period slot");
+}
+
+void V7HistoryUsesV6Layout()
+{
+    using var form = new V7PredictionHistoryForm();
+    var grid = FindControl<System.Windows.Forms.DataGridView>(form);
+    Assert(form.WindowState == System.Windows.Forms.FormWindowState.Maximized, "V7 history should use the maximized V6 history effect");
+    Assert(grid != null && grid.Columns.Count == 13, "V7 history should use all V6 history columns plus a color column");
+    Assert(grid!.Columns.Contains("AnalysisPeriods") && grid.Columns.Contains("PredictNumber") && grid.Columns.Contains("ReviewDetails"), "V7 history is missing V6 history columns");
+    Assert(grid.Columns.Contains("ColorPrediction"), "V7 history should display color prediction in an independent column");
+    Assert(V7PredictionHistoryService.FormatAnalysisLabel(7050, "V7 ShortTerm") == "50期", "visible V7 label should be removed from history window");
+}
+
+void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
+{
+    DatabaseHelper.SavePrediction("998001", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "V6.3", 100,
+        "legacy", "legacy");
+    DatabaseHelper.SavePrediction("998001", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V7 ShortTerm", 998050,
+        "v7", "v7");
+    DatabaseHelper.SavePrediction("998002", "兔,龙,蛇", "兔,龙,蛇,马,羊,猴", "10,11,12", "V6.3", 200,
+        "removed 200-period model", "removed 200-period model");
+    DatabaseHelper.SavePrediction("998003", "鸡,狗,猪", "鸡,狗,猪,鼠,牛,虎", "13,14,15", "V6.3", 0,
+        "old compatibility record", "old compatibility record");
+    using var form = new AIPredictHistoryForm();
+    var grid = FindControl<System.Windows.Forms.DataGridView>(form);
+    Assert(grid != null, "legacy prediction history grid is missing");
+    var versions = grid!.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
+        .Select(row => Convert.ToString(row.Cells["ModelVersion"].Value) ?? "")
+        .ToArray();
+    Assert(versions.Contains("V6.3"), "legacy prediction history lost its V6 row");
+    Assert(versions.All(version => !version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
+        "legacy prediction history still displays V7 rows");
+    var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
+        .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
+        .ToArray();
+    Assert(!analysisLabels.Contains("200期"), "legacy prediction history still displays the removed 200-period model");
+    Assert(!analysisLabels.Contains("旧记录"), "legacy prediction history still displays old compatibility rows");
+}
+
+void Removed200PeriodModelHasNoEntryPoints()
+{
+    Assert(AISettings.GetPeriodOptions().All(option => option.Value != 200),
+        "AI settings still exposes the removed 200-period model");
+    Assert(!Enum.GetNames<AISettings.AnalysisPeriodOption>().Contains("Period200"),
+        "AI settings enum still declares the removed 200-period model");
+    var field = typeof(DailyPredictionAutomation).GetField("Periods",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(field?.GetValue(null) is int[] periods && !periods.Contains(200),
+        "daily automation still generates the removed 200-period model");
+}
+
+void DatabaseInitializationRemovesRetiredPredictions()
+{
+    int drawCount = DatabaseHelper.GetHistory().Count;
+    DatabaseHelper.SavePrediction("998010", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "云端 V6.3", 0,
+        "retired compatibility record", "retired compatibility record");
+    DatabaseHelper.SavePrediction("998011", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "云端 V6.3", 200,
+        "retired 200-period record", "retired 200-period record");
+    DatabaseHelper.SavePrediction("998012", "兔,龙,蛇", "兔,龙,蛇,马,羊,猴", "10,11,12", "云端 V6.3", 50,
+        "中信心 | 云端旧模型", "cloud record without component scores");
+    DatabaseHelper.SavePrediction("998013", "鸡,狗,猪", "鸡,狗,猪,鼠,牛,虎", "13,14,15", "V6.3", 50,
+        "鸡:80|频10|势10|漏25|冷10|周20;狗:70|频9|势9|漏20|冷9|周18", "local record");
+
+    DatabaseHelper.InitializeDatabase();
+
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .All(record => record.AnalysisPeriods is not 0 and not 200),
+        "retired compatibility prediction rows were not removed during initialization");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .All(record => record.ModelVersion != "云端 V6.3"),
+        "cloud predictions without component scores were not removed during initialization");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Any(record => record.Issue == "998013" && record.ModelVersion == "V6.3"),
+        "valid local prediction was removed by cloud-history cleanup");
+    Assert(DatabaseHelper.GetHistory().Count == drawCount,
+        "prediction cleanup must not remove draw history");
+}
+
+void AutomaticLearningWeightsStayBounded()
+{
+    var current = ModelWeights.Default;
+    var next = new WeightOptimizer().Adjust(current, new ModelFeedback(
+        new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["AI"] = 10,
+            ["ML"] = -10,
+            ["State"] = 2,
+            ["Rule"] = -2
+        }, "test"));
+
+    Assert(Math.Abs(next.AI - current.AI) <= 0.050000001, "AI weight changed by more than five points");
+    Assert(Math.Abs(next.ML - current.ML) <= 0.050000001, "ML weight changed by more than five points");
+    Assert(new[] { next.AI, next.ML, next.State, next.Rule }.All(value => value >= 0 && value <= 0.70),
+        "a model weight escaped the 0-70% range");
+    Assert(Math.Abs(next.Sum - 1.0) < 0.000000001, "model weights no longer sum to 100%");
+}
+
+void MetaRankingIsSafeAndNormalized()
+{
+    string[] zodiacs = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
+    var input = new MetaPredictionInput("2027001", zodiacs.Select((zodiac, index) =>
+        new ZodiacMetaFeatures(zodiac,
+            new Dictionary<string, double> { ["AI"] = 12-index, ["ML"] = 12-index, ["State"] = index, ["Rule"] = 0 },
+            new Dictionary<string, double> { ["frequency"] = (12-index)/12d })).ToArray());
+    var baseline = zodiacs.ToArray();
+
+    var cold = new MetaPredictionEngine().Predict(input, new ModelMemoryState(), baseline);
+    Assert(cold.UsedFallback, "fewer than 100 samples must use the existing ranking");
+    Assert(cold.Ranking.Select(item => item.Zodiac).SequenceEqual(baseline), "fallback changed the existing ranking");
+
+    var memory = new ModelMemoryState { LearnedSamples = 100 };
+    var ranked = new MetaPredictionEngine().Predict(input, memory, baseline);
+    Assert(!ranked.UsedFallback, "a valid trained snapshot unexpectedly fell back");
+    Assert(ranked.Ranking.Count == 12 && ranked.Ranking.Select(item => item.Zodiac).Distinct().Count() == 12,
+        "meta ranking must contain exactly 12 unique zodiacs");
+    Assert(Math.Abs(ranked.Ranking.Sum(item => item.Probability) - 1.0) < 0.000000001,
+        "meta probabilities must sum to one");
+}
+
+void AutomaticLearningUsesDualMissThresholds()
+{
+    var engine = new AutoLearningEngine();
+    var top3Memory = new ModelMemoryState { LearnedSamples = 100 };
+    for (int i = 1; i <= 4; i++)
+    {
+        var outcome = engine.ApplyFeedback(top3Memory, Feedback(i, actualRank: 4));
+        Assert(!outcome.FailureAnalysisTriggered, "TOP3 failure analysis triggered before five misses");
+    }
+    Assert(engine.ApplyFeedback(top3Memory, Feedback(5, actualRank: 4)).FailureAnalysisTriggered,
+        "TOP3 five consecutive misses did not trigger failure analysis");
+
+    var top6Memory = new ModelMemoryState { LearnedSamples = 100 };
+    for (int i = 1; i <= 2; i++)
+    {
+        var outcome = engine.ApplyFeedback(top6Memory, Feedback(i, actualRank: 7));
+        Assert(!outcome.FailureAnalysisTriggered, "TOP6 failure analysis triggered before three misses");
+    }
+    Assert(engine.ApplyFeedback(top6Memory, Feedback(3, actualRank: 7)).FailureAnalysisTriggered,
+        "TOP6 three consecutive misses did not trigger failure analysis");
+
+    static PredictionFeedback Feedback(int issue, int actualRank) => new(
+        issue.ToString(), actualRank,
+        new Dictionary<string, int> { ["AI"] = actualRank, ["ML"] = Math.Min(12, actualRank + 1), ["State"] = Math.Max(1, actualRank - 1), ["Rule"] = actualRank },
+        new Dictionary<string, double> { ["frequency"] = -0.4, ["omission"] = 0.2 });
+}
+
+void PredictionFeedbackIsPersistedExactlyOnce()
+{
+    string[] zodiacs = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
+    var input = new MetaPredictionInput("999101", zodiacs.Select((zodiac,index) =>
+        new ZodiacMetaFeatures(zodiac,
+            new Dictionary<string,double> { ["AI"]=12-index, ["ML"]=index, ["State"]=6, ["Rule"]=0 },
+            new Dictionary<string,double> { ["frequency"]=(12-index)/12d, ["omission"]=index/12d })).ToArray());
+    DatabaseHelper.SavePrediction("999101", string.Join(",", zodiacs.Take(3)), string.Join(",", zodiacs.Take(6)),
+        "01,02,03", "V6.3", 50, "test", "test", JsonSerializer.Serialize(zodiacs),
+        JsonSerializer.Serialize(input.Zodiacs.ToDictionary(item => item.Zodiac, item => item.BaseScores)),
+        JsonSerializer.Serialize(input), JsonSerializer.Serialize(ModelWeights.Default));
+    var row = DatabaseHelper.GetPredictionHistory(int.MaxValue).First(item => item.Issue == "999101" && item.AnalysisPeriods == 50);
+    LearningOutcome first = DatabaseHelper.ApplyAutomaticLearningForPrediction(row.Id, "Tiger");
+    LearningOutcome second = DatabaseHelper.ApplyAutomaticLearningForPrediction(row.Id, "Tiger");
+    var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue).First(item => item.Id == row.Id);
+    Assert(first.Updated, "first prediction feedback was not learned");
+    Assert(!second.Updated, "the same prediction feedback was learned twice");
+    Assert(saved.LearningStatus == "Learned" && saved.ActualRank == 3, "learned state or actual rank was not persisted");
+}
+
+void AutomaticLearningEvaluationIsChronological()
+{
+    string[] zodiacs = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
+    var rows = new List<DatabaseHelper.HistoryRecord>();
+    int issue = 2023001;
+    for (int i = 0; i < 180; i++)
+    {
+        int year = i < 120 ? 2023 + i/50 : 2026;
+        rows.Add(new DatabaseHelper.HistoryRecord
+        {
+            Period = (year*1000 + i%500 + 1).ToString(),
+            OpenTime = $"{year}-01-01 21:30:00",
+            SpecialZodiac = zodiacs[i%12],
+            SpecialNumber = ((i%49)+1).ToString("D2")
+        });
+        issue++;
+    }
+    AutoLearningEvaluationResult result = AutoLearningEvaluation.Run(rows);
+    Assert(result.TrainingSamples > 0 && result.TestSamples == 60, "evaluation did not use the intended train/test years");
+    Assert(!result.FutureDataLeakageDetected, "evaluation exposed the target or future draw to prediction");
+    Assert(result.Baseline.Samples == result.Learning.Samples, "baseline and learning evaluated different issues");
+    Assert(result.Latest50.Count == 50 && result.Latest50[^1].Issue == rows[^1].Period,
+        "evaluation did not retain the latest 50 chronological validation records");
+    Assert(result.ColorTrainingSamples > 0 && result.BaselineColor.Samples == 60 && result.LearningColor.Samples == 60,
+        "color evaluation did not use the intended chronological train/test split");
+    Assert(result.Latest50.All(item => !string.IsNullOrWhiteSpace(item.MainColor) &&
+        !string.IsNullOrWhiteSpace(item.DefenseColor) && !string.IsNullOrWhiteSpace(item.ActualColor)),
+        "latest 50 validation rows are missing color predictions or actual colors");
+    AutoLearningEvaluation.SaveLatest50ToPredictionHistory(result);
+    var savedColor = V7PredictionHistoryService.GetHistory(int.MaxValue)
+        .First(item => item.Issue == rows[^1].Period && item.ModelVersion == "V7 AutoLearning Validation");
+    Assert(V7PredictionHistoryService.ExtractColorPrediction(savedColor.ScoreDetails) != "-",
+        "latest-50 history did not display main and defense colors");
+    Assert(savedColor.ReviewDetails.Contains("主波") && savedColor.ReviewDetails.Contains("双波"),
+        "latest-50 history did not record color hit outcomes");
+}
+
+void ColorLearningWeightsStayBounded()
+{
+    var state = new ColorLearningState();
+    ColorLearningWeights before = state.Weights;
+    ColorLearningOutcome outcome = new ColorAutoLearningEngine().ApplyFeedback(state,
+        ColorFeedback("color-1", actual: "红", main: "蓝", defense: "绿"));
+
+    Assert(outcome.Updated, "valid color feedback was not learned");
+    Assert(Math.Abs(state.Weights.Frequency - before.Frequency) <= 0.050000001,
+        "color frequency weight changed by more than five points");
+    Assert(Math.Abs(state.Weights.Transition - before.Transition) <= 0.050000001,
+        "color transition weight changed by more than five points");
+    Assert(Math.Abs(state.Weights.Omission - before.Omission) <= 0.050000001,
+        "color omission weight changed by more than five points");
+    Assert(new[] { state.Weights.Frequency, state.Weights.Transition, state.Weights.Omission }
+        .All(value => value >= 0.05 && value <= 0.85), "a color weight escaped the 5-85% range");
+    Assert(Math.Abs(state.Weights.Sum - 1) < 0.000000001, "color weights do not sum to 100%");
+}
+
+void ColorLearningUsesIndependentMissThresholds()
+{
+    var engine = new ColorAutoLearningEngine();
+    var mainState = new ColorLearningState();
+    for (int i = 1; i <= 4; i++)
+        Assert(!engine.ApplyFeedback(mainState, ColorFeedback($"main-{i}", "蓝", "红", "蓝")).FailureAnalysisTriggered,
+            "main-color failure analysis triggered before five misses");
+    ColorLearningOutcome mainTrigger = engine.ApplyFeedback(mainState, ColorFeedback("main-5", "蓝", "红", "蓝"));
+    Assert(mainTrigger.FailureAnalysisTriggered && mainTrigger.Reason.Contains("主波连续5期"),
+        "main-color five consecutive misses did not trigger failure analysis");
+
+    var dualState = new ColorLearningState();
+    for (int i = 1; i <= 2; i++)
+        Assert(!engine.ApplyFeedback(dualState, ColorFeedback($"dual-{i}", "绿", "红", "蓝")).FailureAnalysisTriggered,
+            "dual-color failure analysis triggered before three misses");
+    ColorLearningOutcome dualTrigger = engine.ApplyFeedback(dualState, ColorFeedback("dual-3", "绿", "红", "蓝"));
+    Assert(dualTrigger.FailureAnalysisTriggered && dualTrigger.Reason.Contains("双波连续3期"),
+        "dual-color three consecutive misses did not trigger failure analysis");
+}
+
+void ColorFeedbackIsIdempotent()
+{
+    var state = new ColorLearningState();
+    var engine = new ColorAutoLearningEngine();
+    ColorLearningOutcome first = engine.ApplyFeedback(state, ColorFeedback("same-color-issue", "红", "蓝", "绿"));
+    ColorLearningWeights afterFirst = state.Weights;
+    ColorLearningOutcome second = engine.ApplyFeedback(state, ColorFeedback("same-color-issue", "红", "蓝", "绿"));
+    Assert(first.Updated && !second.Updated, "the same color issue was learned more than once");
+    Assert(state.LearnedIssues.Count == 1 && state.Weights == afterFirst,
+        "duplicate color feedback changed state");
+}
+
+ColorPredictionFeedback ColorFeedback(string issue, string actual, string main, string defense) => new(
+    issue, actual, main, defense,
+    new Dictionary<string, IReadOnlyDictionary<string, double>>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["红"] = new Dictionary<string, double> { ["frequency"] = 0.9, ["transition"] = 0.8, ["omission"] = 0.1 },
+        ["蓝"] = new Dictionary<string, double> { ["frequency"] = 0.2, ["transition"] = 0.3, ["omission"] = 0.9 },
+        ["绿"] = new Dictionary<string, double> { ["frequency"] = 0.4, ["transition"] = 0.5, ["omission"] = 0.6 }
+    });
+
+void ColorPredictionConsumesLearnedWeights()
+{
+    var rows = new List<DatabaseHelper.HistoryRecord> { History("color-001", "03", "") };
+    for (int i = 0; i < 10; i++) rows.Add(History($"color-r-{i}", "01", ""));
+    for (int i = 0; i < 9; i++) rows.Add(History($"color-b-{i}", "02", ""));
+
+    ColorPredictionResult frequency = ColorEngine.Predict(rows, new ColorLearningWeights(0.85, 0.10, 0.05));
+    ColorPredictionResult omission = ColorEngine.Predict(rows, new ColorLearningWeights(0.10, 0.05, 0.85));
+    Assert(frequency.Main == "红", "frequency-heavy color prediction did not favor the frequent red color");
+    Assert(omission.Main == "绿", "omission-heavy color prediction did not favor the omitted green color");
+    Assert(omission.FeatureSignals.Count == 3 && omission.FeatureSignals.Values.All(features =>
+        features.ContainsKey("frequency") && features.ContainsKey("transition") && features.ContainsKey("omission")),
+        "color prediction did not expose all learnable feature signals");
+    Assert(Math.Abs(omission.Probabilities.Values.Sum() - 1) < 0.000000001,
+        "weighted color probabilities do not sum to one");
+}
+
+void ColorPredictionHistoryPersistsSnapshot()
+{
+    var rows = new List<DatabaseHelper.HistoryRecord>();
+    for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
+    V7PredictionHistoryService.SaveAll("999202", rows);
+    var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 ML LightGBM");
+    Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
+    ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
+    ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
+    Assert(first.Updated && !second.Updated, "online color feedback was not persisted exactly once");
+}
+
+T? FindControl<T>(System.Windows.Forms.Control root) where T : System.Windows.Forms.Control
+{
+    if (root is T found) return found;
+    foreach (System.Windows.Forms.Control child in root.Controls)
+    {
+        var result = FindControl<T>(child);
+        if (result != null) return result;
+    }
+    return null;
+}
+
 AIEngine.PredictResult FakePrediction(long issue) => new()
 {
     PredictPeriod = issue.ToString(),
@@ -396,6 +1104,8 @@ string FreshDirectory()
     Directory.CreateDirectory(path);
     return path;
 }
+
+string ProjectRoot() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
 
 void AssertThrows<T>(Action action, string message) where T : Exception
 {

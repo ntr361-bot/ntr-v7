@@ -229,7 +229,7 @@ namespace 六合分析软件
             y += 30;
 
             // 对比不同周期的生肖分布
-            int[] periods = { 50, 100, 200 };
+            int[] periods = { 50, 100 };
             string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
 
             AddLabel(page, 20, y, "生肖", Color.Gray);

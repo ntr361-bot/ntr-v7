@@ -20,6 +20,9 @@ namespace 六合分析软件
         Button btnPredict;
         Button btnChart;
         Button btnCheck;
+        Button btnMlBacktest;
+        Button btnV7Models;
+        Button btnV7History;
 
         Label titleLabel;
         Label cloudSyncLabel;
@@ -80,13 +83,13 @@ namespace 六合分析软件
 
         private void InitUI()
         {
-            this.Text = "六合智能分析系统 V6.3";
+            this.Text = "六合智能分析系统 V6.5";
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // 标题
             titleLabel = new Label();
-            titleLabel.Text = "六合智能分析系统 V6.3";
+            titleLabel.Text = "六合智能分析系统 V6.5";
             titleLabel.Font = new Font("微软雅黑", 22);
             titleLabel.Location = new Point(300, 20);
             titleLabel.AutoSize = true;
@@ -110,6 +113,7 @@ namespace 六合分析软件
             menuPanel.Location = new Point(0, 0);
             menuPanel.Size = new Size(200, 650);
             menuPanel.BackColor = Color.LightGray;
+            menuPanel.AutoScroll = true;
 
             this.Controls.Add(menuPanel);
 
@@ -125,7 +129,10 @@ namespace 六合分析软件
             btnAnalyze = CreateButton("📊 数据中心", 320);
             btnPredict = CreateButton("走势预测", 370);
             btnChart = CreateButton("统计图表", 440);
-            btnCheck = CreateButton("📐 自用规律", 560);
+            btnMlBacktest = CreateButton("🧪 ML滚动回测", 495);
+            btnV7Models = CreateButton("🧠 智能模型实验", 545);
+            btnV7History = CreateButton("📜 智能预测历史", 600);
+            btnCheck = CreateButton("📐 自用规律", 655);
 
             menuPanel.Controls.Add(btnHome);
             menuPanel.Controls.Add(btnHistory);
@@ -135,6 +142,9 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnAnalyze);
             menuPanel.Controls.Add(btnPredict);
             menuPanel.Controls.Add(btnChart);
+            menuPanel.Controls.Add(btnMlBacktest);
+            menuPanel.Controls.Add(btnV7Models);
+            menuPanel.Controls.Add(btnV7History);
             menuPanel.Controls.Add(btnCheck);
 
             btnHome.Click += (s, e) => ShowHome();
@@ -145,6 +155,9 @@ namespace 六合分析软件
             btnAnalyze.Click += BtnAnalyze_Click;
             btnPredict.Click += BtnPredict_Click;
             btnChart.Click += BtnChart_Click;
+            btnMlBacktest.Click += BtnMlBacktest_Click;
+            btnV7Models.Click += BtnV7Models_Click;
+            btnV7History.Click += (_, _) => new V7PredictionHistoryForm().ShowDialog(this);
             btnCheck.Click += BtnCheck_Click;
 
             // 主显示区域
@@ -235,7 +248,7 @@ namespace 六合分析软件
 
             // ===== 标题 =====
             Label title = new Label();
-            title.Text = "六合智能分析系统 V6.3";
+            title.Text = "六合智能分析系统 V6.5";
             title.Font = new Font("微软雅黑", 18, FontStyle.Bold);
             title.ForeColor = Color.FromArgb(30, 30, 60);
             title.Location = new Point(20, y);
@@ -1017,6 +1030,75 @@ namespace 六合分析软件
         {
             StatisticsChartForm form = new StatisticsChartForm();
             form.ShowDialog();
+        }
+
+        // ML特征实验：只使用目标期之前的数据，不替换现有V6.5预测结果
+        private async void BtnMlBacktest_Click(object sender, EventArgs e)
+        {
+            btnMlBacktest.Enabled = false;
+            try
+            {
+                var history = DatabaseHelper.GetLatestHistory(int.MaxValue);
+                if (history.Count < 10)
+                {
+                    MessageBox.Show("历史数据不足，至少需要10期后才能进行滚动回测。", "ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                var result = await Task.Run(() =>
+                {
+                    var lgb = MachineLearningPredictionService.RollingBacktest(history, 50, 30, MlModelKind.LightGbmStyle);
+                    var xgb = MachineLearningPredictionService.RollingBacktest(history, 50, 30, MlModelKind.XgBoostStyle);
+                    var lgbPath = MachineLearningPredictionService.SaveReport(lgb);
+                    var xgbPath = MachineLearningPredictionService.SaveReport(xgb);
+                    var top = MachineLearningPredictionService.Predict(history, 30, MlModelKind.LightGbmStyle).Take(6)
+                        .Select(x => $"{x.Zodiac} {x.Probability:P1}");
+                    return $"LightGBM-style：TOP3 {lgb.Top3HitRate:P1}，TOP6 {lgb.Top6HitRate:P1}，最大连续错 {lgb.MaximumConsecutiveMisses}\n" +
+                           $"XGBoost-style：TOP3 {xgb.Top3HitRate:P1}，TOP6 {xgb.Top6HitRate:P1}，最大连续错 {xgb.MaximumConsecutiveMisses}\n\n" +
+                           $"当前生肖概率（TOP6）：{string.Join("、", top)}\n" +
+                           $"回测记录：{lgbPath}\n{xgbPath}\n\n" +
+                           "说明：该实验模型不写入或覆盖V6.5正式预测；回测每期只读取更早的历史记录。";
+                });
+                MessageBox.Show(result, "V6.5 ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ML回测失败：{ex.Message}", "V6.5 ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { btnMlBacktest.Enabled = true; }
+        }
+
+        private async void BtnV7Models_Click(object sender, EventArgs e)
+        {
+            btnV7Models.Enabled = false;
+            try
+            {
+                var history = DatabaseHelper.GetLatestHistory(int.MaxValue);
+                var text = await Task.Run(() =>
+                {
+                    string targetPeriod = GetNextPredictionPeriod(history);
+                    var ml = MLPredictEngine.Predict(history, MlModelKind.LightGbmStyle);
+                    var color = ColorEngine.Predict(history);
+                    var optimized = AutoOptimizeEngine.Optimize(history, 30);
+                    var engines = new[] { ShortTermEngine.Predict(history), MediumTermEngine.Predict(history), LongTermEngine.Predict(history) };
+                    var report = AIReportEngine.Generate(history, engines, ml, color);
+                    V7PredictionHistoryService.SaveAll(targetPeriod, history);
+                    return $"预测期号：{targetPeriod}\n" +
+                           $"ML生肖 TOP6：{string.Join("、", ml.Top6)}\n" +
+                           $"波色：排除 {color.Excluded} / 主 {color.Main} / 防 {color.Defense}\n" +
+                           $"最优权重：{optimized.Best?.Name ?? "无"}（TOP6 {optimized.Best?.Top6HitRate:P1}）\n\n" +
+                           report.Text;
+                });
+                MessageBox.Show(text, "智能模型实验", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex) { MessageBox.Show($"智能模型运行失败：{ex.Message}", "智能模型实验", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            finally { btnV7Models.Enabled = true; }
+        }
+
+        private static string GetNextPredictionPeriod(IReadOnlyList<DatabaseHelper.HistoryRecord> history)
+        {
+            var latest = history.Select(x => x.Period).Where(x => int.TryParse(x, out _))
+                .Select(int.Parse).DefaultIfEmpty(0).Max();
+            return latest > 0 ? (latest + 1).ToString() : "下一期";
         }
 
         // 自用规律

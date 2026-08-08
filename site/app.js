@@ -44,14 +44,15 @@ function resultBadge(hit) {
 
 function renderAiPeriods(results) {
   const parent = document.querySelector('#ai-periods');
-  const periods = ['50', '100', '200', 'all'];
+  const periods = ['50', '100', 'auto', 'all'];
   parent.replaceChildren(...periods.map(period => {
     const result = results?.[period] ?? (period === 'all' ? results?.['500'] : undefined);
-    if (!result) throw new Error(`缺少 ${period === 'all' ? '全部历史' : `${period}期`}AI预测`);
+    const periodLabel = period === 'all' ? '长期' : period === 'auto' ? '自动学习' : `${period}期`;
+    if (!result) throw new Error(`缺少 ${periodLabel}AI预测`);
     const block = document.createElement('article');
     block.className = 'period-result';
     const heading = document.createElement('h3');
-    heading.textContent = period === 'all' ? '全部历史' : `${period}期`;
+    heading.textContent = periodLabel;
     const meta = document.createElement('p');
     meta.className = 'period-meta';
     meta.textContent = `${result.confidence || '未标注可信度'} · ${result.best_model || '综合模型'}`;

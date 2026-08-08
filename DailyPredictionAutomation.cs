@@ -14,7 +14,7 @@ public sealed record DailyAiPrediction(
 
 public static class DailyPredictionAutomation
 {
-    private static readonly int[] Periods = { 50, 100, 200, AISettings.AllHistoryModeValue };
+    private static readonly int[] Periods = { 50, 100, AISettings.AllHistoryModeValue };
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static string Generate(long targetIssue, string outputDirectory, bool force = false, bool dryRun = false)
@@ -44,8 +44,29 @@ public static class DailyPredictionAutomation
                 result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
         }
 
-        ZodiacRulePrediction rule = ZodiacRulePredictionService.Predict(targetIssue);
+        IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);
+        AutoLearningFormalPrediction formalLearning = V7PredictionHistoryService.SaveAutoLearning(
+            targetIssue.ToString(), learningHistory);
+        AutoLearningSnapshot learning = formalLearning.Snapshot;
+        string[] autoTop3 = learning.Result.Ranking.Take(3).Select(item => item.Zodiac).ToArray();
+        string[] autoTop6 = learning.Result.Ranking.Take(6).Select(item => item.Zodiac).ToArray();
         int targetYear = checked((int)(targetIssue / 1000));
+        string yearPet = DatabaseHelper.GetYearPetPublic(targetYear.ToString());
+        Dictionary<string, List<string>> zodiacNumbers = DataCrawler.BuildShengXiaoMapPublic(yearPet);
+        int[] autoNumbers = autoTop6
+            .Where(zodiacNumbers.ContainsKey)
+            .SelectMany(zodiac => zodiacNumbers[zodiac])
+            .Select(value => int.TryParse(value, out int number) ? number : 0)
+            .Where(number => number > 0)
+            .Distinct()
+            .OrderBy(number => number)
+            .ToArray();
+        ai["auto"] = new DailyAiPrediction(V7PredictionHistoryService.AutoLearningHistoryKey,
+            autoTop3, autoTop6, autoNumbers,
+            learning.Result.UsedFallback ? "基础排序" : "已学习",
+            "自动学习模型");
+
+        ZodiacRulePrediction rule = ZodiacRulePredictionService.Predict(targetIssue);
         PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(500, targetYear);
         EnsemblePredictionService.PredictionReport ensemble = EnsemblePredictionService.Predict(500);
         if (score.Predictions.Count == 0 || ensemble.Predictions.Count == 0 || rule.Zodiacs.Count == 0)
@@ -130,11 +151,63 @@ public static class DailyPredictionAutomation
         if (targets.Length == 0) Console.WriteLine("[SUCCESS] 所有预测功能的每期记录已齐全");
         if (!dryRun)
         {
+            int upgraded = UpgradeArchivedAutoLearning(outputDirectory);
+            Console.WriteLine($"[INFO] 已将{upgraded}期云端200期旧卡片替换为自动学习记录");
             int verified = VerifyPublishedPredictions(outputDirectory);
             Console.WriteLine($"[INFO] 已写入{verified}期预测命中结果");
             UpdateManifest(outputDirectory);
         }
         return targets;
+    }
+
+    public static int UpgradeArchivedAutoLearning(string directory)
+    {
+        DatabaseHelper.InitializeDatabase();
+        DatabaseHelper.HistoryRecord[] chronological = DatabaseHelper.GetLatestHistory(int.MaxValue)
+            .Where(record => long.TryParse(record.Period, out _))
+            .OrderBy(record => long.Parse(record.Period))
+            .ToArray();
+        var actualByIssue = chronological.ToDictionary(record => long.Parse(record.Period));
+        int updated = 0;
+
+        foreach (long issue in EnumerateIssues(directory).OrderBy(value => value))
+        {
+            string path = Path.Combine(directory, $"{issue}.json");
+            JsonObject root = JsonNode.Parse(File.ReadAllText(path))?.AsObject()
+                ?? throw new InvalidDataException($"第{issue}期云端预测文件无法解析");
+            JsonObject ai = root["ai_zodiac"] as JsonObject
+                ?? throw new InvalidDataException($"第{issue}期缺少AI预测记录");
+            if (ai["auto"] is not null && ai["200"] is null) continue;
+
+            long prior = chronological.Select(record => long.Parse(record.Period)).LastOrDefault(value => value < issue);
+            if (prior == 0) continue;
+            using (DatabaseHelper.UseHistoryThroughIssue(prior))
+            {
+                IReadOnlyList<DatabaseHelper.HistoryRecord> prefix = DatabaseHelper.GetLatestHistory(int.MaxValue);
+                AutoLearningSnapshot learning = V7PredictionHistoryService.BuildAutoLearningSnapshot(issue.ToString(), prefix);
+                string[] top3 = learning.Result.Ranking.Take(3).Select(item => item.Zodiac).ToArray();
+                string[] top6 = learning.Result.Ranking.Take(6).Select(item => item.Zodiac).ToArray();
+                int targetYear = checked((int)(issue / 1000));
+                string yearPet = DatabaseHelper.GetYearPetPublic(targetYear.ToString());
+                Dictionary<string, List<string>> map = DataCrawler.BuildShengXiaoMapPublic(yearPet);
+                int[] numbers = top6.Where(map.ContainsKey).SelectMany(zodiac => map[zodiac])
+                    .Select(value => int.TryParse(value, out int number) ? number : 0)
+                    .Where(number => number > 0).Distinct().OrderBy(number => number).ToArray();
+                JsonObject auto = JsonSerializer.SerializeToNode(new DailyAiPrediction(
+                    V7PredictionHistoryService.AutoLearningHistoryKey, top3, top6, numbers,
+                    learning.Result.UsedFallback ? "基础排序" : "已学习", "自动学习模型"), JsonOptions)!.AsObject();
+                if (actualByIssue.TryGetValue(issue, out DatabaseHelper.HistoryRecord? actual))
+                {
+                    auto["top3_hit"] = top3.Contains(actual.SpecialZodiac);
+                    auto["top6_hit"] = top6.Contains(actual.SpecialZodiac);
+                }
+                ai.Remove("200");
+                ai["auto"] = auto;
+            }
+            AtomicWrite(path, root);
+            updated++;
+        }
+        return updated;
     }
 
     public static int VerifyPublishedPredictions(string directory)

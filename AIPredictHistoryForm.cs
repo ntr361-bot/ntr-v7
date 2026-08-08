@@ -14,13 +14,27 @@ namespace 六合分析软件
         Label statsLabel;
         Button btnRefresh;
         Button btnVerify;
+        private readonly bool newModelOnly;
         private static readonly Font NumberHitFont = new Font("微软雅黑", 10, FontStyle.Bold);
 
-        public AIPredictHistoryForm()
+        public static Color GetWaveColorForDisplay(string waveColor) => waveColor switch
         {
+            "红" => Color.FromArgb(220, 30, 30),
+            "蓝" => Color.FromArgb(30, 90, 210),
+            "绿" => Color.FromArgb(0, 150, 70),
+            _ => Color.FromArgb(30, 30, 30)
+        };
+
+        public AIPredictHistoryForm() : this(false)
+        {
+        }
+
+        protected AIPredictHistoryForm(bool newModelOnly)
+        {
+            this.newModelOnly = newModelOnly;
             InitializeComponent();
 
-            this.Text = "AI预测历史记录 - " + AIEngine.Version;
+            this.Text = newModelOnly ? "智能预测历史记录" : "AI预测历史记录 - " + AIEngine.Version;
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MinimumSize = new Size(1000, 650);
@@ -51,7 +65,9 @@ namespace 六合分析软件
             rootLayout.Controls.Add(topBar, 0, 0);
 
             Label title = new Label();
-            title.Text = "📜 AI预测历史记录（按期号和分析周期留档）";
+            title.Text = newModelOnly
+                ? "📜 智能预测历史记录（按期号和模型留档）"
+                : "📜 AI预测历史记录（按期号和分析周期留档）";
             title.Font = new Font("微软雅黑", 16, FontStyle.Bold);
             title.ForeColor = Color.White;
             title.Dock = DockStyle.Fill;
@@ -62,7 +78,7 @@ namespace 六合分析软件
 
             FlowLayoutPanel toolPanel = new FlowLayoutPanel();
             toolPanel.Dock = DockStyle.Right;
-            toolPanel.Width = 230;
+            toolPanel.Width = newModelOnly ? 350 : 230;
             toolPanel.Padding = new Padding(0, 15, 10, 0);
             toolPanel.WrapContents = false;
             toolPanel.FlowDirection = FlowDirection.LeftToRight;
@@ -92,6 +108,28 @@ namespace 六合分析软件
             btnVerify.FlatAppearance.BorderSize = 0;
             btnVerify.Click += BtnVerify_Click;
             toolPanel.Controls.Add(btnVerify);
+
+            if (newModelOnly)
+            {
+                var btnLearningReport = new Button
+                {
+                    Name = "btnLearningReport",
+                    Text = "学习报告",
+                    Font = new Font("微软雅黑", 10),
+                    Size = new Size(100, 30),
+                    Margin = new Padding(10, 0, 0, 0),
+                    BackColor = Color.FromArgb(118, 78, 180),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
+                btnLearningReport.FlatAppearance.BorderSize = 0;
+                btnLearningReport.Click += (_, _) =>
+                {
+                    using var report = new AutoLearningReportForm();
+                    report.ShowDialog(this);
+                };
+                toolPanel.Controls.Add(btnLearningReport);
+            }
 
             TableLayoutPanel content = new TableLayoutPanel();
             content.Dock = DockStyle.Fill;
@@ -135,6 +173,8 @@ namespace 六合分析软件
             table.Columns.Add("HitResult", "前3结果");
             table.Columns.Add("Top6HitResult", "前6结果");
             table.Columns.Add("ReviewDetails", "错因复盘/学习状态");
+            if (newModelOnly)
+                table.Columns.Add("ColorPrediction", "波色预测");
             table.Columns.Add("ModelVersion", "模型");
             table.Columns.Add("PredictTime", "预测时间");
 
@@ -151,6 +191,12 @@ namespace 六合分析软件
             table.Columns["ReviewDetails"].MinimumWidth = 420;
             table.Columns["ReviewDetails"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             table.Columns["ReviewDetails"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            if (newModelOnly)
+            {
+                table.Columns["ColorPrediction"].Width = 190;
+                table.Columns["ColorPrediction"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                table.Columns["ColorPrediction"].DefaultCellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold);
+            }
             table.Columns["ModelVersion"].Width = 90;
             table.Columns["PredictTime"].Width = 180;
 
@@ -195,6 +241,14 @@ namespace 六合分析软件
 
         private void Table_CellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
         {
+            if (newModelOnly && e.RowIndex >= 0 &&
+                table.Columns.Contains("ColorPrediction") &&
+                e.ColumnIndex == table.Columns["ColorPrediction"].Index)
+            {
+                PaintColorPredictionCell(e);
+                return;
+            }
+
             if (e.RowIndex < 0 || e.ColumnIndex != table.Columns["PredictNumber"].Index)
                 return;
 
@@ -262,6 +316,52 @@ namespace 六合分析软件
             e.Handled = true;
         }
 
+        private void PaintColorPredictionCell(DataGridViewCellPaintingEventArgs e)
+        {
+            string text = Convert.ToString(e.FormattedValue) ?? string.Empty;
+            const string mainPrefix = "主：";
+            const string defensePrefix = "防：";
+            int mainStart = text.IndexOf(mainPrefix, StringComparison.Ordinal);
+            int defenseStart = text.IndexOf(defensePrefix, StringComparison.Ordinal);
+            if (mainStart < 0 || defenseStart < 0 ||
+                mainStart + mainPrefix.Length >= text.Length ||
+                defenseStart + defensePrefix.Length >= text.Length)
+                return;
+
+            string mainColor = text.Substring(mainStart + mainPrefix.Length, 1);
+            string defenseColor = text.Substring(defenseStart + defensePrefix.Length, 1);
+
+            e.PaintBackground(e.CellBounds, true);
+            e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
+
+            bool selected = (e.State & DataGridViewElementStates.Selected) != 0;
+            Color labelColor = selected ? e.CellStyle.SelectionForeColor : e.CellStyle.ForeColor;
+            Font labelFont = e.CellStyle.Font ?? table.Font;
+            using Font colorFont = new Font(labelFont, FontStyle.Bold);
+            TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix |
+                                    TextFormatFlags.VerticalCenter;
+            int x = e.CellBounds.Left + 5;
+            int y = e.CellBounds.Top;
+            int height = e.CellBounds.Height;
+
+            Color mainDisplayColor = GetWaveColorForDisplay(mainColor);
+            Color defenseDisplayColor = GetWaveColorForDisplay(defenseColor);
+            DrawPart(mainPrefix, labelFont, mainDisplayColor);
+            DrawPart(mainColor, colorFont, mainDisplayColor);
+            DrawPart("　", labelFont, labelColor);
+            DrawPart(defensePrefix, labelFont, defenseDisplayColor);
+            DrawPart(defenseColor, colorFont, defenseDisplayColor);
+            e.Handled = true;
+
+            void DrawPart(string part, Font font, Color color)
+            {
+                Size size = TextRenderer.MeasureText(part, font, Size.Empty, flags);
+                TextRenderer.DrawText(e.Graphics, part, font,
+                    new Rectangle(x, y, size.Width, height), color, flags);
+                x += size.Width;
+            }
+        }
+
         private void LoadData()
         {
             table.Rows.Clear();
@@ -278,8 +378,25 @@ namespace 六合分析软件
             var issueColorIndexes = new System.Collections.Generic.Dictionary<string, int>(StringComparer.Ordinal);
             int nextIssueColor = 0;
 
-            var records = DatabaseHelper.GetPredictionHistory(100);
-            var (total, hits, top6Hits, rate, top6Rate) = DatabaseHelper.GetAIPredictStats();
+            var records = newModelOnly
+                ? V7PredictionHistoryService.GetHistory(500)
+                : DatabaseHelper.GetPredictionHistory(int.MaxValue)
+                    .Where(r => !r.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase) &&
+                                r.AnalysisPeriods != 0 && r.AnalysisPeriods != 200)
+                    .Take(100)
+                    .ToList();
+            var verified = records.Where(r => !string.IsNullOrEmpty(r.ActualZodiac)).ToList();
+            int total = verified.Count;
+            int hits = verified.Count(r => r.HitResult == "命中");
+            int top6Hits = verified.Count(r => r.Top6HitResult == "命中");
+            double rate = total == 0 ? 0 : hits * 100.0 / total;
+            double top6Rate = total == 0 ? 0 : top6Hits * 100.0 / total;
+
+            var colorByIssue = records
+                .Select(r => new { r.Issue, Color = V7PredictionHistoryService.ExtractColorPrediction(r.ScoreDetails) })
+                .Where(x => x.Color != "-")
+                .GroupBy(x => x.Issue)
+                .ToDictionary(g => g.Key, g => g.First().Color);
 
             int unverified = records.Count(r => r.HitResult == "未开奖" || string.IsNullOrEmpty(r.HitResult));
 
@@ -292,10 +409,10 @@ namespace 六合分析软件
             {
                 string hitResult = string.IsNullOrEmpty(r.HitResult) ? "未开奖" : r.HitResult;
 
-                int rowIndex = table.Rows.Add(new object[]
+                var rowValues = new System.Collections.Generic.List<object>
                 {
                     r.Issue,
-                    r.AnalysisPeriods > 0 ? $"{r.AnalysisPeriods}期" : "旧记录",
+                    V7PredictionHistoryService.FormatAnalysisLabel(r.AnalysisPeriods, r.ModelVersion),
                     r.PredictZodiac,
                     string.IsNullOrEmpty(r.Top6Zodiac) ? "-" : r.Top6Zodiac,
                     string.IsNullOrEmpty(r.PredictNumber) ? "-" : r.PredictNumber,
@@ -303,10 +420,13 @@ namespace 六合分析软件
                     string.IsNullOrEmpty(r.ActualZodiac) ? "?" : r.ActualZodiac,
                     hitResult,
                     string.IsNullOrEmpty(r.Top6HitResult) ? "未开奖" : r.Top6HitResult,
-                    !string.IsNullOrEmpty(r.ReviewDetails) ? r.ReviewDetails : r.LearningDetails,
-                    r.ModelVersion,
-                    r.PredictTime
-                });
+                    !string.IsNullOrEmpty(r.ReviewDetails) ? r.ReviewDetails : r.LearningDetails
+                };
+                if (newModelOnly)
+                    rowValues.Add(colorByIssue.TryGetValue(r.Issue, out string? color) ? color : "-");
+                rowValues.Add(newModelOnly ? V7PredictionHistoryService.FormatModelName(r.ModelVersion) : r.ModelVersion);
+                rowValues.Add(r.PredictTime);
+                int rowIndex = table.Rows.Add(rowValues.ToArray());
 
                 string issueKey = Convert.ToString(r.Issue) ?? string.Empty;
                 if (!issueColorIndexes.TryGetValue(issueKey, out int colorIndex))
