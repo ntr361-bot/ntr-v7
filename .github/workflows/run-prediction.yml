@@ -32,6 +32,7 @@ on:
     - cron: "0 14 * * *"
     - cron: "0 15 * * *"
     # 手机账本的“运行V6”请求每15分钟检查一次，避开上述三个固定时间。
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   actions: read
@@ -83,6 +84,17 @@ jobs:
             } catch {
               Write-Warning "Could not inspect the 22:00 run; enabling the safe retry: $($_.Exception.Message)"
               $shouldRun = $true
+            }
+          } elseif ($schedule -eq '7,22,37,52 * * * *') {
+            try {
+              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
+              $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
+              $headers = @{ "X-V6-GitHub-OIDC" = "Bearer $oidc" }
+              $response = Invoke-RestMethod -Uri 'https://ntr361-smart-ledger.5rmwf2d5ff.workers.dev/api/v6-sync/request' -Headers $headers
+              $shouldRun = [bool]$response.run_requested
+            } catch {
+              Write-Warning "Mobile trigger check failed: $($_.Exception.Message)"
+              $shouldRun = $false
             }
           }
           "should_run=$($shouldRun.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
@@ -177,4 +189,4 @@ jobs:
           $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
           $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
           $headers = @{ "X-V6-GitHub-OIDC" = "Bearer $oidc" }
-          Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
+          Invoke-RestMethod -Method Post -Uri 'https://ntr361-smart-ledger.5rmwf2d5ff.workers.dev/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
