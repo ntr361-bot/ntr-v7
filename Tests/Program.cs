@@ -92,6 +92,7 @@ var tests = new (string Name, Action Run)[]
     ,("color feedback is idempotent", ColorFeedbackIsIdempotent)
     ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
     ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
+    ,("V6 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
 };
 
 int failures = 0;
@@ -745,14 +746,21 @@ void VerifiedColorHitsAreVisuallyEmphasized()
         "鼠", "01", 1, V7PredictionHistoryService.AutoLearningValidationHistoryKey,
         "V7 AutoLearning Validation", "波色排除:绿;主:红;防:蓝", true, true, "红");
 
-    using var form = new V7PredictionHistoryForm();
-    var grid = FindControl<System.Windows.Forms.DataGridView>(form);
-    var row = grid!.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
-        .Single(item => Convert.ToString(item.Cells["Issue"].Value) == "999303");
-    var style = row.Cells["ColorPrediction"].Style;
-
-    Assert(style.Font != null && style.Font.Bold && style.Font.Size >= 12,
-        "verified color hit should use a large bold font in the color column");
+    Assert(AIPredictHistoryForm.ShouldEmphasizeWave("01", "红"),
+        "the actual red wave should emphasize the matching main wave");
+    Assert(!AIPredictHistoryForm.ShouldEmphasizeWave("01", "蓝"),
+        "the non-matching defense wave must not be emphasized");
+    Assert(!AIPredictHistoryForm.ShouldEmphasizeWave("", "红"),
+        "an unverified row must not emphasize either wave");
+    Assert(AIPredictHistoryForm.GetWaveTextColor("红", isHit: true).ToArgb() ==
+           System.Drawing.Color.FromArgb(220, 30, 30).ToArgb(),
+        "a matching red wave should use the red hit color");
+    Assert(AIPredictHistoryForm.GetWaveTextColor("蓝", isHit: false).ToArgb() ==
+           System.Drawing.Color.Black.ToArgb(),
+        "a non-matching wave should use black text");
+    Assert(AIPredictHistoryForm.GetWaveTextColor("绿", isHit: false).ToArgb() ==
+           System.Drawing.Color.Black.ToArgb(),
+        "an unverified wave should use black text");
 }
 
 void MainMenuOmitsDuplicateStatisticsChart()
@@ -839,16 +847,41 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         .Select(line => line.Trim())
         .Where(line => line.StartsWith("- cron:", StringComparison.Ordinal))
         .ToArray();
-    Assert(cronLines.SequenceEqual(new[] { "- cron: \"0 14 * * *\"", "- cron: \"0 15 * * *\"" }),
-        "cloud workflow should only schedule 22:00 and the 23:00 retry");
+    Assert(cronLines.Contains("- cron: \"0 14 * * *\""),
+        "cloud workflow is missing the 22:00 primary run");
+    Assert(cronLines.Contains("- cron: \"0 15 * * *\""),
+        "cloud workflow is missing the 23:00 failed-run retry");
     Assert(workflow.Contains("$primary.conclusion -ne 'success'", StringComparison.Ordinal),
         "23:00 retry is not conditioned on the 22:00 result");
-    Assert(!workflow.Contains("7,22,37,52 * * * *", StringComparison.Ordinal),
-        "frequent mobile polling schedule is still enabled");
+    Assert(cronLines.Contains("- cron: \"7,22,37,52 * * * *\""),
+        "cloud workflow is missing the mobile-trigger polling schedule");
+    Assert(workflow.Contains("run_requested", StringComparison.Ordinal),
+        "mobile-trigger polling does not consume the cloud run request");
+}
+
+void V6CloudEndpointsAreConsistent()
+{
+    const string endpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync";
+    string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+    string site = File.ReadAllText(Path.Combine(root, "site", "app.js"));
+    string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
+    string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
+    Assert(site.Contains(endpoint, StringComparison.Ordinal), "V6 site is not using the active cloud API");
+    Assert(desktop.Contains(endpoint, StringComparison.Ordinal), "V6 desktop sync is not using the active cloud API");
+    Assert(workflow.Contains(endpoint, StringComparison.Ordinal), "V6 workflow is not using the active cloud API");
+    Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
+        "V6 desktop sync still uses the retired Worker URL");
+    Assert(!workflow.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
+        "V6 workflow still uses the retired Worker URL");
 }
 
 void V7HistoryUsesV6Layout()
 {
+    using var aiHistory = new AIPredictHistoryForm();
+    var aiGrid = FindControl<System.Windows.Forms.DataGridView>(aiHistory);
+    Assert(aiGrid != null && !aiGrid.Columns.Contains("ReviewDetails"),
+        "AI prediction history should not display review details");
+
     using var form = new V7PredictionHistoryForm();
     var grid = FindControl<System.Windows.Forms.DataGridView>(form);
     Assert(form.WindowState == System.Windows.Forms.FormWindowState.Maximized, "V7 history should use the maximized V6 history effect");
