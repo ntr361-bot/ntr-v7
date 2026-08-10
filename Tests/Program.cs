@@ -786,6 +786,17 @@ void V65LearningAcceptsOnlyMatchingSnapshots()
         "V7验证记录不能影响V6.5排序");
 }
 
+void OnlyActualWaveColorIsBold()
+{
+    Assert(AIPredictHistoryForm.GetWaveColorForNumber("26") == "蓝", "26 should use the established blue-wave mapping");
+    Assert(AIPredictHistoryForm.GetWaveColorForNumber("01") == "红", "01 should use the established red-wave mapping");
+    Assert(AIPredictHistoryForm.GetWaveColorForNumber("05") == "绿", "05 should use the established green-wave mapping");
+    var blueHit = AIPredictHistoryForm.ResolveWaveBoldness("实际波色蓝，主波未命中，双波命中", "蓝", "红", "蓝");
+    Assert(!blueHit.MainBold && blueHit.DefenseBold, "a blue hit should bold only the defense color");
+    var missingActual = AIPredictHistoryForm.ResolveWaveBoldness("双波命中", "", "红", "蓝");
+    Assert(!missingActual.MainBold && !missingActual.DefenseBold, "without actual color, neither color should be bold");
+}
+
 void MainMenuOmitsDuplicateStatisticsChart()
 {
     using var form = new Form1();
