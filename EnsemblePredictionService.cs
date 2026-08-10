@@ -35,7 +35,7 @@ namespace 六合分析软件
         /// <summary>
         /// 集成预测（核心方法）
         /// </summary>
-        public static PredictionReport Predict(int periodRange = 500)
+        public static PredictionReport Predict(int periodRange = int.MaxValue)
         {
             var report = new PredictionReport { PredictTime = DateTime.Now };
 

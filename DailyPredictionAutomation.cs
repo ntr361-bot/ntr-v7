@@ -45,6 +45,7 @@ public static class DailyPredictionAutomation
         }
 
         IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);
+        int longTermPeriods = Math.Max(1, learningHistory.Count);
         AutoLearningFormalPrediction formalLearning = V7PredictionHistoryService.SaveAutoLearning(
             targetIssue.ToString(), learningHistory);
         AutoLearningSnapshot learning = formalLearning.Snapshot;
@@ -67,8 +68,8 @@ public static class DailyPredictionAutomation
             "自动学习模型");
 
         ZodiacRulePrediction rule = ZodiacRulePredictionService.Predict(targetIssue);
-        PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(500, targetYear);
-        EnsemblePredictionService.PredictionReport ensemble = EnsemblePredictionService.Predict(500);
+        PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(longTermPeriods, targetYear);
+        EnsemblePredictionService.PredictionReport ensemble = EnsemblePredictionService.Predict(longTermPeriods);
         if (score.Predictions.Count == 0 || ensemble.Predictions.Count == 0 || rule.Zodiacs.Count == 0)
             throw new InvalidDataException("综合预测或特码规律结果为空");
 

@@ -51,6 +51,7 @@ var tests = new (string Name, Action Run)[]
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
+    ,("V6.5学习只接收同版本同周期样本", V65LearningAcceptsOnlyMatchingSnapshots)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -73,7 +74,7 @@ var tests = new (string Name, Action Run)[]
     ,("verified color hits are visually emphasized", VerifiedColorHitsAreVisuallyEmphasized)
     ,("main menu omits duplicate statistics chart", MainMenuOmitsDuplicateStatisticsChart)
     ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
-    ,("200-period prediction model entry points are removed", Removed200PeriodModelHasNoEntryPoints)
+    ,("retired fixed-period prediction model entry points are removed", RemovedFixedPeriodModelHasNoEntryPoints)
     ,("database initialization removes retired compatibility predictions", DatabaseInitializationRemovesRetiredPredictions)
     ,("V8.2 market state probabilities are normalized and leakage safe", V82MarketStateIsNormalizedAndLeakageSafe)
     ,("V8.2 cross features are named finite and leakage safe", V82CrossFeaturesAreNamedFiniteAndLeakageSafe)
@@ -763,6 +764,28 @@ void VerifiedColorHitsAreVisuallyEmphasized()
         "an unverified wave should use black text");
 }
 
+void V65LearningAcceptsOnlyMatchingSnapshots()
+{
+    var v65All = new DatabaseHelper.PredictionRecord { ModelVersion = "V6.5", AnalysisPeriods = 1318 };
+    var v65Short = new DatabaseHelper.PredictionRecord { ModelVersion = "V6.5", AnalysisPeriods = 50 };
+    var oldCloud = new DatabaseHelper.PredictionRecord { ModelVersion = "云端每日自动预测", AnalysisPeriods = 1318 };
+    var oldV3 = new DatabaseHelper.PredictionRecord { ModelVersion = "V3", AnalysisPeriods = 1318 };
+    var v7 = new DatabaseHelper.PredictionRecord { ModelVersion = "V7 AutoLearning Validation", AnalysisPeriods = 7300 };
+
+    Assert(PredictionLearningService.IsEligibleV65LearningSample(v65All, 1320),
+        "V6.5全部历史样本应能被后续全部历史预测复用");
+    Assert(PredictionLearningService.IsEligibleV65LearningSample(v65Short, 50),
+        "V6.5同周期短期样本应能参与校准");
+    Assert(!PredictionLearningService.IsEligibleV65LearningSample(v65Short, 100),
+        "V6.5不同固定周期样本不能混用");
+    Assert(!PredictionLearningService.IsEligibleV65LearningSample(oldCloud, 1320),
+        "旧云端模型记录不能影响V6.5排序");
+    Assert(!PredictionLearningService.IsEligibleV65LearningSample(oldV3, 1320),
+        "V3记录不能影响V6.5排序");
+    Assert(!PredictionLearningService.IsEligibleV65LearningSample(v7, 1320),
+        "V7验证记录不能影响V6.5排序");
+}
+
 void MainMenuOmitsDuplicateStatisticsChart()
 {
     using var form = new Form1();
@@ -917,16 +940,20 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     Assert(!analysisLabels.Contains("旧记录"), "legacy prediction history still displays old compatibility rows");
 }
 
-void Removed200PeriodModelHasNoEntryPoints()
+void RemovedFixedPeriodModelHasNoEntryPoints()
 {
-    Assert(AISettings.GetPeriodOptions().All(option => option.Value != 200),
-        "AI settings still exposes the removed 200-period model");
-    Assert(!Enum.GetNames<AISettings.AnalysisPeriodOption>().Contains("Period200"),
-        "AI settings enum still declares the removed 200-period model");
+    Assert(AISettings.GetPeriodOptions().All(option => option.Value is not 200 and not 500),
+        "AI settings still exposes a retired fixed-period model");
     var field = typeof(DailyPredictionAutomation).GetField("Periods",
         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-    Assert(field?.GetValue(null) is int[] periods && !periods.Contains(200),
-        "daily automation still generates the removed 200-period model");
+    Assert(field?.GetValue(null) is int[] periods && !periods.Contains(200) && !periods.Contains(500),
+        "daily automation still generates a retired fixed-period model");
+    Assert(typeof(PredictionScoreService).GetMethod(nameof(PredictionScoreService.Predict))!
+        .GetParameters()[0].DefaultValue is int scoreDefault && scoreDefault == int.MaxValue,
+        "comprehensive scoring still defaults to the retired 500-period model");
+    Assert(typeof(EnsemblePredictionService).GetMethod(nameof(EnsemblePredictionService.Predict))!
+        .GetParameters()[0].DefaultValue is int ensembleDefault && ensembleDefault == int.MaxValue,
+        "ensemble prediction still defaults to the retired 500-period model");
 }
 
 void DatabaseInitializationRemovesRetiredPredictions()

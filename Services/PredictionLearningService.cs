@@ -28,7 +28,7 @@ namespace 六合分析软件
         public static string ApplyCalibration(ZodiacPredictEngineV2.PredictResultV2 result, int analysisPeriods)
         {
             var samples = DatabaseHelper.GetPredictionHistory(500)
-                .Where(record => IsSameAnalysisBucket(record.AnalysisPeriods, analysisPeriods))
+                .Where(record => IsEligibleV65LearningSample(record, analysisPeriods))
                 .Where(record => record.HitResult is "命中" or "未命中")
                 .Where(record => !string.IsNullOrWhiteSpace(record.ActualZodiac))
                 .Select(record => (Record: record, Scores: ParseScores(record.ScoreDetails)))
@@ -75,6 +75,12 @@ namespace 六合分析软件
             string strongest = Factors.OrderByDescending(factor => coefficients[factor.Key]).First().Name;
             string weakest = Factors.OrderBy(factor => coefficients[factor.Key]).First().Name;
             return $"错因学习：依据最近{samples.Count}条已开奖复盘，小幅校正不超过±{MaximumScoreAdjustment:F0}分；近期较有效={strongest}，较弱={weakest}";
+        }
+
+        public static bool IsEligibleV65LearningSample(DatabaseHelper.PredictionRecord record, int requestedPeriods)
+        {
+            return string.Equals(record.ModelVersion?.Trim(), "V6.5", StringComparison.Ordinal) &&
+                IsSameAnalysisBucket(record.AnalysisPeriods, requestedPeriods);
         }
 
         public static bool IsSameAnalysisBucket(int storedPeriods, int requestedPeriods)

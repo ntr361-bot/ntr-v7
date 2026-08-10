@@ -36,7 +36,7 @@ namespace 六合分析软件
         /// <summary>
         /// 综合评分预测
         /// </summary>
-        public static ScoreResult Predict(int periodRange = 500, int? targetYear = null)
+        public static ScoreResult Predict(int periodRange = int.MaxValue, int? targetYear = null)
         {
             var result = new ScoreResult
             {
