@@ -156,7 +156,7 @@ namespace 六合分析软件
 
         private void LoadHotColdAnalysis(TabPage page)
         {
-            var engine = new ZodiacPredictEngineV2();
+            var engine = new V65RuleScoringEngine();
             int y = 20;
             AddLabel(page, 20, y, "热门生肖（按出现频率）:", Color.FromArgb(200, 50, 50));
             y += 30;

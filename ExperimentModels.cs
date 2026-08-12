@@ -7,6 +7,8 @@ public static class ExperimentModels
     public const string Period100 = "v65-100";
     public const string AllHistory = "v65-all";
     public const string AutoLearning = "v65-auto";
+    // 智能预测历史是另一套独立模型，不属于 V6.5 四模型实验。
+    public const string IntelligentHistory = "intelligent-history";
 
     public static IReadOnlyList<string> AllKeys { get; } =
         new[] { Period50, Period100, AllHistory, AutoLearning };

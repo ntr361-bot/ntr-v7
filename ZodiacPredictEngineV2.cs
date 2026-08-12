@@ -5,10 +5,10 @@ using System.Linq;
 namespace 六合分析软件
 {
     /// <summary>
-    /// AI特码生肖预测引擎 V2
+    /// V6.5 基础规则评分引擎
     /// 多模型综合评分 + 滑动窗口 + 冷热分析 + 关联分析 + 权重自动优化
     /// </summary>
-    public class ZodiacPredictEngineV2
+    public class V65RuleScoringEngine
     {
         private static readonly string[] ZodiacOrder =
         {
@@ -106,14 +106,30 @@ namespace 六合分析软件
 
         public PredictResultV2 Predict(int periodCount, WeightConfig? overrideWeights)
         {
-            var result = new PredictResultV2();
-
-            // 获取历史数据（只读特码生肖）
             var history = DatabaseHelper.GetLatestHistory(periodCount > 0 ? periodCount : int.MaxValue);
+            return Predict(history, periodCount, overrideWeights);
+        }
+
+        /// <summary>
+        /// 与正式预测完全相同的评分入口，但历史由调用者明确传入。
+        /// 仅供严格滚动回测使用，避免从当前数据库读入目标期或未来期数据。
+        /// </summary>
+        public PredictResultV2 Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history,
+            int periodCount, WeightConfig? overrideWeights = null)
+        {
             var zodiacData = history
+                .OrderByDescending(r => long.TryParse(r.Period, out long issue) ? issue : long.MinValue)
+                .Take(periodCount > 0 ? periodCount : int.MaxValue)
                 .Where(r => !string.IsNullOrEmpty(r.SpecialZodiac))
                 .Select(r => r.SpecialZodiac)
                 .ToList();
+
+            return PredictFromZodiacData(zodiacData, overrideWeights);
+        }
+
+        private PredictResultV2 PredictFromZodiacData(List<string> zodiacData, WeightConfig? overrideWeights)
+        {
+            var result = new PredictResultV2();
 
             result.AnalysisPeriods = zodiacData.Count;
 

@@ -128,8 +128,8 @@ namespace 六合分析软件
             btnAnalyze = CreateButton("📊 数据中心", 320);
             btnPredict = CreateButton("走势预测", 370);
             btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
-            btnV7Models = CreateButton("🧠 生成自动学习预测", 490);
-            btnV7History = CreateButton("📜 四模型实验历史", 545);
+            btnV7Models = CreateButton("🧠 智能模型实验", 490);
+            btnV7History = CreateButton("📜 智能预测历史", 545);
             btnCheck = CreateButton("📐 自用规律", 600);
 
             menuPanel.Controls.Add(btnHome);
@@ -1065,16 +1065,21 @@ namespace 六合分析软件
                 var text = await Task.Run(() =>
                 {
                     string targetPeriod = GetNextPredictionPeriod(history);
-                    AutoLearningFormalPrediction auto = V7PredictionHistoryService.SaveAutoLearning(targetPeriod, history);
+                    var ml = MLPredictEngine.Predict(history, MlModelKind.LightGbmStyle);
+                    var color = ColorEngine.Predict(history);
+                    var optimized = AutoOptimizeEngine.Optimize(history, 30);
+                    var engines = new[] { ShortTermEngine.Predict(history), MediumTermEngine.Predict(history), LongTermEngine.Predict(history) };
+                    var report = AIReportEngine.Generate(history, engines, ml, color);
+                    V7PredictionHistoryService.SaveAll(targetPeriod, history);
                     return $"预测期号：{targetPeriod}\n" +
-                           $"自动学习 TOP3：{string.Join("、", auto.Snapshot.Result.Ranking.Take(3).Select(item => item.Zodiac))}\n" +
-                           $"自动学习 TOP6：{string.Join("、", auto.Snapshot.Result.Ranking.Take(6).Select(item => item.Zodiac))}\n" +
-                           $"波色：主 {auto.Color.Main} / 防 {auto.Color.Defense}\n\n" +
-                           "该结果只作为第四条独立实验预测保存，不会覆盖50期、100期和全部历史模型。";
+                           $"ML生肖 TOP6：{string.Join("、", ml.Top6)}\n" +
+                           $"波色：排除 {color.Excluded} / 主 {color.Main} / 防 {color.Defense}\n" +
+                           $"最优权重：{optimized.Best?.Name ?? "无"}（TOP6 {optimized.Best?.Top6HitRate:P1}）\n\n" +
+                           report.Text;
                 });
-                MessageBox.Show(text, "V6.5 自动学习实验", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(text, "智能模型实验", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex) { MessageBox.Show($"自动学习预测生成失败：{ex.Message}", "V6.5 自动学习实验", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex) { MessageBox.Show($"智能模型运行失败：{ex.Message}", "智能模型实验", MessageBoxButtons.OK, MessageBoxIcon.Error); }
             finally { btnV7Models.Enabled = true; }
         }
 

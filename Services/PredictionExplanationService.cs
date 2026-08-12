@@ -7,7 +7,7 @@ namespace 六合分析软件
 {
     public static class PredictionExplanationService
     {
-        public static List<PredictionExplanation> Explain(ZodiacPredictEngineV2.PredictResultV2 result)
+        public static List<PredictionExplanation> Explain(V65RuleScoringEngine.PredictResultV2 result)
         {
             double maxScore = result.AllScores.Count > 0 ? result.AllScores.Max(s => s.TotalScore) : 1;
             return result.AllScores
@@ -17,7 +17,7 @@ namespace 六合分析软件
                 .ToList();
         }
 
-        public static string BuildReport(ZodiacPredictEngineV2.PredictResultV2 result, OptimizedWeightResult? weights, RollingBacktestResult? rolling, List<ModelScoreResult>? competition)
+        public static string BuildReport(V65RuleScoringEngine.PredictResultV2 result, OptimizedWeightResult? weights, RollingBacktestResult? rolling, List<ModelScoreResult>? competition)
         {
             var sb = new StringBuilder();
             sb.AppendLine("V6自动优化预测说明");
@@ -67,7 +67,7 @@ namespace 六合分析软件
             return sb.ToString();
         }
 
-        private static PredictionExplanation BuildExplanation(ZodiacPredictEngineV2.ZodiacScoreV2 score, double maxScore)
+        private static PredictionExplanation BuildExplanation(V65RuleScoringEngine.ZodiacScoreV2 score, double maxScore)
         {
             var explanation = new PredictionExplanation
             {

@@ -16,7 +16,7 @@ namespace 六合分析软件
         // 旧版曾有独立的固定500期模型；全部历史记录从其实际样本数（>500）归为稳定桶。
         private const int AllHistoryThreshold = 500;
 
-        private static readonly (string Key, string Name, Func<ZodiacPredictEngineV2.ZodiacScoreV2, double> Value)[] Factors =
+        private static readonly (string Key, string Name, Func<V65RuleScoringEngine.ZodiacScoreV2, double> Value)[] Factors =
         {
             ("频", "频率", score => score.FrequencyScore),
             ("势", "趋势", score => score.RecentTrendScore),
@@ -25,7 +25,7 @@ namespace 六合分析软件
             ("周", "周期", score => score.PeriodPatternScore)
         };
 
-        public static string ApplyCalibration(ZodiacPredictEngineV2.PredictResultV2 result, int analysisPeriods)
+        public static string ApplyCalibration(V65RuleScoringEngine.PredictResultV2 result, int analysisPeriods)
         {
             var samples = DatabaseHelper.GetPredictionHistory(500)
                 .Where(record => IsEligibleV65LearningSample(record, analysisPeriods))
@@ -125,7 +125,7 @@ namespace 六合分析软件
             return $"错因复盘：实际{actualZodiac}排名第{rank}，距Top3门槛{gap:F1}分；主要原因={mainReason}。本期仅加入已开奖学习样本，不追改历史结果";
         }
 
-        private static void RefreshRanking(ZodiacPredictEngineV2.PredictResultV2 result)
+        private static void RefreshRanking(V65RuleScoringEngine.PredictResultV2 result)
         {
             var sorted = result.AllScores.OrderByDescending(score => score.TotalScore).ToList();
             result.Top3 = sorted.Take(3).Select(score => score.Zodiac).ToList();

@@ -68,7 +68,7 @@ namespace 六合分析软件
             List<DatabaseHelper.HistoryRecord> oldToNewHistory,
             int trainPeriods,
             int testPeriods,
-            ZodiacPredictEngineV2.WeightConfig weights)
+            V65RuleScoringEngine.WeightConfig weights)
         {
             return EvaluatePredictor(
                 oldToNewHistory,
@@ -134,7 +134,7 @@ namespace 六合分析软件
 
         public static List<(string zodiac, double score)> RankByWeights(
             List<DatabaseHelper.HistoryRecord> newestFirstHistory,
-            ZodiacPredictEngineV2.WeightConfig weights)
+            V65RuleScoringEngine.WeightConfig weights)
         {
             return Zodiacs
                 .Select(z => (zodiac: z, score: CalculateWeightedScore(newestFirstHistory, z, weights)))
@@ -143,10 +143,10 @@ namespace 六合分析软件
                 .ToList();
         }
 
-        public static List<ZodiacPredictEngineV2.WeightConfig> GenerateWeightCombinations()
+        public static List<V65RuleScoringEngine.WeightConfig> GenerateWeightCombinations()
         {
             var values = new[] { 0.1, 0.2, 0.3, 0.4, 0.5 };
-            var list = new List<ZodiacPredictEngineV2.WeightConfig>();
+            var list = new List<V65RuleScoringEngine.WeightConfig>();
 
             foreach (double frequency in values)
             foreach (double trend in values)
@@ -156,7 +156,7 @@ namespace 六合分析软件
                 double sum = frequency + trend + omission + pattern;
                 if (Math.Abs(sum - 1.0) > 0.0001) continue;
 
-                list.Add(new ZodiacPredictEngineV2.WeightConfig
+                list.Add(new V65RuleScoringEngine.WeightConfig
                 {
                     FrequencyWeight = frequency,
                     RecentTrendWeight = trend,
@@ -200,7 +200,7 @@ namespace 六合分析软件
         private static double CalculateWeightedScore(
             List<DatabaseHelper.HistoryRecord> newestFirstHistory,
             string zodiac,
-            ZodiacPredictEngineV2.WeightConfig weights)
+            V65RuleScoringEngine.WeightConfig weights)
         {
             int total = newestFirstHistory.Count;
             if (total == 0) return 0;

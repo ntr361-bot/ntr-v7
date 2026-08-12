@@ -31,7 +31,7 @@ namespace 六合分析软件
 
     public class OptimizedWeightResult : ModelScoreResult
     {
-        public ZodiacPredictEngineV2.WeightConfig Weights { get; set; } = new ZodiacPredictEngineV2.WeightConfig();
+        public V65RuleScoringEngine.WeightConfig Weights { get; set; } = new V65RuleScoringEngine.WeightConfig();
         public int TestedCombinations { get; set; }
         public DateTime TrainTime { get; set; } = DateTime.Now;
     }

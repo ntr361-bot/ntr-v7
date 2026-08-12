@@ -19,7 +19,7 @@ namespace 六合分析软件
         public DataAnalysisCenter()
         {
             InitializeComponent();
-            this.Text = "数据分析中心 V2.0";
+            this.Text = "V6.5 数据分析中心";
             this.Size = new Size(1050, 720);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MinimumSize = new Size(900, 600);
@@ -32,7 +32,7 @@ namespace 六合分析软件
             Panel topBar = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Color.FromArgb(30, 30, 46) };
             Label title = new Label
             {
-                Text = "📊 数据分析中心 V2.0",
+                Text = "📊 V6.5 数据分析中心",
                 Font = new Font("微软雅黑", 16, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new Point(20, 10),

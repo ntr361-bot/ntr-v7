@@ -191,7 +191,7 @@ namespace 六合分析软件
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("═══════════════════════════════════════════");
-            sb.AppendLine("       AI 回测分析报告 V2.0");
+            sb.AppendLine("       V6.5 AI 回测分析报告");
             sb.AppendLine("═══════════════════════════════════════════");
             sb.AppendLine();
             sb.AppendLine($"模型：{result.ModelVersion} {result.ModelName}");

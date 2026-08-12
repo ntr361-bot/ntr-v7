@@ -24,7 +24,7 @@ namespace 六合分析软件
                 return sb.ToString();
             }
 
-            var v5Weights = new ZodiacPredictEngineV2.WeightConfig
+            var v5Weights = new V65RuleScoringEngine.WeightConfig
             {
                 FrequencyWeight = 0.20,
                 RecentTrendWeight = 0.20,

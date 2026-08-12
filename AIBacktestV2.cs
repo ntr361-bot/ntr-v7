@@ -5,7 +5,7 @@ using System.Linq;
 namespace 六合分析软件
 {
     /// <summary>
-    /// AI预测回测模块 V2
+    /// V6.5 基础规则模型回测模块
     /// 支持权重自动优化 + 完整统计
     /// </summary>
     public static class AIBacktestV2
@@ -37,7 +37,7 @@ namespace 六合分析软件
 
         public static BacktestReportV2 Run(int trainPeriods = 100, int testCount = 100)
         {
-            var engine = new ZodiacPredictEngineV2();
+            var engine = new V65RuleScoringEngine();
             var result = engine.Backtest(trainPeriods, testCount);
 
             var report = new BacktestReportV2
@@ -73,7 +73,7 @@ namespace 六合分析软件
             var sb = new System.Text.StringBuilder();
 
             sb.AppendLine("═══════════════════════════════════════════");
-            sb.AppendLine("     AI特码生肖预测 V2 · 回测报告");
+            sb.AppendLine("     V6.5 基础规则模型 · 回测报告");
             sb.AppendLine("═══════════════════════════════════════════");
             sb.AppendLine();
             sb.AppendLine($"训练期数：{report.TrainPeriods} 期");

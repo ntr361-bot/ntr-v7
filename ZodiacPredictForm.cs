@@ -432,7 +432,7 @@ namespace 六合分析软件
             };
         }
 
-        private void ShowZodiacExplanation(ZodiacPredictEngineV2.ZodiacScoreV2 score, int periods)
+        private void ShowZodiacExplanation(V65RuleScoringEngine.ZodiacScoreV2 score, int periods)
         {
             var history = DatabaseHelper.GetLatestHistory(periods)
                 .Where(h => !string.IsNullOrEmpty(h.SpecialZodiac)).Select(h => h.SpecialZodiac).ToList();
@@ -593,7 +593,7 @@ namespace 六合分析软件
             }
 
             Label title = new Label();
-            title.Text = "📊 AI预测回测验证 V2";
+            title.Text = "📊 V6.5 基础规则回测验证";
             title.Font = new Font("微软雅黑", 14, FontStyle.Bold);
             title.ForeColor = Color.FromArgb(46, 139, 87);
             title.Location = new Point(20, 10);

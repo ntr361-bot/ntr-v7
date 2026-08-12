@@ -14,24 +14,44 @@ public static class V7PredictionHistoryService
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
         if (string.IsNullOrWhiteSpace(targetPeriod)) throw new ArgumentException("预测期号不能为空", nameof(targetPeriod));
-        // 旧 V7 短中长期/ML 已淘汰；保留入口兼容性，但只生成 V6.5 的第四条自动学习预测。
-        SaveAutoLearning(targetPeriod, history);
+        var shortResult = ShortTermEngine.Predict(history);
+        var mediumResult = MediumTermEngine.Predict(history);
+        var longResult = LongTermEngine.Predict(history);
+        var ml = MLPredictEngine.Predict(history, MlModelKind.LightGbmStyle);
+        ModelMemoryState memory = new ModelMemory(ExperimentModels.IntelligentHistory).LoadOrCreate();
+        var color = ColorEngine.Predict(history, memory.ColorLearning.Weights);
+        var report = AIReportEngine.Generate(history, new[] { shortResult, mediumResult, longResult }, ml, color);
+
+        SaveEngine(targetPeriod, shortResult, ShortTermHistoryKey, "V7 ShortTerm", report.Text);
+        SaveEngine(targetPeriod, mediumResult, MediumTermHistoryKey, "V7 MediumTerm", report.Text);
+        SaveEngine(targetPeriod, longResult, LongTermHistoryKey, "V7 LongTerm", report.Text);
+
+        string mlScores = string.Join(";", ml.Probabilities.OrderByDescending(x => x.Value)
+            .Select(x => $"{x.Key}:{x.Value:F4}"));
+        string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
+        string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
+        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", ml.Top3), string.Join(",", ml.Top6), "",
+            "V7 ML LightGBM", MlHistoryKey, $"{mlScores}|{colorDetails}|{colorSnapshot}", report.Text);
+
+        SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
 
     public static AutoLearningFormalPrediction SaveAutoLearning(string targetPeriod,
         IReadOnlyList<DatabaseHelper.HistoryRecord> history, ColorPredictionResult? color = null,
         string learningDetails = "自动学习模型正式预测")
     {
-        ModelMemoryState colorMemory = AutoLearningTrainer.EnsureInitialTraining();
+        // V6.5 自动学习仅由已开奖的 V6.5 四模型记录更新；不能用另一套手写快照预训练。
+        ModelMemoryState colorMemory = new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate();
         color ??= ColorEngine.Predict(history, colorMemory.ColorLearning.Weights);
         string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
         string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
         ModelMemoryState memory = new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate();
         var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue);
-        AutoLearningSnapshot auto = saved.Count(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5" &&
-            (row.AnalysisPeriods is 50 or 100 || row.AnalysisPeriods == AISettings.AllHistoryModeValue)) >= 3
-            ? AutoLearningSnapshotBuilder.BuildFromBasePredictions(targetPeriod, saved, memory)
-            : BuildAutoLearningSnapshot(targetPeriod, history);
+        int baseCount = saved.Count(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5" &&
+            (row.AnalysisPeriods is 50 or 100 || row.AnalysisPeriods == AISettings.AllHistoryModeValue));
+        if (baseCount < 3)
+            throw new InvalidOperationException("V6.5自动学习必须先取得同一期50期、100期和全部历史三条基础预测快照。");
+        AutoLearningSnapshot auto = AutoLearningSnapshotBuilder.BuildFromBasePredictions(targetPeriod, saved, memory);
         string autoScores = string.Join(";", auto.Result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", auto.Result.Ranking.Take(3).Select(item => item.Zodiac)),
@@ -42,10 +62,30 @@ public static class V7PredictionHistoryService
         return new AutoLearningFormalPrediction(auto, color);
     }
 
+    private static void SaveIntelligentAutoLearning(string targetPeriod,
+        IReadOnlyList<DatabaseHelper.HistoryRecord> history, ColorPredictionResult color, string learningDetails)
+    {
+        ModelMemoryState memory = new ModelMemory(ExperimentModels.IntelligentHistory).LoadOrCreate();
+        string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
+        string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
+        MetaPredictionInput input = HistoricalMetaSnapshotBuilder.Build(history, targetPeriod);
+        IReadOnlyList<string> baseline = HistoricalMetaSnapshotBuilder.Baseline(input);
+        MetaPredictionResult result = new MetaPredictionEngine().Predict(input, memory, baseline);
+        var snapshot = new AutoLearningSnapshot(input, baseline, result, memory.Weights);
+        string scores = string.Join(";", result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
+        DatabaseHelper.SavePrediction(targetPeriod,
+            string.Join(",", result.Ranking.Take(3).Select(item => item.Zodiac)),
+            string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), "",
+            "V7 AutoLearning", AutoLearningHistoryKey,
+            $"{scores}|{colorDetails}|{colorSnapshot}", learningDetails,
+            snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson);
+    }
+
     public static AutoLearningSnapshot BuildAutoLearningSnapshot(string targetPeriod,
         IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
-        ModelMemoryState memory = AutoLearningTrainer.EnsureInitialTraining();
+        // 此方法只服务于独立的智能预测历史；不能读写 V6.5 四模型的记忆库。
+        ModelMemoryState memory = new ModelMemory(ExperimentModels.IntelligentHistory).LoadOrCreate();
         MetaPredictionInput input = HistoricalMetaSnapshotBuilder.Build(history, targetPeriod);
         IReadOnlyList<string> baseline = HistoricalMetaSnapshotBuilder.Baseline(input);
         MetaPredictionResult result = new MetaPredictionEngine().Predict(input, memory, baseline);
@@ -81,8 +121,7 @@ public static class V7PredictionHistoryService
 
     public static List<DatabaseHelper.PredictionRecord> GetHistory(int limit = 100) =>
         DatabaseHelper.GetPredictionHistory(int.MaxValue)
-            .Where(x => string.Equals(x.ModelVersion, "V6.5", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(x.ModelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase))
+            .Where(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
             .OrderByDescending(x => x.Issue)
             .ThenBy(x => ModelDisplayOrder(x.ModelVersion))
             .Take(Math.Max(0, limit))
@@ -90,8 +129,12 @@ public static class V7PredictionHistoryService
 
     private static int ModelDisplayOrder(string modelVersion) => modelVersion switch
     {
-        "V6.5" => 0,
-        "V6.5 AutoLearning" => 1,
+        "V7 ShortTerm" => 0,
+        "V7 MediumTerm" => 1,
+        "V7 ML LightGBM" => 2,
+        "V7 AutoLearning" => 3,
+        "V7 LongTerm" => 4,
+        "V7 AutoLearning Validation" => 5,
         _ => 5
     };
 

@@ -122,10 +122,8 @@ public static class AutoLearningTrainer
             var draw = chronological[target];
             if (Year(draw) is < 2023 or > 2025 || string.IsNullOrWhiteSpace(draw.SpecialZodiac)) continue;
             var prefix = chronological.Take(target).ToArray();
-            MetaPredictionInput input = HistoricalMetaSnapshotBuilder.Build(prefix, draw.Period);
-            IReadOnlyList<string> baseline = HistoricalMetaSnapshotBuilder.Baseline(input);
-            MetaPredictionResult prediction = new MetaPredictionEngine().Predict(input, memory, baseline);
-            LearnOne(input, prediction.Ranking.Select(item => item.Zodiac).ToArray(), draw.SpecialZodiac, memory);
+            AutoLearningSnapshot snapshot = V65ExperimentPipeline.BuildSnapshot(prefix, draw.Period, memory);
+            LearnOne(snapshot.Input, snapshot.Result.Ranking.Select(item => item.Zodiac).ToArray(), draw.SpecialZodiac, memory);
             trained++;
         }
         return trained;
@@ -203,9 +201,10 @@ public static class AutoLearningEvaluation
             if (AutoLearningTrainer.Year(draw) != 2026) continue;
             var prefix = data.Take(target).ToArray();
             leakage |= prefix.Any(item => long.Parse(item.Period) >= long.Parse(draw.Period));
-            MetaPredictionInput input = HistoricalMetaSnapshotBuilder.Build(prefix, draw.Period);
-            IReadOnlyList<string> baseline = HistoricalMetaSnapshotBuilder.Baseline(input);
-            MetaPredictionResult learned = new MetaPredictionEngine().Predict(input, memory, baseline);
+            AutoLearningSnapshot snapshot = V65ExperimentPipeline.BuildSnapshot(prefix, draw.Period, memory);
+            MetaPredictionInput input = snapshot.Input;
+            IReadOnlyList<string> baseline = snapshot.BaselineRanking;
+            MetaPredictionResult learned = snapshot.Result;
             if (learned.UsedFallback) fallback++;
             string[] learnedOrder = learned.Ranking.Select(item => item.Zodiac).ToArray();
             baselineRanks.Add(baseline.ToList().FindIndex(item => item == draw.SpecialZodiac)+1);

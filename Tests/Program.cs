@@ -54,6 +54,7 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5学习只接收同版本同周期样本", V65LearningAcceptsOnlyMatchingSnapshots)
     ,("四模型实验键独立且稳定", ExperimentalModelKeysAreStable)
     ,("自动学习只读取同一期三条基础快照", AutoLearningUsesThreeBaseSnapshots)
+    ,("V6.5回测使用正式三模型快照", V65BacktestUsesFormalModelChain)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -68,8 +69,8 @@ var tests = new (string Name, Action Run)[]
     ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
     ,("V7 AI report explains model state", V7AiReportExplainsState)
     ,("V7 AI report omits repeated implementation notes", V7AiReportOmitsRepeatedImplementationNotes)
-    ,("淘汰模型入口只保存V6.5自动学习", V7PredictionsAreSavedToHistory)
-    ,("自动学习预测是正式第四条历史记录", AutoLearningPredictionIsFormalHistoryRow)
+    ,("智能预测历史独立保存五条模型记录", V7PredictionsAreSavedToHistory)
+    ,("智能预测历史自动学习是独立正式记录", AutoLearningPredictionIsFormalHistoryRow)
     ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
     ,("cloud workflow runs at 22:00 with one failed-run retry", CloudWorkflowUsesSingleDailyRunAndFailedRetry)
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
@@ -403,8 +404,8 @@ void PublishedPredictionVerificationIsRecorded()
 
 void ExtremeOmissionDoesNotKeepRising()
 {
-    double nearAverage = ZodiacPredictEngineV2.CalculateOmissionScore(12, 12);
-    double extreme = ZodiacPredictEngineV2.CalculateOmissionScore(36, 12);
+    double nearAverage = V65RuleScoringEngine.CalculateOmissionScore(12, 12);
+    double extreme = V65RuleScoringEngine.CalculateOmissionScore(36, 12);
     Assert(extreme < nearAverage,
         "遗漏达到平均值数倍后不应继续加分，否则会让同一生肖越不中越霸榜");
 }
@@ -425,7 +426,7 @@ void AllHistoryLearningUsesStableBucket()
 
 void EightZodiacBonusIsBounded()
 {
-    Assert(ZodiacPredictEngineV2.CalculateEightZodiacBonus(0.82) <= 3,
+    Assert(V65RuleScoringEngine.CalculateEightZodiacBonus(0.82) <= 3,
         "八肖关联加分不应大到单独改变榜首");
 }
 
@@ -747,7 +748,7 @@ void VerifiedColorHitsAreVisuallyEmphasized()
 {
     DatabaseHelper.SaveVerifiedValidationPrediction("999303", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇",
         "鼠", "01", 1, V7PredictionHistoryService.AutoLearningValidationHistoryKey,
-        "V6.5 AutoLearning", "波色排除:绿;主:红;防:蓝", true, true, "红");
+        "V7 AutoLearning Validation", "波色排除:绿;主:红;防:蓝", true, true, "红");
 
     Assert(AIPredictHistoryForm.ShouldEmphasizeWave("01", "红"),
         "the actual red wave should emphasize the matching main wave");
@@ -819,6 +820,23 @@ void AutoLearningUsesThreeBaseSnapshots()
         "自动学习没有按50/100/全部历史三条独立快照生成特征");
 }
 
+void V65BacktestUsesFormalModelChain()
+{
+    var history = Enumerable.Range(1, 40).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2026000 + index).ToString(),
+        SpecialZodiac = new[] { "鼠", "牛", "虎", "兔" }[index % 4],
+        SpecialNumber = ((index % 49) + 1).ToString("D2")
+    }).ToArray();
+
+    AutoLearningSnapshot snapshot = V65ExperimentPipeline.BuildSnapshot(history, "2026041", new ModelMemoryState());
+    Assert(snapshot.Input.Zodiacs.Count == 12, "V6.5回测没有生成完整十二生肖快照");
+    Assert(snapshot.BaselineRanking.Count == 12, "V6.5回测没有使用全部历史正式模型作为基线");
+    Assert(snapshot.Input.Zodiacs.All(item => item.BaseScores.Keys.OrderBy(key => key)
+        .SequenceEqual(new[] { "AI", "ML", "Rule", "State" })),
+        "V6.5回测没有从三条正式基础模型构造自动学习输入");
+}
+
 void OnlyActualWaveColorIsBold()
 {
     Assert(AIPredictHistoryForm.GetWaveColorForNumber("26") == "蓝", "26 should use the established blue-wave mapping");
@@ -849,6 +867,34 @@ void MainMenuOmitsDuplicateStatisticsChart()
     }
 }
 
+void HomeUsesSavedPredictionSnapshot()
+{
+    var prediction = new AIEngine.PredictResult
+    {
+        AnalysisPeriods = 100,
+        AllScores = new List<V65RuleScoringEngine.ZodiacScoreV2>
+        {
+            new() { Zodiac = "马", TotalScore = 100 },
+            new() { Zodiac = "蛇", TotalScore = 90 },
+            new() { Zodiac = "猪", TotalScore = 80 },
+            new() { Zodiac = "兔", TotalScore = 70 },
+            new() { Zodiac = "羊", TotalScore = 60 },
+            new() { Zodiac = "龙", TotalScore = 50 },
+        }
+    };
+    var snapshot = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "103",
+        AnalysisPeriods = 100,
+        PredictZodiac = "兔,羊,龙",
+        Top6Zodiac = "兔,羊,龙,猴,牛,虎",
+        ScoreDetails = "兔:100;羊:90;龙:80;猴:70;牛:60;虎:50"
+    };
+
+    var ranking = Form1.ResolveHomeRanking(prediction, snapshot);
+    Assert(ranking.Take(6).SequenceEqual(new[] { "兔", "羊", "龙", "猴", "牛", "虎" }),
+        "home should display the saved snapshot ranking instead of live AllScores");
+}
 void V7PredictionsAreSavedToHistory()
 {
     SeedHistory();
@@ -856,10 +902,13 @@ void V7PredictionsAreSavedToHistory()
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
     var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
-    Assert(!records.Any(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
-        "retired V7 rows must not be generated");
-    Assert(records.Count(x => x.ModelVersion == "V6.5 AutoLearning" && x.AnalysisPeriods == 7250) == 1,
-        "automatic-learning row should be the only row generated by the retired entry");
+    Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 5,
+        "智能预测历史应保存五条独立模型记录");
+    Assert(records.Any(x => x.ModelVersion == "V7 ShortTerm" && x.AnalysisPeriods == 7050), "智能预测短期记录缺失");
+    Assert(records.Any(x => x.ModelVersion == "V7 MediumTerm" && x.AnalysisPeriods == 7100), "智能预测中期记录缺失");
+    Assert(records.Any(x => x.ModelVersion == "V7 LongTerm" && x.AnalysisPeriods == 7000), "智能预测长期记录缺失");
+    Assert(records.Any(x => x.ModelVersion == "V7 ML LightGBM" && x.AnalysisPeriods == 7200), "智能预测ML记录缺失");
+    Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
         "color history display format is incorrect");
     var colorMethod = typeof(AIPredictHistoryForm).GetMethod("GetWaveColorForDisplay",
@@ -869,20 +918,20 @@ void V7PredictionsAreSavedToHistory()
            (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "蓝" })! == System.Drawing.Color.FromArgb(30, 90, 210) &&
            (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "绿" })! == System.Drawing.Color.FromArgb(0, 150, 70),
         "wave-color text should use its real red/blue/green display color");
-    Assert(V7PredictionHistoryService.GetHistory(100).All(x => x.ModelVersion is "V6.5" or "V6.5 AutoLearning"),
-        "experiment history must only show V6.5 rows");
+    Assert(V7PredictionHistoryService.GetHistory(100).All(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
+        "智能预测历史混入了V6.5四模型记录");
     var orderedModels = V7PredictionHistoryService.GetHistory(100)
         .Where(x => x.Issue == "103")
         .Select(x => x.ModelVersion)
         .ToArray();
-    Assert(orderedModels.Count(model => model == "V6.5 AutoLearning") == 1,
-        "retired entry should add exactly one fourth automatic-learning model");
+    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 ML LightGBM", "V7 AutoLearning", "V7 LongTerm" }),
+        "智能预测历史模型排序不正确");
 }
 
 void AutoLearningPredictionIsFormalHistoryRow()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V6.5 AutoLearning");
+        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
     Assert(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 3,
         "automatic-learning TOP3 was not saved");
     Assert(record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 6,
@@ -1230,7 +1279,7 @@ void ColorPredictionHistoryPersistsSnapshot()
     for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
     V7PredictionHistoryService.SaveAll("999202", rows);
     var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .Single(item => item.Issue == "999202" && item.ModelVersion == "V6.5 AutoLearning");
+        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 ML LightGBM");
     Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");

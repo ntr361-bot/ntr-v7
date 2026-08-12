@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +15,7 @@ namespace 六合分析软件
         // The external reasoning model is tracked separately by OpenAIService.
         public const string Version = "AI生肖预测 V6.5";
         private const int DefaultPeriods = AISettings.AllHistoryModeValue;
-        private static readonly ZodiacPredictEngineV2.WeightConfig Period50Weights = new()
+        private static readonly V65RuleScoringEngine.WeightConfig Period50Weights = new()
         {
             FrequencyWeight = 0.16,
             RecentTrendWeight = 0.16,
@@ -24,7 +24,7 @@ namespace 六合分析软件
             PeriodPatternWeight = 0.32,
             ConsecutiveWeight = 0
         };
-        private static readonly ZodiacPredictEngineV2.WeightConfig Period100Weights = new()
+        private static readonly V65RuleScoringEngine.WeightConfig Period100Weights = new()
         {
             FrequencyWeight = 0.24,
             RecentTrendWeight = 0.13,
@@ -33,7 +33,7 @@ namespace 六合分析软件
             PeriodPatternWeight = 0.27,
             ConsecutiveWeight = 0
         };
-        private static readonly ZodiacPredictEngineV2.WeightConfig AllHistoryWeights = new()
+        private static readonly V65RuleScoringEngine.WeightConfig AllHistoryWeights = new()
         {
             FrequencyWeight = 0.17,
             RecentTrendWeight = 0.17,
@@ -52,7 +52,7 @@ namespace 六合分析软件
             public string PredictPeriod { get; set; } = "";  // 预测期号
             public int AnalysisPeriods { get; set; }
             public DateTime PredictTime { get; set; }
-            public List<ZodiacPredictEngineV2.ZodiacScoreV2> AllScores { get; set; } = new List<ZodiacPredictEngineV2.ZodiacScoreV2>();
+            public List<V65RuleScoringEngine.ZodiacScoreV2> AllScores { get; set; } = new List<V65RuleScoringEngine.ZodiacScoreV2>();
             public List<string> Top3 { get; set; } = new List<string>();
             public List<string> Top6 { get; set; } = new List<string>();
             public List<string> Bottom3 { get; set; } = new List<string>();
@@ -65,7 +65,7 @@ namespace 六合分析软件
             public string BestModel { get; set; } = "";
             public string AnalysisText { get; set; } = ""; // GPT 分析文本
             public bool UsedGpt { get; set; } = false;
-            public Dictionary<string, ZodiacPredictEngineV2.PredictResultV2> WindowResults { get; set; } = new Dictionary<string, ZodiacPredictEngineV2.PredictResultV2>();
+            public Dictionary<string, V65RuleScoringEngine.PredictResultV2> WindowResults { get; set; } = new Dictionary<string, V65RuleScoringEngine.PredictResultV2>();
         }
 
         // ===== 内存缓存 =====
@@ -147,7 +147,7 @@ namespace 六合分析软件
             return periods is 200 or 500 ? AISettings.AllHistoryModeValue : periods;
         }
 
-        private static ZodiacPredictEngineV2.WeightConfig GetWeightsForPeriods(int periods)
+        private static V65RuleScoringEngine.WeightConfig GetWeightsForPeriods(int periods)
         {
             return periods switch
             {
@@ -161,11 +161,11 @@ namespace 六合分析软件
 
         private static PredictResult RunPrediction(int periods, bool includeExternalAnalysis)
         {
-            var engine = new ZodiacPredictEngineV2();
+            var engine = new V65RuleScoringEngine();
             int historyLimit = AISettings.ResolveHistoryLimit(periods);
             // 由严格滚动回测选择权重，避免固定权重长期偏离当前数据分布。
             var v2Result = engine.Predict(periods);
-            ZodiacPredictEngineV2.WeightConfig selectedWeights = v2Result.UsedWeights;
+            V65RuleScoringEngine.WeightConfig selectedWeights = v2Result.UsedWeights;
             string learningDetails = PredictionLearningService.ApplyCalibration(v2Result, v2Result.AnalysisPeriods);
             // 回测只用于验证，不参与使用固定分周期权重的正式预测。
             var rollingBacktest = new RollingBacktestResult();
