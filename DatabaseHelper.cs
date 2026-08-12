@@ -44,16 +44,46 @@ namespace 六合分析软件
             {
                 Path.Combine(baseDir, "history.db"),
                 Path.Combine(projectDir, "history.db"),
+                Path.Combine(projectDir, "data", "history.db"),
                 Path.Combine(Directory.GetCurrentDirectory(), "history.db")
             };
 
-            foreach (string legacyPath in legacyPaths.Distinct(StringComparer.OrdinalIgnoreCase))
-            {
-                if (!Path.GetFullPath(databasePath).Equals(Path.GetFullPath(legacyPath), StringComparison.OrdinalIgnoreCase))
-                    TryPromoteLegacyDatabase(databasePath, legacyPath);
-            }
+            PromoteLegacyDatabaseOrThrow(databasePath, legacyPaths);
 
             return databasePath;
+        }
+
+        private static void PromoteLegacyDatabaseOrThrow(string databasePath, IEnumerable<string> legacyPaths)
+        {
+            if (File.Exists(databasePath) ||
+                File.Exists(databasePath + "-wal") ||
+                File.Exists(databasePath + "-shm"))
+                return;
+
+            var candidates = legacyPaths
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Where(path => !Path.GetFullPath(databasePath)
+                    .Equals(Path.GetFullPath(path), StringComparison.OrdinalIgnoreCase))
+                .Where(File.Exists)
+                .Select(path => (Path: path, Rows: CountUserRows(path)))
+                .Where(candidate => candidate.Rows.History > 0 ||
+                                    candidate.Rows.Predictions > 0 ||
+                                    candidate.Rows.LegacyPredictions > 0)
+                .ToList();
+            if (candidates.Count == 0) return;
+
+            var dominant = candidates.Where(candidate => candidates.All(other =>
+                    candidate.Rows.History >= other.Rows.History &&
+                    candidate.Rows.Predictions >= other.Rows.Predictions &&
+                    candidate.Rows.LegacyPredictions >= other.Rows.LegacyPredictions))
+                .ToList();
+            if (dominant.Count != 1)
+                throw new InvalidOperationException(
+                    "发现多份互不包含的旧数据库；为防止历史丢失，已中止创建空稳定库，请保留原文件人工合并");
+
+            if (!TryPromoteLegacyDatabase(databasePath, dominant[0].Path))
+                throw new InvalidOperationException(
+                    $"旧数据库迁移未完成；为防止历史丢失，已中止创建空稳定库：{dominant[0].Path}");
         }
 
         private static string FindProjectDirectory(string startDir)
@@ -80,49 +110,94 @@ namespace 六合分析软件
             return Directory.GetCurrentDirectory();
         }
 
-        private static void TryPromoteLegacyDatabase(string rootDb, string legacyRuntimeDb)
+        private static bool TryPromoteLegacyDatabase(string rootDb, string legacyRuntimeDb)
         {
             try
             {
-                if (!File.Exists(legacyRuntimeDb)) return;
+                if (!File.Exists(legacyRuntimeDb)) return false;
+                // 稳定库一旦存在即视为权威来源，禁止用任何行数启发式整库覆盖。
+                if (File.Exists(rootDb) || File.Exists(rootDb + "-wal") || File.Exists(rootDb + "-shm"))
+                    return false;
 
-                int rootCount = CountHistoryRows(rootDb);
-                int legacyCount = CountHistoryRows(legacyRuntimeDb);
-                if (legacyCount <= rootCount) return;
+                var legacyRows = CountUserRows(legacyRuntimeDb);
+                if (legacyRows.History == 0 && legacyRows.Predictions == 0 && legacyRows.LegacyPredictions == 0)
+                    return false;
 
                 Directory.CreateDirectory(Path.GetDirectoryName(rootDb) ?? ".");
-                if (File.Exists(rootDb))
+                string temporaryPath = rootDb + $".migrating-{Guid.NewGuid():N}.tmp";
+                try
                 {
-                    string backupPath = Path.Combine(
-                        Path.GetDirectoryName(rootDb) ?? ".",
-                        $"history.root-before-v6.1.{DateTime.Now:yyyyMMddHHmmss}.db");
-                    File.Copy(rootDb, backupPath, overwrite: true);
-                }
+                    CreateConsistentDatabaseCopy(legacyRuntimeDb, temporaryPath);
+                    var copiedRows = CountUserRows(temporaryPath);
+                    if (copiedRows != legacyRows)
+                        throw new InvalidDataException("旧数据库在线备份行数校验失败");
+                    using (var verify = new SQLiteConnection($"Data Source={temporaryPath};Version=3;Read Only=True;"))
+                    {
+                        verify.Open();
+                        using var check = new SQLiteCommand("PRAGMA quick_check", verify);
+                        if (!string.Equals(Convert.ToString(check.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidDataException("旧数据库在线备份完整性校验失败");
+                    }
 
-                File.Copy(legacyRuntimeDb, rootDb, overwrite: true);
+                    // 无覆盖移动：若另一进程已先创建稳定库，本次迁移会失败并保留先创建的库。
+                    File.Move(temporaryPath, rootDb);
+                    return true;
+                }
+                finally
+                {
+                    DeleteTemporaryDatabaseFiles(temporaryPath);
+                }
             }
             catch (Exception ex)
             {
                 AppLogger.Error("迁移旧数据库", ex);
+                return false;
             }
         }
 
-        private static int CountHistoryRows(string dbPath)
+        private static (int History, int Predictions, int LegacyPredictions) CountUserRows(string dbPath)
         {
             try
             {
-                if (!File.Exists(dbPath)) return 0;
+                if (!File.Exists(dbPath)) return (0, 0, 0);
                 using var conn = new SQLiteConnection($"Data Source={dbPath};Version=3;Read Only=True;");
                 conn.Open();
-                using var cmd = new SQLiteCommand("SELECT COUNT(*) FROM History", conn);
-                object? result = cmd.ExecuteScalar();
-                return Convert.ToInt32(result);
+                return (CountTableRows(conn, "History"), CountTableRows(conn, "PredictionHistory"),
+                    CountTableRows(conn, "AIPredictHistory"));
             }
             catch (Exception ex)
             {
                 AppLogger.Error($"读取数据库记录数 ({dbPath})", ex);
-                return 0;
+                throw new InvalidDataException($"无法读取旧数据库：{dbPath}", ex);
             }
+        }
+
+        private static void CreateConsistentDatabaseCopy(string sourcePath, string destinationPath)
+        {
+            using var source = new SQLiteConnection($"Data Source={sourcePath};Version=3;Read Only=True;");
+            using var destination = new SQLiteConnection($"Data Source={destinationPath};Version=3;");
+            source.Open();
+            destination.Open();
+            source.BackupDatabase(destination, "main", "main", -1, null, 100);
+        }
+
+        private static void DeleteTemporaryDatabaseFiles(string temporaryPath)
+        {
+            foreach (string path in new[] { temporaryPath, temporaryPath + "-wal", temporaryPath + "-shm" })
+            {
+                if (File.Exists(path)) File.Delete(path);
+            }
+        }
+
+        private static int CountTableRows(SQLiteConnection conn, string tableName)
+        {
+            using var exists = new SQLiteCommand(
+                "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=@name", conn);
+            exists.Parameters.AddWithValue("@name", tableName);
+            if (Convert.ToInt32(exists.ExecuteScalar()) == 0) return 0;
+
+            using var count = new SQLiteCommand($"SELECT COUNT(*) FROM [{tableName}]", conn);
+            return Convert.ToInt32(count.ExecuteScalar());
         }
 
         // 历史记录数据结构
@@ -249,21 +324,11 @@ namespace 六合分析软件
                     "LearnedAt TEXT DEFAULT ''");
                 EnsureAutoLearningSchema(conn);
 
-                // 每个期号按分析周期去重；正式版使用50/100/全部历史。
+                // 历史快照不得在初始化时物理去重；旧版本的重复行也要完整保留以便审计。
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue", conn).ExecuteNonQuery();
-                new SQLiteCommand(@"DELETE FROM PredictionHistory
-                    WHERE Id NOT IN (
-                        SELECT Id FROM PredictionHistory AS current
-                        WHERE Id = (
-                            SELECT Id FROM PredictionHistory AS candidate
-                            WHERE candidate.Issue = current.Issue
-                              AND candidate.AnalysisPeriods = current.AnalysisPeriods
-                            ORDER BY candidate.Id DESC
-                            LIMIT 1
-                        )
-                    )", conn).ExecuteNonQuery();
-                new SQLiteCommand(@"CREATE UNIQUE INDEX IF NOT EXISTS idx_prediction_issue_periods
-                    ON PredictionHistory(Issue, AnalysisPeriods)", conn).ExecuteNonQuery();
+                new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue_periods", conn).ExecuteNonQuery();
+                new SQLiteCommand(@"CREATE INDEX IF NOT EXISTS idx_prediction_identity
+                    ON PredictionHistory(Issue, AnalysisPeriods, ModelVersion, Id)", conn).ExecuteNonQuery();
 
                 new SQLiteCommand(@"UPDATE PredictionHistory
                     SET PredictionGroupId = 'PRED-' || Issue
@@ -291,12 +356,8 @@ namespace 六合分析软件
                 // 种子数据：默认模型版本
                 SeedAIModels(conn);
 
-                // 已停用的兼容记录、200期模型及缺少分项评分的云端预测
-                // 不参与当前预测、回测或学习。
-                new SQLiteCommand(@"DELETE FROM PredictionHistory
-                    WHERE AnalysisPeriods IN (0, 200) OR ModelVersion='云端 V6.3'", conn)
-                    .ExecuteNonQuery();
-                new SQLiteCommand("DROP TABLE IF EXISTS AIPredictHistory", conn).ExecuteNonQuery();
+                // 已停用模型只从当前预测、学习及界面入口中过滤；历史记录必须保留用于审计。
+                // 旧 AIPredictHistory 表保留为只读归档，不能在升级初始化时物理删除。
             }
 
             TryRestoreSiblingLegacyPredictionHistory();
@@ -350,9 +411,13 @@ namespace 六合分析软件
             using SQLiteTransaction transaction = target.BeginTransaction();
             while (reader.Read())
             {
-                using var insert = new SQLiteCommand($@"INSERT OR IGNORE INTO PredictionHistory ({columns})
-                    VALUES (@issue,@time,@number,@zodiac,@top6,@group,@periods,@scores,@model,
-                            @actualNumber,@actualZodiac,@hit,@top6Hit,@review,@learning)", target, transaction);
+                using var insert = new SQLiteCommand($@"INSERT INTO PredictionHistory ({columns})
+                    SELECT @issue,@time,@number,@zodiac,@top6,@group,@periods,@scores,@model,
+                           @actualNumber,@actualZodiac,@hit,@top6Hit,@review,@learning
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM PredictionHistory
+                        WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model
+                    )", target, transaction);
                 string issue = Convert.ToString(reader["Issue"]) ?? "";
                 insert.Parameters.AddWithValue("@issue", issue);
                 insert.Parameters.AddWithValue("@time", Convert.ToString(reader["PredictTime"]) ?? "");
@@ -925,7 +990,7 @@ namespace 六合分析软件
         }
 
         /// <summary>
-        /// 保存预测记录（每期唯一，已存在则更新）
+        /// 保存模型的首次正式预测快照；同一期、同周期、同模型的重复保存保持幂等。
         /// </summary>
         private static string GetPredictionGroupId(string issue)
         {
@@ -954,50 +1019,21 @@ namespace 六合分析软件
             {
                 string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 string predictionGroupId = GetPredictionGroupId(issue);
-
-                string checkSql = "SELECT COUNT(*) FROM PredictionHistory WHERE Issue=@issue AND AnalysisPeriods=@periods";
-                SQLiteCommand checkCmd = new SQLiteCommand(checkSql, conn);
-                checkCmd.Parameters.AddWithValue("@issue", issue);
-                checkCmd.Parameters.AddWithValue("@periods", analysisPeriods);
-                long count = (long)checkCmd.ExecuteScalar();
-
-                if (count > 0)
+                bool transactionStarted = false;
+                try
                 {
-                    string sql = @"UPDATE PredictionHistory
-                    SET PredictTime=@time, PredictNumber=@num, PredictZodiac=@zodiac, Top6Zodiac=@top6,
-                        ModelVersion=@model, ScoreDetails=@scores, LearningDetails=@learning, ReviewDetails='', HitResult='未开奖', Top6HitResult='未开奖',
-                        ActualNumber='', ActualZodiac='', PredictionGroupId=@groupId,
-                        FinalRankingJson=@ranking, BaseModelScoresJson=@baseScores,
-                        FeatureSnapshotJson=@features, WeightSnapshotJson=@weights, MappingSnapshotJson=@mapping,
-                        ActualRank=0, LearningStatus='Pending', LearnedAt=''
-                    WHERE Issue=@issue AND AnalysisPeriods=@periods";
-                    SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@time", now);
-                    cmd.Parameters.AddWithValue("@num", predictNumber);
-                    cmd.Parameters.AddWithValue("@zodiac", predictZodiac);
-                    cmd.Parameters.AddWithValue("@top6", top6Zodiac);
-                    cmd.Parameters.AddWithValue("@model", modelVersion);
-                    cmd.Parameters.AddWithValue("@scores", scoreDetails);
-                    cmd.Parameters.AddWithValue("@learning", learningDetails);
-                    cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
-                    cmd.Parameters.AddWithValue("@ranking", finalRankingJson);
-                    cmd.Parameters.AddWithValue("@baseScores", baseModelScoresJson);
-                    cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
-                    cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
-                    cmd.Parameters.AddWithValue("@mapping", mappingSnapshotJson);
-                    cmd.Parameters.AddWithValue("@issue", issue);
-                    cmd.Parameters.AddWithValue("@periods", analysisPeriods);
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine($"[数据库] 更新预测记录（期号:{issue}）");
-                }
-                else
-                {
+                    new SQLiteCommand("BEGIN IMMEDIATE", conn).ExecuteNonQuery();
+                    transactionStarted = true;
                     string sql = @"INSERT INTO PredictionHistory
                     (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods, ScoreDetails,
                      ModelVersion, LearningDetails, HitResult, Top6HitResult, FinalRankingJson,
                      BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, MappingSnapshotJson, LearningStatus)
-                    VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning, '未开奖', '未开奖',
-                            @ranking, @baseScores, @features, @weights, @mapping, 'Pending')";
+                    SELECT @issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning,
+                           '未开奖', '未开奖', @ranking, @baseScores, @features, @weights, @mapping, 'Pending'
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM PredictionHistory
+                        WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model
+                    )";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
@@ -1014,8 +1050,21 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
                     cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
                     cmd.Parameters.AddWithValue("@mapping", mappingSnapshotJson);
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine($"[数据库] 新建预测记录（期号:{issue}）");
+                    int inserted = cmd.ExecuteNonQuery();
+                    new SQLiteCommand("COMMIT", conn).ExecuteNonQuery();
+                    transactionStarted = false;
+                    Console.WriteLine(inserted > 0
+                        ? $"[数据库] 新建预测记录（期号:{issue}，周期:{analysisPeriods}，模型:{modelVersion}）"
+                        : $"[数据库] 预测记录已存在，保留首次快照（期号:{issue}，周期:{analysisPeriods}，模型:{modelVersion}）");
+                }
+                catch
+                {
+                    if (transactionStarted)
+                    {
+                        try { new SQLiteCommand("ROLLBACK", conn).ExecuteNonQuery(); }
+                        catch { }
+                    }
+                    throw;
                 }
             }
         }
@@ -1026,21 +1075,20 @@ namespace 六合分析软件
         {
             using SQLiteConnection conn = GetConnection();
             string predictionGroupId = GetPredictionGroupId(issue);
+            new SQLiteCommand("BEGIN IMMEDIATE", conn).ExecuteNonQuery();
+            bool committed = false;
+            try
+            {
             using SQLiteCommand cmd = new SQLiteCommand(@"
                 INSERT INTO PredictionHistory
                 (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac,
                  AnalysisPeriods, ScoreDetails, ModelVersion, HitResult, Top6HitResult)
-                VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model,
-                        '未开奖', '未开奖')
-                ON CONFLICT(Issue, AnalysisPeriods) DO UPDATE SET
-                    PredictionGroupId=excluded.PredictionGroupId,
-                    PredictTime=excluded.PredictTime,
-                    PredictNumber=excluded.PredictNumber,
-                    PredictZodiac=excluded.PredictZodiac,
-                    Top6Zodiac=excluded.Top6Zodiac,
-                    ScoreDetails=excluded.ScoreDetails,
-                    ModelVersion=excluded.ModelVersion,
-                    ActualNumber='', ActualZodiac='', HitResult='未开奖', Top6HitResult='未开奖', ReviewDetails=''", conn);
+                SELECT @issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model,
+                       '未开奖', '未开奖'
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM PredictionHistory
+                    WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model
+                )", conn);
             cmd.Parameters.AddWithValue("@issue", issue);
             cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
             cmd.Parameters.AddWithValue("@time", predictTime);
@@ -1051,6 +1099,17 @@ namespace 六合分析软件
             cmd.Parameters.AddWithValue("@scores", scoreDetails);
             cmd.Parameters.AddWithValue("@model", modelVersion);
             cmd.ExecuteNonQuery();
+            new SQLiteCommand("COMMIT", conn).ExecuteNonQuery();
+            committed = true;
+            }
+            finally
+            {
+                if (!committed)
+                {
+                    try { new SQLiteCommand("ROLLBACK", conn).ExecuteNonQuery(); }
+                    catch { }
+                }
+            }
             RecalculateVerifiedPredictionResults();
         }
 
@@ -1069,7 +1128,7 @@ namespace 六合分析软件
             using var cmd = new SQLiteCommand(@"UPDATE PredictionHistory SET ActualNumber=@number, ActualZodiac=@actual,
                 HitResult=@top3, Top6HitResult=@top6, ReviewDetails=@review, ActualRank=@rank,
                 LearningStatus='Backtest', LearnedAt=@time
-                WHERE Issue=@issue AND AnalysisPeriods=@periods", conn);
+                WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model", conn);
             cmd.Parameters.AddWithValue("@actual", actualZodiac);
             cmd.Parameters.AddWithValue("@number", actualNumber);
             cmd.Parameters.AddWithValue("@top3", top3Hit ? "命中" : "未命中");
@@ -1081,6 +1140,7 @@ namespace 六合分析软件
             cmd.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             cmd.Parameters.AddWithValue("@issue", issue);
             cmd.Parameters.AddWithValue("@periods", analysisPeriods);
+            cmd.Parameters.AddWithValue("@model", modelVersion);
             cmd.ExecuteNonQuery();
         }
 

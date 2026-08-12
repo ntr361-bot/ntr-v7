@@ -7,13 +7,20 @@ namespace 六合分析软件
     {
         public static string DataDirectory { get; } = CreateDirectory(
             Environment.GetEnvironmentVariable("LIUHE_DATA_DIR") ??
-            AppDomain.CurrentDomain.BaseDirectory);
+            GetDefaultDataDirectory());
 
         public static string BackupDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Backup"));
         public static string LogDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Logs"));
         public static string CacheDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Cache"));
         public static string CloudPredictionDirectory { get; } = CreateDirectory(
             Path.Combine(DataDirectory, "CloudPredictionsV6"));
+
+        private static string GetDefaultDataDirectory()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "六合分析软件");
+        }
 
         private static string CreateDirectory(string path)
         {

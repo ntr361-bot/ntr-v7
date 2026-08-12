@@ -1,4 +1,5 @@
 using System;
+using System.Data.SQLite;
 using System.IO;
 
 namespace 六合分析软件
@@ -10,8 +11,7 @@ namespace 六合分析软件
     public static class DatabaseBackupService
     {
         private static readonly string DbPath = DatabaseHelper.DatabasePath;
-        private static readonly string BackupDir = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, "Backup");
+        private static readonly string BackupDir = AppPaths.BackupDirectory;
 
         /// <summary>
         /// 检查今天是否已备份
@@ -47,8 +47,27 @@ namespace 六合分析软件
                     return $"已备份（{today}）";
                 }
 
-                // 复制数据库
-                File.Copy(DbPath, backupPath, overwrite: false);
+                // 每个进程写自己的临时库，再无覆盖发布；失败进程绝不能删除另一进程的成功备份。
+                string temporaryPath = Path.Combine(BackupDir, $".{today}.{Guid.NewGuid():N}.tmp");
+                try
+                {
+                    // SQLite 使用 WAL 时直接复制主文件可能漏掉最新记录，必须使用在线备份 API。
+                    CreateConsistentBackup(DbPath, temporaryPath);
+                    VerifyBackup(temporaryPath);
+                    try
+                    {
+                        File.Move(temporaryPath, backupPath);
+                    }
+                    catch (IOException) when (File.Exists(backupPath))
+                    {
+                        // 另一实例已先发布；接受其经过同一流程生成的快照。
+                        VerifyBackup(backupPath);
+                    }
+                }
+                finally
+                {
+                    DeleteTemporaryDatabaseFiles(temporaryPath);
+                }
                 Console.WriteLine($"[备份] 数据库备份成功：{backupPath}");
 
                 // 清理30天前的旧备份
@@ -63,6 +82,35 @@ namespace 六合分析软件
             {
                 Console.WriteLine($"[备份] 备份失败：{ex.Message}");
                 return $"备份失败：{ex.Message}";
+            }
+        }
+
+        private static void CreateConsistentBackup(string sourcePath, string backupPath)
+        {
+            using var source = new SQLiteConnection(
+                $"Data Source={sourcePath};Version=3;Read Only=True;");
+            using var destination = new SQLiteConnection(
+                $"Data Source={backupPath};Version=3;");
+            source.Open();
+            destination.Open();
+            source.BackupDatabase(destination, "main", "main", -1, null, 100);
+        }
+
+        private static void VerifyBackup(string backupPath)
+        {
+            using var connection = new SQLiteConnection(
+                $"Data Source={backupPath};Version=3;Read Only=True;");
+            connection.Open();
+            using var command = new SQLiteCommand("PRAGMA quick_check", connection);
+            if (!string.Equals(Convert.ToString(command.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("备份数据库完整性校验失败");
+        }
+
+        private static void DeleteTemporaryDatabaseFiles(string temporaryPath)
+        {
+            foreach (string path in new[] { temporaryPath, temporaryPath + "-wal", temporaryPath + "-shm" })
+            {
+                if (File.Exists(path)) File.Delete(path);
             }
         }
 

@@ -82,7 +82,18 @@ var tests = new (string Name, Action Run)[]
     ,("main menu omits duplicate statistics chart", MainMenuOmitsDuplicateStatisticsChart)
     ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
     ,("retired fixed-period prediction model entry points are removed", RemovedFixedPeriodModelHasNoEntryPoints)
-    ,("database initialization removes retired compatibility predictions", DatabaseInitializationRemovesRetiredPredictions)
+    ,("database initialization preserves retired predictions as archived history", DatabaseInitializationPreservesRetiredPredictions)
+    ,("default data directory is stable across release builds", DefaultDataDirectoryIsStableAcrossReleaseBuilds)
+    ,("database backup uses stable data directory and contains current rows", DatabaseBackupUsesStableDataDirectoryAndContainsCurrentRows)
+    ,("prediction history keeps the first issued snapshot", PredictionHistoryKeepsFirstIssuedSnapshot)
+    ,("initialization preserves the legacy prediction archive table", InitializationPreservesLegacyPredictionArchiveTable)
+    ,("legacy promotion never replaces a richer prediction database", LegacyPromotionNeverReplacesRicherPredictionDatabase)
+    ,("legacy promotion copies committed WAL and legacy archive rows", LegacyPromotionCopiesCommittedWalAndArchiveRows)
+    ,("legacy promotion never replaces a stable legacy archive", LegacyPromotionNeverReplacesStableLegacyArchive)
+    ,("initialization preserves duplicate prediction snapshots", InitializationPreservesDuplicatePredictionSnapshots)
+    ,("concurrent prediction saves are atomic and idempotent", ConcurrentPredictionSavesAreAtomicAndIdempotent)
+    ,("concurrent database backups publish one valid snapshot", ConcurrentDatabaseBackupsPublishOneValidSnapshot)
+    ,("ambiguous legacy migration never creates an empty stable database", AmbiguousLegacyMigrationNeverCreatesEmptyStableDatabase)
     ,("V8.2 market state probabilities are normalized and leakage safe", V82MarketStateIsNormalizedAndLeakageSafe)
     ,("V8.2 cross features are named finite and leakage safe", V82CrossFeaturesAreNamedFiniteAndLeakageSafe)
     ,("V8.2 pairwise ranker returns one normalized 12-zodiac ranking", V82PairwiseRankerReturnsNormalizedRanking)
@@ -1177,7 +1188,7 @@ void RemovedFixedPeriodModelHasNoEntryPoints()
         "ensemble prediction still defaults to the retired 500-period model");
 }
 
-void DatabaseInitializationRemovesRetiredPredictions()
+void DatabaseInitializationPreservesRetiredPredictions()
 {
     int drawCount = DatabaseHelper.GetHistory().Count;
     DatabaseHelper.SavePrediction("998010", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "云端 V6.3", 0,
@@ -1191,17 +1202,345 @@ void DatabaseInitializationRemovesRetiredPredictions()
 
     DatabaseHelper.InitializeDatabase();
 
-    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .All(record => record.AnalysisPeriods is not 0 and not 200),
-        "retired compatibility prediction rows were not removed during initialization");
-    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .All(record => record.ModelVersion != "云端 V6.3"),
-        "cloud predictions without component scores were not removed during initialization");
+    var predictionHistory = DatabaseHelper.GetPredictionHistory(int.MaxValue);
+    Assert(predictionHistory.Any(record => record.Issue == "998010" && record.AnalysisPeriods == 0),
+        "initialization deleted an archived compatibility prediction");
+    Assert(predictionHistory.Any(record => record.Issue == "998011" && record.AnalysisPeriods == 200),
+        "initialization deleted an archived 200-period prediction");
+    Assert(predictionHistory.Any(record => record.Issue == "998012" && record.ModelVersion == "云端 V6.3"),
+        "initialization deleted an archived cloud prediction");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
         .Any(record => record.Issue == "998013" && record.ModelVersion == "V6.3"),
         "valid local prediction was removed by cloud-history cleanup");
     Assert(DatabaseHelper.GetHistory().Count == drawCount,
         "prediction cleanup must not remove draw history");
+}
+
+void DefaultDataDirectoryIsStableAcrossReleaseBuilds()
+{
+    Type? appPathsType = typeof(DatabaseHelper).Assembly.GetType("六合分析软件.AppPaths");
+    var method = appPathsType?.GetMethod("GetDefaultDataDirectory",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(method is not null, "AppPaths has no independently testable stable default directory resolver");
+
+    string actual = (string)method!.Invoke(null, null)!;
+    string expected = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "六合分析软件");
+    Assert(string.Equals(Path.GetFullPath(actual), Path.GetFullPath(expected), StringComparison.OrdinalIgnoreCase),
+        $"default data directory is release-dependent: {actual}");
+}
+
+void DatabaseBackupUsesStableDataDirectoryAndContainsCurrentRows()
+{
+    const string issue = "998014";
+    DatabaseHelper.SavePrediction(issue, "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "16,17,18", "V6.5", 50,
+        "backup consistency record", "backup consistency record");
+
+    string expectedBackup = Path.Combine(testData, "Backup", $"{DateTime.Now:yyyyMMdd}.db");
+    if (File.Exists(expectedBackup)) File.Delete(expectedBackup);
+
+    DatabaseBackupService.Backup();
+
+    Assert(File.Exists(expectedBackup), "backup was written beside the executable instead of the stable data directory");
+    using var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={expectedBackup};Version=3;Read Only=True;");
+    connection.Open();
+    using var command = new System.Data.SQLite.SQLiteCommand(
+        "SELECT COUNT(*) FROM PredictionHistory WHERE Issue=@Issue", connection);
+    command.Parameters.AddWithValue("@Issue", issue);
+    long count = Convert.ToInt64(command.ExecuteScalar());
+    Assert(count == 1, "backup omitted a prediction that was committed before the backup started");
+}
+
+void PredictionHistoryKeepsFirstIssuedSnapshot()
+{
+    const string issue = "998015";
+    DatabaseHelper.SavePrediction(issue, "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "V6.5", 100,
+        "first official snapshot", "first learning snapshot");
+    DatabaseHelper.SavePrediction(issue, "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V6.5", 100,
+        "later screen refresh", "later learning snapshot");
+
+    var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(record => record.Issue == issue && record.AnalysisPeriods == 100);
+    Assert(saved.PredictZodiac == "鼠,牛,虎", "a later screen refresh overwrote the issued zodiac prediction");
+    Assert(saved.PredictNumber == "01,02,03", "a later screen refresh overwrote the issued number prediction");
+    Assert(saved.ScoreDetails == "first official snapshot", "a later screen refresh overwrote the issued score snapshot");
+}
+
+void InitializationPreservesLegacyPredictionArchiveTable()
+{
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var create = new System.Data.SQLite.SQLiteCommand(
+            "CREATE TABLE IF NOT EXISTS AIPredictHistory (Id INTEGER PRIMARY KEY, PredictPeriod TEXT)", connection);
+        create.ExecuteNonQuery();
+        using var insert = new System.Data.SQLite.SQLiteCommand(
+            "INSERT OR REPLACE INTO AIPredictHistory(Id, PredictPeriod) VALUES (1, '998016')", connection);
+        insert.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    using var verify = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;Read Only=True;");
+    verify.Open();
+    using var command = new System.Data.SQLite.SQLiteCommand(
+        "SELECT COUNT(*) FROM AIPredictHistory WHERE PredictPeriod='998016'", verify);
+    Assert(Convert.ToInt64(command.ExecuteScalar()) == 1,
+        "initialization deleted the legacy prediction archive table");
+}
+
+void LegacyPromotionNeverReplacesRicherPredictionDatabase()
+{
+    string fixtureDirectory = Path.Combine(testData, "promotion-fixture");
+    Directory.CreateDirectory(fixtureDirectory);
+    string stable = Path.Combine(fixtureDirectory, "stable.db");
+    string legacy = Path.Combine(fixtureDirectory, "legacy.db");
+    CreateMigrationFixture(stable, historyRows: 1, predictionRows: 2);
+    CreateMigrationFixture(legacy, historyRows: 2, predictionRows: 1);
+
+    var promote = typeof(DatabaseHelper).GetMethod("TryPromoteLegacyDatabase",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(promote is not null, "legacy promotion entry point is missing");
+    promote!.Invoke(null, new object[] { stable, legacy });
+
+    using var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={stable};Version=3;Read Only=True;");
+    connection.Open();
+    using var historyCount = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM History", connection);
+    using var predictionCount = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM PredictionHistory", connection);
+    Assert(Convert.ToInt64(historyCount.ExecuteScalar()) == 1,
+        "legacy promotion replaced the authoritative stable database");
+    Assert(Convert.ToInt64(predictionCount.ExecuteScalar()) == 2,
+        "legacy promotion discarded prediction history from the stable database");
+}
+
+void CreateMigrationFixture(string path, int historyRows, int predictionRows)
+{
+    if (File.Exists(path)) File.Delete(path);
+    using var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={path};Version=3;");
+    connection.Open();
+    using var create = new System.Data.SQLite.SQLiteCommand(
+        "CREATE TABLE History (Id INTEGER PRIMARY KEY); CREATE TABLE PredictionHistory (Id INTEGER PRIMARY KEY);", connection);
+    create.ExecuteNonQuery();
+    for (int index = 1; index <= historyRows; index++)
+    {
+        using var insert = new System.Data.SQLite.SQLiteCommand("INSERT INTO History(Id) VALUES (@Id)", connection);
+        insert.Parameters.AddWithValue("@Id", index);
+        insert.ExecuteNonQuery();
+    }
+    for (int index = 1; index <= predictionRows; index++)
+    {
+        using var insert = new System.Data.SQLite.SQLiteCommand("INSERT INTO PredictionHistory(Id) VALUES (@Id)", connection);
+        insert.Parameters.AddWithValue("@Id", index);
+        insert.ExecuteNonQuery();
+    }
+}
+
+void LegacyPromotionCopiesCommittedWalAndArchiveRows()
+{
+    string fixtureDirectory = Path.Combine(testData, "promotion-wal-fixture");
+    Directory.CreateDirectory(fixtureDirectory);
+    string stable = Path.Combine(fixtureDirectory, "stable.db");
+    string legacy = Path.Combine(fixtureDirectory, "legacy.db");
+    if (File.Exists(stable)) File.Delete(stable);
+    if (File.Exists(legacy)) File.Delete(legacy);
+
+    using (var source = new System.Data.SQLite.SQLiteConnection($"Data Source={legacy};Version=3;"))
+    {
+        source.Open();
+        using (var setup = new System.Data.SQLite.SQLiteCommand(@"
+            PRAGMA journal_mode=WAL;
+            PRAGMA wal_autocheckpoint=0;
+            CREATE TABLE History (Id INTEGER PRIMARY KEY);
+            CREATE TABLE PredictionHistory (Id INTEGER PRIMARY KEY);
+            CREATE TABLE AIPredictHistory (Id INTEGER PRIMARY KEY, PredictPeriod TEXT);
+            PRAGMA wal_checkpoint(TRUNCATE);", source))
+            setup.ExecuteNonQuery();
+        using (var insert = new System.Data.SQLite.SQLiteCommand(@"
+            INSERT INTO History(Id) VALUES (1);
+            INSERT INTO PredictionHistory(Id) VALUES (1);
+            INSERT INTO AIPredictHistory(Id, PredictPeriod) VALUES (1, '998017');", source))
+            insert.ExecuteNonQuery();
+
+        Assert(File.Exists(legacy + "-wal") && new FileInfo(legacy + "-wal").Length > 0,
+            "WAL migration fixture did not retain committed pages in the WAL file");
+        InvokeLegacyPromotion(stable, legacy);
+    }
+
+    using var verify = new System.Data.SQLite.SQLiteConnection($"Data Source={stable};Version=3;Read Only=True;");
+    verify.Open();
+    Assert(QueryCount(verify, "SELECT COUNT(*) FROM History") == 1,
+        "legacy promotion omitted a committed History row from WAL");
+    Assert(QueryCount(verify, "SELECT COUNT(*) FROM PredictionHistory") == 1,
+        "legacy promotion omitted a committed PredictionHistory row from WAL");
+    Assert(QueryCount(verify, "SELECT COUNT(*) FROM AIPredictHistory WHERE PredictPeriod='998017'") == 1,
+        "legacy promotion omitted the legacy archive table from WAL");
+}
+
+void LegacyPromotionNeverReplacesStableLegacyArchive()
+{
+    string fixtureDirectory = Path.Combine(testData, "promotion-archive-fixture");
+    Directory.CreateDirectory(fixtureDirectory);
+    string stable = Path.Combine(fixtureDirectory, "stable.db");
+    string legacy = Path.Combine(fixtureDirectory, "legacy.db");
+    if (File.Exists(stable)) File.Delete(stable);
+    if (File.Exists(legacy)) File.Delete(legacy);
+
+    using (var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={stable};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            CREATE TABLE AIPredictHistory (Id INTEGER PRIMARY KEY, PredictPeriod TEXT);
+            INSERT INTO AIPredictHistory(Id, PredictPeriod) VALUES (1, '998018');", connection);
+        command.ExecuteNonQuery();
+    }
+    CreateMigrationFixture(legacy, historyRows: 2, predictionRows: 1);
+
+    InvokeLegacyPromotion(stable, legacy);
+
+    using var verify = new System.Data.SQLite.SQLiteConnection($"Data Source={stable};Version=3;Read Only=True;");
+    verify.Open();
+    Assert(QueryCount(verify, "SELECT COUNT(*) FROM AIPredictHistory WHERE PredictPeriod='998018'") == 1,
+        "legacy promotion replaced the stable legacy prediction archive");
+}
+
+void InvokeLegacyPromotion(string stable, string legacy)
+{
+    var promote = typeof(DatabaseHelper).GetMethod("TryPromoteLegacyDatabase",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(promote is not null, "legacy promotion entry point is missing");
+    promote!.Invoke(null, new object[] { stable, legacy });
+}
+
+long QueryCount(System.Data.SQLite.SQLiteConnection connection, string sql)
+{
+    using var command = new System.Data.SQLite.SQLiteCommand(sql, connection);
+    return Convert.ToInt64(command.ExecuteScalar());
+}
+
+void InitializationPreservesDuplicatePredictionSnapshots()
+{
+    const string issue = "998019";
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            DROP INDEX IF EXISTS idx_prediction_issue_periods;
+            DELETE FROM PredictionHistory WHERE Issue='998019';
+            INSERT INTO PredictionHistory(Issue,PredictTime,PredictNumber,PredictZodiac,Top6Zodiac,AnalysisPeriods,ModelVersion)
+                VALUES ('998019','2026-08-12 20:00:00','01','鼠','鼠,牛,虎,兔,龙,蛇',100,'V6.5');
+            INSERT INTO PredictionHistory(Issue,PredictTime,PredictNumber,PredictZodiac,Top6Zodiac,AnalysisPeriods,ModelVersion)
+                VALUES ('998019','2026-08-12 20:01:00','02','牛','牛,虎,兔,龙,蛇,马',100,'V6.5');", connection);
+        command.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    var rows = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Where(record => record.Issue == issue && record.AnalysisPeriods == 100 && record.ModelVersion == "V6.5")
+        .OrderBy(record => record.Id)
+        .ToList();
+    Assert(rows.Count == 2, "initialization physically deleted an older duplicate prediction snapshot");
+    Assert(rows[0].PredictZodiac == "鼠" && rows[1].PredictZodiac == "牛",
+        "initialization changed the order or content of archived prediction snapshots");
+}
+
+void ConcurrentPredictionSavesAreAtomicAndIdempotent()
+{
+    const string issue = "998020";
+    using (var cleanup = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        cleanup.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(
+            "DELETE FROM PredictionHistory WHERE Issue=@Issue", cleanup);
+        command.Parameters.AddWithValue("@Issue", issue);
+        command.ExecuteNonQuery();
+    }
+
+    using var gate = new ManualResetEventSlim(false);
+    var errors = new System.Collections.Concurrent.ConcurrentQueue<Exception>();
+    Task[] writers = Enumerable.Range(1, 24).Select(index => Task.Run(() =>
+    {
+        gate.Wait();
+        try
+        {
+            DatabaseHelper.SavePrediction(issue, "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", index.ToString("D2"),
+                "V6.5", 100, $"concurrent snapshot {index}");
+        }
+        catch (Exception error)
+        {
+            errors.Enqueue(error);
+        }
+    })).ToArray();
+    gate.Set();
+    Task.WaitAll(writers);
+
+    Assert(errors.IsEmpty, $"concurrent prediction save failed: {errors.FirstOrDefault()?.Message}");
+    int saved = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Count(record => record.Issue == issue && record.AnalysisPeriods == 100 && record.ModelVersion == "V6.5");
+    Assert(saved == 1, $"concurrent prediction save created {saved} snapshots instead of one");
+}
+
+void ConcurrentDatabaseBackupsPublishOneValidSnapshot()
+{
+    string backupPath = Path.Combine(testData, "Backup", $"{DateTime.Now:yyyyMMdd}.db");
+    if (File.Exists(backupPath)) File.Delete(backupPath);
+
+    using var gate = new ManualResetEventSlim(false);
+    Task<string>[] writers = Enumerable.Range(0, 12).Select(_ => Task.Run(() =>
+    {
+        gate.Wait();
+        return DatabaseBackupService.Backup();
+    })).ToArray();
+    gate.Set();
+    Task.WaitAll(writers);
+
+    Assert(File.Exists(backupPath), "concurrent startup removed the successfully published daily backup");
+    Assert(writers.All(writer => !writer.Result.Contains("失败", StringComparison.Ordinal)),
+        "one concurrent backup reported a failure instead of accepting the already-published snapshot");
+    using var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={backupPath};Version=3;Read Only=True;");
+    connection.Open();
+    using var check = new System.Data.SQLite.SQLiteCommand("PRAGMA quick_check", connection);
+    Assert(string.Equals(Convert.ToString(check.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase),
+        "concurrent startup left a corrupt daily backup");
+    Assert(!Directory.EnumerateFiles(Path.Combine(testData, "Backup"), ".*.tmp*").Any(),
+        "backup publication left temporary SQLite WAL/SHM files behind");
+}
+
+void AmbiguousLegacyMigrationNeverCreatesEmptyStableDatabase()
+{
+    string fixtureDirectory = Path.Combine(testData, "promotion-ambiguous-fixture");
+    Directory.CreateDirectory(fixtureDirectory);
+    string stable = Path.Combine(fixtureDirectory, "stable.db");
+    string first = Path.Combine(fixtureDirectory, "first.db");
+    string second = Path.Combine(fixtureDirectory, "second.db");
+    if (File.Exists(stable)) File.Delete(stable);
+    CreateMigrationFixture(first, historyRows: 1, predictionRows: 1);
+    CreateMigrationFixture(second, historyRows: 1, predictionRows: 1);
+
+    var migrate = typeof(DatabaseHelper).GetMethod("PromoteLegacyDatabaseOrThrow",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(migrate is not null, "safe legacy migration coordinator is missing");
+    bool rejected = false;
+    try
+    {
+        migrate!.Invoke(null, new object[] { stable, new[] { first, second } });
+    }
+    catch (System.Reflection.TargetInvocationException error)
+        when (error.InnerException is InvalidOperationException)
+    {
+        rejected = true;
+    }
+
+    Assert(rejected, "ambiguous legacy databases were silently accepted");
+    Assert(!File.Exists(stable), "ambiguous migration created an empty stable database and blocked future retries");
 }
 
 void AutomaticLearningWeightsStayBounded()
