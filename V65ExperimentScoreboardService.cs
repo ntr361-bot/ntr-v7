@@ -45,16 +45,16 @@ public static class V65ExperimentScoreboardService
         foreach (var group in drafts.GroupBy(draft => draft.Definition.Group))
         {
             double bestRecent50Top6 = group.Max(draft => draft.Recent50Top6);
-            double bestAverageRank = group.Where(draft => draft.Samples > 0).Select(draft => draft.AverageRank)
+            double bestAverageRank = group.Where(draft => draft.Ranks.Length > 0).Select(draft => draft.AverageRank)
                 .DefaultIfEmpty(double.PositiveInfinity).Min();
             foreach (Draft draft in group)
             {
-                string status = draft.Samples < 30 ? "观察" :
+                string status = draft.Ranks.Length < 30 ? "观察" :
                     draft.CurrentTop6Misses >= 8 ? "暂停" :
                     NearlyEqual(draft.Recent50Top6, bestRecent50Top6) && NearlyEqual(draft.AverageRank, bestAverageRank)
                         ? "领先" : "观察";
                 output.Add(new V65ExperimentScoreboardRow(draft.Definition.Group, draft.Definition.Name,
-                    draft.Samples, Rate(draft.Ranks, 3), Rate(draft.Ranks, 6), draft.AverageRank,
+                    draft.Ranks.Length, Rate(draft.Ranks, 3), Rate(draft.Ranks, 6), draft.AverageRank,
                     Rate(draft.Ranks.TakeLast(20), 3), Rate(draft.Ranks.TakeLast(20), 6),
                     Rate(draft.Ranks.TakeLast(50), 3), Rate(draft.Ranks.TakeLast(50), 6),
                     draft.MaximumTop6Misses, draft.CurrentTop6Misses, status));

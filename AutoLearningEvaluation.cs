@@ -152,7 +152,7 @@ public static class AutoLearningTrainer
         for (int target = 30; target < chronological.Count; target++)
         {
             DatabaseHelper.HistoryRecord draw = chronological[target];
-            string actualColor = ColorEngine.ColorOf(draw.SpecialNumber);
+            string actualColor = ColorEngine.ColorOf(draw);
             if (Year(draw) is < 2023 or > 2025 || string.IsNullOrWhiteSpace(actualColor)) continue;
             var prefix = chronological.Take(target).ToArray();
             ColorPredictionResult prediction = ColorEngine.Predict(prefix, state.Weights);
@@ -210,7 +210,7 @@ public static class AutoLearningEvaluation
             baselineRanks.Add(baseline.ToList().FindIndex(item => item == draw.SpecialZodiac)+1);
             learningRanks.Add(Array.FindIndex(learnedOrder, item => item == draw.SpecialZodiac)+1);
             int learnedRank = learningRanks[^1];
-            string actualColor = ColorEngine.ColorOf(draw.SpecialNumber);
+            string actualColor = ColorEngine.ColorOf(draw);
             ColorPredictionResult baselineColor = ColorEngine.Predict(prefix, ColorLearningWeights.Default);
             ColorPredictionResult learnedColor = ColorEngine.Predict(prefix, memory.ColorLearning.Weights);
             bool baselineMainHit = baselineColor.Main == actualColor;

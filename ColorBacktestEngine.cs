@@ -37,7 +37,7 @@ public static class ColorBacktestEngine
         for (int target = start; target < draws.Count; target++)
         {
             var prediction = ColorEngine.Predict(draws.Take(target).ToList());
-            string actual = ColorEngine.ColorOf(draws[target].SpecialNumber);
+            string actual = ColorEngine.ColorOf(draws[target]);
             bool mainHit = actual == prediction.Main;
             bool covered = mainHit || actual == prediction.Defense;
             bool exclusionSuccess = actual != prediction.Excluded;

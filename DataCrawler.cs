@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,6 +46,8 @@ namespace 六合分析软件
             public string Numbers { get; set; } = "";      // 前6个开奖号码
             public string SpecialNumber { get; set; } = "";// 特码（第7个号码）
             public string SpecialZodiac { get; set; } = "";// 特码生肖（网站直接提供）
+            public string SpecialWaveColor { get; set; } = ""; // 网页颜色源确认的特码波色
+            public string WaveColorSource { get; set; } = "";  // WebPage / LocalFallback
             public string ShengXiao { get; set; } = "";    // 兼容旧字段
         }
 
@@ -228,6 +231,7 @@ namespace 六合分析软件
         private static async Task<List<CrawlRecord>> FetchRecentRecordsAsync(int periods, CancellationToken cancellationToken)
         {
             var allRecords = new Dictionary<string, CrawlRecord>();
+            IReadOnlyDictionary<string, string> webWaveColors = await FetchWebWaveColorMapAsync(cancellationToken);
             int year = DateTime.Now.Year;
 
             for (int i = 0; i < 8 && allRecords.Count < periods; i++)
@@ -243,6 +247,16 @@ namespace 六合分析软件
 
                 foreach (var record in ParseJson(json))
                 {
+                    if (webWaveColors.TryGetValue(record.SpecialNumber, out string? waveColor))
+                    {
+                        record.SpecialWaveColor = waveColor;
+                        record.WaveColorSource = "WebPage";
+                    }
+                    else
+                    {
+                        record.SpecialWaveColor = V65MappingService.GetWaveColor(record.SpecialNumber);
+                        record.WaveColorSource = "LocalFallback";
+                    }
                     if (!string.IsNullOrEmpty(record.Period))
                         allRecords[record.Period] = record;
                 }
@@ -252,6 +266,42 @@ namespace 六合分析软件
                 .OrderByDescending(r => int.TryParse(r.Period, out int period) ? period : 0)
                 .Take(periods)
                 .ToList();
+        }
+
+        private static async Task<IReadOnlyDictionary<string, string>> FetchWebWaveColorMapAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                string page = await HttpClient.GetStringAsync("https://00853lhc.com/", cancellationToken);
+                Match script = Regex.Match(page, "src=\"(?<path>/assets/index-[^\"]+\\.js)\"");
+                if (!script.Success) return new Dictionary<string, string>();
+                string js = await HttpClient.GetStringAsync("https://00853lhc.com" + script.Groups["path"].Value, cancellationToken);
+                IReadOnlyDictionary<string, string> map = ExtractWaveColorMapFromPageScript(js);
+                return map.Count == 49 ? map : new Dictionary<string, string>();
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or RegexMatchTimeoutException)
+            {
+                AppLogger.Error("网页波色映射抓取失败，将使用本地农历映射兜底", ex);
+                return new Dictionary<string, string>();
+            }
+        }
+
+        /// <summary>从开奖网页前端脚本提取红、蓝、绿号码表，与号码 API 独立。</summary>
+        public static IReadOnlyDictionary<string, string> ExtractWaveColorMapFromPageScript(string script)
+        {
+            var result = new Dictionary<string, string>(StringComparer.Ordinal);
+            Match block = Regex.Match(script ?? "", @"(?:const|let|var)\s+tl\s*=\s*\{(?<body>.*?)\}", RegexOptions.Singleline);
+            if (!block.Success) return result;
+            foreach ((string english, string chinese) in new[] { ("red", "红"), ("blue", "蓝"), ("green", "绿") })
+            {
+                Match color = Regex.Match(block.Groups["body"].Value, english + @":\s*\[(?<numbers>[^\]]*)\]");
+                foreach (Match number in Regex.Matches(color.Groups["numbers"].Value, @"\d{1,2}"))
+                {
+                    string value = int.TryParse(number.Value, out int parsed) ? parsed.ToString("D2") : "";
+                    if (!string.IsNullOrEmpty(value) && !result.ContainsKey(value)) result[value] = chinese;
+                }
+            }
+            return result;
         }
 
         /// <summary>
@@ -425,6 +475,8 @@ namespace 六合分析软件
         /// </summary>
         public static string GetShengXiaoByTeMa(string teMa, string yearPet)
         {
+            return V65MappingService.GetZodiacBySpecialNumber(teMa, yearPet);
+
             if (string.IsNullOrEmpty(teMa) || string.IsNullOrEmpty(yearPet))
                 return "";
 
@@ -452,6 +504,9 @@ namespace 六合分析软件
         /// </summary>
         private static Dictionary<string, List<string>> BuildShengXiaoMap(string yearPet)
         {
+            return V65MappingService.GetZodiacNumberMap(yearPet)
+                .ToDictionary(pair => pair.Key, pair => pair.Value.ToList());
+
             // 检查缓存
             if (_shengxiaoCache.ContainsKey(yearPet))
                 return _shengxiaoCache[yearPet];

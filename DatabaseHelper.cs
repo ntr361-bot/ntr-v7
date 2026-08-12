@@ -133,6 +133,8 @@ namespace 六合分析软件
             public string Numbers { get; set; } = "";      // 前6个开奖号码
             public string SpecialNumber { get; set; } = "";// 特码（第7个号码）
             public string SpecialZodiac { get; set; } = "";// 特码生肖（网站提供，权威来源）
+            public string SpecialWaveColor { get; set; } = "";
+            public string WaveColorSource { get; set; } = "";
             public string OpenTime { get; set; } = "";     // 开奖时间
             public string Date { get; set; } = "";         // 日期（兼容旧字段）
             public string ShengXiao { get; set; } = "";    // 生肖（兼容旧字段，同SpecialZodiac）
@@ -168,6 +170,8 @@ namespace 六合分析软件
                     Numbers TEXT DEFAULT '',
                     SpecialNumber TEXT DEFAULT '',
                     SpecialZodiac TEXT DEFAULT '',
+                    SpecialWaveColor TEXT DEFAULT '',
+                    WaveColorSource TEXT DEFAULT '',
                     OpenTime TEXT DEFAULT '',
                     Date TEXT,
                     ShengXiao TEXT DEFAULT '',
@@ -184,6 +188,8 @@ namespace 六合分析软件
                     "ShengXiao TEXT DEFAULT ''",
                     "SpecialNumber TEXT DEFAULT ''",
                     "SpecialZodiac TEXT DEFAULT ''",
+                    "SpecialWaveColor TEXT DEFAULT ''",
+                    "WaveColorSource TEXT DEFAULT ''",
                     "OpenTime TEXT DEFAULT ''",
                     "WebZodiac TEXT DEFAULT ''",
                     "CalcZodiac TEXT DEFAULT ''",
@@ -237,6 +243,7 @@ namespace 六合分析软件
                     "BaseModelScoresJson TEXT DEFAULT ''",
                     "FeatureSnapshotJson TEXT DEFAULT ''",
                     "WeightSnapshotJson TEXT DEFAULT ''",
+                    "MappingSnapshotJson TEXT DEFAULT ''",
                     "ActualRank INTEGER DEFAULT 0",
                     "LearningStatus TEXT DEFAULT 'Pending'",
                     "LearnedAt TEXT DEFAULT ''");
@@ -520,7 +527,7 @@ namespace 六合分析软件
                     ? "WHERE CAST(Period AS INTEGER) <= @maxIssue"
                     : "";
                 string sql = $@"
-                SELECT Id, Period, Numbers, SpecialNumber, SpecialZodiac, OpenTime, Date, ShengXiao, WebZodiac, CalcZodiac, ZodiacCheck
+                SELECT Id, Period, Numbers, SpecialNumber, SpecialZodiac, SpecialWaveColor, WaveColorSource, OpenTime, Date, ShengXiao, WebZodiac, CalcZodiac, ZodiacCheck
                 FROM History
                 {issueFilter}
                 ORDER BY CAST(Period AS INTEGER) DESC, Id DESC
@@ -542,12 +549,14 @@ namespace 六合分析软件
                             Numbers = reader.IsDBNull(2) ? "" : reader.GetString(2),
                             SpecialNumber = reader.IsDBNull(3) ? "" : reader.GetString(3),
                             SpecialZodiac = reader.IsDBNull(4) ? "" : reader.GetString(4),
-                            OpenTime = reader.IsDBNull(5) ? "" : reader.GetString(5),
-                            Date = reader.IsDBNull(6) ? "" : reader.GetString(6),
-                            ShengXiao = reader.IsDBNull(7) ? "" : reader.GetString(7),
-                            WebZodiac = reader.IsDBNull(8) ? "" : reader.GetString(8),
-                            CalcZodiac = reader.IsDBNull(9) ? "" : reader.GetString(9),
-                            ZodiacCheck = reader.IsDBNull(10) ? "" : reader.GetString(10)
+                            SpecialWaveColor = reader.IsDBNull(5) ? "" : reader.GetString(5),
+                            WaveColorSource = reader.IsDBNull(6) ? "" : reader.GetString(6),
+                            OpenTime = reader.IsDBNull(7) ? "" : reader.GetString(7),
+                            Date = reader.IsDBNull(8) ? "" : reader.GetString(8),
+                            ShengXiao = reader.IsDBNull(9) ? "" : reader.GetString(9),
+                            WebZodiac = reader.IsDBNull(10) ? "" : reader.GetString(10),
+                            CalcZodiac = reader.IsDBNull(11) ? "" : reader.GetString(11),
+                            ZodiacCheck = reader.IsDBNull(12) ? "" : reader.GetString(12)
                         });
                     }
                 }
@@ -672,14 +681,16 @@ namespace 六合分析软件
                         r.SpecialZodiac == calcZodiac ? "正确" : "错误";
                     using var cmd = new SQLiteCommand(@"
                         INSERT OR IGNORE INTO History
-                        (Period, Numbers, SpecialNumber, SpecialZodiac, OpenTime, Date, ShengXiao,
+                        (Period, Numbers, SpecialNumber, SpecialZodiac, SpecialWaveColor, WaveColorSource, OpenTime, Date, ShengXiao,
                          WebZodiac, CalcZodiac, ZodiacCheck)
-                        VALUES (@period, @numbers, @specialNum, @zodiac, @date, @date, @zodiac,
+                        VALUES (@period, @numbers, @specialNum, @zodiac, @waveColor, @waveSource, @date, @date, @zodiac,
                                 @zodiac, @calcZodiac, @check)", conn, transaction);
                     cmd.Parameters.AddWithValue("@period", r.Period);
                     cmd.Parameters.AddWithValue("@numbers", r.Numbers);
                     cmd.Parameters.AddWithValue("@specialNum", r.SpecialNumber);
                     cmd.Parameters.AddWithValue("@zodiac", r.SpecialZodiac);
+                    cmd.Parameters.AddWithValue("@waveColor", r.SpecialWaveColor);
+                    cmd.Parameters.AddWithValue("@waveSource", r.WaveColorSource);
                     cmd.Parameters.AddWithValue("@date", r.Date);
                     cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
                     cmd.Parameters.AddWithValue("@check", check);
@@ -790,6 +801,8 @@ namespace 六合分析软件
         // 获取年份对应的生肖（内部实现）
         private static string GetYearPet(string year)
         {
+            return int.TryParse(year, out int value) ? V65MappingService.GetYearZodiac(value) : "";
+
             // 生肖顺序
             string[] shengxiao = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
 
@@ -906,6 +919,7 @@ namespace 六合分析软件
             public string BaseModelScoresJson { get; set; } = "";
             public string FeatureSnapshotJson { get; set; } = "";
             public string WeightSnapshotJson { get; set; } = "";
+            public string MappingSnapshotJson { get; set; } = "";
             public int ActualRank { get; set; }
             public string LearningStatus { get; set; } = "Pending";
             public string LearnedAt { get; set; } = "";
@@ -919,11 +933,24 @@ namespace 六合分析软件
             return string.IsNullOrWhiteSpace(issue) ? "" : $"PRED-{issue.Trim()}";
         }
 
+        private static DateTime ResolveMappingSnapshotDate(string issue)
+        {
+            if (DateTime.TryParseExact(issue, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime datedIssue))
+                return datedIssue;
+            HistoryRecord? latest = GetLatestHistory(1).FirstOrDefault();
+            if (latest != null && DateTime.TryParse(latest.OpenTime, out DateTime openTime)) return openTime;
+            if (latest != null && DateTime.TryParse(latest.Date, out DateTime date)) return date;
+            return DateTime.Today;
+        }
+
         public static void SavePrediction(string issue, string predictZodiac, string top6Zodiac,
             string predictNumber, string modelVersion, int analysisPeriods, string scoreDetails,
             string learningDetails = "", string finalRankingJson = "", string baseModelScoresJson = "",
-            string featureSnapshotJson = "", string weightSnapshotJson = "")
+            string featureSnapshotJson = "", string weightSnapshotJson = "", string mappingSnapshotJson = "")
         {
+            mappingSnapshotJson = string.IsNullOrWhiteSpace(mappingSnapshotJson)
+                ? V65MappingService.CreateSnapshot(issue, ResolveMappingSnapshotDate(issue))
+                : mappingSnapshotJson;
             using (SQLiteConnection conn = GetConnection())
             {
                 string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -942,7 +969,7 @@ namespace 六合分析软件
                         ModelVersion=@model, ScoreDetails=@scores, LearningDetails=@learning, ReviewDetails='', HitResult='未开奖', Top6HitResult='未开奖',
                         ActualNumber='', ActualZodiac='', PredictionGroupId=@groupId,
                         FinalRankingJson=@ranking, BaseModelScoresJson=@baseScores,
-                        FeatureSnapshotJson=@features, WeightSnapshotJson=@weights,
+                        FeatureSnapshotJson=@features, WeightSnapshotJson=@weights, MappingSnapshotJson=@mapping,
                         ActualRank=0, LearningStatus='Pending', LearnedAt=''
                     WHERE Issue=@issue AND AnalysisPeriods=@periods";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
@@ -958,6 +985,7 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@baseScores", baseModelScoresJson);
                     cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
                     cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
+                    cmd.Parameters.AddWithValue("@mapping", mappingSnapshotJson);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@periods", analysisPeriods);
                     cmd.ExecuteNonQuery();
@@ -968,9 +996,9 @@ namespace 六合分析软件
                     string sql = @"INSERT INTO PredictionHistory
                     (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods, ScoreDetails,
                      ModelVersion, LearningDetails, HitResult, Top6HitResult, FinalRankingJson,
-                     BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, LearningStatus)
+                     BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, MappingSnapshotJson, LearningStatus)
                     VALUES (@issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model, @learning, '未开奖', '未开奖',
-                            @ranking, @baseScores, @features, @weights, 'Pending')";
+                            @ranking, @baseScores, @features, @weights, @mapping, 'Pending')";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@issue", issue);
                     cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
@@ -986,6 +1014,7 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@baseScores", baseModelScoresJson);
                     cmd.Parameters.AddWithValue("@features", featureSnapshotJson);
                     cmd.Parameters.AddWithValue("@weights", weightSnapshotJson);
+                    cmd.Parameters.AddWithValue("@mapping", mappingSnapshotJson);
                     cmd.ExecuteNonQuery();
                     Console.WriteLine($"[数据库] 新建预测记录（期号:{issue}）");
                 }
@@ -1230,7 +1259,7 @@ namespace 六合分析软件
                 string sql = $@"
                 SELECT Id, Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods,
                        ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult, ReviewDetails, LearningDetails,
-                       FinalRankingJson, BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson,
+                       FinalRankingJson, BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, MappingSnapshotJson,
                        ActualRank, LearningStatus, LearnedAt
                 FROM PredictionHistory
                 ORDER BY CAST(Issue AS INTEGER) DESC, AnalysisPeriods ASC
@@ -1263,9 +1292,10 @@ namespace 六合分析软件
                             ,BaseModelScoresJson = reader.IsDBNull(17) ? "" : reader.GetString(17)
                             ,FeatureSnapshotJson = reader.IsDBNull(18) ? "" : reader.GetString(18)
                             ,WeightSnapshotJson = reader.IsDBNull(19) ? "" : reader.GetString(19)
-                            ,ActualRank = reader.IsDBNull(20) ? 0 : reader.GetInt32(20)
-                            ,LearningStatus = reader.IsDBNull(21) ? "Pending" : reader.GetString(21)
-                            ,LearnedAt = reader.IsDBNull(22) ? "" : reader.GetString(22)
+                            ,MappingSnapshotJson = reader.IsDBNull(20) ? "" : reader.GetString(20)
+                            ,ActualRank = reader.IsDBNull(21) ? 0 : reader.GetInt32(21)
+                            ,LearningStatus = reader.IsDBNull(22) ? "Pending" : reader.GetString(22)
+                            ,LearnedAt = reader.IsDBNull(23) ? "" : reader.GetString(23)
                         });
                     }
                 }

@@ -14,8 +14,6 @@ public sealed class ColorPredictionResult
 public static class ColorEngine
 {
     private static readonly string[] Colors = { "红", "蓝", "绿" };
-    private static readonly HashSet<int> Red = new() { 1, 4, 7, 10, 12, 15, 18, 21, 23, 26, 29, 30, 33, 36, 39, 42, 45, 48 };
-    private static readonly HashSet<int> Blue = new() { 2, 5, 8, 11, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49 };
 
     public static ColorPredictionResult Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history,
         ColorLearningWeights? weights = null)
@@ -23,7 +21,7 @@ public static class ColorEngine
         ColorLearningWeights activeWeights = ColorAutoLearningEngine.Normalize(weights ?? ColorLearningWeights.Default);
         var draws = history.Where(x => int.TryParse(x.SpecialNumber, out _)).ToList();
         var recent = draws.TakeLast(Math.Min(50, draws.Count)).ToList();
-        var counts = Colors.ToDictionary(c => c, c => recent.Count(x => ColorOf(x.SpecialNumber) == c));
+        var counts = Colors.ToDictionary(c => c, c => recent.Count(x => ColorOf(x) == c));
         var omissions = Colors.ToDictionary(c => c, c => CurrentOmission(draws, c));
         var transitions = Colors.ToDictionary(c => c, c => TransitionRate(recent, c));
         var signals = Colors.ToDictionary(c => c, c => (IReadOnlyDictionary<string, double>)
@@ -51,22 +49,26 @@ public static class ColorEngine
     {
         if (draws.Count < 2) return 0;
         int hits = 0;
-        for (int i = 1; i < draws.Count; i++) if (ColorOf(draws[i - 1].SpecialNumber) != color && ColorOf(draws[i].SpecialNumber) == color) hits++;
+        for (int i = 1; i < draws.Count; i++) if (ColorOf(draws[i - 1]) != color && ColorOf(draws[i]) == color) hits++;
         return hits / (double)(draws.Count - 1);
     }
 
     private static int CurrentOmission(IReadOnlyList<DatabaseHelper.HistoryRecord> draws, string color)
     {
         int count = 0;
-        for (int i = draws.Count - 1; i >= 0 && ColorOf(draws[i].SpecialNumber) != color; i--) count++;
+        for (int i = draws.Count - 1; i >= 0 && ColorOf(draws[i]) != color; i--) count++;
         return count;
     }
 
     public static string ColorOf(string number)
     {
-        if (!int.TryParse(number, out int n)) return "";
-        if (Red.Contains(n)) return "红";
-        if (Blue.Contains(n)) return "蓝";
-        return "绿";
+        return V65MappingService.GetWaveColor(number);
+    }
+
+    public static string ColorOf(DatabaseHelper.HistoryRecord record)
+    {
+        return record.SpecialWaveColor is "红" or "蓝" or "绿"
+            ? record.SpecialWaveColor
+            : ColorOf(record.SpecialNumber);
     }
 }

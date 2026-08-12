@@ -100,6 +100,9 @@ var tests = new (string Name, Action Run)[]
     ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
     ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
     ,("V6 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
+    ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
+    ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
+    ,("web wave-color mapping is parsed independently from number API", WebWaveColorMappingIsParsed)
 };
 
 int failures = 0;
@@ -165,6 +168,41 @@ void ZodiacNumberMapFor2026IsCorrect()
     Assert(string.Join(",", map["羊"]) == "12,24,36,48", "羊肖号码错误");
     Assert(map.Values.SelectMany(numbers => numbers).Distinct().Count() == 49,
         "生肖映射必须完整覆盖01至49且不能重复");
+}
+
+void V65MappingServiceProvidesCompleteValidatedMaps()
+{
+    IReadOnlyDictionary<int, string> colors = V65MappingService.NumberToWaveColor;
+    Assert(colors.Count == 49 && Enumerable.Range(1, 49).All(number => colors.ContainsKey(number)),
+        "1-49 must each have one wave color");
+    Assert(colors.Values.All(color => color is "红" or "蓝" or "绿"), "wave color must be red blue or green");
+    Assert(V65MappingService.GetWaveColor("26") == "蓝" && V65MappingService.GetWaveColor("05") == "绿",
+        "canonical wave colors differ from verified display mapping");
+
+    IReadOnlyDictionary<string, IReadOnlyList<string>> map = V65MappingService.GetZodiacNumberMap(2026);
+    string[] allNumbers = map.Values.SelectMany(numbers => numbers).ToArray();
+    Assert(map.Count == 12 && allNumbers.Distinct().Count() == 49 && allNumbers.Length == 49,
+        "year zodiac mapping must cover 1-49 exactly once");
+    Assert(V65MappingService.GetYearZodiac(2026) == "马" && V65MappingService.GetZodiacBySpecialNumber("01", 2026) == "马",
+        "known 2026 number zodiac mapping is inconsistent");
+}
+
+void V65MappingSnapshotIsStoredWithPrediction()
+{
+    DatabaseHelper.SavePrediction("20260101", "马", "马,羊,猴,鸡,狗,猪", "01", "V6.5", 50, "test");
+    DatabaseHelper.PredictionRecord record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(row => row.Issue == "20260101" && row.AnalysisPeriods == 50);
+    Assert(record.MappingSnapshotJson.Contains("2026") && record.MappingSnapshotJson.Contains(V65MappingService.ZodiacNumberMappingVersion) &&
+        record.MappingSnapshotJson.Contains(V65MappingService.WaveColorMappingVersion),
+        "prediction record did not save target-year mapping versions");
+}
+
+void WebWaveColorMappingIsParsed()
+{
+    string script = "const tl={red:[\"01\",\"02\"],blue:[\"03\"],green:[\"04\",\"49\"]};";
+    IReadOnlyDictionary<string, string> colors = DataCrawler.ExtractWaveColorMapFromPageScript(script);
+    Assert(colors.Count == 5 && colors["01"] == "红" && colors["03"] == "蓝" && colors["49"] == "绿",
+        "网页脚本中的波色映射没有独立解析");
 }
 
 void PredictionScoreUsesTargetYearMap()

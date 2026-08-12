@@ -16,6 +16,14 @@ namespace 六合分析软件
         Button btnVerify;
         private readonly bool newModelOnly;
         private static readonly Font NumberHitFont = new Font("微软雅黑", 10, FontStyle.Bold);
+        private const float WaveHitFontSize = 12f;
+
+        public static float GetWaveHitFontSize(bool isHit) => isHit ? WaveHitFontSize : 9f;
+
+        public static string GetWaveColorForNumber(string number)
+        {
+            return V65MappingService.GetWaveColor(number);
+        }
 
         public static Color GetWaveColorForDisplay(string waveColor) => waveColor switch
         {
