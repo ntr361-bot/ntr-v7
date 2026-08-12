@@ -57,6 +57,7 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5回测使用正式三模型快照", V65BacktestUsesFormalModelChain)
     ,("V6.5三条基础模型应用各自固定权重", V65BaseModelsUseConfiguredWeights)
     ,("V6.5回测实际比较四条实验模型", V65BacktestComparesFourExperimentModels)
+    ,("V6.5实验成绩榜统计四模型与状态", V65ExperimentScoreboardSummarizesModels)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -875,6 +876,49 @@ void V65BacktestComparesFourExperimentModels()
         "V6.5回测没有只比较四条正式实验模型");
     Assert(result.Models.All(model => model.TotalTests == 36),
         "四个V6.5实验模型没有在相同目标期上比较");
+}
+
+void V65ExperimentScoreboardSummarizesModels()
+{
+    var records = new List<DatabaseHelper.PredictionRecord>();
+    string[] ranking = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    for (int issue = 1; issue <= 30; issue++)
+    {
+        foreach (int period in new[] { 50, 100, AISettings.AllHistoryModeValue })
+        {
+            int rank = period == 50 ? 1 : period == 100 ? 4 : 7;
+            records.Add(new DatabaseHelper.PredictionRecord
+            {
+                Issue = issue.ToString(), ModelVersion = "V6.5", AnalysisPeriods = period,
+                ActualZodiac = "鼠", FinalRankingJson = System.Text.Json.JsonSerializer.Serialize(ranking),
+                ActualRank = rank, Top6Zodiac = rank <= 6 ? "鼠,牛,虎,兔,龙,蛇" : "牛,虎,兔,龙,蛇,马"
+            });
+        }
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V6.5 AutoLearning", AnalysisPeriods = 7250,
+            ActualZodiac = "鼠", ActualRank = 9, Top6Zodiac = "牛,虎,兔,龙,蛇,马"
+        });
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V7 ML LightGBM", AnalysisPeriods = 7200,
+            ActualZodiac = "鼠", ActualRank = 3, Top6Zodiac = "鼠,牛,虎,兔,龙,蛇"
+        });
+    }
+
+    IReadOnlyList<V65ExperimentScoreboardRow> rows = V65ExperimentScoreboardService.Build(records);
+    V65ExperimentScoreboardRow[] v65Rows = rows.Where(row => row.Group == "V6.5四模型实验").ToArray();
+    Assert(v65Rows.Select(row => row.ModelName).SequenceEqual(
+            new[] { "V6.5-50期", "V6.5-100期", "V6.5-全部历史", "V6.5-自动学习" }),
+        "实验成绩榜没有固定显示四条V6.5模型");
+    V65ExperimentScoreboardRow fifty = v65Rows[0];
+    Assert(fifty.Samples == 30 && fifty.Top3HitRate == 1 && fifty.Top6HitRate == 1 && fifty.Status == "领先",
+        "领先模型的累计成绩或状态计算错误");
+    V65ExperimentScoreboardRow auto = v65Rows[^1];
+    Assert(auto.CurrentTop6Misses == 30 && auto.MaximumTop6Misses == 30 && auto.Status == "暂停",
+        "连续TOP6未中模型没有进入暂停状态");
+    Assert(rows.Any(row => row.Group == "智能预测模型" && row.ModelName == "智能预测-ML" && row.Samples == 30),
+        "智能预测模型没有作为独立分组接入成绩榜");
 }
 
 void OnlyActualWaveColorIsBold()

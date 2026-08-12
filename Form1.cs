@@ -989,13 +989,13 @@ namespace 六合分析软件
         private Form CreateReservedDataCenterForm()
         {
             Form form = new Form();
-            form.Text = "数据中心（备用）";
-            form.Size = new Size(900, 600);
+            form.Text = "V6.5 数据中心 - 实验成绩榜";
+            form.Size = new Size(1200, 720);
             form.StartPosition = FormStartPosition.CenterParent;
             form.BackColor = Color.White;
 
             Label title = new Label();
-            title.Text = "数据中心";
+            title.Text = "实验成绩榜";
             title.Font = new Font("微软雅黑", 18, FontStyle.Bold);
             title.ForeColor = Color.FromArgb(30, 30, 60);
             title.Location = new Point(30, 28);
@@ -1003,13 +1003,19 @@ namespace 六合分析软件
             form.Controls.Add(title);
 
             Label hint = new Label();
-            hint.Text = "此入口已预留，后续可在这里增加新的功能。现有数据分析内容已整合到“走势预测”窗口。";
+            hint.Text = "只统计已开奖记录：V6.5 四模型与智能预测模型分组展示，互不混算。";
             hint.Font = new Font("微软雅黑", 11);
             hint.ForeColor = Color.Gray;
             hint.Location = new Point(32, 80);
             hint.AutoSize = true;
             hint.MaximumSize = new Size(800, 0);
             form.Controls.Add(hint);
+
+            Control scoreboard = V65ExperimentScoreboardView.Create();
+            scoreboard.Location = new Point(30, 120);
+            scoreboard.Size = new Size(1120, 520);
+            scoreboard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            form.Controls.Add(scoreboard);
 
             return form;
         }
