@@ -1068,7 +1068,7 @@ namespace 六合分析软件
         {
             using (SQLiteConnection conn = GetConnection())
             {
-                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac, ScoreDetails FROM PredictionHistory WHERE Issue=@issue" +
+                string findSql = "SELECT Id, PredictZodiac, Top6Zodiac, ScoreDetails, ModelVersion FROM PredictionHistory WHERE Issue=@issue" +
                     (analysisPeriods.HasValue ? " AND AnalysisPeriods=@periods" : "") +
                     " AND (HitResult='未开奖' OR HitResult='')";
                 SQLiteCommand findCmd = new SQLiteCommand(findSql, conn);
@@ -1076,12 +1076,13 @@ namespace 六合分析软件
                 if (analysisPeriods.HasValue)
                     findCmd.Parameters.AddWithValue("@periods", analysisPeriods.Value);
 
-                var pending = new List<(int id, string top3, string top6, string scores)>();
+                var pending = new List<(int id, string top3, string top6, string scores, string modelVersion)>();
                 using (SQLiteDataReader reader = findCmd.ExecuteReader())
                 {
                     while (reader.Read())
                         pending.Add((reader.GetInt32(0), reader.IsDBNull(1) ? "" : reader.GetString(1),
-                            reader.IsDBNull(2) ? "" : reader.GetString(2), reader.IsDBNull(3) ? "" : reader.GetString(3)));
+                            reader.IsDBNull(2) ? "" : reader.GetString(2), reader.IsDBNull(3) ? "" : reader.GetString(3),
+                            reader.IsDBNull(4) ? "" : reader.GetString(4)));
                 }
 
                 foreach (var item in pending)
@@ -1106,8 +1107,13 @@ namespace 六合分析软件
                     updateCmd.Parameters.AddWithValue("@id", item.id);
                     updateCmd.ExecuteNonQuery();
 
-                    ApplyAutomaticLearningForPrediction(item.id, actualZodiac);
-                    ApplyColorLearningForPrediction(item.id, actualNumber);
+                    // 仅第四条“自动学习”预测在开奖后更新其在线记忆。
+                    // 基础三模型使用各自独立的滚动校准，不消费元模型快照。
+                    if (string.Equals(item.modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ApplyAutomaticLearningForPrediction(item.id, actualZodiac);
+                        ApplyColorLearningForPrediction(item.id, actualNumber);
+                    }
 
                     Console.WriteLine($"[预测验证] 期号:{issue} 实际:{actualNumber} {actualZodiac} {(hit ? "命中" : "未命中")}");
                 }
@@ -1421,6 +1427,7 @@ namespace 六合分析软件
             {
                 string snapshotJson;
                 string finalRankingJson;
+                string experimentKey;
                 using (SQLiteConnection claim = GetConnection())
                 {
                     EnsureAutoLearningSchema(claim);
@@ -1429,12 +1436,22 @@ namespace 六合分析软件
                     claimCmd.Parameters.AddWithValue("@id", predictionId);
                     if (claimCmd.ExecuteNonQuery() != 1)
                         return new LearningOutcome(false, false, 0, new ModelMemory().LoadOrCreate().Weights, "该期已经学习");
-                    using var read = new SQLiteCommand("SELECT FeatureSnapshotJson, FinalRankingJson FROM PredictionHistory WHERE Id=@id", claim);
+                    using var read = new SQLiteCommand("SELECT FeatureSnapshotJson, FinalRankingJson, AnalysisPeriods, ModelVersion FROM PredictionHistory WHERE Id=@id", claim);
                     read.Parameters.AddWithValue("@id", predictionId);
                     using var reader = read.ExecuteReader();
                     if (!reader.Read()) throw new InvalidDataException("找不到预测记录");
                     snapshotJson = reader.IsDBNull(0) ? "" : reader.GetString(0);
                     finalRankingJson = reader.IsDBNull(1) ? "" : reader.GetString(1);
+                    int periods = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
+                    string modelVersion = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                    if (!string.Equals(modelVersion, "V6.5", StringComparison.OrdinalIgnoreCase) &&
+                        !string.Equals(modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase))
+                    {
+                        SetPredictionLearningState(predictionId, "SkippedExperiment", 0);
+                        return new LearningOutcome(false, false, 0, ModelWeights.Default, "淘汰模型不参与四模型实验学习");
+                    }
+                    experimentKey = string.Equals(modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase)
+                        ? ExperimentModels.AutoLearning : ExperimentModels.ForPeriods(periods);
                 }
 
                 if (string.IsNullOrWhiteSpace(snapshotJson))
@@ -1446,7 +1463,7 @@ namespace 六合分析软件
                 MetaPredictionInput? input = System.Text.Json.JsonSerializer.Deserialize<MetaPredictionInput>(snapshotJson);
                 if (input is null || input.Zodiacs.Count != 12)
                     throw new InvalidDataException("自动学习快照不完整");
-                var memoryStore = new ModelMemory();
+                var memoryStore = new ModelMemory(experimentKey);
                 ModelMemoryState memory = memoryStore.LoadOrCreate();
                 string[] savedRanking = System.Text.Json.JsonSerializer.Deserialize<string[]>(finalRankingJson) ?? Array.Empty<string>();
                 int actualRank = Array.FindIndex(savedRanking, item => item == actualZodiac) + 1;

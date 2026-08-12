@@ -54,11 +54,16 @@ public sealed class DatabaseModelMemoryStore : IModelMemoryStore
 
 public sealed class ModelMemory
 {
-    public const string MemoryKey = "auto-learning-meta-v1";
+    public const string LegacyMemoryKey = "auto-learning-meta-v1";
+    public string MemoryKey { get; }
     private readonly IModelMemoryStore store;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = false };
 
-    public ModelMemory(IModelMemoryStore? store = null) => this.store = store ?? new DatabaseModelMemoryStore();
+    public ModelMemory(string experimentKey = ExperimentModels.AutoLearning, IModelMemoryStore? store = null)
+    {
+        MemoryKey = ExperimentModels.MemoryKey(experimentKey);
+        this.store = store ?? new DatabaseModelMemoryStore();
+    }
 
     public ModelMemoryState LoadOrCreate()
     {

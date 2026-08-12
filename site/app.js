@@ -131,7 +131,7 @@ async function loadPrediction() {
     text('generated-at', new Date(result.generated_at).toLocaleString('zh-CN'));
     text('status', '生成成功');
     text('source-issue', `第 ${result.source_issue} 期`);
-    text('model-version', result.model_version || 'AI生肖预测 V6.3');
+    text('model-version', result.model_version || 'AI生肖预测 V6.5');
     const verification = result.verification || { status: 'pending' };
     text('verification-status', verification.status === 'verified'
       ? `已验算：${verification.actual_number || '-'} ${verification.actual_zodiac || ''}`

@@ -52,6 +52,8 @@ var tests = new (string Name, Action Run)[]
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
     ,("V6.5学习只接收同版本同周期样本", V65LearningAcceptsOnlyMatchingSnapshots)
+    ,("四模型实验键独立且稳定", ExperimentalModelKeysAreStable)
+    ,("自动学习只读取同一期三条基础快照", AutoLearningUsesThreeBaseSnapshots)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -66,8 +68,8 @@ var tests = new (string Name, Action Run)[]
     ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
     ,("V7 AI report explains model state", V7AiReportExplainsState)
     ,("V7 AI report omits repeated implementation notes", V7AiReportOmitsRepeatedImplementationNotes)
-    ,("V7 predictions are saved without overwriting V6 history", V7PredictionsAreSavedToHistory)
-    ,("automatic-learning prediction is a formal fifth history row", AutoLearningPredictionIsFormalHistoryRow)
+    ,("淘汰模型入口只保存V6.5自动学习", V7PredictionsAreSavedToHistory)
+    ,("自动学习预测是正式第四条历史记录", AutoLearningPredictionIsFormalHistoryRow)
     ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
     ,("cloud workflow runs at 22:00 with one failed-run retry", CloudWorkflowUsesSingleDailyRunAndFailedRetry)
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
@@ -745,7 +747,7 @@ void VerifiedColorHitsAreVisuallyEmphasized()
 {
     DatabaseHelper.SaveVerifiedValidationPrediction("999303", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇",
         "鼠", "01", 1, V7PredictionHistoryService.AutoLearningValidationHistoryKey,
-        "V7 AutoLearning Validation", "波色排除:绿;主:红;防:蓝", true, true, "红");
+        "V6.5 AutoLearning", "波色排除:绿;主:红;防:蓝", true, true, "红");
 
     Assert(AIPredictHistoryForm.ShouldEmphasizeWave("01", "红"),
         "the actual red wave should emphasize the matching main wave");
@@ -786,6 +788,37 @@ void V65LearningAcceptsOnlyMatchingSnapshots()
         "V7验证记录不能影响V6.5排序");
 }
 
+void ExperimentalModelKeysAreStable()
+{
+    Assert(ExperimentModels.ForPeriods(50) == ExperimentModels.Period50, "50期实验键错误");
+    Assert(ExperimentModels.ForPeriods(100) == ExperimentModels.Period100, "100期实验键错误");
+    Assert(ExperimentModels.ForPeriods(AISettings.AllHistoryModeValue) == ExperimentModels.AllHistory,
+        "全历史实验键错误");
+    Assert(ExperimentModels.AllKeys.Distinct().Count() == 4, "四个实验模型键必须互不相同");
+    Assert(new ModelMemory(ExperimentModels.Period50).MemoryKey != new ModelMemory(ExperimentModels.Period100).MemoryKey,
+        "50期与100期不得共用学习记忆");
+}
+
+void AutoLearningUsesThreeBaseSnapshots()
+{
+    string[] all = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    string[] fifty = { "虎", "鼠", "牛", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    string[] hundred = { "牛", "鼠", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var rows = new[]
+    {
+        new DatabaseHelper.PredictionRecord { Issue = "base-snapshot", ModelVersion = "V6.5", AnalysisPeriods = 50, FinalRankingJson = System.Text.Json.JsonSerializer.Serialize(fifty) },
+        new DatabaseHelper.PredictionRecord { Issue = "base-snapshot", ModelVersion = "V6.5", AnalysisPeriods = 100, FinalRankingJson = System.Text.Json.JsonSerializer.Serialize(hundred) },
+        new DatabaseHelper.PredictionRecord { Issue = "base-snapshot", ModelVersion = "V6.5", AnalysisPeriods = AISettings.AllHistoryModeValue, FinalRankingJson = System.Text.Json.JsonSerializer.Serialize(all) }
+    };
+
+    AutoLearningSnapshot snapshot = AutoLearningSnapshotBuilder.BuildFromBasePredictions(
+        "base-snapshot", rows, new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate());
+    Assert(snapshot.BaselineRanking.SequenceEqual(all), "自动学习基线必须来自全部历史基础模型快照");
+    ZodiacMetaFeatures mouse = snapshot.Input.Zodiacs.Single(item => item.Zodiac == "鼠");
+    Assert(mouse.BaseScores["AI"] == mouse.BaseScores["ML"] && mouse.BaseScores["ML"] < mouse.BaseScores["State"],
+        "自动学习没有按50/100/全部历史三条独立快照生成特征");
+}
+
 void OnlyActualWaveColorIsBold()
 {
     Assert(AIPredictHistoryForm.GetWaveColorForNumber("26") == "蓝", "26 should use the established blue-wave mapping");
@@ -823,17 +856,10 @@ void V7PredictionsAreSavedToHistory()
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
     var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
-    Assert(records.Count(x => x.ModelVersion.StartsWith("V7")) == 5, "new history should contain five independent model rows without duplicates");
-    Assert(records.Any(x => x.ModelVersion == "V7 ShortTerm" && x.AnalysisPeriods == 7050), "V7 50-period row missing");
-    Assert(records.Any(x => x.ModelVersion == "V7 MediumTerm" && x.AnalysisPeriods == 7100), "V7 100-period row missing");
-    Assert(records.Any(x => x.ModelVersion == "V7 LongTerm" && x.AnalysisPeriods == 7000), "V7 long-term row missing");
-    Assert(records.Any(x => x.ModelVersion == "V7 ML LightGBM" && x.AnalysisPeriods == 7200), "V7 ML row missing");
-    Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "automatic-learning row missing");
-    var mlRecord = records.Single(x => x.ModelVersion == "V7 ML LightGBM");
-    Assert(V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("主：") &&
-           V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("防：") &&
-           !V7PredictionHistoryService.ExtractColorPrediction(mlRecord.ScoreDetails).Contains("排除"),
-        "V7 color history should display only main and defense colors");
+    Assert(!records.Any(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
+        "retired V7 rows must not be generated");
+    Assert(records.Count(x => x.ModelVersion == "V6.5 AutoLearning" && x.AnalysisPeriods == 7250) == 1,
+        "automatic-learning row should be the only row generated by the retired entry");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
         "color history display format is incorrect");
     var colorMethod = typeof(AIPredictHistoryForm).GetMethod("GetWaveColorForDisplay",
@@ -843,18 +869,20 @@ void V7PredictionsAreSavedToHistory()
            (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "蓝" })! == System.Drawing.Color.FromArgb(30, 90, 210) &&
            (System.Drawing.Color)colorMethod.Invoke(null, new object[] { "绿" })! == System.Drawing.Color.FromArgb(0, 150, 70),
         "wave-color text should use its real red/blue/green display color");
-    Assert(V7PredictionHistoryService.GetHistory(100).All(x => x.ModelVersion.StartsWith("V7")), "V7 history window source included non-V7 rows");
+    Assert(V7PredictionHistoryService.GetHistory(100).All(x => x.ModelVersion is "V6.5" or "V6.5 AutoLearning"),
+        "experiment history must only show V6.5 rows");
     var orderedModels = V7PredictionHistoryService.GetHistory(100)
         .Where(x => x.Issue == "103")
         .Select(x => x.ModelVersion)
         .ToArray();
-    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 ML LightGBM", "V7 AutoLearning", "V7 LongTerm" }), "automatic learning should be displayed before long-term at the bottom of each issue group");
+    Assert(orderedModels.Count(model => model == "V6.5 AutoLearning") == 1,
+        "retired entry should add exactly one fourth automatic-learning model");
 }
 
 void AutoLearningPredictionIsFormalHistoryRow()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && item.ModelVersion == "V6.5 AutoLearning");
     Assert(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 3,
         "automatic-learning TOP3 was not saved");
     Assert(record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 6,
@@ -1070,10 +1098,10 @@ void PredictionFeedbackIsPersistedExactlyOnce()
             new Dictionary<string,double> { ["AI"]=12-index, ["ML"]=index, ["State"]=6, ["Rule"]=0 },
             new Dictionary<string,double> { ["frequency"]=(12-index)/12d, ["omission"]=index/12d })).ToArray());
     DatabaseHelper.SavePrediction("999101", string.Join(",", zodiacs.Take(3)), string.Join(",", zodiacs.Take(6)),
-        "01,02,03", "V6.3", 50, "test", "test", JsonSerializer.Serialize(zodiacs),
+        "01,02,03", "V6.5 AutoLearning", 7250, "test", "test", JsonSerializer.Serialize(zodiacs),
         JsonSerializer.Serialize(input.Zodiacs.ToDictionary(item => item.Zodiac, item => item.BaseScores)),
         JsonSerializer.Serialize(input), JsonSerializer.Serialize(ModelWeights.Default));
-    var row = DatabaseHelper.GetPredictionHistory(int.MaxValue).First(item => item.Issue == "999101" && item.AnalysisPeriods == 50);
+    var row = DatabaseHelper.GetPredictionHistory(int.MaxValue).First(item => item.Issue == "999101" && item.AnalysisPeriods == 7250);
     LearningOutcome first = DatabaseHelper.ApplyAutomaticLearningForPrediction(row.Id, "Tiger");
     LearningOutcome second = DatabaseHelper.ApplyAutomaticLearningForPrediction(row.Id, "Tiger");
     var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue).First(item => item.Id == row.Id);
@@ -1111,7 +1139,7 @@ void AutomaticLearningEvaluationIsChronological()
         !string.IsNullOrWhiteSpace(item.DefenseColor) && !string.IsNullOrWhiteSpace(item.ActualColor)),
         "latest 50 validation rows are missing color predictions or actual colors");
     AutoLearningEvaluation.SaveLatest50ToPredictionHistory(result);
-    var savedColor = V7PredictionHistoryService.GetHistory(int.MaxValue)
+    var savedColor = DatabaseHelper.GetPredictionHistory(int.MaxValue)
         .First(item => item.Issue == rows[^1].Period && item.ModelVersion == "V7 AutoLearning Validation");
     Assert(V7PredictionHistoryService.ExtractColorPrediction(savedColor.ScoreDetails) != "-",
         "latest-50 history did not display main and defense colors");
@@ -1202,7 +1230,7 @@ void ColorPredictionHistoryPersistsSnapshot()
     for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
     V7PredictionHistoryService.SaveAll("999202", rows);
     var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 ML LightGBM");
+        .Single(item => item.Issue == "999202" && item.ModelVersion == "V6.5 AutoLearning");
     Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");

@@ -77,11 +77,14 @@ namespace 六合分析软件
             return $"错因学习：依据最近{samples.Count}条已开奖复盘，小幅校正不超过±{MaximumScoreAdjustment:F0}分；近期较有效={strongest}，较弱={weakest}";
         }
 
-        public static bool IsEligibleV65LearningSample(DatabaseHelper.PredictionRecord record, int requestedPeriods)
-        {
-            return string.Equals(record.ModelVersion?.Trim(), "V6.5", StringComparison.Ordinal) &&
-                IsSameAnalysisBucket(record.AnalysisPeriods, requestedPeriods);
-        }
+    public static bool IsEligibleV65LearningSample(DatabaseHelper.PredictionRecord record, int requestedPeriods)
+    {
+        if (!string.Equals(record.ModelVersion?.Trim(), "V6.5", StringComparison.Ordinal))
+            return false;
+        if (requestedPeriods == 50) return record.AnalysisPeriods == 50;
+        if (requestedPeriods == 100) return record.AnalysisPeriods == 100;
+        return record.AnalysisPeriods is not (50 or 100 or 200 or 500);
+    }
 
         public static bool IsSameAnalysisBucket(int storedPeriods, int requestedPeriods)
         {

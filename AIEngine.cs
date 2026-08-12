@@ -26,11 +26,11 @@ namespace 六合分析软件
         };
         private static readonly ZodiacPredictEngineV2.WeightConfig Period100Weights = new()
         {
-            FrequencyWeight = 0.16,
-            RecentTrendWeight = 0.16,
-            OmissionWeight = 0.20,
-            HotColdWeight = 0.16,
-            PeriodPatternWeight = 0.32,
+            FrequencyWeight = 0.24,
+            RecentTrendWeight = 0.13,
+            OmissionWeight = 0.16,
+            HotColdWeight = 0.20,
+            PeriodPatternWeight = 0.27,
             ConsecutiveWeight = 0
         };
         private static readonly ZodiacPredictEngineV2.WeightConfig AllHistoryWeights = new()
@@ -325,16 +325,15 @@ namespace 六合分析软件
                     return;
 
                 result.PredictPeriod = nextPeriod;
-                ModelMemoryState memory = AutoLearningTrainer.EnsureInitialTraining();
-                AutoLearningSnapshot snapshot = AutoLearningSnapshotBuilder.Build(result, memory);
-                if (!snapshot.Result.UsedFallback)
-                {
-                    result.Top3 = snapshot.Result.Ranking.Take(3).Select(item => item.Zodiac).ToList();
-                    result.Top6 = snapshot.Result.Ranking.Take(6).Select(item => item.Zodiac).ToList();
-                    result.Bottom3 = snapshot.Result.Ranking.TakeLast(3).Select(item => item.Zodiac).ToList();
-                    result.RecommendedNumbers.Clear();
-                    BuildRecommendedNumbers(result, result.AnalysisPeriods);
-                }
+                // 三条基础模型必须保留自己的原始排序；自动学习只能在它们保存完
+                // 同一期快照后单独生成第四条预测，不能把基础模型反向覆盖。
+                string[] finalRanking = result.AllScores
+                    .OrderByDescending(s => s.TotalScore)
+                    .Select(s => s.Zodiac)
+                    .ToArray();
+                string finalRankingJson = System.Text.Json.JsonSerializer.Serialize(finalRanking);
+                string baseModelScoresJson = System.Text.Json.JsonSerializer.Serialize(
+                    result.AllScores.ToDictionary(s => s.Zodiac, s => s.TotalScore));
 
                 string predictNumbers = string.Join(",", result.RecommendedNumbers.Select(n => n.ToString("D2")));
 
@@ -352,10 +351,10 @@ namespace 六合分析软件
                     scoreDetails + "#重点号码:" + result.NumberScoreDetails,
                     result.AnalysisText.Split(Environment.NewLine)
                         .LastOrDefault(line => line.StartsWith("错因学习：", StringComparison.Ordinal)) ?? "",
-                    snapshot.FinalRankingJson,
-                    snapshot.BaseModelScoresJson,
-                    snapshot.FeatureSnapshotJson,
-                    snapshot.WeightSnapshotJson);
+                    finalRankingJson,
+                    baseModelScoresJson,
+                    string.Empty,
+                    string.Empty);
             }
             catch { }
         }

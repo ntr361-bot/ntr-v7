@@ -16,6 +16,43 @@ public sealed record AutoLearningSnapshot(
 
 public static class AutoLearningSnapshotBuilder
 {
+    public static AutoLearningSnapshot BuildFromBasePredictions(string issue,
+        IReadOnlyList<DatabaseHelper.PredictionRecord> records, ModelMemoryState memory)
+    {
+        var baseRows = records.Where(record => record.Issue == issue &&
+                record.ModelVersion == "V6.5" &&
+                ExperimentModels.AllKeys.Take(3).Contains(ExperimentModels.ForPeriods(record.AnalysisPeriods)))
+            .GroupBy(record => ExperimentModels.ForPeriods(record.AnalysisPeriods))
+            .ToDictionary(group => group.Key, group => group.Single());
+        if (baseRows.Count != 3)
+            throw new InvalidDataException("自动学习需要同一期完整的50期、100期和全历史预测快照");
+
+        var rankings = baseRows.ToDictionary(pair => pair.Key, pair =>
+            JsonSerializer.Deserialize<string[]>(pair.Value.FinalRankingJson) ?? Array.Empty<string>());
+        if (rankings.Values.Any(ranking => ranking.Length != 12 || ranking.Distinct().Count() != 12))
+            throw new InvalidDataException("基础模型快照缺少完整12生肖排序");
+
+        string[] baseline = rankings[ExperimentModels.AllHistory];
+        var rows = baseline.Select(zodiac =>
+        {
+            int r50 = Array.IndexOf(rankings[ExperimentModels.Period50], zodiac) + 1;
+            int r100 = Array.IndexOf(rankings[ExperimentModels.Period100], zodiac) + 1;
+            int rall = Array.IndexOf(rankings[ExperimentModels.AllHistory], zodiac) + 1;
+            double consensus = new[] { r50, r100, rall }.Distinct().Count() == 1 ? 1 :
+                new[] { r50, r100, rall }.GroupBy(x => x).Max(x => x.Count()) >= 2 ? .5 : 0;
+            return new ZodiacMetaFeatures(zodiac, new Dictionary<string, double>
+            {
+                ["AI"] = (13-r50)/12d,
+                ["ML"] = (13-r100)/12d,
+                ["State"] = (13-rall)/12d,
+                ["Rule"] = consensus
+            }, new Dictionary<string, double> { ["model_consensus"] = consensus });
+        }).ToArray();
+        var input = new MetaPredictionInput(issue, rows);
+        var result = new MetaPredictionEngine().Predict(input, memory, baseline);
+        return new AutoLearningSnapshot(input, baseline, result, memory.Weights);
+    }
+
     public static AutoLearningSnapshot Build(AIEngine.PredictResult prediction, ModelMemoryState memory)
     {
         var history = DatabaseHelper.GetHistory()
