@@ -535,8 +535,9 @@ namespace 六合分析软件
         private void RenderMultiPeriodBacktest()
         {
             backtestPanel.Controls.Clear();
-            int[] periods = { 50, 100 };
-            var reports = periods.Select(p => AIBacktestV2.Run(trainPeriods: p, testCount: 30)).ToList();
+            var history = DatabaseHelper.GetHistory();
+            int minimumTraining = Math.Min(100, Math.Max(10, history.Count / 2));
+            V65ExperimentBacktestResult report = V65ExperimentBacktestService.Run(history, minimumTraining);
 
             Label title = new Label
             {
@@ -545,6 +546,7 @@ namespace 六合分析软件
                 ForeColor = Color.FromArgb(46, 139, 87),
                 Location = new Point(20, 10), AutoSize = true
             };
+            title.Text = "V6.5 four-model rolling backtest (50 / 100 / all history / auto learning)";
             backtestPanel.Controls.Add(title);
 
             DataGridView grid = new DataGridView
@@ -558,9 +560,13 @@ namespace 六合分析软件
             grid.Columns.Add("Top3", "前3命中率"); grid.Columns.Add("Top6", "前6命中率");
             grid.Columns.Add("HitStreak", "最大连中"); grid.Columns.Add("MissStreak", "最大连失");
             grid.Columns.Add("Model", "最佳模型");
-            foreach (var report in reports)
-                grid.Rows.Add(report.TrainPeriods, report.TotalTests, $"{report.Top3HitRate:F1}%",
-                    $"{report.Top6HitRate:F1}%", report.MaxConsecutiveHits, report.MaxConsecutiveMiss, report.BestModel);
+            grid.Columns.Clear();
+            grid.Columns.Add("Model", "Experiment model"); grid.Columns.Add("Tests", "Tests");
+            grid.Columns.Add("Top3", "TOP3"); grid.Columns.Add("Top6", "TOP6");
+            grid.Columns.Add("MissStreak", "TOP6 max misses"); grid.Columns.Add("Stability", "Stability");
+            foreach (ModelScoreResult model in report.Models)
+                grid.Rows.Add(model.ModelName, model.TotalTests, $"{model.Top3HitRate:P1}",
+                    $"{model.Top6HitRate:P1}", model.MaxConsecutiveMisses, model.StabilityGrade);
             backtestPanel.Controls.Add(grid);
 
             Label note = new Label
@@ -569,6 +575,7 @@ namespace 六合分析软件
                 Font = new Font("微软雅黑", 10), ForeColor = Color.Gray,
                 Location = new Point(20, 215), AutoSize = true
             };
+            note.Text = "Each target uses only prior draws. V6.5 four models share the same targets; intelligent history and ML experiments are excluded.";
             backtestPanel.Controls.Add(note);
             backtestPanel.Height = 270;
             backtestPanel.Visible = true;

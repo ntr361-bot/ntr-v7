@@ -15,33 +15,6 @@ namespace 六合分析软件
         // The external reasoning model is tracked separately by OpenAIService.
         public const string Version = "AI生肖预测 V6.5";
         private const int DefaultPeriods = AISettings.AllHistoryModeValue;
-        private static readonly V65RuleScoringEngine.WeightConfig Period50Weights = new()
-        {
-            FrequencyWeight = 0.16,
-            RecentTrendWeight = 0.16,
-            OmissionWeight = 0.20,
-            HotColdWeight = 0.16,
-            PeriodPatternWeight = 0.32,
-            ConsecutiveWeight = 0
-        };
-        private static readonly V65RuleScoringEngine.WeightConfig Period100Weights = new()
-        {
-            FrequencyWeight = 0.24,
-            RecentTrendWeight = 0.13,
-            OmissionWeight = 0.16,
-            HotColdWeight = 0.20,
-            PeriodPatternWeight = 0.27,
-            ConsecutiveWeight = 0
-        };
-        private static readonly V65RuleScoringEngine.WeightConfig AllHistoryWeights = new()
-        {
-            FrequencyWeight = 0.17,
-            RecentTrendWeight = 0.17,
-            OmissionWeight = 0.15,
-            HotColdWeight = 0.17,
-            PeriodPatternWeight = 0.34,
-            ConsecutiveWeight = 0
-        };
 
         /// <summary>
         /// 统一预测结果
@@ -147,29 +120,17 @@ namespace 六合分析软件
             return periods is 200 or 500 ? AISettings.AllHistoryModeValue : periods;
         }
 
-        private static V65RuleScoringEngine.WeightConfig GetWeightsForPeriods(int periods)
-        {
-            return periods switch
-            {
-                50 => Period50Weights,
-                100 => Period100Weights,
-                AISettings.AllHistoryModeValue => AllHistoryWeights,
-                _ => periods < 100 ? Period50Weights
-                    : Period100Weights
-            };
-        }
-
         private static PredictResult RunPrediction(int periods, bool includeExternalAnalysis)
         {
             var engine = new V65RuleScoringEngine();
             int historyLimit = AISettings.ResolveHistoryLimit(periods);
-            // 由严格滚动回测选择权重，避免固定权重长期偏离当前数据分布。
-            var v2Result = engine.Predict(periods);
+            // 正式三条基础模型固定使用各自的 V6.5 权重；旧候选权重搜索只允许在实验回测中运行。
+            var v2Result = engine.Predict(periods, V65ExperimentPipeline.GetWeightsForPeriods(periods));
             V65RuleScoringEngine.WeightConfig selectedWeights = v2Result.UsedWeights;
             string learningDetails = PredictionLearningService.ApplyCalibration(v2Result, v2Result.AnalysisPeriods);
-            // 回测只用于验证，不参与使用固定分周期权重的正式预测。
-            var rollingBacktest = new RollingBacktestResult();
-            var modelCompetition = new List<ModelScoreResult>();
+            // 回测与模型竞争由 V65ExperimentBacktestService 按需执行，不能伪装为正式预测已经运行。
+            RollingBacktestResult? rollingBacktest = null;
+            List<ModelScoreResult>? modelCompetition = null;
 
             // 计算预测期号（最新期号 + 1）
             string nextPeriod = "";
@@ -219,9 +180,9 @@ namespace 六合分析软件
             prompt.AppendLine($"可信度：{v2Result.Confidence}");
             prompt.AppendLine($"最佳模型：{v2Result.BestModel}");
             prompt.AppendLine($"正式V6.5分周期权重：频率{selectedWeights.FrequencyWeight:P0} 趋势{selectedWeights.RecentTrendWeight:P0} 遗漏{selectedWeights.OmissionWeight:P0} 冷热{selectedWeights.HotColdWeight:P0} 周期{selectedWeights.PeriodPatternWeight + selectedWeights.ConsecutiveWeight:P0}");
-            if (rollingBacktest.TotalTests > 0)
+            if (rollingBacktest?.TotalTests > 0)
                 prompt.AppendLine($"滚动回测：平均Top3 {rollingBacktest.AverageTop3HitRate:F2}% 平均Top6 {rollingBacktest.AverageTop6HitRate:F2}% 稳定性{rollingBacktest.StabilityGrade}级");
-            if (modelCompetition.Count > 0)
+            if (modelCompetition?.Count > 0)
                 prompt.AppendLine($"模型竞争第一名：{modelCompetition[0].ModelName} 综合评分{modelCompetition[0].CombinedScore:F1}");
             prompt.AppendLine();
             prompt.AppendLine("--- 12生肖综合评分排行 ---");

@@ -55,6 +55,8 @@ var tests = new (string Name, Action Run)[]
     ,("四模型实验键独立且稳定", ExperimentalModelKeysAreStable)
     ,("自动学习只读取同一期三条基础快照", AutoLearningUsesThreeBaseSnapshots)
     ,("V6.5回测使用正式三模型快照", V65BacktestUsesFormalModelChain)
+    ,("V6.5三条基础模型应用各自固定权重", V65BaseModelsUseConfiguredWeights)
+    ,("V6.5回测实际比较四条实验模型", V65BacktestComparesFourExperimentModels)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -835,6 +837,44 @@ void V65BacktestUsesFormalModelChain()
     Assert(snapshot.Input.Zodiacs.All(item => item.BaseScores.Keys.OrderBy(key => key)
         .SequenceEqual(new[] { "AI", "ML", "Rule", "State" })),
         "V6.5回测没有从三条正式基础模型构造自动学习输入");
+}
+
+void V65BaseModelsUseConfiguredWeights()
+{
+    var history = Enumerable.Range(1, 40).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2026000 + index).ToString(),
+        SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙" }[index % 5],
+        SpecialNumber = ((index % 49) + 1).ToString("D2")
+    }).ToArray();
+
+    var models = V65ExperimentPipeline.RunBaseModels(history, "2026041");
+    var fifty = models.Single(model => model.AnalysisPeriods == 50).Result.UsedWeights;
+    var hundred = models.Single(model => model.AnalysisPeriods == 100).Result.UsedWeights;
+    var all = models.Single(model => model.AnalysisPeriods == AISettings.AllHistoryModeValue).Result.UsedWeights;
+    Assert(fifty.FrequencyWeight == 0.16 && fifty.PeriodPatternWeight == 0.32,
+        "50期正式预测没有应用V6.5固定权重");
+    Assert(hundred.FrequencyWeight == 0.24 && hundred.HotColdWeight == 0.20,
+        "100期正式预测没有应用V6.5固定权重");
+    Assert(all.FrequencyWeight == 0.17 && all.PeriodPatternWeight == 0.34,
+        "全部历史正式预测没有应用V6.5固定权重");
+}
+
+void V65BacktestComparesFourExperimentModels()
+{
+    var history = Enumerable.Range(1, 48).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2026000 + index).ToString(),
+        SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" }[index % 6],
+        SpecialNumber = ((index % 49) + 1).ToString("D2")
+    }).ToArray();
+
+    var result = V65ExperimentBacktestService.Run(history, minimumTrainingPeriods: 12);
+    Assert(result.Models.Select(model => model.ModelName).SequenceEqual(
+            new[] { "V6.5-50期", "V6.5-100期", "V6.5-全部历史", "V6.5-自动学习" }),
+        "V6.5回测没有只比较四条正式实验模型");
+    Assert(result.Models.All(model => model.TotalTests == 36),
+        "四个V6.5实验模型没有在相同目标期上比较");
 }
 
 void OnlyActualWaveColorIsBold()

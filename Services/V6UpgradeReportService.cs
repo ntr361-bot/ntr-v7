@@ -18,6 +18,20 @@ namespace 六合分析软件
             sb.AppendLine("说明：本报告只读取历史数据，不修改开奖记录。");
             sb.AppendLine();
 
+            if (history.Count >= 20)
+            {
+                int minimumTraining = Math.Min(100, Math.Max(10, history.Count / 2));
+                V65ExperimentBacktestResult backtest = V65ExperimentBacktestService.Run(history, minimumTraining);
+                sb.AppendLine("V6.5 四模型严格滚动验证：");
+                sb.AppendLine($"训练起点：{minimumTraining}期；每个目标期只使用此前数据。");
+                sb.AppendLine("智能预测历史与ML实验均不参与本表。");
+                sb.AppendLine();
+                sb.AppendLine("模型竞争结果：");
+                foreach (ModelScoreResult model in backtest.Models.OrderByDescending(model => model.CombinedScore))
+                    AppendScore(sb, model.ModelName, model);
+                return sb.ToString();
+            }
+
             if (history.Count < 350)
             {
                 sb.AppendLine("历史数据不足：至少需要350期才能完成300期训练 + 50期测试。");
