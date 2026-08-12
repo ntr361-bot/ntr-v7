@@ -58,6 +58,7 @@ public static class V65ExperimentScoreboardView
             Size = new Size(1088, 355),
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None,
+            ScrollBars = ScrollBars.Vertical,
             AllowUserToAddRows = false,
             AllowUserToDeleteRows = false,
             AllowUserToResizeRows = false,

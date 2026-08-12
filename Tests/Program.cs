@@ -216,6 +216,9 @@ void ScoreboardReservesHorizontalScrollSpace()
         "scoreboard must have its final height before bottom-anchored controls are created");
     Assert(scoreboard.Controls.OfType<HScrollBar>().Single().Bottom <= scoreboard.ClientSize.Height,
         "horizontal scroll bar must remain inside the visible scoreboard area");
+    DataGridView grid = scoreboard.Controls.OfType<DataGridView>().Single();
+    Assert(grid.ScrollBars == ScrollBars.Vertical,
+        "the grid's native horizontal bar must be hidden when the explicit bar is present");
 }
 
 void HistoricalWaveColorDoesNotClaimCurrentWebMap()
