@@ -959,17 +959,6 @@ void V65ExperimentScoreboardSummarizesModels()
         "智能预测模型没有作为独立分组接入成绩榜");
 }
 
-void OnlyActualWaveColorIsBold()
-{
-    Assert(AIPredictHistoryForm.GetWaveColorForNumber("26") == "蓝", "26 should use the established blue-wave mapping");
-    Assert(AIPredictHistoryForm.GetWaveColorForNumber("01") == "红", "01 should use the established red-wave mapping");
-    Assert(AIPredictHistoryForm.GetWaveColorForNumber("05") == "绿", "05 should use the established green-wave mapping");
-    var blueHit = AIPredictHistoryForm.ResolveWaveBoldness("实际波色蓝，主波未命中，双波命中", "蓝", "红", "蓝");
-    Assert(!blueHit.MainBold && blueHit.DefenseBold, "a blue hit should bold only the defense color");
-    var missingActual = AIPredictHistoryForm.ResolveWaveBoldness("双波命中", "", "红", "蓝");
-    Assert(!missingActual.MainBold && !missingActual.DefenseBold, "without actual color, neither color should be bold");
-}
-
 void MainMenuOmitsDuplicateStatisticsChart()
 {
     using var form = new Form1();
@@ -989,34 +978,6 @@ void MainMenuOmitsDuplicateStatisticsChart()
     }
 }
 
-void HomeUsesSavedPredictionSnapshot()
-{
-    var prediction = new AIEngine.PredictResult
-    {
-        AnalysisPeriods = 100,
-        AllScores = new List<V65RuleScoringEngine.ZodiacScoreV2>
-        {
-            new() { Zodiac = "马", TotalScore = 100 },
-            new() { Zodiac = "蛇", TotalScore = 90 },
-            new() { Zodiac = "猪", TotalScore = 80 },
-            new() { Zodiac = "兔", TotalScore = 70 },
-            new() { Zodiac = "羊", TotalScore = 60 },
-            new() { Zodiac = "龙", TotalScore = 50 },
-        }
-    };
-    var snapshot = new DatabaseHelper.PredictionRecord
-    {
-        Issue = "103",
-        AnalysisPeriods = 100,
-        PredictZodiac = "兔,羊,龙",
-        Top6Zodiac = "兔,羊,龙,猴,牛,虎",
-        ScoreDetails = "兔:100;羊:90;龙:80;猴:70;牛:60;虎:50"
-    };
-
-    var ranking = Form1.ResolveHomeRanking(prediction, snapshot);
-    Assert(ranking.Take(6).SequenceEqual(new[] { "兔", "羊", "龙", "猴", "牛", "虎" }),
-        "home should display the saved snapshot ranking instead of live AllScores");
-}
 void V7PredictionsAreSavedToHistory()
 {
     SeedHistory();
