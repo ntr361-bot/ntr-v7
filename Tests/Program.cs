@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Windows.Forms;
 using 六合分析软件;
 
 if (args.Contains("--evaluate-auto-learning", StringComparer.OrdinalIgnoreCase))
@@ -103,6 +104,9 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
     ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
     ,("web wave-color mapping is parsed independently from number API", WebWaveColorMappingIsParsed)
+    ,("scoreboard reserves space for the horizontal scroll bar", ScoreboardReservesHorizontalScrollSpace)
+    ,("current web wave map is never claimed for a prior lunar year", HistoricalWaveColorDoesNotClaimCurrentWebMap)
+    ,("crawler save backfills a missing wave color without counting a new draw", CrawlerSaveBackfillsWaveColor)
 };
 
 int failures = 0;
@@ -203,6 +207,49 @@ void WebWaveColorMappingIsParsed()
     IReadOnlyDictionary<string, string> colors = DataCrawler.ExtractWaveColorMapFromPageScript(script);
     Assert(colors.Count == 5 && colors["01"] == "红" && colors["03"] == "蓝" && colors["49"] == "绿",
         "网页脚本中的波色映射没有独立解析");
+}
+
+void ScoreboardReservesHorizontalScrollSpace()
+{
+    Control scoreboard = V65ExperimentScoreboardView.Create();
+    Assert(scoreboard.Height >= 520,
+        "scoreboard must have its final height before bottom-anchored controls are created");
+    Assert(scoreboard.Controls.OfType<HScrollBar>().Single().Bottom <= scoreboard.ClientSize.Height,
+        "horizontal scroll bar must remain inside the visible scoreboard area");
+}
+
+void HistoricalWaveColorDoesNotClaimCurrentWebMap()
+{
+    var historical = new DataCrawler.CrawlRecord
+    {
+        Period = "2025123",
+        SpecialNumber = "01",
+        Date = "2025-08-10 21:30:00"
+    };
+    DataCrawler.ApplyWaveColorSource(historical, new Dictionary<string, string> { ["01"] = "红" }, new DateTime(2026, 8, 12));
+    Assert(historical.WaveColorSource == "LocalReference",
+        "a current web map must not be labelled as historical web evidence");
+}
+
+void CrawlerSaveBackfillsWaveColor()
+{
+    int saved = DatabaseHelper.SaveCrawlerData(new List<DataCrawler.CrawlRecord>
+    {
+        new()
+        {
+            Period = "100",
+            Numbers = "010203040506",
+            SpecialNumber = "07",
+            SpecialZodiac = "马",
+            SpecialWaveColor = "红",
+            WaveColorSource = "LocalReference",
+            Date = "2026-01-01 21:30:00"
+        }
+    });
+    DatabaseHelper.HistoryRecord record = DatabaseHelper.GetHistory().Single(row => row.Period == "100");
+    Assert(saved == 0, "backfilling an existing draw must not be reported as a new draw");
+    Assert(record.SpecialWaveColor == "红" && record.WaveColorSource == "LocalReference",
+        "missing wave color fields were not backfilled");
 }
 
 void PredictionScoreUsesTargetYearMap()

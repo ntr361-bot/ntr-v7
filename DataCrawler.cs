@@ -21,7 +21,6 @@ namespace 六合分析软件
         private static readonly HttpClient HttpClient = CreateHttpClient();
 
         // 生肖缓存
-        private static Dictionary<string, Dictionary<string, List<string>>> _shengxiaoCache = new Dictionary<string, Dictionary<string, List<string>>>();
 
         /// <summary>
         /// 抓取结果
@@ -232,6 +231,7 @@ namespace 六合分析软件
         {
             var allRecords = new Dictionary<string, CrawlRecord>();
             IReadOnlyDictionary<string, string> webWaveColors = await FetchWebWaveColorMapAsync(cancellationToken);
+            DateTime webMapCapturedAt = DateTime.Now;
             int year = DateTime.Now.Year;
 
             for (int i = 0; i < 8 && allRecords.Count < periods; i++)
@@ -247,16 +247,7 @@ namespace 六合分析软件
 
                 foreach (var record in ParseJson(json))
                 {
-                    if (webWaveColors.TryGetValue(record.SpecialNumber, out string? waveColor))
-                    {
-                        record.SpecialWaveColor = waveColor;
-                        record.WaveColorSource = "WebPage";
-                    }
-                    else
-                    {
-                        record.SpecialWaveColor = V65MappingService.GetWaveColor(record.SpecialNumber);
-                        record.WaveColorSource = "LocalFallback";
-                    }
+                    ApplyWaveColorSource(record, webWaveColors, webMapCapturedAt);
                     if (!string.IsNullOrEmpty(record.Period))
                         allRecords[record.Period] = record;
                 }
@@ -266,6 +257,29 @@ namespace 六合分析软件
                 .OrderByDescending(r => int.TryParse(r.Period, out int period) ? period : 0)
                 .Take(periods)
                 .ToList();
+        }
+
+        /// <summary>
+        /// 网页脚本只证明抓取时所在农历年度的波色表；跨农历年度的记录不得标成网页来源。
+        /// </summary>
+        public static void ApplyWaveColorSource(
+            CrawlRecord record,
+            IReadOnlyDictionary<string, string> currentWebMap,
+            DateTime webMapCapturedAt)
+        {
+            DateTime recordDate = DateTime.TryParse(record.Date, out DateTime parsed) ? parsed : DateTime.MinValue;
+            bool sameLunarYear = recordDate != DateTime.MinValue &&
+                V65MappingService.GetLunarYear(recordDate) == V65MappingService.GetLunarYear(webMapCapturedAt);
+
+            if (sameLunarYear && currentWebMap.TryGetValue(record.SpecialNumber, out string? webColor))
+            {
+                record.SpecialWaveColor = webColor;
+                record.WaveColorSource = "WebPageLunarYear";
+                return;
+            }
+
+            record.SpecialWaveColor = V65MappingService.GetWaveColor(record.SpecialNumber);
+            record.WaveColorSource = "LocalReference";
         }
 
         private static async Task<IReadOnlyDictionary<string, string>> FetchWebWaveColorMapAsync(CancellationToken cancellationToken)
@@ -476,26 +490,6 @@ namespace 六合分析软件
         public static string GetShengXiaoByTeMa(string teMa, string yearPet)
         {
             return V65MappingService.GetZodiacBySpecialNumber(teMa, yearPet);
-
-            if (string.IsNullOrEmpty(teMa) || string.IsNullOrEmpty(yearPet))
-                return "";
-
-            try
-            {
-                int num = int.Parse(teMa);
-                Dictionary<string, List<string>> map = BuildShengXiaoMap(yearPet);
-
-                foreach (var kvp in map)
-                {
-                    if (kvp.Value.Contains(num.ToString("D2")))
-                    {
-                        return ConvertShengXiao(kvp.Key);
-                    }
-                }
-            }
-            catch (Exception ex) { AppLogger.Error("计算特码生肖", ex); }
-
-            return "";
         }
 
         /// <summary>
@@ -506,96 +500,6 @@ namespace 六合分析软件
         {
             return V65MappingService.GetZodiacNumberMap(yearPet)
                 .ToDictionary(pair => pair.Key, pair => pair.Value.ToList());
-
-            // 检查缓存
-            if (_shengxiaoCache.ContainsKey(yearPet))
-                return _shengxiaoCache[yearPet];
-
-            // 生肖顺序（与网站JS一致）
-            string[] shengxiaoOrder = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-
-            // 繁转简
-            string simplifiedPet = ConvertShengXiao(yearPet);
-
-            int yearIndex = -1;
-            for (int i = 0; i < shengxiaoOrder.Length; i++)
-            {
-                if (shengxiaoOrder[i] == simplifiedPet)
-                {
-                    yearIndex = i;
-                    break;
-                }
-            }
-
-            if (yearIndex < 0)
-            {
-                // 如果找不到，尝试用繁体
-                for (int i = 0; i < shengxiaoOrder.Length; i++)
-                {
-                    if (ConvertShengXiao(shengxiaoOrder[i]) == simplifiedPet)
-                    {
-                        yearIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            if (yearIndex < 0)
-                return new Dictionary<string, List<string>>();
-
-            // 构建反转顺序（与JS逻辑一致）
-            // s = [yearPet, yearPet-1, yearPet-2, ..., yearPet+1]
-            List<string> reversedOrder = new List<string>();
-
-            // 从当前生肖开始，逆时针排列
-            for (int i = yearIndex; i >= 0; i--)
-                reversedOrder.Add(shengxiaoOrder[i]);
-            for (int i = shengxiaoOrder.Length - 1; i > yearIndex; i--)
-                reversedOrder.Add(shengxiaoOrder[i]);
-
-            // 分配号码
-            Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
-            foreach (var pet in shengxiaoOrder)
-                map[pet] = new List<string>();
-
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 12; j++)
-                {
-                    int num = 12 * i + (j + 1);
-                    if (num <= 48)
-                    {
-                        map[reversedOrder[j]].Add(num.ToString("D2"));
-                    }
-                }
-            }
-
-            // 49号分配给年份生肖
-            map[simplifiedPet].Add("49");
-
-            _shengxiaoCache[yearPet] = map;
-            return map;
-        }
-
-        /// <summary>
-        /// 繁转简生肖
-        /// </summary>
-        private static string ConvertShengXiao(string pet)
-        {
-            if (string.IsNullOrEmpty(pet))
-                return "";
-
-            Dictionary<string, string> map = new Dictionary<string, string>
-            {
-                { "鼠", "鼠" }, { "牛", "牛" }, { "虎", "虎" }, { "兔", "兔" },
-                { "龍", "龙" }, { "蛇", "蛇" }, { "馬", "马" }, { "羊", "羊" },
-                { "猴", "猴" }, { "雞", "鸡" }, { "狗", "狗" }, { "豬", "猪" }
-            };
-
-            if (map.ContainsKey(pet))
-                return map[pet];
-
-            return pet;
         }
 
         /// <summary>

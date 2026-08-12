@@ -8,7 +8,12 @@ public static class V65ExperimentScoreboardView
 {
     public static Control Create()
     {
-        var panel = new Panel { BackColor = Color.FromArgb(244, 247, 252), BorderStyle = BorderStyle.FixedSingle };
+        var panel = new Panel
+        {
+            Size = new Size(1120, 520),
+            BackColor = Color.FromArgb(244, 247, 252),
+            BorderStyle = BorderStyle.FixedSingle
+        };
         var header = new Panel
         {
             Location = new Point(0, 0), Height = 58, Dock = DockStyle.Top,
@@ -50,7 +55,7 @@ public static class V65ExperimentScoreboardView
         var grid = new DataGridView
         {
             Location = new Point(14, 116),
-            Size = new Size(1088, 384),
+            Size = new Size(1088, 355),
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None,
             AllowUserToAddRows = false,
@@ -98,6 +103,33 @@ public static class V65ExperimentScoreboardView
         grid.Columns["MaxMiss"].Width = 154;
         grid.Columns["CurrentMiss"].Width = 126;
         grid.Columns["Status"].Width = 76;
+        var horizontalScroll = new HScrollBar
+        {
+            Location = new Point(14, 478),
+            Size = new Size(1088, 18),
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+            SmallChange = 40,
+            LargeChange = 300,
+            Visible = true
+        };
+        var scrollHint = new Label
+        {
+            Text = "← 左右拖动滑块查看右侧列：近50期、连续未中、状态 →",
+            Location = new Point(128, 506),
+            AutoSize = true,
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left,
+            ForeColor = Color.FromArgb(67, 102, 143),
+            Font = new Font("微软雅黑", 8.5f)
+        };
+        void RefreshHorizontalScroll()
+        {
+            int offset = Math.Max(0, grid.Columns.GetColumnsWidth(DataGridViewElementStates.Visible) - grid.DisplayRectangle.Width);
+            horizontalScroll.Maximum = Math.Max(0, offset + horizontalScroll.LargeChange - 1);
+            horizontalScroll.Value = Math.Min(horizontalScroll.Value, offset);
+            horizontalScroll.Enabled = offset > 0;
+        }
+        horizontalScroll.ValueChanged += (_, _) => grid.HorizontalScrollingOffset = horizontalScroll.Value;
+        grid.Resize += (_, _) => RefreshHorizontalScroll();
         grid.CellFormatting += (_, e) =>
         {
             if (e.ColumnIndex == grid.Columns["Status"].Index && e.Value is string status)
@@ -135,11 +167,12 @@ public static class V65ExperimentScoreboardView
                     row.MaximumTop6Misses, row.CurrentTop6Misses, row.Status);
                 DataGridViewRow gridRow = grid.Rows[index];
                 bool v65 = row.Group == "V6.5四模型实验";
-                gridRow.DefaultCellStyle.BackColor = v65 ? Color.FromArgb(240, 247, 255) : Color.FromArgb(248, 244, 255);
-                gridRow.Cells["Group"].Style.BackColor = v65 ? Color.FromArgb(211, 231, 251) : Color.FromArgb(231, 218, 249);
-                gridRow.Cells["Group"].Style.ForeColor = v65 ? Color.FromArgb(23, 91, 159) : Color.FromArgb(107, 68, 157);
+                gridRow.DefaultCellStyle.BackColor = v65 ? Color.FromArgb(249, 252, 255) : Color.FromArgb(253, 251, 255);
+                gridRow.Cells["Group"].Style.BackColor = v65 ? Color.FromArgb(236, 246, 255) : Color.FromArgb(246, 239, 255);
+                gridRow.Cells["Group"].Style.ForeColor = v65 ? Color.FromArgb(35, 84, 136) : Color.FromArgb(93, 67, 132);
                 gridRow.Cells["Group"].Style.Font = new Font(grid.Font, FontStyle.Bold);
                 gridRow.Cells["Model"].Style.Font = new Font(grid.Font, FontStyle.Bold);
+                gridRow.Cells["Model"].Style.ForeColor = Color.FromArgb(28, 43, 62);
             }
         }
 
@@ -148,7 +181,10 @@ public static class V65ExperimentScoreboardView
         panel.Controls.Add(refresh);
         panel.Controls.Add(note);
         panel.Controls.Add(grid);
+        panel.Controls.Add(horizontalScroll);
+        panel.Controls.Add(scrollHint);
         LoadRows();
+        RefreshHorizontalScroll();
         return panel;
     }
 }

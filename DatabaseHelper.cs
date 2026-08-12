@@ -695,6 +695,21 @@ namespace 六合分析软件
                     cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
                     cmd.Parameters.AddWithValue("@check", check);
                     saved += cmd.ExecuteNonQuery();
+
+                    using var waveUpdate = new SQLiteCommand(@"
+                        UPDATE History
+                        SET SpecialWaveColor = @waveColor,
+                            WaveColorSource = @waveSource
+                        WHERE Period = @period
+                          AND @waveColor <> ''
+                          AND (
+                              SpecialWaveColor IS NULL OR SpecialWaveColor = ''
+                              OR (WaveColorSource NOT LIKE 'WebPage%' AND @waveSource LIKE 'WebPage%')
+                          )", conn, transaction);
+                    waveUpdate.Parameters.AddWithValue("@period", r.Period);
+                    waveUpdate.Parameters.AddWithValue("@waveColor", r.SpecialWaveColor);
+                    waveUpdate.Parameters.AddWithValue("@waveSource", r.WaveColorSource);
+                    waveUpdate.ExecuteNonQuery();
                 }
                 transaction.Commit();
             }
@@ -802,22 +817,6 @@ namespace 六合分析软件
         private static string GetYearPet(string year)
         {
             return int.TryParse(year, out int value) ? V65MappingService.GetYearZodiac(value) : "";
-
-            // 生肖顺序
-            string[] shengxiao = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-
-            try
-            {
-                int y = int.Parse(year);
-                // 2020年是鼠年，作为基准
-                int offset = (y - 2020) % 12;
-                if (offset < 0) offset += 12;
-                return shengxiao[offset];
-            }
-            catch
-            {
-                return "";
-            }
         }
 
         // ===== AI 预测历史 =====
