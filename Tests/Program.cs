@@ -1159,6 +1159,8 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "mobile-trigger polling does not consume the cloud run request");
     Assert(workflow.Contains("$headers = @{ Authorization = \"Bearer $oidc\" }", StringComparison.Ordinal),
         "mobile-trigger polling must use the standard Authorization header through the site gateway");
+    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/publish", StringComparison.Ordinal),
+        "publisher must refresh the smart-ledger fallback copy as well as the ingress snapshot");
 }
 
 void V6CloudEndpointsAreConsistent()
