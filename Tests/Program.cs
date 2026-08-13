@@ -36,6 +36,7 @@ var tests = new (string Name, Action Run)[]
     ("强制覆盖", ForceOverwrite),
     ("历史数据为空", EmptyHistoryFails),
     ("历史数据格式错误", InvalidHistoryFails),
+    ("云端定时预测要求开奖期号推进", ScheduledPredictionRequiresAdvancedDraw),
     ("输出 JSON 校验", OutputJsonIsValid),
     ("latest.json 更新", LatestJsonUpdates),
     ("重复期号检测", DuplicateIssueFails),
@@ -409,6 +410,15 @@ void ValidCrawlDataPasses()
             Date = "2026-07-19 21:30:00"
         }
     });
+}
+
+void ScheduledPredictionRequiresAdvancedDraw()
+{
+    var stagnant = new LotteryRefreshResult("2026223", "2026223", "2026223", 500, 0, false);
+    AssertThrows<InvalidDataException>(() => LotteryDataRefresh.RequireAdvance(stagnant),
+        "scheduled prediction must fail when the draw issue did not advance");
+
+    LotteryDataRefresh.RequireAdvance(new LotteryRefreshResult("2026223", "2026224", "2026224", 500, 1, false));
 }
 
 void InvalidCrawlDataFails() => AssertThrows<InvalidDataException>(() =>

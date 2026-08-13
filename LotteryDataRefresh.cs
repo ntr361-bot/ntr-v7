@@ -10,6 +10,18 @@ public sealed record LotteryRefreshResult(
 
 public static class LotteryDataRefresh
 {
+    /// <summary>
+    /// Scheduled prediction must not silently succeed against an unchanged draw ledger.
+    /// </summary>
+    public static void RequireAdvance(LotteryRefreshResult result)
+    {
+        if (result.DryRun) return;
+        if (!long.TryParse(result.LocalIssueBefore, out long before) ||
+            !long.TryParse(result.LocalIssueAfter, out long after) || after <= before)
+            throw new InvalidDataException(
+                $"开奖期号未推进（更新前 {result.LocalIssueBefore}，更新后 {result.LocalIssueAfter}）；停止生成旧期预测并等待重试");
+    }
+
     public static async Task<LotteryRefreshResult> RefreshAsync(
         bool dryRun,
         CancellationToken cancellationToken = default)

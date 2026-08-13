@@ -129,6 +129,7 @@ jobs:
         shell: pwsh
         run: |
           $arguments = @('--refresh-data', '--refresh-only')
+          if ('${{ github.event_name }}' -eq 'schedule') { $arguments += '--require-advance' }
           if ('${{ inputs.dry_run }}' -eq 'true') { $arguments += '--dry-run' }
           dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
 

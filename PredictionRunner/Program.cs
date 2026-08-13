@@ -20,7 +20,8 @@ try
 
     if (arguments.ContainsKey("refresh-data"))
     {
-        await LotteryDataRefresh.RefreshAsync(arguments.ContainsKey("dry-run"));
+        LotteryRefreshResult refresh = await LotteryDataRefresh.RefreshAsync(arguments.ContainsKey("dry-run"));
+        if (arguments.ContainsKey("require-advance")) LotteryDataRefresh.RequireAdvance(refresh);
         if (arguments.ContainsKey("refresh-only")) return 0;
     }
 
@@ -79,6 +80,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
             case "--dry-run": parsed["dry-run"] = null; break;
             case "--refresh-data": parsed["refresh-data"] = null; break;
             case "--refresh-only": parsed["refresh-only"] = null; break;
+            case "--require-advance": parsed["require-advance"] = null; break;
             case "--generate-all": parsed["generate-all"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
@@ -89,4 +91,4 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--generate-all]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all]");
