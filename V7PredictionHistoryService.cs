@@ -49,9 +49,7 @@ public static class V7PredictionHistoryService
         string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
         ModelMemoryState memory = colorMemory;
         var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue);
-        int baseCount = saved.Count(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5" &&
-            (row.AnalysisPeriods is 50 or 100 || row.AnalysisPeriods == AISettings.AllHistoryModeValue));
-        if (baseCount < 3)
+        if (!HasCompleteV65BaseSnapshots(targetPeriod, saved))
             throw new InvalidOperationException("V6.5自动学习必须先取得同一期50期、100期和全部历史三条基础预测快照。");
         AutoLearningSnapshot auto = AutoLearningSnapshotBuilder.BuildFromBasePredictions(targetPeriod, saved, memory);
         string autoScores = string.Join(";", auto.Result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
@@ -63,6 +61,13 @@ public static class V7PredictionHistoryService
             auto.FinalRankingJson, auto.BaseModelScoresJson, auto.FeatureSnapshotJson, auto.WeightSnapshotJson);
         return new AutoLearningFormalPrediction(auto, color);
     }
+
+    public static bool HasCompleteV65BaseSnapshots(string targetPeriod,
+        IReadOnlyList<DatabaseHelper.PredictionRecord> records) =>
+        records.Where(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5")
+            .Select(row => ExperimentModels.ForPeriods(row.AnalysisPeriods))
+            .Distinct(StringComparer.Ordinal)
+            .Count() == 3;
 
     private static void SaveIntelligentAutoLearning(string targetPeriod,
         IReadOnlyList<DatabaseHelper.HistoryRecord> history, ColorPredictionResult color, string learningDetails)

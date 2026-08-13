@@ -933,6 +933,14 @@ void AutoLearningUsesThreeBaseSnapshots()
 
     AutoLearningSnapshot snapshot = AutoLearningSnapshotBuilder.BuildFromBasePredictions(
         "base-snapshot", rows, new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate());
+    var dynamicAllRows = rows.Select(row => new DatabaseHelper.PredictionRecord
+    {
+        Issue = row.Issue, ModelVersion = row.ModelVersion,
+        AnalysisPeriods = row.AnalysisPeriods == AISettings.AllHistoryModeValue ? 1320 : row.AnalysisPeriods,
+        FinalRankingJson = row.FinalRankingJson
+    }).ToArray();
+    Assert(V7PredictionHistoryService.HasCompleteV65BaseSnapshots("base-snapshot", dynamicAllRows),
+        "dynamic all-history sample count must be accepted as the third V6.5 base snapshot");
     Assert(snapshot.BaselineRanking.SequenceEqual(all), "自动学习基线必须来自全部历史基础模型快照");
     ZodiacMetaFeatures mouse = snapshot.Input.Zodiacs.Single(item => item.Zodiac == "鼠");
     Assert(mouse.BaseScores["AI"] == mouse.BaseScores["ML"] && mouse.BaseScores["ML"] < mouse.BaseScores["State"],
