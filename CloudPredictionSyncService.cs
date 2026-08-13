@@ -13,7 +13,7 @@ public sealed record CloudSyncResult(
 
 public static class CloudPredictionSyncService
 {
-    private const string RootUrl = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync";
+    private const string MachineSyncUrl = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop";
     private static readonly HttpClient Client = CreateClient();
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -24,7 +24,7 @@ public static class CloudPredictionSyncService
     {
         int newDraws = await SyncHistoryAsync(cancellationToken);
         CloudManifest manifest = await DownloadAsync<CloudManifest>(
-            $"{RootUrl}/manifest?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}",
+            "manifest",
             cancellationToken);
         if (manifest.Status != "success" || manifest.Records.Count == 0)
             throw new InvalidDataException("云端预测清单为空");
@@ -40,7 +40,7 @@ public static class CloudPredictionSyncService
             try
             {
                 prediction = await DownloadAsync<CloudDailyPrediction>(
-                    $"{RootUrl}/prediction?file={Uri.EscapeDataString(fileName)}&t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}",
+                    $"prediction?file={Uri.EscapeDataString(fileName)}",
                     cancellationToken);
                 AtomicWrite(localFile, prediction);
             }
@@ -89,7 +89,7 @@ public static class CloudPredictionSyncService
     private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)
     {
         CloudHistoryArchive archive = await DownloadAsync<CloudHistoryArchive>(
-            $"{RootUrl}/history?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}", cancellationToken);
+            "history", cancellationToken);
         if (archive.Status != "success" || archive.Records.Count == 0)
             throw new InvalidDataException("云端开奖档案为空");
         var records = archive.Records.Select(item => new DataCrawler.CrawlRecord
@@ -105,9 +105,27 @@ public static class CloudPredictionSyncService
         return DatabaseHelper.SaveCrawlerData(records);
     }
 
-    private static async Task<T> DownloadAsync<T>(string url, CancellationToken cancellationToken)
+    public static HttpRequestMessage CreateMachineSyncRequest(string resource)
     {
-        using HttpResponseMessage response = await Client.GetAsync(url, cancellationToken);
+        if (string.IsNullOrWhiteSpace(resource) || resource.StartsWith("/", StringComparison.Ordinal))
+            throw new ArgumentException("云端同步资源无效", nameof(resource));
+        string key = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY") ?? "";
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            string localKeyPath = Path.Combine(AppPaths.DataDirectory, "cloud-sync.key");
+            if (File.Exists(localKeyPath)) key = File.ReadAllText(localKeyPath).Trim();
+        }
+        if (string.IsNullOrWhiteSpace(key))
+            throw new InvalidOperationException("未配置此电脑的云端同步密钥");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{MachineSyncUrl}/{resource}");
+        request.Headers.Add("X-V6-Machine-Key", key);
+        return request;
+    }
+
+    private static async Task<T> DownloadAsync<T>(string resource, CancellationToken cancellationToken)
+    {
+        using HttpRequestMessage request = CreateMachineSyncRequest(resource);
+        using HttpResponseMessage response = await Client.SendAsync(request, cancellationToken);
         if (response.StatusCode == HttpStatusCode.NotFound)
             throw new HttpRequestException("云端同步文件尚未发布", null, response.StatusCode);
         if (!response.IsSuccessStatusCode)

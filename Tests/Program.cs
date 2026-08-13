@@ -116,6 +116,8 @@ var tests = new (string Name, Action Run)[]
     ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
     ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
     ,("V6 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
+    ,("桌面云同步使用受机器密钥保护的独立入口", DesktopCloudSyncUsesMachineIngress)
+    ,("桌面云同步可从本机受保护配置读取密钥", DesktopCloudSyncReadsLocalMachineCredential)
     ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
     ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
     ,("web wave-color mapping is parsed independently from number API", WebWaveColorMappingIsParsed)
@@ -1159,14 +1161,15 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
 
 void V6CloudEndpointsAreConsistent()
 {
-    const string endpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync";
+    const string desktopEndpoint = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop";
+    const string publisherEndpoint = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/publish";
     string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-    string site = File.ReadAllText(Path.Combine(root, "site", "app.js"));
     string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
     string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
-    Assert(site.Contains(endpoint, StringComparison.Ordinal), "V6 site is not using the active cloud API");
-    Assert(desktop.Contains(endpoint, StringComparison.Ordinal), "V6 desktop sync is not using the active cloud API");
-    Assert(workflow.Contains(endpoint, StringComparison.Ordinal), "V6 workflow is not using the active cloud API");
+    Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V6 desktop sync is not using the machine ingress");
+    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V6 workflow is not publishing through the OIDC ingress");
+    Assert(!desktop.Contains("smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync", StringComparison.Ordinal),
+        "V6 desktop sync still uses the interactive smart-ledger API");
     Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
         "V6 desktop sync still uses the retired Worker URL");
     Assert(!workflow.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
@@ -1257,6 +1260,45 @@ void DatabaseInitializationPreservesRetiredPredictions()
         "valid local prediction was removed by cloud-history cleanup");
     Assert(DatabaseHelper.GetHistory().Count == drawCount,
         "prediction cleanup must not remove draw history");
+}
+
+void DesktopCloudSyncUsesMachineIngress()
+{
+    const string key = "test-machine-key";
+    string? previous = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY");
+    try
+    {
+        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", key);
+        using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("history");
+        Assert(request.RequestUri?.ToString() == "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop/history",
+            "desktop sync is not using the dedicated machine ingress");
+        Assert(request.Headers.TryGetValues("X-V6-Machine-Key", out var values) && values.Single() == key,
+            "desktop sync request is missing its machine credential");
+    }
+    finally
+    {
+        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", previous);
+    }
+}
+
+void DesktopCloudSyncReadsLocalMachineCredential()
+{
+    string path = Path.Combine(testData, "cloud-sync.key");
+    string? previousEnvironment = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY");
+    string? previousFile = File.Exists(path) ? File.ReadAllText(path) : null;
+    try
+    {
+        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", null);
+        File.WriteAllText(path, "local-machine-key");
+        using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("manifest");
+        Assert(request.Headers.GetValues("X-V6-Machine-Key").Single() == "local-machine-key",
+            "desktop sync did not use the local machine credential");
+    }
+    finally
+    {
+        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", previousEnvironment);
+        if (previousFile is null) File.Delete(path); else File.WriteAllText(path, previousFile);
+    }
 }
 
 void CloudSyncDoesNotClaimCachedPredictionsAreImported()
