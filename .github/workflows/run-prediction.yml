@@ -190,4 +190,4 @@ jobs:
           $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
           $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
           $headers = @{ "X-V6-GitHub-OIDC" = "Bearer $oidc" }
-          Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
+          Invoke-RestMethod -Method Post -Uri 'https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
