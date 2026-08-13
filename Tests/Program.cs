@@ -1023,6 +1023,11 @@ void V65ExperimentScoreboardSummarizesModels()
     V65ExperimentScoreboardRow auto = v65Rows[^1];
     Assert(auto.CurrentTop6Misses == 30 && auto.MaximumTop6Misses == 30 && auto.Status == "暂停",
         "连续TOP6未中模型没有进入暂停状态");
+    Assert(V65ExperimentScoreboardService.DescribeAutoLearningState(new ModelMemoryState
+    {
+        LearnedSamples = 42, LastTrainingIssue = "2026224"
+    }) == "已学习·42样本·至2026224",
+        "自动学习状态没有显示训练样本与最后训练期号");
     Assert(rows.Any(row => row.Group == "智能预测模型" && row.ModelName == "智能预测-ML" && row.Samples == 30),
         "智能预测模型没有作为独立分组接入成绩榜");
 }

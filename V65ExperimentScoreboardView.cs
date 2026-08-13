@@ -158,6 +158,7 @@ public static class V65ExperimentScoreboardView
 
         void LoadRows()
         {
+            headerHint.Text = $"已开奖记录 · 两组独立统计 · V6.5自动学习：{V65ExperimentScoreboardService.LoadAutoLearningState()}";
             grid.Rows.Clear();
             foreach (V65ExperimentScoreboardRow row in V65ExperimentScoreboardService.Load())
             {

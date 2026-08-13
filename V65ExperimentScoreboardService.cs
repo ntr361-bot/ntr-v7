@@ -65,6 +65,17 @@ public static class V65ExperimentScoreboardService
 
     public static IReadOnlyList<V65ExperimentScoreboardRow> Load() => Build(DatabaseHelper.GetPredictionHistory(int.MaxValue));
 
+    /// <summary>供数据中心直接说明 V6.5 自动学习是否已完成历史预训练。</summary>
+    public static string DescribeAutoLearningState(ModelMemoryState state)
+    {
+        if (state.LearnedSamples <= 0) return "待历史训练";
+        string issue = string.IsNullOrWhiteSpace(state.LastTrainingIssue) ? "-" : state.LastTrainingIssue;
+        return $"已学习·{state.LearnedSamples}样本·至{issue}";
+    }
+
+    public static string LoadAutoLearningState() => DescribeAutoLearningState(
+        new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate());
+
     private static Draft BuildDraft(Definition definition, IReadOnlyList<DatabaseHelper.PredictionRecord> records)
     {
         int[] ranks = records.Where(definition.Matches)
