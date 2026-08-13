@@ -42,6 +42,7 @@ var tests = new (string Name, Action Run)[]
     ("重复期号检测", DuplicateIssueFails),
     ("dry-run 不修改文件", DryRunDoesNotWrite),
     ("历史数据截止期生效", HistoryCutoffWorks),
+    ("历史截止期内可读取下一期基础预测快照", PredictionSnapshotsRemainVisibleDuringHistoryCutoff),
     ("特码规律生成六肖", ZodiacRuleGeneratesSix),
     ("全功能dry-run不写文件", DailyDryRunDoesNotWrite),
     ("有效抓取数据校验", ValidCrawlDataPasses),
@@ -371,16 +372,28 @@ void DryRunDoesNotWrite()
 void HistoryCutoffWorks()
 {
     DatabaseHelper.SavePrediction("100", "鼠", "鼠,牛,虎", "01", "V6.5", 50, "past");
-    DatabaseHelper.SavePrediction("102", "马", "马,羊,猴", "07", "V6.5", 50, "future");
+    DatabaseHelper.SavePrediction("103", "马", "马,羊,猴", "07", "V6.5", 50, "future");
     using (DatabaseHelper.UseHistoryThroughIssue(101))
     {
         Assert(DatabaseHelper.GetLatestPeriod() == "101", "截止期后最新期号应为101");
         Assert(DatabaseHelper.GetLatestHistory(50).Count == 2, "截止期不应包含未来数据");
         Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).All(record =>
-            !long.TryParse(record.Issue, out long issue) || issue <= 101),
+            !long.TryParse(record.Issue, out long issue) || issue <= 102),
             "截止期预测校准不应读取未来预测反馈");
     }
     Assert(DatabaseHelper.GetLatestPeriod() == "102", "离开截止范围后应恢复全部数据");
+}
+
+void PredictionSnapshotsRemainVisibleDuringHistoryCutoff()
+{
+    const string issue = "102";
+    foreach (int period in new[] { 50, 100, 1320 })
+        DatabaseHelper.SavePrediction(issue, "鼠", "鼠,牛,虎,兔,龙,蛇", "01", "V6.5", period,
+            "base", finalRankingJson: "[\"鼠\",\"牛\",\"虎\",\"兔\",\"龙\",\"蛇\",\"马\",\"羊\",\"猴\",\"鸡\",\"狗\",\"猪\"]");
+
+    using (DatabaseHelper.UseHistoryThroughIssue(101))
+        Assert(V7PredictionHistoryService.HasCompleteV65BaseSnapshots(issue, DatabaseHelper.GetPredictionHistory(int.MaxValue)),
+            "生成下一期自动学习时必须能读取同一期三条基础预测快照");
 }
 
 void ZodiacRuleGeneratesSix()

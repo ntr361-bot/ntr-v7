@@ -1315,8 +1315,13 @@ namespace 六合分析软件
             var records = new List<PredictionRecord>();
             using (SQLiteConnection conn = GetConnection())
             {
+                // During chronological replay, the base predictions for the immediately
+                // following issue are created from the same history prefix.  They must
+                // remain visible to the V6.5 auto-learning step, while any later issue
+                // (and every non-base model) remains excluded to prevent leakage.
                 string issueFilter = HistoryIssueUpperBound.Value.HasValue
-                    ? "WHERE CAST(Issue AS INTEGER) <= @maxIssue"
+                    ? "WHERE CAST(Issue AS INTEGER) <= @maxIssue OR " +
+                      "(CAST(Issue AS INTEGER) = @nextIssue AND ModelVersion='V6.5')"
                     : "";
                 string sql = $@"
                 SELECT Id, Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods,
@@ -1330,7 +1335,10 @@ namespace 六合分析软件
 
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                 if (HistoryIssueUpperBound.Value is long maxIssue)
+                {
                     cmd.Parameters.AddWithValue("@maxIssue", maxIssue);
+                    cmd.Parameters.AddWithValue("@nextIssue", checked(maxIssue + 1));
+                }
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
