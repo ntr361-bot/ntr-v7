@@ -1157,6 +1157,8 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "cloud workflow is missing the mobile-trigger polling schedule");
     Assert(workflow.Contains("run_requested", StringComparison.Ordinal),
         "mobile-trigger polling does not consume the cloud run request");
+    Assert(workflow.Contains("$headers = @{ Authorization = \"Bearer $oidc\" }", StringComparison.Ordinal),
+        "mobile-trigger polling must use the standard Authorization header through the site gateway");
 }
 
 void V6CloudEndpointsAreConsistent()
