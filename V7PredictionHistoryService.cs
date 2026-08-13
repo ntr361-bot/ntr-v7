@@ -41,11 +41,13 @@ public static class V7PredictionHistoryService
         string learningDetails = "自动学习模型正式预测")
     {
         // V6.5 自动学习仅由已开奖的 V6.5 四模型记录更新；不能用另一套手写快照预训练。
-        ModelMemoryState colorMemory = new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate();
+        // The formal V6.5 meta model must begin with chronological historical
+        // experience, not wait for one hundred future live draws to accumulate.
+        ModelMemoryState colorMemory = AutoLearningTrainer.EnsureInitialTraining(history, ExperimentModels.AutoLearning);
         color ??= ColorEngine.Predict(history, colorMemory.ColorLearning.Weights);
         string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
         string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
-        ModelMemoryState memory = new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate();
+        ModelMemoryState memory = colorMemory;
         var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue);
         int baseCount = saved.Count(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5" &&
             (row.AnalysisPeriods is 50 or 100 || row.AnalysisPeriods == AISettings.AllHistoryModeValue));

@@ -93,12 +93,14 @@ public static class HistoricalMetaSnapshotBuilder
 
 public static class AutoLearningTrainer
 {
-    public static ModelMemoryState EnsureInitialTraining()
+    public static ModelMemoryState EnsureInitialTraining(
+        IReadOnlyList<DatabaseHelper.HistoryRecord>? history = null,
+        string experimentKey = ExperimentModels.AutoLearning)
     {
-        var memoryStore = new ModelMemory();
+        var memoryStore = new ModelMemory(experimentKey);
         ModelMemoryState memory = memoryStore.LoadOrCreate();
         bool changed = false;
-        IReadOnlyList<DatabaseHelper.HistoryRecord> history = DatabaseHelper.GetHistory();
+        history ??= DatabaseHelper.GetHistory();
         if (memory.LearnedSamples == 0)
         {
             TrainOnce(history, memory);

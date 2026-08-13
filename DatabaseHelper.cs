@@ -1315,16 +1315,22 @@ namespace 六合分析软件
             var records = new List<PredictionRecord>();
             using (SQLiteConnection conn = GetConnection())
             {
+                string issueFilter = HistoryIssueUpperBound.Value.HasValue
+                    ? "WHERE CAST(Issue AS INTEGER) <= @maxIssue"
+                    : "";
                 string sql = $@"
                 SELECT Id, Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac, AnalysisPeriods,
                        ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult, Top6HitResult, ReviewDetails, LearningDetails,
                        FinalRankingJson, BaseModelScoresJson, FeatureSnapshotJson, WeightSnapshotJson, MappingSnapshotJson,
                        ActualRank, LearningStatus, LearnedAt
                 FROM PredictionHistory
+                {issueFilter}
                 ORDER BY CAST(Issue AS INTEGER) DESC, AnalysisPeriods ASC
                 LIMIT {limit}";
 
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
+                if (HistoryIssueUpperBound.Value is long maxIssue)
+                    cmd.Parameters.AddWithValue("@maxIssue", maxIssue);
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

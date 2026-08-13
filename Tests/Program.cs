@@ -47,6 +47,7 @@ var tests = new (string Name, Action Run)[]
     ("损坏抓取数据拒绝", InvalidCrawlDataFails)
     ,("预测清单包含全部期号", PredictionManifestContainsAllIssues)
     ,("云端预测不再导入200期模型", CloudPredictionSkipsRemoved200Period)
+    ,("云端同步不把缓存预测误称为已导入历史", CloudSyncDoesNotClaimCachedPredictionsAreImported)
     ,("云端开奖档案导出", CloudHistoryExportIsValid)
     ,("开奖记录未变化时不重复改写云端档案", UnchangedCloudHistoryIsNotRewritten)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
@@ -55,6 +56,7 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5学习只接收同版本同周期样本", V65LearningAcceptsOnlyMatchingSnapshots)
     ,("四模型实验键独立且稳定", ExperimentalModelKeysAreStable)
     ,("自动学习只读取同一期三条基础快照", AutoLearningUsesThreeBaseSnapshots)
+    ,("V6.5自动学习在正式使用前完成历史预训练", V65AutoLearningBootstrapsHistoricalMemory)
     ,("V6.5回测使用正式三模型快照", V65BacktestUsesFormalModelChain)
     ,("V6.5三条基础模型应用各自固定权重", V65BaseModelsUseConfiguredWeights)
     ,("V6.5回测实际比较四条实验模型", V65BacktestComparesFourExperimentModels)
@@ -367,10 +369,15 @@ void DryRunDoesNotWrite()
 
 void HistoryCutoffWorks()
 {
+    DatabaseHelper.SavePrediction("100", "鼠", "鼠,牛,虎", "01", "V6.5", 50, "past");
+    DatabaseHelper.SavePrediction("102", "马", "马,羊,猴", "07", "V6.5", 50, "future");
     using (DatabaseHelper.UseHistoryThroughIssue(101))
     {
         Assert(DatabaseHelper.GetLatestPeriod() == "101", "截止期后最新期号应为101");
         Assert(DatabaseHelper.GetLatestHistory(50).Count == 2, "截止期不应包含未来数据");
+        Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).All(record =>
+            !long.TryParse(record.Issue, out long issue) || issue <= 101),
+            "截止期预测校准不应读取未来预测反馈");
     }
     Assert(DatabaseHelper.GetLatestPeriod() == "102", "离开截止范围后应恢复全部数据");
 }
@@ -1214,6 +1221,30 @@ void DatabaseInitializationPreservesRetiredPredictions()
         "valid local prediction was removed by cloud-history cleanup");
     Assert(DatabaseHelper.GetHistory().Count == drawCount,
         "prediction cleanup must not remove draw history");
+}
+
+void CloudSyncDoesNotClaimCachedPredictionsAreImported()
+{
+    string form = File.ReadAllText(Path.Combine(ProjectRoot(), "Form1.cs"));
+    Assert(!form.Contains("补齐开奖记录和预测历史"),
+        "cloud sync still claims cached legacy predictions were imported into local history");
+    Assert(form.Contains("预测档案缓存"),
+        "cloud sync status must explicitly identify prediction files as cache");
+}
+
+void V65AutoLearningBootstrapsHistoricalMemory()
+{
+    var history = Enumerable.Range(1, 40).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2023000 + index).ToString(),
+        OpenTime = $"2023-06-{((index - 1) % 28) + 1:D2} 21:30:00",
+        SpecialNumber = ((index % 49) + 1).ToString("D2"),
+        SpecialZodiac = new[] { "鼠", "牛", "虎", "兔" }[index % 4]
+    }).ToArray();
+
+    ModelMemoryState state = AutoLearningTrainer.EnsureInitialTraining(history, "test-v65-bootstrap");
+    Assert(state.LearnedSamples > 0 && state.LastTrainingIssue.Length > 0,
+        "V6.5 automatic learning did not bootstrap chronological historical experience");
 }
 
 void DefaultDataDirectoryIsStableAcrossReleaseBuilds()
