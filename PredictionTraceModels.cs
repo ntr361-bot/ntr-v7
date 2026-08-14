@@ -50,3 +50,20 @@ public sealed record PredictionTraceSnapshot(
     string Status,
     IReadOnlyList<PredictionTraceBaseModel> BaseModels,
     PredictionTraceAutoLearning AutoLearning);
+
+public sealed record PredictionTraceLearningState(
+    IReadOnlyDictionary<string, double> Weights,
+    IReadOnlyDictionary<string, double> MetaCoefficients);
+
+public sealed record PredictionTraceOutcome(
+    string Issue,
+    string ActualZodiac,
+    string ActualNumber,
+    IReadOnlyDictionary<string, int> BaseRanks,
+    int AutoRank,
+    bool Top3Hit,
+    bool Top6Hit,
+    bool WeightUpdateTriggered,
+    PredictionTraceLearningState BeforeLearning,
+    PredictionTraceLearningState AfterLearning,
+    DateTimeOffset RecordedAt);

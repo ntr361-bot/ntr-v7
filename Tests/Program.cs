@@ -125,6 +125,7 @@ var tests = new (string Name, Action Run)[]
     ,("current web wave map is never claimed for a prior lunar year", HistoricalWaveColorDoesNotClaimCurrentWebMap)
     ,("crawler save backfills a missing wave color without counting a new draw", CrawlerSaveBackfillsWaveColor)
     ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
+    ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
 };
 
 int failures = 0;
@@ -1901,6 +1902,71 @@ void PredictionTraceIsImmutableAndIsolated()
         ?? throw new InvalidOperationException("冲突写入后 Trace 丢失");
     Assert(unchanged.BaseModels[0].Ranking[0].Factors["F"].Raw == 41,
         "冲突 Trace 覆盖了原始快照");
+}
+
+void FormalPredictionTraceCapturesLiveAndOutcome()
+{
+    const string issue = "999802";
+    int before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Count;
+    AIEngine.PredictResult[] baseModels = new[] { 50, 100, AISettings.AllHistoryModeValue }
+        .Select((period, modelIndex) => FormalTracePrediction(period, modelIndex)).ToArray();
+    AutoLearningSnapshot auto = FormalTraceAutoLearning(issue);
+
+    PredictionTraceService.CaptureLive(issue, "999801", 50, baseModels, auto, "test-commit");
+    PredictionTraceSnapshot trace = PredictionTraceService.GetLive(issue)
+        ?? throw new InvalidOperationException("未捕获正式四模型 Trace");
+    Assert(trace.BaseModels.Select(model => model.ModelKey).OrderBy(key => key).SequenceEqual(
+            new[] { "v65-50", "v65-100", "v65-all" }.OrderBy(key => key)),
+        "Trace 没有使用正式三基础模型身份");
+    Assert(trace.BaseModels.All(model => model.Ranking.Count == 12) &&
+        trace.BaseModels[0].Ranking[0].Factors["F"].Contribution > 0,
+        "Trace 没有保存正式基础模型因子贡献");
+    Assert(trace.AutoLearning.Zodiacs.Count == 12 && trace.AutoLearning.Zodiacs[0].Rank50 is > 0 and <= 12 &&
+        trace.AutoLearning.Weights.ContainsKey("AI"), "Trace 没有保存正式 AutoLearning 输入");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
+        "旁路捕获不得创建或修改正式 PredictionHistory");
+
+    PredictionTraceService.RecordLiveOutcome(issue, "马", "07",
+        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .4, ["ML"] = .4, ["State"] = .2, ["Rule"] = 0 },
+            new Dictionary<string, double> { ["model_consensus"] = .1 }),
+        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .35, ["ML"] = .4, ["State"] = .2, ["Rule"] = .05 },
+            new Dictionary<string, double> { ["model_consensus"] = .12 }), true);
+    PredictionTraceOutcome outcome = PredictionTraceService.GetLiveOutcome(issue)
+        ?? throw new InvalidOperationException("未保存开奖后的旁路结果");
+    Assert(outcome.ActualZodiac == "马" && outcome.AutoRank is > 0 and <= 12 &&
+        outcome.BaseRanks.Count == 3 && outcome.Top6Hit == (outcome.AutoRank <= 6) && outcome.WeightUpdateTriggered,
+        "开奖结果没有保存真实名次、命中和学习前后状态");
+}
+
+AIEngine.PredictResult FormalTracePrediction(int periods, int modelIndex)
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var scores = zodiacs.Select((zodiac, index) => new V65RuleScoringEngine.ZodiacScoreV2
+    {
+        Zodiac = zodiac, TotalScore = 120 - index - modelIndex,
+        FrequencyScore = 60 - index, RecentTrendScore = 50 - index, OmissionScore = 40 - index,
+        HotColdScore = 30 - index, PeriodPatternScore = 20 - index, ConsecutiveScore = 10 - index,
+        EightZodiacScore = index == 0 ? 2 : 0, TotalAppear = 10 - index, CurrentOmission = index
+    }).ToList();
+    return new AIEngine.PredictResult
+    {
+        AnalysisPeriods = periods, Version = AIEngine.Version, PredictPeriod = "999802", PredictTime = DateTime.Now,
+        AllScores = scores, Top3 = scores.Take(3).Select(item => item.Zodiac).ToList(),
+        Top6 = scores.Take(6).Select(item => item.Zodiac).ToList()
+    };
+}
+
+AutoLearningSnapshot FormalTraceAutoLearning(string issue)
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var input = new MetaPredictionInput(issue, zodiacs.Select((zodiac, index) => new ZodiacMetaFeatures(zodiac,
+        new Dictionary<string, double> { ["AI"] = (12 - index) / 12d, ["ML"] = (11 - index) / 12d,
+            ["State"] = (10 - index) / 12d, ["Rule"] = index == 0 ? 1 : 0 },
+        new Dictionary<string, double> { ["model_consensus"] = index == 0 ? 1 : .2 })).ToArray());
+    var result = new MetaPredictionResult(zodiacs.Select((zodiac, index) => new RankedZodiac(zodiac,
+        (12 - index) / 78d, index + 1)).ToArray(), false, "");
+    return new AutoLearningSnapshot(input, zodiacs, result,
+        new ModelWeights(.4, .4, .2, 0));
 }
 
 PredictionTraceSnapshot TraceFixture(string issue, string cutoffIssue, double frequencyRaw)

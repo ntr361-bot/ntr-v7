@@ -92,6 +92,137 @@ public static class PredictionTraceService
               ?? throw new InvalidDataException("PredictionTrace payload cannot be read.");
     }
 
+    public static void CaptureLive(string issue, string historyCutoffIssue, int historySampleCount,
+        IReadOnlyList<AIEngine.PredictResult> baseResults, AutoLearningSnapshot autoLearning, string codeVersion)
+    {
+        // A force-rerun must never replace the first real-time snapshot with a later replay.
+        if (GetLive(issue) is not null) return;
+        if (baseResults.Count != 3)
+            throw new ArgumentException("正式 Trace 必须接收50期、100期和全部历史三条基础预测。", nameof(baseResults));
+        var models = baseResults.Select(ToBaseModel).ToArray();
+        if (models.Select(model => model.ModelKey).Distinct(StringComparer.Ordinal).Count() != 3)
+            throw new ArgumentException("正式 Trace 的基础模型身份不完整。", nameof(baseResults));
+        DateTimeOffset generatedAt = baseResults.Select(result => new DateTimeOffset(result.PredictTime)).Max();
+        SaveLive(new PredictionTraceSnapshot(issue, "Live", "trace-v1", generatedAt,
+            historyCutoffIssue, historySampleCount, AIEngine.Version, codeVersion, "Complete", models,
+            ToAutoLearning(autoLearning, models)));
+    }
+
+    public static void RecordLiveOutcome(string issue, string actualZodiac, string actualNumber,
+        PredictionTraceLearningState beforeLearning, PredictionTraceLearningState afterLearning,
+        bool weightUpdateTriggered)
+    {
+        PredictionTraceSnapshot trace = GetLive(issue)
+            ?? throw new InvalidOperationException("不能为没有 Live Trace 的历史预测补写开奖结果。");
+        var baseRanks = trace.BaseModels.ToDictionary(model => model.ModelKey,
+            model => model.Ranking.Single(item => item.Zodiac == actualZodiac).Rank, StringComparer.Ordinal);
+        int autoRank = trace.AutoLearning.Zodiacs.Single(item => item.Zodiac == actualZodiac).Rank;
+        var outcome = new PredictionTraceOutcome(issue, actualZodiac, actualNumber, baseRanks, autoRank,
+            autoRank <= 3, autoRank <= 6, weightUpdateTriggered, beforeLearning, afterLearning, DateTimeOffset.UtcNow);
+        string payload = JsonSerializer.Serialize(outcome, JsonOptions);
+        string hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload)));
+
+        DatabaseHelper.InitializeDatabase();
+        using SQLiteConnection connection = DatabaseHelper.GetConnection();
+        using SQLiteTransaction transaction = connection.BeginTransaction();
+        using var traceCommand = new SQLiteCommand("SELECT Id FROM PredictionTrace WHERE Issue=@issue AND CaptureKind='Live' ORDER BY Id DESC LIMIT 1", connection, transaction);
+        traceCommand.Parameters.AddWithValue("@issue", issue);
+        long traceId = Convert.ToInt64(traceCommand.ExecuteScalar() ?? throw new InvalidOperationException("找不到 Live Trace。"));
+        using var existing = new SQLiteCommand("SELECT OutcomeHash FROM PredictionTraceOutcome WHERE TraceId=@traceId", connection, transaction);
+        existing.Parameters.AddWithValue("@traceId", traceId);
+        object? existingHash = existing.ExecuteScalar();
+        if (existingHash is not null && existingHash is not DBNull)
+        {
+            transaction.Commit();
+            if (!string.Equals(Convert.ToString(existingHash), hash, StringComparison.Ordinal))
+                throw new InvalidOperationException("PredictionTrace Outcome 已存在，不能覆盖。");
+            return;
+        }
+        using var insert = new SQLiteCommand(@"INSERT INTO PredictionTraceOutcome
+            (TraceId, Issue, ActualZodiac, ActualNumber, OutcomeJson, OutcomeHash, RecordedAt)
+            VALUES (@traceId,@issue,@zodiac,@number,@payload,@hash,@recorded)", connection, transaction);
+        insert.Parameters.AddWithValue("@traceId", traceId);
+        insert.Parameters.AddWithValue("@issue", issue);
+        insert.Parameters.AddWithValue("@zodiac", actualZodiac);
+        insert.Parameters.AddWithValue("@number", actualNumber);
+        insert.Parameters.AddWithValue("@payload", payload);
+        insert.Parameters.AddWithValue("@hash", hash);
+        insert.Parameters.AddWithValue("@recorded", outcome.RecordedAt.ToString("O"));
+        insert.ExecuteNonQuery();
+        transaction.Commit();
+    }
+
+    public static PredictionTraceOutcome? GetLiveOutcome(string issue)
+    {
+        DatabaseHelper.InitializeDatabase();
+        using SQLiteConnection connection = DatabaseHelper.GetConnection();
+        using var command = new SQLiteCommand(@"SELECT outcome.OutcomeJson FROM PredictionTraceOutcome outcome
+            INNER JOIN PredictionTrace trace ON trace.Id=outcome.TraceId
+            WHERE trace.Issue=@issue AND trace.CaptureKind='Live' ORDER BY trace.Id DESC LIMIT 1", connection);
+        command.Parameters.AddWithValue("@issue", issue);
+        string? payload = Convert.ToString(command.ExecuteScalar());
+        return string.IsNullOrWhiteSpace(payload) ? null : JsonSerializer.Deserialize<PredictionTraceOutcome>(payload, JsonOptions);
+    }
+
+    private static PredictionTraceBaseModel ToBaseModel(AIEngine.PredictResult result)
+    {
+        V65RuleScoringEngine.WeightConfig weights = V65ExperimentPipeline.GetWeightsForPeriods(result.AnalysisPeriods);
+        var ranking = result.AllScores.OrderByDescending(score => score.TotalScore).Select((score, index) =>
+            new PredictionTraceZodiac(score.Zodiac, index + 1, score.TotalScore,
+                new Dictionary<string, PredictionTraceFactor>(StringComparer.Ordinal)
+                {
+                    ["F"] = new(score.FrequencyScore, score.FrequencyScore * weights.FrequencyWeight),
+                    ["T"] = new(score.RecentTrendScore, score.RecentTrendScore * weights.RecentTrendWeight),
+                    ["O"] = new(score.OmissionScore, score.OmissionScore * weights.OmissionWeight),
+                    ["H"] = new(score.HotColdScore, score.HotColdScore * weights.HotColdWeight),
+                    ["P"] = new(score.PeriodPatternScore, score.PeriodPatternScore * weights.PeriodPatternWeight),
+                    ["C"] = new(score.ConsecutiveScore, score.ConsecutiveScore * weights.ConsecutiveWeight),
+                    ["B"] = new(score.EightZodiacScore, score.EightZodiacScore)
+                })).ToArray();
+        return new PredictionTraceBaseModel(ExperimentModels.ForPeriods(result.AnalysisPeriods), result.Version,
+            result.AnalysisPeriods, new Dictionary<string, double>(StringComparer.Ordinal)
+            {
+                ["F"] = weights.FrequencyWeight, ["T"] = weights.RecentTrendWeight,
+                ["O"] = weights.OmissionWeight, ["H"] = weights.HotColdWeight,
+                ["P"] = weights.PeriodPatternWeight, ["C"] = weights.ConsecutiveWeight
+            }, ranking);
+    }
+
+    private static PredictionTraceAutoLearning ToAutoLearning(AutoLearningSnapshot snapshot,
+        IReadOnlyList<PredictionTraceBaseModel> models)
+    {
+        var ranks = models.ToDictionary(model => model.ModelKey,
+            model => model.Ranking.ToDictionary(item => item.Zodiac, item => item.Rank), StringComparer.Ordinal);
+        IReadOnlyDictionary<string, double> coefficients = snapshot.MetaCoefficients ?? new Dictionary<string, double>();
+        var normalized = new[] { "AI", "ML", "State", "Rule" }.ToDictionary(source => source,
+            source => Normalize(snapshot.Input.Zodiacs.ToDictionary(row => row.Zodiac,
+                row => row.BaseScores.GetValueOrDefault(source))), StringComparer.OrdinalIgnoreCase);
+        IReadOnlyDictionary<string, double> weights = snapshot.Weights.AsDictionary();
+        return new PredictionTraceAutoLearning(snapshot.Result.Ranking.Select(row =>
+        {
+            ZodiacMetaFeatures input = snapshot.Input.Zodiacs.Single(item => item.Zodiac == row.Zodiac);
+            double logit = normalized.Sum(source => weights[source.Key] * source.Value[row.Zodiac]) +
+                input.FeatureGroups.Sum(feature => Math.Clamp(feature.Value, -1, 1) * coefficients.GetValueOrDefault(feature.Key));
+            return new PredictionTraceAutoZodiac(row.Zodiac, row.Rank,
+                ranks[ExperimentModels.Period50][row.Zodiac], ranks[ExperimentModels.Period100][row.Zodiac],
+                ranks[ExperimentModels.AllHistory][row.Zodiac], normalized["AI"][row.Zodiac],
+                normalized["ML"][row.Zodiac], normalized["State"][row.Zodiac],
+                input.BaseScores.GetValueOrDefault("Rule"), input.FeatureGroups.GetValueOrDefault("model_consensus"),
+                logit, row.Probability);
+        }).ToArray(), new Dictionary<string, double>(weights, StringComparer.OrdinalIgnoreCase),
+            new Dictionary<string, double>(coefficients, StringComparer.OrdinalIgnoreCase),
+            snapshot.Result.UsedFallback, snapshot.Result.FallbackReason);
+    }
+
+    private static IReadOnlyDictionary<string, double> Normalize(IReadOnlyDictionary<string, double> values)
+    {
+        double min = values.Values.Min();
+        double max = values.Values.Max();
+        double range = max - min;
+        return values.ToDictionary(pair => pair.Key, pair => range < 1e-12 ? .5 : (pair.Value - min) / range,
+            StringComparer.OrdinalIgnoreCase);
+    }
+
     private static string CanonicalPayload(PredictionTraceSnapshot snapshot)
     {
         var canonical = new

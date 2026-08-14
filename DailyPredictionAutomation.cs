@@ -33,6 +33,7 @@ public static class DailyPredictionAutomation
 
         Console.WriteLine($"[INFO] 开始生成第{targetIssue}期全部预测结果");
         var ai = new Dictionary<string, DailyAiPrediction>();
+        var baseResults = new List<AIEngine.PredictResult>(Periods.Length);
         foreach (int period in Periods)
         {
             AIEngine.PredictResult result = AIEngine.GenerateForAutomation(period, targetIssue.ToString());
@@ -42,6 +43,7 @@ public static class DailyPredictionAutomation
             string periodKey = period == AISettings.AllHistoryModeValue ? "all" : period.ToString();
             ai[periodKey] = new DailyAiPrediction(result.AnalysisPeriods, result.Top3.ToArray(),
                 result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
+            baseResults.Add(result);
         }
 
         IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);
@@ -66,6 +68,11 @@ public static class DailyPredictionAutomation
             autoTop3, autoTop6, autoNumbers,
             learning.Result.UsedFallback ? "基础排序" : "已学习",
             "自动学习模型");
+
+        // This is an isolated audit write. It runs only after all four formal records exist.
+        string historyCutoffIssue = DatabaseHelper.GetLatestPeriod();
+        PredictionTraceService.CaptureLive(targetIssue.ToString(), historyCutoffIssue, learningHistory.Count,
+            baseResults, learning, AIEngine.Version);
 
         ZodiacRulePrediction rule = ZodiacRulePredictionService.Predict(targetIssue);
         PredictionScoreService.ScoreResult score = PredictionScoreService.Predict(longTermPeriods, targetYear);

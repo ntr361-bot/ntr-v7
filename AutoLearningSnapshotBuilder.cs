@@ -6,7 +6,8 @@ public sealed record AutoLearningSnapshot(
     MetaPredictionInput Input,
     IReadOnlyList<string> BaselineRanking,
     MetaPredictionResult Result,
-    ModelWeights Weights)
+    ModelWeights Weights,
+    IReadOnlyDictionary<string, double>? MetaCoefficients = null)
 {
     public string FinalRankingJson => JsonSerializer.Serialize(Result.Ranking.Select(item => item.Zodiac));
     public string BaseModelScoresJson => JsonSerializer.Serialize(Input.Zodiacs.ToDictionary(item => item.Zodiac, item => item.BaseScores));
@@ -50,7 +51,8 @@ public static class AutoLearningSnapshotBuilder
         }).ToArray();
         var input = new MetaPredictionInput(issue, rows);
         var result = new MetaPredictionEngine().Predict(input, memory, baseline);
-        return new AutoLearningSnapshot(input, baseline, result, memory.Weights);
+        return new AutoLearningSnapshot(input, baseline, result, memory.Weights,
+            new Dictionary<string, double>(memory.MetaCoefficients, StringComparer.OrdinalIgnoreCase));
     }
 
     public static AutoLearningSnapshot Build(AIEngine.PredictResult prediction, ModelMemoryState memory)
@@ -93,7 +95,8 @@ public static class AutoLearningSnapshotBuilder
         AddConsensus(rows);
         var input = new MetaPredictionInput(prediction.PredictPeriod, rows);
         var result = new MetaPredictionEngine().Predict(input, memory, baseline);
-        return new AutoLearningSnapshot(input, baseline, result, memory.Weights);
+        return new AutoLearningSnapshot(input, baseline, result, memory.Weights,
+            new Dictionary<string, double>(memory.MetaCoefficients, StringComparer.OrdinalIgnoreCase));
     }
 
     public static Dictionary<string, double> BuildGroups(ZodiacFeature feature, double stateConfidence)

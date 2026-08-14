@@ -394,6 +394,17 @@ namespace 六合分析软件
                     PRIMARY KEY(TraceId, ModelKey, Zodiac),
                     FOREIGN KEY(TraceId) REFERENCES PredictionTrace(Id)
                 )", conn).ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS PredictionTraceOutcome
+                (
+                    TraceId INTEGER PRIMARY KEY,
+                    Issue TEXT NOT NULL,
+                    ActualZodiac TEXT NOT NULL,
+                    ActualNumber TEXT NOT NULL,
+                    OutcomeJson TEXT NOT NULL,
+                    OutcomeHash TEXT NOT NULL,
+                    RecordedAt TEXT NOT NULL,
+                    FOREIGN KEY(TraceId) REFERENCES PredictionTrace(Id)
+                )", conn).ExecuteNonQuery();
         }
 
         private static void TryRestoreSiblingLegacyPredictionHistory()
@@ -1232,12 +1243,42 @@ namespace 六合分析软件
                     // 基础三模型使用各自独立的滚动校准，不消费元模型快照。
                     if (string.Equals(item.modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase))
                     {
-                        ApplyAutomaticLearningForPrediction(item.id, actualZodiac);
+                        PredictionTraceLearningState beforeLearning = GetTraceLearningState();
+                        LearningOutcome outcome = ApplyAutomaticLearningForPrediction(item.id, actualZodiac);
                         ApplyColorLearningForPrediction(item.id, actualNumber);
+                        TryRecordPredictionTraceOutcome(issue, actualZodiac, actualNumber, beforeLearning,
+                            GetTraceLearningState(), outcome.Updated);
                     }
 
                     Console.WriteLine($"[预测验证] 期号:{issue} 实际:{actualNumber} {actualZodiac} {(hit ? "命中" : "未命中")}");
                 }
+            }
+        }
+
+        private static PredictionTraceLearningState GetTraceLearningState()
+        {
+            ModelMemoryState memory = new ModelMemory(ExperimentModels.AutoLearning).LoadOrCreate();
+            return new PredictionTraceLearningState(
+                new Dictionary<string, double>(memory.Weights.AsDictionary(), StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, double>(memory.MetaCoefficients, StringComparer.OrdinalIgnoreCase));
+        }
+
+        private static void TryRecordPredictionTraceOutcome(string issue, string actualZodiac, string actualNumber,
+            PredictionTraceLearningState beforeLearning, PredictionTraceLearningState afterLearning, bool updated)
+        {
+            try
+            {
+                PredictionTraceService.RecordLiveOutcome(issue, actualZodiac, actualNumber,
+                    beforeLearning, afterLearning, updated);
+            }
+            catch (InvalidOperationException)
+            {
+                // Older records do not have a real-time trace and must not be reconstructed.
+            }
+            catch (Exception ex)
+            {
+                // Observation failures must not change the established verification result.
+                AppLogger.Error("保存旁路预测追踪开奖结果", ex);
             }
         }
 
