@@ -124,6 +124,7 @@ var tests = new (string Name, Action Run)[]
     ,("scoreboard reserves space for the horizontal scroll bar", ScoreboardReservesHorizontalScrollSpace)
     ,("current web wave map is never claimed for a prior lunar year", HistoricalWaveColorDoesNotClaimCurrentWebMap)
     ,("crawler save backfills a missing wave color without counting a new draw", CrawlerSaveBackfillsWaveColor)
+    ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
 };
 
 int failures = 0;
@@ -1869,6 +1870,63 @@ void ColorPredictionHistoryPersistsSnapshot()
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     Assert(first.Updated && !second.Updated, "online color feedback was not persisted exactly once");
+}
+
+void PredictionTraceIsImmutableAndIsolated()
+{
+    const string issue = "999801";
+    int before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Count;
+    PredictionTraceSnapshot original = TraceFixture(issue, cutoffIssue: "999800", frequencyRaw: 41);
+
+    PredictionTraceService.SaveLive(original);
+    PredictionTraceSnapshot saved = PredictionTraceService.GetLive(issue)
+        ?? throw new InvalidOperationException("未读取到刚写入的 Trace");
+
+    Assert(saved.HistoryCutoffIssue == "999800" && saved.HistorySampleCount == 50,
+        "Trace 没有保存真实历史边界");
+    Assert(saved.BaseModels.Count == 3 && saved.BaseModels.All(model => model.Ranking.Count == 12),
+        "Trace 没有保存三基础模型的完整12生肖排序");
+    Assert(saved.BaseModels[0].Ranking[0].Factors["F"].Raw == 41 &&
+        Math.Abs(saved.BaseModels[0].Ranking[0].Factors["F"].Contribution - 6.56) < 0.000001,
+        "Trace 没有保存因子原始值和实际贡献");
+    Assert(saved.AutoLearning.Zodiacs.Count == 12 && saved.AutoLearning.Weights.ContainsKey("Rule"),
+        "Trace 没有保存 AutoLearning 输入与权重快照");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
+        "旁路 Trace 不得写入正式 PredictionHistory");
+
+    AssertThrows<InvalidOperationException>(() =>
+        PredictionTraceService.SaveLive(TraceFixture(issue, cutoffIssue: "999800", frequencyRaw: 42)),
+        "同一期不同内容的 Trace 不得覆盖原始快照");
+    PredictionTraceSnapshot unchanged = PredictionTraceService.GetLive(issue)
+        ?? throw new InvalidOperationException("冲突写入后 Trace 丢失");
+    Assert(unchanged.BaseModels[0].Ranking[0].Factors["F"].Raw == 41,
+        "冲突 Trace 覆盖了原始快照");
+}
+
+PredictionTraceSnapshot TraceFixture(string issue, string cutoffIssue, double frequencyRaw)
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var models = new[] { ("v65-50", .16), ("v65-100", .24), ("v65-all", .17) }
+        .Select(model => new PredictionTraceBaseModel(
+            model.Item1, model.Item1, 50,
+            new Dictionary<string, double> { ["F"] = model.Item2, ["T"] = .16, ["O"] = .20, ["H"] = .16, ["P"] = .32, ["C"] = 0 },
+            zodiacs.Select((zodiac, index) => new PredictionTraceZodiac(
+                zodiac, index + 1, 50 - index,
+                new Dictionary<string, PredictionTraceFactor>(StringComparer.Ordinal)
+                {
+                    ["F"] = new(frequencyRaw, frequencyRaw * model.Item2),
+                    ["T"] = new(50, 8), ["O"] = new(50, 10), ["H"] = new(50, 8),
+                    ["P"] = new(50, 16), ["C"] = new(50, 0), ["B"] = new(2, 2)
+                })).ToArray())).ToArray();
+    var autoRows = zodiacs.Select((zodiac, index) => new PredictionTraceAutoZodiac(
+        zodiac, index + 1, index + 1, index + 1, index + 1,
+        (12 - index) / 12d, (12 - index) / 12d, (12 - index) / 12d,
+        index == 0 ? 1 : 0, index == 0 ? 1 : 0, 0.2 - index * .01, 1d / 12)).ToArray();
+    return new PredictionTraceSnapshot(issue, "Live", "trace-v1", DateTimeOffset.Parse("2026-08-14T00:00:00Z"),
+        cutoffIssue, 50, "V6.5", "test-commit", "Complete", models,
+        new PredictionTraceAutoLearning(autoRows,
+            new Dictionary<string, double> { ["AI"] = .1, ["ML"] = .2, ["State"] = .2, ["Rule"] = .5 },
+            new Dictionary<string, double> { ["model_consensus"] = -.1 }, false, ""));
 }
 
 T? FindControl<T>(System.Windows.Forms.Control root) where T : System.Windows.Forms.Control

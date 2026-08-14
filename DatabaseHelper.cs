@@ -358,9 +358,42 @@ namespace 六合分析软件
 
                 // 已停用模型只从当前预测、学习及界面入口中过滤；历史记录必须保留用于审计。
                 // 旧 AIPredictHistory 表保留为只读归档，不能在升级初始化时物理删除。
+                EnsurePredictionTraceSchema(conn);
             }
 
             TryRestoreSiblingLegacyPredictionHistory();
+        }
+
+        private static void EnsurePredictionTraceSchema(SQLiteConnection conn)
+        {
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS PredictionTrace
+                (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Issue TEXT NOT NULL,
+                    TraceSchemaVersion TEXT NOT NULL,
+                    CaptureKind TEXT NOT NULL,
+                    GeneratedAt TEXT NOT NULL,
+                    HistoryCutoffIssue TEXT NOT NULL,
+                    HistorySampleCount INTEGER NOT NULL,
+                    ModelVersion TEXT NOT NULL,
+                    CodeVersion TEXT NOT NULL,
+                    Status TEXT NOT NULL,
+                    PayloadJson TEXT NOT NULL,
+                    PayloadHash TEXT NOT NULL,
+                    CreatedAt TEXT NOT NULL,
+                    UNIQUE(Issue, TraceSchemaVersion, CaptureKind)
+                )", conn).ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS PredictionTraceModel
+                (
+                    TraceId INTEGER NOT NULL,
+                    ModelKey TEXT NOT NULL,
+                    Zodiac TEXT NOT NULL,
+                    Rank INTEGER NOT NULL,
+                    TotalScore REAL NOT NULL,
+                    FactorsJson TEXT NOT NULL,
+                    PRIMARY KEY(TraceId, ModelKey, Zodiac),
+                    FOREIGN KEY(TraceId) REFERENCES PredictionTrace(Id)
+                )", conn).ExecuteNonQuery();
         }
 
         private static void TryRestoreSiblingLegacyPredictionHistory()
