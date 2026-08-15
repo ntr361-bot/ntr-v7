@@ -145,7 +145,6 @@ async function loadPrediction() {
     ruleResult.id = 'rule-result';
     document.querySelector('#rule-zodiacs').after(ruleResult);
     renderRanking('score-results', result.comprehensive_score, 'total_score');
-    renderRanking('ensemble-results', result.ensemble, 'final_score');
     state.hidden = true;
     panel.hidden = false;
   } catch (error) {
