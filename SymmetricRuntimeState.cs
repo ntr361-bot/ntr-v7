@@ -59,6 +59,8 @@ public static class SymmetricRuntimeStateSync
         }
         int merged = 0;
         foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
+            row.PredictionSource = "云端同步";
+        foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
             merged += DatabaseHelper.MergeSynchronizedPrediction(row);
         foreach ((string key, string json) in incoming.ModelMemory)
         {

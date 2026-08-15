@@ -93,22 +93,82 @@ public static class CloudPredictionSyncService
         if (prediction.Status != "success" || prediction.Issue <= 0)
             throw new InvalidDataException("云端预测档案状态或期号无效");
 
-        // 云端旧档案只有结果、信心和模型名，没有12生肖完整分项评分。
-        // 这类记录无法参与错因分析或校准，继续导入只会产生无效历史行。
-        return 0;
+        if (!HasCompleteLocalEquivalent(prediction))
+        {
+            // Keep legacy summary-only files in the cache, but never turn them
+            // into misleading formal history rows.
+            AppLogger.Info("V6云端档案同步", $"跳过不完整预测快照：{prediction.Issue}");
+            return 0;
+        }
+
+        int imported = 0;
+        foreach ((string modelKey, CloudAiPrediction item) in prediction.AiZodiac)
+        {
+            if (!IsCompleteModelSnapshot(item)) continue;
+            int analysisPeriods = item.AnalysisPeriods > 0
+                ? item.AnalysisPeriods
+                : ParseAnalysisPeriods(modelKey);
+            if (analysisPeriods <= 0) continue;
+
+            string[] ranking = item.Ranking.OrderBy(row => row.Rank)
+                .ThenBy(row => row.Zodiac, StringComparer.Ordinal)
+                .Select(row => row.Zodiac).ToArray();
+            string[] top3 = item.Top3.Count > 0 ? item.Top3.ToArray() : ranking.Take(3).ToArray();
+            string[] top6 = item.Top6.Count > 0 ? item.Top6.ToArray() : ranking.Take(6).ToArray();
+            var record = new DatabaseHelper.PredictionRecord
+            {
+                Issue = prediction.Issue.ToString(),
+                PredictTime = prediction.GeneratedAt,
+                PredictionGroupId = $"PRED-{prediction.Issue}",
+                PredictNumber = string.Join(',', item.Numbers.Select(number => number.ToString("D2"))),
+                PredictZodiac = string.Join(',', top3),
+                Top6Zodiac = string.Join(',', top6),
+                AnalysisPeriods = analysisPeriods,
+                ScoreDetails = JsonSerializer.Serialize(item.FactorScores, JsonOptions),
+                ModelVersion = ResolveModelVersion(prediction.ModelVersion),
+                ActualNumber = "",
+                ActualZodiac = "",
+                HitResult = "未开奖",
+                Top6HitResult = "未开奖",
+                LearningDetails = $"云端生成；信心={item.Confidence}；最佳模型={item.BestModel}",
+                FinalRankingJson = item.FinalRankingJson,
+                BaseModelScoresJson = item.BaseModelScoresJson,
+                FeatureSnapshotJson = item.FeatureSnapshotJson,
+                WeightSnapshotJson = item.WeightSnapshotJson,
+                MappingSnapshotJson = V65MappingService.CreateSnapshot(
+                    prediction.Issue.ToString(), ResolvePredictionDate(prediction)),
+                LearningStatus = "Pending",
+                PredictionSource = "云端同步"
+            };
+            imported += DatabaseHelper.MergeSynchronizedPrediction(record);
+        }
+        return imported;
     }
+
+    private static bool IsCompleteModelSnapshot(CloudAiPrediction item) =>
+        item.AnalysisPeriods > 0 && item.Ranking.Count == 12 &&
+        item.Ranking.Select(row => row.Zodiac).Distinct(StringComparer.Ordinal).Count() == 12 &&
+        item.FactorScores.Count == 12 &&
+        item.FactorScores.Keys.All(zodiac => item.Ranking.Any(row => row.Zodiac == zodiac)) &&
+        !string.IsNullOrWhiteSpace(item.FinalRankingJson) &&
+        !string.IsNullOrWhiteSpace(item.BaseModelScoresJson);
+
+    private static int ParseAnalysisPeriods(string modelKey) =>
+        int.TryParse(modelKey, out int periods) ? periods : 0;
+
+    private static string ResolveModelVersion(string value) =>
+        string.IsNullOrWhiteSpace(value) ? AIEngine.Version : value;
+
+    private static DateTime ResolvePredictionDate(CloudDailyPrediction prediction) =>
+        DateTime.TryParse(prediction.GeneratedAt, out DateTime generated)
+            ? generated
+            : DateTime.Today;
 
     public static bool HasCompleteLocalEquivalent(CloudDailyPrediction prediction)
     {
         if (prediction.Status != "success" || prediction.Issue <= 0 || prediction.AiZodiac.Count == 0)
             return false;
-        return prediction.AiZodiac.Values.All(item => item.AnalysisPeriods > 0 &&
-            item.Ranking.Count == 12 && item.Ranking.Select(row => row.Zodiac)
-                .Distinct(StringComparer.Ordinal).Count() == 12 &&
-            item.FactorScores.Count == 12 &&
-            item.FactorScores.Keys.All(zodiac => item.Ranking.Any(row => row.Zodiac == zodiac)) &&
-            !string.IsNullOrWhiteSpace(item.FinalRankingJson) &&
-            !string.IsNullOrWhiteSpace(item.BaseModelScoresJson));
+        return prediction.AiZodiac.Values.All(IsCompleteModelSnapshot);
     }
 
     private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)

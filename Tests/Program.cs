@@ -2,6 +2,73 @@ using System.Text.Json;
 using System.Windows.Forms;
 using 六合分析软件;
 
+if (args.Contains("--historical-replay-smoke", StringComparer.OrdinalIgnoreCase) ||
+    args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase))
+{
+    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
+    string smokeDir = Path.Combine(Path.GetTempPath(), "liuhe-real-replay-" + Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(smokeDir);
+    using (var source = new System.Data.SQLite.SQLiteConnection($"Data Source={sourceDb};Version=3;Read Only=True;"))
+    using (var target = new System.Data.SQLite.SQLiteConnection($"Data Source={Path.Combine(smokeDir, "history.db")};Version=3;"))
+    {
+        source.Open();
+        target.Open();
+        source.BackupDatabase(target, "main", "main", -1, null, 100);
+    }
+    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", smokeDir);
+    DatabaseHelper.InitializeDatabase();
+    var allRealHistory = DatabaseHelper.GetHistory().OrderBy(row => long.Parse(row.Period)).ToArray();
+    var realHistory = args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase)
+        ? allRealHistory
+        : allRealHistory.Take(112).ToArray();
+    int warmup = args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase) ? 100 : 100;
+    HistoricalReplayResult replay = new HistoricalReplayEngine().Run(realHistory,
+        new HistoricalReplayOptions(warmup,
+            args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase) ? "real-full" : "real-smoke",
+            Path.Combine(smokeDir, "experiment.db")));
+    EvaluationReport report = EvaluationPipeline.Evaluate(replay.Predictions);
+    string reportPath = Path.Combine(smokeDir, "replay-report.json");
+    string reportJson = JsonSerializer.Serialize(new { replay.WarmupSamples, TargetIssueCount = replay.TargetIssues.Count, PredictionCount = replay.Predictions.Count, replay.FutureDataLeakageDetected, RandomSeed = 6501, MonteCarloIterations = 10000, Report = report }, new JsonSerializerOptions { WriteIndented = true });
+    File.WriteAllText(reportPath, reportJson);
+    Console.WriteLine(reportJson);
+    Console.WriteLine($"REPORT_PATH={reportPath}");
+    return replay.FutureDataLeakageDetected ? 1 : 0;
+}
+
+if (args.Contains("--candidate-stage2-full", StringComparer.OrdinalIgnoreCase) ||
+    args.Contains("--candidate-stage2-smoke", StringComparer.OrdinalIgnoreCase))
+{
+    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
+    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-candidate-stage2-" + Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(runDir);
+    string isolatedData = Path.Combine(runDir, "data");
+    Directory.CreateDirectory(isolatedData);
+    // Copy the isolated input snapshot before opening SQLite. Opening a zero-byte
+    // destination first makes SQLite.BackupDatabase fail with CantOpen on some hosts.
+    File.Copy(sourceDb, Path.Combine(isolatedData, "history.db"), overwrite: true);
+    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", isolatedData);
+    DatabaseHelper.InitializeDatabase();
+    var allHistory = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToArray();
+    var history = args.Contains("--candidate-stage2-full", StringComparer.OrdinalIgnoreCase) ? allHistory : allHistory.Take(112).ToArray();
+    string store = Path.Combine(runDir, "candidate-experiment.db");
+    var replay = new CandidateStage2ReplayEngine().Run(history, store);
+    var report = CandidateStage2Evaluation.Evaluate(replay.Candidates, replay.Controls, replay.ExperimentId, store);
+    string reportPath = Path.Combine(runDir, "candidate-stage2-report.json");
+    File.WriteAllText(reportPath, JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
+    Console.WriteLine(JsonSerializer.Serialize(new { report.ExperimentId, TargetIssueCount = replay.Controls.Select(x => x.TargetIssue).Distinct().Count(), CandidateSnapshotCount = replay.Candidates.Count, report.TripleFailureOpportunity, report.StrongFailureOpportunity, report.LeakageDetected, report.Performance, report.Rescue, report.Diversity, report.Conditional, report.MarketStates, report.TrainingValidationHoldout, report.Rolling, report.RandomConditional, report.MlModesDiffer, report.SelectorComparison, ReportPath = reportPath }, new JsonSerializerOptions { WriteIndented = true }));
+    return report.LeakageDetected ? 1 : 0;
+}
+
+if (args.Contains("--normal-number-research", StringComparer.OrdinalIgnoreCase))
+{
+    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
+    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-normal-number-research-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(runDir);
+    string copy = Path.Combine(runDir, "history.db"); File.Copy(sourceDb, copy, true); Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", runDir); DatabaseHelper.InitializeDatabase();
+    var history = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToArray(); string source = Path.Combine(runDir, "normal-research.db"); NormalNumberResearch.SaveSource(source, history);
+    var report = NormalNumberResearch.Run(history, source); string reportPath = Path.Combine(runDir, "normal-number-signal-report.json"); NormalNumberResearch.Save(reportPath, report);
+    Console.WriteLine(JsonSerializer.Serialize(new { report.ReportTitle, report.N, report.EarliestIssue, report.LatestIssue, report.IncompleteNormalCount, report.MissingSpecialCount, report.MissingZodiacCount, report.NumberAnomalyCount, report.CandidateDecision, report.FutureDataLeakageDetected, ReportPath = reportPath }, new JsonSerializerOptions { WriteIndented = true })); return report.FutureDataLeakageDetected ? 1 : 0;
+}
+
 if (args.Contains("--evaluate-auto-learning", StringComparer.OrdinalIgnoreCase))
 {
     string dataDirectory = Environment.GetEnvironmentVariable("LIUHE_EVAL_DATA_DIR")
@@ -79,6 +146,9 @@ var tests = new (string Name, Action Run)[]
     ,("V7 AI report omits repeated implementation notes", V7AiReportOmitsRepeatedImplementationNotes)
     ,("智能预测历史独立保存五条模型记录", V7PredictionsAreSavedToHistory)
     ,("智能预测历史自动学习是独立正式记录", AutoLearningPredictionIsFormalHistoryRow)
+    ,("V7记录保存完整12生肖排序", V7HistoryStoresCompleteRanking)
+    ,("V7自动学习使用独立记忆库", V7LearningUsesIndependentMemory)
+    ,("V7错因解释使用V7快照", V7ReviewUsesV7Snapshot)
     ,("cloud site replaces removed 200 period with automatic learning", CloudSiteUsesAutoLearningSlot)
     ,("cloud workflow runs at 22:00 with one failed-run retry", CloudWorkflowUsesSingleDailyRunAndFailedRetry)
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
@@ -136,6 +206,9 @@ var tests = new (string Name, Action Run)[]
     ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
     ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
     ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
+    ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
+    ,("历史重放实验快照保持统一期号与截止", HistoricalReplayContractsAreEnforced)
+    ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
 };
 
 int failures = 0;
@@ -1202,7 +1275,7 @@ void V7HistoryUsesV6Layout()
     using var form = new V7PredictionHistoryForm();
     var grid = FindControl<System.Windows.Forms.DataGridView>(form);
     Assert(form.WindowState == System.Windows.Forms.FormWindowState.Maximized, "V7 history should use the maximized V6 history effect");
-    Assert(grid != null && grid.Columns.Count == 13, "V7 history should use all V6 history columns plus a color column");
+    Assert(grid != null && grid.Columns.Count == 14, "V7 history should use all V6 history columns plus source and color columns");
     Assert(grid!.Columns.Contains("AnalysisPeriods") && grid.Columns.Contains("PredictNumber") && grid.Columns.Contains("ReviewDetails"), "V7 history is missing V6 history columns");
     Assert(grid.Columns.Contains("ColorPrediction"), "V7 history should display color prediction in an independent column");
     Assert(V7PredictionHistoryService.FormatAnalysisLabel(7050, "V7 ShortTerm") == "50期", "visible V7 label should be removed from history window");
@@ -2056,8 +2129,12 @@ void CloudPredictionArchiveKeepsFullLocalSnapshots()
     };
     Assert(CloudPredictionSyncService.HasCompleteLocalEquivalent(prediction),
         "云端预测档案没有本地同等的完整排名和因子快照");
-    Assert(CloudPredictionSyncService.ImportPrediction(prediction) == 0,
-        "云端参考档案不应写入正式 PredictionHistory");
+    Assert(CloudPredictionSyncService.ImportPrediction(prediction) == 1,
+        "完整云端预测档案应写入正式 PredictionHistory");
+    var imported = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(row => row.Issue == "2026226" && row.AnalysisPeriods == 50);
+    Assert(imported.PredictionSource == "云端同步" && imported.Top6Zodiac == "虎,猴,鼠,兔,马,龙",
+        "云端完整预测档案没有保留来源和前六排名");
 }
 
 void SymmetricModelStateSnapshotDetectsConflicts()
@@ -2113,6 +2190,99 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
     AssertThrows<InvalidDataException>(() => SymmetricRuntimeStateSync.MergeIntoLocal(incoming), "冲突状态必须拒绝");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count(row => row.Issue == "999901") == 1,
         "冲突状态不应产生部分写入");
+}
+
+void V7HistoryStoresCompleteRanking()
+{
+    var record = V7PredictionHistoryService.GetHistory(100)
+        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+    var ranking = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson);
+    Assert(ranking is { Length: 12 } && ranking.Distinct().Count() == 12,
+        "V7自动学习记录必须保存完整12生肖排序");
+}
+
+void V7LearningUsesIndependentMemory()
+{
+    var record = V7PredictionHistoryService.GetHistory(100)
+        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+    string actual = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson)![0];
+    LearningOutcome outcome = DatabaseHelper.ApplyAutomaticLearningForPrediction(record.Id, actual);
+    Assert(outcome.Updated, "V7自动学习反馈没有更新");
+    string? v7Memory = DatabaseHelper.LoadModelMemoryJson(new ModelMemory(ExperimentModels.IntelligentHistory).MemoryKey);
+    string? v65Memory = DatabaseHelper.LoadModelMemoryJson(new ModelMemory(ExperimentModels.AutoLearning).MemoryKey);
+    Assert(!string.IsNullOrWhiteSpace(v7Memory), "V7自动学习没有写入独立记忆库");
+    Assert(string.IsNullOrWhiteSpace(v65Memory), "V7自动学习错误写入V6.5记忆库");
+}
+
+void V7ReviewUsesV7Snapshot()
+{
+    string review = V7PredictionReviewService.BuildReview(
+        "鸡:0.1538;马:0.1410;虎:0.1282;蛇:0.1154;龙:0.1026;鼠:0.0897;牛:0.0769;猪:0.0641;羊:0.0513;猴:0.0385;狗:0.0256;兔:0.0128",
+        "鸡,马,虎", "兔");
+    Assert(review.Contains("排名第12", StringComparison.Ordinal) &&
+           review.Contains("V7", StringComparison.Ordinal),
+        "V7错因解释没有使用V7概率排序");
+}
+
+void PredictionHistoryPreservesPredictionSource()
+{
+    DatabaseHelper.SavePrediction("999902", "鼠", "鼠,牛,虎,兔,龙,蛇", "01", "V6.5", 50, "local-test");
+    DatabaseHelper.PredictionRecord local = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(row => row.Issue == "999902");
+    Assert(local.PredictionSource == "本地生成", "本地预测没有标记来源");
+
+    DatabaseHelper.PredictionRecord cloud = new()
+    {
+        Issue = "999903", PredictTime = "2026-08-15 10:00:00", PredictNumber = "02",
+        PredictZodiac = "牛", Top6Zodiac = "牛,鼠,虎,兔,龙,蛇", AnalysisPeriods = 50,
+        ScoreDetails = "cloud-test", ModelVersion = "V6.5", HitResult = "未开奖",
+        Top6HitResult = "未开奖", PredictionSource = "云端同步"
+    };
+    Assert(DatabaseHelper.MergeSynchronizedPrediction(cloud) == 1, "云端记录没有写入");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(row => row.Issue == "999903").PredictionSource == "云端同步",
+        "云端同步记录没有保留来源");
+}
+
+void HistoricalReplayContractsAreEnforced()
+{
+    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12],
+        SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
+    }).ToArray();
+    string store = Path.Combine(Path.GetTempPath(), "liuhe-replay-contract-" + Guid.NewGuid().ToString("N") + ".db");
+    HistoricalReplayResult replay = new HistoricalReplayEngine().Run(history, new HistoricalReplayOptions(100, "contract-run", store));
+    Assert(replay.TargetIssues.Count == 12, "重放评估期号数量错误");
+    Assert(replay.Predictions.GroupBy(row => row.TargetIssue).All(group =>
+        group.All(row => row.HistorySampleCount == int.Parse(group.Key) - 2026001)), "快照未记录真实 cutoff 样本数");
+    Assert(replay.Predictions.All(row => long.Parse(row.HistoryCutoffIssue) < long.Parse(row.TargetIssue)), "存在未来 cutoff");
+    Assert(replay.Predictions.Select(row => row.TargetIssue).Distinct().Count() == 12, "目标期集合不一致");
+    EvaluationReport report = EvaluationPipeline.Evaluate(replay.Predictions);
+    Assert(report.CommonEvaluationSet.Count == 12 && report.MissingPredictionCount == 0, "共同评估集合不完整");
+    Assert(!replay.FutureDataLeakageDetected, "正常重放被错误标记为泄漏");
+    Assert(report.RescueHarm.Count == 1 && report.Bootstrap95.Count > 0, "Rescue/Harm 或 Bootstrap 评估未生成");
+    Assert(report.RandomMonteCarlo.Iterations == 10000 && report.PairedComparisons.Count > 0 && report.McNemar.Count > 0, "随机基准或配对评估未生成");
+    Assert(report.Relationships.Count > 0 && report.RankChanges.Count == 1 && report.ConsensusBins.Count == 5 && report.JointFailureRiskBins.Count == 3 && report.ConfidenceGroups.Count == 3, "相关性、排名变化或分箱评估未生成");
+    Assert(File.Exists(store), "实验快照没有写入独立存储");
+    using var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={store};Version=3;Read Only=True;");
+    connection.Open();
+    using var production = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='PredictionHistory'", connection);
+    Assert(Convert.ToInt32(production.ExecuteScalar()) == 0, "实验库不应创建生产 PredictionHistory 表");
+}
+
+void CandidateStage2ContractsAreEnforced()
+{
+    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
+    {
+        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12], SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
+    }).ToArray();
+    string store = Path.Combine(Path.GetTempPath(), "candidate-stage2-contract-" + Guid.NewGuid().ToString("N") + ".db");
+    var result = new CandidateStage2ReplayEngine().Run(history, store);
+    Assert(result.Candidates.Count > 0 && result.Controls.Count > 0, "Candidate 旁路没有生成快照");
+    Assert(result.Candidates.All(x => long.Parse(x.HistoryCutoffIssue) < long.Parse(x.TargetIssue) && x.LeakageAuditPassed), "Candidate cutoff 或泄漏审计失败");
+    var report = CandidateStage2Evaluation.Evaluate(result.Candidates, result.Controls, result.ExperimentId, store, 6501, 100);
+    Assert(report.Performance.Count >= 6 && report.Rescue.Count >= 6 && !report.LeakageDetected, "Candidate Stage 2 评估不完整");
+    Assert(File.Exists(store), "Candidate 实验快照没有写入独立库");
 }
 
 string ProjectRoot() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));

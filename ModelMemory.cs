@@ -56,6 +56,7 @@ public sealed class ModelMemory
 {
     public const string LegacyMemoryKey = "auto-learning-meta-v1";
     public string MemoryKey { get; }
+    public static string MemoryKeyFor(string experimentKey) => ExperimentModels.MemoryKey(experimentKey);
     private readonly IModelMemoryStore store;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = false };
 

@@ -31,7 +31,9 @@ public static class V7PredictionHistoryService
         string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
         string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
         DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", ml.Top3), string.Join(",", ml.Top6), "",
-            "V7 ML LightGBM", MlHistoryKey, $"{mlScores}|{colorDetails}|{colorSnapshot}", report.Text);
+            "V7 ML LightGBM", MlHistoryKey, $"{mlScores}|{colorDetails}|{colorSnapshot}", report.Text,
+            System.Text.Json.JsonSerializer.Serialize(ml.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
+            "", System.Text.Json.JsonSerializer.Serialize(ml.Probabilities));
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
@@ -178,6 +180,8 @@ public static class V7PredictionHistoryService
         string scores = string.Join(";", result.Probabilities.OrderByDescending(x => x.Value)
             .Select(x => $"{x.Key}:{x.Value:F4}"));
         DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), "",
-            modelVersion, historyKey, scores, report);
+            modelVersion, historyKey, scores, report,
+            System.Text.Json.JsonSerializer.Serialize(result.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
+            "", System.Text.Json.JsonSerializer.Serialize(result.Features));
     }
 }

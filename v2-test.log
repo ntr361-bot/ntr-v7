@@ -1,0 +1,517 @@
+D:\projects\六合分析软v6.5正式版\Tests\六合分析软件.SmokeTests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\projects\六合分析软v6.5正式版\六合分析软件.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277: 发现无法解析的“WindowsBase”的不同版本之间存在冲突。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277: “WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”与“WindowsBase, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”之间存在冲突。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:     已选择“WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”，因为它是主版本而“WindowsBase, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”不是。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:     依赖于“WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”[C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.10\ref\net10.0\WindowsBase.dll]的引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:         C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.10\ref\net10.0\WindowsBase.dll [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:           导致引用“C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.10\ref\net10.0\WindowsBase.dll”的项目文件项 Include 特性。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:             C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.10\ref/net10.0/WindowsBase.dll [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:     依赖于或已统一到“WindowsBase, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35”[] 的引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:         C:\Users\Administrator\.nuget\packages\microsoft.web.webview2\1.0.4078.44\lib_manual\net5.0-windows10.0.17763.0\Microsoft.Web.WebView2.Wpf.dll [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:           导致引用“C:\Users\Administrator\.nuget\packages\microsoft.web.webview2\1.0.4078.44\lib_manual\net5.0-windows10.0.17763.0\Microsoft.Web.WebView2.Wpf.dll”的项目文件项 Include 特性。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+C:\Program Files\dotnet\sdk\10.0.302\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3277:             C:\Users\Administrator\.nuget\packages\microsoft.web.webview2\1.0.4078.44\buildTransitive\..\\lib_manual\net5.0-windows10.0.17763.0\Microsoft.Web.WebView2.Wpf.dll [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "table" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "statusLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "summaryLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "missAnalysisLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "reversePanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "reverseTitleLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(53,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "autoRefreshTimer" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(47,19): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "table" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(47,19): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "statsLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(47,19): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnRefresh" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(47,19): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnVerify" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(132,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(133,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(134,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(135,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(136,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(137,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(138,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(139,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(140,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(141,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(142,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(143,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(144,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AISettings.cs(41,33): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "_currentSettings" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(124,32): warning CS8622: “void AIPredictHistoryForm.BtnVerify_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(198,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(199,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(200,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(201,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(202,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(203,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(204,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(205,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(206,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(209,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(210,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(211,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(212,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(213,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(214,17): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(216,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(217,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(220,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(223,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(224,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(225,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(226,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(227,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(228,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(230,37): warning CS8622: “void AIPredictHistoryForm.Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“DataGridViewCellFormattingEventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(238,35): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(239,35): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(262,34): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(268,52): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(287,44): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(287,77): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(318,43): warning CS8604: “void TextRenderer.DrawText(IDeviceContext dc, string? text, Font? font, Point pt, Color foreColor, TextFormatFlags flags)”中的形参“dc”可能传入 null 引用实参。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(323,21): warning CS8604: “void TextRenderer.DrawText(IDeviceContext dc, string? text, Font? font, Point pt, Color foreColor, TextFormatFlags flags)”中的形参“dc”可能传入 null 引用实参。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(356,30): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\AIPredictHistoryForm.cs(377,39): warning CS8604: “void TextRenderer.DrawText(IDeviceContext dc, string? text, Font? font, Rectangle bounds, Color foreColor, TextFormatFlags flags)”中的形参“dc”可能传入 null 引用实参。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(712,25): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(733,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(743,34): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacRuleForm.cs(744,62): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\BacktestAnalysisService.cs(75,27): warning CS0219: 变量“numberHits”已被赋值，但从未使用过它的值 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "topBar" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "cboPeriods" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnPredict" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnBacktest" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "scrollPanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "resultPanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(27,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "backtestPanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(92,33): warning CS8622: “void ZodiacPredictForm.BtnPredict_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\ZodiacPredictForm.cs(103,34): warning CS8622: “void ZodiacPredictForm.BtnBacktest_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "tabControl" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "cboPeriods1" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "cboPeriods2" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "cboPeriods3" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "gridNumbers" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "gridZodiacs" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "gridMissing" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "infoLabel1" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "infoLabel2" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "infoLabel3" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnRefresh1" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnRefresh2" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(19,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnRefresh3" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "tabControl" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "topBar" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "dataInfoLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(115,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(116,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(117,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(118,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(119,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(120,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(121,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(125,38): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(189,38): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(191,32): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(192,25): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(261,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(262,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(263,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(264,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(265,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(266,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(270,38): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(272,25): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(296,21): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataAnalysisCenter.cs(298,25): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataCheckForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "reportBox" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataCheckForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnRun" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DataCheckForm.cs(16,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "statusLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DatabaseHelper.cs(747,28): warning CS8603: 可能返回 null 引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\DatabaseHelper.cs(767,28): warning CS8603: 可能返回 null 引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "menuPanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "mainPanel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnHome" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnHistory" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnZodiacPredict" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnAIPredictHistory" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnLive" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnAnalyze" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnPredict" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnCheck" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnMlBacktest" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnV7Models" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnV7History" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "titleLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "cloudSyncLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "txtNumber" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "btnSaveHistory" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "saveStatus" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "rbDownload100" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "rbDownload300" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(42,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "rbDownload500" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(148,33): warning CS8622: “void Form1.BtnHistory_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(149,39): warning CS8622: “void Form1.BtnZodiacPredict_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(150,42): warning CS8622: “void Form1.BtnAIPredictHistory_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(151,30): warning CS8622: “void Form1.BtnLive_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(152,33): warning CS8622: “void Form1.BtnAnalyze_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(153,33): warning CS8622: “void Form1.BtnPredict_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(154,36): warning CS8622: “void Form1.BtnMlBacktest_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(155,34): warning CS8622: “void Form1.BtnV7Models_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(157,31): warning CS8622: “void Form1.BtnCheck_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(71,32): warning CS8622: “void HistoryForm.BtnUpdate_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(80,32): warning CS8622: “void HistoryForm.BtnRepair_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(87,32): warning CS8622: “void HistoryForm.BtnDelete_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(99,32): warning CS8622: “void HistoryForm.BtnExport_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(106,33): warning CS8622: “void HistoryForm.BtnRefresh_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(163,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(164,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(165,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(168,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(169,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(170,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(171,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(172,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(175,37): warning CS8622: “void HistoryForm.Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“DataGridViewCellFormattingEventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\LiveStreamForm.cs(17,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "webView" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\LiveStreamForm.cs(17,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "topBar" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\LiveStreamForm.cs(17,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "urlLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(197,35): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(294,30): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(350,47): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\HistoryForm.cs(416,26): warning CS8605: 取消装箱可能为 null 的值。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(472,37): warning CS8622: “void Form1.BtnSaveHistory_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(484,39): warning CS8622: “void Form1.BtnUpdateHistory_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(496,35): warning CS8622: “void Form1.BtnTestCrawl_Click(object sender, EventArgs e)”的参数“sender”类型中引用类型的为 Null 性与目标委托“EventHandler”不匹配(可能是由于为 Null 性特性)。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(819,29): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(820,30): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(822,33): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(822,32): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(846,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(847,13): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(848,14): warning CS8600: 将 null 文本或可能的 null 值转换为不可为 null 类型。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\Form1.cs(848,14): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(96,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(97,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(98,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(99,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(100,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(101,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(102,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(103,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(104,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(105,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(106,9): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\V65ExperimentScoreboardView.cs(136,34): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\TrendPredictionForm.cs(22,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "tabControl" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\TrendPredictionForm.cs(22,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "topBar" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\TrendPredictionForm.cs(22,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "dataInfoLabel" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\TrendPredictionForm.cs(22,16): warning CS8618: 在退出构造函数时，不可为 null 的 字段 "periodSelector" 必须包含非 null 值。请考虑添加 "required" 修饰符或将该 字段 声明为可为 null。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+D:\projects\六合分析软v6.5正式版\TrendPredictionForm.cs(175,38): warning CS8602: 解引用可能出现空引用。 [D:\projects\六合分析软v6.5正式版\六合分析软件.csproj]
+2026-08-15 09:02:19.693 [INFO] 数据库迁移: PredictionHistory 新增列 FinalRankingJson
+2026-08-15 09:02:19.709 [INFO] 数据库迁移: PredictionHistory 新增列 BaseModelScoresJson
+2026-08-15 09:02:19.726 [INFO] 数据库迁移: PredictionHistory 新增列 FeatureSnapshotJson
+2026-08-15 09:02:19.743 [INFO] 数据库迁移: PredictionHistory 新增列 WeightSnapshotJson
+2026-08-15 09:02:19.759 [INFO] 数据库迁移: PredictionHistory 新增列 MappingSnapshotJson
+2026-08-15 09:02:19.776 [INFO] 数据库迁移: PredictionHistory 新增列 ActualRank
+2026-08-15 09:02:19.793 [INFO] 数据库迁移: PredictionHistory 新增列 LearningStatus
+2026-08-15 09:02:19.809 [INFO] 数据库迁移: PredictionHistory 新增列 LearnedAt
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[INFO] 开始运行预测模型
+[数据库] 新建预测记录（期号:103，周期:3，模型:V6.5）
+[INFO] 输出文件：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\output\f7e509f4662e46b98e40e9c7b316c8f8\103.json
+[INFO] 文件校验通过
+[SUCCESS] 第103期预测已生成
+PASS 自动化预测写入历史记录
+[爬虫] 解析完成，共找到 1 条记录
+PASS 解析有效开奖 JSON
+[爬虫] API 返回错误: code=500, msg=failed
+PASS 拒绝失败 API 响应
+PASS 号码统计正确
+PASS 2026马年生肖号码映射正确
+PASS 综合评分使用目标年份生肖映射
+PASS V6.5使用GPT-5.6 Sol
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[SUCCESS] 检查通过；将生成第103期预测（dry-run 未写入文件）
+PASS 自动识别下一期
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：110
+[INFO] 使用历史数据数量：3
+[SUCCESS] 检查通过；将生成第110期预测（dry-run 未写入文件）
+PASS 指定期号运行
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：103
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[INFO] 第103期预测已经存在，已跳过。
+PASS 已存在文件时跳过
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：103
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[INFO] 开始运行预测模型
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:3，模型:V6.5）
+[INFO] 输出文件：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\output\0554049448514f49b91bbce33ca0e7aa\103.json
+[INFO] 文件校验通过
+[SUCCESS] 第103期预测已生成
+PASS 强制覆盖
+PASS 历史数据为空
+PASS 历史数据格式错误
+PASS 云端定时预测要求开奖期号推进
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[INFO] 开始运行预测模型
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:3，模型:V6.5）
+[INFO] 输出文件：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\output\299c7b1f75914c758bb9ae157e7a90c0\103.json
+[INFO] 文件校验通过
+[SUCCESS] 第103期预测已生成
+PASS 输出 JSON 校验
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[INFO] 开始运行预测模型
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:3，模型:V6.5）
+[INFO] 输出文件：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\output\e6d639ef0a934d888bad8914ce13a382\103.json
+[INFO] 文件校验通过
+[SUCCESS] 第103期预测已生成
+PASS latest.json 更新
+PASS 重复期号检测
+[INFO] 开始读取历史数据
+[INFO] 最新开奖期号：102
+[INFO] 最新预测期号：0
+[INFO] 目标预测期号：103
+[INFO] 使用历史数据数量：3
+[SUCCESS] 检查通过；将生成第103期预测（dry-run 未写入文件）
+PASS dry-run 不修改文件
+[数据库] 新建预测记录（期号:100，周期:50，模型:V6.5）
+[数据库] 新建预测记录（期号:103，周期:50，模型:V6.5）
+PASS 历史数据截止期生效
+[数据库] 新建预测记录（期号:102，周期:50，模型:V6.5）
+[数据库] 新建预测记录（期号:102，周期:100，模型:V6.5）
+[数据库] 新建预测记录（期号:102，周期:1320，模型:V6.5）
+PASS 历史截止期内可读取下一期基础预测快照
+PASS 特码规律生成六肖
+[SUCCESS] 第103期全功能预测检查通过（dry-run）
+PASS 全功能dry-run不写文件
+PASS 有效抓取数据校验
+PASS 损坏抓取数据拒绝
+PASS 预测清单包含全部期号
+PASS 云端预测不再导入200期模型
+PASS 云端同步不把缓存预测误称为已导入历史
+[SUCCESS] 云端开奖档案已更新：3期，最新102期
+PASS 云端开奖档案导出
+[SUCCESS] 云端开奖档案已更新：3期，最新102期
+[INFO] 云端开奖档案无变化：3期，最新102期
+PASS 开奖记录未变化时不重复改写云端档案
+PASS 历史预测逐项写入命中结果
+PASS 超长遗漏不会继续抬高预测分
+PASS 全部历史学习跨期数复用样本
+PASS V6.5学习只接收同版本同周期样本
+PASS 四模型实验键独立且稳定
+PASS 自动学习只读取同一期三条基础快照
+PASS V6.5自动学习在正式使用前完成历史预训练
+PASS V6.5回测使用正式三模型快照
+PASS V6.5三条基础模型应用各自固定权重
+PASS V6.5回测实际比较四条实验模型
+PASS V6.5实验成绩榜统计四模型与状态
+PASS 八肖规则只做小幅校正
+PASS ML features are leakage safe
+PASS ML models return ranked probabilities
+PASS ML rolling backtest records metrics
+PASS ML selects the highest-gain split feature
+PASS FeatureEngine exposes 30+ finite non-five-element features
+PASS Five-element signals are removed from prediction
+PASS V7 feature engine exposes independent windows
+PASS V7 engines are independent and filter short repeats
+PASS V7 ML prediction facade returns probabilities
+PASS V7 color engine is independent
+PASS V7 auto optimizer compares schemes
+PASS V7 AI report explains model state
+PASS V7 AI report omits repeated implementation notes
+[数据库] 新建预测记录（期号:103，周期:7050，模型:V7 ShortTerm）
+[数据库] 新建预测记录（期号:103，周期:7100，模型:V7 MediumTerm）
+[数据库] 新建预测记录（期号:103，周期:7000，模型:V7 LongTerm）
+[数据库] 新建预测记录（期号:103，周期:7200，模型:V7 ML LightGBM）
+[数据库] 新建预测记录（期号:103，周期:7250，模型:V7 AutoLearning）
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:7050，模型:V7 ShortTerm）
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:7100，模型:V7 MediumTerm）
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:7000，模型:V7 LongTerm）
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:7200，模型:V7 ML LightGBM）
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:7250，模型:V7 AutoLearning）
+PASS 智能预测历史独立保存五条模型记录
+PASS 智能预测历史自动学习是独立正式记录
+PASS cloud site replaces removed 200 period with automatic learning
+PASS cloud workflow runs at 22:00 with one failed-run retry
+PASS V7 history uses the V6 history layout
+[数据库] 新建预测记录（期号:999303，周期:7300，模型:V7 AutoLearning Validation）
+PASS verified color hits are visually emphasized
+PASS main menu omits duplicate statistics chart
+[数据库] 新建预测记录（期号:998001，周期:100，模型:V6.3）
+[数据库] 新建预测记录（期号:998001，周期:998050，模型:V7 ShortTerm）
+[数据库] 新建预测记录（期号:998002，周期:200，模型:V6.3）
+[数据库] 新建预测记录（期号:998003，周期:0，模型:V6.3）
+PASS Legacy prediction history excludes removed and V7 model rows
+PASS retired fixed-period prediction model entry points are removed
+[数据库] 新建预测记录（期号:998010，周期:0，模型:云端 V6.3）
+[数据库] 新建预测记录（期号:998011，周期:200，模型:云端 V6.3）
+[数据库] 新建预测记录（期号:998012，周期:50，模型:云端 V6.3）
+[数据库] 新建预测记录（期号:998013，周期:50，模型:V6.3）
+PASS database initialization preserves retired predictions as archived history
+PASS default data directory is stable across release builds
+[数据库] 新建预测记录（期号:998014，周期:50，模型:V6.5）
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+PASS database backup uses stable data directory and contains current rows
+[数据库] 新建预测记录（期号:998015，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998015，周期:100，模型:V6.5）
+PASS prediction history keeps the first issued snapshot
+PASS initialization preserves the legacy prediction archive table
+PASS legacy promotion never replaces a richer prediction database
+[数据库] 预测记录已存在，保留首次快照（期号:103，周期:3，模型:V6.5）
+PASS legacy promotion copies committed WAL and legacy archive rows
+PASS legacy promotion never replaces a stable legacy archive
+PASS initialization preserves duplicate prediction snapshots
+[数据库] 新建预测记录（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+[数据库] 预测记录已存在，保留首次快照（期号:998020，周期:100，模型:V6.5）
+PASS concurrent prediction saves are atomic and idempotent
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 今日已备份：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+[备份] 数据库备份成功：D:\projects\六合分析软v6.5正式版\Tests\bin\Debug\net10.0-windows\TestData\Backup\20260815.db
+PASS concurrent database backups publish one valid snapshot
+PASS ambiguous legacy migration never creates an empty stable database
+PASS V8.2 market state probabilities are normalized and leakage safe
+PASS V8.2 cross features are named finite and leakage safe
+PASS V8.2 pairwise ranker returns one normalized 12-zodiac ranking
+PASS V8.3 state probabilities condition the pairwise ranker without hard routing
+PASS V8.3 ranking exposes stability metrics
+PASS V8.3 audit can ablate state-missing without changing other features
+PASS V8.2 color backtest is independent from zodiac predictions
+PASS automatic learning weights stay bounded
+PASS meta ranking uses safe fallback and normalized probabilities
+PASS automatic learning uses top3 five and top6 three miss thresholds
+[数据库] 新建预测记录（期号:999101，周期:7250，模型:V6.5 AutoLearning）
+PASS prediction feedback is persisted exactly once
+[数据库] 新建预测记录（期号:2026131，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026132，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026133，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026134，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026135，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026136，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026137，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026138，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026139，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026140，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026141，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026142，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026143，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026144，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026145，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026146，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026147，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026148，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026149，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026150，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026151，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026152，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026153，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026154，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026155，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026156，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026157，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026158，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026159，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026160，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026161，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026162，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026163，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026164，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026165，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026166，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026167，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026168，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026169，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026170，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026171，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026172，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026173，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026174，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026175，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026176，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026177，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026178，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026179，周期:7300，模型:V7 AutoLearning Validation）
+[数据库] 新建预测记录（期号:2026180，周期:7300，模型:V7 AutoLearning Validation）
+PASS automatic learning evaluation is chronological
+PASS color learning weights stay bounded
+PASS color learning uses independent main and dual miss thresholds
+PASS color feedback is idempotent
+PASS color prediction consumes learned weights and exposes features
+[数据库] 新建预测记录（期号:999202，周期:7050，模型:V7 ShortTerm）
+[数据库] 新建预测记录（期号:999202，周期:7100，模型:V7 MediumTerm）
+[数据库] 新建预测记录（期号:999202，周期:7000，模型:V7 LongTerm）
+[数据库] 新建预测记录（期号:999202，周期:7200，模型:V7 ML LightGBM）
+[数据库] 新建预测记录（期号:999202，周期:7250，模型:V7 AutoLearning）
+PASS color prediction history persists one learnable snapshot
+PASS V6 site, desktop sync, and publisher use one cloud API
+PASS 桌面云同步使用受机器密钥保护的独立入口
+PASS 桌面云同步可从本机受保护配置读取密钥
+PASS V6.5 mapping service has complete validated maps
+[数据库] 新建预测记录（期号:20260101，周期:50，模型:V6.5）
+PASS V6.5 prediction persists target-year mapping snapshot
+PASS web wave-color mapping is parsed independently from number API
+PASS scoreboard reserves space for the horizontal scroll bar
+PASS current web wave map is never claimed for a prior lunar year
+PASS crawler save backfills a missing wave color without counting a new draw
+PASS 旁路 PredictionTrace 是不可变且不触碰正式预测历史
+PASS 正式四模型可旁路捕获 Trace 与开奖结果
+PASS AutoLearningV2 快照和残差输出完全旁路且可解释
+PASS AutoLearningV2 独立信号必须通过前缀泄漏审计
+PASS AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据
+PASS AutoLearningV2 报告区分留出指标且不宣称自动上线
+PASS AutoLearningV2 实验快照写入独立表

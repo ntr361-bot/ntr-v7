@@ -192,6 +192,7 @@ namespace 六合分析软件
             if (newModelOnly)
                 table.Columns.Add("ColorPrediction", "波色预测");
             table.Columns.Add("ModelVersion", "模型");
+            table.Columns.Add("PredictionSource", "来源");
             table.Columns.Add("PredictTime", "预测时间");
 
             // 设置列宽（像素）
@@ -214,7 +215,18 @@ namespace 六合分析软件
                 table.Columns["ColorPrediction"].DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Regular);
             }
             table.Columns["ModelVersion"].Width = 90;
-            table.Columns["PredictTime"].Width = 180;
+            table.Columns["PredictionSource"].Width = 90;
+            // Keep the history table readable at any maximized window size. The
+            // previous fixed-width layout left the unused client area blank.
+            if (newModelOnly)
+            {
+                table.Columns["PredictTime"].Width = 180;
+            }
+            else
+            {
+                table.Columns["PredictTime"].MinimumWidth = 180;
+                table.Columns["PredictTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
 
             // 号码列自动换行
             table.Columns["PredictNumber"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -444,6 +456,7 @@ namespace 六合分析软件
                 if (newModelOnly)
                     rowValues.Add(colorByIssue.TryGetValue(r.Issue, out string? color) ? color : "-");
                 rowValues.Add(newModelOnly ? V7PredictionHistoryService.FormatModelName(r.ModelVersion) : r.ModelVersion);
+                rowValues.Add(r.PredictionSource);
                 rowValues.Add(r.PredictTime);
                 int rowIndex = table.Rows.Add(rowValues.ToArray());
 
