@@ -1,3 +1,4 @@
+using System.Text.Json;
 using 六合分析软件;
 
 try
@@ -33,7 +34,10 @@ try
         DailyPredictionAutomation.GenerateMissing(outputDirectory, dailyOutputDirectory,
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
+        {
             CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
+            WriteRuntimeState(repositoryRoot);
+        }
         return 0;
     }
 
@@ -92,3 +96,25 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 
 static void PrintUsage() => Console.WriteLine(
     "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all]");
+
+static void WriteRuntimeState(string repositoryRoot)
+{
+    string output = Path.Combine(repositoryRoot, "site", "data", "runtime-state.json");
+    Directory.CreateDirectory(Path.GetDirectoryName(output)!);
+    SymmetricRuntimeStateSnapshot snapshot = SymmetricRuntimeStateSync.Export("V6.5");
+    string temporary = output + $".{Guid.NewGuid():N}.tmp";
+    try
+    {
+        File.WriteAllText(temporary, JsonSerializer.Serialize(snapshot, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = false
+        }));
+        using JsonDocument _ = JsonDocument.Parse(File.ReadAllBytes(temporary));
+        File.Move(temporary, output, true);
+    }
+    finally
+    {
+        if (File.Exists(temporary)) File.Delete(temporary);
+    }
+}

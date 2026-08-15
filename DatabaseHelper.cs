@@ -405,6 +405,32 @@ namespace 六合分析软件
                     RecordedAt TEXT NOT NULL,
                     FOREIGN KEY(TraceId) REFERENCES PredictionTrace(Id)
                 )", conn).ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS AutoLearningV2ExperimentRun
+                (
+                    RunId TEXT PRIMARY KEY,
+                    ModelKey TEXT NOT NULL,
+                    CodeVersion TEXT NOT NULL,
+                    Lambda TEXT NOT NULL,
+                    Decay TEXT NOT NULL,
+                    TrainingStartIssue TEXT NOT NULL,
+                    TrainingEndIssue TEXT NOT NULL,
+                    ValidationEndIssue TEXT NOT NULL,
+                    HoldoutEndIssue TEXT NOT NULL,
+                    CreatedAt TEXT NOT NULL
+                )", conn).ExecuteNonQuery();
+            new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS AutoLearningV2ExperimentPrediction
+                (
+                    RunId TEXT NOT NULL,
+                    Issue TEXT NOT NULL,
+                    Top6 TEXT NOT NULL,
+                    ActualRank INTEGER NOT NULL,
+                    BaseScore REAL NOT NULL,
+                    ResidualCorrection REAL NOT NULL,
+                    FinalScore REAL NOT NULL,
+                    Confidence TEXT NOT NULL,
+                    PRIMARY KEY(RunId, Issue),
+                    FOREIGN KEY(RunId) REFERENCES AutoLearningV2ExperimentRun(RunId)
+                )", conn).ExecuteNonQuery();
         }
 
         private static void TryRestoreSiblingLegacyPredictionHistory()
@@ -1253,6 +1279,95 @@ namespace 六合分析软件
                     Console.WriteLine($"[预测验证] 期号:{issue} 实际:{actualNumber} {actualZodiac} {(hit ? "命中" : "未命中")}");
                 }
             }
+        }
+
+        public static int MergeSynchronizedPrediction(PredictionRecord record)
+        {
+            using SQLiteConnection conn = GetConnection();
+            ValidateSynchronizedPrediction(conn, record);
+            return InsertSynchronizedPrediction(conn, record);
+        }
+
+        public static void ValidateSynchronizedPrediction(PredictionRecord record)
+        {
+            using SQLiteConnection conn = GetConnection();
+            ValidateSynchronizedPrediction(conn, record);
+        }
+
+        private static void ValidateSynchronizedPrediction(SQLiteConnection conn, PredictionRecord record)
+        {
+            using (var existing = new SQLiteCommand(@"SELECT Id,Issue,PredictTime,PredictionGroupId,PredictNumber,PredictZodiac,Top6Zodiac,
+                AnalysisPeriods,ScoreDetails,ModelVersion,ActualNumber,ActualZodiac,HitResult,Top6HitResult,ReviewDetails,
+                LearningDetails,FinalRankingJson,BaseModelScoresJson,FeatureSnapshotJson,WeightSnapshotJson,MappingSnapshotJson,
+                ActualRank,LearningStatus,LearnedAt FROM PredictionHistory
+                WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model", conn))
+            {
+                existing.Parameters.AddWithValue("@issue", record.Issue);
+                existing.Parameters.AddWithValue("@periods", record.AnalysisPeriods);
+                existing.Parameters.AddWithValue("@model", record.ModelVersion);
+                using SQLiteDataReader reader = existing.ExecuteReader();
+                if (reader.Read())
+                {
+                    PredictionRecord local = ReadPredictionRecord(reader);
+                    if (!PredictionContentEquals(local, record))
+                        throw new InvalidDataException($"同期预测冲突：{record.Issue}/{record.AnalysisPeriods}/{record.ModelVersion}");
+                    return;
+                }
+            }
+        }
+
+        private static int InsertSynchronizedPrediction(SQLiteConnection conn, PredictionRecord record)
+        {
+            using var command = new SQLiteCommand(@"INSERT INTO PredictionHistory
+                (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac,
+                 AnalysisPeriods, ScoreDetails, ModelVersion, ActualNumber, ActualZodiac, HitResult,
+                 Top6HitResult, ReviewDetails, LearningDetails, FinalRankingJson, BaseModelScoresJson,
+                 FeatureSnapshotJson, WeightSnapshotJson, MappingSnapshotJson, ActualRank, LearningStatus, LearnedAt)
+                SELECT @issue,@group,@time,@number,@top3,@top6,@periods,@scores,@model,@actualNumber,@actualZodiac,
+                       @hit,@top6Hit,@review,@learning,@ranking,@base,@features,@weights,@mapping,@rank,@status,@learned
+                WHERE NOT EXISTS (SELECT 1 FROM PredictionHistory WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model)", conn);
+            command.Parameters.AddWithValue("@issue", record.Issue); command.Parameters.AddWithValue("@group", record.PredictionGroupId);
+            command.Parameters.AddWithValue("@time", record.PredictTime); command.Parameters.AddWithValue("@number", record.PredictNumber);
+            command.Parameters.AddWithValue("@top3", record.PredictZodiac); command.Parameters.AddWithValue("@top6", record.Top6Zodiac);
+            command.Parameters.AddWithValue("@periods", record.AnalysisPeriods); command.Parameters.AddWithValue("@scores", record.ScoreDetails);
+            command.Parameters.AddWithValue("@model", record.ModelVersion); command.Parameters.AddWithValue("@actualNumber", record.ActualNumber);
+            command.Parameters.AddWithValue("@actualZodiac", record.ActualZodiac); command.Parameters.AddWithValue("@hit", record.HitResult);
+            command.Parameters.AddWithValue("@top6Hit", record.Top6HitResult); command.Parameters.AddWithValue("@review", record.ReviewDetails);
+            command.Parameters.AddWithValue("@learning", record.LearningDetails); command.Parameters.AddWithValue("@ranking", record.FinalRankingJson);
+            command.Parameters.AddWithValue("@base", record.BaseModelScoresJson); command.Parameters.AddWithValue("@features", record.FeatureSnapshotJson);
+            command.Parameters.AddWithValue("@weights", record.WeightSnapshotJson); command.Parameters.AddWithValue("@mapping", record.MappingSnapshotJson);
+            command.Parameters.AddWithValue("@rank", record.ActualRank); command.Parameters.AddWithValue("@status", record.LearningStatus);
+            command.Parameters.AddWithValue("@learned", record.LearnedAt);
+            return command.ExecuteNonQuery();
+        }
+
+        private static PredictionRecord ReadPredictionRecord(SQLiteDataReader reader)
+        {
+            string Text(int index) => reader.IsDBNull(index) ? "" : reader.GetString(index);
+            return new PredictionRecord
+            {
+                Id = reader.GetInt32(0), Issue = Text(1), PredictTime = Text(2), PredictionGroupId = Text(3),
+                PredictNumber = Text(4), PredictZodiac = Text(5), Top6Zodiac = Text(6), AnalysisPeriods = reader.GetInt32(7),
+                ScoreDetails = Text(8), ModelVersion = Text(9), ActualNumber = Text(10), ActualZodiac = Text(11),
+                HitResult = Text(12), Top6HitResult = Text(13), ReviewDetails = Text(14), LearningDetails = Text(15),
+                FinalRankingJson = Text(16), BaseModelScoresJson = Text(17), FeatureSnapshotJson = Text(18),
+                WeightSnapshotJson = Text(19), MappingSnapshotJson = Text(20), ActualRank = reader.GetInt32(21),
+                LearningStatus = Text(22), LearnedAt = Text(23)
+            };
+        }
+
+        private static bool PredictionContentEquals(PredictionRecord left, PredictionRecord right)
+        {
+            static object Content(PredictionRecord value) => new
+            {
+                value.Issue, value.PredictTime, value.PredictionGroupId, value.PredictNumber, value.PredictZodiac,
+                value.Top6Zodiac, value.AnalysisPeriods, value.ScoreDetails, value.ModelVersion, value.ActualNumber,
+                value.ActualZodiac, value.HitResult, value.Top6HitResult, value.ReviewDetails, value.LearningDetails,
+                value.FinalRankingJson, value.BaseModelScoresJson, value.FeatureSnapshotJson, value.WeightSnapshotJson,
+                value.MappingSnapshotJson, value.ActualRank, value.LearningStatus, value.LearnedAt
+            };
+            return string.Equals(System.Text.Json.JsonSerializer.Serialize(Content(left)),
+                System.Text.Json.JsonSerializer.Serialize(Content(right)), StringComparison.Ordinal);
         }
 
         private static PredictionTraceLearningState GetTraceLearningState()

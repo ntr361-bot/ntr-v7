@@ -164,7 +164,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history.db site/data/history.json site/data/predictions site/data/daily-records
+          git add data/history.db site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json
           if (git diff --cached --quiet) {
             Write-Host "No prediction changes to commit."
             exit 0
@@ -185,6 +185,7 @@ jobs:
             history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
             dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
             manifest = $manifest
+            modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
             predictions = $predictions
           } | ConvertTo-Json -Depth 100 -Compress
           $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"

@@ -126,6 +126,16 @@ var tests = new (string Name, Action Run)[]
     ,("crawler save backfills a missing wave color without counting a new draw", CrawlerSaveBackfillsWaveColor)
     ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
     ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
+    ,("AutoLearningV2 快照和残差输出完全旁路且可解释", AutoLearningV2SnapshotAndResidualAreIsolated)
+    ,("AutoLearningV2 独立信号必须通过前缀泄漏审计", AutoLearningV2IndependentSignalAudit)
+    ,("AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据", AutoLearningV2WalkForwardMetricsAreLeakageSafe)
+    ,("AutoLearningV2 报告区分留出指标且不宣称自动上线", AutoLearningV2ReportIsExplicitlyExperimental)
+    ,("AutoLearningV2 实验快照写入独立表", AutoLearningV2ExperimentStorageIsIsolated)
+    ,("云端预测档案保留本地同等完整模型快照", CloudPredictionArchiveKeepsFullLocalSnapshots)
+    ,("同构模型状态快照具有稳定哈希且学习事件冲突可检测", SymmetricModelStateSnapshotDetectsConflicts)
+    ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
+    ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
+    ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
 };
 
 int failures = 0;
@@ -1938,6 +1948,175 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
         "开奖结果没有保存真实名次、命中和学习前后状态");
 }
 
+void AutoLearningV2SnapshotAndResidualAreIsolated()
+{
+    const string issue = "999803";
+    int before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Count;
+    PredictionTraceSnapshot trace = TraceFixture(issue, "999802", 41);
+    AutoLearningV2Snapshot snapshot = AutoLearningV2Service.BuildSnapshot(trace,
+        new AutoLearningV2HistoryFeatures(18, 50, .42, .48, .14, .23));
+    Assert(snapshot.Zodiacs.Count == 12 && snapshot.Zodiacs[0].RankMean > 0 && snapshot.Zodiacs[0].RankStd >= 0,
+        "V2 没有保存完整三模型分歧特征");
+    Assert(snapshot.Zodiacs[0].FactorFeatures.ContainsKey("F_mean") &&
+        snapshot.Zodiacs[0].FactorFeatures.ContainsKey("B_std"),
+        "V2 没有保存底层因子均值和标准差");
+    Assert(snapshot.Config.Lambda is .05 or .10 or .15 && snapshot.Zodiacs.All(row => row.Rank is >= 1 and <= 12),
+        "V2 残差参数或完整排序无效");
+    Assert(snapshot.Zodiacs.Any(row => Math.Abs(row.FinalScore - row.BaseScore) > 0.000001),
+        "V2 没有产生可解释的残差修正");
+    Assert(snapshot.Zodiacs.All(row => row.Explanation.MaxPositiveFeature is not null),
+        "V2 缺少最大正贡献解释");
+    Assert(snapshot.Confidence is "High" or "Medium" or "Low" && snapshot.JointFailureRisk is >= 0 and <= 1,
+        "V2 Confidence 或 JointFailureRisk 越界");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
+        "V2 不得写入正式 PredictionHistory");
+
+    AutoLearningV2State state = new();
+    ModelWeights oldWeights = state.Weights;
+    state = AutoLearningV2Service.UpdateState(state, snapshot, actualZodiac: "鼠");
+    Assert(Math.Abs(state.Weights.AI - oldWeights.AI) <= .02 && state.Weights.Sum > .999 && state.Weights.Sum < 1.001,
+        "V2 单期权重变化或归一化不符合边界");
+    Assert(state.ObservedSamples == 1 && state.Decay == .98, "V2 没有执行单期更新和默认衰减");
+}
+
+void AutoLearningV2IndependentSignalAudit()
+{
+    var provider = new AutoLearningV2TestSignalProvider("test-signal", "v1", "999803",
+        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" });
+    IndependentSignalSnapshot accepted = AutoLearningV2SignalAudit.Validate(provider, "999803", "999802");
+    Assert(accepted.LeakageAuditPassed && accepted.Ranking.Count == 12, "合法独立信号没有通过审计");
+
+    var future = new AutoLearningV2TestSignalProvider("future", "v1", "999804",
+        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" });
+    AssertThrows<InvalidDataException>(() => AutoLearningV2SignalAudit.Validate(future, "999803", "999802"),
+        "预测期之后生成的独立信号必须被拒绝");
+}
+
+void AutoLearningV2WalkForwardMetricsAreLeakageSafe()
+{
+    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
+        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
+        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
+        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
+        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
+    AutoLearningV2EvaluationReport report = AutoLearningV2WalkForward.Evaluate(rows, 8);
+    Assert(report.TestSamples == 8 && report.RescueCount >= 0 && report.HarmCount >= 0,
+        "WalkForward 没有按时间切分并统计 Rescue/Harm");
+    Assert(report.HoldoutIssue == "0008" && !report.FutureDataLeakageDetected,
+        "WalkForward 的 holdout 边界或泄漏标记错误");
+}
+
+void AutoLearningV2ReportIsExplicitlyExperimental()
+{
+    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
+        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
+        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
+        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
+        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
+    string report = AutoLearningV2ReportService.Render(AutoLearningV2WalkForward.Evaluate(rows, 8), "test-code", ".10", ".98");
+    Assert(report.Contains("AutoLearning V2 旁路实验报告") && report.Contains("Holdout") &&
+        report.Contains("不自动替换正式 AutoLearning") && report.Contains("RescueRate") && report.Contains("HarmRate"),
+        "V2 报告缺少实验边界或核心指标");
+}
+
+void AutoLearningV2ExperimentStorageIsIsolated()
+{
+    string runId = "v2-test-run";
+    AutoLearningV2ExperimentService.SaveRun(new AutoLearningV2ExperimentRun(runId, "test-code", ".10", ".98", "0001", "0008", "0009", "0016"));
+    AutoLearningV2ExperimentService.SavePrediction(runId, new AutoLearningV2ExperimentPrediction("0009", "鼠,牛,虎", 2, .41, .03, .44, "Medium"));
+    AutoLearningV2ExperimentRun run = AutoLearningV2ExperimentService.GetRun(runId) ?? throw new InvalidOperationException("V2 实验运行未保存");
+    Assert(run.ModelKey == AutoLearningV2Service.ModelKey && AutoLearningV2ExperimentService.GetPredictionCount(runId) == 1,
+        "V2 实验记录未写入独立存储");
+    Assert(!DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == "0009" && row.ModelVersion == AutoLearningV2Service.ModelKey),
+        "V2 实验不能写入正式 PredictionHistory");
+}
+
+void CloudPredictionArchiveKeepsFullLocalSnapshots()
+{
+    string[] zodiacs = { "虎", "猴", "鼠", "兔", "马", "龙", "牛", "蛇", "羊", "鸡", "狗", "猪" };
+    CloudDailyPrediction prediction = new()
+    {
+        Issue = 2026226,
+        GeneratedAt = "2026-08-15T09:00:00+08:00",
+        ModelVersion = AIEngine.Version,
+        Status = "success",
+        AiZodiac = new Dictionary<string, CloudAiPrediction>
+        {
+            ["50"] = new CloudAiPrediction
+            {
+                AnalysisPeriods = 50,
+                Top3 = new() { "虎", "猴", "鼠" },
+                Top6 = new() { "虎", "猴", "鼠", "兔", "马", "龙" },
+                Ranking = zodiacs.Select((zodiac, index) => new CloudZodiacSnapshot { Zodiac = zodiac, Rank = index + 1, TotalScore = 92 - index }).ToList(),
+                FactorScores = zodiacs.ToDictionary(zodiac => zodiac, zodiac => new CloudFactorSnapshot { Frequency = 20, Trend = 18, Omission = 15, HotCold = 14, Period = 16, Consecutive = 0, EightZodiac = 2 }),
+                FinalRankingJson = "[\"虎\",\"猴\",\"鼠\"]",
+                BaseModelScoresJson = "{\"虎\":92}"
+            }
+        }
+    };
+    Assert(CloudPredictionSyncService.HasCompleteLocalEquivalent(prediction),
+        "云端预测档案没有本地同等的完整排名和因子快照");
+    Assert(CloudPredictionSyncService.ImportPrediction(prediction) == 0,
+        "云端参考档案不应写入正式 PredictionHistory");
+}
+
+void SymmetricModelStateSnapshotDetectsConflicts()
+{
+    var state = new SymmetricModelStateSnapshot("V6.5", "test-code", "20260815T010000Z",
+        new[] { new SymmetricPredictionSnapshot("2026226", "V6.5", 50, "虎,猴,鼠", "虎,猴,鼠,兔,马,龙", "scores-v1") },
+        new[] { new SymmetricLearningEvent("2026225", "V6.5 AutoLearning", "before-hash", "马", "after-hash") });
+    string hash1 = SymmetricModelSync.CanonicalHash(state);
+    string hash2 = SymmetricModelSync.CanonicalHash(JsonSerializer.Deserialize<SymmetricModelStateSnapshot>(
+        JsonSerializer.Serialize(state))!);
+    Assert(hash1 == hash2 && hash1.Length == 64, "同构状态快照哈希不稳定");
+    AssertThrows<InvalidDataException>(() => SymmetricModelSync.ValidateEventConflict(
+        state.LearningEvents, new SymmetricLearningEvent("2026225", "V6.5 AutoLearning", "different", "马", "after-hash")),
+        "同一期不同学习事件必须拒绝合并");
+}
+
+void CloudWorkflowPublishesSymmetricRuntimeState()
+{
+    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "run-prediction.yml"));
+    Assert(workflow.Contains("runtime-state.json", StringComparison.Ordinal),
+        "云端 workflow 没有生成或发布同构运行状态");
+    Assert(workflow.Contains("modelState", StringComparison.Ordinal),
+        "云端发布 payload 没有包含模型运行状态");
+}
+
+void DesktopSyncReadsSymmetricRuntimeState()
+{
+    string source = File.ReadAllText(Path.Combine(ProjectRoot(), "CloudPredictionSyncService.cs"));
+    Assert(source.Contains("runtime-state", StringComparison.Ordinal),
+        "桌面同步没有读取云端同构运行状态");
+    Assert(source.Contains("SymmetricRuntimeStateSync.MergeIntoLocal", StringComparison.Ordinal),
+        "桌面同步没有合并同构运行状态");
+}
+
+void SymmetricStateConflictDoesNotPartiallyMerge()
+{
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    var existing = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999901", AnalysisPeriods = 50, ModelVersion = "V6.5", PredictZodiac = "鼠",
+        Top6Zodiac = "鼠,牛,虎,兔,龙,蛇", HitResult = "未开奖", Top6HitResult = "未开奖"
+    };
+    DatabaseHelper.MergeSynchronizedPrediction(existing);
+    var conflicting = new DatabaseHelper.PredictionRecord
+    {
+        Issue = existing.Issue, AnalysisPeriods = existing.AnalysisPeriods, ModelVersion = existing.ModelVersion,
+        PredictZodiac = "牛", Top6Zodiac = existing.Top6Zodiac, HitResult = existing.HitResult,
+        Top6HitResult = existing.Top6HitResult
+    };
+    var incoming = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test-code",
+        new[] { conflicting }, new Dictionary<string, string>(), "", "2026-08-15T00:00:00Z");
+    incoming = incoming with { StateHash = SymmetricRuntimeStateSync.Hash(incoming) };
+    AssertThrows<InvalidDataException>(() => SymmetricRuntimeStateSync.MergeIntoLocal(incoming), "冲突状态必须拒绝");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count(row => row.Issue == "999901") == 1,
+        "冲突状态不应产生部分写入");
+}
+
+string ProjectRoot() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+
 AIEngine.PredictResult FormalTracePrediction(int periods, int modelIndex)
 {
     string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
@@ -2032,8 +2211,6 @@ string FreshDirectory()
     return path;
 }
 
-string ProjectRoot() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-
 void AssertThrows<T>(Action action, string message) where T : Exception
 {
     try { action(); }
@@ -2044,4 +2221,11 @@ void AssertThrows<T>(Action action, string message) where T : Exception
 void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
+}
+
+sealed record AutoLearningV2TestSignalProvider(string SourceName, string ModelVersion, string GeneratedForIssue,
+    IReadOnlyList<string> Ranking) : IIndependentSignalProvider
+{
+    public IndependentSignalSnapshot GetSnapshot(string issue, IReadOnlyList<DatabaseHelper.HistoryRecord> prefix) =>
+        new(SourceName, ModelVersion, GeneratedForIssue, Ranking, true);
 }

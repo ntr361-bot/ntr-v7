@@ -71,6 +71,18 @@ public static class CloudPredictionSyncService
             }
         }
 
+        try
+        {
+            SymmetricRuntimeStateSnapshot runtimeState = await DownloadAsync<SymmetricRuntimeStateSnapshot>(
+                "runtime-state", cancellationToken);
+            int merged = SymmetricRuntimeStateSync.MergeIntoLocal(runtimeState);
+            AppLogger.Info("V6同构状态同步", $"已合并云端运行状态，补齐预测记录 {merged} 条，状态哈希 {runtimeState.StateHash}");
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            AppLogger.Info("V6同构状态同步", "云端尚未发布同构运行状态，保留现有开奖与预测档案同步");
+        }
+
         DatabaseHelper.BatchVerifyAIPredicts();
         return new CloudSyncResult(DatabaseHelper.GetLatestPeriod(), manifest.LatestIssue,
             newDraws, files, rows);
@@ -84,6 +96,19 @@ public static class CloudPredictionSyncService
         // 云端旧档案只有结果、信心和模型名，没有12生肖完整分项评分。
         // 这类记录无法参与错因分析或校准，继续导入只会产生无效历史行。
         return 0;
+    }
+
+    public static bool HasCompleteLocalEquivalent(CloudDailyPrediction prediction)
+    {
+        if (prediction.Status != "success" || prediction.Issue <= 0 || prediction.AiZodiac.Count == 0)
+            return false;
+        return prediction.AiZodiac.Values.All(item => item.AnalysisPeriods > 0 &&
+            item.Ranking.Count == 12 && item.Ranking.Select(row => row.Zodiac)
+                .Distinct(StringComparer.Ordinal).Count() == 12 &&
+            item.FactorScores.Count == 12 &&
+            item.FactorScores.Keys.All(zodiac => item.Ranking.Any(row => row.Zodiac == zodiac)) &&
+            !string.IsNullOrWhiteSpace(item.FinalRankingJson) &&
+            !string.IsNullOrWhiteSpace(item.BaseModelScoresJson));
     }
 
     private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)
@@ -197,9 +222,34 @@ public sealed class CloudDailyPrediction
 
 public sealed class CloudAiPrediction
 {
+    [JsonPropertyName("analysis_periods")] public int AnalysisPeriods { get; set; }
     [JsonPropertyName("top3")] public List<string> Top3 { get; set; } = new();
     [JsonPropertyName("top6")] public List<string> Top6 { get; set; } = new();
     [JsonPropertyName("numbers")] public List<int> Numbers { get; set; } = new();
     [JsonPropertyName("confidence")] public string Confidence { get; set; } = "";
     [JsonPropertyName("best_model")] public string BestModel { get; set; } = "";
+    [JsonPropertyName("ranking")] public List<CloudZodiacSnapshot> Ranking { get; set; } = new();
+    [JsonPropertyName("factor_scores")] public Dictionary<string, CloudFactorSnapshot> FactorScores { get; set; } = new();
+    [JsonPropertyName("final_ranking_json")] public string FinalRankingJson { get; set; } = "";
+    [JsonPropertyName("base_model_scores_json")] public string BaseModelScoresJson { get; set; } = "";
+    [JsonPropertyName("feature_snapshot_json")] public string FeatureSnapshotJson { get; set; } = "";
+    [JsonPropertyName("weight_snapshot_json")] public string WeightSnapshotJson { get; set; } = "";
+}
+
+public sealed class CloudZodiacSnapshot
+{
+    [JsonPropertyName("zodiac")] public string Zodiac { get; set; } = "";
+    [JsonPropertyName("rank")] public int Rank { get; set; }
+    [JsonPropertyName("total_score")] public double TotalScore { get; set; }
+}
+
+public sealed class CloudFactorSnapshot
+{
+    [JsonPropertyName("frequency")] public double Frequency { get; set; }
+    [JsonPropertyName("trend")] public double Trend { get; set; }
+    [JsonPropertyName("omission")] public double Omission { get; set; }
+    [JsonPropertyName("hot_cold")] public double HotCold { get; set; }
+    [JsonPropertyName("period")] public double Period { get; set; }
+    [JsonPropertyName("consecutive")] public double Consecutive { get; set; }
+    [JsonPropertyName("eight_zodiac")] public double EightZodiac { get; set; }
 }
