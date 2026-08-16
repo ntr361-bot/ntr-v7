@@ -196,6 +196,7 @@ var tests = new (string Name, Action Run)[]
     ,("crawler save backfills a missing wave color without counting a new draw", CrawlerSaveBackfillsWaveColor)
     ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
     ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
+    ,("正式 Trace 接受动态全历史样本数", FormalPredictionTraceAcceptsDynamicAllHistoryPeriod)
     ,("AutoLearningV2 快照和残差输出完全旁路且可解释", AutoLearningV2SnapshotAndResidualAreIsolated)
     ,("AutoLearningV2 独立信号必须通过前缀泄漏审计", AutoLearningV2IndependentSignalAudit)
     ,("AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据", AutoLearningV2WalkForwardMetricsAreLeakageSafe)
@@ -2019,6 +2020,21 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
     Assert(outcome.ActualZodiac == "马" && outcome.AutoRank is > 0 and <= 12 &&
         outcome.BaseRanks.Count == 3 && outcome.Top6Hit == (outcome.AutoRank <= 6) && outcome.WeightUpdateTriggered,
         "开奖结果没有保存真实名次、命中和学习前后状态");
+}
+
+void FormalPredictionTraceAcceptsDynamicAllHistoryPeriod()
+{
+    const string issue = "999803";
+    AIEngine.PredictResult[] baseModels = new[] { 50, 100, 1323 }
+        .Select((period, modelIndex) => FormalTracePrediction(period, modelIndex)).ToArray();
+
+    PredictionTraceService.CaptureLive(issue, "999802", 1323, baseModels,
+        FormalTraceAutoLearning(issue), "test-commit");
+    PredictionTraceSnapshot trace = PredictionTraceService.GetLive(issue)
+        ?? throw new InvalidOperationException("未捕获动态全历史 Trace");
+    PredictionTraceBaseModel allHistory = trace.BaseModels.Single(model => model.ModelKey == ExperimentModels.AllHistory);
+    Assert(allHistory.AnalysisPeriods == 1323 && Math.Abs(allHistory.Weights["P"] - .34) < .000001,
+        "动态全历史 Trace 没有使用全部历史模型权重");
 }
 
 void AutoLearningV2SnapshotAndResidualAreIsolated()

@@ -166,7 +166,10 @@ public static class PredictionTraceService
 
     private static PredictionTraceBaseModel ToBaseModel(AIEngine.PredictResult result)
     {
-        V65RuleScoringEngine.WeightConfig weights = V65ExperimentPipeline.GetWeightsForPeriods(result.AnalysisPeriods);
+        int weightPeriod = result.AnalysisPeriods is 50 or 100
+            ? result.AnalysisPeriods
+            : AISettings.AllHistoryModeValue;
+        V65RuleScoringEngine.WeightConfig weights = V65ExperimentPipeline.GetWeightsForPeriods(weightPeriod);
         var ranking = result.AllScores.OrderByDescending(score => score.TotalScore).Select((score, index) =>
             new PredictionTraceZodiac(score.Zodiac, index + 1, score.TotalScore,
                 new Dictionary<string, PredictionTraceFactor>(StringComparer.Ordinal)
