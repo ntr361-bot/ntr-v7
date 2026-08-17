@@ -9,7 +9,9 @@ public sealed record CloudHistoryRecord(
     [property: JsonPropertyName("special_number")] string SpecialNumber,
     [property: JsonPropertyName("special_zodiac")] string SpecialZodiac,
     [property: JsonPropertyName("open_time")] string OpenTime,
-    [property: JsonPropertyName("date")] string Date);
+    [property: JsonPropertyName("date")] string Date,
+    [property: JsonPropertyName("special_wave_color")] string SpecialWaveColor = "",
+    [property: JsonPropertyName("wave_color_source")] string WaveColorSource = "");
 
 public static class CloudHistoryAutomation
 {
@@ -21,7 +23,8 @@ public static class CloudHistoryAutomation
         CloudHistoryRecord[] records = DatabaseHelper.GetLatestHistory(int.MaxValue)
             .OrderBy(record => long.TryParse(record.Period, out long issue) ? issue : 0)
             .Select(record => new CloudHistoryRecord(record.Period, record.Numbers,
-                record.SpecialNumber, record.SpecialZodiac, record.OpenTime, record.Date))
+                record.SpecialNumber, record.SpecialZodiac, record.OpenTime, record.Date,
+                record.SpecialWaveColor, record.WaveColorSource))
             .ToArray();
         if (records.Length == 0) throw new InvalidDataException("没有可发布的开奖记录");
 

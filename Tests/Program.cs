@@ -119,6 +119,8 @@ var tests = new (string Name, Action Run)[]
     ,("云端同步不把缓存预测误称为已导入历史", CloudSyncDoesNotClaimCachedPredictionsAreImported)
     ,("云端开奖档案导出", CloudHistoryExportIsValid)
     ,("开奖记录未变化时不重复改写云端档案", UnchangedCloudHistoryIsNotRewritten)
+    ,("开奖档案导出包含波色", CloudHistoryExportIncludesWaveColors)
+    ,("本地开奖档案可重建数据库并保留波色", LocalHistoryArchiveRebuildRestoresRecords)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
@@ -594,6 +596,74 @@ void UnchangedCloudHistoryIsNotRewritten()
     CloudHistoryAutomation.Export(output);
     Assert(File.ReadAllText(output) == first,
         "开奖记录没有增加时不应只因更新时间变化而制造新的Git提交");
+}
+
+void CloudHistoryExportIncludesWaveColors()
+{
+    var record = new DataCrawler.CrawlRecord
+    {
+        Period = "998101",
+        Date = "2026-08-01",
+        Numbers = "010203040506",
+        SpecialNumber = "07",
+        SpecialZodiac = "鼠",
+        ShengXiao = "鼠",
+        SpecialWaveColor = "红",
+        WaveColorSource = "WebPage2026"
+    };
+    Assert(DatabaseHelper.SaveCrawlerData(new List<DataCrawler.CrawlRecord> { record }) == 1,
+        "应写入带波色的测试记录");
+    string output = Path.Combine(FreshDirectory(), "history.json");
+    CloudHistoryAutomation.Export(output);
+    using JsonDocument document = JsonDocument.Parse(File.ReadAllText(output));
+    JsonElement[] records = document.RootElement.GetProperty("records")
+        .EnumerateArray().Where(item => item.GetProperty("issue").GetString() == "998101").ToArray();
+    Assert(records.Length == 1, "导出应包含测试记录");
+    Assert(records[0].GetProperty("special_wave_color").GetString() == "红",
+        "导出应携带波色");
+    Assert(records[0].GetProperty("wave_color_source").GetString() == "WebPage2026",
+        "导出应携带波色来源");
+}
+
+void LocalHistoryArchiveRebuildRestoresRecords()
+{
+    string archive = Path.Combine(FreshDirectory(), "history.json");
+    File.WriteAllText(archive, """
+    {
+      "status": "success",
+      "updated_at": "2026-08-01T00:00:00+08:00",
+      "latest_issue": "998202",
+      "records": [
+        {
+          "issue": "998201",
+          "numbers": "010203040506",
+          "special_number": "07",
+          "special_zodiac": "鼠",
+          "open_time": "2026-08-01",
+          "date": "2026-08-01",
+          "special_wave_color": "红",
+          "wave_color_source": "WebPage2026"
+        },
+        {
+          "issue": "998202",
+          "numbers": "111213141516",
+          "special_number": "17",
+          "special_zodiac": "牛",
+          "open_time": "2026-08-02",
+          "date": "2026-08-02",
+          "special_wave_color": "蓝",
+          "wave_color_source": "WebPage2026"
+        }
+      ]
+    }
+    """);
+    Assert(CloudPredictionSyncService.ImportLocalHistoryArchive(archive) == 2,
+        "应写入2条重建记录");
+    DatabaseHelper.HistoryRecord? first = DatabaseHelper.GetLatestHistory(int.MaxValue)
+        .FirstOrDefault(item => item.Period == "998201");
+    Assert(first is not null, "重建后应能查到998201");
+    Assert(first.SpecialWaveColor == "红" && first.WaveColorSource == "WebPage2026",
+        "重建应保留波色与来源");
 }
 
 void PublishedPredictionVerificationIsRecorded()

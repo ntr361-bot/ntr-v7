@@ -19,6 +19,22 @@ try
         ?? Path.Combine(repositoryRoot, "site", "data", "daily-records");
     Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
 
+    if (arguments.ContainsKey("rebuild-db"))
+    {
+        string historyJson = Path.Combine(repositoryRoot, "site", "data", "history.json");
+        Console.WriteLine($"[INFO] 从提交的 JSON 重建开奖数据库：{historyJson}");
+        DatabaseHelper.InitializeDatabase();
+        int saved = CloudPredictionSyncService.ImportLocalHistoryArchive(historyJson);
+        Console.WriteLine($"[SUCCESS] 开奖数据库重建完成：写入 {saved} 条记录，最新期号 {DatabaseHelper.GetLatestPeriod()}");
+        if (arguments.ContainsKey("rebuild-only")) return 0;
+    }
+
+    if (arguments.ContainsKey("export-history"))
+    {
+        CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
+        return 0;
+    }
+
     if (arguments.ContainsKey("refresh-data"))
     {
         LotteryRefreshResult refresh = await LotteryDataRefresh.RefreshAsync(arguments.ContainsKey("dry-run"));
@@ -86,6 +102,9 @@ static Dictionary<string, string?> ParseArguments(string[] values)
             case "--refresh-only": parsed["refresh-only"] = null; break;
             case "--require-advance": parsed["require-advance"] = null; break;
             case "--generate-all": parsed["generate-all"] = null; break;
+            case "--rebuild-db": parsed["rebuild-db"] = null; break;
+            case "--rebuild-only": parsed["rebuild-only"] = null; break;
+            case "--export-history": parsed["export-history"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -95,7 +114,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {

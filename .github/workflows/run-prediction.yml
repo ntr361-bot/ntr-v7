@@ -124,6 +124,11 @@ jobs:
       - name: Build prediction runner
         run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
 
+      - name: Rebuild history database from committed JSON
+        shell: pwsh
+        run: |
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+
       - name: Refresh latest draw data
         if: ${{ github.event_name == 'schedule' || inputs.refresh_data == true }}
         shell: pwsh
@@ -164,7 +169,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history.db site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json
+          git add site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json
           if (git diff --cached --quiet) {
             Write-Host "No prediction changes to commit."
             exit 0
@@ -172,6 +177,15 @@ jobs:
           $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
           git commit -m "chore: update V6 stable prediction for issue $issue"
           git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload history database artifact
+        if: ${{ inputs.dry_run != true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: v6-history-db
+          path: data/history.db
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Publish V6 data to smart ledger
         shell: pwsh

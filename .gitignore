@@ -5,6 +5,7 @@ build-*/
 verify-*/
 回测报告/
 .vs/
+# SQLite 数据库不进仓库：data/history.db 每次运行由 site/data/history.json 重建，并作为 Actions 产物发布
 *.db
 *.db-shm
 *.db-wal

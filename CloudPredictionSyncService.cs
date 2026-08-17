@@ -175,8 +175,29 @@ public static class CloudPredictionSyncService
     {
         CloudHistoryArchive archive = await DownloadAsync<CloudHistoryArchive>(
             "history", cancellationToken);
+        return ImportHistoryArchive(archive);
+    }
+
+    /// <summary>
+    /// 从仓库内提交的 history.json 重建/补齐开奖数据库。
+    /// 数据库不再进入 Git 仓库，云端工作流每次运行前用它恢复完整历史。
+    /// </summary>
+    public static int ImportLocalHistoryArchive(string historyJsonPath)
+    {
+        if (string.IsNullOrWhiteSpace(historyJsonPath) || !File.Exists(historyJsonPath))
+            throw new InvalidDataException($"本地开奖档案不存在：{historyJsonPath}");
+        DatabaseHelper.InitializeDatabase();
+        CloudHistoryArchive? archive = JsonSerializer.Deserialize<CloudHistoryArchive>(
+            File.ReadAllText(historyJsonPath), JsonOptions);
+        if (archive is null)
+            throw new InvalidDataException("本地开奖档案无法解析");
+        return ImportHistoryArchive(archive);
+    }
+
+    private static int ImportHistoryArchive(CloudHistoryArchive archive)
+    {
         if (archive.Status != "success" || archive.Records.Count == 0)
-            throw new InvalidDataException("云端开奖档案为空");
+            throw new InvalidDataException("开奖档案为空或状态无效");
         var records = archive.Records.Select(item => new DataCrawler.CrawlRecord
         {
             Period = item.Issue,
@@ -184,6 +205,8 @@ public static class CloudPredictionSyncService
             SpecialNumber = item.SpecialNumber,
             SpecialZodiac = item.SpecialZodiac,
             ShengXiao = item.SpecialZodiac,
+            SpecialWaveColor = item.SpecialWaveColor,
+            WaveColorSource = item.WaveColorSource,
             Date = string.IsNullOrWhiteSpace(item.OpenTime) ? item.Date : item.OpenTime
         }).ToList();
         DataCrawler.ValidateCrawlRecords(records);
