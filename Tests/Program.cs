@@ -121,6 +121,9 @@ var tests = new (string Name, Action Run)[]
     ,("开奖记录未变化时不重复改写云端档案", UnchangedCloudHistoryIsNotRewritten)
     ,("开奖档案导出包含波色", CloudHistoryExportIncludesWaveColors)
     ,("本地开奖档案可重建数据库并保留波色", LocalHistoryArchiveRebuildRestoresRecords)
+    ,("运行状态档案可恢复预测历史与模型记忆", RuntimeStateArchiveRestoresPredictionsAndMemory)
+    ,("云端工作流重建数据库且不再提交数据库文件", CloudWorkflowRebuildsDatabaseFromCommittedJson)
+    ,("提交的 runtime-state.json 哈希与当前代码一致", CommittedRuntimeStateHashIsValid)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
@@ -664,6 +667,76 @@ void LocalHistoryArchiveRebuildRestoresRecords()
     Assert(first is not null, "重建后应能查到998201");
     Assert(first.SpecialWaveColor == "红" && first.WaveColorSource == "WebPage2026",
         "重建应保留波色与来源");
+}
+
+void RuntimeStateArchiveRestoresPredictionsAndMemory()
+{
+    string memoryKey = ExperimentModels.MemoryKey("test-restore-memory");
+    var memory = new ModelMemoryState
+    {
+        LearnedSamples = 3,
+        LastTrainingIssue = "998401",
+        Weights = ModelWeights.Default
+    };
+    string memoryJson = JsonSerializer.Serialize(memory);
+    var prediction = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "998401",
+        PredictTime = "2026-08-17T10:00:00+08:00",
+        PredictionGroupId = "PRED-998401",
+        PredictNumber = "01,07,13,19,25,31,37,43",
+        PredictZodiac = "鼠,牛,虎",
+        Top6Zodiac = "鼠,牛,虎,兔,龙,蛇",
+        AnalysisPeriods = 50,
+        ScoreDetails = "{\"鼠\":1.0}",
+        ModelVersion = "V6.5",
+        ActualNumber = "07",
+        ActualZodiac = "鼠",
+        HitResult = "命中",
+        Top6HitResult = "命中",
+        LearningDetails = "测试恢复",
+        PredictionSource = "云端同步"
+    };
+    var snapshot = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test-code",
+        new[] { prediction },
+        new Dictionary<string, string> { [memoryKey] = memoryJson },
+        "", "2026-08-17T10:00:00Z");
+    snapshot = snapshot with { StateHash = SymmetricRuntimeStateSync.Hash(snapshot) };
+    string path = Path.Combine(FreshDirectory(), "runtime-state.json");
+    File.WriteAllText(path, JsonSerializer.Serialize(snapshot, new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    }));
+    Assert(CloudPredictionSyncService.ImportLocalRuntimeState(path) == 1,
+        "应合并1条恢复的预测记录");
+    var restored = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .SingleOrDefault(row => row.Issue == "998401" && row.AnalysisPeriods == 50 && row.ModelVersion == "V6.5");
+    Assert(restored is not null && restored.HitResult == "命中" && restored.ActualZodiac == "鼠",
+        "恢复的预测记录应保留命中结果");
+    string? restoredMemory = DatabaseHelper.LoadModelMemoryJson(memoryKey);
+    Assert(restoredMemory == memoryJson, "恢复的模型记忆应原样保存");
+}
+
+void CloudWorkflowRebuildsDatabaseFromCommittedJson()
+{
+    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "run-prediction.yml"));
+    Assert(workflow.Contains("--rebuild-db --rebuild-only", StringComparison.Ordinal),
+        "云端工作流没有在运行前重建数据库");
+    Assert(!workflow.Contains("git add data/history.db", StringComparison.Ordinal),
+        "云端提交阶段不应再把数据库写入仓库");
+    Assert(workflow.Contains("v6-history-db", StringComparison.Ordinal),
+        "云端没有把数据库作为产物发布");
+}
+
+void CommittedRuntimeStateHashIsValid()
+{
+    string path = Path.Combine(ProjectRoot(), "site", "data", "runtime-state.json");
+    Assert(File.Exists(path), "缺少提交的 runtime-state.json");
+    SymmetricRuntimeStateSnapshot? snapshot = JsonSerializer.Deserialize<SymmetricRuntimeStateSnapshot>(
+        File.ReadAllText(path), new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    Assert(snapshot is not null, "runtime-state.json 无法解析");
+    Assert(string.Equals(SymmetricRuntimeStateSync.Hash(snapshot!), snapshot!.StateHash, StringComparison.OrdinalIgnoreCase),
+        "提交的 runtime-state.json 哈希与当前代码不一致，请重新导出运行状态");
 }
 
 void PublishedPredictionVerificationIsRecorded()

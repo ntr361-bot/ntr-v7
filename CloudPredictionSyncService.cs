@@ -19,6 +19,10 @@ public static class CloudPredictionSyncService
     {
         PropertyNameCaseInsensitive = true
     };
+    private static readonly JsonSerializerOptions RuntimeStateOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     public static async Task<CloudSyncResult> SyncAsync(CancellationToken cancellationToken = default)
     {
@@ -192,6 +196,22 @@ public static class CloudPredictionSyncService
         if (archive is null)
             throw new InvalidDataException("本地开奖档案无法解析");
         return ImportHistoryArchive(archive);
+    }
+
+    /// <summary>
+    /// 从仓库内提交的 runtime-state.json 恢复预测历史与模型记忆，
+    /// 使数据库重建后与上次提交的完整运行状态一致（本地端同步复用同一入口）。
+    /// </summary>
+    public static int ImportLocalRuntimeState(string runtimeStateJsonPath)
+    {
+        if (string.IsNullOrWhiteSpace(runtimeStateJsonPath) || !File.Exists(runtimeStateJsonPath))
+            throw new InvalidDataException($"本地运行状态文件不存在：{runtimeStateJsonPath}");
+        DatabaseHelper.InitializeDatabase();
+        SymmetricRuntimeStateSnapshot? runtimeState = JsonSerializer.Deserialize<SymmetricRuntimeStateSnapshot>(
+            File.ReadAllText(runtimeStateJsonPath), RuntimeStateOptions);
+        if (runtimeState is null)
+            throw new InvalidDataException("本地运行状态无法解析");
+        return SymmetricRuntimeStateSync.MergeIntoLocal(runtimeState);
     }
 
     private static int ImportHistoryArchive(CloudHistoryArchive archive)

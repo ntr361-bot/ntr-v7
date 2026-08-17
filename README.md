@@ -19,7 +19,7 @@
 每次运行会：
 
 - 抓取并校验真实开奖记录。
-- 从仓库内的 `site/data/history.json` 重建本地 `data/history.db`（数据库不进入 Git，避免仓库持续膨胀）。
+- 从仓库内的 `site/data/history.json` 重建 `data/history.db`，并从 `site/data/runtime-state.json` 恢复预测历史与模型记忆（数据库不进入 Git，避免仓库持续膨胀）。
 - 从 `2026197` 起检查和补齐遗漏预测。
 - 使用每一期之前已经开奖的数据生成当期预测，避免使用未来数据。
 - 为已经开奖的预测逐项写入命中或未命中结果。
