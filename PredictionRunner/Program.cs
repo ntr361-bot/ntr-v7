@@ -30,8 +30,17 @@ try
         string runtimeStateJson = Path.Combine(repositoryRoot, "site", "data", "runtime-state.json");
         if (File.Exists(runtimeStateJson))
         {
-            int merged = CloudPredictionSyncService.ImportLocalRuntimeState(runtimeStateJson);
-            Console.WriteLine($"[SUCCESS] 运行状态恢复完成：合并 {merged} 条预测记录与模型记忆");
+            try
+            {
+                int merged = CloudPredictionSyncService.ImportLocalRuntimeState(runtimeStateJson);
+                Console.WriteLine($"[SUCCESS] 运行状态恢复完成：合并 {merged} 条预测记录与模型记忆");
+            }
+            catch (Exception ex)
+            {
+                // 状态文件损坏或版本不匹配时不应阻断预测：本次仅用开奖记录继续，
+                // 运行结束后会重新导出最新状态文件。
+                Console.WriteLine($"[WARNING] 运行状态恢复失败，本次仅使用开奖记录继续（{ex.Message}）");
+            }
         }
         else
         {

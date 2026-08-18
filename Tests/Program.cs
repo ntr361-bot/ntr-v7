@@ -124,6 +124,7 @@ var tests = new (string Name, Action Run)[]
     ,("运行状态档案可恢复预测历史与模型记忆", RuntimeStateArchiveRestoresPredictionsAndMemory)
     ,("云端工作流重建数据库且不再提交数据库文件", CloudWorkflowRebuildsDatabaseFromCommittedJson)
     ,("提交的 runtime-state.json 哈希与当前代码一致", CommittedRuntimeStateHashIsValid)
+    ,("运行状态规范哈希稳定且与序列化细节无关", RuntimeStateHashIsCanonicalAndStable)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
     ,("超长遗漏不会继续抬高预测分", ExtremeOmissionDoesNotKeepRising)
     ,("全部历史学习跨期数复用样本", AllHistoryLearningUsesStableBucket)
@@ -737,6 +738,34 @@ void CommittedRuntimeStateHashIsValid()
     Assert(snapshot is not null, "runtime-state.json 无法解析");
     Assert(string.Equals(SymmetricRuntimeStateSync.Hash(snapshot!), snapshot!.StateHash, StringComparison.OrdinalIgnoreCase),
         "提交的 runtime-state.json 哈希与当前代码不一致，请重新导出运行状态");
+}
+
+void RuntimeStateHashIsCanonicalAndStable()
+{
+    var prediction = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "998501",
+        ModelVersion = "V6.5",
+        AnalysisPeriods = 50,
+        PredictZodiac = "马,虎,鼠",
+        Top6Zodiac = "马,虎,鼠,龙,猴,羊",
+        HitResult = "未开奖",
+        ScoreDetails = "马:67.8|频100.0|势80.0",
+        FinalRankingJson = "[\"马\",\"虎\"]",
+        PredictionSource = "本地生成"
+    };
+    var snapshot = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test",
+        new[] { prediction },
+        new Dictionary<string, string> { ["auto-learning-meta-v2|t"] = "{\"LearnedSamples\":2}" },
+        "", "2026-08-18T00:00:00Z");
+    string first = SymmetricRuntimeStateSync.Hash(snapshot);
+    string second = SymmetricRuntimeStateSync.Hash(snapshot);
+    Assert(first == second && first.Length == 64, "规范哈希应稳定");
+    SymmetricRuntimeStateSnapshot? roundTrip = JsonSerializer.Deserialize<SymmetricRuntimeStateSnapshot>(
+        JsonSerializer.Serialize(snapshot, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }),
+        new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    Assert(roundTrip is not null && SymmetricRuntimeStateSync.Hash(roundTrip) == first,
+        "规范哈希不应受序列化往返影响");
 }
 
 void PublishedPredictionVerificationIsRecorded()

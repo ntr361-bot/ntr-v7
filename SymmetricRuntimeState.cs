@@ -14,8 +14,6 @@ public sealed record SymmetricRuntimeStateSnapshot(
 
 public static class SymmetricRuntimeStateSync
 {
-    private static readonly JsonSerializerOptions Options = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
     public static SymmetricRuntimeStateSnapshot Export(string codeVersion)
     {
         DatabaseHelper.InitializeDatabase();
@@ -32,15 +30,52 @@ public static class SymmetricRuntimeStateSync
 
     public static string Hash(SymmetricRuntimeStateSnapshot snapshot)
     {
-        string payload = JsonSerializer.Serialize(new
+        // 规范哈希：不依赖 JsonSerializer 的转义/序列化细节（不同 .NET 环境可能输出不同），
+        // 只按固定顺序拼接字段后用 SHA256，保证云端、本地、桌面端永远得到同一结果。
+        const char sep = '\u001F'; // 单元分隔符，正常数据不会出现
+        var payload = new System.Text.StringBuilder();
+        payload.Append(snapshot.SchemaVersion).Append(sep);
+        payload.Append(snapshot.ModelVersion).Append(sep);
+        payload.Append(snapshot.CodeVersion);
+        foreach (DatabaseHelper.PredictionRecord item in snapshot.Predictions
+            .OrderBy(item => item.Issue, StringComparer.Ordinal)
+            .ThenBy(item => item.ModelVersion, StringComparer.Ordinal)
+            .ThenBy(item => item.AnalysisPeriods))
         {
-            snapshot.SchemaVersion,
-            snapshot.ModelVersion,
-            snapshot.CodeVersion,
-            Predictions = snapshot.Predictions.OrderBy(item => item.Issue).ThenBy(item => item.ModelVersion).ThenBy(item => item.AnalysisPeriods),
-            ModelMemory = snapshot.ModelMemory.OrderBy(item => item.Key)
-        }, Options);
-        return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(payload)));
+            payload.Append(sep).Append("P");
+            payload.Append(sep).Append(item.Issue);
+            payload.Append(sep).Append(item.ModelVersion);
+            payload.Append(sep).Append(item.AnalysisPeriods);
+            payload.Append(sep).Append(item.PredictZodiac);
+            payload.Append(sep).Append(item.Top6Zodiac);
+            payload.Append(sep).Append(item.PredictNumber);
+            payload.Append(sep).Append(item.HitResult);
+            payload.Append(sep).Append(item.Top6HitResult);
+            payload.Append(sep).Append(item.ActualZodiac);
+            payload.Append(sep).Append(item.ActualNumber);
+            payload.Append(sep).Append(item.ScoreDetails);
+            payload.Append(sep).Append(item.ReviewDetails);
+            payload.Append(sep).Append(item.LearningDetails);
+            payload.Append(sep).Append(item.FinalRankingJson);
+            payload.Append(sep).Append(item.BaseModelScoresJson);
+            payload.Append(sep).Append(item.FeatureSnapshotJson);
+            payload.Append(sep).Append(item.WeightSnapshotJson);
+            payload.Append(sep).Append(item.MappingSnapshotJson);
+            payload.Append(sep).Append(item.ActualRank);
+            payload.Append(sep).Append(item.LearningStatus);
+            payload.Append(sep).Append(item.LearnedAt);
+            payload.Append(sep).Append(item.PredictTime);
+            payload.Append(sep).Append(item.PredictionGroupId);
+            payload.Append(sep).Append(item.PredictionSource);
+        }
+        foreach (KeyValuePair<string, string> entry in snapshot.ModelMemory.OrderBy(item => item.Key, StringComparer.Ordinal))
+        {
+            payload.Append(sep).Append("M");
+            payload.Append(sep).Append(entry.Key);
+            payload.Append(sep).Append(entry.Value);
+        }
+        return Convert.ToHexString(
+            System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(payload.ToString())));
     }
 
     public static int MergeIntoLocal(SymmetricRuntimeStateSnapshot incoming)
