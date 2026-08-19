@@ -82,6 +82,26 @@ if (args.Contains("--evaluate-auto-learning", StringComparer.OrdinalIgnoreCase))
     return evaluation.FutureDataLeakageDetected || evaluation.TestSamples == 0 ? 1 : 0;
 }
 
+if (args.Contains("--model-redundancy-report", StringComparer.OrdinalIgnoreCase))
+{
+    string sourceDb = Path.Combine(Directory.GetCurrentDirectory(), "data", "history.db");
+    if (!File.Exists(sourceDb))
+        sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
+    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-redundancy-" + Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(runDir);
+    File.Copy(sourceDb, Path.Combine(runDir, "history.db"), true);
+    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", runDir);
+    DatabaseHelper.InitializeDatabase();
+    var report = ModelRedundancyReportService.Run(DatabaseHelper.GetHistory(), 50,
+        maxTargets: 300, mlMaxTargets: 40);
+    string path = Path.Combine(runDir, "model-redundancy-report.json");
+    File.WriteAllText(path, ModelRedundancyReportService.ToJson(report));
+    File.WriteAllText(Path.Combine(runDir, "model-redundancy-report.md"), ModelRedundancyReportService.ToMarkdown(report));
+    Console.WriteLine($"REPORT_PATH={path}");
+    Console.WriteLine(JsonSerializer.Serialize(new { report.SampleCount, report.Models, report.Top3HitRates, report.Top6HitRates }, new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 string testData = Path.Combine(AppContext.BaseDirectory, "TestData");
 if (Directory.Exists(testData)) Directory.Delete(testData, recursive: true);
 Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", testData);
@@ -216,6 +236,7 @@ var tests = new (string Name, Action Run)[]
     ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
     ,("历史重放实验快照保持统一期号与截止", HistoricalReplayContractsAreEnforced)
     ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
+    ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
 };
 
 int failures = 0;
@@ -766,6 +787,28 @@ void RuntimeStateHashIsCanonicalAndStable()
         new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     Assert(roundTrip is not null && SymmetricRuntimeStateSync.Hash(roundTrip) == first,
         "规范哈希不应受序列化往返影响");
+}
+
+void ModelRedundancyReportIsDeterministicAndLeakageSafe()
+{
+    SeedHistory();
+    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    for (int i = 0; i < 140; i++)
+        DatabaseHelper.InsertHistory((1000 + i).ToString(), "010203040506", "07", zodiacs[i % 12],
+            "2026-01-01 21:30:00", "2026-01-01");
+    var history = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToList();
+    ModelRedundancyReport first = ModelRedundancyReportService.Run(history, warmup: 50);
+    ModelRedundancyReport second = ModelRedundancyReportService.Run(history, warmup: 50);
+    Assert(first.SampleCount > 0, "报告应至少覆盖一期");
+    Assert(first.Models.Contains("v65-50") && first.Models.Contains("ensemble") &&
+           first.Models.Contains("v7-short") && first.Models.Contains("ml") &&
+           first.Models.Contains("random"), "报告应包含全部对照模型");
+    Assert(first.ModelRankCorrelation.GetLength(0) == first.Models.Count, "相关矩阵应为方阵");
+    Assert(first.Top3HitRates.SequenceEqual(second.Top3HitRates) &&
+           first.ModelRankCorrelation.Cast<double>().SequenceEqual(second.ModelRankCorrelation.Cast<double>()),
+           "相同输入的报告必须逐位一致");
+    Assert(ModelRedundancyReportService.Run(new List<DatabaseHelper.HistoryRecord>(), 50).SampleCount == 0,
+           "数据不足时报告应返回空样本而不是抛异常");
 }
 
 void PublishedPredictionVerificationIsRecorded()
