@@ -84,8 +84,7 @@ public static class SymmetricRuntimeStateSync
             !string.Equals(Hash(incoming), incoming.StateHash, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("云端模型状态版本或哈希无效");
         DatabaseHelper.InitializeDatabase();
-        foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
-            DatabaseHelper.ValidateSynchronizedPrediction(row);
+        // 模型记忆是真正会“分叉”的学习状态：本地与云端不一致必须拒绝，防止两套学习互相覆盖。
         foreach ((string key, string json) in incoming.ModelMemory)
         {
             string? local = DatabaseHelper.LoadModelMemoryJson(key);
@@ -94,9 +93,18 @@ public static class SymmetricRuntimeStateSync
         }
         int merged = 0;
         foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
+        {
             row.PredictionSource = "云端同步";
-        foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
-            merged += DatabaseHelper.MergeSynchronizedPrediction(row);
+            try
+            {
+                merged += DatabaseHelper.MergeSynchronizedPrediction(row);
+            }
+            catch (InvalidDataException)
+            {
+                // 本地已有首次快照且内容不同（例如每日档案与运行状态来自不同通道）：
+                // 保留本地首次快照，跳过该行，不中断整批同步。
+            }
+        }
         foreach ((string key, string json) in incoming.ModelMemory)
         {
             string? local = DatabaseHelper.LoadModelMemoryJson(key);

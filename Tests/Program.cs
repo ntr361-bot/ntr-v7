@@ -2435,9 +2435,23 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
     var incoming = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test-code",
         new[] { conflicting }, new Dictionary<string, string>(), "", "2026-08-15T00:00:00Z");
     incoming = incoming with { StateHash = SymmetricRuntimeStateSync.Hash(incoming) };
-    AssertThrows<InvalidDataException>(() => SymmetricRuntimeStateSync.MergeIntoLocal(incoming), "冲突状态必须拒绝");
+    Assert(SymmetricRuntimeStateSync.MergeIntoLocal(incoming) == 0,
+        "冲突预测行应跳过而不是写入");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count(row => row.Issue == "999901") == 1,
         "冲突状态不应产生部分写入");
+    var local = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Single(row => row.Issue == "999901" && row.AnalysisPeriods == 50 && row.ModelVersion == "V6.5");
+    Assert(local.PredictZodiac == "鼠", "冲突时本地首次快照必须保留");
+
+    string memoryKey = ExperimentModels.MemoryKey("conflict-test");
+    DatabaseHelper.SaveModelMemoryJson(memoryKey, "{\"LearnedSamples\":1}");
+    var memoryConflict = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test-code",
+        Array.Empty<DatabaseHelper.PredictionRecord>(),
+        new Dictionary<string, string> { [memoryKey] = "{\"LearnedSamples\":2}" },
+        "", "2026-08-15T00:00:00Z");
+    memoryConflict = memoryConflict with { StateHash = SymmetricRuntimeStateSync.Hash(memoryConflict) };
+    AssertThrows<InvalidDataException>(() => SymmetricRuntimeStateSync.MergeIntoLocal(memoryConflict),
+        "模型记忆分歧必须拒绝，防止两套学习状态互相覆盖");
 }
 
 void V7HistoryStoresCompleteRanking()
