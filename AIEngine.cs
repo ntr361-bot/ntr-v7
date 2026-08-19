@@ -90,7 +90,8 @@ namespace 六合分析软件
         /// </summary>
         public static Dictionary<int, PredictResult> RefreshAllPeriodPredictions()
         {
-            int[] periods = { 50, 100, AISettings.AllHistoryModeValue };
+            // 展示档只有100期；50期/全部历史由每日自动化在后台计算供自动学习学习。
+            int[] periods = { 100 };
             var results = new Dictionary<int, PredictResult>();
 
             foreach (int period in periods)

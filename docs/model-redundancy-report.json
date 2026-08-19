@@ -183,5 +183,70 @@
       -0.240987175681743,
       1
     ]
+  ],
+  "RecencyBreakdown": [
+    {
+      "Model": "v65-50",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.44375,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0
+    },
+    {
+      "Model": "v65-100",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.375,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0.019230769230769232
+    },
+    {
+      "Model": "v65-all",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.3875,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0
+    },
+    {
+      "Model": "ensemble",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.25625,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0.25
+    },
+    {
+      "Model": "v7-short",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.15625,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0.7692307692307693
+    },
+    {
+      "Model": "v7-medium",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.05,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0.9615384615384616
+    },
+    {
+      "Model": "v7-long",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.03125,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 1
+    },
+    {
+      "Model": "ml",
+      "HotSamples": 22,
+      "HotTop3Rate": 0.3181818181818182,
+      "ColdSamples": 5,
+      "ColdTop3Rate": 0
+    },
+    {
+      "Model": "random",
+      "HotSamples": 160,
+      "HotTop3Rate": 0.21875,
+      "ColdSamples": 52,
+      "ColdTop3Rate": 0.34615384615384615
+    }
   ]
 }

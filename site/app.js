@@ -44,10 +44,10 @@ function resultBadge(hit) {
 
 function renderAiPeriods(results) {
   const parent = document.querySelector('#ai-periods');
-  const periods = ['50', '100', 'auto', 'all'];
+  const periods = ['100', 'auto'];
   parent.replaceChildren(...periods.map(period => {
-    const result = results?.[period] ?? (period === 'all' ? results?.['500'] : undefined);
-    const periodLabel = period === 'all' ? '长期' : period === 'auto' ? '自动学习' : `${period}期`;
+    const result = results?.[period];
+    const periodLabel = period === 'auto' ? '自动学习' : `${period}期`;
     if (!result) throw new Error(`缺少 ${periodLabel}AI预测`);
     const block = document.createElement('article');
     block.className = 'period-result';

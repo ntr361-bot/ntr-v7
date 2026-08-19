@@ -237,6 +237,7 @@ var tests = new (string Name, Action Run)[]
     ,("历史重放实验快照保持统一期号与截止", HistoricalReplayContractsAreEnforced)
     ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
     ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
+    ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
 };
 
 int failures = 0;
@@ -809,6 +810,16 @@ void ModelRedundancyReportIsDeterministicAndLeakageSafe()
            "相同输入的报告必须逐位一致");
     Assert(ModelRedundancyReportService.Run(new List<DatabaseHelper.HistoryRecord>(), 50).SampleCount == 0,
            "数据不足时报告应返回空样本而不是抛异常");
+}
+
+void V65HistoryShowsOnlyDisplayedModels()
+{
+    Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 100), "100期应显示");
+    Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5 AutoLearning", 7250), "自动学习应显示");
+    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 50), "50期不应显示");
+    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 0), "全部历史不应显示");
+    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.3", 100), "旧模型不应显示");
+    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("云端每日自动预测", 1320), "云端旧档案不应显示");
 }
 
 void PublishedPredictionVerificationIsRecorded()
@@ -1433,10 +1444,12 @@ void AutoLearningPredictionIsFormalHistoryRow()
 void CloudSiteUsesAutoLearningSlot()
 {
     string script = File.ReadAllText(Path.Combine(ProjectRoot(), "site", "app.js"));
-    Assert(script.Contains("['50', '100', 'auto', 'all']"),
-        "cloud site does not display the automatic-learning slot");
-    Assert(!script.Contains("['50', '100', '200', 'all']"),
-        "cloud site still displays the removed 200-period slot");
+    Assert(script.Contains("['100', 'auto']"),
+        "cloud site does not display the 100/auto slots");
+    Assert(!script.Contains("'50'", StringComparison.Ordinal) &&
+           !script.Contains("'all'", StringComparison.Ordinal) &&
+           !script.Contains("'200'", StringComparison.Ordinal),
+        "cloud site still displays a retired period slot");
 }
 
 void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
@@ -1497,8 +1510,16 @@ void V7HistoryUsesV6Layout()
 
 void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
 {
-    DatabaseHelper.SavePrediction("998001", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "V6.3", 100,
+    DatabaseHelper.SavePrediction("998001", "鼠,牛,虎", "鼠,牛,虎,兔,龙,蛇", "01,02,03", "V6.5", 100,
         "legacy", "legacy");
+    DatabaseHelper.SavePrediction("998001", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V6.5 AutoLearning", 7250,
+        "auto", "auto");
+    DatabaseHelper.SavePrediction("998001", "虎,马,鼠", "虎,马,鼠,兔,龙,蛇", "05,07,01", "V6.5", 50,
+        "background 50", "background 50");
+    DatabaseHelper.SavePrediction("998001", "牛,龙,羊", "牛,龙,羊,兔,马,猴", "06,03,12", "V6.5", 0,
+        "background all", "background all");
+    DatabaseHelper.SavePrediction("998001", "鸡,狗,猪", "鸡,狗,猪,鼠,牛,虎", "13,14,15", "V6.3", 100,
+        "legacy v6.3", "legacy v6.3");
     DatabaseHelper.SavePrediction("998001", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V7 ShortTerm", 998050,
         "v7", "v7");
     DatabaseHelper.SavePrediction("998002", "兔,龙,蛇", "兔,龙,蛇,马,羊,猴", "10,11,12", "V6.3", 200,
@@ -1511,7 +1532,9 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     var versions = grid!.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["ModelVersion"].Value) ?? "")
         .ToArray();
-    Assert(versions.Contains("V6.3"), "legacy prediction history lost its V6 row");
+    Assert(versions.Contains("V6.5"), "legacy prediction history lost its V6.5 row");
+    Assert(versions.Contains("V6.5 AutoLearning"), "legacy prediction history lost its auto-learning row");
+    Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.All(version => !version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "legacy prediction history still displays V7 rows");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
@@ -1519,16 +1542,21 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
         .ToArray();
     Assert(!analysisLabels.Contains("200期"), "legacy prediction history still displays the removed 200-period model");
     Assert(!analysisLabels.Contains("旧记录"), "legacy prediction history still displays old compatibility rows");
+    Assert(!analysisLabels.Contains("50期"), "legacy prediction history still displays the background 50-period row");
 }
 
 void RemovedFixedPeriodModelHasNoEntryPoints()
 {
     Assert(AISettings.GetPeriodOptions().All(option => option.Value is not 200 and not 500),
         "AI settings still exposes a retired fixed-period model");
-    var field = typeof(DailyPredictionAutomation).GetField("Periods",
+    var baseField = typeof(DailyPredictionAutomation).GetField("BaseModelPeriods",
         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-    Assert(field?.GetValue(null) is int[] periods && !periods.Contains(200) && !periods.Contains(500),
+    Assert(baseField?.GetValue(null) is int[] basePeriods && !basePeriods.Contains(200) && !basePeriods.Contains(500),
         "daily automation still generates a retired fixed-period model");
+    var displayField = typeof(DailyPredictionAutomation).GetField("DisplayPeriods",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+    Assert(displayField?.GetValue(null) is int[] displayPeriods && displayPeriods.SequenceEqual(new[] { 100 }),
+        "daily automation display buckets must be 100-period only");
     Assert(typeof(PredictionScoreService).GetMethod(nameof(PredictionScoreService.Predict))!
         .GetParameters()[0].DefaultValue is int scoreDefault && scoreDefault == int.MaxValue,
         "comprehensive scoring still defaults to the retired 500-period model");

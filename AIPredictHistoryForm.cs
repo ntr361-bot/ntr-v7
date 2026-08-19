@@ -412,7 +412,7 @@ namespace 六合分析软件
                 ? V7PredictionHistoryService.GetHistory(500)
                 : DatabaseHelper.GetPredictionHistory(int.MaxValue)
                     .Where(r => !r.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase) &&
-                                r.AnalysisPeriods != 0 && r.AnalysisPeriods != 200)
+                                V7PredictionHistoryService.IsV65DisplayedModel(r.ModelVersion, r.AnalysisPeriods))
                     .Take(100)
                     .ToList();
             var verified = records.Where(r => !string.IsNullOrEmpty(r.ActualZodiac)).ToList();

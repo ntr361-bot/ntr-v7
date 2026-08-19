@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace 六合分析软件;
 
 /// <summary>
-/// V6.5 四模型唯一预测链：三个正式 V2 周期模型先排序，自动学习只读取这三条快照。
+/// V6.5 实验链：50期、100期、全部历史三条周期模型（长期档保留用于研究回测与自动学习预训练）。
 /// </summary>
 public static class V65ExperimentPipeline
 {

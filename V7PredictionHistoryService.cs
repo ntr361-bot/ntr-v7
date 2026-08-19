@@ -11,6 +11,14 @@ public static class V7PredictionHistoryService
     public const int AutoLearningHistoryKey = 7250;
     public const int AutoLearningValidationHistoryKey = 7300;
 
+    /// <summary>
+    /// V6.5 预测历史只展示正式展示档（100期 + 自动学习）；
+    /// 50期与全部历史（长期）仅在后台计算供自动学习学习，不进入历史展示。
+    /// </summary>
+    public static bool IsV65DisplayedModel(string modelVersion, int analysisPeriods) =>
+        modelVersion == "V6.5 AutoLearning" ||
+        (modelVersion == "V6.5" && analysisPeriods == 100);
+
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
         if (string.IsNullOrWhiteSpace(targetPeriod)) throw new ArgumentException("预测期号不能为空", nameof(targetPeriod));

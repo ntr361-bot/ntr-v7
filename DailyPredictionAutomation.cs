@@ -14,7 +14,9 @@ public sealed record DailyAiPrediction(
 
 public static class DailyPredictionAutomation
 {
-    private static readonly int[] Periods = { 50, 100, AISettings.AllHistoryModeValue };
+    // 基础档：50/100/全部历史 全部计算并保存（仅后台供自动学习学习，不进入展示文档）。
+    private static readonly int[] BaseModelPeriods = { 50, 100, AISettings.AllHistoryModeValue };
+    private static readonly int[] DisplayPeriods = { 100 };
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static string Generate(long targetIssue, string outputDirectory, bool force = false, bool dryRun = false)
@@ -33,17 +35,17 @@ public static class DailyPredictionAutomation
 
         Console.WriteLine($"[INFO] 开始生成第{targetIssue}期全部预测结果");
         var ai = new Dictionary<string, DailyAiPrediction>();
-        var baseResults = new List<AIEngine.PredictResult>(Periods.Length);
-        foreach (int period in Periods)
+        var baseResults = new List<AIEngine.PredictResult>(BaseModelPeriods.Length);
+        foreach (int period in BaseModelPeriods)
         {
             AIEngine.PredictResult result = AIEngine.GenerateForAutomation(period, targetIssue.ToString());
             if (result.Top3.Count == 0 || result.Top6.Count == 0)
                 throw new InvalidDataException($"{period}期 AI 预测结果为空");
             AIEngine.SavePredictionHistory(result);
-            string periodKey = period == AISettings.AllHistoryModeValue ? "all" : period.ToString();
-            ai[periodKey] = new DailyAiPrediction(result.AnalysisPeriods, result.Top3.ToArray(),
-                result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
             baseResults.Add(result);
+            if (DisplayPeriods.Contains(period))
+                ai[period.ToString()] = new DailyAiPrediction(result.AnalysisPeriods, result.Top3.ToArray(),
+                    result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
         }
 
         IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);

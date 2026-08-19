@@ -12,7 +12,15 @@ public sealed record ModelRedundancyReport(
     IReadOnlyDictionary<string, double> Top3HitRates,
     IReadOnlyDictionary<string, double> Top6HitRates,
     double[,] ModelRankCorrelation,
-    double[,] V65DimensionCorrelation);
+    double[,] V65DimensionCorrelation,
+    IReadOnlyList<ModelRecencyRow> RecencyBreakdown);
+
+public sealed record ModelRecencyRow(
+    string Model,
+    int HotSamples,
+    double HotTop3Rate,
+    int ColdSamples,
+    double ColdTop3Rate);
 
 public static class ModelRedundancyReportService
 {
@@ -36,6 +44,10 @@ public static class ModelRedundancyReportService
         var rankByModel = models.ToDictionary(m => m, _ => new List<List<string>>());
         var hit3 = models.ToDictionary(m => m, _ => 0);
         var hit6 = models.ToDictionary(m => m, _ => 0);
+        var hotHits = models.ToDictionary(m => m, _ => 0);
+        var hotSamples = models.ToDictionary(m => m, _ => 0);
+        var coldHits = models.ToDictionary(m => m, _ => 0);
+        var coldSamples = models.ToDictionary(m => m, _ => 0);
         var v65Dims = Enumerable.Range(0, 6).Select(_ => new List<double>()).ToArray();
         int samples = 0;
         var random = new Random(6501);
@@ -67,11 +79,25 @@ public static class ModelRedundancyReportService
             if (evalMl) mlEvalCount++;
             rankings["random"] = Zodiacs.OrderBy(_ => random.Next()).Take(6).ToList();
 
+            var recent10 = prefix.Skip(Math.Max(0, prefix.Count - 10)).Select(r => r.SpecialZodiac).ToList();
+            var recent20 = prefix.Skip(Math.Max(0, prefix.Count - 20)).Select(r => r.SpecialZodiac).ToList();
+            bool hot = recent10.Contains(actual);
+            bool cold = !recent20.Contains(actual);
             foreach (string model in models)
             {
                 if (model == "ml" && !evalMl) continue;
                 if (rankings[model].Contains(actual)) hit6[model]++;
                 if (rankings[model].Take(3).Contains(actual)) hit3[model]++;
+                if (hot)
+                {
+                    hotSamples[model]++;
+                    if (rankings[model].Take(3).Contains(actual)) hotHits[model]++;
+                }
+                if (cold)
+                {
+                    coldSamples[model]++;
+                    if (rankings[model].Take(3).Contains(actual)) coldHits[model]++;
+                }
                 rankByModel[model].Add(rankings[model]);
             }
 
@@ -95,13 +121,16 @@ public static class ModelRedundancyReportService
             models.ToDictionary(m => m, m => samples == 0 ? 0d : hit3[m] / (double)samples),
             models.ToDictionary(m => m, m => samples == 0 ? 0d : hit6[m] / (double)samples),
             RankCorrelation(models, rankByModel),
-            V65DimensionCorrelation(v65Dims));
+            V65DimensionCorrelation(v65Dims),
+            models.Select(m => new ModelRecencyRow(m, hotSamples[m],
+                hotSamples[m] == 0 ? 0d : hotHits[m] / (double)hotSamples[m],
+                coldSamples[m], coldSamples[m] == 0 ? 0d : coldHits[m] / (double)coldSamples[m])).ToList());
     }
 
     private static ModelRedundancyReport Empty() => new(
         0, Array.Empty<string>(),
         new Dictionary<string, double>(), new Dictionary<string, double>(),
-        new double[0, 0], new double[0, 0]);
+        new double[0, 0], new double[0, 0], Array.Empty<ModelRecencyRow>());
 
     private static double[,] RankCorrelation(IReadOnlyList<string> models,
         IReadOnlyDictionary<string, List<List<string>>> ranks)
@@ -158,7 +187,8 @@ public static class ModelRedundancyReportService
             report.Top3HitRates,
             report.Top6HitRates,
             ModelRankCorrelation = ToJagged(report.ModelRankCorrelation),
-            V65DimensionCorrelation = ToJagged(report.V65DimensionCorrelation)
+            V65DimensionCorrelation = ToJagged(report.V65DimensionCorrelation),
+            report.RecencyBreakdown
         }, new JsonSerializerOptions { WriteIndented = true });
 
     private static double[][] ToJagged(double[,] matrix)
@@ -216,6 +246,13 @@ public static class ModelRedundancyReportService
                 sb.Append(report.V65DimensionCorrelation[a, b].ToString("F2")).Append(" | ");
             sb.AppendLine();
         }
+        sb.AppendLine();
+        sb.AppendLine("### 按实际生肖近期热度拆分的 Top3 命中率");
+        sb.AppendLine();
+        sb.AppendLine("| 模型 | 热样本 | 热Top3 | 冷样本 | 冷Top3 |");
+        sb.AppendLine("|---|---|---|---|---|");
+        foreach (ModelRecencyRow row in report.RecencyBreakdown)
+            sb.AppendLine($"| {row.Model} | {row.HotSamples} | {row.HotTop3Rate:P1} | {row.ColdSamples} | {row.ColdTop3Rate:P1} |");
         return sb.ToString();
     }
 }
