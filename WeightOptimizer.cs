@@ -1,9 +1,9 @@
 namespace 六合分析软件;
 
-public sealed record ModelWeights(double AI, double ML, double State, double Rule)
+public sealed record ModelWeights(double AI, double ML, double State, double V7)
 {
     public static ModelWeights Default { get; } = new(0.40, 0.40, 0.20, 0.00);
-    public double Sum => AI + ML + State + Rule;
+    public double Sum => AI + ML + State + V7;
 
     public IReadOnlyDictionary<string, double> AsDictionary() =>
         new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
@@ -11,7 +11,7 @@ public sealed record ModelWeights(double AI, double ML, double State, double Rul
             ["AI"] = AI,
             ["ML"] = ML,
             ["State"] = State,
-            ["Rule"] = Rule
+            ["V7"] = V7
         };
 }
 
@@ -25,7 +25,7 @@ public sealed class WeightOptimizer
     public const double MaximumSingleAdjustment = 0.05;
     public const double MaximumWeight = 0.70;
 
-    private static readonly string[] Names = { "AI", "ML", "State", "Rule" };
+    private static readonly string[] Names = { "AI", "ML", "State", "V7" };
 
     public ModelWeights Adjust(ModelWeights current, ModelFeedback feedback)
     {
@@ -52,7 +52,7 @@ public sealed class WeightOptimizer
 
     private static double[] NormalizeCurrent(ModelWeights weights)
     {
-        double[] values = { weights.AI, weights.ML, weights.State, weights.Rule };
+        double[] values = { weights.AI, weights.ML, weights.State, weights.V7 };
         if (values.Any(value => !double.IsFinite(value) || value < 0))
             return new[] { .40, .40, .20, 0d };
         for (int i = 0; i < values.Length; i++) values[i] = Math.Min(MaximumWeight, values[i]);

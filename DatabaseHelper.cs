@@ -1783,7 +1783,7 @@ namespace 六合分析软件
                 ZodiacMetaFeatures? actual = input.Zodiacs.FirstOrDefault(item => item.Zodiac == actualZodiac);
                 if (actualRank == 0 || actual is null) throw new InvalidDataException("实际生肖不在12生肖快照中");
 
-                string[] sources = { "AI", "ML", "State", "Rule" };
+                string[] sources = { "AI", "ML", "State", "V7" };
                 var baseRanks = sources.ToDictionary(source => source, source =>
                     input.Zodiacs.OrderByDescending(item => item.BaseScores.GetValueOrDefault(source))
                         .Select((item, index) => (item.Zodiac, Rank: index+1))

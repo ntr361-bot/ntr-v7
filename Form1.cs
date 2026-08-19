@@ -1073,7 +1073,7 @@ namespace 六合分析软件
                     string targetPeriod = GetNextPredictionPeriod(history);
                     var color = ColorEngine.Predict(history);
                     var optimized = AutoOptimizeEngine.Optimize(history, 30);
-                    var engines = new[] { ShortTermEngine.Predict(history), MediumTermEngine.Predict(history), LongTermEngine.Predict(history) };
+                    var engines = new[] { V7Engine.Predict(history) };
                     var report = AIReportEngine.Generate(history, engines, color: color);
                     V7PredictionHistoryService.SaveAll(targetPeriod, history);
                     return $"预测期号：{targetPeriod}\n" +

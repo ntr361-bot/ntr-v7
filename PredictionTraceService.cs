@@ -197,7 +197,7 @@ public static class PredictionTraceService
         var ranks = models.ToDictionary(model => model.ModelKey,
             model => model.Ranking.ToDictionary(item => item.Zodiac, item => item.Rank), StringComparer.Ordinal);
         IReadOnlyDictionary<string, double> coefficients = snapshot.MetaCoefficients ?? new Dictionary<string, double>();
-        var normalized = new[] { "AI", "ML", "State", "Rule" }.ToDictionary(source => source,
+        var normalized = new[] { "AI", "ML", "State", "V7" }.ToDictionary(source => source,
             source => Normalize(snapshot.Input.Zodiacs.ToDictionary(row => row.Zodiac,
                 row => row.BaseScores.GetValueOrDefault(source))), StringComparer.OrdinalIgnoreCase);
         IReadOnlyDictionary<string, double> weights = snapshot.Weights.AsDictionary();
@@ -210,7 +210,7 @@ public static class PredictionTraceService
                 ranks[ExperimentModels.Period50][row.Zodiac], ranks[ExperimentModels.Period100][row.Zodiac],
                 ranks[ExperimentModels.AllHistory][row.Zodiac], normalized["AI"][row.Zodiac],
                 normalized["ML"][row.Zodiac], normalized["State"][row.Zodiac],
-                input.BaseScores.GetValueOrDefault("Rule"), input.FeatureGroups.GetValueOrDefault("model_consensus"),
+                input.BaseScores.GetValueOrDefault("V7"), input.FeatureGroups.GetValueOrDefault("model_consensus"),
                 logit, row.Probability);
         }).ToArray(), new Dictionary<string, double>(weights, StringComparer.OrdinalIgnoreCase),
             new Dictionary<string, double>(coefficients, StringComparer.OrdinalIgnoreCase),

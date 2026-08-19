@@ -22,16 +22,12 @@ public static class V7PredictionHistoryService
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
         if (string.IsNullOrWhiteSpace(targetPeriod)) throw new ArgumentException("预测期号不能为空", nameof(targetPeriod));
-        var shortResult = ShortTermEngine.Predict(history);
-        var mediumResult = MediumTermEngine.Predict(history);
-        var longResult = LongTermEngine.Predict(history);
+        var v7 = V7Engine.Predict(history);
         ModelMemoryState memory = new ModelMemory(ExperimentModels.IntelligentHistory).LoadOrCreate();
         var color = ColorEngine.Predict(history, memory.ColorLearning.Weights);
-        var report = AIReportEngine.Generate(history, new[] { shortResult, mediumResult, longResult }, color: color);
+        var report = AIReportEngine.Generate(history, new[] { v7 }, color: color);
 
-        SaveEngine(targetPeriod, shortResult, ShortTermHistoryKey, "V7 ShortTerm", report.Text);
-        SaveEngine(targetPeriod, mediumResult, MediumTermHistoryKey, "V7 MediumTerm", report.Text);
-        SaveEngine(targetPeriod, longResult, LongTermHistoryKey, "V7 LongTerm", report.Text);
+        SaveEngine(targetPeriod, v7, LongTermHistoryKey, "V7", report.Text);
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
@@ -51,7 +47,11 @@ public static class V7PredictionHistoryService
         var saved = DatabaseHelper.GetPredictionHistory(int.MaxValue);
         if (!HasCompleteV65BaseSnapshots(targetPeriod, saved))
             throw new InvalidOperationException("V6.5自动学习必须先取得同一期50期、100期和全部历史三条基础预测快照。");
-        AutoLearningSnapshot auto = AutoLearningSnapshotBuilder.BuildFromBasePredictions(targetPeriod, saved, memory);
+        var v7 = V7Engine.Predict(history);
+        string[] v7Ranking = v7.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key)
+            .Select(x => x.Key).ToArray();
+        AutoLearningSnapshot auto = AutoLearningSnapshotBuilder.BuildFromBasePredictions(
+            targetPeriod, saved, memory, v7Ranking);
         string autoScores = string.Join(";", auto.Result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", auto.Result.Ranking.Take(3).Select(item => item.Zodiac)),
@@ -116,6 +116,7 @@ public static class V7PredictionHistoryService
     {
         "V6.5" => "V6.5基础模型",
         "V6.5 AutoLearning" => "自动学习模型",
+        "V7" => "V7长期模型",
         "V7 ShortTerm" => "短期模型",
         "V7 MediumTerm" => "中期模型",
         "V7 LongTerm" => "长期模型",
@@ -136,6 +137,7 @@ public static class V7PredictionHistoryService
 
     private static int ModelDisplayOrder(string modelVersion) => modelVersion switch
     {
+        "V7" => 0,
         "V7 ShortTerm" => 0,
         "V7 MediumTerm" => 1,
         "V7 ML LightGBM" => 2,

@@ -79,7 +79,7 @@ public sealed class AutoLearningEngine
     private void ApplyFailureAnalysis(ModelMemoryState memory, int windowSize, string reason, string issue)
     {
         FeedbackMemoryItem[] window = memory.RecentFeedback.TakeLast(windowSize).ToArray();
-        string[] sources = { "AI", "ML", "State", "Rule" };
+        string[] sources = { "AI", "ML", "State", "V7" };
         var averageRanks = sources.ToDictionary(source => source,
             source => window.Select(item => item.BaseModelRanks.GetValueOrDefault(source, 12)).Average(),
             StringComparer.OrdinalIgnoreCase);

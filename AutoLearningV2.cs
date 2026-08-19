@@ -161,7 +161,7 @@ public static class AutoLearningV2Service
         var bounded = state.Weights.AsDictionary().ToDictionary(pair => pair.Key,
             pair => Math.Clamp(projected[pair.Key], pair.Value - snapshot.Config.MaximumWeightStep, pair.Value + snapshot.Config.MaximumWeightStep), StringComparer.OrdinalIgnoreCase);
         double boundedSum = bounded.Values.Sum();
-        state.Weights = new ModelWeights(bounded["AI"] / boundedSum, bounded["ML"] / boundedSum, bounded["State"] / boundedSum, bounded["Rule"] / boundedSum);
+        state.Weights = new ModelWeights(bounded["AI"] / boundedSum, bounded["ML"] / boundedSum, bounded["State"] / boundedSum, bounded["V7"] / boundedSum);
         state.Decay = decay;
         state.ObservedSamples++;
         return state;

@@ -91,7 +91,7 @@ public sealed class AutoLearningReportForm : Form
         text.AppendLine($"TOP6最大连续未命中：{data.MaximumTop6MissStreak}期");
         text.AppendLine();
         text.AppendLine("当前基础模型权重");
-        text.AppendLine($"AI：{data.Weights.AI:P1}    ML：{data.Weights.ML:P1}    状态：{data.Weights.State:P1}    规则：{data.Weights.Rule:P1}");
+        text.AppendLine($"AI：{data.Weights.AI:P1}    ML：{data.Weights.ML:P1}    状态：{data.Weights.State:P1}    冷侧V7：{data.Weights.V7:P1}");
         text.AppendLine();
         text.AppendLine("最高贡献特征");
         if (data.TopFeatures.Count == 0) text.AppendLine("样本不足，尚无可靠特征贡献排名");

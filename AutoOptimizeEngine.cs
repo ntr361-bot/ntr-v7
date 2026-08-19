@@ -38,12 +38,8 @@ public static class AutoOptimizeEngine
             for (int i = start; i < draws.Count; i++)
             {
                 var prefix = draws.Take(i).ToList();
-                var shortResult = ShortTermEngine.Predict(prefix);
-                var mediumResult = MediumTermEngine.Predict(prefix);
-                var longResult = LongTermEngine.Predict(prefix);
-                var combined = new[] { shortResult, mediumResult, longResult }
-                    .SelectMany((r, index) => r.Probabilities.Select(p => (p.Key, Value: p.Value * (index == 0 ? scheme.ShortWeight : index == 1 ? scheme.MediumWeight : scheme.LongWeight))))
-                    .GroupBy(x => x.Key).ToDictionary(g => g.Key, g => g.Sum(x => x.Value));
+                var v7Result = V7Engine.Predict(prefix);
+                var combined = v7Result.Probabilities;
                 var ranked = combined.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToList();
                 if (ranked.Take(6).Contains(draws[i].SpecialZodiac)) hits++;
                 var actualFeature = FeatureEngine.BuildFeatures(prefix, 0).FirstOrDefault(x => x.Zodiac == draws[i].SpecialZodiac);

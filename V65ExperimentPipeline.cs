@@ -74,6 +74,9 @@ public static class V65ExperimentPipeline
             };
         }).ToArray();
 
-        return AutoLearningSnapshotBuilder.BuildFromBasePredictions(issue, records, memory);
+        var v7 = V7Engine.Predict(prefix);
+        string[] v7Ranking = v7.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key)
+            .Select(x => x.Key).ToArray();
+        return AutoLearningSnapshotBuilder.BuildFromBasePredictions(issue, records, memory, v7Ranking);
     }
 }

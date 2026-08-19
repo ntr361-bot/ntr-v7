@@ -38,9 +38,7 @@ public sealed class CandidateStage2ReplayEngine
                 AddMl(candidates, experimentId, actual, prior, prefix, state, MachineLearningPredictionService.Predict(prefix, 30, MlModelKind.LightGbmStyle), CandidateStage2Ids.MlLgb);
                 AddMl(candidates, experimentId, actual, prior, prefix, state, MachineLearningPredictionService.Predict(prefix, 30, MlModelKind.XgBoostStyle), CandidateStage2Ids.MlXgb);
                 AddRanking(candidates, experimentId, actual, prior, prefix, state, ZodiacRankingEngine.Predict(prefix, int.MaxValue, 30));
-                AddV7(candidates, experimentId, actual, prior, prefix, state, ShortTermEngine.Predict(prefix), CandidateStage2Ids.V7S);
-                AddV7(candidates, experimentId, actual, prior, prefix, state, MediumTermEngine.Predict(prefix), CandidateStage2Ids.V7M);
-                AddV7(candidates, experimentId, actual, prior, prefix, state, LongTermEngine.Predict(prefix), CandidateStage2Ids.V7L);
+                AddV7(candidates, experimentId, actual, prior, prefix, state, V7Engine.Predict(prefix), CandidateStage2Ids.V7S);
             }
         }
         CandidateStage2Store.Save(storePath, experimentId, candidates, controls);

@@ -13,7 +13,9 @@ public sealed record ModelRedundancyReport(
     IReadOnlyDictionary<string, double> Top6HitRates,
     double[,] ModelRankCorrelation,
     double[,] V65DimensionCorrelation,
-    IReadOnlyList<ModelRecencyRow> RecencyBreakdown);
+    IReadOnlyList<ModelRecencyRow> RecencyBreakdown,
+    double[,] HotColdStateTransition,
+    IReadOnlyList<HotColdBlendRow> BlendSweep);
 
 public sealed record ModelRecencyRow(
     string Model,
@@ -21,6 +23,12 @@ public sealed record ModelRecencyRow(
     double HotTop3Rate,
     int ColdSamples,
     double ColdTop3Rate);
+
+public sealed record HotColdBlendRow(
+    double HotWeight,
+    int Samples,
+    double Top3Rate,
+    double Top6Rate);
 
 public static class ModelRedundancyReportService
 {
@@ -39,7 +47,7 @@ public static class ModelRedundancyReportService
 
         var models = new[]
         {
-            "v65-50", "v65-100", "v65-all", "ensemble", "v7-short", "v7-medium", "v7-long", "ml", "random"
+            "v65-50", "v65-100", "v65-all", "ensemble", "v7", "ml", "random"
         };
         var rankByModel = models.ToDictionary(m => m, _ => new List<List<string>>());
         var hit3 = models.ToDictionary(m => m, _ => 0);
@@ -48,6 +56,11 @@ public static class ModelRedundancyReportService
         var hotSamples = models.ToDictionary(m => m, _ => 0);
         var coldHits = models.ToDictionary(m => m, _ => 0);
         var coldSamples = models.ToDictionary(m => m, _ => 0);
+        var blendHits3 = new int[11];
+        var blendHits6 = new int[11];
+        var blendSamples = new int[11];
+        var transition = new double[3, 3];
+        int? lastState = null;
         var v65Dims = Enumerable.Range(0, 6).Select(_ => new List<double>()).ToArray();
         int samples = 0;
         var random = new Random(6501);
@@ -69,9 +82,7 @@ public static class ModelRedundancyReportService
                 V65ExperimentPipeline.GetWeightsForPeriods(AISettings.AllHistoryModeValue)).Top6;
             rankings["ensemble"] = EnsemblePredictionService.Predict(prefix.Count)
                 .Predictions.OrderByDescending(p => p.FinalScore).Take(6).Select(x => x.Zodiac).ToList();
-            rankings["v7-short"] = ShortTermEngine.Predict(prefix).Top6;
-            rankings["v7-medium"] = MediumTermEngine.Predict(prefix).Top6;
-            rankings["v7-long"] = LongTermEngine.Predict(prefix).Top6;
+            rankings["v7"] = V7Engine.Predict(prefix).Top6;
             rankings["ml"] = evalMl
                 ? MachineLearningPredictionService.Predict(prefix, minimumTraining: 30)
                     .Take(6).Select(x => x.Zodiac).ToList()
@@ -83,6 +94,9 @@ public static class ModelRedundancyReportService
             var recent20 = prefix.Skip(Math.Max(0, prefix.Count - 20)).Select(r => r.SpecialZodiac).ToList();
             bool hot = recent10.Contains(actual);
             bool cold = !recent20.Contains(actual);
+            int state = hot ? 0 : cold ? 2 : 1;
+            if (lastState.HasValue) transition[lastState.Value, state]++;
+            lastState = state;
             foreach (string model in models)
             {
                 if (model == "ml" && !evalMl) continue;
@@ -99,6 +113,23 @@ public static class ModelRedundancyReportService
                     if (rankings[model].Take(3).Contains(actual)) coldHits[model]++;
                 }
                 rankByModel[model].Add(rankings[model]);
+            }
+
+            var v65Hundred = new V65RuleScoringEngine().Predict(prefix, 100,
+                V65ExperimentPipeline.GetWeightsForPeriods(100));
+            var v7 = V7Engine.Predict(prefix);
+            var v65Norm = Normalize(v65Hundred.AllScores.ToDictionary(s => s.Zodiac, s => s.TotalScore));
+            var v7Norm = Normalize(v7.Probabilities);
+            for (int wi = 0; wi <= 10; wi++)
+            {
+                double w = wi / 10d;
+                var fused = Zodiacs.ToDictionary(z => z,
+                    z => w * v65Norm.GetValueOrDefault(z) + (1 - w) * v7Norm.GetValueOrDefault(z));
+                var top3 = fused.OrderByDescending(p => p.Value).ThenBy(p => p.Key).Take(3).Select(p => p.Key).ToList();
+                var top6 = fused.OrderByDescending(p => p.Value).ThenBy(p => p.Key).Take(6).Select(p => p.Key).ToList();
+                if (top3.Contains(actual)) blendHits3[wi]++;
+                if (top6.Contains(actual)) blendHits6[wi]++;
+                blendSamples[wi]++;
             }
 
             var v65 = new V65RuleScoringEngine().Predict(prefix, 50,
@@ -124,13 +155,40 @@ public static class ModelRedundancyReportService
             V65DimensionCorrelation(v65Dims),
             models.Select(m => new ModelRecencyRow(m, hotSamples[m],
                 hotSamples[m] == 0 ? 0d : hotHits[m] / (double)hotSamples[m],
-                coldSamples[m], coldSamples[m] == 0 ? 0d : coldHits[m] / (double)coldSamples[m])).ToList());
+                coldSamples[m], coldSamples[m] == 0 ? 0d : coldHits[m] / (double)coldSamples[m])).ToList(),
+            NormalizeTransition(transition),
+            Enumerable.Range(0, 11).Select(wi => new HotColdBlendRow(wi / 10d, blendSamples[wi],
+                blendSamples[wi] == 0 ? 0d : blendHits3[wi] / (double)blendSamples[wi],
+                blendSamples[wi] == 0 ? 0d : blendHits6[wi] / (double)blendSamples[wi])).ToList());
     }
 
     private static ModelRedundancyReport Empty() => new(
         0, Array.Empty<string>(),
         new Dictionary<string, double>(), new Dictionary<string, double>(),
-        new double[0, 0], new double[0, 0], Array.Empty<ModelRecencyRow>());
+        new double[0, 0], new double[0, 0], Array.Empty<ModelRecencyRow>(),
+        new double[0, 0], Array.Empty<HotColdBlendRow>());
+
+    private static Dictionary<string, double> Normalize(IReadOnlyDictionary<string, double> scores)
+    {
+        double min = scores.Values.DefaultIfEmpty(0).Min();
+        double max = scores.Values.DefaultIfEmpty(0).Max();
+        double range = max - min;
+        return scores.ToDictionary(pair => pair.Key,
+            pair => range <= 0 ? 0.5 : (pair.Value - min) / range);
+    }
+
+    private static double[,] NormalizeTransition(double[,] counts)
+    {
+        var matrix = new double[3, 3];
+        for (int a = 0; a < 3; a++)
+        {
+            double total = 0;
+            for (int b = 0; b < 3; b++) total += counts[a, b];
+            if (total == 0) continue;
+            for (int b = 0; b < 3; b++) matrix[a, b] = counts[a, b] / total;
+        }
+        return matrix;
+    }
 
     private static double[,] RankCorrelation(IReadOnlyList<string> models,
         IReadOnlyDictionary<string, List<List<string>>> ranks)
@@ -188,7 +246,9 @@ public static class ModelRedundancyReportService
             report.Top6HitRates,
             ModelRankCorrelation = ToJagged(report.ModelRankCorrelation),
             V65DimensionCorrelation = ToJagged(report.V65DimensionCorrelation),
-            report.RecencyBreakdown
+            report.RecencyBreakdown,
+            HotColdStateTransition = ToJagged(report.HotColdStateTransition),
+            report.BlendSweep
         }, new JsonSerializerOptions { WriteIndented = true });
 
     private static double[][] ToJagged(double[,] matrix)
@@ -253,6 +313,29 @@ public static class ModelRedundancyReportService
         sb.AppendLine("|---|---|---|---|---|");
         foreach (ModelRecencyRow row in report.RecencyBreakdown)
             sb.AppendLine($"| {row.Model} | {row.HotSamples} | {row.HotTop3Rate:P1} | {row.ColdSamples} | {row.ColdTop3Rate:P1} |");
+        sb.AppendLine();
+        sb.AppendLine("### 热/温/冷状态转移概率（下一期实际生肖的冷热状态）");
+        string[] states = { "热", "温", "冷" };
+        sb.Append("| 当前\\下一期 | ");
+        foreach (string s in states) sb.Append(s).Append(" | ");
+        sb.AppendLine();
+        sb.Append("|---|");
+        for (int i = 0; i < states.Length; i++) sb.Append("---|");
+        sb.AppendLine();
+        for (int a = 0; a < states.Length; a++)
+        {
+            sb.Append("| ").Append(states[a]).Append(" | ");
+            for (int b = 0; b < states.Length; b++)
+                sb.Append(report.HotColdStateTransition[a, b].ToString("P1")).Append(" | ");
+            sb.AppendLine();
+        }
+        sb.AppendLine();
+        sb.AppendLine("### 热冷模型加权融合扫描（权重=热模型V65-100占比，1-权重=冷模型V7-长期）");
+        sb.AppendLine();
+        sb.AppendLine("| 热权重 | Top3 | Top6 |");
+        sb.AppendLine("|---|---|---|");
+        foreach (HotColdBlendRow row in report.BlendSweep)
+            sb.AppendLine($"| {row.HotWeight:F1} | {row.Top3Rate:P1} | {row.Top6Rate:P1} |");
         return sb.ToString();
     }
 }

@@ -18,7 +18,8 @@ public sealed record AutoLearningSnapshot(
 public static class AutoLearningSnapshotBuilder
 {
     public static AutoLearningSnapshot BuildFromBasePredictions(string issue,
-        IReadOnlyList<DatabaseHelper.PredictionRecord> records, ModelMemoryState memory)
+        IReadOnlyList<DatabaseHelper.PredictionRecord> records, ModelMemoryState memory,
+        IReadOnlyList<string>? v7Ranking = null)
     {
         var baseRows = records.Where(record => record.Issue == issue &&
                 record.ModelVersion == "V6.5" &&
@@ -39,6 +40,12 @@ public static class AutoLearningSnapshotBuilder
             int r50 = Array.IndexOf(rankings[ExperimentModels.Period50], zodiac) + 1;
             int r100 = Array.IndexOf(rankings[ExperimentModels.Period100], zodiac) + 1;
             int rall = Array.IndexOf(rankings[ExperimentModels.AllHistory], zodiac) + 1;
+            int rV7 = 7;
+            if (v7Ranking is not null)
+            {
+                int v7Index = v7Ranking.ToList().IndexOf(zodiac);
+                rV7 = v7Index < 0 ? 7 : v7Index + 1;
+            }
             double consensus = new[] { r50, r100, rall }.Distinct().Count() == 1 ? 1 :
                 new[] { r50, r100, rall }.GroupBy(x => x).Max(x => x.Count()) >= 2 ? .5 : 0;
             return new ZodiacMetaFeatures(zodiac, new Dictionary<string, double>
@@ -46,7 +53,7 @@ public static class AutoLearningSnapshotBuilder
                 ["AI"] = (13-r50)/12d,
                 ["ML"] = (13-r100)/12d,
                 ["State"] = (13-rall)/12d,
-                ["Rule"] = consensus
+                ["V7"] = (13-rV7)/12d
             }, new Dictionary<string, double> { ["model_consensus"] = consensus });
         }).ToArray();
         var input = new MetaPredictionInput(issue, rows);
@@ -116,7 +123,7 @@ public static class AutoLearningSnapshotBuilder
 
     private static void AddConsensus(IReadOnlyList<ZodiacMetaFeatures> rows)
     {
-        string[] sources = { "AI", "ML", "State", "Rule" };
+        string[] sources = { "AI", "ML", "State", "V7" };
         var ranks = sources.ToDictionary(source => source,
             source => rows.OrderByDescending(row => row.BaseScores[source]).Select((row,index) => (row.Zodiac,index))
                 .ToDictionary(item => item.Zodiac, item => item.index+1));

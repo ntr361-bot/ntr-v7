@@ -12,7 +12,7 @@ public sealed record MetaPredictionResult(IReadOnlyList<RankedZodiac> Ranking, b
 /// <summary>Scheme C stacking ranker. TOP3/TOP6 are slices of the returned 12-item ranking.</summary>
 public sealed class MetaPredictionEngine
 {
-    private static readonly string[] Sources = { "AI", "ML", "State", "Rule" };
+    private static readonly string[] Sources = { "AI", "ML", "State", "V7" };
 
     public MetaPredictionResult Predict(MetaPredictionInput input, ModelMemoryState memory,
         IReadOnlyList<string> baselineRanking)

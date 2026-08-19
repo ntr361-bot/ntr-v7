@@ -136,7 +136,7 @@ public static class AutoLearningTrainer
     {
         int actualRank = ranking.ToList().FindIndex(item => item == actualZodiac)+1;
         if (actualRank <= 0) return;
-        string[] sources = { "AI", "ML", "State", "Rule" };
+        string[] sources = { "AI", "ML", "State", "V7" };
         var ranks = sources.ToDictionary(source => source, source =>
             input.Zodiacs.OrderByDescending(item => item.BaseScores.GetValueOrDefault(source))
                 .Select((item,index)=>(item.Zodiac, Rank:index+1)).First(item => item.Zodiac == actualZodiac).Rank,
@@ -248,7 +248,7 @@ public static class AutoLearningEvaluation
         {
             string details = $"严格滚动验证|实际排名:{row.ActualRank}|TOP3:{(row.Top3Hit ? "命中" : "未命中")}|" +
                 $"TOP6:{(row.Top6Hit ? "命中" : "未命中")}|权重:AI={row.Weights.AI:P1},ML={row.Weights.ML:P1}," +
-                $"状态={row.Weights.State:P1},规则={row.Weights.Rule:P1}|" +
+                $"状态={row.Weights.State:P1},冷侧V7={row.Weights.V7:P1}|" +
                 $"波色排除:{ExcludedColor(row.MainColor, row.DefenseColor)};主:{row.MainColor};防:{row.DefenseColor}|" +
                 $"实际波色:{row.ActualColor}|主波:{(row.MainColorHit ? "命中" : "未命中")}|" +
                 $"双波:{(row.DualColorHit ? "命中" : "未命中")}|" +

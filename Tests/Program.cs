@@ -170,7 +170,7 @@ var tests = new (string Name, Action Run)[]
     ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
     ,("V7 AI report explains model state", V7AiReportExplainsState)
     ,("V7 AI report omits repeated implementation notes", V7AiReportOmitsRepeatedImplementationNotes)
-    ,("智能预测历史独立保存五条模型记录", V7PredictionsAreSavedToHistory)
+    ,("智能预测历史独立保存两条模型记录", V7PredictionsAreSavedToHistory)
     ,("智能预测历史自动学习是独立正式记录", AutoLearningPredictionIsFormalHistoryRow)
     ,("V7记录保存完整12生肖排序", V7HistoryStoresCompleteRanking)
     ,("V7自动学习使用独立记忆库", V7LearningUsesIndependentMemory)
@@ -802,7 +802,7 @@ void ModelRedundancyReportIsDeterministicAndLeakageSafe()
     ModelRedundancyReport second = ModelRedundancyReportService.Run(history, warmup: 50);
     Assert(first.SampleCount > 0, "报告应至少覆盖一期");
     Assert(first.Models.Contains("v65-50") && first.Models.Contains("ensemble") &&
-           first.Models.Contains("v7-short") && first.Models.Contains("ml") &&
+           first.Models.Contains("v7") && first.Models.Contains("ml") &&
            first.Models.Contains("random"), "报告应包含全部对照模型");
     Assert(first.ModelRankCorrelation.GetLength(0) == first.Models.Count, "相关矩阵应为方阵");
     Assert(first.Top3HitRates.SequenceEqual(second.Top3HitRates) &&
@@ -961,7 +961,7 @@ void FiveElementSignalsAreRemoved()
     for (int i = 0; i < 40; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), i % 3 == 0 ? "鼠" : "牛"));
     Assert(MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠").ToVector().Length >= 30,
         "ML vector should contain at least thirty non-five-element features");
-    var engines = new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) };
+    var engines = new[] { V7Engine.Predict(records) };
     var report = AIReportEngine.Generate(records, engines, ColorEngine.Predict(records));
     Assert(!report.Text.Contains("五行", StringComparison.Ordinal), "AI report still exposes five-element analysis");
 }
@@ -981,14 +981,10 @@ void V7EnginesAreIndependent()
 {
     var records = new List<DatabaseHelper.HistoryRecord>();
     for (int i = 0; i < 120; i++) records.Add(History((i + 1).ToString(), "01", i % 2 == 0 ? "鼠" : "牛"));
-    var shortResult = ShortTermEngine.Predict(records);
-    var mediumResult = MediumTermEngine.Predict(records);
-    var longResult = LongTermEngine.Predict(records);
-    Assert(shortResult.Engine == "ShortTermEngine" && shortResult.Window == 50, "short engine metadata incorrect");
-    Assert(mediumResult.Engine == "MediumTermEngine" && mediumResult.Window == 100, "medium engine metadata incorrect");
-    Assert(longResult.Engine == "LongTermEngine" && longResult.Window == 0, "long engine metadata incorrect");
-    Assert(shortResult.Top6.Count <= 6 && mediumResult.Top6.Count <= 6 && longResult.Top6.Count <= 6, "TOP6 output invalid");
-    Assert(shortResult.Features.All(x => !(x.ShortForbidden && shortResult.Top6.Contains(x.Zodiac))), "short-forbidden zodiac was not filtered");
+    var v7 = V7Engine.Predict(records);
+    Assert(v7.Engine == "V7Engine" && v7.Window == 0, "V7 engine metadata incorrect");
+    Assert(v7.Top6.Count <= 6, "TOP6 output invalid");
+    Assert(v7.Features.All(x => !(x.ShortForbidden && v7.Top6.Contains(x.Zodiac))), "short-forbidden zodiac was not filtered");
 }
 
 void V7MlPredictionFacadeWorks()
@@ -1163,11 +1159,8 @@ void V7AiReportExplainsState()
 {
     var records = new List<DatabaseHelper.HistoryRecord>();
     for (int i = 0; i < 30; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), i % 2 == 0 ? "鼠" : "牛"));
-    var shortResult = ShortTermEngine.Predict(records);
-    var mediumResult = MediumTermEngine.Predict(records);
-    var longResult = LongTermEngine.Predict(records);
     var color = ColorEngine.Predict(records);
-    var report = AIReportEngine.Generate(records, new[] { shortResult, mediumResult, longResult }, color: color);
+    var report = AIReportEngine.Generate(records, new[] { V7Engine.Predict(records) }, color: color);
     Assert(report.Items.Count >= 3, "AI report should explain multiple signals");
     Assert(report.Text.Contains("短周期") && report.Text.Contains("波色"), "AI report missing state explanations");
     Assert(report.IsPrediction == false, "AI report layer must not be marked as prediction");
@@ -1180,7 +1173,7 @@ void V7AiReportOmitsRepeatedImplementationNotes()
         records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("D2"), i % 2 == 0 ? "鼠" : "牛"));
 
     var report = AIReportEngine.Generate(records,
-        new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) },
+        new[] { V7Engine.Predict(records) },
         color: ColorEngine.Predict(records));
 
     Assert(!report.Text.Contains("三套周期模型已独立完成", StringComparison.Ordinal),
@@ -1286,7 +1279,7 @@ void V65BacktestUsesFormalModelChain()
     Assert(snapshot.Input.Zodiacs.Count == 12, "V6.5回测没有生成完整十二生肖快照");
     Assert(snapshot.BaselineRanking.Count == 12, "V6.5回测没有使用全部历史正式模型作为基线");
     Assert(snapshot.Input.Zodiacs.All(item => item.BaseScores.Keys.OrderBy(key => key)
-        .SequenceEqual(new[] { "AI", "ML", "Rule", "State" })),
+        .SequenceEqual(new[] { "AI", "ML", "State", "V7" })),
         "V6.5回测没有从三条正式基础模型构造自动学习输入");
 }
 
@@ -1402,11 +1395,9 @@ void V7PredictionsAreSavedToHistory()
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
     var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
-    Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 4,
-        "智能预测历史应保存四条独立模型记录");
-    Assert(records.Any(x => x.ModelVersion == "V7 ShortTerm" && x.AnalysisPeriods == 7050), "智能预测短期记录缺失");
-    Assert(records.Any(x => x.ModelVersion == "V7 MediumTerm" && x.AnalysisPeriods == 7100), "智能预测中期记录缺失");
-    Assert(records.Any(x => x.ModelVersion == "V7 LongTerm" && x.AnalysisPeriods == 7000), "智能预测长期记录缺失");
+    Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 2,
+        "智能预测历史应保存两条独立模型记录（V7 + 自动学习）");
+    Assert(records.Any(x => x.ModelVersion == "V7" && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
     Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
         "color history display format is incorrect");
@@ -1423,7 +1414,7 @@ void V7PredictionsAreSavedToHistory()
         .Where(x => x.Issue == "103")
         .Select(x => x.ModelVersion)
         .ToArray();
-    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 AutoLearning", "V7 LongTerm" }),
+    Assert(orderedModels.SequenceEqual(new[] { "V7", "V7 AutoLearning" }),
         "智能预测历史模型排序不正确");
 }
 
@@ -1992,12 +1983,12 @@ void AutomaticLearningWeightsStayBounded()
             ["AI"] = 10,
             ["ML"] = -10,
             ["State"] = 2,
-            ["Rule"] = -2
+            ["V7"] = -2
         }, "test"));
 
     Assert(Math.Abs(next.AI - current.AI) <= 0.050000001, "AI weight changed by more than five points");
     Assert(Math.Abs(next.ML - current.ML) <= 0.050000001, "ML weight changed by more than five points");
-    Assert(new[] { next.AI, next.ML, next.State, next.Rule }.All(value => value >= 0 && value <= 0.70),
+    Assert(new[] { next.AI, next.ML, next.State, next.V7 }.All(value => value >= 0 && value <= 0.70),
         "a model weight escaped the 0-70% range");
     Assert(Math.Abs(next.Sum - 1.0) < 0.000000001, "model weights no longer sum to 100%");
 }
@@ -2007,7 +1998,7 @@ void MetaRankingIsSafeAndNormalized()
     string[] zodiacs = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
     var input = new MetaPredictionInput("2027001", zodiacs.Select((zodiac, index) =>
         new ZodiacMetaFeatures(zodiac,
-            new Dictionary<string, double> { ["AI"] = 12-index, ["ML"] = 12-index, ["State"] = index, ["Rule"] = 0 },
+            new Dictionary<string, double> { ["AI"] = 12-index, ["ML"] = 12-index, ["State"] = index, ["V7"] = 0 },
             new Dictionary<string, double> { ["frequency"] = (12-index)/12d })).ToArray());
     var baseline = zodiacs.ToArray();
 
@@ -2047,7 +2038,7 @@ void AutomaticLearningUsesDualMissThresholds()
 
     static PredictionFeedback Feedback(int issue, int actualRank) => new(
         issue.ToString(), actualRank,
-        new Dictionary<string, int> { ["AI"] = actualRank, ["ML"] = Math.Min(12, actualRank + 1), ["State"] = Math.Max(1, actualRank - 1), ["Rule"] = actualRank },
+        new Dictionary<string, int> { ["AI"] = actualRank, ["ML"] = Math.Min(12, actualRank + 1), ["State"] = Math.Max(1, actualRank - 1), ["V7"] = actualRank },
         new Dictionary<string, double> { ["frequency"] = -0.4, ["omission"] = 0.2 });
 }
 
@@ -2056,7 +2047,7 @@ void PredictionFeedbackIsPersistedExactlyOnce()
     string[] zodiacs = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
     var input = new MetaPredictionInput("999101", zodiacs.Select((zodiac,index) =>
         new ZodiacMetaFeatures(zodiac,
-            new Dictionary<string,double> { ["AI"]=12-index, ["ML"]=index, ["State"]=6, ["Rule"]=0 },
+            new Dictionary<string,double> { ["AI"]=12-index, ["ML"]=index, ["State"]=6, ["V7"]=0 },
             new Dictionary<string,double> { ["frequency"]=(12-index)/12d, ["omission"]=index/12d })).ToArray());
     DatabaseHelper.SavePrediction("999101", string.Join(",", zodiacs.Take(3)), string.Join(",", zodiacs.Take(6)),
         "01,02,03", "V6.5 AutoLearning", 7250, "test", "test", JsonSerializer.Serialize(zodiacs),
@@ -2215,7 +2206,7 @@ void PredictionTraceIsImmutableAndIsolated()
     Assert(saved.BaseModels[0].Ranking[0].Factors["F"].Raw == 41 &&
         Math.Abs(saved.BaseModels[0].Ranking[0].Factors["F"].Contribution - 6.56) < 0.000001,
         "Trace 没有保存因子原始值和实际贡献");
-    Assert(saved.AutoLearning.Zodiacs.Count == 12 && saved.AutoLearning.Weights.ContainsKey("Rule"),
+    Assert(saved.AutoLearning.Zodiacs.Count == 12 && saved.AutoLearning.Weights.ContainsKey("V7"),
         "Trace 没有保存 AutoLearning 输入与权重快照");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
         "旁路 Trace 不得写入正式 PredictionHistory");
@@ -2252,9 +2243,9 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
         "旁路捕获不得创建或修改正式 PredictionHistory");
 
     PredictionTraceService.RecordLiveOutcome(issue, "马", "07",
-        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .4, ["ML"] = .4, ["State"] = .2, ["Rule"] = 0 },
+        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .4, ["ML"] = .4, ["State"] = .2, ["V7"] = 0 },
             new Dictionary<string, double> { ["model_consensus"] = .1 }),
-        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .35, ["ML"] = .4, ["State"] = .2, ["Rule"] = .05 },
+        new PredictionTraceLearningState(new Dictionary<string, double> { ["AI"] = .35, ["ML"] = .4, ["State"] = .2, ["V7"] = .05 },
             new Dictionary<string, double> { ["model_consensus"] = .12 }), true);
     PredictionTraceOutcome outcome = PredictionTraceService.GetLiveOutcome(issue)
         ?? throw new InvalidOperationException("未保存开奖后的旁路结果");
@@ -2538,7 +2529,8 @@ void CandidateStage2ContractsAreEnforced()
     Assert(result.Candidates.Count > 0 && result.Controls.Count > 0, "Candidate 旁路没有生成快照");
     Assert(result.Candidates.All(x => long.Parse(x.HistoryCutoffIssue) < long.Parse(x.TargetIssue) && x.LeakageAuditPassed), "Candidate cutoff 或泄漏审计失败");
     var report = CandidateStage2Evaluation.Evaluate(result.Candidates, result.Controls, result.ExperimentId, store, 6501, 100);
-    Assert(report.Performance.Count >= 6 && report.Rescue.Count >= 6 && !report.LeakageDetected, "Candidate Stage 2 评估不完整");
+    Assert(report.Performance.Count >= 4 && report.Rescue.Count >= 4 && !report.LeakageDetected,
+        "Candidate Stage 2 评估不完整");
     Assert(File.Exists(store), "Candidate 实验快照没有写入独立库");
 }
 
@@ -2567,7 +2559,7 @@ AutoLearningSnapshot FormalTraceAutoLearning(string issue)
     string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
     var input = new MetaPredictionInput(issue, zodiacs.Select((zodiac, index) => new ZodiacMetaFeatures(zodiac,
         new Dictionary<string, double> { ["AI"] = (12 - index) / 12d, ["ML"] = (11 - index) / 12d,
-            ["State"] = (10 - index) / 12d, ["Rule"] = index == 0 ? 1 : 0 },
+            ["State"] = (10 - index) / 12d, ["V7"] = index == 0 ? 1 : 0 },
         new Dictionary<string, double> { ["model_consensus"] = index == 0 ? 1 : .2 })).ToArray());
     var result = new MetaPredictionResult(zodiacs.Select((zodiac, index) => new RankedZodiac(zodiac,
         (12 - index) / 78d, index + 1)).ToArray(), false, "");
@@ -2597,7 +2589,7 @@ PredictionTraceSnapshot TraceFixture(string issue, string cutoffIssue, double fr
     return new PredictionTraceSnapshot(issue, "Live", "trace-v1", DateTimeOffset.Parse("2026-08-14T00:00:00Z"),
         cutoffIssue, 50, "V6.5", "test-commit", "Complete", models,
         new PredictionTraceAutoLearning(autoRows,
-            new Dictionary<string, double> { ["AI"] = .1, ["ML"] = .2, ["State"] = .2, ["Rule"] = .5 },
+            new Dictionary<string, double> { ["AI"] = .1, ["ML"] = .2, ["State"] = .2, ["V7"] = .5 },
             new Dictionary<string, double> { ["model_consensus"] = -.1 }, false, ""));
 }
 

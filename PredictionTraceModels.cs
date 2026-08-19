@@ -26,7 +26,7 @@ public sealed record PredictionTraceAutoZodiac(
     double Normalized50,
     double Normalized100,
     double NormalizedAll,
-    double RuleScore,
+    double V7Score,
     double ModelConsensus,
     double Logit,
     double SoftmaxProbability);

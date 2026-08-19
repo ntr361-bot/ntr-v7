@@ -13,39 +13,17 @@ public sealed class V7PredictionResult
     public Dictionary<string, double> Probabilities { get; init; } = new();
 }
 
-public static class ShortTermEngine
-{
-    public static V7PredictionResult Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history)
-    {
-        var features = FeatureEngine.BuildFeatures(history, 50).ToList();
-        return Build("ShortTermEngine", 50, features, 1.0, 0.25);
-    }
-
-    public static string SaveResult(V7PredictionResult result, string? directory = null) => Save(result, directory ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "V7Models", "ShortTerm"));
-    private static V7PredictionResult Build(string name, int window, List<ZodiacFeature> features, double frequencyWeight, double omissionWeight) => EngineScoring.Build(name, window, features, frequencyWeight, omissionWeight);
-    private static string Save(V7PredictionResult result, string directory) => EngineScoring.Save(result, directory);
-}
-
-public static class MediumTermEngine
-{
-    public static V7PredictionResult Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history)
-    {
-        var features = FeatureEngine.BuildFeatures(history, 100).ToList();
-        return EngineScoring.Build("MediumTermEngine", 100, features, 0.8, 0.35);
-    }
-
-    public static string SaveResult(V7PredictionResult result, string? directory = null) => EngineScoring.Save(result, directory ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "V7Models", "MediumTerm"));
-}
-
-public static class LongTermEngine
+/// <summary>
+/// V7 智能预测唯一引擎（原短期/中期/长期三引擎合并为一个）：
+/// 全历史窗口 + 追冷配置（频率0.55/遗漏0.45）。实测三引擎排序重合 0.75-0.90，长期窗口冷样本命中最佳。
+/// </summary>
+public static class V7Engine
 {
     public static V7PredictionResult Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
         var features = FeatureEngine.BuildFeatures(history, 0).ToList();
-        return EngineScoring.Build("LongTermEngine", 0, features, 0.55, 0.45);
+        return EngineScoring.Build("V7Engine", 0, features, 0.55, 0.45);
     }
-
-    public static string SaveResult(V7PredictionResult result, string? directory = null) => EngineScoring.Save(result, directory ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "V7Models", "LongTerm"));
 }
 
 internal static class EngineScoring
