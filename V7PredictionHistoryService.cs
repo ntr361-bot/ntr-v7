@@ -17,23 +17,13 @@ public static class V7PredictionHistoryService
         var shortResult = ShortTermEngine.Predict(history);
         var mediumResult = MediumTermEngine.Predict(history);
         var longResult = LongTermEngine.Predict(history);
-        var ml = MLPredictEngine.Predict(history, MlModelKind.LightGbmStyle);
         ModelMemoryState memory = new ModelMemory(ExperimentModels.IntelligentHistory).LoadOrCreate();
         var color = ColorEngine.Predict(history, memory.ColorLearning.Weights);
-        var report = AIReportEngine.Generate(history, new[] { shortResult, mediumResult, longResult }, ml, color);
+        var report = AIReportEngine.Generate(history, new[] { shortResult, mediumResult, longResult }, color: color);
 
         SaveEngine(targetPeriod, shortResult, ShortTermHistoryKey, "V7 ShortTerm", report.Text);
         SaveEngine(targetPeriod, mediumResult, MediumTermHistoryKey, "V7 MediumTerm", report.Text);
         SaveEngine(targetPeriod, longResult, LongTermHistoryKey, "V7 LongTerm", report.Text);
-
-        string mlScores = string.Join(";", ml.Probabilities.OrderByDescending(x => x.Value)
-            .Select(x => $"{x.Key}:{x.Value:F4}"));
-        string colorDetails = $"波色排除:{color.Excluded};主:{color.Main};防:{color.Defense}";
-        string colorSnapshot = ColorPredictionSnapshotCodec.Encode(targetPeriod, color);
-        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", ml.Top3), string.Join(",", ml.Top6), "",
-            "V7 ML LightGBM", MlHistoryKey, $"{mlScores}|{colorDetails}|{colorSnapshot}", report.Text,
-            System.Text.Json.JsonSerializer.Serialize(ml.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
-            "", System.Text.Json.JsonSerializer.Serialize(ml.Probabilities));
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }

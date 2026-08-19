@@ -1,5 +1,6 @@
 namespace 六合分析软件;
 
+[System.Obsolete("ML 模型已弃用（研究专用）：命中率低于随机基准，正式链不再生成 ML 预测。")]
 public sealed class MLPredictionOutput
 {
     public MlModelKind Model { get; init; }
@@ -8,6 +9,7 @@ public sealed class MLPredictionOutput
     public List<string> Top6 { get; init; } = new();
 }
 
+[System.Obsolete("ML 模型已弃用（研究专用）：命中率低于随机基准，正式链不再生成 ML 预测。")]
 public static class MLPredictEngine
 {
     public static MLPredictionOutput Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> history,

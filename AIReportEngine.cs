@@ -18,8 +18,8 @@ public static class AIReportEngine
     public static AIAnalysisReport Generate(
         IReadOnlyList<DatabaseHelper.HistoryRecord> history,
         IReadOnlyList<V7PredictionResult> engines,
-        MLPredictionOutput ml,
-        ColorPredictionResult color)
+        ColorPredictionResult color,
+        MLPredictionOutput? ml = null)
     {
         var features = FeatureEngine.BuildFeatures(history);
         var items = new List<string>();

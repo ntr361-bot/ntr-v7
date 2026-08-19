@@ -951,7 +951,7 @@ void FiveElementSignalsAreRemoved()
     Assert(MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠").ToVector().Length >= 30,
         "ML vector should contain at least thirty non-five-element features");
     var engines = new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) };
-    var report = AIReportEngine.Generate(records, engines, MLPredictEngine.Predict(records), ColorEngine.Predict(records));
+    var report = AIReportEngine.Generate(records, engines, ColorEngine.Predict(records));
     Assert(!report.Text.Contains("五行", StringComparison.Ordinal), "AI report still exposes five-element analysis");
 }
 
@@ -1155,9 +1155,8 @@ void V7AiReportExplainsState()
     var shortResult = ShortTermEngine.Predict(records);
     var mediumResult = MediumTermEngine.Predict(records);
     var longResult = LongTermEngine.Predict(records);
-    var ml = MLPredictEngine.Predict(records);
     var color = ColorEngine.Predict(records);
-    var report = AIReportEngine.Generate(records, new[] { shortResult, mediumResult, longResult }, ml, color);
+    var report = AIReportEngine.Generate(records, new[] { shortResult, mediumResult, longResult }, color: color);
     Assert(report.Items.Count >= 3, "AI report should explain multiple signals");
     Assert(report.Text.Contains("短周期") && report.Text.Contains("波色"), "AI report missing state explanations");
     Assert(report.IsPrediction == false, "AI report layer must not be marked as prediction");
@@ -1171,7 +1170,7 @@ void V7AiReportOmitsRepeatedImplementationNotes()
 
     var report = AIReportEngine.Generate(records,
         new[] { ShortTermEngine.Predict(records), MediumTermEngine.Predict(records), LongTermEngine.Predict(records) },
-        MLPredictEngine.Predict(records), ColorEngine.Predict(records));
+        color: ColorEngine.Predict(records));
 
     Assert(!report.Text.Contains("三套周期模型已独立完成", StringComparison.Ordinal),
         "AI report still repeats the three-engine implementation note");
@@ -1392,12 +1391,11 @@ void V7PredictionsAreSavedToHistory()
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
     var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
-    Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 5,
-        "智能预测历史应保存五条独立模型记录");
+    Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 4,
+        "智能预测历史应保存四条独立模型记录");
     Assert(records.Any(x => x.ModelVersion == "V7 ShortTerm" && x.AnalysisPeriods == 7050), "智能预测短期记录缺失");
     Assert(records.Any(x => x.ModelVersion == "V7 MediumTerm" && x.AnalysisPeriods == 7100), "智能预测中期记录缺失");
     Assert(records.Any(x => x.ModelVersion == "V7 LongTerm" && x.AnalysisPeriods == 7000), "智能预测长期记录缺失");
-    Assert(records.Any(x => x.ModelVersion == "V7 ML LightGBM" && x.AnalysisPeriods == 7200), "智能预测ML记录缺失");
     Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
         "color history display format is incorrect");
@@ -1414,7 +1412,7 @@ void V7PredictionsAreSavedToHistory()
         .Where(x => x.Issue == "103")
         .Select(x => x.ModelVersion)
         .ToArray();
-    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 ML LightGBM", "V7 AutoLearning", "V7 LongTerm" }),
+    Assert(orderedModels.SequenceEqual(new[] { "V7 ShortTerm", "V7 MediumTerm", "V7 AutoLearning", "V7 LongTerm" }),
         "智能预测历史模型排序不正确");
 }
 
@@ -2165,7 +2163,7 @@ void ColorPredictionHistoryPersistsSnapshot()
     for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
     V7PredictionHistoryService.SaveAll("999202", rows);
     var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 ML LightGBM");
+        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 AutoLearning");
     Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");

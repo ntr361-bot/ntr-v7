@@ -51,6 +51,7 @@ public sealed class MlBacktestReport
 /// does not replace the existing V6.3 rule model until its rolling backtest is
 /// reviewed. A native provider can implement the same feature contract later.
 /// </summary>
+[System.Obsolete("ML 模型已弃用（研究专用）：实测 Top3 命中率 3.3%，远低于随机基准 25%，不再进入任何正式预测链。")]
 public static class MachineLearningPredictionService
 {
     public static IReadOnlyList<string> FeatureNames => FeatureEngine.FeatureNames;

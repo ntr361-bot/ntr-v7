@@ -1071,14 +1071,12 @@ namespace 六合分析软件
                 var text = await Task.Run(() =>
                 {
                     string targetPeriod = GetNextPredictionPeriod(history);
-                    var ml = MLPredictEngine.Predict(history, MlModelKind.LightGbmStyle);
                     var color = ColorEngine.Predict(history);
                     var optimized = AutoOptimizeEngine.Optimize(history, 30);
                     var engines = new[] { ShortTermEngine.Predict(history), MediumTermEngine.Predict(history), LongTermEngine.Predict(history) };
-                    var report = AIReportEngine.Generate(history, engines, ml, color);
+                    var report = AIReportEngine.Generate(history, engines, color: color);
                     V7PredictionHistoryService.SaveAll(targetPeriod, history);
                     return $"预测期号：{targetPeriod}\n" +
-                           $"ML生肖 TOP6：{string.Join("、", ml.Top6)}\n" +
                            $"波色：排除 {color.Excluded} / 主 {color.Main} / 防 {color.Defense}\n" +
                            $"最优权重：{optimized.Best?.Name ?? "无"}（TOP6 {optimized.Best?.Top6HitRate:P1}）\n\n" +
                            report.Text;
