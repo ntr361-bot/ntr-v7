@@ -45,7 +45,7 @@ namespace 六合分析软件
 
             // 恢复窗口位置
             this.Load += (s, e) => RestoreWindowPosition();
-            this.Shown += async (s, e) => { if (AppPaths.CloudSyncEnabled) await SyncCloudDataAsync(); };
+            this.Shown += async (s, e) => await SyncCloudDataAsync();
             this.FormClosing += (s, e) => SaveWindowPosition();
         }
 
@@ -102,12 +102,9 @@ namespace 六合分析软件
             cloudSyncLabel.AutoSize = true;
             this.Controls.Add(cloudSyncLabel);
 
-            if (AppPaths.CloudSyncEnabled)
-            {
-                _cloudSyncTimer = new System.Windows.Forms.Timer { Interval = 15 * 60 * 1000 };
-                _cloudSyncTimer.Tick += async (s, e) => await SyncCloudDataAsync();
-                _cloudSyncTimer.Start();
-            }
+            _cloudSyncTimer = new System.Windows.Forms.Timer { Interval = 15 * 60 * 1000 };
+            _cloudSyncTimer.Tick += async (s, e) => await SyncCloudDataAsync();
+            _cloudSyncTimer.Start();
 
             // 左侧菜单
             menuPanel = new Panel();

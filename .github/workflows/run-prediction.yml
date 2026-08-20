@@ -27,6 +27,8 @@ on:
         required: false
         default: true
         type: boolean
+  schedule:
+    - cron: "0 14 * * *"
 
 permissions:
   actions: read
@@ -34,7 +36,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: v6-stable-prediction-generation
+  group: v7-isolated-prediction-generation
   cancel-in-progress: false
 
 jobs:
@@ -196,11 +198,10 @@ jobs:
             modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
             predictions = $predictions
           } | ConvertTo-Json -Depth 100 -Compress
-          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
+          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
           $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
           # Both endpoints verify the GitHub OIDC token.  Keep the ledger's
           # local snapshot current as a fallback when its read from ingress
           # is temporarily unavailable.
           $headers = @{ Authorization = "Bearer $oidc" }
-          Invoke-RestMethod -Method Post -Uri 'https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
-          Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload
+          Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload

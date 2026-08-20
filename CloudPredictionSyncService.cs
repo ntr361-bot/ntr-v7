@@ -13,7 +13,7 @@ public sealed record CloudSyncResult(
 
 public static class CloudPredictionSyncService
 {
-    private const string MachineSyncUrl = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop";
+    private const string MachineSyncUrl = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
     private static readonly HttpClient Client = CreateClient();
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
