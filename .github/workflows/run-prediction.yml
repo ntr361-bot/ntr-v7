@@ -1,4 +1,4 @@
-name: Run V7 Isolated Prediction (Manual Only)
+name: Run V7 Isolated Prediction
 
 on:
   workflow_dispatch:
@@ -29,6 +29,9 @@ on:
         type: boolean
   schedule:
     - cron: "0 14 * * *"
+    - cron: "0 15 * * *"
+    # Mobile ledger checks for an explicit V7 run request every 15 minutes.
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   actions: read
@@ -83,10 +86,10 @@ jobs:
             }
           } elseif ($schedule -eq '7,22,37,52 * * * *') {
             try {
-              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v6"
+              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
               $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
               $headers = @{ Authorization = "Bearer $oidc" }
-              $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/request' -Headers $headers
+              $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request' -Headers $headers
               $shouldRun = [bool]$response.run_requested
             } catch {
               Write-Warning "Mobile trigger check failed: $($_.Exception.Message)"
@@ -171,19 +174,19 @@ jobs:
             exit 0
           }
           $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
-          git commit -m "chore: update V6 stable prediction for issue $issue"
+          git commit -m "chore: update V7 prediction for issue $issue"
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload history database artifact
         if: ${{ inputs.dry_run != true }}
         uses: actions/upload-artifact@v4
         with:
-          name: v6-history-db
+          name: v7-history-db
           path: data/history.db
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish V6 data to smart ledger
+      - name: Publish V7 data to smart ledger
         shell: pwsh
         run: |
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json

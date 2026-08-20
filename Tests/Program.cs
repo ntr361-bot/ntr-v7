@@ -1510,10 +1510,14 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "cloud workflow is missing the mobile-trigger polling schedule");
     Assert(workflow.Contains("run_requested", StringComparison.Ordinal),
         "mobile-trigger polling does not consume the cloud run request");
+    Assert(workflow.Contains("audience=smart-ledger-v7", StringComparison.Ordinal),
+        "mobile-trigger polling must request a V7-scoped OIDC token");
+    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request", StringComparison.Ordinal),
+        "mobile-trigger polling must read the isolated V7 run request");
     Assert(workflow.Contains("$headers = @{ Authorization = \"Bearer $oidc\" }", StringComparison.Ordinal),
         "mobile-trigger polling must use the standard Authorization header through the site gateway");
-    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync/publish", StringComparison.Ordinal),
-        "publisher must refresh the smart-ledger fallback copy as well as the ingress snapshot");
+    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
+        "V7 publisher must refresh the isolated smart-ledger V7 copy");
 }
 
 void V6CloudEndpointsAreConsistent()
