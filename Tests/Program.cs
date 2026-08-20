@@ -156,6 +156,9 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5三条基础模型应用各自固定权重", V65BaseModelsUseConfiguredWeights)
     ,("V6.5回测实际比较四条实验模型", V65BacktestComparesFourExperimentModels)
     ,("V6.5实验成绩榜统计四模型与状态", V65ExperimentScoreboardSummarizesModels)
+    ,("成绩榜统计合并后的V7引擎", ScoreboardTracksMergedV7Engine)
+    ,("成绩榜计入无排名但有命中的历史记录", ScoreboardCountsVerifiedRowsWithoutRanking)
+    ,("成绩榜计入动态样本数的全部历史记录", ScoreboardCountsDynamicAllHistoryRows)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -1375,6 +1378,45 @@ void V65ExperimentScoreboardSummarizesModels()
         "自动学习状态没有显示训练样本与最后训练期号");
     Assert(rows.Any(row => row.Group == "智能预测模型" && row.ModelName == "智能预测-ML" && row.Samples == 30),
         "智能预测模型没有作为独立分组接入成绩榜");
+}
+
+void ScoreboardTracksMergedV7Engine()
+{
+    var record = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999602", ModelVersion = "V7", AnalysisPeriods = 7000,
+        ActualZodiac = "鼠", ActualRank = 3, HitResult = "命中", Top6HitResult = "命中"
+    };
+    var rows = V65ExperimentScoreboardService.Build(new[] { record });
+    Assert(rows.Any(r => r.ModelName == "智能预测-V7" && r.Samples == 1 && r.AverageRank == 3),
+        "合并后的V7引擎应出现在成绩榜并正确统计");
+}
+
+void ScoreboardCountsVerifiedRowsWithoutRanking()
+{
+    var record = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999601", ModelVersion = "V6.5", AnalysisPeriods = 100,
+        PredictZodiac = "鼠,牛,虎", Top6Zodiac = "鼠,牛,虎,兔,龙,蛇",
+        ActualZodiac = "鼠", HitResult = "命中", Top6HitResult = "命中",
+        ActualRank = 0, FinalRankingJson = ""
+    };
+    var rows = V65ExperimentScoreboardService.Build(new[] { record });
+    var row = rows.Single(r => r.ModelName == "V6.5-100期");
+    Assert(row.Samples == 1 && row.Top3HitRate == 1 && row.Top6HitRate == 1,
+        "无排名快照但有命中结果的历史记录应计入成绩榜");
+}
+
+void ScoreboardCountsDynamicAllHistoryRows()
+{
+    var record = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999603", ModelVersion = "V6.5", AnalysisPeriods = 1327,
+        ActualZodiac = "鼠", ActualRank = 2, HitResult = "命中", Top6HitResult = "命中"
+    };
+    var rows = V65ExperimentScoreboardService.Build(new[] { record });
+    Assert(rows.Single(r => r.ModelName == "V6.5-全部历史").Samples == 1,
+        "动态样本数的全部历史记录应计入V6.5-全部历史");
 }
 
 void MainMenuOmitsDuplicateStatisticsChart()

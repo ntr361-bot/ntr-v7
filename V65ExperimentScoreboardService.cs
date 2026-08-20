@@ -28,8 +28,10 @@ public static class V65ExperimentScoreboardService
     {
         new("V6.5四模型实验", "V6.5-50期", row => IsV65(row) && row.AnalysisPeriods == 50),
         new("V6.5四模型实验", "V6.5-100期", row => IsV65(row) && row.AnalysisPeriods == 100),
-        new("V6.5四模型实验", "V6.5-全部历史", row => IsV65(row) && row.AnalysisPeriods == AISettings.AllHistoryModeValue),
+        new("V6.5四模型实验", "V6.5-全部历史", row => IsV65(row) &&
+            (row.AnalysisPeriods == AISettings.AllHistoryModeValue || row.AnalysisPeriods > 100)),
         new("V6.5四模型实验", "V6.5-自动学习", row => row.ModelVersion == "V6.5 AutoLearning"),
+        new("智能预测模型", "智能预测-V7", row => row.ModelVersion == "V7"),
         new("智能预测模型", "智能预测-短期", row => row.ModelVersion == "V7 ShortTerm"),
         new("智能预测模型", "智能预测-中期", row => row.ModelVersion == "V7 MediumTerm"),
         new("智能预测模型", "智能预测-长期", row => row.ModelVersion == "V7 LongTerm"),
@@ -97,13 +99,21 @@ public static class V65ExperimentScoreboardService
     private static int ActualRank(DatabaseHelper.PredictionRecord row)
     {
         if (row.ActualRank is >= 1 and <= 12) return row.ActualRank;
-        if (string.IsNullOrWhiteSpace(row.ActualZodiac) || string.IsNullOrWhiteSpace(row.FinalRankingJson)) return 0;
-        try
+        if (string.IsNullOrWhiteSpace(row.ActualZodiac)) return 0;
+        if (!string.IsNullOrWhiteSpace(row.FinalRankingJson))
         {
-            string[] ranking = JsonSerializer.Deserialize<string[]>(row.FinalRankingJson) ?? Array.Empty<string>();
-            return Array.IndexOf(ranking, row.ActualZodiac) + 1;
+            try
+            {
+                string[] ranking = JsonSerializer.Deserialize<string[]>(row.FinalRankingJson) ?? Array.Empty<string>();
+                return Array.IndexOf(ranking, row.ActualZodiac) + 1;
+            }
+            catch { /* 排名快照损坏时退回命中档推算 */ }
         }
-        catch { return 0; }
+        // 没有完整排名快照的历史记录：按已开奖命中结果推算代表排名（前3→2，前6→5，未中→9）。
+        if (row.HitResult == "命中") return 2;
+        if (row.Top6HitResult == "命中") return 5;
+        if (row.HitResult == "未命中" || row.Top6HitResult == "未命中") return 9;
+        return 0;
     }
 
     private static bool IsV65(DatabaseHelper.PredictionRecord row) => row.ModelVersion == "V6.5";
