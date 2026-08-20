@@ -116,7 +116,7 @@ var tests = new (string Name, Action Run)[]
     ("号码统计正确", CountNumbers),
     ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
     ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
-    ("V6.5使用GPT-5.6 Sol", V63UsesGpt56Sol),
+    ("V7使用GPT-5.6 Sol", V63UsesGpt56Sol),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
     ("已存在文件时跳过", ExistingFileSkips),
@@ -142,7 +142,7 @@ var tests = new (string Name, Action Run)[]
     ,("开奖档案导出包含波色", CloudHistoryExportIncludesWaveColors)
     ,("本地开奖档案可重建数据库并保留波色", LocalHistoryArchiveRebuildRestoresRecords)
     ,("运行状态档案可恢复预测历史与模型记忆", RuntimeStateArchiveRestoresPredictionsAndMemory)
-    ,("云端工作流重建数据库且不再提交数据库文件", CloudWorkflowRebuildsDatabaseFromCommittedJson)
+    ,("V7云端工作流重建数据库且不再提交数据库文件", CloudWorkflowRebuildsDatabaseFromCommittedJson)
     ,("提交的 runtime-state.json 哈希与当前代码一致", CommittedRuntimeStateHashIsValid)
     ,("运行状态规范哈希稳定且与序列化细节无关", RuntimeStateHashIsCanonicalAndStable)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
@@ -183,10 +183,10 @@ var tests = new (string Name, Action Run)[]
     ,("V7 history uses the V6 history layout", V7HistoryUsesV6Layout)
     ,("verified color hits are visually emphasized", VerifiedColorHitsAreVisuallyEmphasized)
     ,("main menu omits duplicate statistics chart", MainMenuOmitsDuplicateStatisticsChart)
-    ,("Legacy prediction history excludes removed and V7 model rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
-    ,("retired fixed-period prediction model entry points are removed", RemovedFixedPeriodModelHasNoEntryPoints)
+    ,("AI prediction history includes V7 but excludes retired legacy rows", LegacyPredictionHistoryExcludesRemovedAndV7Rows)
+    ,("retired fixed-period models are absent from production defaults", RemovedFixedPeriodModelHasNoEntryPoints)
     ,("database initialization preserves retired predictions as archived history", DatabaseInitializationPreservesRetiredPredictions)
-    ,("default data directory is stable across release builds", DefaultDataDirectoryIsStableAcrossReleaseBuilds)
+    ,("V7 default data directory is stable across release builds", DefaultDataDirectoryIsStableAcrossReleaseBuilds)
     ,("database backup uses stable data directory and contains current rows", DatabaseBackupUsesStableDataDirectoryAndContainsCurrentRows)
     ,("prediction history keeps the first issued snapshot", PredictionHistoryKeepsFirstIssuedSnapshot)
     ,("initialization preserves the legacy prediction archive table", InitializationPreservesLegacyPredictionArchiveTable)
@@ -214,8 +214,8 @@ var tests = new (string Name, Action Run)[]
     ,("color feedback is idempotent", ColorFeedbackIsIdempotent)
     ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
     ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
-    ,("V6 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
-    ,("桌面云同步使用受机器密钥保护的独立入口", DesktopCloudSyncUsesMachineIngress)
+    ,("V7 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
+    ,("V7桌面云同步使用独立入口", DesktopCloudSyncUsesMachineIngress)
     ,("桌面云同步可从本机受保护配置读取密钥", DesktopCloudSyncReadsLocalMachineCredential)
     ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
     ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
@@ -401,8 +401,8 @@ void PredictionScoreUsesTargetYearMap()
 
 void V63UsesGpt56Sol()
 {
-    Assert(AIEngine.Version == "AI生肖预测 V6.5", "预测模型不是V6.5");
-    Assert(OpenAIService.Model == "gpt-5.6-sol", "V6.5外部分析模型不是GPT-5.6 Sol");
+    Assert(AIEngine.Version == "AI生肖预测 V7", "预测模型不是V7");
+    Assert(OpenAIService.Model == "gpt-5.6-sol", "V7外部分析模型不是GPT-5.6 Sol");
     Assert(OpenAIService.ApiKey == (Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? ""),
         "OpenAI API Key未从云端环境变量读取");
 }
@@ -751,8 +751,8 @@ void CloudWorkflowRebuildsDatabaseFromCommittedJson()
         "云端工作流没有在运行前重建数据库");
     Assert(!workflow.Contains("git add data/history.db", StringComparison.Ordinal),
         "云端提交阶段不应再把数据库写入仓库");
-    Assert(workflow.Contains("v6-history-db", StringComparison.Ordinal),
-        "云端没有把数据库作为产物发布");
+    Assert(workflow.Contains("v7-history-db", StringComparison.Ordinal),
+        "V7云端没有把数据库作为产物发布");
 }
 
 void CommittedRuntimeStateHashIsValid()
@@ -1522,19 +1522,19 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
 
 void V6CloudEndpointsAreConsistent()
 {
-    const string desktopEndpoint = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop";
-    const string publisherEndpoint = "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/publish";
+    const string desktopEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
+    const string publisherEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish";
     string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
     string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
     string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
-    Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V6 desktop sync is not using the machine ingress");
-    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V6 workflow is not publishing through the OIDC ingress");
+    Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V7 desktop sync is not using the isolated V7 endpoint");
+    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V7 workflow is not publishing through the V7 OIDC endpoint");
     Assert(!desktop.Contains("smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync", StringComparison.Ordinal),
-        "V6 desktop sync still uses the interactive smart-ledger API");
+        "V7 desktop sync still uses the V6 API");
     Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
-        "V6 desktop sync still uses the retired Worker URL");
+        "V7 desktop sync still uses the retired Worker URL");
     Assert(!workflow.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
-        "V6 workflow still uses the retired Worker URL");
+        "V7 workflow still uses the retired Worker URL");
 }
 
 void V7HistoryUsesV6Layout()
@@ -1580,8 +1580,8 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     Assert(versions.Contains("V6.5"), "legacy prediction history lost its V6.5 row");
     Assert(versions.Contains("V6.5 AutoLearning"), "legacy prediction history lost its auto-learning row");
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
-    Assert(versions.All(version => !version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
-        "legacy prediction history still displays V7 rows");
+    Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
+        "AI prediction history did not display the V7 row");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
         .ToArray();
@@ -1605,8 +1605,10 @@ void RemovedFixedPeriodModelHasNoEntryPoints()
     Assert(typeof(PredictionScoreService).GetMethod(nameof(PredictionScoreService.Predict))!
         .GetParameters()[0].DefaultValue is int scoreDefault && scoreDefault == int.MaxValue,
         "comprehensive scoring still defaults to the retired 500-period model");
-    Assert(typeof(EnsemblePredictionService).GetMethod(nameof(EnsemblePredictionService.Predict))!
-        .GetParameters()[0].DefaultValue is int ensembleDefault && ensembleDefault == int.MaxValue,
+    var ensemblePredict = typeof(EnsemblePredictionService).GetMethods()
+        .Single(method => method.Name == nameof(EnsemblePredictionService.Predict) &&
+            method.GetParameters() is var parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(int));
+    Assert(ensemblePredict.GetParameters()[0].DefaultValue is int ensembleDefault && ensembleDefault == int.MaxValue,
         "ensemble prediction still defaults to the retired 500-period model");
 }
 
@@ -1646,8 +1648,8 @@ void DesktopCloudSyncUsesMachineIngress()
     {
         Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", key);
         using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("history");
-        Assert(request.RequestUri?.ToString() == "https://v6-sync-ingress-2026.ntr133.chatgpt.site/api/sync/desktop/history",
-            "desktop sync is not using the dedicated machine ingress");
+        Assert(request.RequestUri?.ToString() == "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop/history",
+            "desktop sync is not using the isolated V7 endpoint");
         Assert(request.Headers.TryGetValues("X-V6-Machine-Key", out var values) && values.Single() == key,
             "desktop sync request is missing its machine credential");
     }
@@ -1711,7 +1713,7 @@ void DefaultDataDirectoryIsStableAcrossReleaseBuilds()
     string actual = (string)method!.Invoke(null, null)!;
     string expected = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "六合分析软件");
+        "六合分析软件-V7");
     Assert(string.Equals(Path.GetFullPath(actual), Path.GetFullPath(expected), StringComparison.OrdinalIgnoreCase),
         $"default data directory is release-dependent: {actual}");
 }
