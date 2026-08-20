@@ -238,6 +238,7 @@ var tests = new (string Name, Action Run)[]
     ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
     ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
     ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
+    ,("手动刷新只生成100期展示档", RefreshAllPeriodsReturnsOnlyDisplayPeriod)
 };
 
 int failures = 0;
@@ -820,6 +821,13 @@ void V65HistoryShowsOnlyDisplayedModels()
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 0), "全部历史不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.3", 100), "旧模型不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("云端每日自动预测", 1320), "云端旧档案不应显示");
+}
+
+void RefreshAllPeriodsReturnsOnlyDisplayPeriod()
+{
+    var results = AIEngine.RefreshAllPeriodPredictions();
+    Assert(results.Keys.SequenceEqual(new[] { 100 }),
+        "手动刷新应只生成100期展示档，避免界面按旧档位取结果时 KeyNotFound");
 }
 
 void PublishedPredictionVerificationIsRecorded()

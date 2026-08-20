@@ -77,8 +77,8 @@ namespace 六合分析软件
             cboPeriods.Location = new Point(450, 18);
             cboPeriods.Size = new Size(140, 30);
             cboPeriods.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboPeriods.Items.AddRange(new string[] { "50期", "100期", "全部历史" });
-            cboPeriods.SelectedIndex = 2;
+            cboPeriods.Items.AddRange(new string[] { "100期" });
+            cboPeriods.SelectedIndex = 0;
             topBar.Controls.Add(cboPeriods);
 
             btnPredict = new Button();
@@ -167,7 +167,7 @@ namespace 六合分析软件
             panel.Controls.Add(welcome);
 
             Label hint = new Label();
-            hint.Text = "💡 每次会刷新50期、100期和全部历史，并分别保存到预测历史记录\n当前下拉框只决定页面显示哪一套结果；预测只使用真实特码生肖，不使用平码数据";
+            hint.Text = "💡 每次会刷新100期预测并保存到预测历史记录；50期与全部历史在后台计算供自动学习使用\n预测只使用真实特码生肖，不使用平码数据";
             hint.Font = new Font("微软雅黑", 10);
             hint.ForeColor = Color.Gray;
             hint.Location = new Point(30, 70);
@@ -177,13 +177,7 @@ namespace 六合分析软件
 
         private int GetPeriodCount()
         {
-            switch (cboPeriods.SelectedIndex)
-            {
-                case 0: return 50;
-                case 1: return 100;
-                case 2: return AISettings.AllHistoryModeValue;
-                default: return AISettings.AllHistoryModeValue;
-            }
+            return 100;
         }
 
         private void CboPeriods_SelectedIndexChanged(object? sender, EventArgs e)
@@ -448,9 +442,9 @@ namespace 六合分析软件
 
         private void ShowMultiPeriodComparison()
         {
-            int[] periods = { 50, 100, AISettings.AllHistoryModeValue };
+            int[] periods = { 100 };
             var results = periods.ToDictionary(p => p, p => AIEngine.GenerateForAutomation(p));
-            Form dialog = new Form { Text = "50/100/全部历史多周期预测对比", Size = new Size(1000, 570), StartPosition = FormStartPosition.CenterParent };
+            Form dialog = new Form { Text = "100期预测详情", Size = new Size(1000, 570), StartPosition = FormStartPosition.CenterParent };
             DataGridView grid = new DataGridView
             {
                 Dock = DockStyle.Fill, ReadOnly = true, RowHeadersVisible = false,
