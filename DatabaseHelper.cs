@@ -1294,6 +1294,12 @@ namespace 六合分析软件
 
                     Console.WriteLine($"[预测验证] 期号:{issue} 实际:{actualNumber} {actualZodiac} {(hit ? "命中" : "未命中")}");
                 }
+                if (pending.Count > 0 && PredictionTraceService.GetLiveOutcome(issue) is null)
+                {
+                    PredictionTraceLearningState state = GetTraceLearningState();
+                    TryRecordPredictionTraceOutcome(issue, actualZodiac, actualNumber, state, state, false,
+                        learningObserved: false, learningStatus: "NoMatchingAutoLearningSnapshot");
+                }
             }
         }
 
@@ -1396,12 +1402,13 @@ namespace 六合分析软件
         }
 
         private static void TryRecordPredictionTraceOutcome(string issue, string actualZodiac, string actualNumber,
-            PredictionTraceLearningState beforeLearning, PredictionTraceLearningState afterLearning, bool updated)
+            PredictionTraceLearningState beforeLearning, PredictionTraceLearningState afterLearning, bool updated,
+            bool learningObserved = true, string learningStatus = "")
         {
             try
             {
                 PredictionTraceService.RecordLiveOutcome(issue, actualZodiac, actualNumber,
-                    beforeLearning, afterLearning, updated);
+                    beforeLearning, afterLearning, updated, learningObserved, learningStatus);
             }
             catch (InvalidOperationException)
             {
@@ -1776,6 +1783,14 @@ namespace 六合分析软件
                 MetaPredictionInput? input = System.Text.Json.JsonSerializer.Deserialize<MetaPredictionInput>(snapshotJson);
                 if (input is null || input.Zodiacs.Count != 12)
                     throw new InvalidDataException("自动学习快照不完整");
+                if (!HasCurrentAutoLearningSourceSchema(input))
+                {
+                    string[] legacyRanking = System.Text.Json.JsonSerializer.Deserialize<string[]>(finalRankingJson) ?? Array.Empty<string>();
+                    int legacyRank = Array.FindIndex(legacyRanking, item => item == actualZodiac) + 1;
+                    SetPredictionLearningState(predictionId, "SkippedSnapshotSchema", legacyRank);
+                    return new LearningOutcome(false, false, legacyRank, ModelWeights.Default,
+                        "旧版 Rule 快照与当前 V7 自动学习特征不兼容，已保留验证结果但不写入新版记忆");
+                }
                 var memoryStore = new ModelMemory(experimentKey);
                 ModelMemoryState memory = memoryStore.LoadOrCreate();
                 string[] savedRanking = System.Text.Json.JsonSerializer.Deserialize<string[]>(finalRankingJson) ?? Array.Empty<string>();
@@ -1805,6 +1820,12 @@ namespace 六合分析软件
                 return new LearningOutcome(false, false, 0, new ModelMemory().LoadOrCreate().Weights, ex.Message);
             }
         }
+
+        private static bool HasCurrentAutoLearningSourceSchema(MetaPredictionInput input) =>
+            input.Zodiacs.All(row => row.BaseScores.TryGetValue("AI", out double ai) && double.IsFinite(ai) &&
+                row.BaseScores.TryGetValue("ML", out double ml) && double.IsFinite(ml) &&
+                row.BaseScores.TryGetValue("State", out double state) && double.IsFinite(state) &&
+                row.BaseScores.TryGetValue("V7", out double v7) && double.IsFinite(v7));
 
         public static ColorLearningOutcome ApplyColorLearningForPrediction(int predictionId, string actualNumber)
         {

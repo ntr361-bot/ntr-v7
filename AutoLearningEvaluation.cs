@@ -56,12 +56,12 @@ public static class HistoricalMetaSnapshotBuilder
                 MarketStateKind.OmissionRelease => Math.Clamp(feature.OmissionRatio/3, 0, 1),
                 _ => Math.Clamp(feature.HistoricalRate*12, 0, 1)
             };
-            double rule = Math.Clamp(feature.Recent20Rate*2 + feature.OmissionRatio*0.15
+            double v7 = Math.Clamp(feature.Recent20Rate*2 + feature.OmissionRatio*0.15
                 - (feature.ShortForbidden ? 0.45 : 0), 0, 1);
             raw.Add(new ZodiacMetaFeatures(feature.Zodiac,
                 new Dictionary<string,double>(StringComparer.OrdinalIgnoreCase)
                 {
-                    ["AI"] = ai, ["ML"] = ml, ["State"] = stateScore, ["Rule"] = rule
+                    ["AI"] = ai, ["ML"] = ml, ["State"] = stateScore, ["V7"] = v7
                 }, AutoLearningSnapshotBuilder.BuildGroups(feature, state.Confidence)));
         }
         AddConsensus(raw);
@@ -74,7 +74,7 @@ public static class HistoricalMetaSnapshotBuilder
 
     private static void AddConsensus(IReadOnlyList<ZodiacMetaFeatures> rows)
     {
-        string[] sources = { "AI", "ML", "State", "Rule" };
+        string[] sources = { "AI", "ML", "State", "V7" };
         var ranks = sources.ToDictionary(source => source,
             source => rows.OrderByDescending(row => row.BaseScores[source]).Select((row,index)=>(row.Zodiac,index))
                 .ToDictionary(item => item.Zodiac, item => item.index+1));

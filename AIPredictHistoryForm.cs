@@ -49,7 +49,7 @@ namespace 六合分析软件
             this.newModelOnly = newModelOnly;
             InitializeComponent();
 
-            this.Text = newModelOnly ? "智能预测历史记录" : "AI预测历史记录 - " + AIEngine.Version;
+            this.Text = newModelOnly ? "智能预测历史记录" : "AI预测历史记录（V7 + 智能预测）";
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MinimumSize = new Size(1000, 650);
@@ -82,7 +82,7 @@ namespace 六合分析软件
             Label title = new Label();
             title.Text = newModelOnly
                 ? "📜 智能预测历史记录（按期号和模型留档）"
-                : "📜 AI预测历史记录（按期号和分析周期留档）";
+                : "📜 AI预测历史记录（V7 + 智能预测，按期号和模型留档）";
             title.Font = new Font("微软雅黑", 16, FontStyle.Bold);
             title.ForeColor = Color.White;
             title.Dock = DockStyle.Fill;
@@ -411,7 +411,7 @@ namespace 六合分析软件
             var records = newModelOnly
                 ? V7PredictionHistoryService.GetHistory(500)
                 : DatabaseHelper.GetPredictionHistory(int.MaxValue)
-                    .Where(r => !r.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase) &&
+                    .Where(r => r.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase) ||
                                 V7PredictionHistoryService.IsV65DisplayedModel(r.ModelVersion, r.AnalysisPeriods))
                     .Take(100)
                     .ToList();

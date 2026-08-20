@@ -110,7 +110,7 @@ public static class PredictionTraceService
 
     public static void RecordLiveOutcome(string issue, string actualZodiac, string actualNumber,
         PredictionTraceLearningState beforeLearning, PredictionTraceLearningState afterLearning,
-        bool weightUpdateTriggered)
+        bool weightUpdateTriggered, bool learningObserved = true, string learningStatus = "")
     {
         PredictionTraceSnapshot trace = GetLive(issue)
             ?? throw new InvalidOperationException("不能为没有 Live Trace 的历史预测补写开奖结果。");
@@ -118,7 +118,8 @@ public static class PredictionTraceService
             model => model.Ranking.Single(item => item.Zodiac == actualZodiac).Rank, StringComparer.Ordinal);
         int autoRank = trace.AutoLearning.Zodiacs.Single(item => item.Zodiac == actualZodiac).Rank;
         var outcome = new PredictionTraceOutcome(issue, actualZodiac, actualNumber, baseRanks, autoRank,
-            autoRank <= 3, autoRank <= 6, weightUpdateTriggered, beforeLearning, afterLearning, DateTimeOffset.UtcNow);
+            autoRank <= 3, autoRank <= 6, weightUpdateTriggered, beforeLearning, afterLearning, DateTimeOffset.UtcNow,
+            learningObserved, learningStatus);
         string payload = JsonSerializer.Serialize(outcome, JsonOptions);
         string hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload)));
 

@@ -14,12 +14,14 @@ namespace 六合分析软件
         public static string CacheDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Cache"));
         public static string CloudPredictionDirectory { get; } = CreateDirectory(
             Path.Combine(DataDirectory, "CloudPredictionsV6"));
+        public static bool CloudSyncEnabled => string.Equals(
+            Environment.GetEnvironmentVariable("LIUHE_V7_CLOUD_SYNC"), "1", StringComparison.Ordinal);
 
         private static string GetDefaultDataDirectory()
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "六合分析软件");
+                "六合分析软件-V7");
         }
 
         private static string CreateDirectory(string path)

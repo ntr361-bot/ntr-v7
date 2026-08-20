@@ -21,7 +21,6 @@ namespace 六合分析软件
         Button btnCheck;
         Button btnMlBacktest;
         Button btnV7Models;
-        Button btnV7History;
 
         Label titleLabel;
         Label cloudSyncLabel;
@@ -46,7 +45,7 @@ namespace 六合分析软件
 
             // 恢复窗口位置
             this.Load += (s, e) => RestoreWindowPosition();
-            this.Shown += async (s, e) => await SyncCloudDataAsync();
+            this.Shown += async (s, e) => { if (AppPaths.CloudSyncEnabled) await SyncCloudDataAsync(); };
             this.FormClosing += (s, e) => SaveWindowPosition();
         }
 
@@ -82,13 +81,13 @@ namespace 六合分析软件
 
         private void InitUI()
         {
-            this.Text = "六合智能分析系统 V6.5";
+            this.Text = "六合智能分析系统 V7";
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // 标题
             titleLabel = new Label();
-            titleLabel.Text = "六合智能分析系统 V6.5";
+            titleLabel.Text = "六合智能分析系统 V7";
             titleLabel.Font = new Font("微软雅黑", 22);
             titleLabel.Location = new Point(300, 20);
             titleLabel.AutoSize = true;
@@ -96,16 +95,19 @@ namespace 六合分析软件
             this.Controls.Add(titleLabel);
 
             cloudSyncLabel = new Label();
-            cloudSyncLabel.Text = "V6云端数据：等待同步";
+            cloudSyncLabel.Text = "V7独立运行：云端同步默认关闭";
             cloudSyncLabel.Font = new Font("微软雅黑", 9);
             cloudSyncLabel.ForeColor = Color.DimGray;
             cloudSyncLabel.Location = new Point(302, 62);
             cloudSyncLabel.AutoSize = true;
             this.Controls.Add(cloudSyncLabel);
 
-            _cloudSyncTimer = new System.Windows.Forms.Timer { Interval = 15 * 60 * 1000 };
-            _cloudSyncTimer.Tick += async (s, e) => await SyncCloudDataAsync();
-            _cloudSyncTimer.Start();
+            if (AppPaths.CloudSyncEnabled)
+            {
+                _cloudSyncTimer = new System.Windows.Forms.Timer { Interval = 15 * 60 * 1000 };
+                _cloudSyncTimer.Tick += async (s, e) => await SyncCloudDataAsync();
+                _cloudSyncTimer.Start();
+            }
 
             // 左侧菜单
             menuPanel = new Panel();
@@ -129,8 +131,7 @@ namespace 六合分析软件
             btnPredict = CreateButton("走势预测", 370);
             btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
             btnV7Models = CreateButton("🧠 智能模型实验", 490);
-            btnV7History = CreateButton("📜 智能预测历史", 545);
-            btnCheck = CreateButton("📐 自用规律", 600);
+            btnCheck = CreateButton("📐 自用规律", 545);
 
             menuPanel.Controls.Add(btnHome);
             menuPanel.Controls.Add(btnHistory);
@@ -141,7 +142,6 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnPredict);
             menuPanel.Controls.Add(btnMlBacktest);
             menuPanel.Controls.Add(btnV7Models);
-            menuPanel.Controls.Add(btnV7History);
             menuPanel.Controls.Add(btnCheck);
 
             btnHome.Click += (s, e) => ShowHome();
@@ -153,7 +153,6 @@ namespace 六合分析软件
             btnPredict.Click += BtnPredict_Click;
             btnMlBacktest.Click += BtnMlBacktest_Click;
             btnV7Models.Click += BtnV7Models_Click;
-            btnV7History.Click += (_, _) => new V7PredictionHistoryForm().ShowDialog(this);
             btnCheck.Click += BtnCheck_Click;
 
             // 主显示区域

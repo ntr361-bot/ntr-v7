@@ -93,7 +93,7 @@ public static class AutoLearningSnapshotBuilder
                 ["AI"] = ai.GetValueOrDefault(zodiac),
                 ["ML"] = ml.GetValueOrDefault(zodiac, 1d/12),
                 ["State"] = stateScore,
-                ["Rule"] = ruleScore
+                ["V7"] = ruleScore
             };
             var groups = BuildGroups(feature, state.Confidence);
             rows.Add(new ZodiacMetaFeatures(zodiac, baseScores, groups));

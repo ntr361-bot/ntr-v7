@@ -37,10 +37,13 @@ namespace 六合分析软件
         /// </summary>
         public static PredictionReport Predict(int periodRange = int.MaxValue)
         {
-            var report = new PredictionReport { PredictTime = DateTime.Now };
+            return Predict(DatabaseHelper.GetLatestHistory(periodRange));
+        }
 
-            // 获取历史数据
-            var history = DatabaseHelper.GetLatestHistory(periodRange);
+        public static PredictionReport Predict(IReadOnlyList<DatabaseHelper.HistoryRecord> historyPrefix)
+        {
+            var report = new PredictionReport { PredictTime = DateTime.Now };
+            var history = historyPrefix.OrderByDescending(item => long.TryParse(item.Period, out long issue) ? issue : long.MinValue).ToList();
             if (history.Count < 50) return report;
 
             string[] allZodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };

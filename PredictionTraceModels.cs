@@ -66,4 +66,6 @@ public sealed record PredictionTraceOutcome(
     bool WeightUpdateTriggered,
     PredictionTraceLearningState BeforeLearning,
     PredictionTraceLearningState AfterLearning,
-    DateTimeOffset RecordedAt);
+    DateTimeOffset RecordedAt,
+    bool LearningObserved = true,
+    string LearningStatus = "");

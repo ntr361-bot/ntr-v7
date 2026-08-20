@@ -13,7 +13,7 @@ namespace 六合分析软件
     {
         // Keep the public model identifier aligned with the V6.5 formal release.
         // The external reasoning model is tracked separately by OpenAIService.
-        public const string Version = "AI生肖预测 V6.5";
+        public const string Version = "AI生肖预测 V7";
         private const int DefaultPeriods = AISettings.AllHistoryModeValue;
 
         /// <summary>

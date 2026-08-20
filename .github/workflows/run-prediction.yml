@@ -1,4 +1,4 @@
-name: Run V6 Stable Prediction
+name: Run V7 Isolated Prediction (Manual Only)
 
 on:
   workflow_dispatch:
@@ -27,12 +27,6 @@ on:
         required: false
         default: true
         type: boolean
-  # Draw data is refreshed around 21:40 China time; cron expressions use UTC.
-  schedule:
-    - cron: "0 14 * * *"
-    - cron: "0 15 * * *"
-    # Mobile ledger checks for an explicit V6 run request every 15 minutes.
-    - cron: "7,22,37,52 * * * *"
 
 permissions:
   actions: read

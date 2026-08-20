@@ -80,7 +80,7 @@ public static class ModelRedundancyReportService
                 V65ExperimentPipeline.GetWeightsForPeriods(100)).Top6;
             rankings["v65-all"] = new V65RuleScoringEngine().Predict(prefix, AISettings.AllHistoryModeValue,
                 V65ExperimentPipeline.GetWeightsForPeriods(AISettings.AllHistoryModeValue)).Top6;
-            rankings["ensemble"] = EnsemblePredictionService.Predict(prefix.Count)
+            rankings["ensemble"] = EnsemblePredictionService.Predict(prefix)
                 .Predictions.OrderByDescending(p => p.FinalScore).Take(6).Select(x => x.Zodiac).ToList();
             rankings["v7"] = V7Engine.Predict(prefix).Top6;
             rankings["ml"] = evalMl

@@ -33,7 +33,7 @@ namespace 六合分析软件
         public class Settings
         {
             public int AnalysisPeriods { get; set; } = 100;
-            public string ModelVersion { get; set; } = "AI生肖预测 V6.5";
+            public string ModelVersion { get; set; } = "AI生肖预测 V7";
             public DateTime LastPredictTime { get; set; }
             public string AnalysisMethod { get; set; } = "热度+遗漏+周期+关联";
         }
@@ -135,7 +135,7 @@ namespace 六合分析软件
                     var settings = JsonSerializer.Deserialize<Settings>(json);
                     if (settings != null)
                     {
-                        settings.ModelVersion = "AI生肖预测 V6.5";
+                        settings.ModelVersion = "AI生肖预测 V7";
                         // 展示档统一为100期；50期/全部历史（长期）仅在后台供自动学习学习。
                         if (settings.AnalysisPeriods is 50 or 200 or 500 or AllHistoryModeValue)
                             settings.AnalysisPeriods = 100;
