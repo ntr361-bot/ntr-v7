@@ -1582,6 +1582,9 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
+    Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
+            .All(version => version == "V7"),
+        "AI prediction history still displays V7 component-model rows instead of only the integrated V7 model");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
         .ToArray();

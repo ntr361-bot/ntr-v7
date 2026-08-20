@@ -19,6 +19,13 @@ public static class V7PredictionHistoryService
         modelVersion == "V6.5 AutoLearning" ||
         (modelVersion == "V6.5" && analysisPeriods == 100);
 
+    /// <summary>
+    /// AI 预测历史只保留一个整合后的 V7 结果；V7 的短/中/长/ML/自动学习明细
+    /// 继续留在数据库供研究、回测和追溯，不作为日常历史展示档。
+    /// </summary>
+    public static bool IsV7DisplayedModel(string modelVersion, int analysisPeriods) =>
+        modelVersion == "V7" && analysisPeriods == LongTermHistoryKey;
+
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
         if (string.IsNullOrWhiteSpace(targetPeriod)) throw new ArgumentException("预测期号不能为空", nameof(targetPeriod));
@@ -102,6 +109,7 @@ public static class V7PredictionHistoryService
     public static string FormatAnalysisLabel(int analysisPeriods, string modelVersion) => analysisPeriods switch
     {
         AutoLearningHistoryKey when modelVersion == "V6.5 AutoLearning" => "自动学习",
+        LongTermHistoryKey when modelVersion == "V7" => "整合V7",
         ShortTermHistoryKey when modelVersion.StartsWith("V7") => "50期",
         MediumTermHistoryKey when modelVersion.StartsWith("V7") => "100期",
         LongTermHistoryKey when modelVersion.StartsWith("V7") => "长期",
@@ -116,7 +124,7 @@ public static class V7PredictionHistoryService
     {
         "V6.5" => "V6.5基础模型",
         "V6.5 AutoLearning" => "自动学习模型",
-        "V7" => "V7长期模型",
+        "V7" => "V7整合模型",
         "V7 ShortTerm" => "短期模型",
         "V7 MediumTerm" => "中期模型",
         "V7 LongTerm" => "长期模型",
@@ -129,7 +137,7 @@ public static class V7PredictionHistoryService
 
     public static List<DatabaseHelper.PredictionRecord> GetHistory(int limit = 100) =>
         DatabaseHelper.GetPredictionHistory(int.MaxValue)
-            .Where(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
+            .Where(x => IsV7DisplayedModel(x.ModelVersion, x.AnalysisPeriods))
             .OrderByDescending(x => x.Issue)
             .ThenBy(x => ModelDisplayOrder(x.ModelVersion))
             .Take(Math.Max(0, limit))
