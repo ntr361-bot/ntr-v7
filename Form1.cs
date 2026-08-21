@@ -175,12 +175,12 @@ namespace 六合分析软件
         {
             if (_cloudSyncRunning) return;
             _cloudSyncRunning = true;
-            cloudSyncLabel.Text = "V7云端数据：正在补齐开奖记录和预测档案...";
+            cloudSyncLabel.Text = "V7云端数据：正在同步开奖记录和预测档案缓存...";
             cloudSyncLabel.ForeColor = Color.FromArgb(36, 116, 210);
             try
             {
                 CloudSyncResult result = await CloudPredictionSyncService.SyncAsync();
-                cloudSyncLabel.Text = $"V7云端同步完成：开奖{result.LatestDrawIssue}期，预测档案同步至{result.LatestPredictionIssue}期（{result.PredictionFileCount}期）";
+                cloudSyncLabel.Text = $"V7云端同步完成：开奖{result.LatestDrawIssue}期，预测档案缓存同步至{result.LatestPredictionIssue}期（{result.PredictionFileCount}期）";
                 cloudSyncLabel.ForeColor = Color.FromArgb(15, 140, 91);
                 DatabaseHelper.BatchVerifyAIPredicts();
                 AIEngine.InvalidateCache();

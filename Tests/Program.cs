@@ -132,6 +132,7 @@ var tests = new (string Name, Action Run)[]
     ("历史截止期内可读取下一期基础预测快照", PredictionSnapshotsRemainVisibleDuringHistoryCutoff),
     ("特码规律生成六肖", ZodiacRuleGeneratesSix),
     ("全功能dry-run不写文件", DailyDryRunDoesNotWrite),
+    ("每日自动任务同时生成V7预测", DailyAutomationGeneratesV7Predictions),
     ("有效抓取数据校验", ValidCrawlDataPasses),
     ("损坏抓取数据拒绝", InvalidCrawlDataFails)
     ,("预测清单包含全部期号", PredictionManifestContainsAllIssues)
@@ -822,7 +823,7 @@ void ModelRedundancyReportIsDeterministicAndLeakageSafe()
 void V65HistoryShowsOnlyDisplayedModels()
 {
     Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 100), "100期应显示");
-    Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5 AutoLearning", 7250), "自动学习应显示");
+    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5 AutoLearning", 7250), "自动学习不应混入V6.5日常展示档");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 50), "50期不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 0), "全部历史不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.3", 100), "旧模型不应显示");
@@ -1665,6 +1666,13 @@ void DesktopCloudSyncUsesMachineIngress()
         "desktop sync is not using the isolated V7 endpoint");
     Assert(!request.Headers.Contains("X-V6-Machine-Key"),
         "V7 desktop sync must not depend on the retired V6 machine credential");
+}
+
+void DailyAutomationGeneratesV7Predictions()
+{
+    string source = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "DailyPredictionAutomation.cs"));
+    Assert(source.Contains("V7PredictionHistoryService.SaveAll(targetIssue.ToString(), learningHistory)"),
+        "每日自动任务没有调用整合V7和V7自动学习预测生成器");
 }
 
 void ScoreboardProvidesThirtyVerifiedModelDetails()

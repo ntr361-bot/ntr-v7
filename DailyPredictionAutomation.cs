@@ -52,6 +52,9 @@ public static class DailyPredictionAutomation
         int longTermPeriods = Math.Max(1, learningHistory.Count);
         AutoLearningFormalPrediction formalLearning = V7PredictionHistoryService.SaveAutoLearning(
             targetIssue.ToString(), learningHistory);
+        // V7 integrates the same closed historical prefix as the daily V6.5 prediction.
+        // Persist it here so the scheduled cloud run and the desktop experiment view stay in sync.
+        V7PredictionHistoryService.SaveAll(targetIssue.ToString(), learningHistory);
         AutoLearningSnapshot learning = formalLearning.Snapshot;
         string[] autoTop3 = learning.Result.Ranking.Take(3).Select(item => item.Zodiac).ToArray();
         string[] autoTop6 = learning.Result.Ranking.Take(6).Select(item => item.Zodiac).ToArray();
