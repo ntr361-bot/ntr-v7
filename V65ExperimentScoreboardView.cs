@@ -44,10 +44,21 @@ public static class V65ExperimentScoreboardView
             Font = new Font("微软雅黑", 9, FontStyle.Bold)
         };
         refresh.FlatAppearance.BorderSize = 0;
+        var viewSelected = new Button
+        {
+            Text = "查看已勾选近30期",
+            Location = new Point(130, 70),
+            Size = new Size(142, 34),
+            BackColor = Color.FromArgb(62, 104, 153),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Font = new Font("微软雅黑", 9, FontStyle.Bold)
+        };
+        viewSelected.FlatAppearance.BorderSize = 0;
         var note = new Label
         {
-            Text = "领先：至少30期，最近50期 TOP6 最好且平均排名最佳；暂停：连续8期 TOP6 未中；其余为观察。",
-            Location = new Point(136, 78),
+            Text = "勾选模型后可读取各自最近30条已开奖明细；领先：至少30期，最近50期 TOP6 最好且平均排名最佳。",
+            Location = new Point(286, 78),
             AutoSize = true,
             ForeColor = Color.DimGray,
             Font = new Font("微软雅黑", 9)
@@ -82,8 +93,10 @@ public static class V65ExperimentScoreboardView
                 Font = new Font("微软雅黑", 9), Alignment = DataGridViewContentAlignment.MiddleCenter
             }
         };
+        grid.Columns.Add(new DataGridViewCheckBoxColumn { Name = "Selected", HeaderText = "读取", Width = 54 });
         grid.Columns.Add("Group", "模型组");
         grid.Columns.Add("Model", "模型");
+        grid.Columns.Add(new DataGridViewButtonColumn { Name = "Details", HeaderText = "近30期明细", Text = "查看", UseColumnTextForButtonValue = true, Width = 94 });
         grid.Columns.Add("Samples", "累计期数");
         grid.Columns.Add("Top3", "TOP3");
         grid.Columns.Add("Top6", "TOP6");
@@ -156,18 +169,107 @@ public static class V65ExperimentScoreboardView
             }
         };
 
+        void ShowDetails(IEnumerable<string> modelNames)
+        {
+            string[] selectedModels = modelNames.Distinct().ToArray();
+            var detailForm = new Form
+            {
+                Text = selectedModels.Length == 1 ? $"{selectedModels[0]} - 最近30期已开奖明细" : "已勾选模型 - 最近30期已开奖明细",
+                Size = new Size(1180, 620),
+                StartPosition = FormStartPosition.CenterParent,
+                BackColor = Color.White,
+                MinimizeBox = false,
+                MaximizeBox = true
+            };
+            var detailGrid = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                AllowUserToResizeRows = false,
+                RowHeadersVisible = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                BackgroundColor = Color.White,
+                EnableHeadersVisualStyles = false,
+                ColumnHeadersHeight = 34,
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.FromArgb(35, 80, 135), ForeColor = Color.White,
+                    Font = new Font("微软雅黑", 9, FontStyle.Bold), Alignment = DataGridViewContentAlignment.MiddleCenter
+                },
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Font = new Font("微软雅黑", 9), Alignment = DataGridViewContentAlignment.MiddleCenter
+                }
+            };
+            detailGrid.Columns.Add("Model", "模型");
+            detailGrid.Columns.Add("Issue", "期号");
+            detailGrid.Columns.Add("Top3", "预测TOP3");
+            detailGrid.Columns.Add("Top6", "预测TOP6");
+            detailGrid.Columns.Add("Actual", "实际生肖");
+            detailGrid.Columns.Add("Rank", "实际排名");
+            detailGrid.Columns.Add("Top3Hit", "TOP3结果");
+            detailGrid.Columns.Add("Top6Hit", "TOP6结果");
+            detailGrid.Columns.Add("Time", "预测时间");
+            detailGrid.Columns.Add("Source", "来源");
+            detailGrid.Columns["Model"].Width = 150;
+            detailGrid.Columns["Issue"].Width = 88;
+            detailGrid.Columns["Top3"].Width = 150;
+            detailGrid.Columns["Top6"].Width = 205;
+            detailGrid.Columns["Actual"].Width = 82;
+            detailGrid.Columns["Rank"].Width = 82;
+            detailGrid.Columns["Top3Hit"].Width = 90;
+            detailGrid.Columns["Top6Hit"].Width = 90;
+            detailGrid.Columns["Time"].Width = 150;
+            detailGrid.Columns["Source"].Width = 110;
+
+            V65ExperimentScoreboardDetailRow[] details = selectedModels
+                .SelectMany(model => V65ExperimentScoreboardService.LoadRecentVerifiedDetails(model))
+                .OrderByDescending(detail => long.TryParse(detail.Issue, out long issue) ? issue : long.MinValue)
+                .ThenBy(detail => detail.ModelName)
+                .ToArray();
+            foreach (V65ExperimentScoreboardDetailRow detail in details)
+            {
+                int index = detailGrid.Rows.Add(detail.ModelName, detail.Issue,
+                    string.IsNullOrWhiteSpace(detail.Top3Zodiac) ? "-" : detail.Top3Zodiac,
+                    string.IsNullOrWhiteSpace(detail.Top6Zodiac) ? "-" : detail.Top6Zodiac,
+                    detail.ActualZodiac, detail.ActualRank,
+                    detail.Top3Hit ? "命中" : "未命中", detail.Top6Hit ? "命中" : "未命中",
+                    detail.PredictTime, string.IsNullOrWhiteSpace(detail.Source) ? "-" : detail.Source);
+                detailGrid.Rows[index].Cells["Top3Hit"].Style.ForeColor = detail.Top3Hit ? Color.ForestGreen : Color.Firebrick;
+                detailGrid.Rows[index].Cells["Top6Hit"].Style.ForeColor = detail.Top6Hit ? Color.ForestGreen : Color.Firebrick;
+            }
+
+            if (details.Length == 0)
+            {
+                detailForm.Controls.Add(new Label
+                {
+                    Text = "暂无已开奖记录",
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Font = new Font("微软雅黑", 14, FontStyle.Bold),
+                    ForeColor = Color.DimGray
+                });
+            }
+            else detailForm.Controls.Add(detailGrid);
+            detailForm.ShowDialog(panel.FindForm());
+        }
+
         void LoadRows()
         {
             headerHint.Text = $"已开奖记录 · 两组独立统计 · V6.5自动学习：{V65ExperimentScoreboardService.LoadAutoLearningState()}";
             grid.Rows.Clear();
             foreach (V65ExperimentScoreboardRow row in V65ExperimentScoreboardService.Load())
             {
-                int index = grid.Rows.Add(row.Group, row.ModelName, row.Samples, row.Top3HitRate.ToString("P1"),
+                int index = grid.Rows.Add(true, row.Group, row.ModelName, "查看", row.Samples, row.Top3HitRate.ToString("P1"),
                     row.Top6HitRate.ToString("P1"), row.Samples == 0 ? "-" : row.AverageRank.ToString("F2"),
                     $"{row.Recent20Top3HitRate:P1} / {row.Recent20Top6HitRate:P1}",
                     $"{row.Recent50Top3HitRate:P1} / {row.Recent50Top6HitRate:P1}",
                     row.MaximumTop6Misses, row.CurrentTop6Misses, row.Status);
                 DataGridViewRow gridRow = grid.Rows[index];
+                gridRow.Tag = row.ModelName;
                 bool v65 = row.Group == "V6.5四模型实验";
                 gridRow.DefaultCellStyle.BackColor = v65 ? Color.FromArgb(249, 252, 255) : Color.FromArgb(253, 251, 255);
                 gridRow.Cells["Group"].Style.BackColor = v65 ? Color.FromArgb(236, 246, 255) : Color.FromArgb(246, 239, 255);
@@ -179,8 +281,29 @@ public static class V65ExperimentScoreboardView
         }
 
         refresh.Click += (_, _) => LoadRows();
+        viewSelected.Click += (_, _) =>
+        {
+            string[] selectedModels = grid.Rows.Cast<DataGridViewRow>()
+                .Where(row => row.Cells["Selected"].Value is true)
+                .Select(row => row.Tag as string)
+                .Where(model => !string.IsNullOrWhiteSpace(model))
+                .Cast<string>()
+                .ToArray();
+            if (selectedModels.Length == 0)
+            {
+                MessageBox.Show("请至少勾选一个模型。", "近30期明细", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            ShowDetails(selectedModels);
+        };
+        grid.CellContentClick += (_, e) =>
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != "Details") return;
+            if (grid.Rows[e.RowIndex].Tag is string modelName) ShowDetails(new[] { modelName });
+        };
         panel.Controls.Add(header);
         panel.Controls.Add(refresh);
+        panel.Controls.Add(viewSelected);
         panel.Controls.Add(note);
         panel.Controls.Add(grid);
         panel.Controls.Add(horizontalScroll);

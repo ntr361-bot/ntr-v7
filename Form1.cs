@@ -985,7 +985,7 @@ namespace 六合分析软件
         private Form CreateReservedDataCenterForm()
         {
             Form form = new Form();
-            form.Text = "V6.5 数据中心 - 实验成绩榜";
+            form.Text = "V7 数据中心 - 实验成绩榜";
             form.Size = new Size(1200, 720);
             form.StartPosition = FormStartPosition.CenterParent;
             form.BackColor = Color.White;
@@ -999,7 +999,7 @@ namespace 六合分析软件
             form.Controls.Add(title);
 
             Label hint = new Label();
-            hint.Text = "只统计已开奖记录：V6.5 四模型与智能预测模型分组展示，互不混算。";
+            hint.Text = "只统计已开奖记录：可勾选模型并查看各自最近30期预测与命中结果，互不混算。";
             hint.Font = new Font("微软雅黑", 11);
             hint.ForeColor = Color.Gray;
             hint.Location = new Point(32, 80);
