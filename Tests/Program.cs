@@ -160,7 +160,7 @@ var tests = new (string Name, Action Run)[]
     ,("成绩榜计入无排名但有命中的历史记录", ScoreboardCountsVerifiedRowsWithoutRanking)
     ,("成绩榜计入动态样本数的全部历史记录", ScoreboardCountsDynamicAllHistoryRows)
     ,("成绩榜近30期明细只读取指定模型的已开奖记录", ScoreboardProvidesThirtyVerifiedModelDetails)
-    ,("成绩榜提供逐模型勾选和近30期明细入口", ScoreboardProvidesSelectionAndDetailEntry)
+    ,("成绩榜提供直接的近30期明细入口", ScoreboardProvidesDirectDetailEntry)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -1693,14 +1693,12 @@ void ScoreboardProvidesThirtyVerifiedModelDetails()
         "成绩榜明细应按期号倒序且不混入其他模型");
 }
 
-void ScoreboardProvidesSelectionAndDetailEntry()
+void ScoreboardProvidesDirectDetailEntry()
 {
     Control scoreboard = V65ExperimentScoreboardView.Create();
     DataGridView grid = scoreboard.Controls.OfType<DataGridView>().Single();
-    Assert(grid.Columns.Contains("Selected") && grid.Columns.Contains("Details"),
-        "成绩榜应提供逐模型选择和近30期明细入口");
-    Assert(grid.Rows.Cast<DataGridViewRow>().All(row => row.Cells["Selected"].Value is true),
-        "成绩榜模型应默认全部勾选");
+    Assert(!grid.Columns.Contains("Selected") && grid.Columns.Contains("Details") && grid.Columns["Details"].Index == 2,
+        "成绩榜应移除无效勾选框，并保留近30期明细入口在模型列之后");
 }
 
 void DesktopCloudSyncReadsLocalMachineCredential()

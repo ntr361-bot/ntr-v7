@@ -44,21 +44,10 @@ public static class V65ExperimentScoreboardView
             Font = new Font("微软雅黑", 9, FontStyle.Bold)
         };
         refresh.FlatAppearance.BorderSize = 0;
-        var viewSelected = new Button
-        {
-            Text = "查看已勾选近30期",
-            Location = new Point(130, 70),
-            Size = new Size(142, 34),
-            BackColor = Color.FromArgb(62, 104, 153),
-            ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat,
-            Font = new Font("微软雅黑", 9, FontStyle.Bold)
-        };
-        viewSelected.FlatAppearance.BorderSize = 0;
         var note = new Label
         {
-            Text = "勾选模型后可读取各自最近30条已开奖明细；领先：至少30期，最近50期 TOP6 最好且平均排名最佳。",
-            Location = new Point(286, 78),
+            Text = "点击每行“查看”可读取该模型最近30条已开奖明细；领先：至少30期，最近50期 TOP6 最好且平均排名最佳。",
+            Location = new Point(136, 78),
             AutoSize = true,
             ForeColor = Color.DimGray,
             Font = new Font("微软雅黑", 9)
@@ -93,7 +82,6 @@ public static class V65ExperimentScoreboardView
                 Font = new Font("微软雅黑", 9), Alignment = DataGridViewContentAlignment.MiddleCenter
             }
         };
-        grid.Columns.Add(new DataGridViewCheckBoxColumn { Name = "Selected", HeaderText = "读取", Width = 54 });
         grid.Columns.Add("Group", "模型组");
         grid.Columns.Add("Model", "模型");
         grid.Columns.Add(new DataGridViewButtonColumn { Name = "Details", HeaderText = "近30期明细", Text = "查看", UseColumnTextForButtonValue = true, Width = 94 });
@@ -263,7 +251,7 @@ public static class V65ExperimentScoreboardView
             grid.Rows.Clear();
             foreach (V65ExperimentScoreboardRow row in V65ExperimentScoreboardService.Load())
             {
-                int index = grid.Rows.Add(true, row.Group, row.ModelName, "查看", row.Samples, row.Top3HitRate.ToString("P1"),
+                int index = grid.Rows.Add(row.Group, row.ModelName, "查看", row.Samples, row.Top3HitRate.ToString("P1"),
                     row.Top6HitRate.ToString("P1"), row.Samples == 0 ? "-" : row.AverageRank.ToString("F2"),
                     $"{row.Recent20Top3HitRate:P1} / {row.Recent20Top6HitRate:P1}",
                     $"{row.Recent50Top3HitRate:P1} / {row.Recent50Top6HitRate:P1}",
@@ -281,21 +269,6 @@ public static class V65ExperimentScoreboardView
         }
 
         refresh.Click += (_, _) => LoadRows();
-        viewSelected.Click += (_, _) =>
-        {
-            string[] selectedModels = grid.Rows.Cast<DataGridViewRow>()
-                .Where(row => row.Cells["Selected"].Value is true)
-                .Select(row => row.Tag as string)
-                .Where(model => !string.IsNullOrWhiteSpace(model))
-                .Cast<string>()
-                .ToArray();
-            if (selectedModels.Length == 0)
-            {
-                MessageBox.Show("请至少勾选一个模型。", "近30期明细", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            ShowDetails(selectedModels);
-        };
         grid.CellContentClick += (_, e) =>
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != "Details") return;
@@ -303,7 +276,6 @@ public static class V65ExperimentScoreboardView
         };
         panel.Controls.Add(header);
         panel.Controls.Add(refresh);
-        panel.Controls.Add(viewSelected);
         panel.Controls.Add(note);
         panel.Controls.Add(grid);
         panel.Controls.Add(horizontalScroll);
