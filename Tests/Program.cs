@@ -160,6 +160,7 @@ var tests = new (string Name, Action Run)[]
     ,("成绩榜计入无排名但有命中的历史记录", ScoreboardCountsVerifiedRowsWithoutRanking)
     ,("成绩榜计入动态样本数的全部历史记录", ScoreboardCountsDynamicAllHistoryRows)
     ,("成绩榜近30期明细只读取指定模型的已开奖记录", ScoreboardProvidesThirtyVerifiedModelDetails)
+    ,("成绩榜明细在最近30期成绩前展示该模型最新预测", ScoreboardDetailsIncludeLatestPrediction)
     ,("成绩榜提供直接的近30期明细入口", ScoreboardProvidesDirectDetailEntry)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
@@ -1691,6 +1692,34 @@ void ScoreboardProvidesThirtyVerifiedModelDetails()
         "成绩榜明细应只返回该模型最近30条可验证记录");
     Assert(rows.First().Issue == "31" && rows.Last().Issue == "2" && rows.All(row => row.ModelName == "V6.5-100期"),
         "成绩榜明细应按期号倒序且不混入其他模型");
+}
+
+void ScoreboardDetailsIncludeLatestPrediction()
+{
+    var records = new List<DatabaseHelper.PredictionRecord>();
+    for (int issue = 1; issue <= 31; issue++)
+    {
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V6.5", AnalysisPeriods = 100,
+            PredictZodiac = "鼠,牛,虎", Top6Zodiac = "鼠,牛,虎,兔,龙,蛇",
+            ActualZodiac = "鼠", ActualRank = 3, HitResult = "命中", Top6HitResult = "命中"
+        });
+    }
+    records.Add(new DatabaseHelper.PredictionRecord
+    {
+        Issue = "32", ModelVersion = "V6.5", AnalysisPeriods = 100,
+        PredictZodiac = "马,羊,猴", Top6Zodiac = "马,羊,猴,鸡,狗,猪",
+        ActualZodiac = "", ActualRank = 0, HitResult = "未开奖", Top6HitResult = "未开奖"
+    });
+
+    IReadOnlyList<V65ExperimentScoreboardDetailRow> rows =
+        V65ExperimentScoreboardService.GetScorecardDetails("V6.5-100期", records);
+
+    Assert(rows.Count == 31 && rows[0].Issue == "32" && rows[0].IsLatestPrediction && !rows[0].IsVerified,
+        "成绩榜应在最近30期已开奖成绩前展示该模型最新的未开奖预测");
+    Assert(rows.Skip(1).All(row => row.IsVerified) && rows.Skip(1).Count() == 30,
+        "最新预测以外的成绩榜明细应维持最近30条已开奖记录");
 }
 
 void ScoreboardProvidesDirectDetailEntry()

@@ -162,7 +162,7 @@ public static class V65ExperimentScoreboardView
             string[] selectedModels = modelNames.Distinct().ToArray();
             var detailForm = new Form
             {
-                Text = selectedModels.Length == 1 ? $"{selectedModels[0]} - 最近30期已开奖明细" : "已勾选模型 - 最近30期已开奖明细",
+                Text = selectedModels.Length == 1 ? $"{selectedModels[0]} - 最新预测与近30期成绩" : "模型 - 最新预测与近30期成绩",
                 Size = new Size(1180, 620),
                 StartPosition = FormStartPosition.CenterParent,
                 BackColor = Color.White,
@@ -214,7 +214,7 @@ public static class V65ExperimentScoreboardView
             detailGrid.Columns["Source"].Width = 110;
 
             V65ExperimentScoreboardDetailRow[] details = selectedModels
-                .SelectMany(model => V65ExperimentScoreboardService.LoadRecentVerifiedDetails(model))
+                .SelectMany(model => V65ExperimentScoreboardService.LoadScorecardDetails(model))
                 .OrderByDescending(detail => long.TryParse(detail.Issue, out long issue) ? issue : long.MinValue)
                 .ThenBy(detail => detail.ModelName)
                 .ToArray();
@@ -223,11 +223,21 @@ public static class V65ExperimentScoreboardView
                 int index = detailGrid.Rows.Add(detail.ModelName, detail.Issue,
                     string.IsNullOrWhiteSpace(detail.Top3Zodiac) ? "-" : detail.Top3Zodiac,
                     string.IsNullOrWhiteSpace(detail.Top6Zodiac) ? "-" : detail.Top6Zodiac,
-                    detail.ActualZodiac, detail.ActualRank,
-                    detail.Top3Hit ? "命中" : "未命中", detail.Top6Hit ? "命中" : "未命中",
+                    detail.IsVerified ? detail.ActualZodiac : "未开奖", detail.IsVerified ? detail.ActualRank : "-",
+                    detail.IsVerified ? (detail.Top3Hit ? "命中" : "未命中") : "未开奖",
+                    detail.IsVerified ? (detail.Top6Hit ? "命中" : "未命中") : "未开奖",
                     detail.PredictTime, string.IsNullOrWhiteSpace(detail.Source) ? "-" : detail.Source);
-                detailGrid.Rows[index].Cells["Top3Hit"].Style.ForeColor = detail.Top3Hit ? Color.ForestGreen : Color.Firebrick;
-                detailGrid.Rows[index].Cells["Top6Hit"].Style.ForeColor = detail.Top6Hit ? Color.ForestGreen : Color.Firebrick;
+                if (!detail.IsVerified)
+                {
+                    detailGrid.Rows[index].DefaultCellStyle.BackColor = Color.FromArgb(255, 248, 214);
+                    detailGrid.Rows[index].Cells["Top3Hit"].Style.ForeColor = Color.FromArgb(150, 102, 0);
+                    detailGrid.Rows[index].Cells["Top6Hit"].Style.ForeColor = Color.FromArgb(150, 102, 0);
+                }
+                else
+                {
+                    detailGrid.Rows[index].Cells["Top3Hit"].Style.ForeColor = detail.Top3Hit ? Color.ForestGreen : Color.Firebrick;
+                    detailGrid.Rows[index].Cells["Top6Hit"].Style.ForeColor = detail.Top6Hit ? Color.ForestGreen : Color.Firebrick;
+                }
             }
 
             if (details.Length == 0)
