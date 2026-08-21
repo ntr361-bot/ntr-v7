@@ -17,6 +17,19 @@ public sealed record V65ExperimentScoreboardRow(
     int CurrentTop6Misses,
     string Status);
 
+/// <summary>成绩榜内单个模型的已开奖预测明细；仅供只读展示。</summary>
+public sealed record V65ExperimentScoreboardDetailRow(
+    string Issue,
+    string ModelName,
+    string Top3Zodiac,
+    string Top6Zodiac,
+    string ActualZodiac,
+    int ActualRank,
+    bool Top3Hit,
+    bool Top6Hit,
+    string PredictTime,
+    string Source);
+
 /// <summary>
 /// 只读取已开奖预测记录，分别汇总 V6.5 四模型实验与独立智能预测模型的表现。
 /// </summary>
@@ -66,6 +79,34 @@ public static class V65ExperimentScoreboardService
     }
 
     public static IReadOnlyList<V65ExperimentScoreboardRow> Load() => Build(DatabaseHelper.GetPredictionHistory(int.MaxValue));
+
+    /// <summary>读取指定模型最近的已开奖记录，不会触碰预测历史或学习状态。</summary>
+    public static IReadOnlyList<V65ExperimentScoreboardDetailRow> GetRecentVerifiedDetails(
+        string modelName, IReadOnlyList<DatabaseHelper.PredictionRecord> records, int limit = 30)
+    {
+        Definition definition = Definitions.SingleOrDefault(item => item.Name == modelName)
+            ?? throw new ArgumentException($"未知成绩榜模型：{modelName}", nameof(modelName));
+        return records.Where(definition.Matches)
+            .Select(row => (Row: row, Rank: ActualRank(row)))
+            .Where(item => item.Rank is >= 1 and <= 12)
+            .OrderByDescending(item => IssueNumber(item.Row.Issue)).ThenByDescending(item => item.Row.Id)
+            .Take(Math.Max(0, limit))
+            .Select(item => new V65ExperimentScoreboardDetailRow(
+                item.Row.Issue,
+                definition.Name,
+                item.Row.PredictZodiac,
+                item.Row.Top6Zodiac,
+                item.Row.ActualZodiac,
+                item.Rank,
+                item.Rank <= 3,
+                item.Rank <= 6,
+                item.Row.PredictTime,
+                item.Row.PredictionSource))
+            .ToArray();
+    }
+
+    public static IReadOnlyList<V65ExperimentScoreboardDetailRow> LoadRecentVerifiedDetails(string modelName, int limit = 30) =>
+        GetRecentVerifiedDetails(modelName, DatabaseHelper.GetPredictionHistory(int.MaxValue), limit);
 
     /// <summary>供数据中心直接说明 V6.5 自动学习是否已完成历史预训练。</summary>
     public static string DescribeAutoLearningState(ModelMemoryState state)

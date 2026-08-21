@@ -159,6 +159,7 @@ var tests = new (string Name, Action Run)[]
     ,("成绩榜统计合并后的V7引擎", ScoreboardTracksMergedV7Engine)
     ,("成绩榜计入无排名但有命中的历史记录", ScoreboardCountsVerifiedRowsWithoutRanking)
     ,("成绩榜计入动态样本数的全部历史记录", ScoreboardCountsDynamicAllHistoryRows)
+    ,("成绩榜近30期明细只读取指定模型的已开奖记录", ScoreboardProvidesThirtyVerifiedModelDetails)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
     ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
     ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
@@ -1650,6 +1651,39 @@ void DesktopCloudSyncUsesMachineIngress()
         "desktop sync is not using the isolated V7 endpoint");
     Assert(!request.Headers.Contains("X-V6-Machine-Key"),
         "V7 desktop sync must not depend on the retired V6 machine credential");
+}
+
+void ScoreboardProvidesThirtyVerifiedModelDetails()
+{
+    var records = new List<DatabaseHelper.PredictionRecord>();
+    for (int issue = 1; issue <= 31; issue++)
+    {
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V6.5", AnalysisPeriods = 100,
+            PredictZodiac = "鼠,牛,虎", Top6Zodiac = "鼠,牛,虎,兔,龙,蛇",
+            ActualZodiac = "鼠", ActualRank = 3, HitResult = "命中", Top6HitResult = "命中",
+            PredictTime = $"2026-08-{issue:00} 22:00:00", PredictionSource = "本地生成"
+        });
+    }
+    records.Add(new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999", ModelVersion = "V7", AnalysisPeriods = 7000,
+        ActualZodiac = "鼠", ActualRank = 1
+    });
+    records.Add(new DatabaseHelper.PredictionRecord
+    {
+        Issue = "1000", ModelVersion = "V6.5", AnalysisPeriods = 100,
+        ActualZodiac = "", ActualRank = 0
+    });
+
+    IReadOnlyList<V65ExperimentScoreboardDetailRow> rows =
+        V65ExperimentScoreboardService.GetRecentVerifiedDetails("V6.5-100期", records);
+
+    Assert(rows.Count == 30 && rows.All(row => row.ActualRank is >= 1 and <= 12),
+        "成绩榜明细应只返回该模型最近30条可验证记录");
+    Assert(rows.First().Issue == "31" && rows.Last().Issue == "2" && rows.All(row => row.ModelName == "V6.5-100期"),
+        "成绩榜明细应按期号倒序且不混入其他模型");
 }
 
 void DesktopCloudSyncReadsLocalMachineCredential()
