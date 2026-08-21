@@ -1379,8 +1379,14 @@ void V65ExperimentScoreboardSummarizesModels()
         LearnedSamples = 42, LastTrainingIssue = "2026224"
     }) == "已学习·42样本·至2026224",
         "自动学习状态没有显示训练样本与最后训练期号");
-    Assert(rows.Any(row => row.Group == "智能预测模型" && row.ModelName == "智能预测-ML" && row.Samples == 30),
-        "智能预测模型没有作为独立分组接入成绩榜");
+    Assert(rows.Select(row => row.ModelName).SequenceEqual(new[]
+    {
+        "V6.5-50期", "V6.5-100期", "V6.5-全部历史", "V6.5-自动学习",
+        "整合 V7", "V7 自动学习"
+    }), "成绩榜必须只显示六个每日运行、可验算模型");
+    Assert(!rows.Any(row => row.ModelName.Contains("短期") || row.ModelName.Contains("中期") ||
+        row.ModelName.Contains("长期") || row.ModelName.Contains("ML")),
+        "未运行的旧模型不应继续出现在成绩榜");
 }
 
 void ScoreboardTracksMergedV7Engine()
@@ -1391,7 +1397,7 @@ void ScoreboardTracksMergedV7Engine()
         ActualZodiac = "鼠", ActualRank = 3, HitResult = "命中", Top6HitResult = "命中"
     };
     var rows = V65ExperimentScoreboardService.Build(new[] { record });
-    Assert(rows.Any(r => r.ModelName == "智能预测-V7" && r.Samples == 1 && r.AverageRank == 3),
+    Assert(rows.Any(r => r.ModelName == "整合 V7" && r.Samples == 1 && r.AverageRank == 3),
         "合并后的V7引擎应出现在成绩榜并正确统计");
 }
 

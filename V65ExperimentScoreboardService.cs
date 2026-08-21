@@ -33,7 +33,7 @@ public sealed record V65ExperimentScoreboardDetailRow(
     bool IsLatestPrediction);
 
 /// <summary>
-/// 只读取已开奖预测记录，分别汇总 V6.5 四模型实验与独立智能预测模型的表现。
+/// 只读取六个每日运行模型的已开奖预测记录，分别汇总 V6.5 四模型与 V7 两模型的表现。
 /// </summary>
 public static class V65ExperimentScoreboardService
 {
@@ -46,12 +46,8 @@ public static class V65ExperimentScoreboardService
         new("V6.5四模型实验", "V6.5-全部历史", row => IsV65(row) &&
             (row.AnalysisPeriods == AISettings.AllHistoryModeValue || row.AnalysisPeriods > 100)),
         new("V6.5四模型实验", "V6.5-自动学习", row => row.ModelVersion == "V6.5 AutoLearning"),
-        new("智能预测模型", "智能预测-V7", row => row.ModelVersion == "V7"),
-        new("智能预测模型", "智能预测-短期", row => row.ModelVersion == "V7 ShortTerm"),
-        new("智能预测模型", "智能预测-中期", row => row.ModelVersion == "V7 MediumTerm"),
-        new("智能预测模型", "智能预测-长期", row => row.ModelVersion == "V7 LongTerm"),
-        new("智能预测模型", "智能预测-ML", row => row.ModelVersion == "V7 ML LightGBM"),
-        new("智能预测模型", "智能预测-自动学习", row => row.ModelVersion == "V7 AutoLearning")
+        new("V7 每日模型", "整合 V7", row => row.ModelVersion == "V7"),
+        new("V7 每日模型", "V7 自动学习", row => row.ModelVersion == "V7 AutoLearning")
     };
 
     public static IReadOnlyList<V65ExperimentScoreboardRow> Build(
