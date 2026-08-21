@@ -237,17 +237,10 @@ public static class CloudPredictionSyncService
     {
         if (string.IsNullOrWhiteSpace(resource) || resource.StartsWith("/", StringComparison.Ordinal))
             throw new ArgumentException("云端同步资源无效", nameof(resource));
-        string key = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY") ?? "";
-        if (string.IsNullOrWhiteSpace(key))
-        {
-            string localKeyPath = Path.Combine(AppPaths.DataDirectory, "cloud-sync.key");
-            if (File.Exists(localKeyPath)) key = File.ReadAllText(localKeyPath).Trim();
-        }
-        if (string.IsNullOrWhiteSpace(key))
-            throw new InvalidOperationException("未配置此电脑的云端同步密钥");
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{MachineSyncUrl}/{resource}");
-        request.Headers.Add("X-V6-Machine-Key", key);
-        return request;
+        // V7 publishes the same read-only prediction archive used by the mobile
+        // ledger. Requiring the retired V6 machine key here prevented a fresh V7
+        // installation from downloading its own cloud history at all.
+        return new HttpRequestMessage(HttpMethod.Get, $"{MachineSyncUrl}/{resource}");
     }
 
     private static async Task<T> DownloadAsync<T>(string resource, CancellationToken cancellationToken)

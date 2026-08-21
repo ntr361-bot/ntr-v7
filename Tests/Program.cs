@@ -215,8 +215,8 @@ var tests = new (string Name, Action Run)[]
     ,("color prediction consumes learned weights and exposes features", ColorPredictionConsumesLearnedWeights)
     ,("color prediction history persists one learnable snapshot", ColorPredictionHistoryPersistsSnapshot)
     ,("V7 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
-    ,("V7桌面云同步使用独立入口", DesktopCloudSyncUsesMachineIngress)
-    ,("桌面云同步可从本机受保护配置读取密钥", DesktopCloudSyncReadsLocalMachineCredential)
+    ,("V7桌面云同步无需旧机器密钥即可使用独立入口", DesktopCloudSyncUsesMachineIngress)
+    ,("V7桌面云同步不依赖旧机器密钥配置", DesktopCloudSyncReadsLocalMachineCredential)
     ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
     ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
     ,("web wave-color mapping is parsed independently from number API", WebWaveColorMappingIsParsed)
@@ -1645,40 +1645,26 @@ void DatabaseInitializationPreservesRetiredPredictions()
 
 void DesktopCloudSyncUsesMachineIngress()
 {
-    const string key = "test-machine-key";
-    string? previous = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY");
-    try
-    {
-        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", key);
-        using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("history");
-        Assert(request.RequestUri?.ToString() == "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop/history",
-            "desktop sync is not using the isolated V7 endpoint");
-        Assert(request.Headers.TryGetValues("X-V6-Machine-Key", out var values) && values.Single() == key,
-            "desktop sync request is missing its machine credential");
-    }
-    finally
-    {
-        Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", previous);
-    }
+    using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("history");
+    Assert(request.RequestUri?.ToString() == "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop/history",
+        "desktop sync is not using the isolated V7 endpoint");
+    Assert(!request.Headers.Contains("X-V6-Machine-Key"),
+        "V7 desktop sync must not depend on the retired V6 machine credential");
 }
 
 void DesktopCloudSyncReadsLocalMachineCredential()
 {
-    string path = Path.Combine(testData, "cloud-sync.key");
     string? previousEnvironment = Environment.GetEnvironmentVariable("V65_CLOUD_SYNC_KEY");
-    string? previousFile = File.Exists(path) ? File.ReadAllText(path) : null;
     try
     {
         Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", null);
-        File.WriteAllText(path, "local-machine-key");
         using HttpRequestMessage request = CloudPredictionSyncService.CreateMachineSyncRequest("manifest");
-        Assert(request.Headers.GetValues("X-V6-Machine-Key").Single() == "local-machine-key",
-            "desktop sync did not use the local machine credential");
+        Assert(request.RequestUri?.ToString() == "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop/manifest",
+            "V7 desktop sync should work without a legacy machine key");
     }
     finally
     {
         Environment.SetEnvironmentVariable("V65_CLOUD_SYNC_KEY", previousEnvironment);
-        if (previousFile is null) File.Delete(path); else File.WriteAllText(path, previousFile);
     }
 }
 

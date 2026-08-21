@@ -13,9 +13,7 @@ namespace 六合分析软件
         public static string LogDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Logs"));
         public static string CacheDirectory { get; } = CreateDirectory(Path.Combine(DataDirectory, "Cache"));
         public static string CloudPredictionDirectory { get; } = CreateDirectory(
-            Path.Combine(DataDirectory, "CloudPredictionsV6"));
-        public static bool CloudSyncEnabled => string.Equals(
-            Environment.GetEnvironmentVariable("LIUHE_V7_CLOUD_SYNC"), "1", StringComparison.Ordinal);
+            Path.Combine(DataDirectory, "CloudPredictionsV7"));
 
         private static string GetDefaultDataDirectory()
         {

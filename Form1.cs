@@ -95,7 +95,7 @@ namespace 六合分析软件
             this.Controls.Add(titleLabel);
 
             cloudSyncLabel = new Label();
-            cloudSyncLabel.Text = "V7独立运行：云端同步默认关闭";
+            cloudSyncLabel.Text = "V7云端同步：启动时自动同步，之后每15分钟检查一次";
             cloudSyncLabel.Font = new Font("微软雅黑", 9);
             cloudSyncLabel.ForeColor = Color.DimGray;
             cloudSyncLabel.Location = new Point(302, 62);
@@ -175,12 +175,12 @@ namespace 六合分析软件
         {
             if (_cloudSyncRunning) return;
             _cloudSyncRunning = true;
-            cloudSyncLabel.Text = "V6云端数据：正在补齐开奖记录并缓存预测档案...";
+            cloudSyncLabel.Text = "V7云端数据：正在补齐开奖记录和预测档案...";
             cloudSyncLabel.ForeColor = Color.FromArgb(36, 116, 210);
             try
             {
                 CloudSyncResult result = await CloudPredictionSyncService.SyncAsync();
-                cloudSyncLabel.Text = $"V6云端同步完成：开奖{result.LatestDrawIssue}期，预测档案缓存至{result.LatestPredictionIssue}期（{result.PredictionFileCount}期）";
+                cloudSyncLabel.Text = $"V7云端同步完成：开奖{result.LatestDrawIssue}期，预测档案同步至{result.LatestPredictionIssue}期（{result.PredictionFileCount}期）";
                 cloudSyncLabel.ForeColor = Color.FromArgb(15, 140, 91);
                 DatabaseHelper.BatchVerifyAIPredicts();
                 AIEngine.InvalidateCache();
@@ -189,8 +189,8 @@ namespace 六合分析软件
             }
             catch (Exception cloudError)
             {
-                AppLogger.Error("V6云端档案同步失败", cloudError);
-                cloudSyncLabel.Text = "V6云端同步失败，已保留电脑现有数据，15分钟后重试";
+                AppLogger.Error("V7云端档案同步失败", cloudError);
+                cloudSyncLabel.Text = "V7云端同步失败，已保留电脑现有数据，15分钟后重试";
                 cloudSyncLabel.ForeColor = Color.Firebrick;
             }
             finally { _cloudSyncRunning = false; }
