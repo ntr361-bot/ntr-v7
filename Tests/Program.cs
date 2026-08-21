@@ -1569,6 +1569,8 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
         "legacy v6.3", "legacy v6.3");
     DatabaseHelper.SavePrediction("998001", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V7 ShortTerm", 998050,
         "v7", "v7");
+    DatabaseHelper.SavePrediction("998004", "马,羊,猴", "马,羊,猴,鸡,狗,猪", "07,08,09", "V7 AutoLearning", 7250,
+        "v7 auto", "v7 auto");
     DatabaseHelper.SavePrediction("998002", "兔,龙,蛇", "兔,龙,蛇,马,羊,猴", "10,11,12", "V6.3", 200,
         "removed 200-period model", "removed 200-period model");
     DatabaseHelper.SavePrediction("998003", "鸡,狗,猪", "鸡,狗,猪,鼠,牛,虎", "13,14,15", "V6.3", 0,
@@ -1580,13 +1582,14 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
         .Select(row => Convert.ToString(row.Cells["ModelVersion"].Value) ?? "")
         .ToArray();
     Assert(versions.Contains("V6.5"), "legacy prediction history lost its V6.5 row");
-    Assert(versions.Contains("V6.5 AutoLearning"), "legacy prediction history lost its auto-learning row");
+    Assert(!versions.Contains("V6.5 AutoLearning"), "AI prediction history should hide the retired V6.5 automatic-learning display row");
+    Assert(versions.Contains("V7 AutoLearning"), "AI prediction history should display the V7 automatic-learning row");
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
     Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
-            .All(version => version == "V7"),
-        "AI prediction history still displays V7 component-model rows instead of only the integrated V7 model");
+            .All(version => version is "V7" or "V7 AutoLearning"),
+        "AI prediction history should display only integrated V7 and V7 automatic-learning rows");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
         .ToArray();

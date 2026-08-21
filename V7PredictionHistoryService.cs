@@ -12,19 +12,18 @@ public static class V7PredictionHistoryService
     public const int AutoLearningValidationHistoryKey = 7300;
 
     /// <summary>
-    /// V6.5 预测历史只展示正式展示档（100期 + 自动学习）；
-    /// 50期与全部历史（长期）仅在后台计算供自动学习学习，不进入历史展示。
+    /// V6.5 预测历史只展示 100 期正式展示档；50期、全部历史和 V6.5 自动学习
+    /// 均保留在数据库供研究与成绩榜使用，不进入 V7 的日常预测历史展示。
     /// </summary>
     public static bool IsV65DisplayedModel(string modelVersion, int analysisPeriods) =>
-        modelVersion == "V6.5 AutoLearning" ||
-        (modelVersion == "V6.5" && analysisPeriods == 100);
+        modelVersion == "V6.5" && analysisPeriods == 100;
 
     /// <summary>
-    /// AI 预测历史只保留一个整合后的 V7 结果；V7 的短/中/长/ML/自动学习明细
-    /// 继续留在数据库供研究、回测和追溯，不作为日常历史展示档。
+    /// AI 预测历史保留整合 V7 与 V7 自动学习；短/中/长/ML 明细继续留在数据库供研究、回测和追溯。
     /// </summary>
     public static bool IsV7DisplayedModel(string modelVersion, int analysisPeriods) =>
-        modelVersion == "V7" && analysisPeriods == LongTermHistoryKey;
+        (modelVersion == "V7" && analysisPeriods == LongTermHistoryKey) ||
+        (modelVersion == "V7 AutoLearning" && analysisPeriods == AutoLearningHistoryKey);
 
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
