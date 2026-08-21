@@ -1451,6 +1451,9 @@ void V7PredictionsAreSavedToHistory()
         "智能预测历史应保存两条独立模型记录（V7 + 自动学习）");
     Assert(records.Any(x => x.ModelVersion == "V7" && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
     Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
+    Assert(records.Where(x => x.ModelVersion is "V7" or "V7 AutoLearning")
+            .All(x => x.PredictNumber.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 7),
+        "V7与自动学习都应保存恰好7个重点号码");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
         "color history display format is incorrect");
     var colorMethod = typeof(AIPredictHistoryForm).GetMethod("GetWaveColorForDisplay",

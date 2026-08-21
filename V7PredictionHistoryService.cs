@@ -33,7 +33,9 @@ public static class V7PredictionHistoryService
         var color = ColorEngine.Predict(history, memory.ColorLearning.Weights);
         var report = AIReportEngine.Generate(history, new[] { v7 }, color: color);
 
-        SaveEngine(targetPeriod, v7, LongTermHistoryKey, "V7", report.Text);
+        V7RecommendedNumberSelection v7Numbers = V7RecommendedNumberService.Select(targetPeriod,
+            v7.Probabilities.Select(item => (item.Key, item.Value)), history);
+        SaveEngine(targetPeriod, v7, LongTermHistoryKey, "V7", report.Text, v7Numbers);
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
@@ -86,12 +88,15 @@ public static class V7PredictionHistoryService
         MetaPredictionResult result = new MetaPredictionEngine().Predict(input, memory, baseline);
         var snapshot = new AutoLearningSnapshot(input, baseline, result, memory.Weights);
         string scores = string.Join(";", result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
+        V7RecommendedNumberSelection numbers = V7RecommendedNumberService.Select(targetPeriod,
+            result.Ranking.Select(item => (item.Zodiac, item.Probability)), history);
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", result.Ranking.Take(3).Select(item => item.Zodiac)),
-            string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), "",
+            string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), numbers.Numbers,
             "V7 AutoLearning", AutoLearningHistoryKey,
-            $"{scores}|{colorDetails}|{colorSnapshot}", learningDetails,
-            snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson);
+            $"{scores}|{colorDetails}|{colorSnapshot}|重点号码:{numbers.Details}", learningDetails,
+            snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson,
+            numbers.MappingSnapshotJson);
     }
 
     public static AutoLearningSnapshot BuildAutoLearningSnapshot(string targetPeriod,
@@ -182,13 +187,14 @@ public static class V7PredictionHistoryService
             : "-";
     }
 
-    private static void SaveEngine(string targetPeriod, V7PredictionResult result, int historyKey, string modelVersion, string report)
+    private static void SaveEngine(string targetPeriod, V7PredictionResult result, int historyKey, string modelVersion,
+        string report, V7RecommendedNumberSelection numbers)
     {
         string scores = string.Join(";", result.Probabilities.OrderByDescending(x => x.Value)
             .Select(x => $"{x.Key}:{x.Value:F4}"));
-        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), "",
-            modelVersion, historyKey, scores, report,
+        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), numbers.Numbers,
+            modelVersion, historyKey, $"{scores}|重点号码:{numbers.Details}", report,
             System.Text.Json.JsonSerializer.Serialize(result.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
-            "", System.Text.Json.JsonSerializer.Serialize(result.Features));
+            "", System.Text.Json.JsonSerializer.Serialize(result.Features), "", numbers.MappingSnapshotJson);
     }
 }
