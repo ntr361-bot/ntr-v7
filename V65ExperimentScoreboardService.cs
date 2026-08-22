@@ -53,7 +53,10 @@ public static class V65ExperimentScoreboardService
     public static IReadOnlyList<V65ExperimentScoreboardRow> Build(
         IReadOnlyList<DatabaseHelper.PredictionRecord> records)
     {
-        var drafts = Definitions.Select(definition => BuildDraft(definition, records)).ToList();
+        // 只有确实产出过预测记录的模型才进入看板；不能给已停用或尚未运行的模型
+        // 创建“查看”入口，避免把零样本误认为验算异常。
+        var drafts = Definitions.Where(definition => records.Any(definition.Matches))
+            .Select(definition => BuildDraft(definition, records)).ToList();
         var output = new List<V65ExperimentScoreboardRow>(drafts.Count);
         foreach (var group in drafts.GroupBy(draft => draft.Definition.Group))
         {

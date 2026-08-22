@@ -245,7 +245,8 @@ var tests = new (string Name, Action Run)[]
     ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
     ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
     ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
-    ,("手动刷新只生成100期展示档", RefreshAllPeriodsReturnsOnlyDisplayPeriod)
+    ,("手动刷新生成四个V6.5日更模型", RefreshAllPeriodsGeneratesAllV65DailyModels)
+    ,("成绩榜不展示没有预测记录的模型", ScoreboardHidesModelsWithoutPredictionRecords)
 };
 
 int failures = 0;
@@ -830,11 +831,32 @@ void V65HistoryShowsOnlyDisplayedModels()
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("云端每日自动预测", 1320), "云端旧档案不应显示");
 }
 
-void RefreshAllPeriodsReturnsOnlyDisplayPeriod()
+void RefreshAllPeriodsGeneratesAllV65DailyModels()
 {
     var results = AIEngine.RefreshAllPeriodPredictions();
-    Assert(results.Keys.SequenceEqual(new[] { 100 }),
-        "手动刷新应只生成100期展示档，避免界面按旧档位取结果时 KeyNotFound");
+    Assert(results.Keys.SequenceEqual(new[] { 50, 100, AISettings.AllHistoryModeValue }),
+        "手动刷新必须同时生成50期、100期和全部历史三条基础预测");
+    string issue = results[100].PredictPeriod;
+    int allHistoryPeriods = results[AISettings.AllHistoryModeValue].AnalysisPeriods;
+    DatabaseHelper.PredictionRecord[] rows = DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Where(row => row.Issue == issue).ToArray();
+    Assert(rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 50) &&
+        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 100) &&
+        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == allHistoryPeriods) &&
+        rows.Any(row => row.ModelVersion == "V6.5 AutoLearning"),
+        "手动刷新后缺少基础模型或V6.5自动学习的同一期预测记录");
+}
+
+void ScoreboardHidesModelsWithoutPredictionRecords()
+{
+    var onlyOneModel = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999991", ModelVersion = "V6.5", AnalysisPeriods = 100,
+        PredictZodiac = "鼠,牛,虎", Top6Zodiac = "鼠,牛,虎,兔,龙,蛇"
+    };
+    IReadOnlyList<V65ExperimentScoreboardRow> rows = V65ExperimentScoreboardService.Build(new[] { onlyOneModel });
+    Assert(rows.Select(row => row.ModelName).SequenceEqual(new[] { "V6.5-100期" }),
+        "成绩榜不应为没有任何预测记录的模型创建空白查看入口");
 }
 
 void PublishedPredictionVerificationIsRecorded()
@@ -1361,6 +1383,16 @@ void V65ExperimentScoreboardSummarizesModels()
         {
             Issue = issue.ToString(), ModelVersion = "V7 ML LightGBM", AnalysisPeriods = 7200,
             ActualZodiac = "鼠", ActualRank = 3, Top6Zodiac = "鼠,牛,虎,兔,龙,蛇"
+        });
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V7", AnalysisPeriods = 7000,
+            ActualZodiac = "鼠", ActualRank = 4, Top6Zodiac = "鼠,牛,虎,兔,龙,蛇"
+        });
+        records.Add(new DatabaseHelper.PredictionRecord
+        {
+            Issue = issue.ToString(), ModelVersion = "V7 AutoLearning", AnalysisPeriods = 7250,
+            ActualZodiac = "鼠", ActualRank = 5, Top6Zodiac = "鼠,牛,虎,兔,龙,蛇"
         });
     }
 
@@ -2605,12 +2637,14 @@ void V7LearningUsesIndependentMemory()
     var record = V7PredictionHistoryService.GetHistory(100)
         .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
     string actual = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson)![0];
+    string v65MemoryKey = new ModelMemory(ExperimentModels.AutoLearning).MemoryKey;
+    string? v65Before = DatabaseHelper.LoadModelMemoryJson(v65MemoryKey);
     LearningOutcome outcome = DatabaseHelper.ApplyAutomaticLearningForPrediction(record.Id, actual);
     Assert(outcome.Updated, "V7自动学习反馈没有更新");
     string? v7Memory = DatabaseHelper.LoadModelMemoryJson(new ModelMemory(ExperimentModels.IntelligentHistory).MemoryKey);
-    string? v65Memory = DatabaseHelper.LoadModelMemoryJson(new ModelMemory(ExperimentModels.AutoLearning).MemoryKey);
+    string? v65Memory = DatabaseHelper.LoadModelMemoryJson(v65MemoryKey);
     Assert(!string.IsNullOrWhiteSpace(v7Memory), "V7自动学习没有写入独立记忆库");
-    Assert(string.IsNullOrWhiteSpace(v65Memory), "V7自动学习错误写入V6.5记忆库");
+    Assert(v65Memory == v65Before, "V7自动学习错误写入或篡改V6.5记忆库");
 }
 
 void V7ReviewUsesV7Snapshot()
@@ -2685,7 +2719,20 @@ void CandidateStage2ContractsAreEnforced()
     Assert(File.Exists(store), "Candidate 实验快照没有写入独立库");
 }
 
-string ProjectRoot() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+string ProjectRoot()
+{
+    // 测试既可能从 Tests/bin 运行，也可能因项目引用而从主程序 bin 运行；
+    // 不能假定固定的 ".." 层数，否则云端工作流会在生成预测后找错源码目录。
+    foreach (string start in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
+    {
+        for (DirectoryInfo? directory = new(start); directory is not null; directory = directory.Parent)
+        {
+            if (File.Exists(Path.Combine(directory.FullName, "六合分析软件.csproj")))
+                return directory.FullName;
+        }
+    }
+    throw new DirectoryNotFoundException("未找到六合分析软件项目根目录");
+}
 
 AIEngine.PredictResult FormalTracePrediction(int periods, int modelIndex)
 {

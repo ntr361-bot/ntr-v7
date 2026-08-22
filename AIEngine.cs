@@ -90,12 +90,18 @@ namespace 六合分析软件
         /// </summary>
         public static Dictionary<int, PredictResult> RefreshAllPeriodPredictions()
         {
-            // 展示档只有100期；50期/全部历史由每日自动化在后台计算供自动学习学习。
-            int[] periods = { 100 };
+            // 手动刷新与云端日更必须产出同一组基础快照；否则 V6.5 自动学习
+            // 缺少同一期的 50/100/全部历史输入，成绩榜也会留下空档。
+            int[] periods = { 50, 100, AISettings.AllHistoryModeValue };
             var results = new Dictionary<int, PredictResult>();
 
             foreach (int period in periods)
                 results[period] = Predict(period, forceRefresh: true);
+
+            string targetPeriod = results[100].PredictPeriod;
+            IReadOnlyList<DatabaseHelper.HistoryRecord> history = DatabaseHelper.GetLatestHistory(int.MaxValue);
+            V7PredictionHistoryService.SaveAutoLearning(targetPeriod, history);
+            V7PredictionHistoryService.SaveAll(targetPeriod, history);
 
             return results;
         }
