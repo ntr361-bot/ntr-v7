@@ -37,6 +37,11 @@ on:
     - cron: "0 15 * * *"
     # Mobile ledger checks for an explicit V7 run request every 15 minutes.
     - cron: "7,22,37,52 * * * *"
+  # One-time verification trigger; removed after this run finishes.
+  push:
+    branches: [main]
+    paths:
+      - 'ops/run-v7-once'
 
 permissions:
   actions: write
@@ -59,7 +64,7 @@ jobs:
         run: |
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
-          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *'
+          $shouldRun = $eventName -in @('workflow_dispatch', 'push') -or $schedule -eq '0 14 * * *'
           if ($schedule -eq '0 15 * * *') {
             try {
               $headers = @{
@@ -134,7 +139,7 @@ jobs:
           dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
 
       - name: Refresh latest draw data
-        if: ${{ github.event_name == 'schedule' || inputs.refresh_data == true }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'push' || inputs.refresh_data == true }}
         shell: pwsh
         run: |
           $arguments = @('--refresh-data', '--refresh-only')
