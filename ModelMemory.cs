@@ -23,6 +23,8 @@ public sealed class LearningAdjustmentRecord
 
 public sealed class ModelMemoryState
 {
+    // Zero is an explicit legacy baseline; old learning is never retroactively audited.
+    public long MemoryVersion { get; set; }
     public ModelWeights Weights { get; set; } = ModelWeights.Default;
     public Dictionary<string, double> MetaCoefficients { get; set; } = new(StringComparer.OrdinalIgnoreCase);
     public Dictionary<string, double> FeatureContributions { get; set; } = new(StringComparer.OrdinalIgnoreCase);
@@ -91,6 +93,7 @@ public sealed class ModelMemory
     {
         state.Weights = WeightOptimizer.Normalize(state.Weights);
         state.LearnedSamples = Math.Max(0, state.LearnedSamples);
+        if (state.MemoryVersion < 0) throw new InvalidDataException("MemoryVersion 无效");
         state.ConsecutiveTop3Misses = Math.Max(0, state.ConsecutiveTop3Misses);
         state.ConsecutiveTop6Misses = Math.Max(0, state.ConsecutiveTop6Misses);
         Trim(state.RecentTop3, 500);

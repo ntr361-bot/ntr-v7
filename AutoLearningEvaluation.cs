@@ -134,6 +134,11 @@ public static class AutoLearningTrainer
     public static void LearnOne(MetaPredictionInput input, IReadOnlyList<string> ranking,
         string actualZodiac, ModelMemoryState memory)
     {
+        // Check before MetaPredictionEngine.Learn, which mutates coefficients.
+        // The persisted pipeline additionally enforces a durable unique receipt.
+        if (memory.RecentFeedback.Any(item => item.Issue == input.Issue) ||
+            (long.TryParse(memory.LastTrainingIssue, out long last) &&
+             long.TryParse(input.Issue, out long target) && target <= last)) return;
         int actualRank = ranking.ToList().FindIndex(item => item == actualZodiac)+1;
         if (actualRank <= 0) return;
         string[] sources = { "AI", "ML", "State", "V7" };
