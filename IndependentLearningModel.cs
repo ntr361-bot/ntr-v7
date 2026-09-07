@@ -87,6 +87,63 @@ public sealed class IndependentLearningModel
     private static string? Saved(SQLiteConnection c,long issue) => Scalar(c,
         "SELECT Json FROM IndependentPrediction WHERE Issue=@i",("@i",issue));
 
+    public string[] PendingPredictions()
+    {
+        using var c=Open();
+        return Rows(c,"SELECT Json FROM IndependentPrediction WHERE Issue NOT IN (SELECT Issue FROM LearningReceipt) ORDER BY Issue");
+    }
+    private static string[] Rows(SQLiteConnection c,string sql)
+    {
+        using var cmd=new SQLiteCommand(sql,c); using var r=cmd.ExecuteReader(); var values=new List<string>();
+        while(r.Read()) values.Add(r.GetString(0)); return values.ToArray();
+    }
+    private sealed record Archive(string Model,string Code,string State,string[] Predictions,string[] Receipts);
+    public string ExportArchive()
+    {
+        using var c=Open(); Exec(c,"BEGIN");
+        try {
+            string json=Json(new Archive(ModelKey,CodeVersion,Json(ReadState(c)),
+                Rows(c,"SELECT Json FROM IndependentPrediction ORDER BY Issue"),Rows(c,"SELECT Json FROM LearningReceipt ORDER BY Version")));
+            Exec(c,"COMMIT"); return json;
+        } catch { Exec(c,"ROLLBACK"); throw; }
+    }
+    // Validate in an isolated transaction; never merge divergent learning branches.
+    public void RestoreArchive(string json)
+    {
+        var archive=Read<Archive>(json);
+        if(archive.Model!=ModelKey || archive.Code!=CodeVersion) throw new InvalidDataException("独立学习档案版本不匹配");
+        using var c=Open(); Exec(c,"BEGIN IMMEDIATE");
+        try {
+            if(ReadState(c).Version!=0 || Scalar(c,"SELECT Json FROM IndependentPrediction LIMIT 1") is not null)
+                throw new InvalidDataException("档案只允许恢复至空的独立库，禁止覆盖本地学习分支");
+            var expected=new State(); var predictions=archive.Predictions.Select(Read<Prediction>).ToArray();
+            var receipts=archive.Receipts.Select(Read<Receipt>).ToArray();
+            if(predictions.Select(p=>p.Input.Issue).Distinct().Count()!=predictions.Length || predictions.Length<receipts.Length || predictions.Length>receipts.Length+1)
+                throw new InvalidDataException("学习档案记录数量异常");
+            for(int i=0;i<predictions.Length;i++) {
+                var p=predictions[i]; Validate(p.Input,p.GeneratedAt);
+                var result=Evaluate(p.Input,expected);
+                if(p.Model!=ModelKey || p.Code!=CodeVersion || p.Schema!=1 || p.InputHash!=Hash(p.Input) ||
+                    p.UsedMemoryVersion!=expected.Version || (expected.LastIssue!=0 && p.Input.HistoryCutoffIssue!=expected.LastIssue) ||
+                    !p.Ranking.SequenceEqual(result.Ranking) || !p.Weights.SequenceEqual(result.Weights) ||
+                    !p.Scores.SequenceEqual(result.Scores) || !p.Probabilities.SequenceEqual(result.P))
+                    throw new InvalidDataException("学习档案预测不可复现");
+                Exec(c,"INSERT INTO IndependentPrediction VALUES(@i,@j)",("@i",p.Input.Issue),("@j",Json(p)));
+                if(i<receipts.Length) {
+                    var a=receipts[i];
+                    if(a.Issue!=p.Input.Issue || !Names.Contains(a.Actual) || a.InputHash!=p.InputHash ||
+                        a.ActualRank!=Array.IndexOf(p.Ranking,a.Actual)+1 || Json(a.Before)!=Json(expected) ||
+                        Json(a.After)!=Json(Update(p.Input,expected,a.Actual)))
+                        throw new InvalidDataException("学习档案审计链不可复现");
+                    expected=a.After;
+                    Exec(c,"INSERT INTO LearningReceipt VALUES(@i,@v,@j)",("@i",a.Issue),("@v",expected.Version),("@j",Json(a)));
+                }
+            }
+            if(Json(expected)!=archive.State) throw new InvalidDataException("学习档案最终状态不一致");
+            Exec(c,"UPDATE IndependentState SET Json=@j WHERE Id=1",("@j",archive.State)); Exec(c,"COMMIT");
+        } catch { Exec(c,"ROLLBACK"); throw; }
+    }
+
     private static void Validate(Input input,DateTimeOffset now)
     {
         if (input.Issue <= 0 || input.HistoryCutoffIssue <= 0 || input.HistoryCutoffIssue >= input.Issue ||
@@ -163,17 +220,21 @@ public sealed class IndependentLearningModel
             if(prediction.InputHash!=Hash(prediction.Input) || prediction.UsedMemoryVersion!=before.Version ||
                 previousIssue!=prediction.Input.HistoryCutoffIssue || (before.LastIssue!=0 && before.LastIssue!=previousIssue))
                 throw new InvalidDataException("快照版本、截止期或学习顺序不一致");
-            var (w,_,p,_)=Evaluate(prediction.Input,before);
-            var x=Features(prediction.Input); int a=Array.IndexOf(Names,actual);
-            var delta=Enumerable.Range(0,3).Select(s=>x[a][s]-Enumerable.Range(0,12).Sum(z=>p[z]*x[z][s])).ToArray();
-            double mean=Enumerable.Range(0,3).Sum(s=>w[s]*delta[s]);
-            var theta=Enumerable.Range(0,3).Select(s=>Math.Clamp(before.Theta[s]+Rate*w[s]*(delta[s]-mean),-5,5)).ToArray();
-            var after=before with { Version=checked(before.Version+1),LastIssue=issue,Theta=theta };
+            var after=Update(prediction.Input,before,actual);
             var audit=new Receipt(issue,actual,Array.IndexOf(prediction.Ranking,actual)+1,prediction.InputHash,DateTimeOffset.UtcNow,before,after);
             Exec(c,"UPDATE IndependentState SET Json=@j WHERE Id=1",("@j",Json(after)));
             Exec(c,"INSERT INTO LearningReceipt VALUES(@i,@v,@j)",("@i",issue),("@v",after.Version),("@j",Json(audit)));
             Exec(c,"COMMIT"); return true;
         }
         catch { Exec(c,"ROLLBACK"); throw; }
+    }
+
+    private static State Update(Input input,State before,string actual)
+    {
+        var (w,_,p,_)=Evaluate(input,before); var x=Features(input); int a=Array.IndexOf(Names,actual);
+        var delta=Enumerable.Range(0,3).Select(s=>x[a][s]-Enumerable.Range(0,12).Sum(z=>p[z]*x[z][s])).ToArray();
+        double mean=Enumerable.Range(0,3).Sum(s=>w[s]*delta[s]);
+        var theta=Enumerable.Range(0,3).Select(s=>Math.Clamp(before.Theta[s]+Rate*w[s]*(delta[s]-mean),-5,5)).ToArray();
+        return before with { Version=checked(before.Version+1),LastIssue=input.Issue,Theta=theta };
     }
 }

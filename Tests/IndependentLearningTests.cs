@@ -75,8 +75,44 @@ public static class IndependentLearningTests
         Check((bool)model.Learn(2026101L,"牛",2026100L), "failed learning can retry");
         Check((string)model.ReadPredictionJson(2026100L) == saved, "learning never rewrites historical prediction");
         Check(File.ReadAllBytes(legacyPath).SequenceEqual(legacy), "both legacy memories and history remain byte-identical");
+        string archive=model.ExportArchive();
+        var recovered=new IndependentLearningModel(Path.Combine(root,"recovered"));
+        recovered.RestoreArchive(archive);
+        Check(recovered.ExportArchive()==archive,"cloud archive reproduces predictions, receipts and exact state");
+        Reject(()=>recovered.RestoreArchive(archive),"archive cannot overwrite an existing learning branch");
+        var corrupt=System.Text.Json.Nodes.JsonNode.Parse(archive)!;
+        corrupt["State"]="{}";
+        var empty=new IndependentLearningModel(Path.Combine(root,"corrupt"));
+        string clean=empty.ExportArchive();
+        Reject(()=>empty.RestoreArchive(corrupt.ToJsonString()),"invalid final archive state is rejected");
+        Check(empty.ExportArchive()==clean,"failed archive restoration rolls back every inserted row");
+        Daily(root,z);
         Console.WriteLine("ACCEPTANCE_DATABASE=" + independentPath);
         return 0;
+    }
+
+    private static void Daily(string root,string[] z)
+    {
+        string directory=Path.Combine(root,"daily");
+        var draws=new List<DatabaseHelper.HistoryRecord>{ new() { Period="2026199",SpecialZodiac="虎",OpenTime=DateTimeOffset.UtcNow.AddHours(-1).ToString("O") } };
+        List<DatabaseHelper.PredictionRecord> Bases(long issue) => new[]{50,100,200}.Select(n=>new DatabaseHelper.PredictionRecord {
+            Issue=issue.ToString(),ModelVersion="V6.5",AnalysisPeriods=n,PredictTime=DateTimeOffset.UtcNow.ToString("O"),
+            FinalRankingJson=JsonSerializer.Serialize(z)
+        }).ToList();
+        var rows=Bases(2026200);
+        string first=IndependentLearningDaily.Run(directory,2026200,draws,rows);
+        Check(IndependentLearningDaily.Run(directory,2026200,draws,rows)==first,"daily retry reuses the frozen prediction");
+        draws.Add(new() { Period="2026200",SpecialZodiac="牛",OpenTime=DateTimeOffset.UtcNow.AddHours(1).ToString("O") });
+        Reject(()=>IndependentLearningDaily.Run(directory,2026201,draws,Bases(2026201)),"future-dated draw cannot update memory");
+        Check(new IndependentLearningModel(directory).ReadReceiptJson(2026200)==null,"rejected future draw leaves no learning receipt");
+        draws.RemoveAt(draws.Count-1);
+        draws.Add(new() { Period="2026200",SpecialZodiac="牛",OpenTime=DateTimeOffset.UtcNow.ToString("O") });
+        string second=IndependentLearningDaily.Run(directory,2026201,draws,Bases(2026201));
+        using var p=JsonDocument.Parse(second);
+        Check(p.RootElement.GetProperty("UsedMemoryVersion").GetInt64()==1,"daily adapter reveals N, learns N, predicts N+1");
+        Reject(()=>IndependentLearningDaily.Run(directory,2026200,draws,rows),"daily adapter refuses post-draw reconstruction");
+        Reject(()=>IndependentLearningDaily.Run(Path.Combine(root,"missing"),2026201,draws,Array.Empty<DatabaseHelper.PredictionRecord>()),"daily adapter rejects missing base snapshots");
+        Check(new IndependentLearningModel(directory).ReadReceiptJson(2026200)!=null,"daily feedback is auditable");
     }
 
     private static void Check(bool condition,string name) {

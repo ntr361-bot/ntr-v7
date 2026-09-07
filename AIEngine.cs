@@ -103,6 +103,8 @@ namespace 六合分析软件
             V7PredictionHistoryService.SaveAutoLearning(targetPeriod, history);
             V7PredictionHistoryService.SaveAll(targetPeriod, history);
 
+            IndependentLearningDaily.TryRunDesktop(long.Parse(targetPeriod));
+
             return results;
         }
 

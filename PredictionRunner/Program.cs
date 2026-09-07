@@ -19,6 +19,36 @@ try
         ?? Path.Combine(repositoryRoot, "site", "data", "daily-records");
     Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
 
+    if (arguments.ContainsKey("independent-daily"))
+    {
+        if(arguments.ContainsKey("dry-run")) return 0;
+        DatabaseHelper.InitializeDatabase();
+        var history=DatabaseHelper.GetHistory();
+        long latest=history.Max(h=>long.Parse(h.Period));
+        long target=ParseIssue(arguments,"issue") ?? checked(latest+1);
+        string archive=Path.Combine(repositoryRoot,"experiments",IndependentLearningModel.ModelKey,"archive.json");
+        var model=new IndependentLearningModel(dataDirectory);
+        if(File.Exists(archive))
+        {
+            string saved=File.ReadAllText(archive);
+            if(model.ExportArchive()!=saved) model.RestoreArchive(saved);
+        }
+        try
+        {
+            string prediction=IndependentLearningDaily.Run(dataDirectory,target,history,DatabaseHelper.GetPredictionHistory(int.MaxValue));
+            using var doc=JsonDocument.Parse(prediction);
+            Console.WriteLine($"[INDEPENDENT] 第{target}期旁路预测已保存，MemoryVersion={doc.RootElement.GetProperty("UsedMemoryVersion").GetInt64()}");
+        }
+        finally
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
+            string temporary=archive+"."+Guid.NewGuid().ToString("N")+".tmp";
+            try { File.WriteAllText(temporary,model.ExportArchive()); File.Move(temporary,archive,true); }
+            finally { if(File.Exists(temporary)) File.Delete(temporary); }
+        }
+        return 0;
+    }
+
     if (arguments.ContainsKey("rebuild-db"))
     {
         string historyJson = Path.Combine(repositoryRoot, "site", "data", "history.json");
@@ -129,6 +159,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
             case "--refresh-only": parsed["refresh-only"] = null; break;
             case "--require-advance": parsed["require-advance"] = null; break;
             case "--generate-all": parsed["generate-all"] = null; break;
+            case "--independent-daily": parsed["independent-daily"] = null; break;
             case "--rebuild-db": parsed["rebuild-db"] = null; break;
             case "--rebuild-only": parsed["rebuild-only"] = null; break;
             case "--export-history": parsed["export-history"] = null; break;
@@ -142,7 +173,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--independent-daily] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {
