@@ -2,8 +2,11 @@ using System.Text.Json;
 using System.Windows.Forms;
 using 六合分析软件;
 
+if (args.Contains("--independent-learning-smoke", StringComparer.OrdinalIgnoreCase))
+    return IndependentLearningTests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
-    return LearningPipelineTests.Run();
+    return IndependentLearningTests.Run();
 
 if (args.Contains("--historical-replay-smoke", StringComparer.OrdinalIgnoreCase) ||
     args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase))

@@ -40,7 +40,6 @@ public sealed class AutoLearningEngine
             FeatureSignals = new Dictionary<string, double>(feedback.FeatureSignals, StringComparer.OrdinalIgnoreCase)
         });
         memory.LearnedSamples++;
-        memory.MemoryVersion = checked(memory.MemoryVersion + 1);
         memory.LastTrainingIssue = feedback.Issue;
 
         bool top3Trigger = memory.ConsecutiveTop3Misses == 5 && !memory.Top3ThresholdFired;

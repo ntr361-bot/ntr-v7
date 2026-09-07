@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Retained draft only: superseded by the separately persisted independent learner. -->
+    <Compile Remove="OnlineLearningPipeline.cs" />
     <Compile Remove="Tests\**\*.cs" />
     <Compile Remove="PredictionRunner\**\*.cs" />
     <Compile Remove="verify-*\**\*.cs" />

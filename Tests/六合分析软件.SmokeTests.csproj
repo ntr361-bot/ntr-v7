@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Superseded legacy-mutation acceptance draft; retained on disk, never executed. -->
+    <Compile Remove="LearningPipelineTests.cs" />
     <ProjectReference Include="..\六合分析软件.csproj" />
   </ItemGroup>
   <Target Name="RemoveUnusedWebView2WpfReference" BeforeTargets="ResolveAssemblyReferences">
