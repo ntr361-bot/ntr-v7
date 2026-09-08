@@ -87,6 +87,7 @@ public static class IndependentLearningTests
         Reject(()=>empty.RestoreArchive(corrupt.ToJsonString()),"invalid final archive state is rejected");
         Check(empty.ExportArchive()==clean,"failed archive restoration rolls back every inserted row");
         Daily(root,z);
+        Historical(root,z);
         Console.WriteLine("ACCEPTANCE_DATABASE=" + independentPath);
         return 0;
     }
@@ -113,6 +114,36 @@ public static class IndependentLearningTests
         Reject(()=>IndependentLearningDaily.Run(directory,2026200,draws,rows),"daily adapter refuses post-draw reconstruction");
         Reject(()=>IndependentLearningDaily.Run(Path.Combine(root,"missing"),2026201,draws,Array.Empty<DatabaseHelper.PredictionRecord>()),"daily adapter rejects missing base snapshots");
         Check(new IndependentLearningModel(directory).ReadReceiptJson(2026200)!=null,"daily feedback is auditable");
+    }
+
+    private static void Historical(string root, string[] z)
+    {
+        string directory = Path.Combine(root, "historical");
+        DateTimeOffset opened = DateTimeOffset.UtcNow.AddHours(-2);
+        var samples = new[]
+        {
+            new HistoricalTrainingSample(2026100, 2026099, opened.AddHours(-2), opened.AddHours(-1), "鼠",
+                new Dictionary<string, string[]> { ["v65-50"] = z, ["v65-100"] = z.Reverse().ToArray(), ["v65-all"] = z }, "测试冻结快照", "fixture-1"),
+            new HistoricalTrainingSample(2026101, 2026100, opened.AddMinutes(-30), opened, "牛",
+                new Dictionary<string, string[]> { ["v65-50"] = z.Reverse().ToArray(), ["v65-100"] = z, ["v65-all"] = z.Reverse().ToArray() }, "测试冻结快照", "fixture-2")
+        };
+        HistoricalTrainingReport report = IndependentLearningHistoricalTraining.Train(directory, samples);
+        Check(report.Entries.Select(entry => entry.Issue).SequenceEqual(new long[] { 2026100, 2026101 }),
+            "history trainer predicts then learns every contiguous frozen sample");
+        Check(new IndependentLearningModel(IndependentLearningHistoricalTraining.Folder(directory)).ReadReceiptJson(2026101) is not null,
+            "history trainer persists per-issue learning receipts");
+        Check(IndependentLearningHistoricalTraining.LoadReport(directory)?.Entries.Length == 2, "history report persists independently");
+        Reject(() => IndependentLearningHistoricalTraining.Train(directory, samples), "existing historical run cannot be overwritten");
+        Reject(() => IndependentLearningHistoricalTraining.Train(Path.Combine(root,"bad-history"), new[]{samples[0], samples[1] with { HistoryCutoffIssue = 2026101 }}), "history cutoff cannot include target");
+        Reject(() => IndependentLearningHistoricalTraining.Train(Path.Combine(root,"future-history"), new[]{samples[0] with { SourceGeneratedAt = opened }}), "post-draw source rejected");
+        string archived = File.ReadAllText(Path.Combine(IndependentLearningHistoricalTraining.Folder(directory),"archive.json"));
+        var restored = new IndependentLearningModel(Path.Combine(root,"history-restored"));
+        restored.RestoreArchive(archived);
+        Check(restored.ExportArchive()==archived,"historical archive reproduces every prediction and weight update");
+        using var view = new IndependentLearningHistoryForm(directory);
+        var grid = view.Controls.OfType<System.Windows.Forms.DataGridView>().Single();
+        Check(grid.ReadOnly && grid.Rows.Count==2,"history viewer displays both learned periods read-only");
+        Check(!File.Exists(Path.Combine(directory,"history.db")),"historical training and viewing never create production database");
     }
 
     private static void Check(bool condition,string name) {

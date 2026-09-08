@@ -19,6 +19,16 @@ try
         ?? Path.Combine(repositoryRoot, "site", "data", "daily-records");
     Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
 
+    if (arguments.TryGetValue("independent-history-train", out string? manifest))
+    {
+        var samples = JsonSerializer.Deserialize<HistoricalTrainingSample[]>(File.ReadAllText(manifest!))
+            ?? throw new InvalidDataException("历史实验清单为空");
+        var report = IndependentLearningHistoricalTraining.Train(dataDirectory, samples);
+        Console.WriteLine($"HistoricalExperiment: {report.Entries.Length}期，Top3={report.Entries.Count(e=>e.Top3Hit)}，Top6={report.Entries.Count(e=>e.Top6Hit)}");
+        Console.WriteLine(IndependentLearningHistoricalTraining.Folder(dataDirectory));
+        return 0;
+    }
+
     if (arguments.ContainsKey("independent-daily"))
     {
         if(arguments.ContainsKey("dry-run")) return 0;
@@ -148,6 +158,10 @@ static Dictionary<string, string?> ParseArguments(string[] values)
             case "--issue":
                 if (++i >= values.Length) throw new ArgumentException("--issue 缺少期号");
                 parsed["issue"] = values[i];
+                break;
+            case "--independent-history-train":
+                if (++i >= values.Length) throw new ArgumentException("需要历史实验清单路径");
+                parsed["independent-history-train"] = values[i];
                 break;
             case "--start-issue":
                 if (++i >= values.Length) throw new ArgumentException("--start-issue 缺少期号");
