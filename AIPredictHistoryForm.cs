@@ -411,7 +411,7 @@ namespace 六合分析软件
             var records = newModelOnly
                 ? V7PredictionHistoryService.GetHistory(500)
                 : DatabaseHelper.GetPredictionHistory(int.MaxValue)
-                    .Where(r => V7PredictionHistoryService.IsV7DisplayedModel(r.ModelVersion, r.AnalysisPeriods) ||
+                    .Where(r => (r.ModelVersion == "V7" && r.AnalysisPeriods == V7PredictionHistoryService.LongTermHistoryKey) ||
                                 V7PredictionHistoryService.IsV65DisplayedModel(r.ModelVersion, r.AnalysisPeriods))
                     .Take(100)
                     .ToList();

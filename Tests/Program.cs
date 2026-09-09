@@ -2,6 +2,9 @@ using System.Text.Json;
 using System.Windows.Forms;
 using 六合分析软件;
 
+if (args.Contains("--macro-contract-smoke", StringComparer.OrdinalIgnoreCase))
+    return MacroReasoningContractTests.Run();
+
 if (args.Contains("--independent-learning-smoke", StringComparer.OrdinalIgnoreCase))
     return IndependentLearningTests.Run();
 
@@ -830,7 +833,7 @@ void ModelRedundancyReportIsDeterministicAndLeakageSafe()
 void V65HistoryShowsOnlyDisplayedModels()
 {
     Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 100), "100期应显示");
-    Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5 AutoLearning", 7250), "自动学习不应混入V6.5日常展示档");
+    Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5 AutoLearning", 7250), "V6.5自动学习应显示在AI预测历史");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 50), "50期不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 0), "全部历史不应显示");
     Assert(!V7PredictionHistoryService.IsV65DisplayedModel("V6.3", 100), "旧模型不应显示");
@@ -1631,14 +1634,14 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
         .Select(row => Convert.ToString(row.Cells["ModelVersion"].Value) ?? "")
         .ToArray();
     Assert(versions.Contains("V6.5"), "legacy prediction history lost its V6.5 row");
-    Assert(!versions.Contains("V6.5 AutoLearning"), "AI prediction history should hide the retired V6.5 automatic-learning display row");
-    Assert(versions.Contains("V7 AutoLearning"), "AI prediction history should display the V7 automatic-learning row");
+    Assert(versions.Contains("V6.5 AutoLearning"), "AI prediction history should display the V6.5 automatic-learning row");
+    Assert(!versions.Contains("V7 AutoLearning"), "AI prediction history should hide the background V7 automatic-learning row");
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
     Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
-            .All(version => version is "V7" or "V7 AutoLearning"),
-        "AI prediction history should display only integrated V7 and V7 automatic-learning rows");
+            .All(version => version is "V7"),
+        "AI prediction history should display only the integrated V7 row");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
         .ToArray();
@@ -2620,13 +2623,24 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
 
     string memoryKey = ExperimentModels.MemoryKey("conflict-test");
     DatabaseHelper.SaveModelMemoryJson(memoryKey, "{\"LearnedSamples\":1}");
+    var cloudOnly = new DatabaseHelper.PredictionRecord
+    {
+        Issue = "999904", AnalysisPeriods = 100, ModelVersion = "V6.5",
+        PredictZodiac = "马,羊,猴", Top6Zodiac = "马,羊,猴,鸡,狗,猪",
+        HitResult = "未开奖", Top6HitResult = "未开奖"
+    };
     var memoryConflict = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, "test-code",
-        Array.Empty<DatabaseHelper.PredictionRecord>(),
+        new[] { cloudOnly },
         new Dictionary<string, string> { [memoryKey] = "{\"LearnedSamples\":2}" },
         "", "2026-08-15T00:00:00Z");
     memoryConflict = memoryConflict with { StateHash = SymmetricRuntimeStateSync.Hash(memoryConflict) };
-    AssertThrows<InvalidDataException>(() => SymmetricRuntimeStateSync.MergeIntoLocal(memoryConflict),
-        "模型记忆分歧必须拒绝，防止两套学习状态互相覆盖");
+    Assert(SymmetricRuntimeStateSync.MergeIntoLocal(memoryConflict) == 1,
+        "模型记忆冲突不应阻断缺失预测记录导入");
+    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue)
+        .Any(row => row.Issue == "999904" && row.AnalysisPeriods == 100 && row.ModelVersion == "V6.5"),
+        "记忆冲突时云端缺失预测记录没有导入");
+    Assert(DatabaseHelper.LoadModelMemoryJson(memoryKey) == "{\"LearnedSamples\":1}",
+        "冲突时必须保留本机模型记忆");
 }
 
 void V7HistoryStoresCompleteRanking()

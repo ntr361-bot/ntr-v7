@@ -84,13 +84,6 @@ public static class SymmetricRuntimeStateSync
             !string.Equals(Hash(incoming), incoming.StateHash, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("云端模型状态版本或哈希无效");
         DatabaseHelper.InitializeDatabase();
-        // 模型记忆是真正会“分叉”的学习状态：本地与云端不一致必须拒绝，防止两套学习互相覆盖。
-        foreach ((string key, string json) in incoming.ModelMemory)
-        {
-            string? local = DatabaseHelper.LoadModelMemoryJson(key);
-            if (!string.IsNullOrWhiteSpace(local) && !string.Equals(local, json, StringComparison.Ordinal))
-                throw new InvalidDataException($"模型记忆冲突：{key}");
-        }
         int merged = 0;
         foreach (DatabaseHelper.PredictionRecord row in incoming.Predictions)
         {
@@ -108,7 +101,16 @@ public static class SymmetricRuntimeStateSync
         foreach ((string key, string json) in incoming.ModelMemory)
         {
             string? local = DatabaseHelper.LoadModelMemoryJson(key);
-            if (string.IsNullOrWhiteSpace(local)) DatabaseHelper.SaveModelMemoryJson(key, json);
+            if (string.IsNullOrWhiteSpace(local))
+            {
+                DatabaseHelper.SaveModelMemoryJson(key, json);
+            }
+            else if (!string.Equals(local, json, StringComparison.Ordinal))
+            {
+                // 本机学习状态已有分叉时，预测快照仍可安全补齐；仅保留本机记忆，
+                // 绝不能用云端状态覆盖它或令整批预测记录同步失败。
+                AppLogger.Info("V7同构状态同步", $"模型记忆冲突，保留本机状态：{key}");
+            }
         }
         return merged;
     }
