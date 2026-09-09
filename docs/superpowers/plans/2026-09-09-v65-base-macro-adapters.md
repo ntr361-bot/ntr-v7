@@ -26,8 +26,8 @@
 - Consumes: existing `V65RuleScoringEngine`, `ImmutableExpertSnapshotStore`.
 - Produces: executable `--v65-base-macro-adapter-smoke` acceptance test.
 
-- [ ] Add assertions for exact formal ranking parity, FullRanking12, determinism, temporal rejection, sealed hash, immutable append, conflicting overwrite rejection, causal reconstruction, catalog append-only status, and unchanged PredictionHistory.
-- [ ] Run the focused test and confirm it fails because the new adapter/service types do not exist.
+- [x] Add assertions for exact formal ranking parity, FullRanking12, determinism, temporal rejection, sealed hash, immutable append, conflicting overwrite rejection, causal reconstruction, catalog append-only status, and unchanged PredictionHistory.
+- [x] Run the focused test and confirm it fails because the new adapter/service types do not exist.
 
 ### Task 2: Implement the pure V65 base adapter
 
@@ -38,9 +38,9 @@
 - Consumes: `Build(history, expertId)` and existing fixed weight definitions.
 - Produces: `V65BaseMacroRanking` with exactly 12 ranked zodiac items.
 
-- [ ] Add immutable definitions for the 50, 100, and all-history experts with explicit revision and algorithm versions.
-- [ ] Delegate scoring to the existing explicit-history overload and validate the complete ranking.
-- [ ] Run the focused test and retain failures that specifically require snapshot persistence.
+- [x] Add immutable definitions for the 50, 100, and all-history experts with explicit revision and algorithm versions.
+- [x] Delegate scoring to the existing explicit-history overload and validate the complete ranking.
+- [x] Run the focused test and retain failures that specifically require snapshot persistence.
 
 ### Task 3: Implement immutable live and causal-reconstruction snapshots
 
@@ -51,9 +51,9 @@
 - Consumes: caller prefix, expert ID, target/cutoff issues, timestamps, and code version.
 - Produces: P6-sealed `ExpertSnapshot` via `FreezeAndAppend`.
 
-- [ ] Validate every input period, strict cutoff ordering, exact cutoff coverage, and reconstruction provenance.
-- [ ] Compute a deterministic history-prefix hash and persist live/reconstructed snapshots through the P6 store.
-- [ ] Run the focused test to green.
+- [x] Validate every input period, strict cutoff ordering, exact cutoff coverage, and reconstruction provenance.
+- [x] Compute a deterministic history-prefix hash and persist live/reconstructed snapshots through the P6 store.
+- [x] Run the focused test to green.
 
 ### Task 4: Append audited expert revisions
 
@@ -64,8 +64,8 @@
 - Consumes: static definitions from `V65BaseMacroExpertAdapter`.
 - Produces: three append-only Passed/Passed registrations that remain disabled and ineligible.
 
-- [ ] Append the new revisions without changing dependency edges bound to old production revisions.
-- [ ] Run P5, P6, Integrated-V7, and V65-focused tests.
+- [x] Append the new revisions without changing dependency edges bound to old production revisions.
+- [x] Run P5, P6, Integrated-V7, and V65-focused tests.
 
 ### Task 5: Verify and report admission
 
@@ -76,6 +76,6 @@
 - Consumes: fresh test/build evidence.
 - Produces: per-expert PASS/FAIL report and isolation statement.
 
-- [ ] Run the full smoke-test suite and Release build.
-- [ ] Inspect the diff for forbidden production changes and unrelated user files.
-- [ ] Record exact revisions, audit status, evidence, and scope exclusions in the report.
+- [x] Run the full smoke-test suite and Release build.
+- [x] Inspect the diff for forbidden production changes and unrelated user files.
+- [x] Record exact revisions, audit status, evidence, and scope exclusions in the report.

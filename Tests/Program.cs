@@ -35,6 +35,9 @@ if (args.Contains("--p15-uncertainty-smoke", StringComparer.OrdinalIgnoreCase))
 if (args.Contains("--integrated-v7-macro-adapter-smoke", StringComparer.OrdinalIgnoreCase))
     return IntegratedV7MacroExpertAdapterTests.Run();
 
+if (args.Contains("--v65-base-macro-adapter-smoke", StringComparer.OrdinalIgnoreCase))
+    return V65BaseMacroExpertAdapterTests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
     return RejectLegacyLearningPipelineAlias();
 
