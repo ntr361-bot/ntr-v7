@@ -28,10 +28,10 @@
 - Consumes: `FeatureEngine.BuildFeatures(IReadOnlyList<HistoryRecord>, int)`
 - Produces: `IntegratedV7MacroExpertAdapter.Build(history)` and immutable 12-item result.
 
-- [ ] Add tests with literal fixtures covering zero, one and two hard exclusions, completeness, stable ties, determinism and formal Top6 invariance.
-- [ ] Run `--integrated-v7-macro-adapter-smoke` and confirm it fails because the adapter does not exist.
-- [ ] Implement only the score calculation, partitioned ordering and validation required by the tests.
-- [ ] Re-run the focused test and confirm all adapter cases pass.
+- [x] Add tests with literal fixtures covering zero, one and two hard exclusions, completeness, stable ties, determinism and formal Top6 invariance.
+- [x] Run `--integrated-v7-macro-adapter-smoke` and confirm it fails because the adapter does not exist.
+- [x] Implement only the score calculation, partitioned ordering and validation required by the tests.
+- [x] Re-run the focused test and confirm all adapter cases pass.
 
 ### Task 2: P6 snapshot integration
 
@@ -43,10 +43,10 @@
 - Consumes: adapter result, `VersionedExpertRegistry`, `ImmutableExpertSnapshotStore.FreezeAndAppend`.
 - Produces: sealed append-only `ExpertSnapshot` for one target issue and revision.
 
-- [ ] Add failing integration tests for valid freeze, invalid cutoff, matching revision/version, immutable duplicate behavior and unchanged PredictionHistory count/content.
-- [ ] Run the focused test and confirm failure is caused by the missing snapshot service.
-- [ ] Implement the minimal isolated snapshot service.
-- [ ] Re-run focused tests and P5/P6 smoke tests.
+- [x] Add failing integration tests for valid freeze, invalid cutoff, matching revision/version, immutable duplicate behavior and unchanged PredictionHistory count/content.
+- [x] Run the focused test and confirm failure is caused by the missing snapshot service.
+- [x] Implement the minimal isolated snapshot service.
+- [x] Re-run focused tests and P5/P6 smoke tests.
 
 ### Task 3: Admission audit and revision
 
@@ -59,8 +59,8 @@
 - Consumes: verified adapter/snapshot evidence.
 - Produces: a new append-only Integrated-V7 revision; old `Integrated-V7@f055-o045-v1` remains unchanged.
 
-- [ ] Add a failing test asserting both old and new revisions coexist and the new revision remains disabled/ineligible.
-- [ ] Append the new revision registration and its source evidence without modifying the old revision.
-- [ ] Run focused tests, P5/P6 tests, full smoke suite and Release build.
-- [ ] Record exact LeakageAudit and SnapshotIntegrity evidence in the audit report; do not claim Passed if any check fails.
-- [ ] Inspect git diff and verify no production V7/history/workflow file changed.
+- [x] Add a failing test asserting both old and new revisions coexist and the new revision remains disabled/ineligible.
+- [x] Append the new revision registration and its source evidence without modifying the old revision.
+- [x] Run focused tests, P5/P6 tests, full smoke suite and Release build.
+- [x] Record exact LeakageAudit and SnapshotIntegrity evidence in the audit report; do not claim Passed if any check fails.
+- [x] Inspect git diff and verify no production V7/history/workflow file changed.

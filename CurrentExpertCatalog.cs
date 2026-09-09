@@ -13,11 +13,15 @@ public static class CurrentExpertCatalog
             R("V65-100","V65-100@v65-rule-current","V6.5-100","V65",ExpertModelType.Base,"unknown",codeVersion,true,false,false,null,false,false,false,[],["history.db","V65RuleScoringEngine"],"V65ExperimentPipeline.cs; AIEngine.cs"),
             R("V65-All","V65-All@v65-rule-current","V6.5-全部历史","V65",ExpertModelType.Base,"unknown",codeVersion,true,false,false,null,false,false,false,[],["history.db","V65RuleScoringEngine"],"V65ExperimentPipeline.cs; AIEngine.cs"),
             R("Integrated-V7","Integrated-V7@f055-o045-v1","整合V7","V7",ExpertModelType.Composite,"frequency-0.55-omission-0.45",codeVersion,true,false,false,null,false,false,false,[],["history.db","FeatureEngine"],"V7PredictionEngines.cs:V7Engine.Predict/EngineScoring.Build"),
+            R("Integrated-V7",IntegratedV7MacroExpertSnapshotService.ExpertRevisionId,"整合V7 Macro FullRanking12","V7",ExpertModelType.Composite,IntegratedV7MacroExpertSnapshotService.AlgorithmVersion,codeVersion,true,false,false,null,false,false,false,[],IntegratedV7MacroExpertSnapshotService.InputDependencyIds.ToArray(),"IntegratedV7MacroExpertAdapter.cs; IntegratedV7MacroExpertSnapshotService.cs") with { LeakageAuditStatus=ExpertAuditStatus.Passed,SnapshotIntegrityStatus=ExpertAuditStatus.Passed },
             R("V65-Auto","V65-Auto@meta-current","V6.5自动学习","V65-Meta",ExpertModelType.Meta,"unknown",codeVersion,false,true,false,null,true,false,true,["V65-50","V65-100","V65-All","Integrated-V7"],["PredictionHistory","ModelMemory:v65-auto"],"V7PredictionHistoryService.cs:SaveAutoLearning; AutoLearningSnapshotBuilder.cs:BuildFromBasePredictions"),
             R("V7-Auto","V7-Auto@historical-meta-current","V7自动学习","V7-Meta",ExpertModelType.Meta,"unknown",codeVersion,false,true,false,null,false,false,false,[],["history.db","FeatureEngine","MarketStateEngine","ModelMemory:intelligent-history"],"V7PredictionHistoryService.cs:SaveIntelligentAutoLearning; AutoLearningEvaluation.cs:HistoricalMetaSnapshotBuilder")
         };
         foreach(var r in registrations)registry.AppendRevision(r with{RegisteredAt=registeredAt,EffectiveFrom=registeredAt});
-        var byId=registrations.ToDictionary(x=>x.ExpertId,x=>x.ExpertRevisionId,StringComparer.Ordinal);
+        // Existing production dependencies remain bound to the original production revision.
+        // The Macro FullRanking12 revision is append-only and has no production consumers.
+        var byId=registrations.GroupBy(x=>x.ExpertId,StringComparer.Ordinal)
+            .ToDictionary(x=>x.Key,x=>x.First().ExpertRevisionId,StringComparer.Ordinal);
         void Consume(string source,string typeEvidence)=>registry.AppendDependency(E("V65-Auto",source,MetaDependencyType.ConsumesExpertRanking,typeEvidence));
         Consume("V65-50","AutoLearningSnapshotBuilder.BuildFromBasePredictions读取50期完整排名");
         Consume("V65-100","AutoLearningSnapshotBuilder.BuildFromBasePredictions读取100期完整排名");
