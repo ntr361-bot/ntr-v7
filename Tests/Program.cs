@@ -11,6 +11,9 @@ if (args.Contains("--independent-learning-smoke", StringComparer.OrdinalIgnoreCa
 if (args.Contains("--p4-acceptance", StringComparer.OrdinalIgnoreCase))
     return P4AcceptanceTests.Run();
 
+if (args.Contains("--p5-registry-smoke", StringComparer.OrdinalIgnoreCase))
+    return ExpertRegistryTests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
     return RejectLegacyLearningPipelineAlias();
 
