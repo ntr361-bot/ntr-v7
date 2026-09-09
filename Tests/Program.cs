@@ -29,6 +29,9 @@ if (args.Contains("--p9-p13-smoke", StringComparer.OrdinalIgnoreCase))
 if (args.Contains("--p14-gating-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroGatingP14Tests.Run();
 
+if (args.Contains("--p15-uncertainty-smoke", StringComparer.OrdinalIgnoreCase))
+    return MacroUncertaintyP15Tests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
     return RejectLegacyLearningPipelineAlias();
 
