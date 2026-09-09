@@ -17,6 +17,9 @@ if (args.Contains("--p5-registry-smoke", StringComparer.OrdinalIgnoreCase))
 if (args.Contains("--p7-observation-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroObservationEngineTests.Run();
 
+if (args.Contains("--p6-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
+    return ImmutableExpertSnapshotTests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
     return RejectLegacyLearningPipelineAlias();
 

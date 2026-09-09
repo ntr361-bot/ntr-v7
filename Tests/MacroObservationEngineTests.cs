@@ -76,18 +76,21 @@ public static class MacroObservationEngineTests
             Result(102,"牛",new DateTimeOffset(2026,1,3,0,0,0,TimeSpan.Zero)),
             Result(103,"虎",new DateTimeOffset(2026,1,4,0,0,0,TimeSpan.Zero)),
             Result(104,"兔",new DateTimeOffset(2026,1,5,0,0,0,TimeSpan.Zero)));
+        string registryVersion=registry.ReadAsOf(asOf).Version;
         var snapshots=ImmutableArray.CreateBuilder<ExpertSnapshot>();
         foreach(long issue in new long[]{101,102,103,104,105})
         {
             DateTimeOffset available=new(2026,1,(int)(issue-100),12,0,0,TimeSpan.Zero);
-            snapshots.Add(Snapshot("A","A@r1",issue,issue-1,Zodiac,available));
-            snapshots.Add(Snapshot("B","B@r1",issue,issue-1,Zodiac.Reverse().ToArray(),available));
+            snapshots.Add(ExpertSnapshotIntegrity.Seal(Snapshot("A","A@r1",issue,issue-1,Zodiac,available) with{RegistryVersion=registryVersion}));
+            snapshots.Add(ExpertSnapshotIntegrity.Seal(Snapshot("B","B@r1",issue,issue-1,Zodiac.Reverse().ToArray(),available) with{RegistryVersion=registryVersion}));
         }
+        ExpertSnapshot currentA=snapshots.Single(x=>x.ExpertId=="A"&&x.TargetIssue==105);
+        ExpertSnapshot currentB=snapshots.Single(x=>x.ExpertId=="B"&&x.TargetIssue==105);
         var pool=new ExpertPoolSnapshot(105,asOf,registry.ReadAsOf(asOf).Version,
             ImmutableArray.Create("A","B"),ImmutableArray.Create("A","B"),ImmutableArray.Create("A","B"),
             ImmutableArray<string>.Empty,ImmutableArray<string>.Empty,
             ImmutableDictionary<string,ImmutableArray<string>>.Empty,
-            ImmutableDictionary<string,string>.Empty,HistoricalEvaluationMode.HistoricalAvailability,
+            ImmutableDictionary<string,string>.Empty.Add("A",currentA.PayloadHash).Add("B",currentB.PayloadHash),HistoricalEvaluationMode.HistoricalAvailability,
             ImmutableDictionary<string,string>.Empty.Add("A","A@r1").Add("B","B@r1"));
         var memory=new ReasoningMemorySnapshot(0,0,registered,ImmutableDictionary<string,ReliabilityStats>.Empty,
             ImmutableDictionary<string,ReliabilityStats>.Empty,ImmutableDictionary<string,ReliabilityStats>.Empty,

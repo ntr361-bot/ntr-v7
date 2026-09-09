@@ -25,7 +25,11 @@ public sealed class MacroObservationEngine : IMacroObservationEngine
     public MacroObservationSnapshot Observe(PrefixContext prefix)
     {
         ValidatePrefix(prefix);
-        ExpertRegistrySnapshot registrySnapshot=registry.ReadAsOf(prefix.AsOf);
+        DateTimeOffset registryAsOf=prefix.ExpertPool.EvaluationMode==HistoricalEvaluationMode.CausalReconstruction
+            ?prefix.ExpertSnapshots.Select(x=>x.Reconstruction?.ReconstructedAt??x.AvailableAt).DefaultIfEmpty(prefix.AsOf).Max()
+            :prefix.AsOf;
+        ExpertRegistrySnapshot registrySnapshot=registry.ReadAsOf(registryAsOf);
+        if(registrySnapshot.Version!=prefix.ExpertPool.RegistryVersion)throw new InvalidDataException("ExpertPool注册表版本与观察时点不一致");
         var registrations=ResolveRegistrations(prefix,registrySnapshot);
         var included=prefix.ExpertPool.IncludedExpertIds.Distinct(StringComparer.Ordinal).OrderBy(x=>x,StringComparer.Ordinal).ToArray();
         var snapshots=prefix.ExpertSnapshots
@@ -55,17 +59,37 @@ public sealed class MacroObservationEngine : IMacroObservationEngine
         foreach(ExpertSnapshot snapshot in prefix.ExpertSnapshots)
         {
             if(snapshot.TargetIssue>prefix.TargetIssue) throw new InvalidDataException("未来目标快照不得进入Observation");
-            if(snapshot.GeneratedAt>prefix.AsOf||snapshot.AvailableAt>prefix.AsOf) throw new InvalidDataException("快照在AsOf以后才可用");
             if(snapshot.HistoryCutoffIssue>=snapshot.TargetIssue||snapshot.HistoryCutoffIssue>prefix.CutoffIssue) throw new InvalidDataException("快照HistoryCutoff不是合法前缀");
             ValidateRanking(snapshot.Ranking);
+            if(!ExpertSnapshotIntegrity.Verify(snapshot))throw new InvalidDataException("专家快照PayloadHash校验失败");
             ClosedResult? result=prefix.PastResults.SingleOrDefault(x=>x.Issue==snapshot.TargetIssue);
-            if(result is not null&&(snapshot.GeneratedAt>result.OpenedAt||snapshot.AvailableAt>result.OpenedAt)) throw new InvalidDataException("历史专家快照不是开奖前冻结");
+            if(prefix.ExpertPool.EvaluationMode==HistoricalEvaluationMode.HistoricalAvailability)
+            {
+                if(snapshot.Origin!=SnapshotOrigin.LiveFrozen||snapshot.Reconstruction is not null)throw new InvalidDataException("HistoricalAvailability只能读取LiveFrozen快照");
+                if(snapshot.GeneratedAt>prefix.AsOf||snapshot.AvailableAt>prefix.AsOf) throw new InvalidDataException("快照在AsOf以后才可用");
+                if(result is not null&&(snapshot.GeneratedAt>result.OpenedAt||snapshot.AvailableAt>result.OpenedAt)) throw new InvalidDataException("历史专家快照不是开奖前冻结");
+            }
+            else
+            {
+                ReconstructionProvenance reconstruction=snapshot.Reconstruction??throw new InvalidDataException("CausalReconstruction缺少重建证明");
+                if(snapshot.Origin!=SnapshotOrigin.CausalReconstruction||!reconstruction.Reconstructed||!reconstruction.MemoryRebuiltFromScratch
+                    ||reconstruction.HistoryCutoff!=snapshot.HistoryCutoffIssue||reconstruction.SimulatedAsOf>prefix.AsOf
+                    ||string.IsNullOrWhiteSpace(reconstruction.TrainingPrefixHash))throw new InvalidDataException("CausalReconstruction重建证明无效");
+                if(result is not null&&reconstruction.SimulatedAsOf>result.OpenedAt)throw new InvalidDataException("重建模拟时点晚于历史开奖");
+            }
         }
         string[] included=prefix.ExpertPool.IncludedExpertIds.ToArray();
         if(included.Distinct(StringComparer.Ordinal).Count()!=included.Length) throw new InvalidDataException("IncludedExperts重复");
         foreach(string expertId in included)
+        {
             if(!prefix.ExpertPool.ExpertRevisionIds.ContainsKey(expertId)||string.IsNullOrWhiteSpace(prefix.ExpertPool.ExpertRevisionIds[expertId]))
                 throw new InvalidDataException("Included专家缺少冻结Revision");
+            if(!prefix.ExpertPool.IncludedSnapshotHashes.TryGetValue(expertId,out string? expectedHash))throw new InvalidDataException("Included专家缺少冻结快照哈希");
+            string revision=prefix.ExpertPool.ExpertRevisionIds[expertId];
+            ExpertSnapshot[] current=prefix.ExpertSnapshots.Where(x=>x.ExpertId==expertId&&x.ExpertRevisionId==revision&&x.TargetIssue==prefix.TargetIssue).ToArray();
+            if(current.Length!=1)throw new InvalidDataException("Included专家缺少唯一同目标期快照");
+            if(current[0].PayloadHash!=expectedHash)throw new InvalidDataException("ExpertPool与实际专家快照哈希不一致");
+        }
     }
 
     private static void ValidateRanking(ImmutableArray<string> ranking)
