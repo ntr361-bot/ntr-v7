@@ -40,7 +40,9 @@ Counter-evidence IDs bind the hypothesis, source facts, observation hash and def
 
 `MacroReasoningCritic` implements the ten existing checks with fixed policy `p11-critic-v1`: prefix safety, hypothesis/null-alternative presence, support search completion, counter-search completion, weight validity, sample sufficiency, short-window chasing, opposing/long-window evidence, action magnitude, and random-fluctuation consideration.
 
-Hard invalidity, leakage, incomplete counter search, malformed weights, missing hypothesis candidates or action magnitude above 0.05 returns `Reject` with maximum magnitude 0. A valid proposal returns `Caution` with maximum magnitude 0.01 when evidence samples are below 20, evidence is only short-window, counter strength is at least support strength, a long-window counter exists, or proposed magnitude exceeds 0.01. Otherwise it returns `Pass` with maximum magnitude 0.05.
+Hard invalidity, leakage, incomplete counter search, malformed weights, missing hypothesis candidates or action magnitude above 0.05 returns `Reject` with maximum magnitude 0. A valid proposal returns `Caution` with maximum magnitude 0.01 when evidence samples are below 20, evidence is only short-window, counter strength is at least support strength, a long-window counter exists, or proposed magnitude exceeds 0.01.
+
+The frozen P11 interface does not yet carry P14's ranking-impact preview or a validated similar-environment statistic. P11 therefore records `RANK_IMPACT_PREVIEW_UNAVAILABLE` and `ENVIRONMENT_SIMILARITY_UNAVAILABLE` and cannot honestly emit `Pass` before those inputs exist. The `Pass` branch remains implemented for later compatible input expansion, but current P9→P13 execution is at most `Caution`. This is an explicit safety boundary, not a failed check disguised as success.
 
 The critic does not change weights.
 
@@ -65,4 +67,3 @@ For HOLD and REJECT, action magnitude is zero. Proposed weights are preserved fo
 ## Acceptance
 
 Tests must cover support and missing facts, active counter search, no future results, critic veto/caution/pass, confidence caps, HOLD and REJECT invariants, scaled APPLY, deterministic results, P7→P13 integration, and unchanged formal V7 Top6. Unified acceptance runs P5-P13 focused suites, Macro contracts, complete smoke regression and Release build.
-

@@ -21,44 +21,43 @@
 
 **Files:** Create `MacroEvidenceEngine.cs`, create `Tests/MacroReasoningP9P13Tests.cs`, modify `Tests/Program.cs`.
 
-- [ ] Write failing P9 tests for declared facts, thresholds, missing inputs, deterministic evidence IDs and leakage rejection.
-- [ ] Run `--p9-p13-smoke` and confirm the engine is absent.
-- [ ] Implement `MacroEvidenceEngine` under `p9-evidence-v1`.
-- [ ] Re-run the P9 tests.
+- [x] Write failing P9 tests for declared facts, thresholds, missing inputs, deterministic evidence IDs and leakage rejection.
+- [x] Run `--p9-p13-smoke` and confirm the engine is absent.
+- [x] Implement `MacroEvidenceEngine` under `p9-evidence-v1`.
+- [x] Re-run the P9 tests.
 
 ### Task 2: P10 active counter-evidence
 
 **Files:** Create `MacroCounterEvidenceEngine.cs`, modify `Tests/MacroReasoningP9P13Tests.cs`.
 
-- [ ] Write failing P10 tests for opposite facts, long-window non-confirmation, null-hypothesis challenge, missing inputs and incomplete-support rejection.
-- [ ] Run and confirm the new tests fail for the absent engine.
-- [ ] Implement `MacroCounterEvidenceEngine` under `p10-counter-v1`.
-- [ ] Re-run P9-P10 tests.
+- [x] Write failing P10 tests for opposite facts, long-window non-confirmation, null-hypothesis challenge, missing inputs and incomplete-support rejection.
+- [x] Run and confirm the new tests fail for the absent engine.
+- [x] Implement `MacroCounterEvidenceEngine` under `p10-counter-v1`.
+- [x] Re-run P9-P10 tests.
 
 ### Task 3: P11 independent critic
 
 **Files:** Create `MacroReasoningCritic.cs`, modify `Tests/MacroReasoningP9P13Tests.cs`.
 
-- [ ] Write failing tests for leakage, malformed weights, incomplete counter search, sample/short-window caution, action caps and clean pass.
-- [ ] Run and confirm failure for the absent critic.
-- [ ] Implement the ten fixed checks without changing weights.
-- [ ] Re-run P9-P11 tests.
+- [x] Write failing tests for leakage, malformed weights, incomplete counter search, sample/short-window caution, action caps and clean pass.
+- [x] Run and confirm failure for the absent critic.
+- [x] Implement the ten fixed checks without changing weights.
+- [x] Re-run P9-P11 tests.
 
 ### Task 4: P12 confidence score
 
 **Files:** Create `MacroConfidenceEngine.cs`, modify `Tests/MacroReasoningP9P13Tests.cs`.
 
-- [ ] Write failing tests for bounded components, missing-component handling, incomplete-search zero, critic caps and calibration cap.
-- [ ] Run and confirm failure for the absent engine.
-- [ ] Implement `p12-confidence-score-v1`.
-- [ ] Re-run P9-P12 tests.
+- [x] Write failing tests for bounded components, missing-component handling, incomplete-search zero, critic caps and calibration cap.
+- [x] Run and confirm failure for the absent engine.
+- [x] Implement `p12-confidence-score-v1`.
+- [x] Re-run P9-P12 tests.
 
 ### Task 5: P13 decision and unified acceptance
 
 **Files:** Create `MacroDecisionEngine.cs`, modify `Tests/MacroReasoningP9P13Tests.cs`, create `docs/P9-P13-Macro-Reasoning-统一验收报告.md`.
 
-- [ ] Write failing tests for no-hypothesis HOLD, incomplete counter HOLD, critic REJECT veto, low-confidence HOLD, HOLD invariants, CAUTION scaling and PASS apply.
-- [ ] Run and confirm failure for the absent engine.
-- [ ] Implement `p13-decision-v1` and P7→P13 integration test.
-- [ ] Run unified focused suites, full regression and Release build; document and commit, then stop before P14.
-
+- [x] Write failing tests for no-hypothesis HOLD, incomplete counter HOLD, critic REJECT veto, low-confidence HOLD, HOLD invariants, CAUTION scaling and PASS apply.
+- [x] Run and confirm failure for the absent engine.
+- [x] Implement `p13-decision-v1` and P7→P13 integration test.
+- [x] Run unified focused suites, full regression and Release build; document P9-P13 acceptance.

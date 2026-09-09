@@ -3,7 +3,8 @@ using 六合分析软件.MacroReasoning;
 
 public static class MacroReasoningContractTests
 {
-    // Executable contract checks only. Behavioral acceptance cases below remain unimplemented.
+    // Executable contract checks. P9-P13 behavior is covered by MacroReasoningP9P13Tests;
+    // the remaining roadmap cases below belong to later stages.
     public static int Run()
     {
         if(Enum.GetValues<HypothesisType>().Length!=7 ||
@@ -51,23 +52,18 @@ public static class MacroReasoningContractTests
             typeof(MarginalContributionStats).GetProperty("ControlEnsembleId") is null ||
             typeof(MarginalContributionStats).GetProperty("CandidateEnsembleId") is null)
             throw new Exception("Static search and contextual marginal comparison contracts required");
-        Console.WriteLine("PASS 13 contract checks; behavior skeletons remain PENDING; no COUNTER transform or statistics executed.");
+        Console.WriteLine("PASS 13 contract checks; P9-P13 have a separate executable acceptance suite; no COUNTER transform or statistics executed.");
         return 0;
     }
 
     public static readonly (string Name, string Stage, string Expected)[] PendingAcceptance =
     {
-        ("TEST01_NoHypothesisNoAction", "P13", "No hypothesis => Applied equals Before"),
-        ("TEST02_CounterEvidenceRequired", "P10/P13", "Completed=false => never APPLY"),
-        ("TEST03_CriticRejectVeto", "P11/P13", "REJECT => unchanged weights"),
         ("TEST04_LowConfidenceCap", "P12/P15", "Magnitude <= frozen confidence cap; CAUTION <= .01"),
-        ("TEST05_NullHypothesesAlwaysPresent", "P8", "Every candidate set contains RandomFluctuation and NoMeaningfulChange"),
         ("TEST06_DeterministicReasoning", "P17", "Same frozen prefix, versions, time and seed => same audit payload"),
         ("TEST07_NoTargetLeakage", "P7/P20", "Perturb target/future outcomes => unchanged Observe(N)"),
         ("TEST08_ReflectionAfterReveal", "P18", "Before AvailableAt => reject reflection"),
         ("TEST09_PredictionBeforeReflection", "P17/P18", "Missing frozen pre-draw audit => reject"),
         ("TEST10_SeparateAssessments", "P18", "Hypothesis correct with harmful action remains separately represented"),
-        ("TEST11_HoldNoChange", "P13", "HOLD => Before == Applied, magnitude zero, reason retained"),
         ("TEST12_CompleteImmutableAudit", "P17/P19", "Missing fields rejected; reflection cannot modify prediction hash")
     };
     public static readonly string[] PendingDynamicPoolAcceptance =

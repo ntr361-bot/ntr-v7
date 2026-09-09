@@ -23,6 +23,12 @@ if (args.Contains("--p6-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
 if (args.Contains("--p8-hypothesis-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroHypothesisEngineTests.Run();
 
+if (args.Contains("--p9-p13-smoke", StringComparer.OrdinalIgnoreCase))
+    return MacroReasoningP9P13Tests.Run();
+
+if (args.Contains("--p14-gating-smoke", StringComparer.OrdinalIgnoreCase))
+    return MacroGatingP14Tests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
     return RejectLegacyLearningPipelineAlias();
 
