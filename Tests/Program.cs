@@ -2,6 +2,9 @@ using System.Text.Json;
 using System.Windows.Forms;
 using 六合分析软件;
 
+if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase))
+    return FourExpertChainTests.Run();
+
 if (args.Contains("--macro-contract-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroReasoningContractTests.Run();
 

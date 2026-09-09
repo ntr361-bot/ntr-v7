@@ -38,6 +38,24 @@ public static class CurrentExpertCatalog
         Shared("V65-50","V65-100",MetaDependencyType.SharedHistory,"同一期V65ExperimentPipeline历史前缀，不同窗口");
         Shared("V65-50","V65-All",MetaDependencyType.SharedHistory,"同一期V65ExperimentPipeline历史前缀，不同窗口");
         Shared("V65-100","V65-All",MetaDependencyType.SharedHistory,"同一期V65ExperimentPipeline历史前缀，不同窗口");
+        // Append relationships for the Macro revisions explicitly; never retarget old consumer edges.
+        var macroBases = V65BaseMacroExpertAdapter.Definitions;
+        for (int i = 0; i < macroBases.Length; i++)
+        for (int j = i + 1; j < macroBases.Length; j++)
+        {
+            var left = macroBases[i];
+            var right = macroBases[j];
+            if (string.CompareOrdinal(left.ExpertRevisionId, right.ExpertRevisionId) > 0)
+                (left, right) = (right, left);
+            registry.AppendDependency(new ExpertDependencyEdge(left.ExpertId, right.ExpertId,
+                left.ExpertRevisionId, right.ExpertRevisionId, MetaDependencyType.SharedHistory,
+                "V65BaseMacroExpertAdapter.Build: caller-supplied history; V65RuleScoringEngine.Predict: windowed prefixes of shared history",
+                "v65-macro-dependencies-v1", ImmutableArray.Create("history-prefix:caller-supplied")));
+            registry.AppendDependency(new ExpertDependencyEdge(left.ExpertId, right.ExpertId,
+                left.ExpertRevisionId, right.ExpertRevisionId, MetaDependencyType.SharedFeatures,
+                "ZodiacPredictEngineV2.cs: CalculateZodiacScoreV2/ApplyEightZodiacRule share feature definitions; window values and weights differ",
+                "v65-macro-dependencies-v1", ImmutableArray.Create("V65RuleScoringEngine")));
+        }
         ExpertDependencyEdge E(string from,string to,MetaDependencyType type,string evidence)=>new(from,to,byId[from],byId[to],type,evidence,"p5-source-audit-v1",ImmutableArray<string>.Empty);
         void Shared(string left,string right,MetaDependencyType type,string evidence){if(string.CompareOrdinal(byId[left],byId[right])>0)(left,right)=(right,left);registry.AppendDependency(E(left,right,type,evidence));}
     }
