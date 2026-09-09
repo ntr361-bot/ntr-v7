@@ -8,8 +8,17 @@ if (args.Contains("--macro-contract-smoke", StringComparer.OrdinalIgnoreCase))
 if (args.Contains("--independent-learning-smoke", StringComparer.OrdinalIgnoreCase))
     return IndependentLearningTests.Run();
 
+if (args.Contains("--p4-acceptance", StringComparer.OrdinalIgnoreCase))
+    return P4AcceptanceTests.Run();
+
 if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
-    return IndependentLearningTests.Run();
+    return RejectLegacyLearningPipelineAlias();
+
+static int RejectLegacyLearningPipelineAlias()
+{
+    Console.Error.WriteLine("旧 OnlineLearningPipeline P0-P4 草案未编译、未验收。请使用 --p4-acceptance 验收当前 V7 独立学习 P4。");
+    return 2;
+}
 
 if (args.Contains("--historical-replay-smoke", StringComparer.OrdinalIgnoreCase) ||
     args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase))
