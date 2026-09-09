@@ -28,10 +28,10 @@
 - Consumes: `IMacroHypothesisEngine.Build(MacroObservationSnapshot, ReasoningMemorySnapshot)`.
 - Produces: deterministic `HypothesisSet` with seven content-bound candidates.
 
-- [ ] **Step 1: Write failing tests** for exact vocabulary, mandatory null explanations, deterministic IDs, observation/memory hash binding and future-memory rejection.
-- [ ] **Step 2: Run `--p8-hypothesis-smoke` and confirm failure because the engine is absent.**
-- [ ] **Step 3: Implement minimal validation, canonical identity and candidate construction.**
-- [ ] **Step 4: Re-run the P8 smoke tests and keep identity cases green.**
+- [x] **Step 1: Write failing tests** for exact vocabulary, mandatory null explanations, deterministic IDs, observation/memory hash binding and future-memory rejection.
+- [x] **Step 2: Run `--p8-hypothesis-smoke` and confirm failure because the engine is absent.**
+- [x] **Step 3: Implement minimal validation, canonical identity and candidate construction.**
+- [x] **Step 4: Re-run the P8 smoke tests and keep identity cases green.**
 
 ### Task 2: Conservative prior policy
 
@@ -43,10 +43,10 @@
 - Consumes: hypothesis reliability entries from `ReasoningMemorySnapshot.Hypotheses`.
 - Produces: prior/current probability and prior logit score under `p8-prior-v1`.
 
-- [ ] **Step 1: Add failing tests** for missing memory, fewer than 20 matured samples, shrinkage at 20+ samples, bounds and invalid reliability counters.
-- [ ] **Step 2: Run P8 smoke and confirm the new prior assertions fail.**
-- [ ] **Step 3: Implement the frozen conservative prior rule only.**
-- [ ] **Step 4: Re-run P8 smoke and confirm all prior cases pass.**
+- [x] **Step 1: Add failing tests** for missing memory, fewer than 20 matured samples, shrinkage at 20+ samples, bounds and invalid reliability counters.
+- [x] **Step 2: Run P8 smoke and confirm the new prior assertions fail, including an integer-overflow boundary found during review.**
+- [x] **Step 3: Implement the frozen conservative prior rule only.**
+- [x] **Step 4: Re-run P8 smoke and confirm all prior cases pass.**
 
 ### Task 3: Isolation and acceptance report
 
@@ -58,8 +58,7 @@
 - Consumes: formal V7 regression fixture.
 - Produces: evidence that hypothesis generation cannot alter production ranking.
 
-- [ ] **Step 1: Add a regression test** comparing formal V7 Top6 before and after P8 construction.
-- [ ] **Step 2: Run P8, P7, P6, P5 and contract smoke suites plus Release build.**
-- [ ] **Step 3: Record acceptance evidence and the non-production boundary.**
-- [ ] **Step 4: Commit P8 and stop before P9.**
-
+- [x] **Step 1: Add a regression test** comparing formal V7 Top6 before and after P8 construction.
+- [x] **Step 2: Run P8, P7, P6, P5 and contract smoke suites plus full smoke regression and Release build.**
+- [x] **Step 3: Record acceptance evidence and the non-production boundary.**
+- [x] **Step 4: Commit P8 and stop before P9.**
