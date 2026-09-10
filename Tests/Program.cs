@@ -2,6 +2,12 @@ using System.Text.Json;
 using System.Windows.Forms;
 using 六合分析软件;
 
+if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
+{
+    try { return MacroP16P20Tests.Run(); }
+    catch (Exception error) { Console.Error.WriteLine(error); return 1; }
+}
+
 if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase))
     return FourExpertChainTests.Run();
 

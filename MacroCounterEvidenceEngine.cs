@@ -132,7 +132,7 @@ public sealed class MacroCounterEvidenceEngine : IMacroCounterEvidenceEngine
     private static bool Usable(ObservationFact? fact)=>fact is {Value:not null,EffectiveSamples:>0}&&double.IsFinite(fact.Value.Value);
     private static IssueRange CombinedRange(MacroObservationSnapshot observation)
     {
-        ObservationFact[] facts=observation.Facts.Where(x=>x.EffectiveSamples>0).ToArray();
+        ObservationFact[] facts=observation.Facts.Where(x=>x.EffectiveSamples>0 && x.SourceIssueRange.Last<=observation.CutoffIssue).ToArray();
         return facts.Length==0?new IssueRange(0,0,0):new IssueRange(facts.Min(x=>x.SourceIssueRange.First),facts.Max(x=>x.SourceIssueRange.Last),facts.Max(x=>x.EffectiveSamples));
     }
 }
