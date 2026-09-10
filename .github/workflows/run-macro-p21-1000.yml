@@ -1,0 +1,29 @@
+name: Macro P21 1000 Historical Validation
+
+on:
+  push:
+    paths:
+      - ".github/workflows/run-macro-p21-1000.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet restore Tests/六合分析软件.SmokeTests.csproj
+      - run: dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
+      - run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release -- --rebuild-db --rebuild-only
+      - run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --macro-p21-real --samples 1000
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-p21-1000-report
+          path: data/macro-p21/1000/report.json
+          if-no-files-found: error
+          retention-days: 30
