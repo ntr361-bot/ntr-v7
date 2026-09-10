@@ -16,7 +16,9 @@ if (args.Contains("--macro-p21-real", StringComparer.OrdinalIgnoreCase))
 {
     int samples=args.SkipWhile(x=>x!="--samples").Skip(1).Select(int.Parse).FirstOrDefault();
     if(samples is not (300 or 600 or 1000)) throw new InvalidDataException("--samples must be 300, 600 or 1000");
-    string root=Path.Combine(Directory.GetCurrentDirectory(),"data","macro-p21",samples.ToString()); Directory.CreateDirectory(root);
+    string baseRoot=Path.Combine(Directory.GetCurrentDirectory(),"data","macro-p21",samples.ToString());
+    string root=File.Exists(Path.Combine(baseRoot,"report.json")) ? baseRoot : baseRoot+"-run-"+DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmss");
+    Directory.CreateDirectory(root);
     Environment.SetEnvironmentVariable("LIUHE_DATA_DIR",Path.Combine(Directory.GetCurrentDirectory(),"data")); DatabaseHelper.InitializeDatabase();
     var built=MacroHistoricalFrameBuilder.Build(DatabaseHelper.GetHistory(),samples,root);
     var audit=new MacroReasoningAuditStore(Path.Combine(root,"reasoning.db"),built.Run);
@@ -1719,12 +1721,13 @@ void RemovedFixedPeriodModelHasNoEntryPoints()
         "AI settings still exposes a retired fixed-period model");
     var baseField = typeof(DailyPredictionAutomation).GetField("BaseModelPeriods",
         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-    Assert(baseField?.GetValue(null) is int[] basePeriods && !basePeriods.Contains(200) && !basePeriods.Contains(500),
+    int[] basePeriods = baseField?.GetValue(null) as int[] ?? Array.Empty<int>();
+    Assert(basePeriods.Length > 0 && !basePeriods.Contains(200) && !basePeriods.Contains(500),
         "daily automation still generates a retired fixed-period model");
     var displayField = typeof(DailyPredictionAutomation).GetField("DisplayPeriods",
         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-    Assert(displayField?.GetValue(null) is int[] displayPeriods && displayPeriods.SequenceEqual(new[] { 100 }),
-        "daily automation display buckets must be 100-period only");
+    Assert(displayField?.GetValue(null) is int[] displayPeriods && displayPeriods.SequenceEqual(basePeriods),
+        "daily automation cloud archive must publish every formal base-model snapshot");
     Assert(typeof(PredictionScoreService).GetMethod(nameof(PredictionScoreService.Predict))!
         .GetParameters()[0].DefaultValue is int scoreDefault && scoreDefault == int.MaxValue,
         "comprehensive scoring still defaults to the retired 500-period model");
@@ -2612,7 +2615,9 @@ void CloudPredictionArchiveKeepsFullLocalSnapshots()
                 Ranking = zodiacs.Select((zodiac, index) => new CloudZodiacSnapshot { Zodiac = zodiac, Rank = index + 1, TotalScore = 92 - index }).ToList(),
                 FactorScores = zodiacs.ToDictionary(zodiac => zodiac, zodiac => new CloudFactorSnapshot { Frequency = 20, Trend = 18, Omission = 15, HotCold = 14, Period = 16, Consecutive = 0, EightZodiac = 2 }),
                 FinalRankingJson = "[\"虎\",\"猴\",\"鼠\"]",
-                BaseModelScoresJson = "{\"虎\":92}"
+                BaseModelScoresJson = "{\"虎\":92}",
+                FeatureSnapshotJson = "{\"schema\":\"full-local-v1\"}",
+                WeightSnapshotJson = "{\"model\":\"V65RuleScoringEngine\"}"
             }
         }
     };

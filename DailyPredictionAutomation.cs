@@ -10,13 +10,20 @@ public sealed record DailyAiPrediction(
     [property: JsonPropertyName("top6")] IReadOnlyList<string> Top6,
     [property: JsonPropertyName("numbers")] IReadOnlyList<int> Numbers,
     [property: JsonPropertyName("confidence")] string Confidence,
-    [property: JsonPropertyName("best_model")] string BestModel);
+    [property: JsonPropertyName("best_model")] string BestModel,
+    [property: JsonPropertyName("ranking")] IReadOnlyList<CloudZodiacSnapshot> Ranking,
+    [property: JsonPropertyName("factor_scores")] IReadOnlyDictionary<string, CloudFactorSnapshot> FactorScores,
+    [property: JsonPropertyName("final_ranking_json")] string FinalRankingJson,
+    [property: JsonPropertyName("base_model_scores_json")] string BaseModelScoresJson,
+    [property: JsonPropertyName("feature_snapshot_json")] string FeatureSnapshotJson,
+    [property: JsonPropertyName("weight_snapshot_json")] string WeightSnapshotJson);
 
 public static class DailyPredictionAutomation
 {
     // 基础档：50/100/全部历史 全部计算并保存（仅后台供自动学习学习，不进入展示文档）。
     private static readonly int[] BaseModelPeriods = { 50, 100, AISettings.AllHistoryModeValue };
-    private static readonly int[] DisplayPeriods = { 100 };
+    // 云端档案是桌面端完整预测快照的传输层，不是网页展示层；三套基础模型都必须发布。
+    private static readonly int[] DisplayPeriods = BaseModelPeriods;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static string Generate(long targetIssue, string outputDirectory, bool force = false, bool dryRun = false)
@@ -44,8 +51,7 @@ public static class DailyPredictionAutomation
             AIEngine.SavePredictionHistory(result);
             baseResults.Add(result);
             if (DisplayPeriods.Contains(period))
-                ai[period.ToString()] = new DailyAiPrediction(result.AnalysisPeriods, result.Top3.ToArray(),
-                    result.Top6.ToArray(), result.RecommendedNumbers.ToArray(), result.Confidence, result.BestModel);
+                ai[period.ToString()] = CreateCompletePrediction(result);
         }
 
         IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);
@@ -69,10 +75,7 @@ public static class DailyPredictionAutomation
             .Distinct()
             .OrderBy(number => number)
             .ToArray();
-        ai["auto"] = new DailyAiPrediction(V7PredictionHistoryService.AutoLearningHistoryKey,
-            autoTop3, autoTop6, autoNumbers,
-            learning.Result.UsedFallback ? "基础排序" : "已学习",
-            "自动学习模型");
+        ai["auto"] = CreateCompleteAutoPrediction(learning, autoTop3, autoTop6, autoNumbers);
 
         // This is an isolated audit write. It runs only after all four formal records exist.
         string historyCutoffIssue = DatabaseHelper.GetLatestPeriod();
@@ -128,6 +131,27 @@ public static class DailyPredictionAutomation
         UpdateManifest(outputDirectory);
         Console.WriteLine($"[SUCCESS] 第{targetIssue}期全部预测结果已保存");
         return outputFile;
+    }
+
+    // The cloud archive is a transport of the exact local prediction snapshot, never a web-only summary.
+    private static DailyAiPrediction CreateCompletePrediction(AIEngine.PredictResult result)
+    {
+        var ordered=result.AllScores.OrderByDescending(x=>x.TotalScore).ThenBy(x=>x.Zodiac,StringComparer.Ordinal).ToArray();
+        var ranking=ordered.Select((x,i)=>new CloudZodiacSnapshot{Zodiac=x.Zodiac,Rank=i+1,TotalScore=x.TotalScore}).ToArray();
+        var factors=ordered.ToDictionary(x=>x.Zodiac,x=>new CloudFactorSnapshot{Frequency=x.FrequencyScore,Trend=x.RecentTrendScore,
+            Omission=x.OmissionScore,HotCold=x.HotColdScore,Period=x.PeriodPatternScore,Consecutive=x.ConsecutiveScore,EightZodiac=x.EightZodiacScore});
+        return new(result.AnalysisPeriods,result.Top3.ToArray(),result.Top6.ToArray(),result.RecommendedNumbers.ToArray(),result.Confidence,result.BestModel,
+            ranking,factors,JsonSerializer.Serialize(ranking.Select(x=>x.Zodiac)),JsonSerializer.Serialize(ordered.ToDictionary(x=>x.Zodiac,x=>x.TotalScore)),
+            JsonSerializer.Serialize(ordered),JsonSerializer.Serialize(new{result.AnalysisPeriods,Model="V65RuleScoringEngine"}));
+    }
+    private static DailyAiPrediction CreateCompleteAutoPrediction(AutoLearningSnapshot learning,string[] top3,string[] top6,int[] numbers)
+    {
+        var rows=learning.Result.Ranking.OrderBy(x=>x.Rank).ToArray();
+        var inputs=learning.Input.Zodiacs.ToDictionary(x=>x.Zodiac,x=>x.BaseScores);
+        var ranking=rows.Select(x=>new CloudZodiacSnapshot{Zodiac=x.Zodiac,Rank=x.Rank,TotalScore=x.Probability}).ToArray();
+        var factors=rows.ToDictionary(x=>x.Zodiac,x=> {var b=inputs[x.Zodiac];return new CloudFactorSnapshot{Frequency=b.GetValueOrDefault("AI"),Trend=b.GetValueOrDefault("ML"),Omission=b.GetValueOrDefault("State"),HotCold=b.GetValueOrDefault("V7")};});
+        return new(V7PredictionHistoryService.AutoLearningHistoryKey,top3,top6,numbers,learning.Result.UsedFallback?"基础排序":"已学习","自动学习模型",
+            ranking,factors,learning.FinalRankingJson,learning.BaseModelScoresJson,learning.FeatureSnapshotJson,learning.WeightSnapshotJson);
     }
 
     public static IReadOnlyList<long> GenerateMissing(string predictionDirectory, string outputDirectory,
@@ -206,9 +230,8 @@ public static class DailyPredictionAutomation
                 int[] numbers = top6.Where(map.ContainsKey).SelectMany(zodiac => map[zodiac])
                     .Select(value => int.TryParse(value, out int number) ? number : 0)
                     .Where(number => number > 0).Distinct().OrderBy(number => number).ToArray();
-                JsonObject auto = JsonSerializer.SerializeToNode(new DailyAiPrediction(
-                    V7PredictionHistoryService.AutoLearningHistoryKey, top3, top6, numbers,
-                    learning.Result.UsedFallback ? "基础排序" : "已学习", "自动学习模型"), JsonOptions)!.AsObject();
+                JsonObject auto = JsonSerializer.SerializeToNode(
+                    CreateCompleteAutoPrediction(learning, top3, top6, numbers), JsonOptions)!.AsObject();
                 if (actualByIssue.TryGetValue(issue, out DatabaseHelper.HistoryRecord? actual))
                 {
                     auto["top3_hit"] = top3.Contains(actual.SpecialZodiac);

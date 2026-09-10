@@ -155,7 +155,9 @@ public static class CloudPredictionSyncService
         item.FactorScores.Count == 12 &&
         item.FactorScores.Keys.All(zodiac => item.Ranking.Any(row => row.Zodiac == zodiac)) &&
         !string.IsNullOrWhiteSpace(item.FinalRankingJson) &&
-        !string.IsNullOrWhiteSpace(item.BaseModelScoresJson);
+        !string.IsNullOrWhiteSpace(item.BaseModelScoresJson) &&
+        !string.IsNullOrWhiteSpace(item.FeatureSnapshotJson) &&
+        !string.IsNullOrWhiteSpace(item.WeightSnapshotJson);
 
     private static int ParseAnalysisPeriods(string modelKey) =>
         int.TryParse(modelKey, out int periods) ? periods : 0;
