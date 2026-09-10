@@ -1,6 +1,8 @@
 using System.Text.Json;
+using System.Collections.Immutable;
 using System.Windows.Forms;
 using 六合分析软件;
+using 六合分析软件.MacroReasoning;
 
 if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
 {
@@ -9,6 +11,20 @@ if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
 }
 if (args.Contains("--p21-p25-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroP21P25Tests.Run();
+
+if (args.Contains("--macro-p21-real", StringComparer.OrdinalIgnoreCase))
+{
+    int samples=args.SkipWhile(x=>x!="--samples").Skip(1).Select(int.Parse).FirstOrDefault();
+    if(samples is not (300 or 600 or 1000)) throw new InvalidDataException("--samples must be 300, 600 or 1000");
+    string root=Path.Combine(Directory.GetCurrentDirectory(),"data","macro-p21",samples.ToString()); Directory.CreateDirectory(root);
+    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR",Path.Combine(Directory.GetCurrentDirectory(),"data")); DatabaseHelper.InitializeDatabase();
+    var built=MacroHistoricalFrameBuilder.Build(DatabaseHelper.GetHistory(),samples,root);
+    var audit=new MacroReasoningAuditStore(Path.Combine(root,"reasoning.db"),built.Run);
+    var evaluator=new MacroWalkForwardEvaluator(built.Registry,audit,built.Frames,built.Warmup,built.Weights,"p21-hold-control-v1");
+    var metrics=evaluator.Evaluate(built.Run,built.Frames.Select(x=>x.Issue).ToImmutableArray(),built.Split);
+    string report=Path.Combine(root,"report.json"); File.WriteAllText(report,JsonSerializer.Serialize(new {samples,metrics,evaluator.SplitMetrics,Rows=evaluator.Rows},new JsonSerializerOptions{WriteIndented=true}));
+    Console.WriteLine("REPORT_PATH="+report); return 0;
+}
 
 if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase))
     return FourExpertChainTests.Run();

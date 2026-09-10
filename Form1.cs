@@ -21,6 +21,7 @@ namespace 六合分析软件
         Button btnCheck;
         Button btnMlBacktest;
         Button btnV7Models;
+        Button btnMacroExperiments;
 
         Label titleLabel;
         Label cloudSyncLabel;
@@ -128,7 +129,8 @@ namespace 六合分析软件
             btnPredict = CreateButton("走势预测", 370);
             btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
             btnV7Models = CreateButton("🧠 智能模型实验", 490);
-            btnCheck = CreateButton("📐 自用规律", 545);
+            btnMacroExperiments = CreateButton("🔬 Macro 实验中心", 540);
+            btnCheck = CreateButton("📐 自用规律", 590);
 
             menuPanel.Controls.Add(btnHome);
             menuPanel.Controls.Add(btnHistory);
@@ -139,6 +141,7 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnPredict);
             menuPanel.Controls.Add(btnMlBacktest);
             menuPanel.Controls.Add(btnV7Models);
+            menuPanel.Controls.Add(btnMacroExperiments);
             menuPanel.Controls.Add(btnCheck);
 
             btnHome.Click += (s, e) => ShowHome();
@@ -150,6 +153,7 @@ namespace 六合分析软件
             btnPredict.Click += BtnPredict_Click;
             btnMlBacktest.Click += BtnMlBacktest_Click;
             btnV7Models.Click += BtnV7Models_Click;
+            btnMacroExperiments.Click += BtnMacroExperiments_Click;
             btnCheck.Click += BtnCheck_Click;
 
             // 主显示区域
@@ -982,6 +986,22 @@ namespace 六合分析软件
             form.ShowDialog();
         }
 
+        private void BtnMacroExperiments_Click(object sender, EventArgs e)
+        {
+            // Deliberately empty until a named, immutable experiment is registered.
+            // The UI must not manufacture a production experiment or enable Macro.
+            var registry = new MacroReasoning.MacroExperimentRegistry();
+            var shadow = new MacroReasoning.MacroLiveShadowService();
+            var explain = new MacroReasoning.ModelExplanationService(new EmptyMacroExplanationSource());
+            new MacroExperimentCenterForm(new MacroReasoning.MacroExperimentCenterModel(registry, shadow,
+                new MacroReasoning.MacroModelAssistant(explain))).ShowDialog(this);
+        }
+
+        private sealed class EmptyMacroExplanationSource : MacroReasoning.IMacroExplanationSource
+        {
+            public MacroReasoning.MacroExplanationRecord? Read(string experiment, long issue) => null;
+        }
+
         private Form CreateReservedDataCenterForm()
         {
             Form form = new Form();
@@ -1070,9 +1090,12 @@ namespace 六合分析软件
                     var color = ColorEngine.Predict(history);
                     var optimized = AutoOptimizeEngine.Optimize(history, 30);
                     var engines = new[] { V7Engine.Predict(history) };
+                    var v7 = engines[0];
                     var report = AIReportEngine.Generate(history, engines, color: color);
                     V7PredictionHistoryService.SaveAll(targetPeriod, history);
                     return $"预测期号：{targetPeriod}\n" +
+                           $"V7推荐三肖：{string.Join("、", v7.Top3)}\n" +
+                           $"V7推荐六肖：{string.Join("、", v7.Top6)}\n" +
                            $"波色：排除 {color.Excluded} / 主 {color.Main} / 防 {color.Defense}\n" +
                            $"最优权重：{optimized.Best?.Name ?? "无"}（TOP6 {optimized.Best?.Top6HitRate:P1}）\n\n" +
                            report.Text;
