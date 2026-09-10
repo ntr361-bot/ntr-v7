@@ -7,6 +7,8 @@ if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
     try { return MacroP16P20Tests.Run(); }
     catch (Exception error) { Console.Error.WriteLine(error); return 1; }
 }
+if (args.Contains("--p21-p25-smoke", StringComparer.OrdinalIgnoreCase))
+    return MacroP21P25Tests.Run();
 
 if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase))
     return FourExpertChainTests.Run();
