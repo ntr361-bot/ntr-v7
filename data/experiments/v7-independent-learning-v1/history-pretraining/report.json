@@ -1,0 +1,610 @@
+{
+  "Model": "v7-independent-learning-v1",
+  "Kind": "HistoricalExperiment",
+  "SchemaVersion": 1,
+  "GeneratedAt": "2026-09-08T08:32:37.5999993+00:00",
+  "Entries": [
+    {
+      "Issue": 2026233,
+      "HistoryCutoffIssue": 2026232,
+      "ActualZodiac": "\u9F20",
+      "Top3": [
+        "\u9A6C",
+        "\u864E",
+        "\u7334"
+      ],
+      "Top6": [
+        "\u9A6C",
+        "\u864E",
+        "\u7334",
+        "\u5154",
+        "\u9F20",
+        "\u86C7"
+      ],
+      "ActualRank": 5,
+      "Top3Hit": false,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.3333333333333333,
+        "v65-100": 0.3333333333333333,
+        "v65-all": 0.3333333333333333
+      },
+      "AfterWeights": {
+        "v65-50": 0.33265786804248126,
+        "v65-100": 0.3341754857578796,
+        "v65-all": 0.33316664619963915
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=54,3,55; SHA256=e75500187aa63459b6631354707d0e6f7ea99516925d06773c7b950f81c2e5d3",
+      "SourceGeneratedAt": "2026-08-21T20:31:58+08:00"
+    },
+    {
+      "Issue": 2026234,
+      "HistoryCutoffIssue": 2026233,
+      "ActualZodiac": "\u9F99",
+      "Top3": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334"
+      ],
+      "Top6": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334",
+        "\u5154",
+        "\u86C7",
+        "\u9F20"
+      ],
+      "ActualRank": 9,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.33265786804248126,
+        "v65-100": 0.3341754857578796,
+        "v65-all": 0.33316664619963915
+      },
+      "AfterWeights": {
+        "v65-50": 0.33331939604845034,
+        "v65-100": 0.3343489541407944,
+        "v65-all": 0.3323316498107552
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=57,51,58; SHA256=190fa65af8fef0c3612f53f3b85a7270452d5227bf84cf62a44745bd0173c8d6",
+      "SourceGeneratedAt": "2026-08-22T12:22:15+08:00"
+    },
+    {
+      "Issue": 2026235,
+      "HistoryCutoffIssue": 2026234,
+      "ActualZodiac": "\u732A",
+      "Top3": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334"
+      ],
+      "Top6": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334",
+        "\u5154",
+        "\u9F20",
+        "\u86C7"
+      ],
+      "ActualRank": 7,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.33331939604845034,
+        "v65-100": 0.3343489541407944,
+        "v65-all": 0.3323316498107552
+      },
+      "AfterWeights": {
+        "v65-50": 0.33297978740720247,
+        "v65-100": 0.33451371426705645,
+        "v65-all": 0.3325064983257411
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=60,61,62; SHA256=424cffd9038c7f7f654a4a754a1ca274a260c9d0187ac0ba9cdf02b8760e8e35",
+      "SourceGeneratedAt": "2026-08-23T10:40:47+08:00"
+    },
+    {
+      "Issue": 2026236,
+      "HistoryCutoffIssue": 2026235,
+      "ActualZodiac": "\u7334",
+      "Top3": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334"
+      ],
+      "Top6": [
+        "\u864E",
+        "\u9A6C",
+        "\u7334",
+        "\u5154",
+        "\u9F20",
+        "\u86C7"
+      ],
+      "ActualRank": 3,
+      "Top3Hit": true,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.33297978740720247,
+        "v65-100": 0.33451371426705645,
+        "v65-all": 0.3325064983257411
+      },
+      "AfterWeights": {
+        "v65-50": 0.3333181486591005,
+        "v65-100": 0.3338323048836672,
+        "v65-all": 0.3328495464572324
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=66,67,68; SHA256=d7b642efa9fea6e21404fc2a8ca75433a61249d55c9ce7986bb12ab4126aea24",
+      "SourceGeneratedAt": "2026-08-23T21:40:55+08:00"
+    },
+    {
+      "Issue": 2026237,
+      "HistoryCutoffIssue": 2026236,
+      "ActualZodiac": "\u7F8A",
+      "Top3": [
+        "\u9A6C",
+        "\u5154",
+        "\u9F20"
+      ],
+      "Top6": [
+        "\u9A6C",
+        "\u5154",
+        "\u9F20",
+        "\u86C7",
+        "\u7334",
+        "\u864E"
+      ],
+      "ActualRank": 10,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3333181486591005,
+        "v65-100": 0.3338323048836672,
+        "v65-all": 0.3328495464572324
+      },
+      "AfterWeights": {
+        "v65-50": 0.33386027591572004,
+        "v65-100": 0.33377858642320296,
+        "v65-all": 0.33236113766107706
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=72,73,74; SHA256=80458e67bb72e2a2aa16e8c3f94d1c9144c5b9eae579c677009a7163c0cd397b",
+      "SourceGeneratedAt": "2026-08-24T21:38:32+08:00"
+    },
+    {
+      "Issue": 2026238,
+      "HistoryCutoffIssue": 2026237,
+      "ActualZodiac": "\u864E",
+      "Top3": [
+        "\u5154",
+        "\u9A6C",
+        "\u86C7"
+      ],
+      "Top6": [
+        "\u5154",
+        "\u9A6C",
+        "\u86C7",
+        "\u9F20",
+        "\u7334",
+        "\u864E"
+      ],
+      "ActualRank": 6,
+      "Top3Hit": false,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.33386027591572004,
+        "v65-100": 0.33377858642320296,
+        "v65-all": 0.33236113766107706
+      },
+      "AfterWeights": {
+        "v65-50": 0.3354029767757821,
+        "v65-100": 0.3337327480476808,
+        "v65-all": 0.33086427517653705
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=78,79,80; SHA256=1ad72b5d16bb35df9fea633e3548ec4d2caeb579fbc3680cb7cbf91c85ee27aa",
+      "SourceGeneratedAt": "2026-08-26T09:15:21+08:00"
+    },
+    {
+      "Issue": 2026239,
+      "HistoryCutoffIssue": 2026238,
+      "ActualZodiac": "\u864E",
+      "Top3": [
+        "\u5154",
+        "\u9A6C",
+        "\u86C7"
+      ],
+      "Top6": [
+        "\u5154",
+        "\u9A6C",
+        "\u86C7",
+        "\u864E",
+        "\u9F20",
+        "\u7334"
+      ],
+      "ActualRank": 4,
+      "Top3Hit": false,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.3354029767757821,
+        "v65-100": 0.3337327480476808,
+        "v65-all": 0.33086427517653705
+      },
+      "AfterWeights": {
+        "v65-50": 0.3367663783211588,
+        "v65-100": 0.33352838673089796,
+        "v65-all": 0.3297052349479432
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=84,85,86; SHA256=afe20fecc29851b05c3bfc97f28af69cb79bc740028376fb2f02717fb02667e0",
+      "SourceGeneratedAt": "2026-08-27T14:54:31+08:00"
+    },
+    {
+      "Issue": 2026240,
+      "HistoryCutoffIssue": 2026239,
+      "ActualZodiac": "\u9F99",
+      "Top3": [
+        "\u5154",
+        "\u9A6C",
+        "\u864E"
+      ],
+      "Top6": [
+        "\u5154",
+        "\u9A6C",
+        "\u864E",
+        "\u9F20",
+        "\u7334",
+        "\u86C7"
+      ],
+      "ActualRank": 9,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3367663783211588,
+        "v65-100": 0.33352838673089796,
+        "v65-all": 0.3297052349479432
+      },
+      "AfterWeights": {
+        "v65-50": 0.335434628297287,
+        "v65-100": 0.3326766927391909,
+        "v65-all": 0.33188867896352214
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=90,91,92; SHA256=832041edd88bb9ddc569276a3b20b7381d89869de172c723da8ea1e75e6a8d69",
+      "SourceGeneratedAt": "2026-08-27T22:15:17+08:00"
+    },
+    {
+      "Issue": 2026241,
+      "HistoryCutoffIssue": 2026240,
+      "ActualZodiac": "\u9A6C",
+      "Top3": [
+        "\u9F20",
+        "\u7334",
+        "\u9A6C"
+      ],
+      "Top6": [
+        "\u9F20",
+        "\u7334",
+        "\u9A6C",
+        "\u864E",
+        "\u5154",
+        "\u732A"
+      ],
+      "ActualRank": 3,
+      "Top3Hit": true,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.335434628297287,
+        "v65-100": 0.3326766927391909,
+        "v65-all": 0.33188867896352214
+      },
+      "AfterWeights": {
+        "v65-50": 0.3344253852418129,
+        "v65-100": 0.3331577371636639,
+        "v65-all": 0.33241687759452326
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=96,97,98; SHA256=d7193eb0e4ae4339bb0c89ce9a65964e347fc6b4d1a2087b0867e3b490db3982",
+      "SourceGeneratedAt": "2026-08-28T21:37:04+08:00"
+    },
+    {
+      "Issue": 2026242,
+      "HistoryCutoffIssue": 2026241,
+      "ActualZodiac": "\u72D7",
+      "Top3": [
+        "\u7334",
+        "\u864E",
+        "\u9F20"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u864E",
+        "\u9F20",
+        "\u732A",
+        "\u5154",
+        "\u7F8A"
+      ],
+      "ActualRank": 11,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3344253852418129,
+        "v65-100": 0.3331577371636639,
+        "v65-all": 0.33241687759452326
+      },
+      "AfterWeights": {
+        "v65-50": 0.33440591296562217,
+        "v65-100": 0.3331490822932621,
+        "v65-all": 0.33244500474111577
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=102,103,104; SHA256=6e5a397424a9194786c39b43bfaeba55365afb929db85811dc0c30ed7d579aa3",
+      "SourceGeneratedAt": "2026-08-29T21:38:28+08:00"
+    },
+    {
+      "Issue": 2026243,
+      "HistoryCutoffIssue": 2026242,
+      "ActualZodiac": "\u72D7",
+      "Top3": [
+        "\u7334",
+        "\u9F20",
+        "\u864E"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u9F20",
+        "\u864E",
+        "\u732A",
+        "\u5154",
+        "\u7F8A"
+      ],
+      "ActualRank": 9,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.33440591296562217,
+        "v65-100": 0.3331490822932621,
+        "v65-all": 0.33244500474111577
+      },
+      "AfterWeights": {
+        "v65-50": 0.33559490571365574,
+        "v65-100": 0.33278478558543917,
+        "v65-all": 0.33162030870090514
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=108,109,110; SHA256=fcdf946c2f82d94877e6da0907a4665f609bc0096f8da77c1e6fe725307d7e76",
+      "SourceGeneratedAt": "2026-08-31T21:00:46+08:00"
+    },
+    {
+      "Issue": 2026244,
+      "HistoryCutoffIssue": 2026243,
+      "ActualZodiac": "\u9E21",
+      "Top3": [
+        "\u7334",
+        "\u864E",
+        "\u732A"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u864E",
+        "\u732A",
+        "\u7F8A",
+        "\u5154",
+        "\u9F20"
+      ],
+      "ActualRank": 12,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.33559490571365574,
+        "v65-100": 0.33278478558543917,
+        "v65-all": 0.33162030870090514
+      },
+      "AfterWeights": {
+        "v65-50": 0.3356061503462622,
+        "v65-100": 0.3327645570576781,
+        "v65-all": 0.33162929259605983
+      },
+      "EvidenceSource": "\u4E91\u7AEF\u51BB\u7ED3\u5FEB\u7167",
+      "EvidenceReference": "https://github.com/ntr361-bot/ntr-v7/blob/2dfb4456a1dc1e769a8d62c5ec272d59aea6f9e2/site/data/runtime-state.json",
+      "SourceGeneratedAt": "2026-08-31T19:55:24.916818+00:00"
+    },
+    {
+      "Issue": 2026245,
+      "HistoryCutoffIssue": 2026244,
+      "ActualZodiac": "\u725B",
+      "Top3": [
+        "\u7334",
+        "\u864E",
+        "\u732A"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u864E",
+        "\u732A",
+        "\u7F8A",
+        "\u5154",
+        "\u9F20"
+      ],
+      "ActualRank": 12,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3356061503462622,
+        "v65-100": 0.3327645570576781,
+        "v65-all": 0.33162929259605983
+      },
+      "AfterWeights": {
+        "v65-50": 0.3354515152153368,
+        "v65-100": 0.3330923044413747,
+        "v65-all": 0.33145618034328855
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=114,115,116; SHA256=0ec2c7aef174047220a132a787befd48b1d3517d4930cf97ab315608eedf740b",
+      "SourceGeneratedAt": "2026-09-01T22:34:21+08:00"
+    },
+    {
+      "Issue": 2026246,
+      "HistoryCutoffIssue": 2026245,
+      "ActualZodiac": "\u725B",
+      "Top3": [
+        "\u7334",
+        "\u864E",
+        "\u9A6C"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u864E",
+        "\u9A6C",
+        "\u9F20",
+        "\u5154",
+        "\u7F8A"
+      ],
+      "ActualRank": 11,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3354515152153368,
+        "v65-100": 0.3330923044413747,
+        "v65-all": 0.33145618034328855
+      },
+      "AfterWeights": {
+        "v65-50": 0.33650154304524416,
+        "v65-100": 0.3330616588690076,
+        "v65-all": 0.3304367980857481
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=120,121,122; SHA256=e92db8956b4b339c90f365031204215c407339fdb88b97facf0a9e9e14799e41",
+      "SourceGeneratedAt": "2026-09-03T20:29:38+08:00"
+    },
+    {
+      "Issue": 2026247,
+      "HistoryCutoffIssue": 2026246,
+      "ActualZodiac": "\u5154",
+      "Top3": [
+        "\u7334",
+        "\u864E",
+        "\u9A6C"
+      ],
+      "Top6": [
+        "\u7334",
+        "\u864E",
+        "\u9A6C",
+        "\u9F20",
+        "\u5154",
+        "\u9F99"
+      ],
+      "ActualRank": 5,
+      "Top3Hit": false,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.33650154304524416,
+        "v65-100": 0.3330616588690076,
+        "v65-all": 0.3304367980857481
+      },
+      "AfterWeights": {
+        "v65-50": 0.3375543691099847,
+        "v65-100": 0.3325076910791167,
+        "v65-all": 0.32993793981089853
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=126,127,128; SHA256=985f25ba9143477bea960a6a250007ca2d41eafa2d5ce047bf58ae5e17d97f76",
+      "SourceGeneratedAt": "2026-09-04T08:45:02+08:00"
+    },
+    {
+      "Issue": 2026248,
+      "HistoryCutoffIssue": 2026247,
+      "ActualZodiac": "\u732A",
+      "Top3": [
+        "\u864E",
+        "\u7334",
+        "\u9A6C"
+      ],
+      "Top6": [
+        "\u864E",
+        "\u7334",
+        "\u9A6C",
+        "\u72D7",
+        "\u5154",
+        "\u9F99"
+      ],
+      "ActualRank": 9,
+      "Top3Hit": false,
+      "Top6Hit": false,
+      "BeforeWeights": {
+        "v65-50": 0.3375543691099847,
+        "v65-100": 0.3325076910791167,
+        "v65-all": 0.32993793981089853
+      },
+      "AfterWeights": {
+        "v65-50": 0.3380489600251251,
+        "v65-100": 0.3320030346052935,
+        "v65-all": 0.3299480053695814
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=132,133,134; SHA256=272fe90e94a9e8e8644fc4778abc3ea39bdfca2a2b97ae0942724c56ac961f11",
+      "SourceGeneratedAt": "2026-09-05T21:07:37+08:00"
+    },
+    {
+      "Issue": 2026249,
+      "HistoryCutoffIssue": 2026248,
+      "ActualZodiac": "\u7334",
+      "Top3": [
+        "\u864E",
+        "\u7334",
+        "\u9A6C"
+      ],
+      "Top6": [
+        "\u864E",
+        "\u7334",
+        "\u9A6C",
+        "\u72D7",
+        "\u5154",
+        "\u9F99"
+      ],
+      "ActualRank": 2,
+      "Top3Hit": true,
+      "Top6Hit": true,
+      "BeforeWeights": {
+        "v65-50": 0.3380489600251251,
+        "v65-100": 0.3320030346052935,
+        "v65-all": 0.3299480053695814
+      },
+      "AfterWeights": {
+        "v65-50": 0.3382121122725845,
+        "v65-100": 0.3326601486265804,
+        "v65-all": 0.32912773910083515
+      },
+      "EvidenceSource": "\u672C\u5730\u51BB\u7ED3\u5FEB\u7167\uFF08\u65E0\u5B8C\u6574Trace\uFF09",
+      "EvidenceReference": "C:\\Users\\Administrator\\AppData\\Local\\\u516D\u5408\u5206\u6790\u8F6F\u4EF6-V7\\history.db; rows=138,139,140; SHA256=39120f82a6b01c1eeae8ad457c2c028d8b603ed6702ed26834d6d6fa8452bf11",
+      "SourceGeneratedAt": "2026-09-05T21:36:17+08:00"
+    }
+  ],
+  "FinalWeights": {
+    "v65-50": 0.3382121122725845,
+    "v65-100": 0.3326601486265804,
+    "v65-all": 0.32912773910083515
+  },
+  "CompletedIssues": [
+    2026233,
+    2026234,
+    2026235,
+    2026236,
+    2026237,
+    2026238,
+    2026239,
+    2026240,
+    2026241,
+    2026242,
+    2026243,
+    2026244,
+    2026245,
+    2026246,
+    2026247,
+    2026248,
+    2026249
+  ]
+}
