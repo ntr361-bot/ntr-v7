@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.WinForms;
+using 六合分析软件.MacroReasoning;
 
 namespace 六合分析软件
 {
@@ -22,6 +23,7 @@ namespace 六合分析软件
         Button btnMlBacktest;
         Button btnV7Models;
         Button btnMacroExperiments;
+        Button btnP25WebsiteUpdate;
 
         Label titleLabel;
         Label cloudSyncLabel;
@@ -130,7 +132,8 @@ namespace 六合分析软件
             btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
             btnV7Models = CreateButton("🧠 智能模型实验", 490);
             btnMacroExperiments = CreateButton("🔬 Macro 实验中心", 540);
-            btnCheck = CreateButton("📐 自用规律", 590);
+            btnP25WebsiteUpdate = CreateButton("🌐 P25资料更新", 590);
+            btnCheck = CreateButton("📐 自用规律", 640);
 
             menuPanel.Controls.Add(btnHome);
             menuPanel.Controls.Add(btnHistory);
@@ -142,6 +145,7 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnMlBacktest);
             menuPanel.Controls.Add(btnV7Models);
             menuPanel.Controls.Add(btnMacroExperiments);
+            menuPanel.Controls.Add(btnP25WebsiteUpdate);
             menuPanel.Controls.Add(btnCheck);
 
             btnHome.Click += (s, e) => ShowHome();
@@ -154,6 +158,7 @@ namespace 六合分析软件
             btnMlBacktest.Click += BtnMlBacktest_Click;
             btnV7Models.Click += BtnV7Models_Click;
             btnMacroExperiments.Click += BtnMacroExperiments_Click;
+            btnP25WebsiteUpdate.Click += BtnP25WebsiteUpdate_Click;
             btnCheck.Click += BtnCheck_Click;
 
             // 主显示区域
@@ -202,6 +207,29 @@ namespace 六合分析软件
 
         public static string FormatCloudSyncSuccess(CloudSyncResult result) =>
             $"V7云端同步完成（{result.Source}）：开奖{result.LatestDrawIssue}期，预测档案同步至{result.LatestPredictionIssue}期（档案{result.PredictionFileCount}期，导入{result.PredictionRowCount}条）";
+
+        private async void BtnP25WebsiteUpdate_Click(object? sender, EventArgs e)
+        {
+            btnP25WebsiteUpdate.Enabled = false;
+            try
+            {
+                string latest = DatabaseHelper.GetLatestPeriod();
+                if (!long.TryParse(latest, out long latestIssue))
+                    throw new InvalidDataException("无法确定最新开奖期号");
+                long targetIssue = checked(latestIssue + 1);
+                await Task.Run(() => WebsiteLearningIntegration.Publish(targetIssue));
+                MessageBox.Show($"P25网站资料已更新并写入第{targetIssue}期智能账本。", "P25资料更新",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowHome();
+            }
+            catch (Exception error)
+            {
+                AppLogger.Error("P25网站资料手动更新失败", error);
+                MessageBox.Show($"P25网站资料未写入：{error.Message}", "P25资料更新",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally { btnP25WebsiteUpdate.Enabled = true; }
+        }
 
         private Button CreateButton(string text, int y)
         {
