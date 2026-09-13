@@ -47,6 +47,7 @@ var report = new
     Warmup = warmup,
     RequestedTargetSamples = targetSamples,
     ActualTargetSamples = rows.Count == 0 ? 0 : rows.Max(x => x.Samples),
+    Warning = "V6.5 only-eight 与生产 baseline 使用硬编码 EightZodiacRules/EightZodiacHitRates，可能含评估区间未来信息；判断规则贡献应以 no-eight / clean-remove-* 为主。",
     Rows = rows
 };
 
@@ -84,7 +85,10 @@ void EvaluateV65(IReadOnlyList<DatabaseHelper.HistoryRecord> prefix, string actu
         Observe(model, $"only-{dimension.Name}", Rank(scores, dimension.Value), actual);
 
     foreach (string removed in new[] { "frequency", "trend", "omission", "hotcold", "period", "consecutive" })
+    {
         Observe(model, $"remove-{removed}", Rank(scores, s => Weighted(s, weights, removed, includeEight: true)), actual);
+        Observe(model, $"clean-remove-{removed}", Rank(scores, s => Weighted(s, weights, removed, includeEight: false)), actual);
+    }
 }
 
 void EvaluateV7(IReadOnlyList<DatabaseHelper.HistoryRecord> prefix, string actual)
@@ -156,10 +160,11 @@ static List<string> RankV7(IReadOnlyList<ZodiacFeature> features, bool useFilter
 static int VariantOrder(string variant) => variant switch
 {
     "baseline" => 0,
-    "no-filter" => 1,
     "no-eight" => 1,
-    _ when variant.StartsWith("remove-", StringComparison.Ordinal) => 2,
-    _ when variant.StartsWith("only-", StringComparison.Ordinal) => 3,
+    "no-filter" => 1,
+    _ when variant.StartsWith("clean-remove-", StringComparison.Ordinal) => 2,
+    _ when variant.StartsWith("remove-", StringComparison.Ordinal) => 3,
+    _ when variant.StartsWith("only-", StringComparison.Ordinal) => 4,
     _ => 9
 };
 
@@ -168,18 +173,18 @@ static string BuildMarkdown(IReadOnlyList<MetricRow> rows)
     var sb = new StringBuilder();
     sb.AppendLine("# 1000期模型拆解 / 消融实验");
     sb.AppendLine();
-    sb.AppendLine("严格 Walk-Forward：每一期只使用此前历史。baseline 为当前代码；remove-X 表示只拿掉该信号；only-X 表示只保留该信号用于排序。");
+    sb.AppendLine("严格 Walk-Forward：每一期只使用此前历史。V6.5 的八肖规则/命中率为硬编码常量，可能含未来信息，因此判断 V6.5 规则贡献时以 no-eight 和 clean-remove-* 为主。");
     sb.AppendLine();
     foreach (var group in rows.GroupBy(x => x.Model))
     {
         var baseline = group.First(x => x.Variant == "baseline");
         sb.AppendLine($"## {group.Key}");
         sb.AppendLine();
-        sb.AppendLine("| 变体 | 样本 | Top3 | ΔTop3 | Top6 | ΔTop6 | Top3最长连错 | Top6最长连错 |");
-        sb.AppendLine("|---|---:|---:|---:|---:|---:|---:|---:|");
+        sb.AppendLine("| 变体 | 样本 | Top3 | ΔTop3 | Top6 | ΔTop6 | 前500 Top6 | 后500 Top6 | Top3最长连错 | Top6最长连错 |");
+        sb.AppendLine("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
         foreach (var row in group)
         {
-            sb.AppendLine($"| {row.Variant} | {row.Samples} | {row.Top3Rate:P1} | {(row.Top3Rate - baseline.Top3Rate):+0.0%;-0.0%;0.0%} | {row.Top6Rate:P1} | {(row.Top6Rate - baseline.Top6Rate):+0.0%;-0.0%;0.0%} | {row.MaxTop3MissStreak} | {row.MaxTop6MissStreak} |");
+            sb.AppendLine($"| {row.Variant} | {row.Samples} | {row.Top3Rate:P1} | {(row.Top3Rate - baseline.Top3Rate):+0.0%;-0.0%;0.0%} | {row.Top6Rate:P1} | {(row.Top6Rate - baseline.Top6Rate):+0.0%;-0.0%;0.0%} | {row.FirstHalfTop6Rate:P1} | {row.SecondHalfTop6Rate:P1} | {row.MaxTop3MissStreak} | {row.MaxTop6MissStreak} |");
         }
         sb.AppendLine();
     }
@@ -191,6 +196,12 @@ sealed class Metric(string model, string variant)
     private int samples;
     private int top3Hits;
     private int top6Hits;
+    private int firstSamples;
+    private int secondSamples;
+    private int firstTop3Hits;
+    private int firstTop6Hits;
+    private int secondTop3Hits;
+    private int secondTop6Hits;
     private int currentTop3Miss;
     private int currentTop6Miss;
     private int maxTop3Miss;
@@ -201,6 +212,19 @@ sealed class Metric(string model, string variant)
         samples++;
         bool hit3 = ranking.Take(3).Contains(actual);
         bool hit6 = ranking.Take(6).Contains(actual);
+        if (samples <= 500)
+        {
+            firstSamples++;
+            if (hit3) firstTop3Hits++;
+            if (hit6) firstTop6Hits++;
+        }
+        else
+        {
+            secondSamples++;
+            if (hit3) secondTop3Hits++;
+            if (hit6) secondTop6Hits++;
+        }
+
         if (hit3)
         {
             top3Hits++;
@@ -226,8 +250,15 @@ sealed class Metric(string model, string variant)
     public MetricRow ToRow() => new(model, variant, samples,
         samples == 0 ? 0 : top3Hits / (double)samples,
         samples == 0 ? 0 : top6Hits / (double)samples,
+        firstSamples == 0 ? 0 : firstTop3Hits / (double)firstSamples,
+        firstSamples == 0 ? 0 : firstTop6Hits / (double)firstSamples,
+        secondSamples == 0 ? 0 : secondTop3Hits / (double)secondSamples,
+        secondSamples == 0 ? 0 : secondTop6Hits / (double)secondSamples,
         maxTop3Miss, maxTop6Miss);
 }
 
 sealed record MetricRow(string Model, string Variant, int Samples,
-    double Top3Rate, double Top6Rate, int MaxTop3MissStreak, int MaxTop6MissStreak);
+    double Top3Rate, double Top6Rate,
+    double FirstHalfTop3Rate, double FirstHalfTop6Rate,
+    double SecondHalfTop3Rate, double SecondHalfTop6Rate,
+    int MaxTop3MissStreak, int MaxTop6MissStreak);
