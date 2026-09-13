@@ -9,12 +9,18 @@ public sealed record CloudSyncResult(
     long LatestPredictionIssue,
     int NewDrawCount,
     int PredictionFileCount,
-    int PredictionRowCount);
+    int PredictionRowCount,
+    string Source = "V7 备用云端");
 
 public static class CloudPredictionSyncService
 {
     private const string MachineSyncUrl = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
+    private const string GitHubSyncUrl = "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/site/data";
     private static readonly HttpClient Client = CreateClient();
+    private static readonly CloudSyncSource GitHubSource = new(
+        "GitHub V7 正式数据", CreateGitHubSyncRequest);
+    private static readonly CloudSyncSource FallbackSource = new(
+        "V7 备用云端", CreateMachineSyncRequest);
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true
@@ -26,8 +32,22 @@ public static class CloudPredictionSyncService
 
     public static async Task<CloudSyncResult> SyncAsync(CancellationToken cancellationToken = default)
     {
-        int newDraws = await SyncHistoryAsync(cancellationToken);
+        CloudSyncSource source = GitHubSource;
+        CloudHistoryArchive history;
+        try
+        {
+            history = await DownloadAsync<CloudHistoryArchive>(source, "history", cancellationToken);
+        }
+        catch (Exception githubError) when (CanUseFallback(githubError, cancellationToken))
+        {
+            AppLogger.Info("V7云端档案同步", $"GitHub 正式档案不可用，改用备用云端：{githubError.Message}");
+            source = FallbackSource;
+            history = await DownloadAsync<CloudHistoryArchive>(source, "history", cancellationToken);
+        }
+
+        int newDraws = ImportHistoryArchive(history);
         CloudManifest manifest = await DownloadAsync<CloudManifest>(
+            source,
             "manifest",
             cancellationToken);
         if (manifest.Status != "success" || manifest.Records.Count == 0)
@@ -44,6 +64,7 @@ public static class CloudPredictionSyncService
             try
             {
                 prediction = await DownloadAsync<CloudDailyPrediction>(
+                    source,
                     $"prediction?file={Uri.EscapeDataString(fileName)}",
                     cancellationToken);
                 AtomicWrite(localFile, prediction);
@@ -78,6 +99,7 @@ public static class CloudPredictionSyncService
         try
         {
             SymmetricRuntimeStateSnapshot runtimeState = await DownloadAsync<SymmetricRuntimeStateSnapshot>(
+                source,
                 "runtime-state", cancellationToken);
             int merged = SymmetricRuntimeStateSync.MergeIntoLocal(runtimeState);
             AppLogger.Info("V6同构状态同步", $"已合并云端运行状态，补齐预测记录 {merged} 条，状态哈希 {runtimeState.StateHash}");
@@ -89,7 +111,7 @@ public static class CloudPredictionSyncService
 
         DatabaseHelper.BatchVerifyAIPredicts();
         return new CloudSyncResult(DatabaseHelper.GetLatestPeriod(), manifest.LatestIssue,
-            newDraws, files, rows);
+            newDraws, files, rows, source.Name);
     }
 
     public static int ImportPrediction(CloudDailyPrediction prediction)
@@ -177,13 +199,6 @@ public static class CloudPredictionSyncService
         return prediction.AiZodiac.Values.All(IsCompleteModelSnapshot);
     }
 
-    private static async Task<int> SyncHistoryAsync(CancellationToken cancellationToken)
-    {
-        CloudHistoryArchive archive = await DownloadAsync<CloudHistoryArchive>(
-            "history", cancellationToken);
-        return ImportHistoryArchive(archive);
-    }
-
     /// <summary>
     /// 从仓库内提交的 history.json 重建/补齐开奖数据库。
     /// 数据库不再进入 Git 仓库，云端工作流每次运行前用它恢复完整历史。
@@ -245,9 +260,35 @@ public static class CloudPredictionSyncService
         return new HttpRequestMessage(HttpMethod.Get, $"{MachineSyncUrl}/{resource}");
     }
 
-    private static async Task<T> DownloadAsync<T>(string resource, CancellationToken cancellationToken)
+    public static HttpRequestMessage CreateGitHubSyncRequest(string resource)
     {
-        using HttpRequestMessage request = CreateMachineSyncRequest(resource);
+        string relativePath = resource switch
+        {
+            "history" => "history.json",
+            "manifest" => "daily-records/manifest.json",
+            "runtime-state" => "runtime-state.json",
+            _ when resource.StartsWith("prediction?file=", StringComparison.Ordinal) =>
+                $"daily-records/{GetSafePredictionFileName(resource)}",
+            _ => throw new ArgumentException("GitHub 云端同步资源无效", nameof(resource))
+        };
+        return new HttpRequestMessage(HttpMethod.Get, $"{GitHubSyncUrl}/{relativePath}");
+    }
+
+    private static string GetSafePredictionFileName(string resource)
+    {
+        const string prefix = "prediction?file=";
+        string fileName = Uri.UnescapeDataString(resource[prefix.Length..]);
+        if (!IsSafePredictionFile(fileName))
+            throw new ArgumentException("GitHub 云端预测文件名无效", nameof(resource));
+        return fileName;
+    }
+
+    private static bool CanUseFallback(Exception error, CancellationToken cancellationToken) =>
+        !cancellationToken.IsCancellationRequested && error is HttpRequestException or JsonException or InvalidDataException;
+
+    private static async Task<T> DownloadAsync<T>(CloudSyncSource source, string resource, CancellationToken cancellationToken)
+    {
+        using HttpRequestMessage request = source.CreateRequest(resource);
         using HttpResponseMessage response = await Client.SendAsync(request, cancellationToken);
         if (response.StatusCode == HttpStatusCode.NotFound)
             throw new HttpRequestException("云端同步文件尚未发布", null, response.StatusCode);
@@ -294,6 +335,10 @@ public static class CloudPredictionSyncService
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36");
         return client;
     }
+
+    private sealed record CloudSyncSource(
+        string Name,
+        Func<string, HttpRequestMessage> CreateRequest);
 }
 
 public sealed class CloudManifest

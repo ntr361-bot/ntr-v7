@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using 六合分析软件.MacroReasoning;
 
 namespace 六合分析软件
 {
@@ -30,6 +31,18 @@ namespace 六合分析软件
 
 
             // 启动主界面
+            if (Array.Exists(args, a => a == "--p25-web"))
+            {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                string latest = DatabaseHelper.GetLatestPeriod();
+                if (!long.TryParse(latest, out long latestIssue))
+                    throw new InvalidDataException("无法确定最新开奖期号");
+                long targetIssue = checked(latestIssue + 1);
+                WebsiteLearningIntegration.Publish(targetIssue);
+                Console.WriteLine($"[SUCCESS] P25-Web 第{targetIssue}期已写入智能账本：{DatabaseHelper.DatabasePath}");
+                return;
+            }
+
             if (Array.Exists(args, a => a == "--v6-report"))
             {
                 Console.OutputEncoding = System.Text.Encoding.UTF8;

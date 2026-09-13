@@ -24,7 +24,8 @@ public static class V7PredictionHistoryService
     /// </summary>
     public static bool IsV7DisplayedModel(string modelVersion, int analysisPeriods) =>
         (modelVersion == "V7" && analysisPeriods == LongTermHistoryKey) ||
-        (modelVersion == "V7 AutoLearning" && analysisPeriods == AutoLearningHistoryKey);
+        (modelVersion == "V7 AutoLearning" && analysisPeriods == AutoLearningHistoryKey) ||
+        (modelVersion == "P25-Web" && analysisPeriods == 25);
 
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
@@ -136,6 +137,7 @@ public static class V7PredictionHistoryService
         "V7 ML LightGBM" => "ML LightGBM",
         "V7 AutoLearning" => "自动学习模型",
         "V7 AutoLearning Validation" => "自动学习验证",
+        "P25-Web" => "P25网站资料",
         _ when modelVersion.StartsWith("V7 ", StringComparison.OrdinalIgnoreCase) => modelVersion[3..],
         _ => modelVersion
     };

@@ -30,6 +30,11 @@ public static class MacroP21P25Tests
         Check(center.List().Single().ExperimentId=="exp-1"&&center.Ask("exp-1",1,"为什么没有调权").Contains("HOLD"),"P25 experiment center model integrates list and ask");
         using var form=new MacroExperimentCenterForm(center);
         Check(form.Text.Contains("实验中心")&&form.Controls.Count>0,"P25 independent experiment/ask-model window exists");
+        var parsed = WebsiteLearningParser.Parse("256期六肖中特【猴龙蛇羊虎牛】", "六肖", "sha256");
+        Check(parsed.Issue == 256 && parsed.Zodiacs.SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}) && parsed.SourceHash == "sha256", "P25 website source parser extracts issue and zodiac set");
+        Check(WebsiteLearningParser.IsPostResult("256期六肖【猴龙蛇羊虎牛】开：蛇02"), "P25 website parser rejects revealed result");
+        Check(V7PredictionHistoryService.IsV7DisplayedModel("P25-Web", 25), "P25 website record is visible in intelligent ledger");
+        Check(V7PredictionHistoryService.FormatModelName("P25-Web") == "P25网站资料", "P25 website model has readable ledger name");
         Console.WriteLine("P21_P25_SMOKE_PASS"); return 0;
     }
     sealed class FakeExplanationSource : IMacroExplanationSource

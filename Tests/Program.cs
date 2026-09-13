@@ -295,6 +295,9 @@ var tests = new (string Name, Action Run)[]
     ,("V7 site, desktop sync, and publisher use one cloud API", V6CloudEndpointsAreConsistent)
     ,("V7桌面云同步无需旧机器密钥即可使用独立入口", DesktopCloudSyncUsesMachineIngress)
     ,("V7桌面云同步不依赖旧机器密钥配置", DesktopCloudSyncReadsLocalMachineCredential)
+    ,("V7桌面云同步优先读取 GitHub 正式档案", GitHubDesktopCloudSyncUsesPublishedV7Archive)
+    ,("V7桌面云同步实际使用 GitHub 正式档案", GitHubCloudSyncIsPrimary)
+    ,("V7桌面云同步状态展示实际来源", CloudSyncStatusShowsSource)
     ,("V6.5 mapping service has complete validated maps", V65MappingServiceProvidesCompleteValidatedMaps)
     ,("V6.5 prediction persists target-year mapping snapshot", V65MappingSnapshotIsStoredWithPrediction)
     ,("web wave-color mapping is parsed independently from number API", WebWaveColorMappingIsParsed)
@@ -1773,6 +1776,33 @@ void DesktopCloudSyncUsesMachineIngress()
         "desktop sync is not using the isolated V7 endpoint");
     Assert(!request.Headers.Contains("X-V6-Machine-Key"),
         "V7 desktop sync must not depend on the retired V6 machine credential");
+}
+
+void GitHubDesktopCloudSyncUsesPublishedV7Archive()
+{
+    using HttpRequestMessage history = CloudPredictionSyncService.CreateGitHubSyncRequest("history");
+    using HttpRequestMessage prediction = CloudPredictionSyncService.CreateGitHubSyncRequest("prediction?file=2026239.json");
+    Assert(history.RequestUri?.ToString() ==
+        "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/site/data/history.json",
+        "GitHub 主同步源没有读取 V7 正式开奖档案");
+    Assert(prediction.RequestUri?.ToString() ==
+        "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/site/data/daily-records/2026239.json",
+        "GitHub 主同步源没有读取对应预测档案");
+}
+
+void GitHubCloudSyncIsPrimary()
+{
+    CloudSyncResult result = CloudPredictionSyncService.SyncAsync().GetAwaiter().GetResult();
+    Assert(result.Source == "GitHub V7 正式数据",
+        "GitHub 正式档案可访问时，V7 同步仍错误地使用了备用云端");
+}
+
+void CloudSyncStatusShowsSource()
+{
+    string status = Form1.FormatCloudSyncSuccess(new CloudSyncResult(
+        "2026239", 2026239, 1, 1, 3, "GitHub V7 正式数据"));
+    Assert(status.Contains("GitHub V7 正式数据", StringComparison.Ordinal),
+        "同步成功状态没有展示实际数据来源");
 }
 
 void DailyAutomationGeneratesV7Predictions()

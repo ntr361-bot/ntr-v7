@@ -184,7 +184,7 @@ namespace 六合分析软件
             try
             {
                 CloudSyncResult result = await CloudPredictionSyncService.SyncAsync();
-                cloudSyncLabel.Text = $"V7云端同步完成：开奖{result.LatestDrawIssue}期，预测档案缓存同步至{result.LatestPredictionIssue}期（{result.PredictionFileCount}期）";
+                cloudSyncLabel.Text = FormatCloudSyncSuccess(result);
                 cloudSyncLabel.ForeColor = Color.FromArgb(15, 140, 91);
                 DatabaseHelper.BatchVerifyAIPredicts();
                 AIEngine.InvalidateCache();
@@ -199,6 +199,9 @@ namespace 六合分析软件
             }
             finally { _cloudSyncRunning = false; }
         }
+
+        public static string FormatCloudSyncSuccess(CloudSyncResult result) =>
+            $"V7云端同步完成（{result.Source}）：开奖{result.LatestDrawIssue}期，预测档案同步至{result.LatestPredictionIssue}期（档案{result.PredictionFileCount}期，导入{result.PredictionRowCount}条）";
 
         private Button CreateButton(string text, int y)
         {
@@ -620,7 +623,7 @@ namespace 六合分析软件
 
             Label title = new Label
             {
-                Text = $"📜 近10期预测验证记录（{HomePredictionPeriods}期模型）",
+                Text = $"📜 近10期预测验证记录（{HomePredictionPeriods}期模型 / P25网站资料）",
                 Font = new Font("微软雅黑", 11, FontStyle.Bold),
                 ForeColor = Color.FromArgb(80, 80, 110), Location = new Point(12, 8), AutoSize = true
             };
@@ -643,7 +646,8 @@ namespace 六合分析软件
             section.Controls.Add(list);
 
             var records = DatabaseHelper.GetPredictionHistory(200)
-                .Where(r => r.AnalysisPeriods == HomePredictionPeriods)
+                .Where(r => r.AnalysisPeriods == HomePredictionPeriods ||
+                    (r.ModelVersion == "P25-Web" && r.AnalysisPeriods == 25))
                 .GroupBy(r => r.Issue)
                 .OrderByDescending(g => int.TryParse(g.Key, out int issue) ? issue : 0)
                 .Take(10)
