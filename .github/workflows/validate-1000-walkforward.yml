@@ -52,6 +52,7 @@ jobs:
           $new = 'maxTargets: 1000, mlMaxTargets: 1000'
           if (-not $text.Contains($old)) { throw "Expected backtest limits were not found in Tests/Program.cs" }
           Set-Content -Path $program -Value ($text.Replace($old, $new)) -Encoding UTF8
+          dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
 
           $output = & dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --model-redundancy-report 2>&1
           $code = $LASTEXITCODE
