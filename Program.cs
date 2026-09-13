@@ -38,8 +38,10 @@ namespace 六合分析软件
                 if (!long.TryParse(latest, out long latestIssue))
                     throw new InvalidDataException("无法确定最新开奖期号");
                 long targetIssue = checked(latestIssue + 1);
-                WebsiteLearningIntegration.Publish(targetIssue);
-                Console.WriteLine($"[SUCCESS] P25-Web 第{targetIssue}期已写入智能账本：{DatabaseHelper.DatabasePath}");
+                bool created = WebsiteLearningIntegration.Publish(targetIssue);
+                Console.WriteLine(created
+                    ? $"[SUCCESS] P25-Web 第{targetIssue}期已写入智能账本：{DatabaseHelper.DatabasePath}"
+                    : $"[INFO] P25-Web 第{targetIssue}期已有冻结记录，未覆盖。");
                 return;
             }
 

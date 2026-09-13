@@ -63,8 +63,11 @@ public sealed class WebsiteLearningService(HttpClient? client = null)
 public static class WebsiteLearningIntegration
 {
     private static readonly Uri Page = new("https://x17.xn--hdcl2bk2m1bc.xn--gecrj9c:8443/62.html");
-    public static void Publish(long targetIssue)
+    public static bool Publish(long targetIssue)
     {
+        if (DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == targetIssue.ToString() &&
+            row.ModelVersion == "P25-Web" && row.AnalysisPeriods == 25))
+            return false;
         var service = new WebsiteLearningService();
         var signals = service.FetchAsync(Page).GetAwaiter().GetResult();
         int shortIssue = checked((int)(targetIssue % 1000));
@@ -84,5 +87,6 @@ public static class WebsiteLearningIntegration
         });
         DatabaseHelper.SavePrediction(targetIssue.ToString(), string.Join(",", top3), string.Join(",", top6), "",
             "P25-Web", 25, details, "网站资料专家直接写入；开奖后由人工/自动复核", JsonSerializer.Serialize(ranking));
+        return true;
     }
 }

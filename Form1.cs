@@ -217,8 +217,11 @@ namespace 六合分析软件
                 if (!long.TryParse(latest, out long latestIssue))
                     throw new InvalidDataException("无法确定最新开奖期号");
                 long targetIssue = checked(latestIssue + 1);
-                await Task.Run(() => WebsiteLearningIntegration.Publish(targetIssue));
-                MessageBox.Show($"P25网站资料已更新并写入第{targetIssue}期智能账本。", "P25资料更新",
+                bool created = await Task.Run(() => WebsiteLearningIntegration.Publish(targetIssue));
+                MessageBox.Show(created
+                        ? $"P25网站资料已更新并写入第{targetIssue}期智能账本。"
+                        : $"第{targetIssue}期已有冻结的P25网站资料记录，未覆盖。",
+                    "P25资料更新",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ShowHome();
             }
