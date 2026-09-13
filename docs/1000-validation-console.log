@@ -1,0 +1,31 @@
+REPORT_PATH=C:\Users\runneradmin\AppData\Local\Temp\liuhe-redundancy-cf0b5825307e48fb9bf9041b27eab0f0\model-redundancy-report.json
+{
+  "SampleCount": 300,
+  "Models": [
+    "v65-50",
+    "v65-100",
+    "v65-all",
+    "ensemble",
+    "v7",
+    "ml",
+    "random"
+  ],
+  "Top3HitRates": {
+    "v65-50": 0.2633333333333333,
+    "v65-100": 0.24333333333333335,
+    "v65-all": 0.22666666666666666,
+    "ensemble": 0.22666666666666666,
+    "v7": 0.33666666666666667,
+    "ml": 0.03,
+    "random": 0.22333333333333333
+  },
+  "Top6HitRates": {
+    "v65-50": 0.5166666666666667,
+    "v65-100": 0.51,
+    "v65-all": 0.4766666666666667,
+    "ensemble": 0.49666666666666665,
+    "v7": 0.5633333333333334,
+    "ml": 0.06,
+    "random": 0.4666666666666667
+  }
+}
