@@ -743,7 +743,8 @@ namespace 六合分析软件
                 FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = Padding.Empty
             };
             header.Controls.Add(CreateHistoryText(
-                $"{record.Issue}期  |  {record.AnalysisPeriods}期模型  |  实际：" +
+                $"{record.Issue}期  |  {V7PredictionHistoryService.FormatModelName(record.ModelVersion)}" +
+                $"（{record.AnalysisPeriods}期）  |  实际：" +
                 $"{(string.IsNullOrEmpty(record.ActualNumber) ? "?" : record.ActualNumber)} ",
                 Color.FromArgb(55, 55, 70), true));
 
