@@ -1,0 +1,488 @@
+{
+  "GeneratedAtUtc": "2026-09-13T14:28:52.5798167Z",
+  "HistoryCount": 1351,
+  "Warmup": 100,
+  "RequestedTargetSamples": 1000,
+  "ActualTargetSamples": 1000,
+  "Rows": [
+    {
+      "Model": "V65-100",
+      "Variant": "baseline",
+      "Samples": 1000,
+      "Top3Rate": 0.254,
+      "Top6Rate": 0.511,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "no-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.251,
+      "Top6Rate": 0.507,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.254,
+      "Top6Rate": 0.511,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.271,
+      "Top6Rate": 0.504,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.247,
+      "Top6Rate": 0.493,
+      "MaxTop3MissStreak": 17,
+      "MaxTop6MissStreak": 12
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.24,
+      "Top6Rate": 0.498,
+      "MaxTop3MissStreak": 21,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-period",
+      "Samples": 1000,
+      "Top3Rate": 0.249,
+      "Top6Rate": 0.526,
+      "MaxTop3MissStreak": 22,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "remove-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.251,
+      "Top6Rate": 0.51,
+      "MaxTop3MissStreak": 21,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.248,
+      "Top6Rate": 0.491,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.276,
+      "Top6Rate": 0.53,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.229,
+      "Top6Rate": 0.484,
+      "MaxTop3MissStreak": 24,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.265,
+      "Top6Rate": 0.49,
+      "MaxTop3MissStreak": 13,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.274,
+      "Top6Rate": 0.528,
+      "MaxTop3MissStreak": 16,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-period",
+      "Samples": 1000,
+      "Top3Rate": 0.251,
+      "Top6Rate": 0.487,
+      "MaxTop3MissStreak": 21,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V65-100",
+      "Variant": "only-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.22,
+      "Top6Rate": 0.469,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "baseline",
+      "Samples": 1000,
+      "Top3Rate": 0.257,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 17,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "no-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.253,
+      "Top6Rate": 0.514,
+      "MaxTop3MissStreak": 17,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.257,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 17,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.261,
+      "Top6Rate": 0.535,
+      "MaxTop3MissStreak": 14,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.268,
+      "Top6Rate": 0.509,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.248,
+      "Top6Rate": 0.504,
+      "MaxTop3MissStreak": 16,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-period",
+      "Samples": 1000,
+      "Top3Rate": 0.245,
+      "Top6Rate": 0.49,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "remove-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.275,
+      "Top6Rate": 0.531,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.246,
+      "Top6Rate": 0.528,
+      "MaxTop3MissStreak": 14,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.276,
+      "Top6Rate": 0.53,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.221,
+      "Top6Rate": 0.493,
+      "MaxTop3MissStreak": 21,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.263,
+      "Top6Rate": 0.519,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.261,
+      "Top6Rate": 0.519,
+      "MaxTop3MissStreak": 39,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-period",
+      "Samples": 1000,
+      "Top3Rate": 0.278,
+      "Top6Rate": 0.549,
+      "MaxTop3MissStreak": 16,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-50",
+      "Variant": "only-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.22,
+      "Top6Rate": 0.469,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "baseline",
+      "Samples": 1000,
+      "Top3Rate": 0.261,
+      "Top6Rate": 0.488,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "no-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.25,
+      "Top6Rate": 0.489,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 13
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.261,
+      "Top6Rate": 0.488,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.267,
+      "Top6Rate": 0.5,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.254,
+      "Top6Rate": 0.492,
+      "MaxTop3MissStreak": 21,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.246,
+      "Top6Rate": 0.485,
+      "MaxTop3MissStreak": 25,
+      "MaxTop6MissStreak": 11
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-period",
+      "Samples": 1000,
+      "Top3Rate": 0.267,
+      "Top6Rate": 0.513,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "remove-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.279,
+      "Top6Rate": 0.532,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-consecutive",
+      "Samples": 1000,
+      "Top3Rate": 0.235,
+      "Top6Rate": 0.5,
+      "MaxTop3MissStreak": 25,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-eight",
+      "Samples": 1000,
+      "Top3Rate": 0.276,
+      "Top6Rate": 0.53,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.252,
+      "Top6Rate": 0.493,
+      "MaxTop3MissStreak": 16,
+      "MaxTop6MissStreak": 10
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-hotcold",
+      "Samples": 1000,
+      "Top3Rate": 0.257,
+      "Top6Rate": 0.505,
+      "MaxTop3MissStreak": 17,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.277,
+      "Top6Rate": 0.536,
+      "MaxTop3MissStreak": 20,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-period",
+      "Samples": 1000,
+      "Top3Rate": 0.238,
+      "Top6Rate": 0.494,
+      "MaxTop3MissStreak": 19,
+      "MaxTop6MissStreak": 12
+    },
+    {
+      "Model": "V65-All",
+      "Variant": "only-trend",
+      "Samples": 1000,
+      "Top3Rate": 0.22,
+      "Top6Rate": 0.469,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V7",
+      "Variant": "baseline",
+      "Samples": 1000,
+      "Top3Rate": 0.268,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V7",
+      "Variant": "no-filter",
+      "Samples": 1000,
+      "Top3Rate": 0.268,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V7",
+      "Variant": "remove-cycle",
+      "Samples": 1000,
+      "Top3Rate": 0.271,
+      "Top6Rate": 0.523,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 9
+    },
+    {
+      "Model": "V7",
+      "Variant": "remove-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.265,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 7
+    },
+    {
+      "Model": "V7",
+      "Variant": "remove-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.232,
+      "Top6Rate": 0.528,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V7",
+      "Variant": "only-cycle",
+      "Samples": 1000,
+      "Top3Rate": 0.276,
+      "Top6Rate": 0.542,
+      "MaxTop3MissStreak": 15,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V7",
+      "Variant": "only-frequency",
+      "Samples": 1000,
+      "Top3Rate": 0.237,
+      "Top6Rate": 0.527,
+      "MaxTop3MissStreak": 23,
+      "MaxTop6MissStreak": 8
+    },
+    {
+      "Model": "V7",
+      "Variant": "only-omission",
+      "Samples": 1000,
+      "Top3Rate": 0.265,
+      "Top6Rate": 0.522,
+      "MaxTop3MissStreak": 18,
+      "MaxTop6MissStreak": 7
+    }
+  ]
+}
+REPORT_JSON=D:\a\ntr-v7\ntr-v7\docs\1000-ablation-report.json
+REPORT_MD=D:\a\ntr-v7\ntr-v7\docs\1000-ablation-report.md
