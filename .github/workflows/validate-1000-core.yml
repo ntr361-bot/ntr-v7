@@ -1,0 +1,76 @@
+name: V7 1000-period Core Validation
+
+on:
+  push:
+    branches:
+      - validation/1000-walkforward-20260913
+    paths:
+      - .github/workflows/validate-1000-core.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate-core:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout validation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Restore and build
+        shell: pwsh
+        run: |
+          dotnet restore PredictionRunner/PredictionRunner.csproj
+          dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+          dotnet restore Tests/六合分析软件.SmokeTests.csproj
+      - name: Rebuild isolated history database
+        shell: pwsh
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+      - name: Run 1000-period core walk-forward
+        id: core
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $program = 'Tests/Program.cs'
+          $text = Get-Content $program -Raw
+          $old = 'maxTargets: 300, mlMaxTargets: 40'
+          $new = 'maxTargets: 1000, mlMaxTargets: 0'
+          if (-not $text.Contains($old)) { throw 'Expected backtest limits not found' }
+          Set-Content -Path $program -Value ($text.Replace($old, $new)) -Encoding UTF8
+          dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
+          $output = & dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --model-redundancy-report 2>&1
+          $code = $LASTEXITCODE
+          $output | Tee-Object -FilePath docs/1000-core-validation-console.log | ForEach-Object { Write-Host $_ }
+          $match = $output | Select-String -Pattern '^REPORT_PATH=(.+)$' | Select-Object -Last 1
+          if ($match) {
+            $reportPath = $match.Matches[0].Groups[1].Value.Trim()
+            Copy-Item $reportPath docs/1000-core-validation-report.json -Force
+            $mdPath = Join-Path (Split-Path $reportPath -Parent) 'model-redundancy-report.md'
+            if (Test-Path $mdPath) { Copy-Item $mdPath docs/1000-core-validation-report.md -Force }
+          }
+          "exit_code=$code" | Set-Content docs/1000-core-validation-status.txt -Encoding UTF8
+          if ($code -ne 0) { exit $code }
+      - name: Commit core outputs
+        if: always()
+        shell: pwsh
+        run: |
+          git checkout -- Tests/Program.cs
+          git pull --rebase origin validation/1000-walkforward-20260913
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/1000-core-validation-*
+          if (git diff --cached --quiet) { exit 0 }
+          git commit -m "test: record 1000-period core validation"
+          git push origin HEAD:validation/1000-walkforward-20260913
+      - name: Fail if core validation failed
+        if: steps.core.outcome == 'failure'
+        shell: pwsh
+        run: exit 1
