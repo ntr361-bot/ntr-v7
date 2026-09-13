@@ -1,0 +1,90 @@
+name: V7 1000-period Walk-Forward Validation
+
+on:
+  push:
+    branches:
+      - validation/1000-walkforward-20260913
+    paths:
+      - .github/workflows/validate-1000-walkforward.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout validation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore and build runners
+        shell: pwsh
+        run: |
+          dotnet restore PredictionRunner/PredictionRunner.csproj
+          dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+          dotnet restore Tests/六合分析软件.SmokeTests.csproj
+          dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
+
+      - name: Rebuild isolated history database
+        shell: pwsh
+        run: |
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+
+      - name: Run 1000-period strict walk-forward
+        id: backtest
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force docs | Out-Null
+          $program = 'Tests/Program.cs'
+          $text = Get-Content $program -Raw
+          $old = 'maxTargets: 300, mlMaxTargets: 40'
+          $new = 'maxTargets: 1000, mlMaxTargets: 1000'
+          if (-not $text.Contains($old)) { throw "Expected backtest limits were not found in Tests/Program.cs" }
+          Set-Content -Path $program -Value ($text.Replace($old, $new)) -Encoding UTF8
+
+          $output = & dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --model-redundancy-report 2>&1
+          $code = $LASTEXITCODE
+          $output | Tee-Object -FilePath docs/1000-validation-console.log | ForEach-Object { Write-Host $_ }
+          "exit_code=$code" | Set-Content docs/1000-validation-status.txt -Encoding UTF8
+
+          $match = $output | Select-String -Pattern '^REPORT_PATH=(.+)$' | Select-Object -Last 1
+          if ($match) {
+            $reportPath = $match.Matches[0].Groups[1].Value.Trim()
+            Copy-Item $reportPath docs/1000-validation-report.json -Force
+            $mdPath = Join-Path (Split-Path $reportPath -Parent) 'model-redundancy-report.md'
+            if (Test-Path $mdPath) { Copy-Item $mdPath docs/1000-validation-report.md -Force }
+          }
+          if ($code -ne 0) { exit $code }
+
+      - name: Commit validation outputs to validation branch
+        if: always()
+        shell: pwsh
+        run: |
+          git checkout -- Tests/Program.cs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/1000-validation-console.log docs/1000-validation-status.txt
+          if (Test-Path docs/1000-validation-report.json) { git add docs/1000-validation-report.json }
+          if (Test-Path docs/1000-validation-report.md) { git add docs/1000-validation-report.md }
+          if (git diff --cached --quiet) {
+            Write-Host "No validation output changes to commit."
+            exit 0
+          }
+          git commit -m "test: record 1000-period walk-forward validation"
+          git push origin HEAD:validation/1000-walkforward-20260913
+
+      - name: Fail workflow if backtest failed
+        if: steps.backtest.outcome == 'failure'
+        shell: pwsh
+        run: exit 1
