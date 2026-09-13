@@ -32,11 +32,45 @@ public static class MacroP21P25Tests
         Check(form.Text.Contains("实验中心")&&form.Controls.Count>0,"P25 independent experiment/ask-model window exists");
         var parsed = WebsiteLearningParser.Parse("256期六肖中特【猴龙蛇羊虎牛】", "六肖", "sha256");
         Check(parsed.Issue == 256 && parsed.Zodiacs.SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}) && parsed.SourceHash == "sha256", "P25 website source parser extracts issue and zodiac set");
+        var isolated = WebsiteLearningParser.Parse("256期六肖中特【猴龙蛇羊虎牛】255期六肖中特【鼠兔狗猪】", "六肖", "sha256");
+        Check(isolated.Zodiacs.SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}), "P25 parser isolates the first issue block from prior issues");
+        var target = ParseExpectedIssue("257期六肖中特【兔鸡牛】256期六肖中特【猴龙蛇羊虎牛】255期六肖中特【鼠狗猪】", 256);
+        Check(target.Issue == 256 && target.Zodiacs.SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}), "P25 parser selects only the requested issue block");
+        var placeholder = ParseExpectedIssue("256期六生肖【猴龙蛇羊虎牛】开：<span>？00</span>255期六生肖【鼠狗猪】开：猪44", 256);
+        Check(placeholder.Zodiacs.SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}), "P25 parser accepts an unrevealed target issue placeholder");
+        Reject(()=>ParseExpectedIssue("256期六生肖【猴龙蛇羊虎牛】开：<span>猪44</span>255期六生肖【鼠狗】", 256), "P25 parser rejects a revealed target issue result");
+        Reject(()=>ParseExpectedIssue("256期【大双大单小单】开：？00 255期六生肖【猪鼠马】开：猪44", 256), "P25 parser cannot import zodiac values from a prior issue");
+        Reject(()=>ParseExpectedIssue("257期六生肖【兔鸡牛】", 256), "P25 parser rejects a missing target issue");
         Check(WebsiteLearningParser.IsPostResult("256期六肖【猴龙蛇羊虎牛】开：蛇02"), "P25 website parser rejects revealed result");
+        var issueBlocks = ParseAllIssueBlocks("256期六肖【猴龙蛇羊虎牛】开：？00 255期六肖【鼠兔狗猪】开：猪44");
+        Check(issueBlocks.Count == 2, "P25 crawler parser archives each website issue separately");
+        Check(ReadIssue(issueBlocks.Single(x => ReadIssue(x) == 256)) == 256 &&
+              ReadZodiacs(issueBlocks.Single(x => ReadIssue(x) == 256)).SequenceEqual(new[]{"猴","龙","蛇","羊","虎","牛"}) &&
+              ReadWebsiteResult(issueBlocks.Single(x => ReadIssue(x) == 256)) is null,
+              "P25 crawler parser keeps an unrevealed issue independent from older results");
+        Check(ReadWebsiteResult(issueBlocks.Single(x => ReadIssue(x) == 255)) == "猪" &&
+              ReadZodiacs(issueBlocks.Single(x => ReadIssue(x) == 255)).SequenceEqual(new[]{"鼠","兔","狗","猪"}),
+              "P25 crawler parser settles only the revealed issue from its own block");
         Check(V7PredictionHistoryService.IsV7DisplayedModel("P25-Web", 25), "P25 website record is visible in intelligent ledger");
         Check(V7PredictionHistoryService.FormatModelName("P25-Web") == "P25网站资料", "P25 website model has readable ledger name");
         Console.WriteLine("P21_P25_SMOKE_PASS"); return 0;
     }
+    static WebsiteParsedSignal ParseExpectedIssue(string text,int issue)
+    {
+        var method=typeof(WebsiteLearningParser).GetMethod("Parse",[typeof(string),typeof(string),typeof(string),typeof(int)]);
+        if(method is null)throw new Exception("P25 target-issue parser API is missing");
+        try{return (WebsiteParsedSignal)method.Invoke(null,[text,"test","sha256",issue])!;}
+        catch(System.Reflection.TargetInvocationException e)when(e.InnerException is not null){throw e.InnerException;}
+    }
+    static IReadOnlyList<object> ParseAllIssueBlocks(string text)
+    {
+        var method=typeof(WebsiteLearningParser).GetMethod("ParseAll",[typeof(string),typeof(string),typeof(string)]);
+        if(method is null)throw new Exception("P25 crawler parser ParseAll API is missing");
+        return ((System.Collections.IEnumerable)method.Invoke(null,[text,"test","sha256"])!).Cast<object>().ToArray();
+    }
+    static int ReadIssue(object value)=>(int)(value.GetType().GetProperty("Issue")?.GetValue(value) ?? throw new Exception("P25 issue snapshot lacks Issue"));
+    static IReadOnlyList<string> ReadZodiacs(object value)=>(IReadOnlyList<string>)(value.GetType().GetProperty("Zodiacs")?.GetValue(value) ?? throw new Exception("P25 issue snapshot lacks Zodiacs"));
+    static string? ReadWebsiteResult(object value)=>(string?)value.GetType().GetProperty("WebsiteResultZodiac")?.GetValue(value);
     sealed class FakeExplanationSource : IMacroExplanationSource
     {
         public MacroExplanationRecord? Read(string experiment,long issue)=>new(experiment,issue,DecisionType.Hold,.42,"证据不足",["RandomFluctuation"],["长期窗口未确认"],CriticVerdict.Caution,["样本不足"],ImmutableDictionary<string,double>.Empty,ImmutableDictionary<string,double>.Empty,null);
