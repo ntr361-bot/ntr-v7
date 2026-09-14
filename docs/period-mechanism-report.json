@@ -1,0 +1,404 @@
+{
+  "GeneratedAtUtc": "2026-09-14T01:02:26.9017169Z",
+  "Protocol": {
+    "HistoryCount": 1351,
+    "LatestAuditSamples": 1000,
+    "FirstAuditIssue": "2023352",
+    "LastAuditIssue": "2026255",
+    "Windows": [
+      20,
+      30,
+      40,
+      45,
+      50,
+      55,
+      60,
+      70,
+      80,
+      100,
+      120
+    ],
+    "Permutations": 200,
+    "Null": "\u540C\u4E00\u5E74\u4EFD\u5185\u90E8\u6D17\u724C\uFF0C\u4FDD\u6301\u5E74\u5EA6\u751F\u8096\u8FB9\u9645\u5206\u5E03\uFF1B\u516811\u7A97\u53E3\u53D6\u6BCF\u6B21\u7F6E\u6362\u7684\u6700\u5927Top6\u7528\u4E8E\u591A\u91CD\u6BD4\u8F83\u6821\u6B63\u3002",
+    "Warning": "\u4ECD\u5C5E\u4E8E\u540C\u4E00\u5386\u53F2\u6570\u636E\u4E0A\u7684\u673A\u5236\u5BA1\u8BA1\uFF0C\u4E0D\u662F\u65B0\u7684\u72EC\u7ACB\u672A\u6765\u6837\u672C\u3002"
+  },
+  "MechanismDecomposition": [
+    {
+      "Variant": "current",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 278,
+        "Top6Hits": 549,
+        "Top3Rate": 0.278,
+        "Top6Rate": 0.549,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 7
+      },
+      "NeutralTieExpectedTop6": 0.5340357142857145
+    },
+    {
+      "Variant": "strict-cv-min2",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 273,
+        "Top6Hits": 531,
+        "Top3Rate": 0.273,
+        "Top6Rate": 0.531,
+        "MaxTop3Miss": 15,
+        "MaxTop6Miss": 7
+      },
+      "NeutralTieExpectedTop6": 0.5316666666666666
+    },
+    {
+      "Variant": "strict-cv-min3",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 263,
+        "Top6Hits": 506,
+        "Top3Rate": 0.263,
+        "Top6Rate": 0.506,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 9
+      },
+      "NeutralTieExpectedTop6": 0.5050476190476192
+    },
+    {
+      "Variant": "strict-cv-min4",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 248,
+        "Top6Hits": 486,
+        "Top3Rate": 0.248,
+        "Top6Rate": 0.486,
+        "MaxTop3Miss": 18,
+        "MaxTop6Miss": 11
+      },
+      "NeutralTieExpectedTop6": 0.47641904761905063
+    },
+    {
+      "Variant": "fallback-only",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 285,
+        "Top6Hits": 509,
+        "Top3Rate": 0.285,
+        "Top6Rate": 0.509,
+        "MaxTop3Miss": 14,
+        "MaxTop6Miss": 9
+      },
+      "NeutralTieExpectedTop6": 0.5052166666666668
+    },
+    {
+      "Variant": "enough-intervals-only",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 242,
+        "Top6Hits": 508,
+        "Top3Rate": 0.242,
+        "Top6Rate": 0.508,
+        "MaxTop3Miss": 19,
+        "MaxTop6Miss": 9
+      },
+      "NeutralTieExpectedTop6": 0.4938547619047619
+    },
+    {
+      "Variant": "favor-fewer-intervals",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 257,
+        "Top6Hits": 527,
+        "Top3Rate": 0.257,
+        "Top6Rate": 0.527,
+        "MaxTop3Miss": 23,
+        "MaxTop6Miss": 7
+      },
+      "NeutralTieExpectedTop6": 0.5173142857142862
+    },
+    {
+      "Variant": "favor-more-intervals",
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 233,
+        "Top6Hits": 494,
+        "Top3Rate": 0.233,
+        "Top6Rate": 0.494,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 11
+      },
+      "NeutralTieExpectedTop6": 0.48268571428571366
+    }
+  ],
+  "SparseFallbackScoreSensitivity": [
+    {
+      "SparseScore": 20,
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 265,
+        "Top6Hits": 522,
+        "Top3Rate": 0.265,
+        "Top6Rate": 0.522,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 9
+      }
+    },
+    {
+      "SparseScore": 30,
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 272,
+        "Top6Hits": 535,
+        "Top3Rate": 0.272,
+        "Top6Rate": 0.535,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 9
+      }
+    },
+    {
+      "SparseScore": 40,
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 278,
+        "Top6Hits": 549,
+        "Top3Rate": 0.278,
+        "Top6Rate": 0.549,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 7
+      }
+    },
+    {
+      "SparseScore": 50,
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 284,
+        "Top6Hits": 545,
+        "Top3Rate": 0.284,
+        "Top6Rate": 0.545,
+        "MaxTop3Miss": 23,
+        "MaxTop6Miss": 7
+      }
+    },
+    {
+      "SparseScore": 60,
+      "Metric": {
+        "Samples": 1000,
+        "Top3Hits": 284,
+        "Top6Hits": 533,
+        "Top3Rate": 0.284,
+        "Top6Rate": 0.533,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 7
+      }
+    }
+  ],
+  "EarlierPre1000Segment": {
+    "Samples": 231,
+    "FirstIssue": "2023121",
+    "LastIssue": "2023351",
+    "CurrentFixedTie": {
+      "Samples": 231,
+      "Top3Hits": 54,
+      "Top6Hits": 114,
+      "Top3Rate": 0.23376623376623376,
+      "Top6Rate": 0.4935064935064935,
+      "MaxTop3Miss": 18,
+      "MaxTop6Miss": 6
+    },
+    "NeutralTieExpectedTop6": 0.48665223665223667,
+    "Caveat": "\u4EC5\u4F5C\u65F6\u95F4\u7A33\u5B9A\u6027\u8BCA\u65AD\uFF1B\u4E0D\u80FD\u89C6\u4E3A\u771F\u6B63\u72EC\u7ACB\uFF0C\u56E0\u4E3A\u6A21\u578B\u5F00\u53D1\u5386\u53F2\u53EF\u80FD\u5DF2\u63A5\u89E6\u8FD9\u4E9B\u6570\u636E\u3002"
+  },
+  "ByYear": [
+    {
+      "Year": "2023",
+      "Current": {
+        "Samples": 14,
+        "Top3Hits": 7,
+        "Top6Hits": 10,
+        "Top3Rate": 0.5,
+        "Top6Rate": 0.7142857142857143,
+        "MaxTop3Miss": 2,
+        "MaxTop6Miss": 2
+      },
+      "StrictCvMin3": {
+        "Samples": 14,
+        "Top3Hits": 7,
+        "Top6Hits": 8,
+        "Top3Rate": 0.5,
+        "Top6Rate": 0.5714285714285714,
+        "MaxTop3Miss": 2,
+        "MaxTop6Miss": 2
+      }
+    },
+    {
+      "Year": "2024",
+      "Current": {
+        "Samples": 366,
+        "Top3Hits": 96,
+        "Top6Hits": 201,
+        "Top3Rate": 0.26229508196721313,
+        "Top6Rate": 0.5491803278688525,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 7
+      },
+      "StrictCvMin3": {
+        "Samples": 366,
+        "Top3Hits": 90,
+        "Top6Hits": 178,
+        "Top3Rate": 0.2459016393442623,
+        "Top6Rate": 0.48633879781420764,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 8
+      }
+    },
+    {
+      "Year": "2025",
+      "Current": {
+        "Samples": 365,
+        "Top3Hits": 100,
+        "Top6Hits": 195,
+        "Top3Rate": 0.273972602739726,
+        "Top6Rate": 0.5342465753424658,
+        "MaxTop3Miss": 12,
+        "MaxTop6Miss": 7
+      },
+      "StrictCvMin3": {
+        "Samples": 365,
+        "Top3Hits": 97,
+        "Top6Hits": 188,
+        "Top3Rate": 0.26575342465753427,
+        "Top6Rate": 0.5150684931506849,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 8
+      }
+    },
+    {
+      "Year": "2026",
+      "Current": {
+        "Samples": 255,
+        "Top3Hits": 75,
+        "Top6Hits": 143,
+        "Top3Rate": 0.29411764705882354,
+        "Top6Rate": 0.5607843137254902,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 4
+      },
+      "StrictCvMin3": {
+        "Samples": 255,
+        "Top3Hits": 69,
+        "Top6Hits": 132,
+        "Top3Rate": 0.27058823529411763,
+        "Top6Rate": 0.5176470588235295,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 9
+      }
+    }
+  ],
+  "ZodiacSelectionBias": [
+    {
+      "Zodiac": "\u9F20",
+      "ActualRate": 0.087,
+      "SelectedTop6Rate": 0.611,
+      "HitContribution": 58
+    },
+    {
+      "Zodiac": "\u725B",
+      "ActualRate": 0.081,
+      "SelectedTop6Rate": 0.62,
+      "HitContribution": 58
+    },
+    {
+      "Zodiac": "\u864E",
+      "ActualRate": 0.088,
+      "SelectedTop6Rate": 0.518,
+      "HitContribution": 48
+    },
+    {
+      "Zodiac": "\u5154",
+      "ActualRate": 0.084,
+      "SelectedTop6Rate": 0.562,
+      "HitContribution": 54
+    },
+    {
+      "Zodiac": "\u9F99",
+      "ActualRate": 0.091,
+      "SelectedTop6Rate": 0.61,
+      "HitContribution": 57
+    },
+    {
+      "Zodiac": "\u86C7",
+      "ActualRate": 0.084,
+      "SelectedTop6Rate": 0.432,
+      "HitContribution": 40
+    },
+    {
+      "Zodiac": "\u9A6C",
+      "ActualRate": 0.081,
+      "SelectedTop6Rate": 0.524,
+      "HitContribution": 39
+    },
+    {
+      "Zodiac": "\u7F8A",
+      "ActualRate": 0.095,
+      "SelectedTop6Rate": 0.469,
+      "HitContribution": 53
+    },
+    {
+      "Zodiac": "\u7334",
+      "ActualRate": 0.08,
+      "SelectedTop6Rate": 0.558,
+      "HitContribution": 48
+    },
+    {
+      "Zodiac": "\u9E21",
+      "ActualRate": 0.077,
+      "SelectedTop6Rate": 0.32,
+      "HitContribution": 35
+    },
+    {
+      "Zodiac": "\u72D7",
+      "ActualRate": 0.078,
+      "SelectedTop6Rate": 0.418,
+      "HitContribution": 31
+    },
+    {
+      "Zodiac": "\u732A",
+      "ActualRate": 0.074,
+      "SelectedTop6Rate": 0.358,
+      "HitContribution": 28
+    }
+  ],
+  "ObservedWindowTop6": {
+    "20": 0.515,
+    "30": 0.511,
+    "40": 0.528,
+    "45": 0.543,
+    "50": 0.549,
+    "55": 0.546,
+    "60": 0.528,
+    "70": 0.51,
+    "80": 0.495,
+    "100": 0.487,
+    "120": 0.497
+  },
+  "Permutation": {
+    "Replicates": 200,
+    "GlobalAcrossAll11": {
+      "ObservedBestWindow": 50,
+      "ObservedMaxTop6": 0.549,
+      "NullMeanMax": 0.5244500000000004,
+      "Null95thMax": 0.543,
+      "AdjustedP": 0.024875621890547265
+    },
+    "Window50FixedTie": {
+      "Observed": 0.549,
+      "NullMean": 0.5049100000000002,
+      "Null95th": 0.53005,
+      "P": 0.004975124378109453
+    },
+    "Window50NeutralTieExpectation": {
+      "Observed": 0.5340357142857145,
+      "NullMean": 0.5010499186507942,
+      "Null95th": 0.5245389285714291,
+      "P": 0.009950248756218905
+    }
+  }
+}
