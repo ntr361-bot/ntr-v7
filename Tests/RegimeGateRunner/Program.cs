@@ -31,7 +31,6 @@ int firstOuterTarget = Math.Max(Warmup, history.Count - RequestedOuterSamples);
 var engine = new V65RuleScoringEngine();
 var states = new Dictionary<int, GateState>();
 
-// Gate 只允许使用开奖前可见状态；底层排名固定为 50期周期单信号。
 for (int target = Warmup; target < history.Count; target++)
 {
     var prefix = history.Take(target).ToList();
@@ -114,7 +113,6 @@ for (int outerStart = firstOuterTarget;
         .Select(g => Evaluate(g, innerStart, outerStart))
         .ToList();
 
-    // Gate 只能从过去数据中选择。最低覆盖30%，再按Top6的Wilson 95%下界排序，避免少量样本虚高。
     var eligible = innerResults
         .Where(x => x.Coverage >= MinimumInnerCoverage)
         .ToList();
@@ -269,18 +267,6 @@ static double AverageTop6Jaccard(params IReadOnlyList<string>[] rankings)
     return pairs == 0 ? 0 : total / pairs;
 }
 
-static double WilsonLower95(int hits, int n)
-{
-    if (n <= 0) return 0;
-    const double z = 1.959963984540054;
-    double p = hits / (double)n;
-    double z2 = z * z;
-    double denom = 1 + z2 / n;
-    double center = p + z2 / (2 * n);
-    double margin = z * Math.Sqrt((p * (1 - p) + z2 / (4 * n)) / n);
-    return (center - margin) / denom;
-}
-
 sealed record GateState(
     int Index,
     string Issue,
@@ -381,10 +367,22 @@ sealed class GateMetric
             periods == 0 ? 0 : bets / (double)periods,
             top3,
             top6,
-            WilsonLower95(top6Hits, bets),
+            ComputeWilsonLower95(top6Hits, bets),
             skipped,
             skipped == 0 ? 0 : skippedTop6Hits / (double)skipped,
             maxBetTop3Miss,
             maxBetTop6Miss);
+    }
+
+    private static double ComputeWilsonLower95(int hits, int n)
+    {
+        if (n <= 0) return 0;
+        const double z = 1.959963984540054;
+        double p = hits / (double)n;
+        double z2 = z * z;
+        double denom = 1 + z2 / n;
+        double center = p + z2 / (2 * n);
+        double margin = z * Math.Sqrt((p * (1 - p) + z2 / (4 * n)) / n);
+        return (center - margin) / denom;
     }
 }
