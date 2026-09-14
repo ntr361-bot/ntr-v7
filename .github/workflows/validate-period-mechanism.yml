@@ -1,0 +1,60 @@
+name: Period Mechanism Audit
+
+on:
+  push:
+    branches:
+      - validation/1000-walkforward-20260913
+    paths:
+      - .github/workflows/validate-period-mechanism.yml
+      - Tests/PeriodMechanismRunner/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  period-mechanism:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      LIUHE_DATA_DIR: ${{ github.workspace }}\data
+
+    steps:
+      - name: Checkout validation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build
+        shell: pwsh
+        run: |
+          dotnet restore PredictionRunner/PredictionRunner.csproj
+          dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+          dotnet restore Tests/PeriodMechanismRunner/PeriodMechanismRunner.csproj
+          dotnet build Tests/PeriodMechanismRunner/PeriodMechanismRunner.csproj --configuration Release --no-restore
+
+      - name: Rebuild isolated history database
+        shell: pwsh
+        run: |
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+
+      - name: Run period mechanism audit
+        shell: pwsh
+        run: |
+          dotnet run --project Tests/PeriodMechanismRunner/PeriodMechanismRunner.csproj --configuration Release --no-build | Tee-Object -FilePath docs/period-mechanism-console.log
+
+      - name: Commit research report
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/period-mechanism-report.json docs/period-mechanism-console.log
+          if (git diff --cached --quiet) { exit 0 }
+          git commit -m "test: record period mechanism audit"
+          git pull --rebase origin validation/1000-walkforward-20260913
+          git push origin HEAD:validation/1000-walkforward-20260913
