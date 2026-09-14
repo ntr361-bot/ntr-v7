@@ -65,6 +65,19 @@ public static class MacroP21P25Tests
                 "P25 crawler archive stores website result and source hit evidence");
         }
         finally { System.Data.SQLite.SQLiteConnection.ClearAllPools(); try { if (File.Exists(archivePath)) File.Delete(archivePath); } catch (IOException) { } }
+        var weights = CalculateWebsiteWeights(
+            Enumerable.Range(1, 12).Select(issue => ("strong", issue, true, true, "Consistent"))
+            .Concat(Enumerable.Range(1, 12).Select(issue => ("weak", issue, false, false, "Consistent")))
+            .Append(("new", 30, true, true, "Consistent"))
+            .Append(("ignored", 31, true, true, "Conflict")).ToArray());
+        Check(ReadWeight(weights, "strong") > ReadWeight(weights, "weak"), "P25 crawler learning gives stronger sources more influence");
+        Check(Math.Abs(ReadWeight(weights, "new") - 1d) < .2d && !weights.ContainsKey("ignored"),
+            "P25 crawler learning keeps small samples neutral and excludes conflicts");
+        Check(RankWithWebsiteWeights(new[]{
+                new WebsiteParsedSignal("strong",256,new[]{"龙"},"",""),
+                new WebsiteParsedSignal("weak",256,new[]{"鼠"},"","") },
+                new Dictionary<string,double>{{"strong",1.5d},{"weak",.5d}}).First() == "龙",
+            "P25 crawler ranking applies learned source influence");
         Check(V7PredictionHistoryService.IsV7DisplayedModel("P25-Web", 25), "P25 website record is visible in intelligent ledger");
         Check(V7PredictionHistoryService.FormatModelName("P25-Web") == "P25网站资料", "P25 website model has readable ledger name");
         Console.WriteLine("P21_P25_SMOKE_PASS"); return 0;
@@ -103,6 +116,30 @@ public static class MacroP21P25Tests
     }
     static object ReadProperty(object value,string name)=>value.GetType().GetProperty(name)?.GetValue(value) ?? throw new Exception($"P25 archive record lacks {name}");
     static string ReadTextProperty(object value,string name)=>(string)ReadProperty(value,name);
+    static IReadOnlyDictionary<string,object> CalculateWebsiteWeights((string SourceId,int Issue,bool Top3Hit,bool Top6Hit,string Consistency)[] rows)
+    {
+        var assembly=typeof(WebsiteLearningParser).Assembly;
+        var outcomeType=assembly.GetType("六合分析软件.MacroReasoning.WebsiteLearningSourceOutcome")
+            ?? throw new Exception("P25 website source outcome API is missing");
+        var outcomeArray=Array.CreateInstance(outcomeType,rows.Length);
+        for(int index=0;index<rows.Length;index++)
+        {
+            var row=rows[index];
+            outcomeArray.SetValue(Activator.CreateInstance(outcomeType,[row.SourceId,(long)row.Issue,row.Top3Hit,row.Top6Hit,row.Consistency,DateTimeOffset.UtcNow]),index);
+        }
+        var service=assembly.GetType("六合分析软件.MacroReasoning.WebsiteLearningWeightService")
+            ?? throw new Exception("P25 website weight service API is missing");
+        var method=service.GetMethod("Calculate") ?? throw new Exception("P25 website weight calculation API is missing");
+        var raw=(System.Collections.IDictionary)(method.Invoke(null,[outcomeArray]) ?? throw new Exception("P25 website weights are missing"));
+        return raw.Keys.Cast<string>().ToDictionary(key=>key,value=>raw[value]!);
+    }
+    static double ReadWeight(IReadOnlyDictionary<string,object> weights,string source)=>(double)ReadProperty(weights[source],"Weight");
+    static IReadOnlyList<string> RankWithWebsiteWeights(IReadOnlyList<WebsiteParsedSignal> signals,IReadOnlyDictionary<string,double> weights)
+    {
+        var method=typeof(WebsiteLearningService).GetMethod("Rank",[typeof(IEnumerable<WebsiteParsedSignal>),typeof(int),typeof(IReadOnlyDictionary<string,double>)]);
+        if(method is null)throw new Exception("P25 weighted ranking API is missing");
+        return (IReadOnlyList<string>)(method.Invoke(null,[signals,256,weights]) ?? throw new Exception("P25 weighted ranking is missing"));
+    }
     sealed class FakeExplanationSource : IMacroExplanationSource
     {
         public MacroExplanationRecord? Read(string experiment,long issue)=>new(experiment,issue,DecisionType.Hold,.42,"证据不足",["RandomFluctuation"],["长期窗口未确认"],CriticVerdict.Caution,["样本不足"],ImmutableDictionary<string,double>.Empty,ImmutableDictionary<string,double>.Empty,null);

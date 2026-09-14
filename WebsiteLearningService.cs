@@ -12,6 +12,10 @@ public sealed record WebsiteLearningIssueSnapshot(string SourceId, int Issue, IR
     string RawText, string SourceHash, string? WebsiteResultZodiac);
 public sealed record WebsiteLearningSettlement(long CaptureId, string WebsiteResultZodiac, string? LocalResultZodiac,
     string Consistency, bool Top3Hit, bool Top6Hit, DateTimeOffset SettledAt);
+public sealed record WebsiteLearningSourceOutcome(string SourceId, long Issue, bool Top3Hit, bool Top6Hit,
+    string Consistency, DateTimeOffset SettledAt);
+public sealed record WebsiteLearningSourceWeight(string SourceId, double Weight, int SampleCount,
+    double Top3Rate, double Top6Rate);
 
 public static class WebsiteLearningParser
 {
@@ -152,6 +156,33 @@ public sealed class WebsiteLearningArchive
     }
 }
 
+public static class WebsiteLearningWeightService
+{
+    private const double PriorSamples = 12d;
+    public static IReadOnlyDictionary<string, WebsiteLearningSourceWeight> Calculate(
+        IEnumerable<WebsiteLearningSourceOutcome> outcomes)
+    {
+        var provisional = outcomes.Where(outcome => !string.Equals(outcome.Consistency, "Conflict", StringComparison.Ordinal))
+            .GroupBy(outcome => outcome.SourceId, StringComparer.Ordinal)
+            .Select(group =>
+            {
+                var samples = group.OrderByDescending(item => item.Issue).ToArray();
+                double total = samples.Sum(item => Math.Pow(.97d, samples[0].Issue - item.Issue));
+                double top3 = samples.Where(item => item.Top3Hit).Sum(item => Math.Pow(.97d, samples[0].Issue - item.Issue));
+                double top6 = samples.Where(item => item.Top6Hit).Sum(item => Math.Pow(.97d, samples[0].Issue - item.Issue));
+                double top3Rate = total == 0 ? 0 : top3 / total;
+                double top6Rate = total == 0 ? 0 : top6 / total;
+                double observed = top3Rate * .7d + top6Rate * .3d;
+                double shrunk = (observed * samples.Length + .5d * PriorSamples) / (samples.Length + PriorSamples);
+                return new { SourceId = group.Key, Samples = samples.Length, Top3Rate = top3Rate, Top6Rate = top6Rate, Raw = Math.Clamp(shrunk, .5d, 1.5d) };
+            }).OrderBy(item => item.SourceId, StringComparer.Ordinal).ToArray();
+        if (provisional.Length == 0) return new Dictionary<string, WebsiteLearningSourceWeight>(StringComparer.Ordinal);
+        double mean = provisional.Average(item => item.Raw);
+        return provisional.ToDictionary(item => item.SourceId, item => new WebsiteLearningSourceWeight(item.SourceId,
+            Math.Clamp(item.Raw / mean, .5d, 1.5d), item.Samples, item.Top3Rate, item.Top6Rate), StringComparer.Ordinal);
+    }
+}
+
 public sealed class WebsiteLearningService(HttpClient? client = null)
 {
     private readonly HttpClient http = client ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
@@ -175,8 +206,14 @@ public sealed class WebsiteLearningService(HttpClient? client = null)
     }
     public static IReadOnlyList<string> Rank(IEnumerable<WebsiteParsedSignal> signals, int issue)
     {
-        var counts = signals.Where(x => x.Issue == issue).SelectMany(x => x.Zodiacs)
-            .GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count(), StringComparer.Ordinal);
+        return Rank(signals, issue, null);
+    }
+    public static IReadOnlyList<string> Rank(IEnumerable<WebsiteParsedSignal> signals, int issue,
+        IReadOnlyDictionary<string, double>? sourceWeights)
+    {
+        var counts = signals.Where(x => x.Issue == issue).SelectMany(signal => signal.Zodiacs.Select(zodiac => new
+            { Zodiac = zodiac, Weight = sourceWeights?.GetValueOrDefault(signal.SourceId, 1d) ?? 1d }))
+            .GroupBy(item => item.Zodiac).ToDictionary(group => group.Key, group => group.Sum(item => item.Weight), StringComparer.Ordinal);
         return new[]{"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"}
             .OrderByDescending(x => counts.GetValueOrDefault(x)).ThenBy(x => Array.IndexOf(new[]{"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"}, x)).ToArray();
     }
