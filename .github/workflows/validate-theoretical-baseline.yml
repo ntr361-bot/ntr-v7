@@ -1,0 +1,54 @@
+name: Theoretical Zodiac Baseline Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - validation/1000-walkforward-20260913
+    paths:
+      - "Tests/TheoreticalBaselineAuditRunner/**"
+      - ".github/workflows/validate-theoretical-baseline.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  baseline-audit:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout validation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build
+        shell: pwsh
+        run: |
+          dotnet restore Tests/TheoreticalBaselineAuditRunner/TheoreticalBaselineAuditRunner.csproj
+          dotnet build Tests/TheoreticalBaselineAuditRunner/TheoreticalBaselineAuditRunner.csproj --configuration Release --no-restore
+
+      - name: Run exact baseline audit
+        shell: pwsh
+        run: |
+          dotnet run `
+            --project Tests/TheoreticalBaselineAuditRunner/TheoreticalBaselineAuditRunner.csproj `
+            --configuration Release `
+            --no-build | Tee-Object -FilePath docs/theoretical-baseline-audit-console.log
+
+      - name: Commit research report
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/theoretical-baseline-audit.json docs/theoretical-baseline-audit.md docs/theoretical-baseline-audit-console.log
+          if (git diff --cached --quiet) { exit 0 }
+          git commit -m "test: record exact zodiac baseline audit"
+          git pull --rebase origin validation/1000-walkforward-20260913
+          git push origin HEAD:validation/1000-walkforward-20260913
