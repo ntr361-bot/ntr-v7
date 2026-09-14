@@ -16,6 +16,8 @@ public sealed record WebsiteLearningSourceOutcome(string SourceId, long Issue, b
     string Consistency, DateTimeOffset SettledAt);
 public sealed record WebsiteLearningSourceWeight(string SourceId, double Weight, int SampleCount,
     double Top3Rate, double Top6Rate);
+public sealed record WebsiteLearningCycle(IReadOnlyList<WebsiteParsedSignal> Signals, IReadOnlyList<string> Ranking,
+    IReadOnlyDictionary<string, WebsiteLearningSourceWeight> Weights);
 
 public static class WebsiteLearningParser
 {
@@ -136,6 +138,20 @@ public sealed class WebsiteLearningArchive
         }
         return new(captureId, websiteResultZodiac, localResultZodiac, consistency, top3Hit, top6Hit, settledAt);
     }
+    public IReadOnlyList<WebsiteLearningSourceOutcome> ReadOutcomes()
+    {
+        using var connection = Open();
+        EnsureSchema(connection);
+        using var read = new SQLiteCommand(@"SELECT Capture.SourceId, Capture.Issue, Settlement.Top3Hit, Settlement.Top6Hit,
+            Settlement.Consistency, Settlement.SettledAt
+            FROM WebsiteLearningSettlement Settlement
+            JOIN WebsiteLearningCapture Capture ON Capture.Id=Settlement.CaptureId", connection);
+        using var rows = read.ExecuteReader();
+        var outcomes = new List<WebsiteLearningSourceOutcome>();
+        while (rows.Read()) outcomes.Add(new(rows.GetString(0), rows.GetInt64(1), rows.GetInt32(2) != 0,
+            rows.GetInt32(3) != 0, rows.GetString(4), DateTimeOffset.Parse(rows.GetString(5))));
+        return outcomes;
+    }
 
     private SQLiteConnection Open()
     {
@@ -186,23 +202,29 @@ public static class WebsiteLearningWeightService
 public sealed class WebsiteLearningService(HttpClient? client = null)
 {
     private readonly HttpClient http = client ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
-    public async Task<IReadOnlyList<WebsiteParsedSignal>> FetchAsync(Uri page, int expectedIssue, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<WebsiteLearningIssueSnapshot>> FetchAllAsync(Uri page, CancellationToken cancellationToken = default)
     {
         var html = await http.GetStringAsync(page, cancellationToken);
         var sources = Regex.Matches(html, @"<script[^>]+src=['""]([^'""]+)", RegexOptions.IgnoreCase)
             .Select(m => m.Groups[1].Value).Where(x => x.Contains("/bbs/") &&
                 (x.Contains("6x.js") || x.Contains("3bds.js") || x.Contains("x3x6m.js") || x.Contains("6x18mm.js")))
             .Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
-        var list = new List<WebsiteParsedSignal>();
+        var list = new List<WebsiteLearningIssueSnapshot>();
         foreach (var source in sources)
         {
             var uri = new Uri(page, source);
             var raw = await http.GetStringAsync(uri, cancellationToken);
             var normalized = WebsiteLearningParser.NormalizeScript(raw);
-            try { list.Add(WebsiteLearningParser.Parse(normalized, source, WebsiteLearningParser.Sha256(raw), expectedIssue)); }
+            try { list.AddRange(WebsiteLearningParser.ParseAll(normalized, source, WebsiteLearningParser.Sha256(raw))); }
             catch (InvalidDataException) { }
         }
         return list;
+    }
+    public async Task<IReadOnlyList<WebsiteParsedSignal>> FetchAsync(Uri page, int expectedIssue, CancellationToken cancellationToken = default)
+    {
+        return (await FetchAllAsync(page, cancellationToken)).Where(snapshot => snapshot.Issue == expectedIssue &&
+            snapshot.WebsiteResultZodiac is null && snapshot.Zodiacs.Count > 0).Select(snapshot =>
+            new WebsiteParsedSignal(snapshot.SourceId, snapshot.Issue, snapshot.Zodiacs, snapshot.RawText, snapshot.SourceHash)).ToArray();
     }
     public static IReadOnlyList<string> Rank(IEnumerable<WebsiteParsedSignal> signals, int issue)
     {
@@ -222,16 +244,40 @@ public sealed class WebsiteLearningService(HttpClient? client = null)
 public static class WebsiteLearningIntegration
 {
     private static readonly Uri Page = new("https://x17.xn--hdcl2bk2m1bc.xn--gecrj9c:8443/62.html");
+    public static WebsiteLearningCycle ArchiveAndRank(long targetIssue,
+        IReadOnlyList<WebsiteLearningIssueSnapshot> snapshots, WebsiteLearningArchive archive,
+        Func<long, string?> localResultLookup)
+    {
+        int targetShortIssue = checked((int)(targetIssue % 1000));
+        foreach (WebsiteLearningIssueSnapshot snapshot in snapshots)
+        {
+            long fullIssue = targetIssue - targetShortIssue + snapshot.Issue;
+            long captureId = archive.SaveCapture(fullIssue, snapshot.SourceId, snapshot.SourceHash, snapshot.RawText,
+                snapshot.Zodiacs, DateTimeOffset.Now);
+            if (snapshot.WebsiteResultZodiac is not null)
+                archive.Settle(captureId, snapshot.WebsiteResultZodiac, localResultLookup(fullIssue), DateTimeOffset.Now);
+        }
+        var weights = WebsiteLearningWeightService.Calculate(archive.ReadOutcomes());
+        var signals = snapshots.Where(snapshot => snapshot.Issue == targetShortIssue && snapshot.WebsiteResultZodiac is null &&
+                snapshot.Zodiacs.Count > 0).Select(snapshot => new WebsiteParsedSignal(snapshot.SourceId, snapshot.Issue,
+                snapshot.Zodiacs, snapshot.RawText, snapshot.SourceHash)).ToArray();
+        return new(signals, WebsiteLearningService.Rank(signals, targetShortIssue,
+            weights.ToDictionary(pair => pair.Key, pair => pair.Value.Weight, StringComparer.Ordinal)), weights);
+    }
     public static bool Publish(long targetIssue)
     {
+        int shortIssue = checked((int)(targetIssue % 1000));
+        var service = new WebsiteLearningService();
+        var snapshots = service.FetchAllAsync(Page).GetAwaiter().GetResult();
+        var localResults = DatabaseHelper.GetLatestHistory(int.MaxValue).Where(record => !string.IsNullOrWhiteSpace(record.Period))
+            .GroupBy(record => record.Period).ToDictionary(group => group.Key, group => group.First().SpecialZodiac, StringComparer.Ordinal);
+        var cycle = ArchiveAndRank(targetIssue, snapshots, new WebsiteLearningArchive(DatabaseHelper.DatabasePath),
+            issue => localResults.GetValueOrDefault(issue.ToString()));
         if (DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == targetIssue.ToString() &&
             row.ModelVersion == "P25-Web" && row.AnalysisPeriods == 25))
             return false;
-        int shortIssue = checked((int)(targetIssue % 1000));
-        var service = new WebsiteLearningService();
-        var signals = service.FetchAsync(Page, shortIssue).GetAwaiter().GetResult();
-        var ranking = WebsiteLearningService.Rank(signals, shortIssue);
-        var usable = signals.Where(x => x.Issue == shortIssue).ToArray();
+        var ranking = cycle.Ranking;
+        var usable = cycle.Signals.ToArray();
         if (usable.Length == 0) throw new InvalidDataException($"网站没有第{shortIssue}期资料");
         string[] top6 = ranking.Take(6).ToArray();
         string[] top3 = top6.Take(3).ToArray();
@@ -242,6 +288,8 @@ public static class WebsiteLearningIntegration
             source_issue = shortIssue,
             captured_at = DateTimeOffset.Now,
             sources = usable.Select(x => new { x.SourceId, x.SourceHash, zodiacs = x.Zodiacs }).ToArray(),
+            weights = cycle.Weights.Values.OrderBy(weight => weight.SourceId).Select(weight => new
+            { weight.SourceId, weight.Weight, weight.SampleCount, weight.Top3Rate, weight.Top6Rate }).ToArray(),
             ranking = ranking.ToArray()
         });
         DatabaseHelper.SavePrediction(targetIssue.ToString(), string.Join(",", top3), string.Join(",", top6), "",

@@ -78,6 +78,20 @@ public static class MacroP21P25Tests
                 new WebsiteParsedSignal("weak",256,new[]{"鼠"},"","") },
                 new Dictionary<string,double>{{"strong",1.5d},{"weak",.5d}}).First() == "龙",
             "P25 crawler ranking applies learned source influence");
+        string cyclePath = Path.Combine(Path.GetTempPath(), "p25-web-cycle-" + Guid.NewGuid() + ".db");
+        try
+        {
+            var cycle = RunWebsiteLearningCycle(2026256, new[]
+            {
+                new WebsiteLearningIssueSnapshot("6x.js",255,new[]{"猪","鼠","兔"},"255期六肖【猪鼠兔】开：猪44","old-hash","猪"),
+                new WebsiteLearningIssueSnapshot("6x.js",256,new[]{"龙","蛇","鸡"},"256期六肖【龙蛇鸡】开：？00","new-hash",null)
+            }, new WebsiteLearningArchive(cyclePath));
+            var signals = ((System.Collections.IEnumerable)ReadProperty(cycle,"Signals")).Cast<object>().ToArray();
+            Check(signals.Length == 1 && ReadIssue(signals[0]) == 256 &&
+                  ((IReadOnlyList<string>)ReadProperty(cycle,"Ranking")).First() == "龙",
+                  "P25 crawler archives historical website evidence before ranking only the target issue");
+        }
+        finally { System.Data.SQLite.SQLiteConnection.ClearAllPools(); try { if (File.Exists(cyclePath)) File.Delete(cyclePath); } catch (IOException) { } }
         Check(V7PredictionHistoryService.IsV7DisplayedModel("P25-Web", 25), "P25 website record is visible in intelligent ledger");
         Check(V7PredictionHistoryService.FormatModelName("P25-Web") == "P25网站资料", "P25 website model has readable ledger name");
         Console.WriteLine("P21_P25_SMOKE_PASS"); return 0;
@@ -139,6 +153,12 @@ public static class MacroP21P25Tests
         var method=typeof(WebsiteLearningService).GetMethod("Rank",[typeof(IEnumerable<WebsiteParsedSignal>),typeof(int),typeof(IReadOnlyDictionary<string,double>)]);
         if(method is null)throw new Exception("P25 weighted ranking API is missing");
         return (IReadOnlyList<string>)(method.Invoke(null,[signals,256,weights]) ?? throw new Exception("P25 weighted ranking is missing"));
+    }
+    static object RunWebsiteLearningCycle(long targetIssue,IReadOnlyList<WebsiteLearningIssueSnapshot> snapshots,WebsiteLearningArchive archive)
+    {
+        var method=typeof(WebsiteLearningIntegration).GetMethod("ArchiveAndRank");
+        if(method is null)throw new Exception("P25 crawler learning cycle API is missing");
+        return method.Invoke(null,[targetIssue,snapshots,archive,(Func<long,string?>)(_=>null)]) ?? throw new Exception("P25 crawler learning cycle is missing");
     }
     sealed class FakeExplanationSource : IMacroExplanationSource
     {
