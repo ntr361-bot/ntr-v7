@@ -1703,13 +1703,13 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
         .ToArray();
     Assert(versions.Contains("V6.5"), "legacy prediction history lost its V6.5 row");
     Assert(versions.Contains("V6.5 AutoLearning"), "AI prediction history should display the V6.5 automatic-learning row");
-    Assert(!versions.Contains("V7 AutoLearning"), "AI prediction history should hide the background V7 automatic-learning row");
+    Assert(versions.Contains("V7 AutoLearning"), "AI prediction history should display the V7 automatic-learning row");
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
     Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
-            .All(version => version is "V7"),
-        "AI prediction history should display only the integrated V7 row");
+            .All(version => version is "V7" or "V7 AutoLearning"),
+        "AI prediction history should display only the integrated V7 rows");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
         .ToArray();
