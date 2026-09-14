@@ -1,0 +1,192 @@
+{
+  "GeneratedAtUtc": "2026-09-14T01:28:04.6114563Z",
+  "Protocol": {
+    "HistoryCount": 1351,
+    "Window": 50,
+    "Rule": "\u9010\u671F\u6309\u5F00\u5956\u65E5\u671F\u8BA1\u7B97\u519C\u5386\u5E74\u751F\u8096\u53F7\u7801\u8868\u3002\u672C\u547D\u751F\u80965\u4E2A\u53F7\u7801\uFF0C\u5176\u4F5911\u80964\u4E2A\u53F7\u7801\u3002Top6\u7406\u8BBA\u968F\u673A\u8986\u76D6\u7387\u6309\u6A21\u578B\u5F53\u671F\u5404\u751F\u8096\u8FDB\u5165Top6\u7684\u6982\u7387\u52A0\u6743\u8BA1\u7B97\uFF0C\u4E0D\u518D\u56FA\u5B9A\u752850%\u3002",
+    "NeutralTie": "\u540C\u5206\u8FB9\u754C\u6309\u5747\u5300\u968F\u673A\u5206\u914D\uFF1A\u6BCF\u4E2A\u751F\u8096\u8BA1\u7B97\u8FDB\u5165Top6\u6982\u7387\uFF0C\u518D\u540C\u65F6\u7528\u4E8E\u89C2\u5BDF\u547D\u4E2D\u671F\u671B\u548C\u7406\u8BBA\u53F7\u7801\u8986\u76D6\u7387\u3002",
+    "Candidates": [
+      "regularity50",
+      "clean50",
+      "old-period50"
+    ],
+    "Warning": "\u8FD9\u662F\u5BF9\u65E2\u6709\u5019\u9009\u7684\u57FA\u51C6\u6821\u6B63\uFF0C\u4E0D\u662F\u65B0\u72EC\u7ACB\u6837\u672C\u3002"
+  },
+  "Latest1000": {
+    "Samples": 1000,
+    "FirstIssue": "2023352",
+    "LastIssue": "2026255",
+    "Metrics": {
+      "regularity50": {
+        "Samples": 1000,
+        "ObservedTop6": 0.53125,
+        "TheoreticalBaseline": 0.5027959183673464,
+        "Edge": 0.028454081632653616,
+        "YearZodiacIncludedRate": 0.637
+      },
+      "clean50": {
+        "Samples": 1000,
+        "ObservedTop6": 0.5313333333333333,
+        "TheoreticalBaseline": 0.4993537414965988,
+        "Edge": 0.031979591836734544,
+        "YearZodiacIncludedRate": 0.465
+      },
+      "old-period50": {
+        "Samples": 1000,
+        "ObservedTop6": 0.5340357142857145,
+        "TheoreticalBaseline": 0.5008724489795916,
+        "Edge": 0.0331632653061229,
+        "YearZodiacIncludedRate": 0.546
+      }
+    },
+    "ByYear": {
+      "regularity50": {
+        "2023": {
+          "Samples": 14,
+          "ObservedTop6": 0.6428571428571429,
+          "TheoreticalBaseline": 0.5102040816326527,
+          "Edge": 0.13265306122449017,
+          "YearZodiacIncludedRate": 1
+        },
+        "2024": {
+          "Samples": 366,
+          "ObservedTop6": 0.5416666666666666,
+          "TheoreticalBaseline": 0.505576000892159,
+          "Edge": 0.03609066577450759,
+          "YearZodiacIncludedRate": 0.773224043715847
+        },
+        "2025": {
+          "Samples": 365,
+          "ObservedTop6": 0.5342465753424658,
+          "TheoreticalBaseline": 0.5008107352530053,
+          "Edge": 0.033435840089460434,
+          "YearZodiacIncludedRate": 0.5397260273972603
+        },
+        "2026": {
+          "Samples": 255,
+          "ObservedTop6": 0.5058823529411764,
+          "TheoreticalBaseline": 0.5012404961984792,
+          "Edge": 0.004641856742697237,
+          "YearZodiacIncludedRate": 0.5607843137254902
+        }
+      },
+      "clean50": {
+        "2023": {
+          "Samples": 14,
+          "ObservedTop6": 0.5714285714285714,
+          "TheoreticalBaseline": 0.5072886297376091,
+          "Edge": 0.06413994169096227,
+          "YearZodiacIncludedRate": 0.8571428571428571
+        },
+        "2024": {
+          "Samples": 366,
+          "ObservedTop6": 0.5596539162112932,
+          "TheoreticalBaseline": 0.5024534403925499,
+          "Edge": 0.057200475818743324,
+          "YearZodiacIncludedRate": 0.6174863387978142
+        },
+        "2025": {
+          "Samples": 365,
+          "ObservedTop6": 0.5095890410958904,
+          "TheoreticalBaseline": 0.49874196253844,
+          "Edge": 0.01084707855745043,
+          "YearZodiacIncludedRate": 0.4301369863013699
+        },
+        "2026": {
+          "Samples": 255,
+          "ObservedTop6": 0.5196078431372549,
+          "TheoreticalBaseline": 0.49534480458850283,
+          "Edge": 0.024263038548752114,
+          "YearZodiacIncludedRate": 0.27450980392156865
+        }
+      },
+      "old-period50": {
+        "2023": {
+          "Samples": 14,
+          "ObservedTop6": 0.7142857142857143,
+          "TheoreticalBaseline": 0.5102040816326527,
+          "Edge": 0.20408163265306156,
+          "YearZodiacIncludedRate": 1
+        },
+        "2024": {
+          "Samples": 366,
+          "ObservedTop6": 0.5330145719489982,
+          "TheoreticalBaseline": 0.5029366938032038,
+          "Edge": 0.030077878145794323,
+          "YearZodiacIncludedRate": 0.6502732240437158
+        },
+        "2025": {
+          "Samples": 365,
+          "ObservedTop6": 0.5204566210045661,
+          "TheoreticalBaseline": 0.5005358307706641,
+          "Edge": 0.01992079023390203,
+          "YearZodiacIncludedRate": 0.5287671232876713
+        },
+        "2026": {
+          "Samples": 255,
+          "ObservedTop6": 0.5450420168067227,
+          "TheoreticalBaseline": 0.4978791516606646,
+          "Edge": 0.04716286514605811,
+          "YearZodiacIncludedRate": 0.396078431372549
+        }
+      }
+    }
+  },
+  "EarlierSegment": {
+    "Samples": 231,
+    "FirstIssue": "2023121",
+    "LastIssue": "2023351",
+    "Metrics": {
+      "regularity50": {
+        "Samples": 231,
+        "ObservedTop6": 0.5084415584415585,
+        "TheoreticalBaseline": 0.50239420443502,
+        "Edge": 0.006047354006538441,
+        "YearZodiacIncludedRate": 0.6147186147186147
+      },
+      "clean50": {
+        "Samples": 231,
+        "ObservedTop6": 0.51010101010101,
+        "TheoreticalBaseline": 0.4999116529728774,
+        "Edge": 0.010189357128132681,
+        "YearZodiacIncludedRate": 0.4935064935064935
+      },
+      "old-period50": {
+        "Samples": 231,
+        "ObservedTop6": 0.48665223665223667,
+        "TheoreticalBaseline": 0.4976057955649789,
+        "Edge": -0.010953558912742245,
+        "YearZodiacIncludedRate": 0.3852813852813853
+      }
+    },
+    "ByYear": {
+      "regularity50": {
+        "2023": {
+          "Samples": 231,
+          "ObservedTop6": 0.5084415584415585,
+          "TheoreticalBaseline": 0.50239420443502,
+          "Edge": 0.006047354006538441,
+          "YearZodiacIncludedRate": 0.6147186147186147
+        }
+      },
+      "clean50": {
+        "2023": {
+          "Samples": 231,
+          "ObservedTop6": 0.51010101010101,
+          "TheoreticalBaseline": 0.4999116529728774,
+          "Edge": 0.010189357128132681,
+          "YearZodiacIncludedRate": 0.4935064935064935
+        }
+      },
+      "old-period50": {
+        "2023": {
+          "Samples": 231,
+          "ObservedTop6": 0.48665223665223667,
+          "TheoreticalBaseline": 0.4976057955649789,
+          "Edge": -0.010953558912742245,
+          "YearZodiacIncludedRate": 0.3852813852813853
+        }
+      }
+    }
+  }
+}
