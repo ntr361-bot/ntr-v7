@@ -279,11 +279,6 @@ public static class V65ExperimentScoreboardView
         }
 
         refresh.Click += (_, _) => LoadRows();
-        var learningHistory = new Button { Text = "独立学习历史实验", Location = new Point(130,70),
-            Size = new Size(178,34), BackColor = Color.FromArgb(48,93,145), ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat };
-        learningHistory.Click += (_,_) => { using var form = new IndependentLearningHistoryForm(AppPaths.DataDirectory); form.ShowDialog(panel.FindForm()); };
-        panel.Controls.Add(learningHistory);
         grid.CellContentClick += (_, e) =>
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != "Details") return;

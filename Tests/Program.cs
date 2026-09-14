@@ -34,9 +34,6 @@ if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase)
 if (args.Contains("--macro-contract-smoke", StringComparer.OrdinalIgnoreCase))
     return MacroReasoningContractTests.Run();
 
-if (args.Contains("--independent-learning-smoke", StringComparer.OrdinalIgnoreCase))
-    return IndependentLearningTests.Run();
-
 if (args.Contains("--p4-acceptance", StringComparer.OrdinalIgnoreCase))
     return P4AcceptanceTests.Run();
 

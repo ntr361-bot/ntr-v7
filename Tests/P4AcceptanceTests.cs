@@ -22,8 +22,6 @@ public static class P4AcceptanceTests
             Check(!File.ReadAllText(file).Contains("OnlineLearningPipeline.", StringComparison.Ordinal),
                 $"正式源码不调用旧管线：{Path.GetFileName(file)}");
 
-        int result = IndependentLearningTests.Run();
-        Check(result == 0, "V7独立学习完整行为验收");
         Console.WriteLine("P4 ACCEPTANCE PASS");
         return 0;
     }
