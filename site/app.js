@@ -1,7 +1,9 @@
 const state = document.querySelector('#state');
 const panel = document.querySelector('#prediction');
 const refreshButton = document.querySelector('#refresh');
-const cloudApi = 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync';
+// The scheduled workflow publishes the current V7 payload through this endpoint.
+// Keep the static-file fallback below for offline/mobile cache use.
+const cloudApi = 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync';
 
 function text(id, value) {
   document.querySelector(`#${id}`).textContent = value;
