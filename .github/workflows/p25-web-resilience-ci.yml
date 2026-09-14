@@ -1,0 +1,25 @@
+name: P25 Web Resilience CI
+
+on:
+  push:
+    branches:
+      - work/p25-web-resilience-20260915
+    paths:
+      - "WebsiteLearningService.cs"
+      - "Tests/**"
+      - ".github/workflows/p25-web-resilience-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet restore Tests/六合分析软件.SmokeTests.csproj
+      - run: dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
+      - run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --p21-p25-smoke
