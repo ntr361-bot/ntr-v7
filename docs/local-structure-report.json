@@ -1,0 +1,424 @@
+{
+  "GeneratedAtUtc": "2026-09-14T01:20:03.8910746Z",
+  "Protocol": {
+    "HistoryCount": 1351,
+    "RequestedSamples": 1000,
+    "ActualSamples": 1000,
+    "FirstIssue": "2023352",
+    "LastIssue": "2026255",
+    "MainWindows": [
+      45,
+      50,
+      55
+    ],
+    "Formula": "\u6BCF\u4E2A\u7A97\u53E3\u8BA1\u7B97scarcity\u3001regularity\u3001balance\u4E09\u9879\uFF1B\u5404\u81EA\u5728\u5F53\u671F12\u751F\u8096\u5185\u8F6C\u4E2D\u4F4D\u79E9\u767E\u5206\u4F4D\uFF1B\u4E09\u9879\u7B49\u6743\uFF0C45/50/55\u4E09\u7A97\u53E3\u7B49\u6743\u3002",
+    "Scarcity": "\u7A97\u53E3\u5185\u51FA\u73B0\u6B21\u6570\u8D8A\u5C11\u5206\u8D8A\u9AD8\uFF1B\u4E0D\u8BFB\u53D6\u5F53\u524D\u9057\u6F0F\u3002",
+    "Regularity": "\u81F3\u5C112\u4E2A\u5386\u53F2\u95F4\u9694\u65F6\u4F7F\u75281/(1\u002BCV)\uFF0C\u4E0D\u8DB3\u65F6\u8BBE\u4E3A\u4E2D\u60270.5\uFF0C\u4E0D\u518D\u7ED920/40\u5956\u52B1\u3002",
+    "Balance": "\u7A97\u53E3\u524D\u540E\u4E24\u534A\u51FA\u73B0\u6B21\u6570\u8D8A\u5747\u8861\u5206\u8D8A\u9AD8\uFF1B\u53EA\u770B\u5206\u5E03\u5E73\u8861\uFF0C\u4E0D\u770B\u662F\u5426\u2018\u5230\u671F\u2019\u3002",
+    "TiePolicy": "\u4E3B\u6307\u6807\u4F7F\u7528TopK\u8FB9\u754C\u540C\u5206\u7684\u5747\u5300\u5206\u914D\u671F\u671B\uFF1B\u6700\u957F\u8FDE\u9519\u4F7F\u7528\u671F\u53F7\u002B\u751F\u8096FNV\u54C8\u5E0C\u6253\u7834\u540C\u5206\uFF0C\u907F\u514D\u56FA\u5B9A\u751F\u8096\u987A\u5E8F\u504F\u5DEE\u3002",
+    "NoTuning": "\u516C\u5F0F\u548C45/50/55\u7A97\u53E3\u5728\u8FD0\u884C\u524D\u9501\u6B7B\uFF1B\u672C\u8F6E\u4E0D\u641C\u7D22\u6743\u91CD\u3001\u9608\u503C\u6216\u6700\u4F73\u7A97\u53E3\u3002",
+    "Permutation": "200\u6B21\u6309\u5E74\u4EFD\u5185\u90E8\u6253\u4E71\u6574\u4E2A\u751F\u8096\u5E8F\u5217\u5E76\u91CD\u65B0\u751F\u6210\u7279\u5F81\uFF0C\u4FDD\u6301\u6BCF\u5E74\u751F\u8096\u8FB9\u9645\u5206\u5E03\u3002",
+    "Warning": "45/50/55\u6765\u81EA\u4E0A\u4E00\u8F6E\u540C\u4E00\u5386\u53F2\u6570\u636E\u63A2\u7D22\uFF0C\u672C\u8F6E\u5C5E\u4E8E\u673A\u5236\u590D\u6838\uFF0C\u4E0D\u662F\u72EC\u7ACB\u672A\u6765\u6837\u672C\u3002"
+  },
+  "Latest1000": {
+    "Samples": 1000,
+    "FirstIssue": "2023352",
+    "LastIssue": "2026255",
+    "Metrics": {
+      "clean-full": {
+        "Samples": 1000,
+        "HardTop3": 0.271,
+        "HardTop6": 0.519,
+        "ExpectedTop3": 0.2721666666666666,
+        "ExpectedTop6": 0.52,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 9
+      },
+      "scarcity-only": {
+        "Samples": 1000,
+        "HardTop3": 0.24,
+        "HardTop6": 0.521,
+        "ExpectedTop3": 0.23961666666666667,
+        "ExpectedTop6": 0.5205500000000002,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 7
+      },
+      "regularity-only": {
+        "Samples": 1000,
+        "HardTop3": 0.273,
+        "HardTop6": 0.527,
+        "ExpectedTop3": 0.2716666666666666,
+        "ExpectedTop6": 0.5255,
+        "MaxTop3Miss": 19,
+        "MaxTop6Miss": 6
+      },
+      "balance-only": {
+        "Samples": 1000,
+        "HardTop3": 0.254,
+        "HardTop6": 0.511,
+        "ExpectedTop3": 0.2534333333333333,
+        "ExpectedTop6": 0.5085666666666665,
+        "MaxTop3Miss": 17,
+        "MaxTop6Miss": 9
+      },
+      "scarcity\u002Bregularity": {
+        "Samples": 1000,
+        "HardTop3": 0.272,
+        "HardTop6": 0.514,
+        "ExpectedTop3": 0.27183333333333337,
+        "ExpectedTop6": 0.5148333333333334,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 6
+      },
+      "scarcity\u002Bbalance": {
+        "Samples": 1000,
+        "HardTop3": 0.262,
+        "HardTop6": 0.511,
+        "ExpectedTop3": 0.26425,
+        "ExpectedTop6": 0.5166833333333334,
+        "MaxTop3Miss": 23,
+        "MaxTop6Miss": 6
+      },
+      "regularity\u002Bbalance": {
+        "Samples": 1000,
+        "HardTop3": 0.268,
+        "HardTop6": 0.502,
+        "ExpectedTop3": 0.2658333333333333,
+        "ExpectedTop6": 0.5026666666666667,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 10
+      },
+      "stress-40-50-60": {
+        "Samples": 1000,
+        "HardTop3": 0.27,
+        "HardTop6": 0.524,
+        "ExpectedTop3": 0.2718333333333333,
+        "ExpectedTop6": 0.5205,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 9
+      },
+      "clean-50-only": {
+        "Samples": 1000,
+        "HardTop3": 0.254,
+        "HardTop6": 0.53,
+        "ExpectedTop3": 0.2545166666666666,
+        "ExpectedTop6": 0.5313333333333333,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 9
+      },
+      "old-period50": {
+        "Samples": 1000,
+        "HardTop3": 0.268,
+        "HardTop6": 0.528,
+        "ExpectedTop3": 0.27089999999999975,
+        "ExpectedTop6": 0.5340357142857145,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 9
+      }
+    },
+    "Blocks": [
+      {
+        "Block": 1,
+        "FirstIssue": "2023352",
+        "LastIssue": "2024086",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.32,
+          "HardTop6": 0.53,
+          "ExpectedTop3": 0.315,
+          "ExpectedTop6": 0.535,
+          "MaxTop3Miss": 11,
+          "MaxTop6Miss": 5
+        }
+      },
+      {
+        "Block": 2,
+        "FirstIssue": "2024087",
+        "LastIssue": "2024186",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.25,
+          "HardTop6": 0.49,
+          "ExpectedTop3": 0.255,
+          "ExpectedTop6": 0.505,
+          "MaxTop3Miss": 8,
+          "MaxTop6Miss": 5
+        }
+      },
+      {
+        "Block": 3,
+        "FirstIssue": "2024187",
+        "LastIssue": "2024286",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.21,
+          "HardTop6": 0.49,
+          "ExpectedTop3": 0.21,
+          "ExpectedTop6": 0.485,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 4
+        }
+      },
+      {
+        "Block": 4,
+        "FirstIssue": "2024287",
+        "LastIssue": "2025020",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.36,
+          "HardTop6": 0.61,
+          "ExpectedTop3": 0.355,
+          "ExpectedTop6": 0.61,
+          "MaxTop3Miss": 6,
+          "MaxTop6Miss": 4
+        }
+      },
+      {
+        "Block": 5,
+        "FirstIssue": "2025021",
+        "LastIssue": "2025120",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.21,
+          "HardTop6": 0.5,
+          "ExpectedTop3": 0.21833333333333335,
+          "ExpectedTop6": 0.495,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 9
+        }
+      },
+      {
+        "Block": 6,
+        "FirstIssue": "2025121",
+        "LastIssue": "2025220",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.29,
+          "HardTop6": 0.5,
+          "ExpectedTop3": 0.29,
+          "ExpectedTop6": 0.5,
+          "MaxTop3Miss": 8,
+          "MaxTop6Miss": 8
+        }
+      },
+      {
+        "Block": 7,
+        "FirstIssue": "2025221",
+        "LastIssue": "2025320",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.35,
+          "HardTop6": 0.6,
+          "ExpectedTop3": 0.35333333333333333,
+          "ExpectedTop6": 0.6,
+          "MaxTop3Miss": 6,
+          "MaxTop6Miss": 4
+        }
+      },
+      {
+        "Block": 8,
+        "FirstIssue": "2025321",
+        "LastIssue": "2026055",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.26,
+          "HardTop6": 0.52,
+          "ExpectedTop3": 0.265,
+          "ExpectedTop6": 0.515,
+          "MaxTop3Miss": 8,
+          "MaxTop6Miss": 8
+        }
+      },
+      {
+        "Block": 9,
+        "FirstIssue": "2026056",
+        "LastIssue": "2026155",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.17,
+          "HardTop6": 0.4,
+          "ExpectedTop3": 0.17,
+          "ExpectedTop6": 0.41,
+          "MaxTop3Miss": 22,
+          "MaxTop6Miss": 8
+        }
+      },
+      {
+        "Block": 10,
+        "FirstIssue": "2026156",
+        "LastIssue": "2026255",
+        "Metric": {
+          "Samples": 100,
+          "HardTop3": 0.29,
+          "HardTop6": 0.55,
+          "ExpectedTop3": 0.29,
+          "ExpectedTop6": 0.545,
+          "MaxTop3Miss": 9,
+          "MaxTop6Miss": 4
+        }
+      }
+    ],
+    "Years": [
+      {
+        "Year": "2023",
+        "Metric": {
+          "Samples": 14,
+          "HardTop3": 0.35714285714285715,
+          "HardTop6": 0.6428571428571429,
+          "ExpectedTop3": 0.35714285714285715,
+          "ExpectedTop6": 0.6428571428571429,
+          "MaxTop3Miss": 3,
+          "MaxTop6Miss": 2
+        }
+      },
+      {
+        "Year": "2024",
+        "Metric": {
+          "Samples": 366,
+          "HardTop3": 0.2814207650273224,
+          "HardTop6": 0.5273224043715847,
+          "ExpectedTop3": 0.2814207650273224,
+          "ExpectedTop6": 0.5314207650273224,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 5
+        }
+      },
+      {
+        "Year": "2025",
+        "Metric": {
+          "Samples": 365,
+          "HardTop3": 0.27671232876712326,
+          "HardTop6": 0.5342465753424658,
+          "ExpectedTop3": 0.2785388127853881,
+          "ExpectedTop6": 0.5301369863013699,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 9
+        }
+      },
+      {
+        "Year": "2026",
+        "Metric": {
+          "Samples": 255,
+          "HardTop3": 0.24313725490196078,
+          "HardTop6": 0.47843137254901963,
+          "ExpectedTop3": 0.24509803921568626,
+          "ExpectedTop6": 0.4823529411764706,
+          "MaxTop3Miss": 25,
+          "MaxTop6Miss": 8
+        }
+      }
+    ]
+  },
+  "EarlierSegment": {
+    "Samples": 231,
+    "FirstIssue": "2023121",
+    "LastIssue": "2023351",
+    "Metrics": {
+      "clean-full": {
+        "Samples": 231,
+        "HardTop3": 0.2943722943722944,
+        "HardTop6": 0.5108225108225108,
+        "ExpectedTop3": 0.2943722943722944,
+        "ExpectedTop6": 0.5137085137085137,
+        "MaxTop3Miss": 15,
+        "MaxTop6Miss": 11
+      },
+      "scarcity-only": {
+        "Samples": 231,
+        "HardTop3": 0.2554112554112554,
+        "HardTop6": 0.5064935064935064,
+        "ExpectedTop3": 0.25981240981240983,
+        "ExpectedTop6": 0.5064935064935064,
+        "MaxTop3Miss": 15,
+        "MaxTop6Miss": 9
+      },
+      "regularity-only": {
+        "Samples": 231,
+        "HardTop3": 0.23376623376623376,
+        "HardTop6": 0.5151515151515151,
+        "ExpectedTop3": 0.23160173160173161,
+        "ExpectedTop6": 0.512987012987013,
+        "MaxTop3Miss": 19,
+        "MaxTop6Miss": 9
+      },
+      "balance-only": {
+        "Samples": 231,
+        "HardTop3": 0.2683982683982684,
+        "HardTop6": 0.49783549783549785,
+        "ExpectedTop3": 0.2655122655122655,
+        "ExpectedTop6": 0.49783549783549785,
+        "MaxTop3Miss": 18,
+        "MaxTop6Miss": 7
+      },
+      "scarcity\u002Bregularity": {
+        "Samples": 231,
+        "HardTop3": 0.23376623376623376,
+        "HardTop6": 0.5021645021645021,
+        "ExpectedTop3": 0.22943722943722944,
+        "ExpectedTop6": 0.5086580086580087,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 7
+      },
+      "scarcity\u002Bbalance": {
+        "Samples": 231,
+        "HardTop3": 0.2727272727272727,
+        "HardTop6": 0.5238095238095238,
+        "ExpectedTop3": 0.26551226551226553,
+        "ExpectedTop6": 0.5202020202020201,
+        "MaxTop3Miss": 14,
+        "MaxTop6Miss": 6
+      },
+      "regularity\u002Bbalance": {
+        "Samples": 231,
+        "HardTop3": 0.2727272727272727,
+        "HardTop6": 0.5021645021645021,
+        "ExpectedTop3": 0.2763347763347763,
+        "ExpectedTop6": 0.5086580086580087,
+        "MaxTop3Miss": 23,
+        "MaxTop6Miss": 12
+      },
+      "stress-40-50-60": {
+        "Samples": 231,
+        "HardTop3": 0.27705627705627706,
+        "HardTop6": 0.5194805194805194,
+        "ExpectedTop3": 0.2813852813852814,
+        "ExpectedTop6": 0.5238095238095238,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 6
+      },
+      "clean-50-only": {
+        "Samples": 231,
+        "HardTop3": 0.27705627705627706,
+        "HardTop6": 0.5021645021645021,
+        "ExpectedTop3": 0.27705627705627706,
+        "ExpectedTop6": 0.51010101010101,
+        "MaxTop3Miss": 19,
+        "MaxTop6Miss": 7
+      },
+      "old-period50": {
+        "Samples": 231,
+        "HardTop3": 0.23809523809523808,
+        "HardTop6": 0.4935064935064935,
+        "ExpectedTop3": 0.23037518037518032,
+        "ExpectedTop6": 0.48665223665223667,
+        "MaxTop3Miss": 15,
+        "MaxTop6Miss": 6
+      }
+    }
+  },
+  "BlockBootstrapTop6": {
+    "Observed": 0.519,
+    "Mean": 0.5188185999999995,
+    "Lower95": 0.489,
+    "Upper95": 0.548,
+    "BlockLength": 7,
+    "Replicates": 5000
+  },
+  "YearPermutation": {
+    "Replicates": 200,
+    "Observed": 0.52,
+    "NullMean": 0.5029429166666667,
+    "Null95th": 0.5291666666666668,
+    "P": 0.14427860696517414
+  }
+}
