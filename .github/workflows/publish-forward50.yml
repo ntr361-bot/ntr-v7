@@ -1,0 +1,84 @@
+name: Publish Forward50 Pending
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "Forward50PredictionPublisher.cs"
+      - "PredictionRunner/Program.cs"
+      - ".github/workflows/publish-forward50.yml"
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: publish-forward50-pending
+  cancel-in-progress: true
+
+jobs:
+  publish-forward50:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore PredictionRunner/PredictionRunner.csproj
+
+      - name: Build
+        run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+
+      - name: Rebuild history database
+        shell: pwsh
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+
+      - name: Publish frozen Forward50 into pending issue
+        shell: pwsh
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --publish-forward
+
+      - name: Run smoke tests
+        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release
+
+      - name: Commit updated daily records
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data/daily-records
+          if (git diff --cached --quiet) {
+            Write-Host "No Forward50 data changes to commit."
+          } else {
+            git commit -m "chore: publish Forward50 pending prediction"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          }
+
+      - name: Publish refreshed data to smart ledger
+        shell: pwsh
+        run: |
+          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
+          $predictions = @{}
+          foreach ($file in $manifest.records) {
+            $predictions[$file] = Get-Content "site/data/daily-records/$file" -Raw | ConvertFrom-Json
+          }
+          $payload = @{
+            history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
+            dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
+            manifest = $manifest
+            modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
+            predictions = $predictions
+          } | ConvertTo-Json -Depth 100 -Compress
+          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
+          $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
+          $headers = @{ Authorization = "Bearer $oidc" }
+          $response = Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload -ErrorAction Stop
+          if ($null -ne $response.status -and $response.status -ne 'success') { throw "发布接口返回异常：$($response.status)" }
