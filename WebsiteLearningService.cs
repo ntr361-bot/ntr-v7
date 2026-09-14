@@ -1,4 +1,5 @@
 using System.Net;
+using System.Data.SQLite;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -9,6 +10,8 @@ namespace 六合分析软件.MacroReasoning;
 public sealed record WebsiteParsedSignal(string SourceId, int Issue, IReadOnlyList<string> Zodiacs, string RawText, string SourceHash);
 public sealed record WebsiteLearningIssueSnapshot(string SourceId, int Issue, IReadOnlyList<string> Zodiacs,
     string RawText, string SourceHash, string? WebsiteResultZodiac);
+public sealed record WebsiteLearningSettlement(long CaptureId, string WebsiteResultZodiac, string? LocalResultZodiac,
+    string Consistency, bool Top3Hit, bool Top6Hit, DateTimeOffset SettledAt);
 
 public static class WebsiteLearningParser
 {
@@ -67,6 +70,86 @@ public static class WebsiteLearningParser
         return WebUtility.HtmlDecode(body).Replace("\\'", "'").Replace("\\\"", "\"");
     }
     public static string Sha256(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)));
+}
+
+public sealed class WebsiteLearningArchive
+{
+    private readonly string connectionString;
+    public WebsiteLearningArchive(string databasePath) => connectionString = $"Data Source={databasePath};Version=3;";
+
+    public long SaveCapture(long issue, string sourceId, string sourceHash, string rawText,
+        IReadOnlyList<string> zodiacs, DateTimeOffset capturedAt)
+    {
+        using var connection = Open();
+        EnsureSchema(connection);
+        using (var insert = new SQLiteCommand(@"INSERT OR IGNORE INTO WebsiteLearningCapture
+            (Issue, SourceId, SourceHash, RawText, ZodiacsJson, CapturedAt)
+            VALUES (@issue, @sourceId, @sourceHash, @rawText, @zodiacsJson, @capturedAt)", connection))
+        {
+            insert.Parameters.AddWithValue("@issue", issue);
+            insert.Parameters.AddWithValue("@sourceId", sourceId);
+            insert.Parameters.AddWithValue("@sourceHash", sourceHash);
+            insert.Parameters.AddWithValue("@rawText", rawText);
+            insert.Parameters.AddWithValue("@zodiacsJson", JsonSerializer.Serialize(zodiacs));
+            insert.Parameters.AddWithValue("@capturedAt", capturedAt.ToString("O"));
+            insert.ExecuteNonQuery();
+        }
+        using var read = new SQLiteCommand("SELECT Id FROM WebsiteLearningCapture WHERE Issue=@issue AND SourceId=@sourceId AND SourceHash=@sourceHash", connection);
+        read.Parameters.AddWithValue("@issue", issue);
+        read.Parameters.AddWithValue("@sourceId", sourceId);
+        read.Parameters.AddWithValue("@sourceHash", sourceHash);
+        return Convert.ToInt64(read.ExecuteScalar());
+    }
+
+    public WebsiteLearningSettlement Settle(long captureId, string websiteResultZodiac, string? localResultZodiac,
+        DateTimeOffset settledAt)
+    {
+        using var connection = Open();
+        EnsureSchema(connection);
+        string zodiacsJson;
+        using (var read = new SQLiteCommand("SELECT ZodiacsJson FROM WebsiteLearningCapture WHERE Id=@captureId", connection))
+        {
+            read.Parameters.AddWithValue("@captureId", captureId);
+            zodiacsJson = Convert.ToString(read.ExecuteScalar()) ?? throw new InvalidDataException("网站资料档案不存在");
+        }
+        string[] zodiacs = JsonSerializer.Deserialize<string[]>(zodiacsJson) ?? [];
+        string consistency = string.IsNullOrWhiteSpace(localResultZodiac) ? "Unavailable" :
+            string.Equals(websiteResultZodiac, localResultZodiac, StringComparison.Ordinal) ? "Consistent" : "Conflict";
+        bool top3Hit = zodiacs.Take(3).Contains(websiteResultZodiac, StringComparer.Ordinal);
+        bool top6Hit = zodiacs.Take(6).Contains(websiteResultZodiac, StringComparer.Ordinal);
+        using (var write = new SQLiteCommand(@"INSERT OR REPLACE INTO WebsiteLearningSettlement
+            (CaptureId, WebsiteResultZodiac, LocalResultZodiac, Consistency, Top3Hit, Top6Hit, SettledAt)
+            VALUES (@captureId, @websiteResult, @localResult, @consistency, @top3Hit, @top6Hit, @settledAt)", connection))
+        {
+            write.Parameters.AddWithValue("@captureId", captureId);
+            write.Parameters.AddWithValue("@websiteResult", websiteResultZodiac);
+            write.Parameters.AddWithValue("@localResult", (object?)localResultZodiac ?? DBNull.Value);
+            write.Parameters.AddWithValue("@consistency", consistency);
+            write.Parameters.AddWithValue("@top3Hit", top3Hit ? 1 : 0);
+            write.Parameters.AddWithValue("@top6Hit", top6Hit ? 1 : 0);
+            write.Parameters.AddWithValue("@settledAt", settledAt.ToString("O"));
+            write.ExecuteNonQuery();
+        }
+        return new(captureId, websiteResultZodiac, localResultZodiac, consistency, top3Hit, top6Hit, settledAt);
+    }
+
+    private SQLiteConnection Open()
+    {
+        var connection = new SQLiteConnection(connectionString);
+        connection.Open();
+        return connection;
+    }
+    private static void EnsureSchema(SQLiteConnection connection)
+    {
+        new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS WebsiteLearningCapture (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT, Issue INTEGER NOT NULL, SourceId TEXT NOT NULL,
+            SourceHash TEXT NOT NULL, RawText TEXT NOT NULL, ZodiacsJson TEXT NOT NULL, CapturedAt TEXT NOT NULL,
+            UNIQUE(Issue, SourceId, SourceHash))", connection).ExecuteNonQuery();
+        new SQLiteCommand(@"CREATE TABLE IF NOT EXISTS WebsiteLearningSettlement (
+            CaptureId INTEGER PRIMARY KEY, WebsiteResultZodiac TEXT NOT NULL, LocalResultZodiac TEXT NULL,
+            Consistency TEXT NOT NULL, Top3Hit INTEGER NOT NULL, Top6Hit INTEGER NOT NULL, SettledAt TEXT NOT NULL,
+            FOREIGN KEY(CaptureId) REFERENCES WebsiteLearningCapture(Id))", connection).ExecuteNonQuery();
+    }
 }
 
 public sealed class WebsiteLearningService(HttpClient? client = null)

@@ -51,6 +51,20 @@ public static class MacroP21P25Tests
         Check(ReadWebsiteResult(issueBlocks.Single(x => ReadIssue(x) == 255)) == "猪" &&
               ReadZodiacs(issueBlocks.Single(x => ReadIssue(x) == 255)).SequenceEqual(new[]{"鼠","兔","狗","猪"}),
               "P25 crawler parser settles only the revealed issue from its own block");
+        string archivePath = Path.Combine(Path.GetTempPath(), "p25-web-archive-" + Guid.NewGuid() + ".db");
+        try
+        {
+            var archive = CreateWebsiteArchive(archivePath);
+            long captureId = SaveWebsiteCapture(archive, 2026255, "6x.js", "hash-a", "255期六肖【鼠兔狗猪】开：猪44", new[]{"鼠","兔","狗","猪"});
+            Check(SaveWebsiteCapture(archive, 2026255, "6x.js", "hash-a", "255期六肖【鼠兔狗猪】开：猪44", new[]{"鼠","兔","狗","猪"}) == captureId,
+                "P25 crawler archive deduplicates an unchanged website capture");
+            Check(SaveWebsiteCapture(archive, 2026255, "6x.js", "hash-b", "255期六肖【鼠兔狗猪】开：猪44", new[]{"鼠","兔","狗","猪"}) != captureId,
+                "P25 crawler archive preserves a changed capture version");
+            var settlement = SettleWebsiteCapture(archive, captureId, "猪", "猪");
+            Check(ReadTextProperty(settlement, "Consistency") == "Consistent" && (bool)ReadProperty(settlement, "Top6Hit"),
+                "P25 crawler archive stores website result and source hit evidence");
+        }
+        finally { System.Data.SQLite.SQLiteConnection.ClearAllPools(); try { if (File.Exists(archivePath)) File.Delete(archivePath); } catch (IOException) { } }
         Check(V7PredictionHistoryService.IsV7DisplayedModel("P25-Web", 25), "P25 website record is visible in intelligent ledger");
         Check(V7PredictionHistoryService.FormatModelName("P25-Web") == "P25网站资料", "P25 website model has readable ledger name");
         Console.WriteLine("P21_P25_SMOKE_PASS"); return 0;
@@ -71,6 +85,24 @@ public static class MacroP21P25Tests
     static int ReadIssue(object value)=>(int)(value.GetType().GetProperty("Issue")?.GetValue(value) ?? throw new Exception("P25 issue snapshot lacks Issue"));
     static IReadOnlyList<string> ReadZodiacs(object value)=>(IReadOnlyList<string>)(value.GetType().GetProperty("Zodiacs")?.GetValue(value) ?? throw new Exception("P25 issue snapshot lacks Zodiacs"));
     static string? ReadWebsiteResult(object value)=>(string?)value.GetType().GetProperty("WebsiteResultZodiac")?.GetValue(value);
+    static object CreateWebsiteArchive(string path)
+    {
+        var type=typeof(WebsiteLearningParser).Assembly.GetType("六合分析软件.MacroReasoning.WebsiteLearningArchive")
+            ?? throw new Exception("P25 website archive API is missing");
+        return Activator.CreateInstance(type,[path]) ?? throw new Exception("P25 website archive cannot be created");
+    }
+    static long SaveWebsiteCapture(object archive,long issue,string sourceId,string hash,string raw,IReadOnlyList<string> zodiacs)
+    {
+        var method=archive.GetType().GetMethod("SaveCapture") ?? throw new Exception("P25 website archive SaveCapture API is missing");
+        return Convert.ToInt64(method.Invoke(archive,[issue,sourceId,hash,raw,zodiacs,DateTimeOffset.UtcNow]));
+    }
+    static object SettleWebsiteCapture(object archive,long captureId,string webResult,string localResult)
+    {
+        var method=archive.GetType().GetMethod("Settle") ?? throw new Exception("P25 website archive Settle API is missing");
+        return method.Invoke(archive,[captureId,webResult,localResult,DateTimeOffset.UtcNow]) ?? throw new Exception("P25 website archive settlement is missing");
+    }
+    static object ReadProperty(object value,string name)=>value.GetType().GetProperty(name)?.GetValue(value) ?? throw new Exception($"P25 archive record lacks {name}");
+    static string ReadTextProperty(object value,string name)=>(string)ReadProperty(value,name);
     sealed class FakeExplanationSource : IMacroExplanationSource
     {
         public MacroExplanationRecord? Read(string experiment,long issue)=>new(experiment,issue,DecisionType.Hold,.42,"证据不足",["RandomFluctuation"],["长期窗口未确认"],CriticVerdict.Caution,["样本不足"],ImmutableDictionary<string,double>.Empty,ImmutableDictionary<string,double>.Empty,null);
