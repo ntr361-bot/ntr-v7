@@ -4,6 +4,9 @@ using System.Windows.Forms;
 using 六合分析软件;
 using 六合分析软件.MacroReasoning;
 
+if (args.Contains("--readonly-db-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
+    return ReadOnlyDatabaseSnapshotTests.Run();
+
 if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
 {
     try { return MacroP16P20Tests.Run(); }
@@ -215,6 +218,7 @@ var tests = new (string Name, Action Run)[]
     ,("本地开奖档案可重建数据库并保留波色", LocalHistoryArchiveRebuildRestoresRecords)
     ,("运行状态档案可恢复预测历史与模型记忆", RuntimeStateArchiveRestoresPredictionsAndMemory)
     ,("V7云端工作流重建数据库且不再提交数据库文件", CloudWorkflowRebuildsDatabaseFromCommittedJson)
+    ,("运行器不引用已退休的独立学习类型", PredictionRunnerDoesNotReferenceRetiredIndependentLearning)
     ,("提交的 runtime-state.json 哈希与当前代码一致", CommittedRuntimeStateHashIsValid)
     ,("运行状态规范哈希稳定且与序列化细节无关", RuntimeStateHashIsCanonicalAndStable)
     ,("历史预测逐项写入命中结果", PublishedPredictionVerificationIsRecorded)
@@ -1774,7 +1778,6 @@ void DesktopCloudSyncUsesMachineIngress()
     Assert(!request.Headers.Contains("X-V6-Machine-Key"),
         "V7 desktop sync must not depend on the retired V6 machine credential");
 }
-
 void GitHubDesktopCloudSyncUsesPublishedV7Archive()
 {
     using HttpRequestMessage history = CloudPredictionSyncService.CreateGitHubSyncRequest("history");
@@ -2847,6 +2850,17 @@ string ProjectRoot()
         }
     }
     throw new DirectoryNotFoundException("未找到六合分析软件项目根目录");
+}
+
+void PredictionRunnerDoesNotReferenceRetiredIndependentLearning()
+{
+    string runner = File.ReadAllText(Path.Combine(ProjectRoot(), "PredictionRunner", "Program.cs"));
+    Assert(!runner.Contains("IndependentLearningHistoricalTraining", StringComparison.Ordinal),
+        "PredictionRunner 仍引用已删除的 IndependentLearningHistoricalTraining，导致所有运行器命令无法编译");
+    Assert(!runner.Contains("IndependentLearningModel", StringComparison.Ordinal),
+        "PredictionRunner 仍引用已删除的 IndependentLearningModel，导致所有运行器命令无法编译");
+    Assert(!runner.Contains("IndependentLearningDaily", StringComparison.Ordinal),
+        "PredictionRunner 仍引用已删除的 IndependentLearningDaily，导致所有运行器命令无法编译");
 }
 
 AIEngine.PredictResult FormalTracePrediction(int periods, int modelIndex)

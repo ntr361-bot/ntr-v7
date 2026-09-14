@@ -1,6 +1,7 @@
 using System.Text.Json;
 using 六合分析软件;
 
+string? temporarySnapshotDirectory = null;
 try
 {
     Dictionary<string, string?> arguments = ParseArguments(args);
@@ -13,51 +14,20 @@ try
     string repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
     string dataDirectory = Environment.GetEnvironmentVariable("LIUHE_DATA_DIR")
         ?? Path.Combine(repositoryRoot, "data");
+    if (arguments.TryGetValue("export-state-from", out string? sourceDatabase))
+    {
+        if (!arguments.ContainsKey("export-state"))
+            throw new ArgumentException("--export-state-from 只能与 --export-state 一起使用");
+        temporarySnapshotDirectory = Path.Combine(Path.GetTempPath(), "liuhe-export-state-" + Guid.NewGuid().ToString("N"));
+        ReadOnlyDatabaseSnapshot.Create(sourceDatabase!, temporarySnapshotDirectory);
+        dataDirectory = temporarySnapshotDirectory;
+        Console.WriteLine("[INFO] 已创建只读源数据库快照用于导出；源数据库不会被修改");
+    }
     string outputDirectory = Environment.GetEnvironmentVariable("PREDICTION_OUTPUT_DIR")
         ?? Path.Combine(repositoryRoot, "site", "data", "predictions");
     string dailyOutputDirectory = Environment.GetEnvironmentVariable("DAILY_PREDICTION_OUTPUT_DIR")
         ?? Path.Combine(repositoryRoot, "site", "data", "daily-records");
     Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
-
-    if (arguments.TryGetValue("independent-history-train", out string? manifest))
-    {
-        var samples = JsonSerializer.Deserialize<HistoricalTrainingSample[]>(File.ReadAllText(manifest!))
-            ?? throw new InvalidDataException("历史实验清单为空");
-        var report = IndependentLearningHistoricalTraining.Train(dataDirectory, samples);
-        Console.WriteLine($"HistoricalExperiment: {report.Entries.Length}期，Top3={report.Entries.Count(e=>e.Top3Hit)}，Top6={report.Entries.Count(e=>e.Top6Hit)}");
-        Console.WriteLine(IndependentLearningHistoricalTraining.Folder(dataDirectory));
-        return 0;
-    }
-
-    if (arguments.ContainsKey("independent-daily"))
-    {
-        if(arguments.ContainsKey("dry-run")) return 0;
-        DatabaseHelper.InitializeDatabase();
-        var history=DatabaseHelper.GetHistory();
-        long latest=history.Max(h=>long.Parse(h.Period));
-        long target=ParseIssue(arguments,"issue") ?? checked(latest+1);
-        string archive=Path.Combine(repositoryRoot,"experiments",IndependentLearningModel.ModelKey,"archive.json");
-        var model=new IndependentLearningModel(dataDirectory);
-        if(File.Exists(archive))
-        {
-            string saved=File.ReadAllText(archive);
-            if(model.ExportArchive()!=saved) model.RestoreArchive(saved);
-        }
-        try
-        {
-            string prediction=IndependentLearningDaily.Run(dataDirectory,target,history,DatabaseHelper.GetPredictionHistory(int.MaxValue));
-            using var doc=JsonDocument.Parse(prediction);
-            Console.WriteLine($"[INDEPENDENT] 第{target}期旁路预测已保存，MemoryVersion={doc.RootElement.GetProperty("UsedMemoryVersion").GetInt64()}");
-        }
-        finally
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
-            string temporary=archive+"."+Guid.NewGuid().ToString("N")+".tmp";
-            try { File.WriteAllText(temporary,model.ExportArchive()); File.Move(temporary,archive,true); }
-            finally { if(File.Exists(temporary)) File.Delete(temporary); }
-        }
-        return 0;
-    }
 
     if (arguments.ContainsKey("rebuild-db"))
     {
@@ -149,6 +119,14 @@ catch (Exception ex)
     if (Environment.GetEnvironmentVariable("PREDICTION_DEBUG") == "1") Console.Error.WriteLine(ex);
     return 1;
 }
+finally
+{
+    if (!string.IsNullOrWhiteSpace(temporarySnapshotDirectory))
+    {
+        try { Directory.Delete(temporarySnapshotDirectory, recursive: true); }
+        catch { /* Export has completed; a locked temporary snapshot is harmless and can be cleared by the OS. */ }
+    }
+}
 
 static long? ParseIssue(Dictionary<string, string?> arguments, string key)
 {
@@ -169,10 +147,6 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 if (++i >= values.Length) throw new ArgumentException("--issue 缺少期号");
                 parsed["issue"] = values[i];
                 break;
-            case "--independent-history-train":
-                if (++i >= values.Length) throw new ArgumentException("需要历史实验清单路径");
-                parsed["independent-history-train"] = values[i];
-                break;
             case "--start-issue":
                 if (++i >= values.Length) throw new ArgumentException("--start-issue 缺少期号");
                 parsed["start-issue"] = values[i];
@@ -183,11 +157,14 @@ static Dictionary<string, string?> ParseArguments(string[] values)
             case "--refresh-only": parsed["refresh-only"] = null; break;
             case "--require-advance": parsed["require-advance"] = null; break;
             case "--generate-all": parsed["generate-all"] = null; break;
-            case "--independent-daily": parsed["independent-daily"] = null; break;
             case "--rebuild-db": parsed["rebuild-db"] = null; break;
             case "--rebuild-only": parsed["rebuild-only"] = null; break;
             case "--export-history": parsed["export-history"] = null; break;
             case "--export-state": parsed["export-state"] = null; break;
+            case "--export-state-from":
+                if (++i >= values.Length) throw new ArgumentException("--export-state-from 缺少数据库路径");
+                parsed["export-state-from"] = values[i];
+                break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
@@ -198,7 +175,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--independent-daily] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state] [--publish-forward]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {
