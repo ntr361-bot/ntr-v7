@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#162d4a">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>模型数据中心</title>
+  <link rel="stylesheet" href="model-center.css?v=20260914-1">
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">智能账本 · 只读统计</p>
+        <h1>模型数据中心</h1>
+        <p class="subtitle">全部模型 · 最近30期预测与命中历史</p>
+      </div>
+      <div class="actions">
+        <a class="back" href="index.html">返回账本</a>
+        <button id="refresh" type="button">刷新</button>
+      </div>
+    </header>
+
+    <section id="state" class="state" aria-live="polite">正在读取模型历史...</section>
+
+    <section id="content" hidden>
+      <div class="summary">
+        <div><span>最新预测期</span><strong id="latest-issue">-</strong></div>
+        <div><span>读取记录</span><strong id="record-count">-</strong></div>
+        <div><span>发现模型</span><strong id="model-count">-</strong></div>
+        <div><span>统计口径</span><strong>最近30期已开奖</strong></div>
+      </div>
+
+      <div class="notice">
+        <strong>说明：</strong> Regularity50、Period50-Fair 从2026257起按冻结公式做Forward前瞻记录；旧模型仅作对照，不代表推荐优先级。
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>模型表现总表</h2>
+            <p>点击“查看30期”展开逐期预测与命中记录。</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="score-table">
+            <thead>
+              <tr>
+                <th>模型</th>
+                <th>状态</th>
+                <th>已开奖样本</th>
+                <th>近30 TOP3</th>
+                <th>近30 TOP6</th>
+                <th>最大TOP6连错</th>
+                <th>当前TOP6连错</th>
+                <th>最新TOP3</th>
+                <th>最新TOP6</th>
+                <th>明细</th>
+              </tr>
+            </thead>
+            <tbody id="score-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="detail-panel" class="panel detail-panel" hidden>
+        <div class="panel-head detail-head">
+          <div>
+            <h2 id="detail-title">近30期明细</h2>
+            <p id="detail-note"></p>
+          </div>
+          <button id="close-detail" type="button">收起</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>期号</th>
+                <th>预测TOP3</th>
+                <th>预测TOP6</th>
+                <th>实际生肖</th>
+                <th>实际排名</th>
+                <th>TOP3</th>
+                <th>TOP6</th>
+                <th>预测时间</th>
+              </tr>
+            </thead>
+            <tbody id="detail-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="model-center.js?v=20260914-1" defer></script>
+</body>
+</html>
