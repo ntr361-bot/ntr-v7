@@ -18,6 +18,19 @@ public sealed record WebsiteLearningSourceWeight(string SourceId, double Weight,
     double Top3Rate, double Top6Rate);
 public sealed record WebsiteLearningCycle(IReadOnlyList<WebsiteParsedSignal> Signals, IReadOnlyList<string> Ranking,
     IReadOnlyDictionary<string, WebsiteLearningSourceWeight> Weights);
+public sealed record WebsiteLearningEvidence(long Issue, string SourceId, string SourceHash, string RawText,
+    IReadOnlyList<string> Zodiacs, DateTimeOffset CapturedAt, string? WebsiteResultZodiac, string? LocalResultZodiac,
+    string? Consistency, bool? Top3Hit, bool? Top6Hit, DateTimeOffset? SettledAt);
+public sealed record WebsiteLearningFetchAttempt(string Kind, string RequestedUrl, string? EffectiveUrl,
+    int? StatusCode, bool Success, string? Error, DateTimeOffset CheckedAt);
+public sealed record WebsiteLearningFetchResult(Uri? Page, IReadOnlyList<WebsiteLearningIssueSnapshot> Snapshots,
+    IReadOnlyList<WebsiteLearningFetchAttempt> Attempts)
+{
+    public bool Success => Page is not null && Snapshots.Count > 0;
+}
+public sealed record WebsiteLearningEndpointState(string Url, int SuccessCount, int FailureCount,
+    int ConsecutiveFailures, DateTimeOffset? LastSuccessAt, DateTimeOffset? LastFailureAt);
+public sealed record WebsiteLearningPersistentState(WebsiteLearningEvidence[] Evidence, WebsiteLearningEndpointState[] Endpoints);
 
 public static class WebsiteLearningParser
 {
@@ -152,6 +165,29 @@ public sealed class WebsiteLearningArchive
             rows.GetInt32(3) != 0, rows.GetString(4), DateTimeOffset.Parse(rows.GetString(5))));
         return outcomes;
     }
+    public IReadOnlyList<WebsiteLearningEvidence> ReadEvidence()
+    {
+        using var connection = Open();
+        EnsureSchema(connection);
+        using var read = new SQLiteCommand(@"SELECT Capture.Issue, Capture.SourceId, Capture.SourceHash, Capture.RawText,
+            Capture.ZodiacsJson, Capture.CapturedAt, Settlement.WebsiteResultZodiac, Settlement.LocalResultZodiac,
+            Settlement.Consistency, Settlement.Top3Hit, Settlement.Top6Hit, Settlement.SettledAt
+            FROM WebsiteLearningCapture Capture
+            LEFT JOIN WebsiteLearningSettlement Settlement ON Settlement.CaptureId=Capture.Id
+            ORDER BY Capture.Issue, Capture.SourceId, Capture.Id", connection);
+        using var rows = read.ExecuteReader();
+        var evidence = new List<WebsiteLearningEvidence>();
+        while (rows.Read())
+        {
+            string[] zodiacs = JsonSerializer.Deserialize<string[]>(rows.GetString(4)) ?? [];
+            evidence.Add(new(rows.GetInt64(0), rows.GetString(1), rows.GetString(2), rows.GetString(3), zodiacs,
+                DateTimeOffset.Parse(rows.GetString(5)), rows.IsDBNull(6) ? null : rows.GetString(6),
+                rows.IsDBNull(7) ? null : rows.GetString(7), rows.IsDBNull(8) ? null : rows.GetString(8),
+                rows.IsDBNull(9) ? null : rows.GetInt32(9) != 0, rows.IsDBNull(10) ? null : rows.GetInt32(10) != 0,
+                rows.IsDBNull(11) ? null : DateTimeOffset.Parse(rows.GetString(11))));
+        }
+        return evidence;
+    }
 
     private SQLiteConnection Open()
     {
@@ -169,6 +205,50 @@ public sealed class WebsiteLearningArchive
             CaptureId INTEGER PRIMARY KEY, WebsiteResultZodiac TEXT NOT NULL, LocalResultZodiac TEXT NULL,
             Consistency TEXT NOT NULL, Top3Hit INTEGER NOT NULL, Top6Hit INTEGER NOT NULL, SettledAt TEXT NOT NULL,
             FOREIGN KEY(CaptureId) REFERENCES WebsiteLearningCapture(Id))", connection).ExecuteNonQuery();
+    }
+}
+
+public static class WebsiteLearningPersistence
+{
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+    public static WebsiteLearningPersistentState Load(string path)
+    {
+        if (!File.Exists(path)) return new([], []);
+        try
+        {
+            var state = JsonSerializer.Deserialize<WebsiteLearningPersistentState>(File.ReadAllText(path), JsonOptions);
+            return state is null ? new([], []) : new(state.Evidence ?? [], state.Endpoints ?? []);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidDataException($"网页学习记忆文件损坏：{path}", ex);
+        }
+    }
+    public static void RestoreArchive(WebsiteLearningArchive archive, IEnumerable<WebsiteLearningEvidence> evidence)
+    {
+        foreach (WebsiteLearningEvidence item in evidence)
+        {
+            long captureId = archive.SaveCapture(item.Issue, item.SourceId, item.SourceHash, item.RawText,
+                item.Zodiacs, item.CapturedAt);
+            if (!string.IsNullOrWhiteSpace(item.WebsiteResultZodiac))
+                archive.Settle(captureId, item.WebsiteResultZodiac!, item.LocalResultZodiac, item.SettledAt ?? item.CapturedAt);
+        }
+    }
+    public static void Save(string path, WebsiteLearningArchive archive, IReadOnlyList<WebsiteLearningEndpointState> endpoints)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+        string temporary = path + $".{Guid.NewGuid():N}.tmp";
+        var state = new WebsiteLearningPersistentState(archive.ReadEvidence().ToArray(), endpoints.ToArray());
+        try
+        {
+            File.WriteAllText(temporary, JsonSerializer.Serialize(state, JsonOptions));
+            using JsonDocument _ = JsonDocument.Parse(File.ReadAllBytes(temporary));
+            File.Move(temporary, path, true);
+        }
+        finally
+        {
+            if (File.Exists(temporary)) File.Delete(temporary);
+        }
     }
 }
 
@@ -201,24 +281,119 @@ public static class WebsiteLearningWeightService
 
 public sealed class WebsiteLearningService(HttpClient? client = null)
 {
+    private static readonly HashSet<string> KnownSourceFiles = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "6x.js", "3bds.js", "x3x6m.js", "6x18mm.js"
+    };
     private readonly HttpClient http = client ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+
     public async Task<IReadOnlyList<WebsiteLearningIssueSnapshot>> FetchAllAsync(Uri page, CancellationToken cancellationToken = default)
     {
-        var html = await http.GetStringAsync(page, cancellationToken);
-        var sources = Regex.Matches(html, @"<script[^>]+src=['""]([^'""]+)", RegexOptions.IgnoreCase)
-            .Select(m => m.Groups[1].Value).Where(x => x.Contains("/bbs/") &&
-                (x.Contains("6x.js") || x.Contains("3bds.js") || x.Contains("x3x6m.js") || x.Contains("6x18mm.js")))
-            .Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
-        var list = new List<WebsiteLearningIssueSnapshot>();
-        foreach (var source in sources)
+        WebsiteLearningFetchResult result = await FetchFirstAvailableAsync([page], cancellationToken);
+        if (!result.Success) throw new InvalidDataException(BuildFailureSummary(result.Attempts));
+        return result.Snapshots;
+    }
+    public async Task<WebsiteLearningFetchResult> FetchFirstAvailableAsync(IEnumerable<Uri> pages,
+        CancellationToken cancellationToken = default)
+    {
+        var attempts = new List<WebsiteLearningFetchAttempt>();
+        foreach (Uri requestedPage in pages.DistinctBy(page => page.AbsoluteUri, StringComparer.OrdinalIgnoreCase))
         {
-            var uri = new Uri(page, source);
-            var raw = await http.GetStringAsync(uri, cancellationToken);
-            var normalized = WebsiteLearningParser.NormalizeScript(raw);
-            try { list.AddRange(WebsiteLearningParser.ParseAll(normalized, source, WebsiteLearningParser.Sha256(raw))); }
-            catch (InvalidDataException) { }
+            string html;
+            Uri effectivePage = requestedPage;
+            int? pageStatus = null;
+            try
+            {
+                using HttpResponseMessage response = await http.GetAsync(requestedPage, cancellationToken);
+                effectivePage = response.RequestMessage?.RequestUri ?? requestedPage;
+                pageStatus = (int)response.StatusCode;
+                if (!response.IsSuccessStatusCode)
+                {
+                    attempts.Add(new("page", requestedPage.AbsoluteUri, effectivePage.AbsoluteUri, pageStatus, false,
+                        $"HTTP {(int)response.StatusCode}", DateTimeOffset.Now));
+                    continue;
+                }
+                html = await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                attempts.Add(new("page", requestedPage.AbsoluteUri, null, pageStatus, false, "请求超时", DateTimeOffset.Now));
+                continue;
+            }
+            catch (Exception ex)
+            {
+                attempts.Add(new("page", requestedPage.AbsoluteUri, null, pageStatus, false, ex.Message, DateTimeOffset.Now));
+                continue;
+            }
+
+            Uri[] sources = DiscoverSources(effectivePage, html).ToArray();
+            if (sources.Length == 0)
+            {
+                attempts.Add(new("page", requestedPage.AbsoluteUri, effectivePage.AbsoluteUri, pageStatus, false,
+                    "页面未发现目标资料脚本", DateTimeOffset.Now));
+                continue;
+            }
+
+            var snapshots = new List<WebsiteLearningIssueSnapshot>();
+            int sourceSuccess = 0;
+            foreach (Uri sourceUri in sources)
+            {
+                try
+                {
+                    using HttpResponseMessage response = await http.GetAsync(sourceUri, cancellationToken);
+                    Uri effectiveSource = response.RequestMessage?.RequestUri ?? sourceUri;
+                    int status = (int)response.StatusCode;
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        attempts.Add(new("source", sourceUri.AbsoluteUri, effectiveSource.AbsoluteUri, status, false,
+                            $"HTTP {status}", DateTimeOffset.Now));
+                        continue;
+                    }
+                    string raw = await response.Content.ReadAsStringAsync(cancellationToken);
+                    string normalized = WebsiteLearningParser.NormalizeScript(raw);
+                    IReadOnlyList<WebsiteLearningIssueSnapshot> parsed;
+                    try
+                    {
+                        parsed = WebsiteLearningParser.ParseAll(normalized, CanonicalSourceId(effectiveSource),
+                            WebsiteLearningParser.Sha256(raw));
+                    }
+                    catch (InvalidDataException ex)
+                    {
+                        attempts.Add(new("source", sourceUri.AbsoluteUri, effectiveSource.AbsoluteUri, status, false,
+                            ex.Message, DateTimeOffset.Now));
+                        continue;
+                    }
+                    if (parsed.Count == 0)
+                    {
+                        attempts.Add(new("source", sourceUri.AbsoluteUri, effectiveSource.AbsoluteUri, status, false,
+                            "资料脚本解析结果为空", DateTimeOffset.Now));
+                        continue;
+                    }
+                    sourceSuccess++;
+                    snapshots.AddRange(parsed);
+                    attempts.Add(new("source", sourceUri.AbsoluteUri, effectiveSource.AbsoluteUri, status, true,
+                        null, DateTimeOffset.Now));
+                }
+                catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+                {
+                    attempts.Add(new("source", sourceUri.AbsoluteUri, null, null, false, "请求超时", DateTimeOffset.Now));
+                }
+                catch (Exception ex)
+                {
+                    attempts.Add(new("source", sourceUri.AbsoluteUri, null, null, false, ex.Message, DateTimeOffset.Now));
+                }
+            }
+
+            if (sourceSuccess > 0 && snapshots.Count > 0)
+            {
+                attempts.Add(new("page", requestedPage.AbsoluteUri, effectivePage.AbsoluteUri, pageStatus, true,
+                    null, DateTimeOffset.Now));
+                return new(effectivePage, snapshots, attempts);
+            }
+            attempts.Add(new("page", requestedPage.AbsoluteUri, effectivePage.AbsoluteUri, pageStatus, false,
+                "页面可访问，但目标资料脚本全部失败", DateTimeOffset.Now));
         }
-        return list;
+        return new(null, Array.Empty<WebsiteLearningIssueSnapshot>(), attempts);
     }
     public async Task<IReadOnlyList<WebsiteParsedSignal>> FetchAsync(Uri page, int expectedIssue, CancellationToken cancellationToken = default)
     {
@@ -239,11 +414,49 @@ public sealed class WebsiteLearningService(HttpClient? client = null)
         return new[]{"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"}
             .OrderByDescending(x => counts.GetValueOrDefault(x)).ThenBy(x => Array.IndexOf(new[]{"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"}, x)).ToArray();
     }
+    public static string BuildFailureSummary(IEnumerable<WebsiteLearningFetchAttempt> attempts)
+    {
+        string[] failures = attempts.Where(attempt => !attempt.Success)
+            .TakeLast(8).Select(attempt => $"{attempt.Kind}:{attempt.RequestedUrl}={attempt.Error ?? attempt.StatusCode?.ToString() ?? "失败"}")
+            .ToArray();
+        return failures.Length == 0 ? "P25网站资料没有可用入口" : "P25网站资料没有可用入口；" + string.Join("；", failures);
+    }
+    private static IEnumerable<Uri> DiscoverSources(Uri page, string html)
+    {
+        foreach (Match match in Regex.Matches(html, @"<script[^>]+src=['""]([^'""]+)", RegexOptions.IgnoreCase))
+        {
+            string source = WebUtility.HtmlDecode(match.Groups[1].Value.Trim());
+            if (!Uri.TryCreate(page, source, out Uri? uri)) continue;
+            string file = Path.GetFileName(uri.AbsolutePath);
+            if (!KnownSourceFiles.Contains(file) || !IsAllowedSourceUri(page, uri)) continue;
+            yield return uri;
+        }
+    }
+    private static bool IsAllowedSourceUri(Uri page, Uri source)
+    {
+        if (source.Scheme is not ("https" or "http")) return false;
+        if (source.Host.Equals(page.Host, StringComparison.OrdinalIgnoreCase)) return true;
+        return Is62827Family(source.Host) || IsIdnFamily(source.Host);
+    }
+    private static bool Is62827Family(string host) => host.Equals("62827.com", StringComparison.OrdinalIgnoreCase) ||
+        host.EndsWith(".62827.com", StringComparison.OrdinalIgnoreCase);
+    private static bool IsIdnFamily(string host) => host.Equals("xn--hdcl2bk2m1bc.xn--gecrj9c", StringComparison.OrdinalIgnoreCase) ||
+        host.EndsWith(".xn--hdcl2bk2m1bc.xn--gecrj9c", StringComparison.OrdinalIgnoreCase);
+    private static string CanonicalSourceId(Uri source) => Path.GetFileName(source.AbsolutePath).ToLowerInvariant();
 }
 
 public static class WebsiteLearningIntegration
 {
-    private static readonly Uri Page = new("https://x17.xn--hdcl2bk2m1bc.xn--gecrj9c:8443/62.html");
+    private static readonly Uri[] CandidatePages =
+    [
+        new("https://62827.com/62.html"),
+        new("https://1.62827.com/62.html"),
+        new("https://a.62827.com/62.html"),
+        new("https://12.62827.com/62.html"),
+        new("https://ab.62827.com/62.html"),
+        new("https://xn--hdcl2bk2m1bc.xn--gecrj9c/62.html"),
+        new("https://x17.xn--hdcl2bk2m1bc.xn--gecrj9c:8443/62.html")
+    ];
     public static WebsiteLearningCycle ArchiveAndRank(long targetIssue,
         IReadOnlyList<WebsiteLearningIssueSnapshot> snapshots, WebsiteLearningArchive archive,
         Func<long, string?> localResultLookup)
@@ -267,27 +480,54 @@ public static class WebsiteLearningIntegration
     public static bool Publish(long targetIssue)
     {
         int shortIssue = checked((int)(targetIssue % 1000));
+        string statePath = ResolveStatePath();
+        WebsiteLearningPersistentState state = WebsiteLearningPersistence.Load(statePath);
+        var archive = new WebsiteLearningArchive(DatabaseHelper.DatabasePath);
+        WebsiteLearningPersistence.RestoreArchive(archive, state.Evidence);
+
         var service = new WebsiteLearningService();
-        var snapshots = service.FetchAllAsync(Page).GetAwaiter().GetResult();
+        Uri[] candidates = OrderCandidatePages(state.Endpoints).ToArray();
+        WebsiteLearningFetchResult fetch = service.FetchFirstAvailableAsync(candidates).GetAwaiter().GetResult();
+        WebsiteLearningEndpointState[] endpoints = UpdateEndpointStates(state.Endpoints, fetch.Attempts);
+        if (!fetch.Success)
+        {
+            WebsiteLearningPersistence.Save(statePath, archive, endpoints);
+            throw new InvalidDataException(WebsiteLearningService.BuildFailureSummary(fetch.Attempts));
+        }
+
         var localResults = DatabaseHelper.GetLatestHistory(int.MaxValue).Where(record => !string.IsNullOrWhiteSpace(record.Period))
             .GroupBy(record => record.Period).ToDictionary(group => group.Key, group => group.First().SpecialZodiac, StringComparer.Ordinal);
-        var cycle = ArchiveAndRank(targetIssue, snapshots, new WebsiteLearningArchive(DatabaseHelper.DatabasePath),
+        var cycle = ArchiveAndRank(targetIssue, fetch.Snapshots, archive,
             issue => localResults.GetValueOrDefault(issue.ToString()));
+        WebsiteLearningPersistence.Save(statePath, archive, endpoints);
+
         if (DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == targetIssue.ToString() &&
             row.ModelVersion == "P25-Web" && row.AnalysisPeriods == 25))
             return false;
         var ranking = cycle.Ranking;
         var usable = cycle.Signals.ToArray();
-        if (usable.Length == 0) throw new InvalidDataException($"网站没有第{shortIssue}期资料");
+        if (usable.Length == 0) throw new InvalidDataException($"网站没有第{shortIssue}期未开奖资料");
         string[] top6 = ranking.Take(6).ToArray();
         string[] top3 = top6.Take(3).ToArray();
-        string details = System.Text.Json.JsonSerializer.Serialize(new
+        string details = JsonSerializer.Serialize(new
         {
             source = "62827.com",
             issue = targetIssue,
             source_issue = shortIssue,
             captured_at = DateTimeOffset.Now,
+            entry_url = fetch.Page!.AbsoluteUri,
+            source_count = usable.Length,
             sources = usable.Select(x => new { x.SourceId, x.SourceHash, zodiacs = x.Zodiacs }).ToArray(),
+            fetch_attempts = fetch.Attempts.Select(attempt => new
+            {
+                kind = attempt.Kind,
+                requested_url = attempt.RequestedUrl,
+                effective_url = attempt.EffectiveUrl,
+                http_status = attempt.StatusCode,
+                success = attempt.Success,
+                error = attempt.Error,
+                checked_at = attempt.CheckedAt
+            }).ToArray(),
             weights = cycle.Weights.Values.OrderBy(weight => weight.SourceId).Select(weight => new
             { weight.SourceId, weight.Weight, weight.SampleCount, weight.Top3Rate, weight.Top6Rate }).ToArray(),
             ranking = ranking.ToArray()
@@ -295,5 +535,52 @@ public static class WebsiteLearningIntegration
         DatabaseHelper.SavePrediction(targetIssue.ToString(), string.Join(",", top3), string.Join(",", top6), "",
             "P25-Web", 25, details, "网站资料专家直接写入；开奖后由人工/自动复核", JsonSerializer.Serialize(ranking));
         return true;
+    }
+    private static string ResolveStatePath()
+    {
+        string? configured = Environment.GetEnvironmentVariable("P25_WEBSITE_STATE_PATH");
+        if (!string.IsNullOrWhiteSpace(configured)) return Path.GetFullPath(configured);
+        string cwd = Directory.GetCurrentDirectory();
+        if (Directory.Exists(Path.Combine(cwd, "site")))
+            return Path.Combine(cwd, "site", "data", "predictions", "website-learning-archive.json");
+        return Path.Combine(Path.GetDirectoryName(DatabaseHelper.DatabasePath)!, "website-learning-archive.json");
+    }
+    private static IEnumerable<Uri> OrderCandidatePages(IEnumerable<WebsiteLearningEndpointState> states)
+    {
+        var map = states.ToDictionary(state => state.Url, StringComparer.OrdinalIgnoreCase);
+        return CandidatePages.Select((page, index) => new
+            {
+                Page = page,
+                Index = index,
+                State = map.GetValueOrDefault(page.AbsoluteUri)
+            })
+            .OrderBy(item => item.State?.ConsecutiveFailures ?? 0)
+            .ThenByDescending(item => item.State?.LastSuccessAt ?? DateTimeOffset.MinValue)
+            .ThenBy(item => item.Index)
+            .Select(item => item.Page);
+    }
+    private static WebsiteLearningEndpointState[] UpdateEndpointStates(
+        IEnumerable<WebsiteLearningEndpointState> existing, IEnumerable<WebsiteLearningFetchAttempt> attempts)
+    {
+        var map = existing.ToDictionary(state => state.Url, StringComparer.OrdinalIgnoreCase);
+        foreach (WebsiteLearningFetchAttempt attempt in attempts.Where(attempt => attempt.Kind == "page"))
+        {
+            WebsiteLearningEndpointState previous = map.GetValueOrDefault(attempt.RequestedUrl) ??
+                new(attempt.RequestedUrl, 0, 0, 0, null, null);
+            map[attempt.RequestedUrl] = attempt.Success
+                ? previous with
+                {
+                    SuccessCount = previous.SuccessCount + 1,
+                    ConsecutiveFailures = 0,
+                    LastSuccessAt = attempt.CheckedAt
+                }
+                : previous with
+                {
+                    FailureCount = previous.FailureCount + 1,
+                    ConsecutiveFailures = previous.ConsecutiveFailures + 1,
+                    LastFailureAt = attempt.CheckedAt
+                };
+        }
+        return map.Values.OrderBy(state => state.Url, StringComparer.OrdinalIgnoreCase).ToArray();
     }
 }
