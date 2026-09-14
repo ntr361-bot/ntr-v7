@@ -1,0 +1,808 @@
+{
+  "GeneratedAtUtc": "2026-09-14T00:43:25.0963911Z",
+  "Protocol": {
+    "Warmup": 100,
+    "RequestedOuterSamples": 1000,
+    "InnerLookback": 300,
+    "OuterBlockSize": 100,
+    "Rule": "\u6BCF\u4E2A\u5916\u5C42\u6D4B\u8BD5\u5757\u5F00\u59CB\u524D\uFF0C\u53EA\u4F7F\u7528\u6B64\u524D\u5386\u53F2\u9009\u62E9\u5019\u9009\uFF1B\u9009\u62E9\u540E\u9501\u6B7B\uFF0C\u7981\u6B62\u67E5\u770B\u5916\u5C42\u7ED3\u679C\u91CD\u65B0\u8C03\u53C2\u3002",
+    "Selection": "Top6\u4F18\u5148\uFF0C\u5176\u6B21Top3\uFF0C\u5176\u6B21\u6700\u5927Top6\u8FDE\u9519\u3002",
+    "Signals": [
+      "50\u671F\u5468\u671F",
+      "20\u671F\u77ED\u5468\u671F\u91CD\u590D",
+      "\u5168\u90E8\u5386\u53F2\u9057\u6F0F"
+    ],
+    "Disabled": [
+      "\u516B\u8096",
+      "Trend\u8FD1\u671F\u8D70\u52BF",
+      "ShortForbidden\u4E94\u671F\u786C\u8FC7\u6EE4",
+      "Consecutive\u5173\u8054",
+      "\u81EA\u52A8\u6743\u91CD\u641C\u7D22"
+    ]
+  },
+  "HistoryCount": 1351,
+  "FirstOuterIssue": "2023352",
+  "LastOuterIssue": "2026255",
+  "OuterSamples": 1000,
+  "NestedSelected": {
+    "Top3Rate": 0.259,
+    "Top6Rate": 0.532,
+    "MaxTop3Miss": 16,
+    "MaxTop6Miss": 7
+  },
+  "SelectedCounts": {
+    "period\u002Bcycle\u002Bomission": 1,
+    "period\u002Bcycle": 2,
+    "period50": 4,
+    "omission-all": 2,
+    "period\u002Bomission": 1
+  },
+  "Folds": [
+    {
+      "StartIssue": "2023352",
+      "EndIssue": "2024086",
+      "InnerStartIndex": 100,
+      "InnerEndIndex": 350,
+      "SelectedModel": "period\u002Bcycle\u002Bomission",
+      "InnerTop3": 0.26294820717131473,
+      "InnerTop6": 0.5219123505976095,
+      "OuterTop3": 0.26,
+      "OuterTop6": 0.51,
+      "OuterMaxTop3Miss": 10,
+      "OuterMaxTop6Miss": 5,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 251,
+          "Top3Rate": 0.23107569721115537,
+          "Top6Rate": 0.4900398406374502,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 251,
+          "Top3Rate": 0.26294820717131473,
+          "Top6Rate": 0.4900398406374502,
+          "MaxTop3Miss": 20,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 251,
+          "Top3Rate": 0.24701195219123506,
+          "Top6Rate": 0.4820717131474104,
+          "MaxTop3Miss": 30,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 251,
+          "Top3Rate": 0.26693227091633465,
+          "Top6Rate": 0.4900398406374502,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 251,
+          "Top3Rate": 0.24302788844621515,
+          "Top6Rate": 0.5139442231075697,
+          "MaxTop3Miss": 22,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 251,
+          "Top3Rate": 0.27091633466135456,
+          "Top6Rate": 0.5139442231075697,
+          "MaxTop3Miss": 28,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 251,
+          "Top3Rate": 0.26294820717131473,
+          "Top6Rate": 0.5219123505976095,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2024087",
+      "EndIssue": "2024186",
+      "InnerStartIndex": 151,
+      "InnerEndIndex": 450,
+      "SelectedModel": "period\u002Bcycle",
+      "InnerTop3": 0.2833333333333333,
+      "InnerTop6": 0.53,
+      "OuterTop3": 0.31,
+      "OuterTop6": 0.54,
+      "OuterMaxTop3Miss": 10,
+      "OuterMaxTop6Miss": 5,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5166666666666667,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.24666666666666667,
+          "Top6Rate": 0.49333333333333335,
+          "MaxTop3Miss": 20,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.22333333333333333,
+          "Top6Rate": 0.49333333333333335,
+          "MaxTop3Miss": 30,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.2833333333333333,
+          "Top6Rate": 0.53,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.24333333333333335,
+          "Top6Rate": 0.5133333333333333,
+          "MaxTop3Miss": 22,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.23666666666666666,
+          "Top6Rate": 0.5033333333333333,
+          "MaxTop3Miss": 28,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2633333333333333,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2024187",
+      "EndIssue": "2024286",
+      "InnerStartIndex": 251,
+      "InnerEndIndex": 550,
+      "SelectedModel": "period\u002Bcycle",
+      "InnerTop3": 0.29333333333333333,
+      "InnerTop6": 0.5533333333333333,
+      "OuterTop3": 0.2,
+      "OuterTop6": 0.49,
+      "OuterMaxTop3Miss": 16,
+      "OuterMaxTop6Miss": 6,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.31333333333333335,
+          "Top6Rate": 0.5366666666666666,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.23333333333333334,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 20,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.23666666666666666,
+          "Top6Rate": 0.5133333333333333,
+          "MaxTop3Miss": 20,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.29333333333333333,
+          "Top6Rate": 0.5533333333333333,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.23666666666666666,
+          "Top6Rate": 0.5066666666666667,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.23666666666666666,
+          "Top6Rate": 0.5033333333333333,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.28,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 5
+        }
+      ]
+    },
+    {
+      "StartIssue": "2024287",
+      "EndIssue": "2025020",
+      "InnerStartIndex": 351,
+      "InnerEndIndex": 650,
+      "SelectedModel": "period50",
+      "InnerTop3": 0.2833333333333333,
+      "InnerTop6": 0.54,
+      "OuterTop3": 0.23,
+      "OuterTop6": 0.6,
+      "OuterMaxTop3Miss": 10,
+      "OuterMaxTop6Miss": 4,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.2833333333333333,
+          "Top6Rate": 0.54,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.24,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.25333333333333335,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 20,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.26666666666666666,
+          "Top6Rate": 0.5366666666666666,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.23666666666666666,
+          "Top6Rate": 0.5033333333333333,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.23,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.27666666666666667,
+          "Top6Rate": 0.52,
+          "MaxTop3Miss": 14,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2025021",
+      "EndIssue": "2025120",
+      "InnerStartIndex": 451,
+      "InnerEndIndex": 750,
+      "SelectedModel": "period50",
+      "InnerTop3": 0.25,
+      "InnerTop6": 0.5566666666666666,
+      "OuterTop3": 0.27,
+      "OuterTop6": 0.5,
+      "OuterMaxTop3Miss": 12,
+      "OuterMaxTop6Miss": 6,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.25,
+          "Top6Rate": 0.5566666666666666,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.25,
+          "Top6Rate": 0.5533333333333333,
+          "MaxTop3Miss": 19,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.29,
+          "Top6Rate": 0.55,
+          "MaxTop3Miss": 11,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.23333333333333334,
+          "Top6Rate": 0.5066666666666667,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2633333333333333,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.26,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 14,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2866666666666667,
+          "Top6Rate": 0.53,
+          "MaxTop3Miss": 14,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2025121",
+      "EndIssue": "2025220",
+      "InnerStartIndex": 551,
+      "InnerEndIndex": 850,
+      "SelectedModel": "period50",
+      "InnerTop3": 0.22666666666666666,
+      "InnerTop6": 0.54,
+      "OuterTop3": 0.3,
+      "OuterTop6": 0.52,
+      "OuterMaxTop3Miss": 10,
+      "OuterMaxTop6Miss": 7,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.22666666666666666,
+          "Top6Rate": 0.54,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.24333333333333335,
+          "Top6Rate": 0.5366666666666666,
+          "MaxTop3Miss": 19,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.2866666666666667,
+          "Top6Rate": 0.5366666666666666,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.21666666666666667,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2733333333333333,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.24333333333333335,
+          "Top6Rate": 0.49666666666666665,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2025221",
+      "EndIssue": "2025320",
+      "InnerStartIndex": 651,
+      "InnerEndIndex": 950,
+      "SelectedModel": "omission-all",
+      "InnerTop3": 0.27666666666666667,
+      "InnerTop6": 0.5466666666666666,
+      "OuterTop3": 0.28,
+      "OuterTop6": 0.54,
+      "OuterMaxTop3Miss": 10,
+      "OuterMaxTop6Miss": 5,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.26666666666666666,
+          "Top6Rate": 0.54,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.26,
+          "Top6Rate": 0.5333333333333333,
+          "MaxTop3Miss": 17,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.27666666666666667,
+          "Top6Rate": 0.5466666666666666,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.25,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 18,
+          "MaxTop6Miss": 8
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5333333333333333,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.25333333333333335,
+          "Top6Rate": 0.5166666666666667,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.3,
+          "Top6Rate": 0.5133333333333333,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2025321",
+      "EndIssue": "2026055",
+      "InnerStartIndex": 751,
+      "InnerEndIndex": 1050,
+      "SelectedModel": "omission-all",
+      "InnerTop3": 0.26666666666666666,
+      "InnerTop6": 0.53,
+      "OuterTop3": 0.25,
+      "OuterTop6": 0.51,
+      "OuterMaxTop3Miss": 16,
+      "OuterMaxTop6Miss": 4,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.2633333333333333,
+          "Top6Rate": 0.52,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.26,
+          "Top6Rate": 0.53,
+          "MaxTop3Miss": 17,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.26666666666666666,
+          "Top6Rate": 0.53,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.25666666666666665,
+          "Top6Rate": 0.51,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.24666666666666667,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.25,
+          "Top6Rate": 0.51,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2833333333333333,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2026056",
+      "EndIssue": "2026155",
+      "InnerStartIndex": 851,
+      "InnerEndIndex": 1150,
+      "SelectedModel": "period\u002Bomission",
+      "InnerTop3": 0.2733333333333333,
+      "InnerTop6": 0.5633333333333334,
+      "OuterTop3": 0.22,
+      "OuterTop6": 0.54,
+      "OuterMaxTop3Miss": 13,
+      "OuterMaxTop6Miss": 4,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.3,
+          "Top6Rate": 0.5566666666666666,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.24666666666666667,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 17,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5366666666666666,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 6
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.25666666666666665,
+          "Top6Rate": 0.53,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.2733333333333333,
+          "Top6Rate": 0.5633333333333334,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 4
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.24,
+          "Top6Rate": 0.51,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 7
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5233333333333333,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        }
+      ]
+    },
+    {
+      "StartIssue": "2026156",
+      "EndIssue": "2026255",
+      "InnerStartIndex": 951,
+      "InnerEndIndex": 1250,
+      "SelectedModel": "period50",
+      "InnerTop3": 0.2866666666666667,
+      "InnerTop6": 0.56,
+      "OuterTop3": 0.27,
+      "OuterTop6": 0.57,
+      "OuterMaxTop3Miss": 16,
+      "OuterMaxTop6Miss": 3,
+      "InnerCandidates": [
+        {
+          "Name": "period50",
+          "Samples": 300,
+          "Top3Rate": 0.2866666666666667,
+          "Top6Rate": 0.56,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 4
+        },
+        {
+          "Name": "cycle20",
+          "Samples": 300,
+          "Top3Rate": 0.22666666666666666,
+          "Top6Rate": 0.5133333333333333,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "omission-all",
+          "Samples": 300,
+          "Top3Rate": 0.2733333333333333,
+          "Top6Rate": 0.5266666666666666,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 9
+        },
+        {
+          "Name": "period\u002Bcycle",
+          "Samples": 300,
+          "Top3Rate": 0.24666666666666667,
+          "Top6Rate": 0.5133333333333333,
+          "MaxTop3Miss": 11,
+          "MaxTop6Miss": 5
+        },
+        {
+          "Name": "period\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.26666666666666666,
+          "Top6Rate": 0.5566666666666666,
+          "MaxTop3Miss": 15,
+          "MaxTop6Miss": 4
+        },
+        {
+          "Name": "cycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.22333333333333333,
+          "Top6Rate": 0.48333333333333334,
+          "MaxTop3Miss": 16,
+          "MaxTop6Miss": 10
+        },
+        {
+          "Name": "period\u002Bcycle\u002Bomission",
+          "Samples": 300,
+          "Top3Rate": 0.24333333333333335,
+          "Top6Rate": 0.49333333333333335,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 6
+        }
+      ]
+    }
+  ],
+  "FixedCandidateDiagnostics": {
+    "period50": {
+      "Samples": 1000,
+      "Top3Rate": 0.278,
+      "Top6Rate": 0.549,
+      "MaxTop3Miss": 16,
+      "MaxTop6Miss": 7
+    },
+    "cycle20": {
+      "Samples": 1000,
+      "Top3Rate": 0.24,
+      "Top6Rate": 0.52,
+      "MaxTop3Miss": 19,
+      "MaxTop6Miss": 8
+    },
+    "omission-all": {
+      "Samples": 1000,
+      "Top3Rate": 0.277,
+      "Top6Rate": 0.536,
+      "MaxTop3Miss": 20,
+      "MaxTop6Miss": 9
+    },
+    "period\u002Bcycle": {
+      "Samples": 1000,
+      "Top3Rate": 0.251,
+      "Top6Rate": 0.518,
+      "MaxTop3Miss": 18,
+      "MaxTop6Miss": 8
+    },
+    "period\u002Bomission": {
+      "Samples": 1000,
+      "Top3Rate": 0.261,
+      "Top6Rate": 0.536,
+      "MaxTop3Miss": 15,
+      "MaxTop6Miss": 6
+    },
+    "cycle\u002Bomission": {
+      "Samples": 1000,
+      "Top3Rate": 0.234,
+      "Top6Rate": 0.501,
+      "MaxTop3Miss": 18,
+      "MaxTop6Miss": 10
+    },
+    "period\u002Bcycle\u002Bomission": {
+      "Samples": 1000,
+      "Top3Rate": 0.274,
+      "Top6Rate": 0.511,
+      "MaxTop3Miss": 14,
+      "MaxTop6Miss": 6
+    }
+  }
+}
+
+Nested Top3 = 25.90%
+Nested Top6 = 53.20%
+Top6最大连错 = 7
+REPORT=D:\a\ntr-v7\ntr-v7\docs\nested-walkforward-report.json
