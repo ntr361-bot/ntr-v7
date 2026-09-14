@@ -1,0 +1,2975 @@
+{
+  "GeneratedAtUtc": "2026-09-14T00:58:07.1676353Z",
+  "Protocol": {
+    "HistoryCount": 1351,
+    "RequestedSamples": 1000,
+    "ActualSamples": 1000,
+    "FirstIssue": "2023352",
+    "LastIssue": "2026255",
+    "Formula": "intervalCount\u003E=3: score=max(0,(1-CV)*100); intervalCount 1-2 =\u003E 40; 0 =\u003E 20",
+    "CurrentTieBreaker": "\u56FA\u5B9A\u751F\u8096\u987A\u5E8F\uFF1A\u9F20\u725B\u864E\u5154\u9F99\u86C7\u9A6C\u7F8A\u7334\u9E21\u72D7\u732A",
+    "Windows": [
+      20,
+      30,
+      40,
+      45,
+      50,
+      55,
+      60,
+      70,
+      80,
+      100,
+      120
+    ],
+    "PrimaryWindowFamily": [
+      30,
+      40,
+      50,
+      60,
+      80
+    ],
+    "NestedWindowRule": "\u6BCF100\u671F\u5916\u5C42\u5757\u5F00\u59CB\u524D\uFF0C\u53EA\u7528\u6B64\u524D\u6700\u591A300\u671F\uFF0C\u572830/40/50/60/80\u4E2D\u6309Top6 Wilson\u4E0B\u754C\u9009\u62E9\u7A97\u53E3\u5E76\u9501\u6B7B100\u671F\u3002",
+    "PermutationNull": "100\u6B21\uFF1B\u53EA\u5728\u540C\u4E00\u5E74\u4EFD\u5185\u90E8\u6253\u4E71\u751F\u8096\uFF0C\u4FDD\u6301\u6BCF\u5E74\u751F\u8096\u8FB9\u9645\u5206\u5E03\uFF1B\u5BB6\u65CF\u6821\u6B63\u53D65\u4E2A\u4E3B\u7A97\u53E3\u4E2D\u7684\u6700\u5927Top6\u3002",
+    "Bootstrap": "Top6\u547D\u4E2D\u5E8F\u5217\uFF0C\u5FAA\u73AF\u5757Bootstrap\uFF0C\u5757\u957F7\uFF0C5000\u6B21\u3002",
+    "Warning": "\u7A97\u53E3\u626B\u63CF\u3001phase\u8BCA\u65AD\u5747\u4E3A\u63A2\u7D22\u6027\u5206\u6790\uFF1B\u672C\u62A5\u544A\u4E0D\u80FD\u628A\u540C\u4E001000\u671F\u91CD\u65B0\u5305\u88C5\u6210\u72EC\u7ACB\u8BC1\u660E\u3002"
+  },
+  "WindowSensitivity": [
+    {
+      "Window": 20,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 246,
+        "Top6Hits": 515,
+        "Top3Rate": 0.246,
+        "Top6Rate": 0.515,
+        "MaxTop3Miss": 32,
+        "MaxTop6Miss": 7
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 252,
+        "Top6Hits": 501,
+        "Top3Rate": 0.252,
+        "Top6Rate": 0.501,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 10
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 279,
+        "Top6Hits": 499,
+        "Top3Rate": 0.279,
+        "Top6Rate": 0.499,
+        "MaxTop3Miss": 17,
+        "MaxTop6Miss": 10
+      },
+      "ExpectedTop3": 0.2502166666666661,
+      "ExpectedTop6": 0.50785119047619,
+      "Top3BoundaryTieRate": 0.964,
+      "Top6BoundaryTieRate": 0.612,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 19,
+            "Top6Hits": 53,
+            "Top3Rate": 0.19,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 32,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 54,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 51,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 49,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 54,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 54,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 45,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.45,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 19,
+            "Top6Hits": 49,
+            "Top3Rate": 0.19,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 19,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 54,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 20,
+            "Top6Hits": 52,
+            "Top3Rate": 0.2,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 3,
+            "Top6Hits": 6,
+            "Top3Rate": 0.21428571428571427,
+            "Top6Rate": 0.42857142857142855,
+            "MaxTop3Miss": 5,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 96,
+            "Top6Hits": 191,
+            "Top3Rate": 0.26229508196721313,
+            "Top6Rate": 0.5218579234972678,
+            "MaxTop3Miss": 32,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 88,
+            "Top6Hits": 183,
+            "Top3Rate": 0.2410958904109589,
+            "Top6Rate": 0.5013698630136987,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 59,
+            "Top6Hits": 135,
+            "Top3Rate": 0.23137254901960785,
+            "Top6Rate": 0.5294117647058824,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 7
+          }
+        }
+      ]
+    },
+    {
+      "Window": 30,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 276,
+        "Top6Hits": 511,
+        "Top3Rate": 0.276,
+        "Top6Rate": 0.511,
+        "MaxTop3Miss": 17,
+        "MaxTop6Miss": 9
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 248,
+        "Top6Hits": 513,
+        "Top3Rate": 0.248,
+        "Top6Rate": 0.513,
+        "MaxTop3Miss": 28,
+        "MaxTop6Miss": 10
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 259,
+        "Top6Hits": 487,
+        "Top3Rate": 0.259,
+        "Top6Rate": 0.487,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 9
+      },
+      "ExpectedTop3": 0.2575080447330448,
+      "ExpectedTop6": 0.5121343434343437,
+      "Top3BoundaryTieRate": 0.846,
+      "Top6BoundaryTieRate": 0.761,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 22,
+            "Top6Hits": 47,
+            "Top3Rate": 0.22,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 17,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 50,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 52,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 51,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 25,
+            "Top6Hits": 54,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 47,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 53,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 50,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 52,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 55,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 4
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 3,
+            "Top6Hits": 6,
+            "Top3Rate": 0.21428571428571427,
+            "Top6Rate": 0.42857142857142855,
+            "MaxTop3Miss": 5,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 101,
+            "Top6Hits": 184,
+            "Top3Rate": 0.27595628415300544,
+            "Top6Rate": 0.5027322404371585,
+            "MaxTop3Miss": 17,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 101,
+            "Top6Hits": 187,
+            "Top3Rate": 0.27671232876712326,
+            "Top6Rate": 0.5123287671232877,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 71,
+            "Top6Hits": 134,
+            "Top3Rate": 0.2784313725490196,
+            "Top6Rate": 0.5254901960784314,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 40,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 295,
+        "Top6Hits": 528,
+        "Top3Rate": 0.295,
+        "Top6Rate": 0.528,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 9
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 265,
+        "Top6Hits": 506,
+        "Top3Rate": 0.265,
+        "Top6Rate": 0.506,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 10
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 225,
+        "Top6Hits": 494,
+        "Top3Rate": 0.225,
+        "Top6Rate": 0.494,
+        "MaxTop3Miss": 26,
+        "MaxTop6Miss": 7
+      },
+      "ExpectedTop3": 0.27096190476190457,
+      "ExpectedTop6": 0.5247369047619049,
+      "Top3BoundaryTieRate": 0.508,
+      "Top6BoundaryTieRate": 0.726,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 46,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.46,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 34,
+            "Top6Hits": 58,
+            "Top3Rate": 0.34,
+            "Top6Rate": 0.58,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 49,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 34,
+            "Top6Hits": 54,
+            "Top3Rate": 0.34,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 7,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 22,
+            "Top6Hits": 45,
+            "Top3Rate": 0.22,
+            "Top6Rate": 0.45,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 32,
+            "Top6Hits": 51,
+            "Top3Rate": 0.32,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 25,
+            "Top6Hits": 53,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 36,
+            "Top6Hits": 63,
+            "Top3Rate": 0.36,
+            "Top6Rate": 0.63,
+            "MaxTop3Miss": 6,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 52,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 57,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.57,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 5
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 6,
+            "Top6Hits": 8,
+            "Top3Rate": 0.42857142857142855,
+            "Top6Rate": 0.5714285714285714,
+            "MaxTop3Miss": 2,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 110,
+            "Top6Hits": 189,
+            "Top3Rate": 0.3005464480874317,
+            "Top6Rate": 0.5163934426229508,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 104,
+            "Top6Hits": 189,
+            "Top3Rate": 0.28493150684931506,
+            "Top6Rate": 0.5178082191780822,
+            "MaxTop3Miss": 20,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 75,
+            "Top6Hits": 142,
+            "Top3Rate": 0.29411764705882354,
+            "Top6Rate": 0.5568627450980392,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 45,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 278,
+        "Top6Hits": 543,
+        "Top3Rate": 0.278,
+        "Top6Rate": 0.543,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 7
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 269,
+        "Top6Hits": 537,
+        "Top3Rate": 0.269,
+        "Top6Rate": 0.537,
+        "MaxTop3Miss": 24,
+        "MaxTop6Miss": 7
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 242,
+        "Top6Hits": 463,
+        "Top3Rate": 0.242,
+        "Top6Rate": 0.463,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 10
+      },
+      "ExpectedTop3": 0.2715273809523808,
+      "ExpectedTop6": 0.5336095238095242,
+      "Top3BoundaryTieRate": 0.377,
+      "Top6BoundaryTieRate": 0.616,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 32,
+            "Top6Hits": 51,
+            "Top3Rate": 0.32,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 57,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.57,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 20,
+            "Top6Hits": 53,
+            "Top3Rate": 0.2,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 55,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 47,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 54,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 52,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 38,
+            "Top6Hits": 63,
+            "Top3Rate": 0.38,
+            "Top6Rate": 0.63,
+            "MaxTop3Miss": 7,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 50,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 25,
+            "Top6Hits": 61,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.61,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 3
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 7,
+            "Top6Hits": 10,
+            "Top3Rate": 0.5,
+            "Top6Rate": 0.7142857142857143,
+            "MaxTop3Miss": 2,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 96,
+            "Top6Hits": 196,
+            "Top3Rate": 0.26229508196721313,
+            "Top6Rate": 0.5355191256830601,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 101,
+            "Top6Hits": 191,
+            "Top3Rate": 0.27671232876712326,
+            "Top6Rate": 0.5232876712328767,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 74,
+            "Top6Hits": 146,
+            "Top3Rate": 0.2901960784313726,
+            "Top6Rate": 0.5725490196078431,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 50,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 278,
+        "Top6Hits": 549,
+        "Top3Rate": 0.278,
+        "Top6Rate": 0.549,
+        "MaxTop3Miss": 16,
+        "MaxTop6Miss": 7
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 267,
+        "Top6Hits": 524,
+        "Top3Rate": 0.267,
+        "Top6Rate": 0.524,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 11
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 233,
+        "Top6Hits": 476,
+        "Top3Rate": 0.233,
+        "Top6Rate": 0.476,
+        "MaxTop3Miss": 24,
+        "MaxTop6Miss": 8
+      },
+      "ExpectedTop3": 0.27089999999999975,
+      "ExpectedTop6": 0.5340357142857145,
+      "Top3BoundaryTieRate": 0.285,
+      "Top6BoundaryTieRate": 0.474,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 33,
+            "Top6Hits": 55,
+            "Top3Rate": 0.33,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 34,
+            "Top6Hits": 55,
+            "Top3Rate": 0.34,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 18,
+            "Top6Hits": 52,
+            "Top3Rate": 0.18,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 60,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.6,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 50,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 52,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 22,
+            "Top6Hits": 54,
+            "Top3Rate": 0.22,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 38,
+            "Top6Hits": 61,
+            "Top3Rate": 0.38,
+            "Top6Rate": 0.61,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 53,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 57,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.57,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 3
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 7,
+            "Top6Hits": 10,
+            "Top3Rate": 0.5,
+            "Top6Rate": 0.7142857142857143,
+            "MaxTop3Miss": 2,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 96,
+            "Top6Hits": 201,
+            "Top3Rate": 0.26229508196721313,
+            "Top6Rate": 0.5491803278688525,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 100,
+            "Top6Hits": 195,
+            "Top3Rate": 0.273972602739726,
+            "Top6Rate": 0.5342465753424658,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 75,
+            "Top6Hits": 143,
+            "Top3Rate": 0.29411764705882354,
+            "Top6Rate": 0.5607843137254902,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 4
+          }
+        }
+      ]
+    },
+    {
+      "Window": 55,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 275,
+        "Top6Hits": 546,
+        "Top3Rate": 0.275,
+        "Top6Rate": 0.546,
+        "MaxTop3Miss": 20,
+        "MaxTop6Miss": 6
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 265,
+        "Top6Hits": 525,
+        "Top3Rate": 0.265,
+        "Top6Rate": 0.525,
+        "MaxTop3Miss": 23,
+        "MaxTop6Miss": 11
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 244,
+        "Top6Hits": 475,
+        "Top3Rate": 0.244,
+        "Top6Rate": 0.475,
+        "MaxTop3Miss": 26,
+        "MaxTop6Miss": 11
+      },
+      "ExpectedTop3": 0.27059999999999984,
+      "ExpectedTop6": 0.5351833333333333,
+      "Top3BoundaryTieRate": 0.277,
+      "Top6BoundaryTieRate": 0.352,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 52,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 33,
+            "Top6Hits": 53,
+            "Top3Rate": 0.33,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 52,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 20,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 56,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.56,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 59,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.59,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 57,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.57,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 22,
+            "Top6Hits": 55,
+            "Top3Rate": 0.22,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 17,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 35,
+            "Top6Hits": 59,
+            "Top3Rate": 0.35,
+            "Top6Rate": 0.59,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 50,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 53,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 5
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 5,
+            "Top6Hits": 10,
+            "Top3Rate": 0.35714285714285715,
+            "Top6Rate": 0.7142857142857143,
+            "MaxTop3Miss": 3,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 103,
+            "Top6Hits": 195,
+            "Top3Rate": 0.2814207650273224,
+            "Top6Rate": 0.5327868852459017,
+            "MaxTop3Miss": 20,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 103,
+            "Top6Hits": 205,
+            "Top3Rate": 0.2821917808219178,
+            "Top6Rate": 0.5616438356164384,
+            "MaxTop3Miss": 20,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 64,
+            "Top6Hits": 136,
+            "Top3Rate": 0.25098039215686274,
+            "Top6Rate": 0.5333333333333333,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 60,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 284,
+        "Top6Hits": 528,
+        "Top3Rate": 0.284,
+        "Top6Rate": 0.528,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 6
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 276,
+        "Top6Hits": 517,
+        "Top3Rate": 0.276,
+        "Top6Rate": 0.517,
+        "MaxTop3Miss": 15,
+        "MaxTop6Miss": 7
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 247,
+        "Top6Hits": 483,
+        "Top3Rate": 0.247,
+        "Top6Rate": 0.483,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 7
+      },
+      "ExpectedTop3": 0.2787333333333334,
+      "ExpectedTop6": 0.5214666666666669,
+      "Top3BoundaryTieRate": 0.243,
+      "Top6BoundaryTieRate": 0.24,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 35,
+            "Top6Hits": 58,
+            "Top3Rate": 0.35,
+            "Top6Rate": 0.58,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 49,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 25,
+            "Top6Hits": 51,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 22,
+            "Top6Hits": 48,
+            "Top3Rate": 0.22,
+            "Top6Rate": 0.48,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 54,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 33,
+            "Top6Hits": 55,
+            "Top3Rate": 0.33,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 54,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 37,
+            "Top6Hits": 59,
+            "Top3Rate": 0.37,
+            "Top6Rate": 0.59,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 47,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 53,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 7,
+            "Top6Hits": 10,
+            "Top3Rate": 0.5,
+            "Top6Rate": 0.7142857142857143,
+            "MaxTop3Miss": 2,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 100,
+            "Top6Hits": 190,
+            "Top3Rate": 0.273224043715847,
+            "Top6Rate": 0.5191256830601093,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 115,
+            "Top6Hits": 197,
+            "Top3Rate": 0.3150684931506849,
+            "Top6Rate": 0.5397260273972603,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 62,
+            "Top6Hits": 131,
+            "Top3Rate": 0.24313725490196078,
+            "Top6Rate": 0.5137254901960784,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 70,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 278,
+        "Top6Hits": 510,
+        "Top3Rate": 0.278,
+        "Top6Rate": 0.51,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 8
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 273,
+        "Top6Hits": 508,
+        "Top3Rate": 0.273,
+        "Top6Rate": 0.508,
+        "MaxTop3Miss": 25,
+        "MaxTop6Miss": 10
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 256,
+        "Top6Hits": 492,
+        "Top3Rate": 0.256,
+        "Top6Rate": 0.492,
+        "MaxTop3Miss": 17,
+        "MaxTop6Miss": 11
+      },
+      "ExpectedTop3": 0.2758333333333333,
+      "ExpectedTop6": 0.5094000000000001,
+      "Top3BoundaryTieRate": 0.198,
+      "Top6BoundaryTieRate": 0.1,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 34,
+            "Top6Hits": 53,
+            "Top3Rate": 0.34,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 46,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.46,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 51,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 25,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 51,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 32,
+            "Top6Hits": 60,
+            "Top3Rate": 0.32,
+            "Top6Rate": 0.6,
+            "MaxTop3Miss": 6,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 34,
+            "Top6Hits": 51,
+            "Top3Rate": 0.34,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 55,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.55,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 33,
+            "Top6Hits": 52,
+            "Top3Rate": 0.33,
+            "Top6Rate": 0.52,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 19,
+            "Top6Hits": 41,
+            "Top3Rate": 0.19,
+            "Top6Rate": 0.41,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 50,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 17,
+            "MaxTop6Miss": 6
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 7,
+            "Top6Hits": 8,
+            "Top3Rate": 0.5,
+            "Top6Rate": 0.5714285714285714,
+            "MaxTop3Miss": 2,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 100,
+            "Top6Hits": 186,
+            "Top3Rate": 0.273224043715847,
+            "Top6Rate": 0.5081967213114754,
+            "MaxTop3Miss": 25,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 117,
+            "Top6Hits": 197,
+            "Top3Rate": 0.32054794520547947,
+            "Top6Rate": 0.5397260273972603,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 54,
+            "Top6Hits": 119,
+            "Top3Rate": 0.21176470588235294,
+            "Top6Rate": 0.4666666666666667,
+            "MaxTop3Miss": 17,
+            "MaxTop6Miss": 6
+          }
+        }
+      ]
+    },
+    {
+      "Window": 80,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 258,
+        "Top6Hits": 495,
+        "Top3Rate": 0.258,
+        "Top6Rate": 0.495,
+        "MaxTop3Miss": 26,
+        "MaxTop6Miss": 10
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 250,
+        "Top6Hits": 496,
+        "Top3Rate": 0.25,
+        "Top6Rate": 0.496,
+        "MaxTop3Miss": 28,
+        "MaxTop6Miss": 10
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 273,
+        "Top6Hits": 504,
+        "Top3Rate": 0.273,
+        "Top6Rate": 0.504,
+        "MaxTop3Miss": 13,
+        "MaxTop6Miss": 10
+      },
+      "ExpectedTop3": 0.25383333333333336,
+      "ExpectedTop6": 0.4955,
+      "Top3BoundaryTieRate": 0.103,
+      "Top6BoundaryTieRate": 0.006,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 53,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.53,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 38,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.38,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 46,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.46,
+            "MaxTop3Miss": 26,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 28,
+            "Top6Hits": 50,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 25,
+            "Top6Hits": 47,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 10
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 49,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 50,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 30,
+            "Top6Hits": 60,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.6,
+            "MaxTop3Miss": 19,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 51,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 51,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 4
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 5,
+            "Top6Hits": 9,
+            "Top3Rate": 0.35714285714285715,
+            "Top6Rate": 0.6428571428571429,
+            "MaxTop3Miss": 5,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 98,
+            "Top6Hits": 171,
+            "Top3Rate": 0.2677595628415301,
+            "Top6Rate": 0.4672131147540984,
+            "MaxTop3Miss": 26,
+            "MaxTop6Miss": 8
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 101,
+            "Top6Hits": 178,
+            "Top3Rate": 0.27671232876712326,
+            "Top6Rate": 0.4876712328767123,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 10
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 54,
+            "Top6Hits": 137,
+            "Top3Rate": 0.21176470588235294,
+            "Top6Rate": 0.5372549019607843,
+            "MaxTop3Miss": 18,
+            "MaxTop6Miss": 7
+          }
+        }
+      ]
+    },
+    {
+      "Window": 100,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 251,
+        "Top6Hits": 487,
+        "Top3Rate": 0.251,
+        "Top6Rate": 0.487,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 9
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 251,
+        "Top6Hits": 487,
+        "Top3Rate": 0.251,
+        "Top6Rate": 0.487,
+        "MaxTop3Miss": 21,
+        "MaxTop6Miss": 9
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 260,
+        "Top6Hits": 513,
+        "Top3Rate": 0.26,
+        "Top6Rate": 0.513,
+        "MaxTop3Miss": 14,
+        "MaxTop6Miss": 10
+      },
+      "ExpectedTop3": 0.251,
+      "ExpectedTop6": 0.487,
+      "Top3BoundaryTieRate": 0.005,
+      "Top6BoundaryTieRate": 0,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 50,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 21,
+            "Top6Hits": 42,
+            "Top3Rate": 0.21,
+            "Top6Rate": 0.42,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 20,
+            "Top6Hits": 43,
+            "Top3Rate": 0.2,
+            "Top6Rate": 0.43,
+            "MaxTop3Miss": 13,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 57,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.57,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 40,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.4,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 56,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.56,
+            "MaxTop3Miss": 18,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 50,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 8,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 54,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 3
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 24,
+            "Top6Hits": 44,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.44,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 51,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.51,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 5
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 5,
+            "Top6Hits": 8,
+            "Top3Rate": 0.35714285714285715,
+            "Top6Rate": 0.5714285714285714,
+            "MaxTop3Miss": 5,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 84,
+            "Top6Hits": 174,
+            "Top3Rate": 0.22950819672131148,
+            "Top6Rate": 0.47540983606557374,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 96,
+            "Top6Hits": 179,
+            "Top3Rate": 0.26301369863013696,
+            "Top6Rate": 0.4904109589041096,
+            "MaxTop3Miss": 21,
+            "MaxTop6Miss": 9
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 66,
+            "Top6Hits": 126,
+            "Top3Rate": 0.25882352941176473,
+            "Top6Rate": 0.49411764705882355,
+            "MaxTop3Miss": 14,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    },
+    {
+      "Window": 120,
+      "Fixed": {
+        "Samples": 1000,
+        "Top3Hits": 254,
+        "Top6Hits": 497,
+        "Top3Rate": 0.254,
+        "Top6Rate": 0.497,
+        "MaxTop3Miss": 18,
+        "MaxTop6Miss": 7
+      },
+      "ReverseTie": {
+        "Samples": 1000,
+        "Top3Hits": 254,
+        "Top6Hits": 497,
+        "Top3Rate": 0.254,
+        "Top6Rate": 0.497,
+        "MaxTop3Miss": 18,
+        "MaxTop6Miss": 7
+      },
+      "Inverse": {
+        "Samples": 1000,
+        "Top3Hits": 264,
+        "Top6Hits": 503,
+        "Top3Rate": 0.264,
+        "Top6Rate": 0.503,
+        "MaxTop3Miss": 26,
+        "MaxTop6Miss": 8
+      },
+      "ExpectedTop3": 0.254,
+      "ExpectedTop6": 0.497,
+      "Top3BoundaryTieRate": 0,
+      "Top6BoundaryTieRate": 0,
+      "Blocks": [
+        {
+          "Block": 1,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 48,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.48,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 2,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 49,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.49,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 3,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 19,
+            "Top6Hits": 47,
+            "Top3Rate": 0.19,
+            "Top6Rate": 0.47,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 4,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 29,
+            "Top6Hits": 59,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.59,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 5,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 50,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 4
+          }
+        },
+        {
+          "Block": 6,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 27,
+            "Top6Hits": 50,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 12,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Block": 7,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 31,
+            "Top6Hits": 45,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.45,
+            "MaxTop3Miss": 10,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Block": 8,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 54,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.54,
+            "MaxTop3Miss": 9,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 9,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 26,
+            "Top6Hits": 45,
+            "Top3Rate": 0.26,
+            "Top6Rate": 0.45,
+            "MaxTop3Miss": 11,
+            "MaxTop6Miss": 5
+          }
+        },
+        {
+          "Block": 10,
+          "Metric": {
+            "Samples": 100,
+            "Top3Hits": 23,
+            "Top6Hits": 50,
+            "Top3Rate": 0.23,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 18,
+            "MaxTop6Miss": 4
+          }
+        }
+      ],
+      "Years": [
+        {
+          "Year": "2023",
+          "Metric": {
+            "Samples": 14,
+            "Top3Hits": 5,
+            "Top6Hits": 9,
+            "Top3Rate": 0.35714285714285715,
+            "Top6Rate": 0.6428571428571429,
+            "MaxTop3Miss": 3,
+            "MaxTop6Miss": 2
+          }
+        },
+        {
+          "Year": "2024",
+          "Metric": {
+            "Samples": 366,
+            "Top3Hits": 88,
+            "Top6Hits": 183,
+            "Top3Rate": 0.24043715846994534,
+            "Top6Rate": 0.5,
+            "MaxTop3Miss": 16,
+            "MaxTop6Miss": 6
+          }
+        },
+        {
+          "Year": "2025",
+          "Metric": {
+            "Samples": 365,
+            "Top3Hits": 97,
+            "Top6Hits": 177,
+            "Top3Rate": 0.26575342465753427,
+            "Top6Rate": 0.4849315068493151,
+            "MaxTop3Miss": 15,
+            "MaxTop6Miss": 7
+          }
+        },
+        {
+          "Year": "2026",
+          "Metric": {
+            "Samples": 255,
+            "Top3Hits": 64,
+            "Top6Hits": 128,
+            "Top3Rate": 0.25098039215686274,
+            "Top6Rate": 0.5019607843137255,
+            "MaxTop3Miss": 18,
+            "MaxTop6Miss": 5
+          }
+        }
+      ]
+    }
+  ],
+  "Window50ObservationSufficiency": {
+    "AllZodiacCells": {
+      "Total": 12000,
+      "Counts": {
+        "0": 925,
+        "1": 1324,
+        "2": 2079,
+        "\u003E=3": 7672
+      },
+      "Rates": {
+        "0": 0.07708333333333334,
+        "1": 0.11033333333333334,
+        "2": 0.17325,
+        "\u003E=3": 0.6393333333333333
+      }
+    },
+    "ActualWinnerCells": {
+      "Total": 1000,
+      "Counts": {
+        "0": 69,
+        "1": 110,
+        "2": 188,
+        "\u003E=3": 633
+      },
+      "Rates": {
+        "0": 0.069,
+        "1": 0.11,
+        "2": 0.188,
+        "\u003E=3": 0.633
+      }
+    },
+    "SelectedTop6Cells": {
+      "Total": 6000,
+      "Counts": {
+        "0": 1,
+        "1": 925,
+        "2": 1557,
+        "\u003E=3": 3517
+      },
+      "Rates": {
+        "0": 0.00016666666666666666,
+        "1": 0.15416666666666667,
+        "2": 0.2595,
+        "\u003E=3": 0.5861666666666666
+      }
+    },
+    "SelectedTop6CellsTotal": 6000
+  },
+  "Window50AlternativeTimingDiagnostics": {
+    "PhaseOnly": {
+      "Samples": 1000,
+      "Top3Hits": 264,
+      "Top6Hits": 484,
+      "Top3Rate": 0.264,
+      "Top6Rate": 0.484,
+      "MaxTop3Miss": 19,
+      "MaxTop6Miss": 10
+    },
+    "RegularityTimesPhase": {
+      "Samples": 1000,
+      "Top3Hits": 250,
+      "Top6Hits": 495,
+      "Top3Rate": 0.25,
+      "Top6Rate": 0.495,
+      "MaxTop3Miss": 19,
+      "MaxTop6Miss": 10
+    },
+    "Note": "\u63A2\u7D22\u6027\u89E3\u91CA\uFF1A\u7528\u4E8E\u5224\u65AD54.9%\u6765\u81EA\u7EAF\u89C4\u5F8B\u6027\u8FD8\u662F\u63A5\u8FD1\u5386\u53F2\u5E73\u5747\u95F4\u9694\u7684\u65F6\u70B9\u4FE1\u606F\uFF0C\u4E0D\u4F5C\u4E3A\u5DF2\u9A8C\u8BC1\u6A21\u578B\u3002"
+  },
+  "NestedAdaptiveWindow": {
+    "Overall": {
+      "Samples": 1000,
+      "Top3Hits": 270,
+      "Top6Hits": 538,
+      "Top3Rate": 0.27,
+      "Top6Rate": 0.538,
+      "MaxTop3Miss": 13,
+      "MaxTop6Miss": 7
+    },
+    "SelectedWindowCounts": {
+      "60": 4,
+      "50": 5,
+      "40": 1
+    },
+    "Folds": [
+      {
+        "StartIssue": "2023352",
+        "EndIssue": "2024086",
+        "SelectedWindow": 60,
+        "InnerTop6": 0.5281385281385281,
+        "InnerTop6WilsonLower95": 0.4638293832562316,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 35,
+          "Top6Hits": 58,
+          "Top3Rate": 0.35,
+          "Top6Rate": 0.58,
+          "MaxTop3Miss": 11,
+          "MaxTop6Miss": 4
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.21645021645021645,
+            "Top6Rate": 0.49783549783549785,
+            "Top6WilsonLower95": 0.4339229421178191,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.22510822510822512,
+            "Top6Rate": 0.49783549783549785,
+            "Top6WilsonLower95": 0.4339229421178191,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.23376623376623376,
+            "Top6Rate": 0.4935064935064935,
+            "Top6WilsonLower95": 0.4296694656671155,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.26406926406926406,
+            "Top6Rate": 0.5281385281385281,
+            "Top6WilsonLower95": 0.4638293832562316,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.22077922077922077,
+            "Top6Rate": 0.47619047619047616,
+            "Top6WilsonLower95": 0.4127027510040639,
+            "MaxTop6Miss": 7
+          }
+        ]
+      },
+      {
+        "StartIssue": "2024087",
+        "EndIssue": "2024186",
+        "SelectedWindow": 60,
+        "InnerTop6": 0.55,
+        "InnerTop6WilsonLower95": 0.49342560452395345,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 28,
+          "Top6Hits": 49,
+          "Top3Rate": 0.28,
+          "Top6Rate": 0.49,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 4
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.22333333333333333,
+            "Top6Rate": 0.49333333333333335,
+            "Top6WilsonLower95": 0.43720207035328285,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.24666666666666667,
+            "Top6Rate": 0.49,
+            "Top6WilsonLower95": 0.43391704888051774,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.5166666666666667,
+            "Top6WilsonLower95": 0.4602663137927717,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.2966666666666667,
+            "Top6Rate": 0.55,
+            "Top6WilsonLower95": 0.49342560452395345,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.24666666666666667,
+            "Top6Rate": 0.48,
+            "Top6WilsonLower95": 0.42407680086272237,
+            "MaxTop6Miss": 8
+          }
+        ]
+      },
+      {
+        "StartIssue": "2024187",
+        "EndIssue": "2024286",
+        "SelectedWindow": 50,
+        "InnerTop6": 0.5366666666666666,
+        "InnerTop6WilsonLower95": 0.4801320652390866,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 18,
+          "Top6Hits": 52,
+          "Top3Rate": 0.18,
+          "Top6Rate": 0.52,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 4
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.24,
+            "Top6Rate": 0.4766666666666667,
+            "Top6WilsonLower95": 0.42080166187431245,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.29333333333333333,
+            "Top6Rate": 0.5166666666666667,
+            "Top6WilsonLower95": 0.4602663137927717,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.31333333333333335,
+            "Top6Rate": 0.5366666666666666,
+            "Top6WilsonLower95": 0.4801320652390866,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.5233333333333333,
+            "Top6WilsonLower95": 0.466878323217167,
+            "MaxTop6Miss": 4
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.25666666666666665,
+            "Top6Rate": 0.43666666666666665,
+            "Top6WilsonLower95": 0.38169399309783686,
+            "MaxTop6Miss": 8
+          }
+        ]
+      },
+      {
+        "StartIssue": "2024287",
+        "EndIssue": "2025020",
+        "SelectedWindow": 50,
+        "InnerTop6": 0.54,
+        "InnerTop6WilsonLower95": 0.48345170979913027,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 23,
+          "Top6Hits": 60,
+          "Top3Rate": 0.23,
+          "Top6Rate": 0.6,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 4
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.2733333333333333,
+            "Top6Rate": 0.49666666666666665,
+            "Top6WilsonLower95": 0.44048955960019637,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.2966666666666667,
+            "Top6Rate": 0.51,
+            "Top6WilsonLower95": 0.4536641894560269,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.2833333333333333,
+            "Top6Rate": 0.54,
+            "Top6WilsonLower95": 0.48345170979913027,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.29333333333333333,
+            "Top6Rate": 0.5266666666666666,
+            "Top6WilsonLower95": 0.4701880395241621,
+            "MaxTop6Miss": 4
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.25333333333333335,
+            "Top6Rate": 0.45666666666666667,
+            "Top6WilsonLower95": 0.4012029025617836,
+            "MaxTop6Miss": 8
+          }
+        ]
+      },
+      {
+        "StartIssue": "2025021",
+        "EndIssue": "2025120",
+        "SelectedWindow": 50,
+        "InnerTop6": 0.5566666666666666,
+        "InnerTop6WilsonLower95": 0.50008738082687,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 27,
+          "Top6Hits": 50,
+          "Top3Rate": 0.27,
+          "Top6Rate": 0.5,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 6
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.51,
+            "Top6WilsonLower95": 0.4536641894560269,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.31666666666666665,
+            "Top6Rate": 0.5366666666666666,
+            "Top6WilsonLower95": 0.4801320652390866,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.5566666666666666,
+            "Top6WilsonLower95": 0.50008738082687,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.25,
+            "Top6Rate": 0.49333333333333335,
+            "Top6WilsonLower95": 0.43720207035328285,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.24666666666666667,
+            "Top6Rate": 0.44666666666666666,
+            "Top6WilsonLower95": 0.39143715496049114,
+            "MaxTop6Miss": 8
+          }
+        ]
+      },
+      {
+        "StartIssue": "2025121",
+        "EndIssue": "2025220",
+        "SelectedWindow": 50,
+        "InnerTop6": 0.54,
+        "InnerTop6WilsonLower95": 0.48345170979913027,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 30,
+          "Top6Hits": 52,
+          "Top3Rate": 0.3,
+          "Top6Rate": 0.52,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 7
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.27,
+            "Top6Rate": 0.5233333333333333,
+            "Top6WilsonLower95": 0.466878323217167,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.27666666666666667,
+            "Top6Rate": 0.49333333333333335,
+            "Top6WilsonLower95": 0.43720207035328285,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.22666666666666666,
+            "Top6Rate": 0.54,
+            "Top6WilsonLower95": 0.48345170979913027,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.25666666666666665,
+            "Top6Rate": 0.51,
+            "Top6WilsonLower95": 0.4536641894560269,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.25333333333333335,
+            "Top6Rate": 0.4766666666666667,
+            "Top6WilsonLower95": 0.42080166187431245,
+            "MaxTop6Miss": 10
+          }
+        ]
+      },
+      {
+        "StartIssue": "2025221",
+        "EndIssue": "2025320",
+        "SelectedWindow": 50,
+        "InnerTop6": 0.54,
+        "InnerTop6WilsonLower95": 0.48345170979913027,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 22,
+          "Top6Hits": 54,
+          "Top3Rate": 0.22,
+          "Top6Rate": 0.54,
+          "MaxTop3Miss": 10,
+          "MaxTop6Miss": 4
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.25333333333333335,
+            "Top6Rate": 0.5066666666666667,
+            "Top6WilsonLower95": 0.45036683073695566,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.29333333333333333,
+            "Top6Rate": 0.5,
+            "Top6WilsonLower95": 0.4437795161339169,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.26666666666666666,
+            "Top6Rate": 0.54,
+            "Top6WilsonLower95": 0.48345170979913027,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.2833333333333333,
+            "Top6Rate": 0.5233333333333333,
+            "Top6WilsonLower95": 0.466878323217167,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.28,
+            "Top6Rate": 0.4866666666666667,
+            "Top6WilsonLower95": 0.43063449599449377,
+            "MaxTop6Miss": 10
+          }
+        ]
+      },
+      {
+        "StartIssue": "2025321",
+        "EndIssue": "2026055",
+        "SelectedWindow": 60,
+        "InnerTop6": 0.5433333333333333,
+        "InnerTop6WilsonLower95": 0.48677384505565635,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 37,
+          "Top6Hits": 59,
+          "Top3Rate": 0.37,
+          "Top6Rate": 0.59,
+          "MaxTop3Miss": 13,
+          "MaxTop6Miss": 5
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.26666666666666666,
+            "Top6Rate": 0.5133333333333333,
+            "Top6WilsonLower95": 0.4569640167618392,
+            "MaxTop6Miss": 8
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.2633333333333333,
+            "Top6Rate": 0.49666666666666665,
+            "Top6WilsonLower95": 0.44048955960019637,
+            "MaxTop6Miss": 9
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.2633333333333333,
+            "Top6Rate": 0.52,
+            "Top6WilsonLower95": 0.4635710820137406,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.5433333333333333,
+            "Top6WilsonLower95": 0.48677384505565635,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.2733333333333333,
+            "Top6Rate": 0.4866666666666667,
+            "Top6WilsonLower95": 0.43063449599449377,
+            "MaxTop6Miss": 10
+          }
+        ]
+      },
+      {
+        "StartIssue": "2026056",
+        "EndIssue": "2026155",
+        "SelectedWindow": 60,
+        "InnerTop6": 0.56,
+        "InnerTop6WilsonLower95": 0.503422038437878,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 21,
+          "Top6Hits": 47,
+          "Top3Rate": 0.21,
+          "Top6Rate": 0.47,
+          "MaxTop3Miss": 12,
+          "MaxTop6Miss": 5
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.2866666666666667,
+            "Top6Rate": 0.5,
+            "Top6WilsonLower95": 0.4437795161339169,
+            "MaxTop6Miss": 8
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.31,
+            "Top6Rate": 0.5566666666666666,
+            "Top6WilsonLower95": 0.50008738082687,
+            "MaxTop6Miss": 6
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.5566666666666666,
+            "Top6WilsonLower95": 0.50008738082687,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.3333333333333333,
+            "Top6Rate": 0.56,
+            "Top6WilsonLower95": 0.503422038437878,
+            "MaxTop6Miss": 5
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.29,
+            "Top6Rate": 0.53,
+            "Top6WilsonLower95": 0.4735002333859322,
+            "MaxTop6Miss": 4
+          }
+        ]
+      },
+      {
+        "StartIssue": "2026156",
+        "EndIssue": "2026255",
+        "SelectedWindow": 40,
+        "InnerTop6": 0.56,
+        "InnerTop6WilsonLower95": 0.503422038437878,
+        "Outer": {
+          "Samples": 100,
+          "Top3Hits": 29,
+          "Top6Hits": 57,
+          "Top3Rate": 0.29,
+          "Top6Rate": 0.57,
+          "MaxTop3Miss": 8,
+          "MaxTop6Miss": 5
+        },
+        "Candidates": [
+          {
+            "Window": 30,
+            "Top3Rate": 0.3,
+            "Top6Rate": 0.5166666666666667,
+            "Top6WilsonLower95": 0.4602663137927717,
+            "MaxTop6Miss": 7
+          },
+          {
+            "Window": 40,
+            "Top3Rate": 0.2966666666666667,
+            "Top6Rate": 0.56,
+            "Top6WilsonLower95": 0.503422038437878,
+            "MaxTop6Miss": 4
+          },
+          {
+            "Window": 50,
+            "Top3Rate": 0.2866666666666667,
+            "Top6Rate": 0.56,
+            "Top6WilsonLower95": 0.503422038437878,
+            "MaxTop6Miss": 4
+          },
+          {
+            "Window": 60,
+            "Top3Rate": 0.29333333333333333,
+            "Top6Rate": 0.5333333333333333,
+            "Top6WilsonLower95": 0.476814907585406,
+            "MaxTop6Miss": 5
+          },
+          {
+            "Window": 80,
+            "Top3Rate": 0.25666666666666665,
+            "Top6Rate": 0.5366666666666666,
+            "Top6WilsonLower95": 0.4801320652390866,
+            "MaxTop6Miss": 6
+          }
+        ]
+      }
+    ]
+  },
+  "Window50BlockBootstrapTop6": {
+    "Observed": 0.549,
+    "BootstrapMean": 0.5488572000000009,
+    "Lower95": 0.519,
+    "Upper95": 0.576,
+    "BlockLength": 7,
+    "Replicates": 5000
+  },
+  "Permutation": {
+    "Replicates": 100,
+    "PerWindow": [
+      {
+        "Window": 30,
+        "ObservedTop6": 0.511,
+        "NullMean": 0.50636,
+        "Null95th": 0.532,
+        "NominalP": 0.40594059405940597
+      },
+      {
+        "Window": 40,
+        "ObservedTop6": 0.528,
+        "NullMean": 0.5079599999999999,
+        "Null95th": 0.53005,
+        "NominalP": 0.0891089108910891
+      },
+      {
+        "Window": 50,
+        "ObservedTop6": 0.549,
+        "NullMean": 0.50707,
+        "Null95th": 0.534,
+        "NominalP": 0.019801980198019802
+      },
+      {
+        "Window": 60,
+        "ObservedTop6": 0.528,
+        "NullMean": 0.5036300000000002,
+        "Null95th": 0.52905,
+        "NominalP": 0.0891089108910891
+      },
+      {
+        "Window": 80,
+        "ObservedTop6": 0.495,
+        "NullMean": 0.50185,
+        "Null95th": 0.5272,
+        "NominalP": 0.7029702970297029
+      }
+    ],
+    "ObservedPrimaryMax": 0.549,
+    "NullMaxMean": 0.5203600000000003,
+    "NullMax95th": 0.53905,
+    "FamilyAdjustedP": 0.019801980198019802
+  }
+}
+REPORT_JSON=D:\a\ntr-v7\ntr-v7\docs\period-deep-dive-report.json
+REPORT_MD=D:\a\ntr-v7\ntr-v7\docs\period-deep-dive-report.md
