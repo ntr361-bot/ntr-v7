@@ -127,16 +127,6 @@ public static class PredictionAutomation
         calculated.PredictPeriod = targetIssue.ToString();
         ValidatePrediction(calculated, targetIssue);
         AIEngine.SavePredictionHistory(calculated);
-        // P25 网站资料专家：与主模型同一目标期直接写入智能账本，便于观察其独立贡献。
-        // 网站不可用或期号不匹配时不阻断主模型预测。
-        try
-        {
-            WebsiteLearningIntegration.Publish(targetIssue);
-        }
-        catch (Exception ex)
-        {
-            Log("WARN", $"P25 网站资料未写入：{ex.Message}");
-        }
 
         DateTimeOffset generatedAt = DateTimeOffset.Now;
         long startIssue = history.Select(h => ParseIssue(h.Period, "历史期号")).Min();
@@ -199,9 +189,9 @@ public static class PredictionAutomation
             if (!issues.Add(issue))
                 throw new InvalidDataException($"历史数据存在重复期号：{issue}");
             if (!int.TryParse(record.SpecialNumber, out int number) || number is < 1 or > 49)
-                throw new InvalidDataException($"第{issue}期特码数字无效：{record.SpecialNumber}");
+                throw new InvalidDataException($"第{issue}期彩票吗数字无效：{record.SpecialNumber}");
             if (!ValidZodiacs.Contains(record.SpecialZodiac))
-                throw new InvalidDataException($"第{issue}期特码生肖字段无效：{record.SpecialZodiac}");
+                throw new InvalidDataException($"第{issue}期彩票论坛生肖字段无效：{record.SpecialZodiac}");
         }
 
         long[] ordered = issues.OrderBy(value => value).ToArray();
