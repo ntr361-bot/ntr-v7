@@ -1,11 +1,9 @@
-name: Deploy V6 cloud site
+name: Legacy static site deploy (manual)
 
+# 历史静态站点维护工具。
+# 当前正式智能账本位于 smart-ledger-2026.ntr133.chatgpt.site，
+# 由 ntr361-bot/smart-ledger-2026 单独发布；本工作流不属于正式智能账本发布链。
 on:
-  push:
-    branches: [main]
-    paths:
-      - "site/**"
-      - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
 
 permissions:
@@ -14,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: legacy-pages
   cancel-in-progress: true
 
 jobs:
@@ -32,11 +30,11 @@ jobs:
         with:
           enablement: true
 
-      - name: Upload site artifact
+      - name: Upload legacy static site artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy legacy site to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
