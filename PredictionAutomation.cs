@@ -189,9 +189,9 @@ public static class PredictionAutomation
             if (!issues.Add(issue))
                 throw new InvalidDataException($"历史数据存在重复期号：{issue}");
             if (!int.TryParse(record.SpecialNumber, out int number) || number is < 1 or > 49)
-                throw new InvalidDataException($"第{issue}期彩票吗数字无效：{record.SpecialNumber}");
+                throw new InvalidDataException($"第{issue}期开奖结果数字无效：{record.SpecialNumber}");
             if (!ValidZodiacs.Contains(record.SpecialZodiac))
-                throw new InvalidDataException($"第{issue}期彩票论坛生肖字段无效：{record.SpecialZodiac}");
+                throw new InvalidDataException($"第{issue}期开奖结果生肖字段无效：{record.SpecialZodiac}");
         }
 
         long[] ordered = issues.OrderBy(value => value).ToArray();
