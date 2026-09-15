@@ -1,0 +1,47 @@
+name: Cleanup Retired Independent Sidecar
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-retired-independent-sidecar.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove retired sidecar steps only
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('.github/workflows/run-prediction.yml')
+          text = path.read_text(encoding='utf-8')
+          start = text.index('      - name: Generate independent learning sidecar\n')
+          end = text.index('      - name: Commit generated files\n', start)
+          updated = text[:start] + text[end:]
+          if updated == text:
+              raise SystemExit('No sidecar block removed')
+          path.write_text(updated, encoding='utf-8')
+      - name: Verify retired commands are gone
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q -- '--independent-learning-smoke' .github/workflows/run-prediction.yml
+          ! grep -q -- '--independent-daily' .github/workflows/run-prediction.yml
+          grep -q 'Production safety checks' .github/workflows/run-prediction.yml
+          grep -q 'Publish V7 data to smart ledger' .github/workflows/run-prediction.yml
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/run-prediction.yml
+          git commit -m 'fix: remove retired independent-learning sidecar'
+          git push origin HEAD:main
