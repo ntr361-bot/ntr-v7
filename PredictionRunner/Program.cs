@@ -1,5 +1,6 @@
 using System.Text.Json;
 using 六合分析软件;
+using 六合分析软件.MacroReasoning;
 
 string? temporarySnapshotDirectory = null;
 try
@@ -107,6 +108,22 @@ try
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
         {
+            long nextIssue = ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
+            if (!issue.HasValue || issue.Value == nextIssue)
+            {
+                try
+                {
+                    bool p25Updated = WebsiteLearningIntegration.Publish(nextIssue);
+                    Console.WriteLine(p25Updated
+                        ? $"[INFO] P25网页资料已写入第{nextIssue}期"
+                        : $"[INFO] 第{nextIssue}期P25网页资料已存在");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[WARNING] 第{nextIssue}期P25网页资料未写入：{ex.Message}");
+                }
+            }
+
             int forwardUpdated = Forward50PredictionPublisher.EnrichPending(dailyOutputDirectory);
             DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
             Console.WriteLine($"[INFO] Forward50 前瞻旁路更新 {forwardUpdated} 期");
