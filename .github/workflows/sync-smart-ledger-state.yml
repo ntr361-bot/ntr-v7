@@ -50,11 +50,13 @@ jobs:
           }
 
           $modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
-          $p25 = @($modelState.prediction_history | Where-Object { $_.model_version -eq 'P25-Web' })
+          $p25 = @($modelState.predictions | Where-Object { $_.modelVersion -eq 'P25-Web' })
           Write-Host "P25 records in committed runtime-state: $($p25.Count)"
           if ($p25.Count -gt 0) {
             $latestP25 = $p25 | Sort-Object {[long]$_.issue} -Descending | Select-Object -First 1
             Write-Host "Latest P25 issue in payload: $($latestP25.issue)"
+            Write-Host "Latest P25 top3: $($latestP25.predictZodiac)"
+            Write-Host "Latest P25 top6: $($latestP25.top6Zodiac)"
           }
 
           $payload = @{
