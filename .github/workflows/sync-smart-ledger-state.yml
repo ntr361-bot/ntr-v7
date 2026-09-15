@@ -72,3 +72,15 @@ jobs:
           $headers = @{ Authorization = "Bearer $oidc" }
           $response = Invoke-RequiredPublish -Url 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -Body $payload
           Write-Host "Smart ledger sync status: $($response.status)"
+
+      - name: Verify P25 from live smart ledger API
+        shell: pwsh
+        run: |
+          $api = Invoke-RestMethod -Method Get -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/predictions' -Headers @{ 'Cache-Control' = 'no-cache' } -ErrorAction Stop
+          $p25 = @($api.p25_web_predictions)
+          Write-Host "Live API P25 count: $($p25.Count)"
+          if ($p25.Count -eq 0) { throw '线上 /api/predictions 仍未返回 P25。' }
+          $latest = $p25 | Sort-Object {[long]$_.issue} -Descending | Select-Object -First 1
+          Write-Host "Live API latest P25 issue: $($latest.issue)"
+          Write-Host "Live API latest P25 top3: $($latest.top3 -join ',')"
+          Write-Host "Live API latest P25 top6: $($latest.top6 -join ',')"
