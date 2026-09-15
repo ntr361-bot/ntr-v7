@@ -1,0 +1,72 @@
+name: Sync V7 State to Smart Ledger
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/sync-smart-ledger-state.yml"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: sync-v7-state-to-smart-ledger
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout current committed state
+        uses: actions/checkout@v4
+
+      - name: Publish current V7 state to smart ledger
+        shell: pwsh
+        run: |
+          function Invoke-RequiredPublish {
+            param([string]$Url, [hashtable]$Headers, [string]$Body)
+            $lastError = $null
+            for ($attempt = 1; $attempt -le 3; $attempt++) {
+              try {
+                $response = Invoke-RestMethod -Method Post -Uri $Url -Headers $Headers -ContentType 'application/json' -Body $Body -ErrorAction Stop
+                if ($null -ne $response.status -and $response.status -ne 'success') {
+                  throw "发布接口返回异常状态：$($response.status)"
+                }
+                return $response
+              } catch {
+                $lastError = $_
+                if ($attempt -lt 3) { Start-Sleep -Seconds (3 * $attempt) }
+              }
+            }
+            throw "发布失败：$($lastError.Exception.Message)"
+          }
+
+          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
+          $predictions = @{}
+          foreach ($file in $manifest.records) {
+            $predictions[$file] = Get-Content "site/data/daily-records/$file" -Raw | ConvertFrom-Json
+          }
+
+          $modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
+          $p25 = @($modelState.prediction_history | Where-Object { $_.model_version -eq 'P25-Web' })
+          Write-Host "P25 records in committed runtime-state: $($p25.Count)"
+          if ($p25.Count -gt 0) {
+            $latestP25 = $p25 | Sort-Object {[long]$_.issue} -Descending | Select-Object -First 1
+            Write-Host "Latest P25 issue in payload: $($latestP25.issue)"
+          }
+
+          $payload = @{
+            history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
+            dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
+            manifest = $manifest
+            modelState = $modelState
+            predictions = $predictions
+          } | ConvertTo-Json -Depth 100 -Compress
+
+          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
+          $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
+          $headers = @{ Authorization = "Bearer $oidc" }
+          $response = Invoke-RequiredPublish -Url 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -Body $payload
+          Write-Host "Smart ledger sync status: $($response.status)"
