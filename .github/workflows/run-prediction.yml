@@ -196,23 +196,6 @@ jobs:
           if (@($manifest.records) -notcontains "$target.json") { throw "manifest does not contain $target.json" }
           Write-Host "Production safety checks passed for issue $target."
 
-      - name: Generate independent learning sidecar
-        id: independent
-        if: ${{ inputs.dry_run != true }}
-        continue-on-error: true
-        shell: pwsh
-        run: |
-          dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build -- --independent-learning-smoke
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --independent-daily
-
-      - name: Report independent learning interruption
-        if: ${{ steps.independent.outcome == 'failure' }}
-        shell: pwsh
-        run: |
-          Write-Warning 'Independent learning stopped. Check its log before resuming; formal prediction remains available.'
-          'Independent learning stopped; inspect the sidecar step logs.' >> $env:GITHUB_STEP_SUMMARY
-
       - name: Commit generated files
         if: ${{ inputs.dry_run != true }}
         shell: pwsh
