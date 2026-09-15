@@ -35,10 +35,8 @@ public static class P25ScheduledWebCheck
             row.Issue == targetIssue.ToString() && row.ModelVersion == "P25-Web" && row.AnalysisPeriods == 25);
         if (exists)
         {
-            var existing = new P25ScheduledCheckResult(targetIssue, true, false, true, null,
+            return new P25ScheduledCheckResult(targetIssue, true, false, true, null,
                 RequiredSources, [], "本期P25已存在，跳过网页检查", checkedAt);
-            Save(checkStatePath, existing);
-            return existing;
         }
 
         var service = new WebsiteLearningService();
