@@ -89,6 +89,18 @@ try
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
 
+    if (arguments.ContainsKey("check-p25-web"))
+    {
+        long targetIssue = issue ?? ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
+        string checkStatePath = Path.Combine(outputDirectory, "p25-web-check.json");
+        P25ScheduledCheckResult result = P25ScheduledWebCheck.Run(targetIssue, checkStatePath);
+        WriteRuntimeState(repositoryRoot);
+        Console.WriteLine(result.Complete
+            ? $"[SUCCESS] P25网页检查完成：{result.Message}"
+            : $"[WARNING] P25网页检查未完成：{result.Message}");
+        return 0;
+    }
+
     if (arguments.ContainsKey("generate-all"))
     {
         DailyPredictionAutomation.GenerateMissing(outputDirectory, dailyOutputDirectory,
@@ -126,6 +138,15 @@ finally
         try { Directory.Delete(temporarySnapshotDirectory, recursive: true); }
         catch { /* Export has completed; a locked temporary snapshot is harmless and can be cleared by the OS. */ }
     }
+}
+
+static long ResolveNextIssue(string? latestPeriod)
+{
+    if (!long.TryParse(latestPeriod, out long latestIssue) || latestIssue <= 0)
+        throw new InvalidDataException("无法从开奖历史确定P25目标期号");
+    int latestYear = checked((int)(latestIssue / 1000));
+    int chinaYear = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(8)).Year;
+    return chinaYear > latestYear ? chinaYear * 1000L + 1L : latestIssue + 1L;
 }
 
 static long? ParseIssue(Dictionary<string, string?> arguments, string key)
@@ -166,6 +187,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 parsed["export-state-from"] = values[i];
                 break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
+            case "--check-p25-web": parsed["check-p25-web"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -175,7 +197,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {
