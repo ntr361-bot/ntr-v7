@@ -1,20 +1,16 @@
-name: Publish Forward50 Pending
+name: Forward50 maintenance publish (manual)
 
+# 维护/恢复工具：仅在需要单独补写冻结 Forward50 结果时手动运行。
+# 正常每日生产由 run-prediction.yml 负责，Forward50 已随正式 V7 生成链产出。
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "Forward50PredictionPublisher.cs"
-      - "PredictionRunner/Program.cs"
-      - ".github/workflows/publish-forward50.yml"
 
 permissions:
   contents: write
   id-token: write
 
 concurrency:
-  group: publish-forward50-pending
+  group: publish-forward50-maintenance
   cancel-in-progress: true
 
 jobs:
