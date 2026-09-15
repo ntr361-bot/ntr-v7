@@ -109,6 +109,7 @@ jobs:
     needs: check-trigger
     if: ${{ needs.check-trigger.outputs.should_run == 'true' }}
     runs-on: windows-latest
+    timeout-minutes: 30
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
@@ -164,8 +165,36 @@ jobs:
           if ('${{ inputs.force }}' -eq 'true') { $arguments += '--force' }
           dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
 
-      - name: Run tests
-        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release
+      - name: Production safety checks
+        if: ${{ inputs.dry_run != true }}
+        shell: pwsh
+        run: |
+          $latest = Get-Content 'site/data/predictions/latest.json' -Raw | ConvertFrom-Json
+          $target = if ('${{ inputs.issue }}') { [long]'${{ inputs.issue }}' } else { [long]$latest.latest_issue }
+          if ([long]$latest.latest_issue -lt $target) { throw "latest.json has not advanced to target issue $target" }
+
+          $history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
+          if ([long]$history.latest_issue -ge $target) { throw "history contains target/future draw $target before prediction" }
+          if ([long]$history.latest_issue -ne ($target - 1)) { throw "history latest issue $($history.latest_issue) is not target-1 for $target" }
+
+          $predictionPath = "site/data/predictions/$target.json"
+          $dailyPath = "site/data/daily-records/$target.json"
+          foreach ($path in @($predictionPath, $dailyPath, 'site/data/runtime-state.json', 'site/data/daily-records/manifest.json')) {
+            if (!(Test-Path $path)) { throw "missing production artifact: $path" }
+          }
+
+          $prediction = Get-Content $predictionPath -Raw | ConvertFrom-Json
+          $daily = Get-Content $dailyPath -Raw | ConvertFrom-Json
+          if ([long]$prediction.issue -ne $target -or $prediction.status -ne 'success') { throw "prediction artifact failed validation for $target" }
+          if ([long]$daily.issue -ne $target -or $daily.status -ne 'success') { throw "daily artifact failed validation for $target" }
+          if ([long]$daily.source_issue -ne ($target - 1)) { throw "daily source_issue is not target-1 for $target" }
+          if ($null -eq $daily.ai_zodiac.'100' -or $null -eq $daily.ai_zodiac.auto) { throw "daily artifact missing 100-period or auto-learning model" }
+          if ($null -eq $daily.ai_zodiac.regularity50 -or $null -eq $daily.ai_zodiac.period50_fair) { throw "daily artifact missing frozen Forward50 models" }
+          if (@($daily.ai_zodiac.'100'.top6).Count -ne 6 -or @($daily.ai_zodiac.auto.top6).Count -ne 6) { throw "production Top6 output is incomplete" }
+
+          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
+          if (@($manifest.records) -notcontains "$target.json") { throw "manifest does not contain $target.json" }
+          Write-Host "Production safety checks passed for issue $target."
 
       - name: Generate independent learning sidecar
         id: independent
