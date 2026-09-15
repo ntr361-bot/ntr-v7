@@ -31,7 +31,10 @@
         18
       ],
       "confidence": "\u4E2D",
-      "best_model": "\u5468\u671F\u002B\u9891\u7387\u002B\u51B7\u70ED\u6A21\u578B"
+      "best_model": "\u5468\u671F\u002B\u9891\u7387\u002B\u51B7\u70ED\u6A21\u578B",
+      "actual_zodiac": "\u9F20",
+      "top3_hit": false,
+      "top6_hit": true
     },
     "auto": {
       "analysis_periods": 7250,
@@ -75,7 +78,10 @@
         48
       ],
       "confidence": "\u5DF2\u5B66\u4E60",
-      "best_model": "\u81EA\u52A8\u5B66\u4E60\u6A21\u578B"
+      "best_model": "\u81EA\u52A8\u5B66\u4E60\u6A21\u578B",
+      "actual_zodiac": "\u9F20",
+      "top3_hit": false,
+      "top6_hit": true
     },
     "regularity50": {
       "analysis_periods": 50,
@@ -138,7 +144,10 @@
         "\u9E21",
         "\u9F99",
         "\u7F8A"
-      ]
+      ],
+      "actual_zodiac": "\u9F20",
+      "top3_hit": false,
+      "top6_hit": true
     },
     "period50_fair": {
       "analysis_periods": 50,
@@ -200,7 +209,10 @@
         "\u9A6C",
         "\u725B",
         "\u86C7"
-      ]
+      ],
+      "actual_zodiac": "\u9F20",
+      "top3_hit": false,
+      "top6_hit": false
     }
   },
   "special_rule": {
@@ -217,7 +229,10 @@
       "\u86C7",
       "\u732A",
       "\u72D7"
-    ]
+    ],
+    "actual_zodiac": "\u9F20",
+    "hit": false,
+    "result": "\u672A\u547D\u4E2D"
   },
   "comprehensive_score": [
     {
@@ -225,42 +240,54 @@
       "numbers": "05,17,29,41",
       "total_score": 70,
       "confidence": "\u9AD8",
-      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F17\u671F(\u574711.8) | \u8FD110\u671F0\u6B21"
+      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F17\u671F(\u574711.8) | \u8FD110\u671F0\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u9F99",
       "numbers": "03,15,27,39",
       "total_score": 70,
       "confidence": "\u9AD8",
-      "reason": "\u9891\u73878.6% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F16\u671F(\u574711.3) | \u8FD110\u671F0\u6B21"
+      "reason": "\u9891\u73878.6% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F16\u671F(\u574711.3) | \u8FD110\u671F0\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u72D7",
       "numbers": "09,21,33,45",
       "total_score": 66,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73878.3% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F13\u671F(\u574711.8) | \u8FD110\u671F0\u6B21"
+      "reason": "\u9891\u73878.3% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F13\u671F(\u574711.8) | \u8FD110\u671F0\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u7F8A",
       "numbers": "12,24,36,48",
       "total_score": 63,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73879.1% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F19\u671F(\u574711.1) | \u8FD110\u671F0\u6B21"
+      "reason": "\u9891\u73879.1% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F19\u671F(\u574711.1) | \u8FD110\u671F0\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u7334",
       "numbers": "11,23,35,47",
       "total_score": 63,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F7\u671F(\u574711.6) | \u8FD110\u671F1\u6B21"
+      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F7\u671F(\u574711.6) | \u8FD110\u671F1\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u5154",
       "numbers": "04,16,28,40",
       "total_score": 59,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73879.3% | \u8D8B\u52BF:\u2191 \u4E0A\u5347 | \u9057\u6F0F3\u671F(\u574710.7) | \u8FD110\u671F2\u6B21"
+      "reason": "\u9891\u73879.3% | \u8D8B\u52BF:\u2191 \u4E0A\u5347 | \u9057\u6F0F3\u671F(\u574710.7) | \u8FD110\u671F2\u6B21",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     }
   ],
   "ensemble": [
@@ -268,37 +295,49 @@
       "zodiac": "\u7334",
       "final_score": 0.7725,
       "confidence": "\u9AD8",
-      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.70 | \u6A21\u5F0F0.30 | \u52A8\u91CF1.00"
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.70 | \u6A21\u5F0F0.30 | \u52A8\u91CF1.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u72D7",
       "final_score": 0.6664,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73870.99 | \u8D8B\u52BF0.57 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.46 | \u52A8\u91CF0.00"
+      "reason": "\u9891\u73870.99 | \u8D8B\u52BF0.57 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.46 | \u52A8\u91CF0.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u9F99",
       "final_score": 0.6493,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.32 | \u52A8\u91CF0.00"
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.32 | \u52A8\u91CF0.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u864E",
       "final_score": 0.6377,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.43 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.28 | \u52A8\u91CF0.00"
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.43 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.28 | \u52A8\u91CF0.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u5154",
       "final_score": 0.6289,
       "confidence": "\u4E2D",
-      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.63 | \u9057\u6F0F0.30 | \u6A21\u5F0F0.16 | \u52A8\u91CF1.00"
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.63 | \u9057\u6F0F0.30 | \u6A21\u5F0F0.16 | \u52A8\u91CF1.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     },
     {
       "zodiac": "\u86C7",
       "final_score": 0.5967,
       "confidence": "\u4F4E",
-      "reason": "\u9891\u73870.96 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.30 | \u6A21\u5F0F0.08 | \u52A8\u91CF1.00"
+      "reason": "\u9891\u73870.96 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.30 | \u6A21\u5F0F0.08 | \u52A8\u91CF1.00",
+      "hit": false,
+      "result": "\u672A\u547D\u4E2D"
     }
   ],
   "validation": {
@@ -306,9 +345,37 @@
     "warnings": []
   },
   "verification": {
-    "status": "pending",
-    "actual_number": null,
-    "actual_zodiac": null,
-    "message": "\u7B49\u5F85\u5F00\u5956"
+    "status": "verified",
+    "verified_at": "2026-09-15T05:00:17.7397994\u002B00:00",
+    "actual_number": "07",
+    "actual_zodiac": "\u9F20",
+    "ai_zodiac": {
+      "100": {
+        "top3_hit": false,
+        "top6_hit": true,
+        "top3_result": "\u672A\u547D\u4E2D",
+        "top6_result": "\u547D\u4E2D"
+      },
+      "auto": {
+        "top3_hit": false,
+        "top6_hit": true,
+        "top3_result": "\u672A\u547D\u4E2D",
+        "top6_result": "\u547D\u4E2D"
+      },
+      "regularity50": {
+        "top3_hit": false,
+        "top6_hit": true,
+        "top3_result": "\u672A\u547D\u4E2D",
+        "top6_result": "\u547D\u4E2D"
+      },
+      "period50_fair": {
+        "top3_hit": false,
+        "top6_hit": false,
+        "top3_result": "\u672A\u547D\u4E2D",
+        "top6_result": "\u672A\u547D\u4E2D"
+      }
+    },
+    "special_rule_hit": false,
+    "message": "\u5DF2\u6309\u771F\u5B9E\u5F00\u5956\u7ED3\u679C\u9A8C\u7B97"
   }
 }
