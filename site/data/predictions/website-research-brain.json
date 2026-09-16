@@ -1,15 +1,15 @@
 {
   "schema_version": "website-research-brain-v1",
-  "generated_at": "2026-09-16T03:03:55.9715485+00:00",
+  "generated_at": "2026-09-16T03:30:24.2853945+00:00",
   "material_count": 26,
   "training_eligible_material_count": 3,
   "rejected_post_draw_material_count": 20,
   "settled_count": 1,
   "experiences": [
     {
-      "material_key": "6x.js::六肖中特",
+      "material_key": "6x.js::\u516D\u8096\u4E2D\u7279",
       "source_id": "6x.js",
-      "material_name": "六肖中特",
+      "material_name": "\u516D\u8096\u4E2D\u7279",
       "polarity": 0,
       "target": 2,
       "samples": 1,
@@ -29,11 +29,11 @@
   ],
   "correlations": [],
   "notes": [
-    "这是旁路研究快照，不生成或修改正式P25预测。",
-    "只有开奖训练截止时间之前真实冻结的资料才允许学习；开奖后抓到的旧资料只归档，不训练。",
-    "资料价值按实际命中减去当期49号码生肖映射的随机基线评估，不用固定N/12近似。",
-    "未知资料允许进入观察池；种子目录只帮助理解，不是固定白名单或固定权重。",
-    "相关性用于识别疑似转载/同源资料，后续元学习器不得把高度相关资料重复当成独立证据。",
-    "Conditional与纯号码资料暂不自动判定优劣，等待专门语义解释器。"
+    "\u8FD9\u662F\u65C1\u8DEF\u7814\u7A76\u5FEB\u7167\uFF0C\u4E0D\u751F\u6210\u6216\u4FEE\u6539\u6B63\u5F0FP25\u9884\u6D4B\u3002",
+    "\u53EA\u6709\u5F00\u5956\u8BAD\u7EC3\u622A\u6B62\u65F6\u95F4\u4E4B\u524D\u771F\u5B9E\u51BB\u7ED3\u7684\u8D44\u6599\u624D\u5141\u8BB8\u5B66\u4E60\uFF1B\u5F00\u5956\u540E\u6293\u5230\u7684\u65E7\u8D44\u6599\u53EA\u5F52\u6863\uFF0C\u4E0D\u8BAD\u7EC3\u3002",
+    "\u8D44\u6599\u4EF7\u503C\u6309\u5B9E\u9645\u547D\u4E2D\u51CF\u53BB\u5F53\u671F49\u53F7\u7801\u751F\u8096\u6620\u5C04\u7684\u968F\u673A\u57FA\u7EBF\u8BC4\u4F30\uFF0C\u4E0D\u7528\u56FA\u5B9AN/12\u8FD1\u4F3C\u3002",
+    "\u672A\u77E5\u8D44\u6599\u5141\u8BB8\u8FDB\u5165\u89C2\u5BDF\u6C60\uFF1B\u79CD\u5B50\u76EE\u5F55\u53EA\u5E2E\u52A9\u7406\u89E3\uFF0C\u4E0D\u662F\u56FA\u5B9A\u767D\u540D\u5355\u6216\u56FA\u5B9A\u6743\u91CD\u3002",
+    "\u76F8\u5173\u6027\u7528\u4E8E\u8BC6\u522B\u7591\u4F3C\u8F6C\u8F7D/\u540C\u6E90\u8D44\u6599\uFF0C\u540E\u7EED\u5143\u5B66\u4E60\u5668\u4E0D\u5F97\u628A\u9AD8\u5EA6\u76F8\u5173\u8D44\u6599\u91CD\u590D\u5F53\u6210\u72EC\u7ACB\u8BC1\u636E\u3002",
+    "Conditional\u4E0E\u7EAF\u53F7\u7801\u8D44\u6599\u6682\u4E0D\u81EA\u52A8\u5224\u5B9A\u4F18\u52A3\uFF0C\u7B49\u5F85\u4E13\u95E8\u8BED\u4E49\u89E3\u91CA\u5668\u3002"
   ]
 }
