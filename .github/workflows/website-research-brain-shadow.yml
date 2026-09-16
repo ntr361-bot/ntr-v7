@@ -1,0 +1,54 @@
+name: Website Research Brain Shadow Check
+
+on:
+  push:
+    branches:
+      - "research/website-learning-brain-20260916"
+    paths:
+      - "WebsiteResearchBrain.cs"
+      - "PredictionRunner/**"
+      - "docs/Website-Research-Brain-v1.md"
+      - ".github/workflows/website-research-brain-shadow.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Restore
+        run: dotnet restore PredictionRunner/PredictionRunner.csproj
+      - name: Build research branch
+        run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+      - name: Rebuild local history database
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+      - name: Run website research brain shadow
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --website-brain-shadow
+      - name: Verify shadow report
+        shell: pwsh
+        run: |
+          $path = "site/data/predictions/website-research-brain.json"
+          if (-not (Test-Path $path)) { throw "website-research-brain.json was not generated" }
+          $report = Get-Content -Raw $path | ConvertFrom-Json
+          if ($report.schema_version -ne "website-research-brain-v1") { throw "unexpected schema version" }
+          if ([int]$report.training_eligible_material_count -lt 1) { throw "no genuine pre-draw training material was detected" }
+          if ([int]$report.rejected_post_draw_material_count -lt 1) { throw "anti-leakage gate was not exercised" }
+          Write-Host "materials=$($report.material_count)"
+          Write-Host "training_eligible=$($report.training_eligible_material_count)"
+          Write-Host "rejected_post_draw=$($report.rejected_post_draw_material_count)"
+          Write-Host "settled=$($report.settled_count)"
+          Write-Host "experiences=$($report.experiences.Count)"
+          Write-Host "correlations=$($report.correlations.Count)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-research-brain-shadow-report
+          path: site/data/predictions/website-research-brain.json
+          if-no-files-found: error
+          retention-days: 14
