@@ -1,0 +1,39 @@
+{
+  "schema_version": "website-research-brain-v1",
+  "generated_at": "2026-09-16T03:03:55.9715485+00:00",
+  "material_count": 26,
+  "training_eligible_material_count": 3,
+  "rejected_post_draw_material_count": 20,
+  "settled_count": 1,
+  "experiences": [
+    {
+      "material_key": "6x.js::六肖中特",
+      "source_id": "6x.js",
+      "material_name": "六肖中特",
+      "polarity": 0,
+      "target": 2,
+      "samples": 1,
+      "recent20_samples": 1,
+      "recent50_samples": 1,
+      "long_rate": 1,
+      "recent20_rate": 1,
+      "recent50_rate": 1,
+      "mean_baseline": 0.48979591836734687,
+      "long_edge": 0.5102040816326532,
+      "recent20_edge": 0.5102040816326532,
+      "recent50_edge": 0.5102040816326532,
+      "confidence": 0.1414213562373095,
+      "eligible_for_decision": false,
+      "status": "OBSERVE"
+    }
+  ],
+  "correlations": [],
+  "notes": [
+    "这是旁路研究快照，不生成或修改正式P25预测。",
+    "只有开奖训练截止时间之前真实冻结的资料才允许学习；开奖后抓到的旧资料只归档，不训练。",
+    "资料价值按实际命中减去当期49号码生肖映射的随机基线评估，不用固定N/12近似。",
+    "未知资料允许进入观察池；种子目录只帮助理解，不是固定白名单或固定权重。",
+    "相关性用于识别疑似转载/同源资料，后续元学习器不得把高度相关资料重复当成独立证据。",
+    "Conditional与纯号码资料暂不自动判定优劣，等待专门语义解释器。"
+  ]
+}
