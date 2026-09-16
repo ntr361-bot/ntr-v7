@@ -87,6 +87,16 @@ try
         return 0;
     }
 
+    if (arguments.ContainsKey("website-brain-shadow"))
+    {
+        WebsiteResearchBrainSnapshot snapshot = WebsiteResearchShadowService.BuildFromLegacyArchive(repositoryRoot);
+        Console.WriteLine($"[SUCCESS] 网页研究大脑旁路快照：资料 {snapshot.MaterialCount}，" +
+            $"训练可用 {snapshot.TrainingEligibleMaterialCount}，开奖后拒绝 {snapshot.RejectedPostDrawMaterialCount}，" +
+            $"已结算 {snapshot.SettledCount}，经验项 {snapshot.Experiences.Length}，相关关系 {snapshot.Correlations.Length}");
+        Console.WriteLine("[INFO] 本命令只生成 website-research-brain.json，不生成或修改正式P25预测");
+        return 0;
+    }
+
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
 
@@ -205,6 +215,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
             case "--check-p25-web": parsed["check-p25-web"] = null; break;
+            case "--website-brain-shadow": parsed["website-brain-shadow"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -214,7 +225,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web] [--website-brain-shadow]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {

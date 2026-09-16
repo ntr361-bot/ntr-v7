@@ -33,6 +33,14 @@ public sealed record WebsiteResearchMaterial(
     DateTimeOffset CapturedAt,
     string RawText);
 
+public sealed record WebsiteResearchOutcomeContext(
+    long Issue,
+    string ActualZodiac,
+    DateOnly DrawDate,
+    DateTimeOffset TrainingCutoff,
+    ImmutableDictionary<string, double> ZodiacRandomBaseline,
+    string MappingVersion);
+
 public sealed record WebsiteResearchSettlement(
     string MaterialKey,
     string SourceId,
@@ -43,7 +51,8 @@ public sealed record WebsiteResearchSettlement(
     bool Success,
     double Baseline,
     double ExcessOverBaseline,
-    DateTimeOffset CapturedAt);
+    DateTimeOffset CapturedAt,
+    string BaselineModel);
 
 public sealed record WebsiteMaterialExperience(
     string MaterialKey,
@@ -76,6 +85,8 @@ public sealed record WebsiteResearchBrainSnapshot(
     string SchemaVersion,
     DateTimeOffset GeneratedAt,
     int MaterialCount,
+    int TrainingEligibleMaterialCount,
+    int RejectedPostDrawMaterialCount,
     int SettledCount,
     ImmutableArray<WebsiteMaterialExperience> Experiences,
     ImmutableArray<WebsiteMaterialCorrelation> Correlations,
@@ -89,7 +100,8 @@ public sealed record WebsiteResearchSeedHint(
 
 public static class WebsiteResearchSeedCatalog
 {
-    // Seed hints are not a whitelist. Unknown materials must remain discoverable and learnable.
+    // Seed hints come from long-term human observation. They are NOT a whitelist or fixed weights.
+    // New/unknown materials must remain discoverable and learnable.
     public static ImmutableArray<WebsiteResearchSeedHint> All { get; } =
     [
         new("八肖六码", WebsiteMaterialPolarity.Positive, WebsiteMaterialTarget.Mixed,
@@ -169,7 +181,7 @@ public static class WebsiteResearchMaterialInterpreter
         };
         WebsiteResearchMaterial interpreted = InterpretSection(evidence.SourceId, materialName,
             evidence.Issue, evidence.RawText, evidence.CapturedAt);
-        if (!evidence.Zodiacs.IsNullOrEmpty())
+        if (evidence.Zodiacs.Count > 0)
             interpreted = interpreted with { Zodiacs = evidence.Zodiacs.Distinct(StringComparer.Ordinal).ToImmutableArray() };
         return interpreted;
     }
@@ -190,33 +202,36 @@ public static class WebsiteResearchMaterialInterpreter
     }
 
     private static string NormalizeKey(string value) => Regex.Replace(value.Trim().ToLowerInvariant(), @"\s+", "-");
-
-    private static bool IsNullOrEmpty<T>(this IReadOnlyCollection<T>? values) => values is null || values.Count == 0;
 }
 
 public static class WebsiteResearchExperienceEngine
 {
     public static ImmutableArray<WebsiteResearchSettlement> Settle(
         IEnumerable<WebsiteResearchMaterial> materials,
-        IReadOnlyDictionary<long, string> actualZodiacByIssue)
+        IReadOnlyDictionary<long, WebsiteResearchOutcomeContext> outcomes)
     {
         var rows = new List<WebsiteResearchSettlement>();
         foreach (WebsiteResearchMaterial material in materials)
         {
-            if (!actualZodiacByIssue.TryGetValue(material.Issue, out string? actual) || string.IsNullOrWhiteSpace(actual)) continue;
+            if (!outcomes.TryGetValue(material.Issue, out WebsiteResearchOutcomeContext? outcome)) continue;
+            if (material.CapturedAt >= outcome.TrainingCutoff) continue; // hard anti-leakage gate
             if (material.Target is WebsiteMaterialTarget.Number or WebsiteMaterialTarget.Unknown) continue;
             if (material.Zodiacs.Length == 0 || material.Zodiacs.Length >= 12) continue;
             if (material.Polarity is WebsiteMaterialPolarity.Unknown or WebsiteMaterialPolarity.Conditional) continue;
 
             int coverage = material.Zodiacs.Length;
-            bool contains = material.Zodiacs.Contains(actual, StringComparer.Ordinal);
+            bool contains = material.Zodiacs.Contains(outcome.ActualZodiac, StringComparer.Ordinal);
             bool success = material.Polarity == WebsiteMaterialPolarity.Negative ? !contains : contains;
+            double positiveBaseline = material.Zodiacs
+                .Distinct(StringComparer.Ordinal)
+                .Sum(zodiac => outcome.ZodiacRandomBaseline.GetValueOrDefault(zodiac));
+            positiveBaseline = Math.Clamp(positiveBaseline, 0d, 1d);
             double baseline = material.Polarity == WebsiteMaterialPolarity.Negative
-                ? 1d - coverage / 12d
-                : coverage / 12d;
+                ? 1d - positiveBaseline
+                : positiveBaseline;
             rows.Add(new WebsiteResearchSettlement(material.MaterialKey, material.SourceId, material.MaterialName,
-                material.Issue, actual, coverage, success, baseline, (success ? 1d : 0d) - baseline,
-                material.CapturedAt));
+                material.Issue, outcome.ActualZodiac, coverage, success, baseline,
+                (success ? 1d : 0d) - baseline, material.CapturedAt, outcome.MappingVersion));
         }
         return rows.OrderBy(row => row.Issue).ThenBy(row => row.MaterialKey, StringComparer.Ordinal).ToImmutableArray();
     }
@@ -264,10 +279,13 @@ public static class WebsiteResearchExperienceEngine
 
     public static ImmutableArray<WebsiteMaterialCorrelation> FindCorrelations(
         IEnumerable<WebsiteResearchMaterial> materials,
+        IReadOnlyDictionary<long, WebsiteResearchOutcomeContext> outcomes,
         int minimumOverlapIssues = 12,
         double duplicateThreshold = .80d)
     {
-        var groups = materials.Where(x => x.Zodiacs.Length > 0)
+        // Correlations use only genuinely pre-draw snapshots, otherwise a post-result page copy can create false agreement.
+        var groups = materials
+            .Where(x => x.Zodiacs.Length > 0 && outcomes.TryGetValue(x.Issue, out WebsiteResearchOutcomeContext? outcome) && x.CapturedAt < outcome.TrainingCutoff)
             .GroupBy(x => x.MaterialKey, StringComparer.Ordinal)
             .ToDictionary(group => group.Key,
                 group => group.GroupBy(x => x.Issue).ToDictionary(g => g.Key, g => g.OrderBy(x => x.CapturedAt).First()),
@@ -292,7 +310,7 @@ public static class WebsiteResearchExperienceEngine
 
     public static WebsiteResearchBrainSnapshot BuildSnapshot(
         IEnumerable<WebsiteResearchMaterial> materials,
-        IReadOnlyDictionary<long, string> actualZodiacByIssue)
+        IReadOnlyDictionary<long, WebsiteResearchOutcomeContext> outcomes)
     {
         WebsiteResearchMaterial[] uniqueMaterials = materials
             .GroupBy(x => (x.MaterialKey, x.Issue))
@@ -300,20 +318,27 @@ public static class WebsiteResearchExperienceEngine
             .OrderBy(x => x.Issue)
             .ThenBy(x => x.MaterialKey, StringComparer.Ordinal)
             .ToArray();
-        ImmutableArray<WebsiteResearchSettlement> settlements = Settle(uniqueMaterials, actualZodiacByIssue);
+        int trainingEligible = uniqueMaterials.Count(material =>
+            outcomes.TryGetValue(material.Issue, out WebsiteResearchOutcomeContext? outcome) && material.CapturedAt < outcome.TrainingCutoff);
+        int rejectedPostDraw = uniqueMaterials.Count(material =>
+            outcomes.TryGetValue(material.Issue, out WebsiteResearchOutcomeContext? outcome) && material.CapturedAt >= outcome.TrainingCutoff);
+        ImmutableArray<WebsiteResearchSettlement> settlements = Settle(uniqueMaterials, outcomes);
         ImmutableArray<WebsiteMaterialExperience> experiences = Learn(uniqueMaterials, settlements);
-        ImmutableArray<WebsiteMaterialCorrelation> correlations = FindCorrelations(uniqueMaterials);
+        ImmutableArray<WebsiteMaterialCorrelation> correlations = FindCorrelations(uniqueMaterials, outcomes);
         return new WebsiteResearchBrainSnapshot(
             "website-research-brain-v1",
             DateTimeOffset.Now,
             uniqueMaterials.Length,
+            trainingEligible,
+            rejectedPostDraw,
             settlements.Length,
             experiences,
             correlations,
             [
                 "这是旁路研究快照，不生成或修改正式P25预测。",
-                "资料价值按实际命中减去自身覆盖规模随机基线评估，避免用高覆盖率制造虚假高命中。",
-                "未知资料允许进入观察池；种子目录仅用于帮助理解，不是固定白名单。",
+                "只有开奖训练截止时间之前真实冻结的资料才允许学习；开奖后抓到的旧资料只归档，不训练。",
+                "资料价值按实际命中减去当期49号码生肖映射的随机基线评估，不用固定N/12近似。",
+                "未知资料允许进入观察池；种子目录只帮助理解，不是固定白名单或固定权重。",
                 "相关性用于识别疑似转载/同源资料，后续元学习器不得把高度相关资料重复当成独立证据。",
                 "Conditional与纯号码资料暂不自动判定优劣，等待专门语义解释器。"
             ]);
@@ -367,25 +392,52 @@ public static class WebsiteResearchBrainStore
 
 public static class WebsiteResearchShadowService
 {
+    private static readonly TimeSpan ChinaOffset = TimeSpan.FromHours(8);
+    private const int ConservativeTrainingCutoffHour = 20;
+
     public static WebsiteResearchBrainSnapshot BuildFromLegacyArchive(string repositoryRoot)
     {
         string archivePath = Path.Combine(repositoryRoot, "site", "data", "predictions", "website-learning-archive.json");
         WebsiteLearningPersistentState state = WebsiteLearningPersistence.Load(archivePath);
         WebsiteResearchMaterial[] materials = state.Evidence
-            .Where(evidence => evidence.WebsiteResultZodiac is null && evidence.Zodiacs.Length > 0)
+            .Where(evidence => evidence.WebsiteResultZodiac is null && evidence.Zodiacs.Count > 0)
             .Select(WebsiteResearchMaterialInterpreter.FromLegacyEvidence)
             .GroupBy(material => (material.MaterialKey, material.Issue))
             .Select(group => group.OrderBy(material => material.CapturedAt).First())
             .ToArray();
 
-        var actualByIssue = DatabaseHelper.GetLatestHistory(int.MaxValue)
-            .Where(row => long.TryParse(row.Period, out _) && !string.IsNullOrWhiteSpace(row.SpecialZodiac))
-            .GroupBy(row => long.Parse(row.Period))
-            .ToDictionary(group => group.Key, group => group.First().SpecialZodiac);
-
-        WebsiteResearchBrainSnapshot snapshot = WebsiteResearchExperienceEngine.BuildSnapshot(materials, actualByIssue);
+        Dictionary<long, WebsiteResearchOutcomeContext> outcomes = BuildOutcomeContexts();
+        WebsiteResearchBrainSnapshot snapshot = WebsiteResearchExperienceEngine.BuildSnapshot(materials, outcomes);
         string outputPath = Path.Combine(repositoryRoot, "site", "data", "predictions", "website-research-brain.json");
         WebsiteResearchBrainStore.Save(outputPath, snapshot);
         return snapshot;
+    }
+
+    private static Dictionary<long, WebsiteResearchOutcomeContext> BuildOutcomeContexts()
+    {
+        var result = new Dictionary<long, WebsiteResearchOutcomeContext>();
+        foreach (DatabaseHelper.HistoryRecord row in DatabaseHelper.GetLatestHistory(int.MaxValue))
+        {
+            if (!long.TryParse(row.Period, out long issue) || issue <= 0 || string.IsNullOrWhiteSpace(row.SpecialZodiac)) continue;
+            DateTime? date = ParseDate(row.Date) ?? ParseDate(row.OpenTime);
+            if (!date.HasValue) continue;
+            DateOnly drawDate = DateOnly.FromDateTime(date.Value);
+            var cutoff = new DateTimeOffset(drawDate.Year, drawDate.Month, drawDate.Day,
+                ConservativeTrainingCutoffHour, 0, 0, ChinaOffset);
+            int lunarYear = V65MappingService.GetLunarYear(drawDate.ToDateTime(new TimeOnly(12, 0)));
+            IReadOnlyDictionary<string, IReadOnlyList<string>> map = V65MappingService.GetZodiacNumberMap(lunarYear);
+            ImmutableDictionary<string, double> baseline = map.ToImmutableDictionary(
+                pair => pair.Key,
+                pair => pair.Value.Count / 49d,
+                StringComparer.Ordinal);
+            result[issue] = new WebsiteResearchOutcomeContext(issue, row.SpecialZodiac, drawDate, cutoff,
+                baseline, V65MappingService.ZodiacNumberMappingVersion);
+        }
+        return result;
+    }
+
+    private static DateTime? ParseDate(string? value)
+    {
+        return DateTime.TryParse(value, out DateTime parsed) ? parsed.Date : null;
     }
 }
