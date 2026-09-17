@@ -93,7 +93,7 @@ try
         Console.WriteLine($"[SUCCESS] 网页研究大脑旁路快照：资料 {snapshot.MaterialCount}，" +
             $"训练可用 {snapshot.TrainingEligibleMaterialCount}，开奖后拒绝 {snapshot.RejectedPostDrawMaterialCount}，" +
             $"已结算 {snapshot.SettledCount}，经验项 {snapshot.Experiences.Length}，相关关系 {snapshot.Correlations.Length}");
-        Console.WriteLine("[INFO] 本命令只生成 website-research-brain.json，不生成或修改正式P25预测");
+        Console.WriteLine("[INFO] 本命令只生成网页研究报告和每日考试冻结记录，不生成或修改正式P25预测");
         return 0;
     }
 
