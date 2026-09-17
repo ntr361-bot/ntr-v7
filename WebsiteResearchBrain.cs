@@ -92,6 +92,52 @@ public sealed record WebsiteResearchBrainSnapshot(
     ImmutableArray<WebsiteMaterialCorrelation> Correlations,
     ImmutableArray<string> Notes);
 
+// This is deliberately a separate, append-only examination record.  It is not a
+// V7/P25 prediction and it is never read by the production prediction pipeline.
+public sealed record WebsiteResearchEvidenceContribution(
+    string MaterialKey,
+    string SourceId,
+    string MaterialName,
+    string SourceHash,
+    ImmutableArray<string> Zodiacs,
+    int TrainingSamples,
+    bool AppliedToRanking,
+    double LearnedEdge,
+    string Decision);
+
+public sealed record WebsiteResearchExamSettlement(
+    string ActualZodiac,
+    int ActualRank,
+    bool Top3Hit,
+    bool Top6Hit,
+    DateTimeOffset SettledAt);
+
+public sealed record WebsiteResearchDailyExam(
+    long Issue,
+    DateTimeOffset GeneratedAt,
+    string BrainVersion,
+    string LearningStage,
+    int MaterialCount,
+    int EffectiveMaterialCount,
+    ImmutableArray<string> Ranking,
+    ImmutableArray<string> Top3,
+    ImmutableArray<string> Top6,
+    ImmutableArray<WebsiteResearchEvidenceContribution> Evidence,
+    WebsiteResearchExamSettlement? Settlement);
+
+public sealed record WebsiteResearchPerformanceWindow(int SampleCount, double Top3Rate, double Top6Rate);
+
+public sealed record WebsiteResearchDailyExamArchive(
+    string SchemaVersion,
+    DateTimeOffset UpdatedAt,
+    ImmutableArray<WebsiteResearchDailyExam> Exams,
+    WebsiteResearchPerformanceWindow Recent20,
+    WebsiteResearchPerformanceWindow Recent50,
+    WebsiteResearchPerformanceWindow AllForward,
+    int MaximumTop6MissStreak,
+    int CurrentTop6MissStreak,
+    ImmutableArray<string> Notes);
+
 public sealed record WebsiteResearchSeedHint(
     string Name,
     WebsiteMaterialPolarity Polarity,
@@ -390,6 +436,39 @@ public static class WebsiteResearchBrainStore
     }
 }
 
+public static class WebsiteResearchDailyExamStore
+{
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        WriteIndented = true
+    };
+
+    public static WebsiteResearchDailyExamArchive Load(string path)
+    {
+        if (!File.Exists(path)) return Empty();
+        WebsiteResearchDailyExamArchive? archive = JsonSerializer.Deserialize<WebsiteResearchDailyExamArchive>(File.ReadAllText(path), JsonOptions);
+        return archive ?? Empty();
+    }
+
+    public static void Save(string path, WebsiteResearchDailyExamArchive archive)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+        string temporary = path + $".{Guid.NewGuid():N}.tmp";
+        try
+        {
+            File.WriteAllText(temporary, JsonSerializer.Serialize(archive, JsonOptions));
+            using JsonDocument _ = JsonDocument.Parse(File.ReadAllBytes(temporary));
+            File.Move(temporary, path, true);
+        }
+        finally { if (File.Exists(temporary)) File.Delete(temporary); }
+    }
+
+    private static WebsiteResearchDailyExamArchive Empty() => new(
+        "website-research-daily-exam-v1", DateTimeOffset.MinValue, [],
+        new(0, 0, 0), new(0, 0, 0), new(0, 0, 0), 0, 0, []);
+}
+
 public static class WebsiteResearchShadowService
 {
     private static readonly TimeSpan ChinaOffset = TimeSpan.FromHours(8);
@@ -400,7 +479,10 @@ public static class WebsiteResearchShadowService
         string archivePath = Path.Combine(repositoryRoot, "site", "data", "predictions", "website-learning-archive.json");
         WebsiteLearningPersistentState state = WebsiteLearningPersistence.Load(archivePath);
         WebsiteResearchMaterial[] materials = state.Evidence
-            .Where(evidence => evidence.WebsiteResultZodiac is null && evidence.Zodiacs.Count > 0)
+            // Settlement is a property of the capture, not a reason to erase that
+            // capture from the learning set.  The captured-at gate below remains
+            // the only training admission gate.
+            .Where(evidence => evidence.Zodiacs.Count > 0)
             .Select(WebsiteResearchMaterialInterpreter.FromLegacyEvidence)
             .GroupBy(material => (material.MaterialKey, material.Issue))
             .Select(group => group.OrderBy(material => material.CapturedAt).First())
@@ -410,8 +492,117 @@ public static class WebsiteResearchShadowService
         WebsiteResearchBrainSnapshot snapshot = WebsiteResearchExperienceEngine.BuildSnapshot(materials, outcomes);
         string outputPath = Path.Combine(repositoryRoot, "site", "data", "predictions", "website-research-brain.json");
         WebsiteResearchBrainStore.Save(outputPath, snapshot);
+        BuildOrSettleDailyExam(repositoryRoot, state, materials, outcomes, snapshot);
         return snapshot;
     }
+
+    private static void BuildOrSettleDailyExam(string repositoryRoot, WebsiteLearningPersistentState state,
+        WebsiteResearchMaterial[] materials, IReadOnlyDictionary<long, WebsiteResearchOutcomeContext> outcomes,
+        WebsiteResearchBrainSnapshot snapshot)
+    {
+        string path = Path.Combine(repositoryRoot, "site", "data", "predictions", "website-research-daily-exams.json");
+        WebsiteResearchDailyExamArchive existing = WebsiteResearchDailyExamStore.Load(path);
+        long targetIssue = ResolveNextIssue();
+        var exams = existing.Exams.ToDictionary(exam => exam.Issue);
+
+        // Freeze once.  Later web captures, source edits, and the draw itself can
+        // only affect Settlement; they can never change this ranking or evidence.
+        if (!exams.ContainsKey(targetIssue))
+            exams[targetIssue] = CreateFrozenExam(targetIssue, state, materials, snapshot);
+
+        foreach ((long issue, WebsiteResearchDailyExam exam) in exams.ToArray())
+        {
+            if (exam.Settlement is not null || !outcomes.TryGetValue(issue, out WebsiteResearchOutcomeContext? outcome)) continue;
+            int rank = exam.Ranking.IndexOf(outcome.ActualZodiac);
+            if (rank < 0) throw new InvalidDataException($"网页研究考试第{issue}期缺少实际生肖 {outcome.ActualZodiac}");
+            exams[issue] = exam with
+            {
+                Settlement = new(outcome.ActualZodiac, rank + 1, rank < 3, rank < 6, DateTimeOffset.Now)
+            };
+        }
+
+        WebsiteResearchDailyExam[] frozen = exams.Values.OrderBy(exam => exam.Issue).ToArray();
+        WebsiteResearchDailyExamStore.Save(path, BuildArchive(frozen));
+    }
+
+    private static WebsiteResearchDailyExam CreateFrozenExam(long issue, WebsiteLearningPersistentState state,
+        IEnumerable<WebsiteResearchMaterial> materials, WebsiteResearchBrainSnapshot snapshot)
+    {
+        WebsiteResearchMaterial[] issueMaterials = materials.Where(material => material.Issue == issue)
+            .OrderBy(material => material.MaterialKey, StringComparer.Ordinal).ToArray();
+        Dictionary<string, WebsiteMaterialExperience> experience = snapshot.Experiences
+            .ToDictionary(item => item.MaterialKey, StringComparer.Ordinal);
+        var evidence = new List<WebsiteResearchEvidenceContribution>();
+        var score = Zodiac.ToDictionary(zodiac => zodiac, _ => 0d, StringComparer.Ordinal);
+        foreach (WebsiteResearchMaterial material in issueMaterials)
+        {
+            experience.TryGetValue(material.MaterialKey, out WebsiteMaterialExperience? learned);
+            bool apply = learned is not null && learned.EligibleForDecision && learned.LongEdge > 0 &&
+                material.Polarity is WebsiteMaterialPolarity.Positive or WebsiteMaterialPolarity.Negative;
+            double edge = apply ? learned!.LongEdge * learned.Confidence : 0d;
+            if (apply)
+            {
+                foreach (string zodiac in material.Zodiacs)
+                    score[zodiac] += material.Polarity == WebsiteMaterialPolarity.Negative ? -edge : edge;
+            }
+            evidence.Add(new(material.MaterialKey, material.SourceId, material.MaterialName,
+                state.Evidence.FirstOrDefault(item => item.Issue == issue && item.SourceId == material.SourceId &&
+                    item.CapturedAt == material.CapturedAt)?.SourceHash ?? "", material.Zodiacs,
+                learned?.Samples ?? 0, apply, edge,
+                apply ? "已通过样本门槛，按已验证超额优势计入" : "低样本观察：不计入排序"));
+        }
+        // With no validated source there is intentionally no disguised vote.  The
+        // deterministic tie-break is an auditable neutral observation baseline.
+        string[] ranking = Zodiac.OrderByDescending(zodiac => score[zodiac])
+            .ThenBy(zodiac => NeutralTieBreak(issue, zodiac)).ToArray();
+        int effective = evidence.Count(item => item.AppliedToRanking);
+        return new(issue, DateTimeOffset.Now, "website-research-brain-v1",
+            effective == 0 ? "低样本观察期" : "前瞻学习期", issueMaterials.Length, effective,
+            ranking.ToImmutableArray(), ranking.Take(3).ToImmutableArray(), ranking.Take(6).ToImmutableArray(),
+            evidence.ToImmutableArray(), null);
+    }
+
+    private static WebsiteResearchDailyExamArchive BuildArchive(IReadOnlyList<WebsiteResearchDailyExam> exams)
+    {
+        WebsiteResearchDailyExam[] settled = exams.Where(exam => exam.Settlement is not null).OrderBy(exam => exam.Issue).ToArray();
+        int currentMiss = 0, maximumMiss = 0, runningMiss = 0;
+        foreach (WebsiteResearchDailyExam exam in settled)
+        {
+            if (exam.Settlement!.Top6Hit) runningMiss = 0;
+            else { runningMiss++; maximumMiss = Math.Max(maximumMiss, runningMiss); }
+        }
+        for (int i = settled.Length - 1; i >= 0 && !settled[i].Settlement!.Top6Hit; i--) currentMiss++;
+        return new("website-research-daily-exam-v1", DateTimeOffset.Now, exams.ToImmutableArray(),
+            Window(settled.TakeLast(20)), Window(settled.TakeLast(50)), Window(settled), maximumMiss, currentMiss,
+            ["每期排名和证据在开奖前首次生成后冻结；开奖后仅回填结算字段。",
+             "没有达到样本门槛的网页资料只展示，不参与排序，因此不会变相按资料数量投票。",
+             "训练仅使用开奖前抓到的资料；开奖后首次抓到的旧资料不进入训练。"]);
+    }
+
+    private static WebsiteResearchPerformanceWindow Window(IEnumerable<WebsiteResearchDailyExam> exams)
+    {
+        WebsiteResearchDailyExam[] rows = exams.ToArray();
+        return new(rows.Length,
+            rows.Length == 0 ? 0d : rows.Count(row => row.Settlement!.Top3Hit) / (double)rows.Length,
+            rows.Length == 0 ? 0d : rows.Count(row => row.Settlement!.Top6Hit) / (double)rows.Length);
+    }
+
+    private static long ResolveNextIssue()
+    {
+        if (!long.TryParse(DatabaseHelper.GetLatestPeriod(), out long latest) || latest <= 0)
+            throw new InvalidDataException("无法从开奖历史确定网页研究考试目标期号");
+        int currentYear = DateTimeOffset.UtcNow.ToOffset(ChinaOffset).Year;
+        return latest / 1000 < currentYear ? currentYear * 1000L + 1 : latest + 1;
+    }
+
+    private static ulong NeutralTieBreak(long issue, string zodiac)
+    {
+        ulong hash = 1469598103934665603UL;
+        foreach (char c in issue.ToString() + zodiac) { hash ^= c; hash *= 1099511628211UL; }
+        return hash;
+    }
+
+    private static readonly string[] Zodiac = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
 
     private static Dictionary<long, WebsiteResearchOutcomeContext> BuildOutcomeContexts()
     {
