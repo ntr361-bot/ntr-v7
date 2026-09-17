@@ -10,6 +10,95 @@ on:
       - "docs/Website-Research-Brain-v1.md"
       - ".github/workflows/website-research-brain-shadow.yml"
   workflow_dispatch:
+  schedule:
+    # 12:20 / 17:20 China time: read P25's already-committed web archive.
+    - cron: "20 4 * * *"
+    - cron: "20 9 * * *"
+    # 22:30 China time: settle only after the official history has advanced.
+    - cron: "30 14 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read latest production data from main
+        shell: pwsh
+        run: |
+          git fetch origin main
+          git checkout origin/main -- site/data/history.json site/data/runtime-state.json site/data/predictions/website-learning-archive.json
+          Write-Host "latest main history/archive/runtime copied into research worktree"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Restore
+        run: dotnet restore PredictionRunner/PredictionRunner.csproj
+      - name: Build research branch
+        run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
+      - name: Rebuild local history database
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
+      - name: Run website research brain shadow
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --website-brain-shadow
+      - name: Verify shadow report
+        shell: pwsh
+        run: |
+          $path = "site/data/predictions/website-research-brain.json"
+          if (-not (Test-Path $path)) { throw "website-research-brain.json was not generated" }
+          $report = Get-Content -Raw $path | ConvertFrom-Json
+          if ($report.schema_version -ne "website-research-brain-v1") { throw "unexpected schema version" }
+          if ([int]$report.training_eligible_material_count -lt 1) { throw "no genuine pre-draw training material was detected" }
+          if ([int]$report.rejected_post_draw_material_count -lt 1) { throw "anti-leakage gate was not exercised" }
+          Write-Host "materials=$($report.material_count)"
+          Write-Host "training_eligible=$($report.training_eligible_material_count)"
+          Write-Host "rejected_post_draw=$($report.rejected_post_draw_material_count)"
+          Write-Host "settled=$($report.settled_count)"
+          Write-Host "experiences=$($report.experiences.Count)"
+          Write-Host "correlations=$($report.correlations.Count)"
+          $examPath = "site/data/predictions/website-research-daily-exams.json"
+          if (-not (Test-Path $examPath)) { throw "website-research-daily-exams.json was not generated" }
+          $exams = Get-Content -Raw $examPath | ConvertFrom-Json
+          if ($exams.schema_version -ne "website-research-daily-exam-v1") { throw "unexpected daily exam schema" }
+          if (@($exams.exams).Count -lt 1) { throw "daily exam did not freeze a prediction" }
+          $latestExam = @($exams.exams | Sort-Object {[long]$_.issue} -Descending | Select-Object -First 1)
+          if (@($latestExam.ranking).Count -ne 12 -or @($latestExam.top3).Count -ne 3 -or @($latestExam.top6).Count -ne 6) { throw "daily exam ranking is incomplete" }
+          Write-Host "daily_exams=$(@($exams.exams).Count)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-research-brain-shadow-report
+          path: site/data/predictions/website-research-brain.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Keep latest report on research branch
+        shell: pwsh
+        run: |
+          git config user.name "ntr361-bot"
+          git config user.email "ntr361@icloud.com"
+          git add -- site/data/predictions/website-research-brain.json site/data/predictions/website-research-daily-exams.json
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "website research report unchanged"
+            exit 0
+          }
+          git commit -m "chore: refresh website research brain report"
+          git push origin HEAD:research/website-learning-brain-20260916
+name: Website Research Brain Shadow Check
+
+on:
+  push:
+    branches:
+      - "research/website-learning-brain-20260916"
+    paths:
+      - "WebsiteResearchBrain.cs"
+      - "PredictionRunner/**"
+      - "docs/Website-Research-Brain-v1.md"
+      - ".github/workflows/website-research-brain-shadow.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
