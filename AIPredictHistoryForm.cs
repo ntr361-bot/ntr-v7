@@ -49,7 +49,7 @@ namespace 六合分析软件
             this.newModelOnly = newModelOnly;
             InitializeComponent();
 
-            this.Text = newModelOnly ? "智能预测历史记录" : "AI预测历史记录（100期 + 自动学习 + V7整合 + P25网站资料）";
+            this.Text = newModelOnly ? "智能预测历史记录" : "AI预测历史记录（100期 + 自动学习 + V7整合）";
             this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MinimumSize = new Size(1000, 650);
@@ -82,7 +82,7 @@ namespace 六合分析软件
             Label title = new Label();
             title.Text = newModelOnly
                 ? "📜 智能预测历史记录（按期号和模型留档）"
-                : "📜 AI预测历史记录（100期 + 自动学习 + V7整合 + P25网站资料）";
+                : "📜 AI预测历史记录（100期 + 自动学习 + V7整合）";
             title.Font = new Font("微软雅黑", 16, FontStyle.Bold);
             title.ForeColor = Color.White;
             title.Dock = DockStyle.Fill;

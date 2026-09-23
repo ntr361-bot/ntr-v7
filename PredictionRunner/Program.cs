@@ -87,39 +87,8 @@ try
         return 0;
     }
 
-    if (arguments.ContainsKey("website-brain-shadow"))
-    {
-        WebsiteResearchBrainSnapshot snapshot = WebsiteResearchShadowService.BuildFromLegacyArchive(repositoryRoot);
-        Console.WriteLine($"[SUCCESS] 网页研究大脑旁路快照：资料 {snapshot.MaterialCount}，" +
-            $"训练可用 {snapshot.TrainingEligibleMaterialCount}，开奖后拒绝 {snapshot.RejectedPostDrawMaterialCount}，" +
-            $"已结算 {snapshot.SettledCount}，经验项 {snapshot.Experiences.Length}，相关关系 {snapshot.Correlations.Length}");
-        Console.WriteLine("[INFO] 本命令只生成网页研究报告和每日考试冻结记录，不生成或修改正式P25预测");
-        return 0;
-    }
-
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
-
-    if (arguments.ContainsKey("check-p25-web"))
-    {
-        long targetIssue = issue ?? ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
-        string checkStatePath = Path.Combine(outputDirectory, "p25-web-check.json");
-        P25ScheduledCheckResult result = P25ScheduledWebCheck.Run(targetIssue, checkStatePath);
-        WriteRuntimeState(repositoryRoot);
-        Console.WriteLine(result.Complete
-            ? $"[SUCCESS] P25网页检查完成：{result.Message}"
-            : $"[WARNING] P25网页检查未完成：{result.Message}");
-        return 0;
-    }
-
-    if (arguments.ContainsKey("settle-p25-web"))
-    {
-        string settlementStatePath = Path.Combine(outputDirectory, "p25-web-settlement.json");
-        P25SettlementResult result = P25PostDrawSettlement.Run(settlementStatePath);
-        WriteRuntimeState(repositoryRoot);
-        Console.WriteLine($"[SUCCESS] P25开奖后结算完成：{result.Message}");
-        return 0;
-    }
 
     if (arguments.ContainsKey("generate-all"))
     {
@@ -127,22 +96,6 @@ try
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
         {
-            long nextIssue = ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
-            if (!issue.HasValue || issue.Value == nextIssue)
-            {
-                try
-                {
-                    bool p25Updated = WebsiteLearningIntegration.Publish(nextIssue);
-                    Console.WriteLine(p25Updated
-                        ? $"[INFO] P25网页资料已写入第{nextIssue}期"
-                        : $"[INFO] 第{nextIssue}期P25网页资料已存在");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[WARNING] 第{nextIssue}期P25网页资料未写入：{ex.Message}");
-                }
-            }
-
             int forwardUpdated = Forward50PredictionPublisher.EnrichPending(dailyOutputDirectory);
             DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
             Console.WriteLine($"[INFO] Forward50 前瞻旁路更新 {forwardUpdated} 期");
@@ -174,15 +127,6 @@ finally
         try { Directory.Delete(temporarySnapshotDirectory, recursive: true); }
         catch { /* Export has completed; a locked temporary snapshot is harmless and can be cleared by the OS. */ }
     }
-}
-
-static long ResolveNextIssue(string? latestPeriod)
-{
-    if (!long.TryParse(latestPeriod, out long latestIssue) || latestIssue <= 0)
-        throw new InvalidDataException("无法从开奖历史确定P25目标期号");
-    int latestYear = checked((int)(latestIssue / 1000));
-    int chinaYear = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(8)).Year;
-    return chinaYear > latestYear ? chinaYear * 1000L + 1L : latestIssue + 1L;
 }
 
 static long? ParseIssue(Dictionary<string, string?> arguments, string key)
@@ -223,9 +167,6 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 parsed["export-state-from"] = values[i];
                 break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
-            case "--check-p25-web": parsed["check-p25-web"] = null; break;
-            case "--settle-p25-web": parsed["settle-p25-web"] = null; break;
-            case "--website-brain-shadow": parsed["website-brain-shadow"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -235,7 +176,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web] [--settle-p25-web] [--website-brain-shadow]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {

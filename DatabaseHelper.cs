@@ -1,5 +1,5 @@
-Warning: truncated output (original token count: 27242)
-Total output lines: 2046
+Warning: truncated output (original token count: 26295)
+Total output lines: 1987
 
 using System;
 using System.Data.SQLite;
@@ -1048,7 +1048,77 @@ namespace 六合分析软件
             public string ScoreDetails { get; set; } = "";   // 完整评分摘要
             public string ModelVersion { get; set; } = "";   // 模型版本
             public string ActualNumber { get; set; } = "";   // 实际开奖特码
- …2242 tokens truncated… StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+ …1295 tokens truncated…          new SQLiteCommand("COMMIT", conn).ExecuteNonQuery();
+                    transactionStarted = false;
+                    Console.WriteLine(inserted > 0
+                        ? $"[数据库] 新建预测记录（期号:{issue}，周期:{analysisPeriods}，模型:{modelVersion}）"
+                        : $"[数据库] 预测记录已存在，保留首次快照（期号:{issue}，周期:{analysisPeriods}，模型:{modelVersion}）");
+                }
+                catch
+                {
+                    if (transactionStarted)
+                    {
+                        try { new SQLiteCommand("ROLLBACK", conn).ExecuteNonQuery(); }
+                        catch { }
+                    }
+                    throw;
+                }
+            }
+        }
+
+        public static void SaveCloudPrediction(string issue, string predictTime, string predictZodiac,
+            string top6Zodiac, string predictNumber, string modelVersion, int analysisPeriods,
+            string scoreDetails)
+        {
+            using SQLiteConnection conn = GetConnection();
+            string predictionGroupId = GetPredictionGroupId(issue);
+            new SQLiteCommand("BEGIN IMMEDIATE", conn).ExecuteNonQuery();
+            bool committed = false;
+            try
+            {
+            using SQLiteCommand cmd = new SQLiteCommand(@"
+                INSERT INTO PredictionHistory
+                (Issue, PredictionGroupId, PredictTime, PredictNumber, PredictZodiac, Top6Zodiac,
+                 AnalysisPeriods, ScoreDetails, ModelVersion, HitResult, Top6HitResult)
+                SELECT @issue, @groupId, @time, @num, @zodiac, @top6, @periods, @scores, @model,
+                       '未开奖', '未开奖'
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM PredictionHistory
+                    WHERE Issue=@issue AND AnalysisPeriods=@periods AND ModelVersion=@model
+                )", conn);
+            cmd.Parameters.AddWithValue("@issue", issue);
+            cmd.Parameters.AddWithValue("@groupId", predictionGroupId);
+            cmd.Parameters.AddWithValue("@time", predictTime);
+            cmd.Parameters.AddWithValue("@num", predictNumber);
+            cmd.Parameters.AddWithValue("@zodiac", predictZodiac);
+            cmd.Parameters.AddWithValue("@top6", top6Zodiac);
+            cmd.Parameters.AddWithValue("@periods", analysisPeriods);
+            cmd.Parameters.AddWithValue("@scores", scoreDetails);
+            cmd.Parameters.AddWithValue("@model", modelVersion);
+            cmd.ExecuteNonQuery();
+            new SQLiteCommand("COMMIT", conn).ExecuteNonQuery();
+            committed = true;
+            }
+            finally
+            {
+                if (!committed)
+                {
+                    try { new SQLiteCommand("ROLLBACK", conn).ExecuteNonQuery(); }
+                    catch { }
+                }
+            }
+            RecalculateVerifiedPredictionResults();
+        }
+
+        public static void SaveVerifiedValidationPrediction(string issue, string top3Zodiac, string top6Zodiac,
+            string actualZodiac, string actualNumber, int actualRank, int analysisPeriods, string modelVersion,
+            string scoreDetails, bool mainColorHit, bool dualColorHit, string actualColor)
+        {
+            using (SQLiteConnection schema = GetConnection()) EnsureAutoLearningSchema(schema);
+            string[] ranking = top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            SavePrediction(issue, top3Zodiac, top6Zodiac, "", modelVersion, analysisPeriods, scoreDetails,
+                "严格滚动验证记录，不参与在线重复学习", System.Text.Json.JsonSerializer.Serialize(ranking));
+            bool top3Hit = top3Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .Contains(actualZodiac);
             bool top6Hit = ranking.Contains(actualZodiac);
             using SQLiteConnection conn = GetConnection();
@@ -1323,65 +1393,6 @@ namespace 六合分析软件
                 Console.WriteLine($"[预测验证] 批量验证失败: {ex.Message}");
             }
             return verified;
-        }
-
-        /// <summary>
-        /// 开奖后只结算已经冻结的 P25 网页预测。不会读取网页、不会重新排序，也不会写入任何正式 V7/V6 学习状态。
-        /// </summary>
-        public static int SettlePendingP25WebPredictions()
-        {
-            using SQLiteConnection conn = GetConnection();
-            const string selectSql = @"SELECT p.Id, p.PredictZodiac, p.Top6Zodiac, p.FinalRankingJson,
-                                               h.SpecialNumber, h.SpecialZodiac
-                                        FROM PredictionHistory p
-                                        INNER JOIN History h ON h.Period = p.Issue
-                                        WHERE p.ModelVersion = 'P25-Web' AND p.AnalysisPeriods = 25
-                                          AND (p.ActualZodiac IS NULL OR p.ActualZodiac = '')
-                                          AND h.SpecialZodiac IS NOT NULL AND h.SpecialZodiac <> ''";
-            var pending = new List<(int Id, string Top3, string Top6, string Ranking, string Number, string Zodiac)>();
-            using (SQLiteCommand select = new SQLiteCommand(selectSql, conn))
-            using (SQLiteDataReader reader = select.ExecuteReader())
-            {
-                while (reader.Read())
-                    pending.Add((reader.GetInt32(0),
-                        reader.IsDBNull(1) ? "" : reader.GetString(1),
-                        reader.IsDBNull(2) ? "" : reader.GetString(2),
-                        reader.IsDBNull(3) ? "" : reader.GetString(3),
-                        reader.IsDBNull(4) ? "" : reader.GetString(4),
-                        reader.GetString(5)));
-            }
-
-            int settled = 0;
-            foreach (var item in pending)
-            {
-                bool top3Hit = ContainsZodiac(item.Top3, item.Zodiac);
-                bool top6Hit = ContainsZodiac(item.Top6, item.Zodiac);
-                int actualRank = 0;
-                if (!string.IsNullOrWhiteSpace(item.Ranking))
-                {
-                    try
-                    {
-                        string[] ranking = System.Text.Json.JsonSerializer.Deserialize<string[]>(item.Ranking) ?? Array.Empty<string>();
-                        actualRank = Array.FindIndex(ranking, zodiac => zodiac == item.Zodiac) + 1;
-                    }
-                    catch { /* Frozen ranking is preserved even when an older malformed record cannot provide a rank. */ }
-                }
-
-                using SQLiteCommand update = new SQLiteCommand(@"UPDATE PredictionHistory
-                    SET ActualNumber=@number, ActualZodiac=@zodiac, HitResult=@top3, Top6HitResult=@top6,
-                        ActualRank=@rank, ReviewDetails=@review, LearningStatus='Settled', LearnedAt=@settledAt
-                    WHERE Id=@id AND (ActualZodiac IS NULL OR ActualZodiac = '')", conn);
-                update.Parameters.AddWithValue("@number", item.Number);
-                update.Parameters.AddWithValue("@zodiac", item.Zodiac);
-                update.Parameters.AddWithValue("@top3", top3Hit ? "命中" : "未命中");
-                update.Parameters.AddWithValue("@top6", top6Hit ? "命中" : "未命中");
-                update.Parameters.AddWithValue("@rank", actualRank);
-                update.Parameters.AddWithValue("@review", $"P25开奖后自动兑奖：实际生肖{item.Zodiac}，实际排名{actualRank}，TOP3{(top3Hit ? "命中" : "未命中")}，TOP6{(top6Hit ? "命中" : "未命中")}；冻结预测未重算");
-                update.Parameters.AddWithValue("@settledAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                update.Parameters.AddWithValue("@id", item.Id);
-                settled += update.ExecuteNonQuery();
-            }
-            return settled;
         }
 
         /// <summary>
