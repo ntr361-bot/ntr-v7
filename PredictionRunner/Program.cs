@@ -112,6 +112,15 @@ try
         return 0;
     }
 
+    if (arguments.ContainsKey("settle-p25-web"))
+    {
+        string settlementStatePath = Path.Combine(outputDirectory, "p25-web-settlement.json");
+        P25SettlementResult result = P25PostDrawSettlement.Run(settlementStatePath);
+        WriteRuntimeState(repositoryRoot);
+        Console.WriteLine($"[SUCCESS] P25开奖后结算完成：{result.Message}");
+        return 0;
+    }
+
     if (arguments.ContainsKey("generate-all"))
     {
         DailyPredictionAutomation.GenerateMissing(outputDirectory, dailyOutputDirectory,
@@ -215,6 +224,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
             case "--check-p25-web": parsed["check-p25-web"] = null; break;
+            case "--settle-p25-web": parsed["settle-p25-web"] = null; break;
             case "--website-brain-shadow": parsed["website-brain-shadow"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
@@ -225,7 +235,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web] [--website-brain-shadow]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web] [--settle-p25-web] [--website-brain-shadow]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {

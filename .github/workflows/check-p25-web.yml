@@ -7,6 +7,8 @@ on:
     - cron: "0 4 * * *"
     # 09:00 UTC = 17:00 China Standard Time. If noon already produced P25, code skips the web request.
     - cron: "0 9 * * *"
+    # 16:00 UTC = 00:00 China Standard Time. Settle only the already-frozen P25 after the draw data is stable.
+    - cron: "0 16 * * *"
 
 permissions:
   contents: write
@@ -40,7 +42,13 @@ jobs:
         shell: pwsh
         run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --rebuild-db --rebuild-only
 
+      - name: Refresh draw data for P25 settlement
+        if: ${{ github.event.schedule == '0 16 * * *' }}
+        shell: pwsh
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --refresh-data --settle-p25-web
+
       - name: Check P25 website materials
+        if: ${{ github.event.schedule != '0 16 * * *' }}
         shell: pwsh
         run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --check-p25-web
 
@@ -60,6 +68,9 @@ jobs:
           }
           if (Test-Path 'site/data/predictions/p25-web-check.json') {
             git add site/data/predictions/p25-web-check.json
+          }
+          if (Test-Path 'site/data/predictions/p25-web-settlement.json') {
+            git add site/data/predictions/p25-web-settlement.json
           }
 
           "runtime_changed=$($runtimeChanged.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT

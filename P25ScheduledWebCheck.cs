@@ -14,6 +14,39 @@ public sealed record P25ScheduledCheckResult(
     string Message,
     DateTimeOffset CheckedAt);
 
+public sealed record P25SettlementResult(
+    int SettledCount,
+    string Message,
+    DateTimeOffset SettledAt);
+
+public static class P25PostDrawSettlement
+{
+    public static P25SettlementResult Run(string statePath)
+    {
+        int settled = DatabaseHelper.SettlePendingP25WebPredictions();
+        var result = new P25SettlementResult(settled,
+            settled > 0 ? $"已自动兑奖 {settled} 期冻结 P25 预测" : "暂无已开奖且待兑奖的 P25 预测",
+            DateTimeOffset.Now);
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(statePath))!);
+        string temp = statePath + $".{Guid.NewGuid():N}.tmp";
+        try
+        {
+            File.WriteAllText(temp, JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+                WriteIndented = true
+            }));
+            using JsonDocument _ = JsonDocument.Parse(File.ReadAllBytes(temp));
+            File.Move(temp, statePath, true);
+        }
+        finally
+        {
+            if (File.Exists(temp)) File.Delete(temp);
+        }
+        return result;
+    }
+}
+
 public static class P25ScheduledWebCheck
 {
     private static readonly string[] RequiredSources = ["6x.js", "3bds.js", "x3x6m.js", "6x18mm.js"];
