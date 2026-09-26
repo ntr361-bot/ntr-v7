@@ -93,7 +93,7 @@ jobs:
             try {
               $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
               $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
-              $headers = @{ 'x-v6-github-oidc' = "Bearer $oidc" }
+              $headers = @{ Authorization = "Bearer $oidc" }
               $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request' -Headers $headers
               $shouldRun = [bool]$response.run_requested
             } catch {
@@ -258,7 +258,7 @@ jobs:
           } | ConvertTo-Json -Depth 100 -Compress
           $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
           $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
-          $headers = @{ 'x-v6-github-oidc' = "Bearer $oidc" }
+          $headers = @{ Authorization = "Bearer $oidc" }
           Invoke-RequiredPublish -Url 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -Body $payload | Out-Host
 
           $publishedManifest = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/manifest' -ErrorAction Stop
