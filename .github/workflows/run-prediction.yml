@@ -224,6 +224,7 @@ jobs:
           retention-days: 30
 
       - name: Publish V7 data to smart ledger
+        if: ${{ inputs.dry_run != true }}
         shell: pwsh
         run: |
           function Invoke-RequiredPublish {
