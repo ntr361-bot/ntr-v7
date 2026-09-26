@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.decide.outputs.should_run }}
+      retry_allowed: ${{ steps.decide.outputs.retry_allowed }}
     steps:
       - name: Check primary run or failed-run retry
         id: decide
@@ -106,6 +107,8 @@ jobs:
             }
           }
           "should_run=$($shouldRun.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+          $retryAllowed = ![string]::IsNullOrWhiteSpace($env:SITES_SIWC_BYPASS_TOKEN)
+          "retry_allowed=$($retryAllowed.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
@@ -286,7 +289,7 @@ jobs:
 
   retry-on-failure:
     needs: [check-trigger, predict]
-    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' && inputs.dry_run != true }}
+    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.check-trigger.outputs.retry_allowed == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     steps:
       - name: Queue one guarded retry
