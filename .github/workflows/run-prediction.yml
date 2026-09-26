@@ -109,7 +109,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
-          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
 
   predict:
     needs: check-trigger
@@ -282,6 +281,8 @@ jobs:
           if ($latestFile) {
             Invoke-RestMethod -Uri "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/prediction?file=$latestFile" -Headers $headers -ErrorAction Stop | Out-Null
           }
+        env:
+          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
 
   retry-on-failure:
     needs: [check-trigger, predict]
