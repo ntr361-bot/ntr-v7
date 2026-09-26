@@ -275,7 +275,7 @@ jobs:
 
   retry-on-failure:
     needs: [check-trigger, predict]
-    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' }}
+    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     steps:
       - name: Queue one guarded retry
