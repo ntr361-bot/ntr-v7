@@ -1,0 +1,59 @@
+name: Model Shadow Observation
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Run V7 Isolated Prediction]
+    types: [completed]
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - experiments/model-shadow-v1/observe.mjs
+      - experiments/model-shadow-v1/observe.test.mjs
+      - .github/workflows/model-shadow.yml
+  schedule:
+    - cron: '31 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: model-shadow-observation
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test isolation and chronological evaluation
+        run: node --test experiments/model-shadow-v1/observe.test.mjs
+      - name: Observe saved snapshots only
+        run: node experiments/model-shadow-v1/observe.mjs
+      - name: Assert write boundary and persist observer data
+        shell: bash
+        run: |
+          if git status --porcelain -- site/data data | grep -q .; then
+            echo 'Observer modified a production file'; exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/model-shadow-v1/forward.json experiments/model-shadow-v1/report.json experiments/model-shadow-v1/REPORT.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: update isolated model shadow observation'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Upload observation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-shadow-observation
+          path: experiments/model-shadow-v1/
