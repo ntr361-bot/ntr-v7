@@ -1,265 +1,387 @@
 {
   "version": "model-shadow-v1",
-  "updated_at": "2026-09-30T16:01:30.130Z",
-  "latest_draw": 2026272,
+  "updated_at": "2026-09-30T18:42:55.839Z",
+  "latest_draw": 2026273,
   "forward": {
     "per_model": {
       "v7": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "ai50": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "ai100": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "comprehensive": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "v7_soft": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "v7_none": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "v7_normalized": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "hits6": 1,
+        "top3_rate": 0,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "ai50_unsaturated": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "ai50_shrunk": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "selector": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "low_ai100": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "low_comprehensive": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       }
     },
     "common_issue_comparison": {
       "v7": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "ai50": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "ai100": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "comprehensive": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "v7_soft": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "v7_none": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "v7_normalized": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "hits6": 1,
+        "top3_rate": 0,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "ai50_unsaturated": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "ai50_shrunk": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "selector": {
-        "samples": 0,
-        "hits3": 0,
-        "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
+        "samples": 1,
+        "hits3": 1,
+        "hits6": 1,
+        "top3_rate": 1,
+        "top6_rate": 1,
+        "top6_wilson95": [
+          0.20654329147389294,
+          1
+        ],
         "max_top6_misses": 0,
-        "issues": []
+        "issues": [
+          2026273
+        ]
       },
       "low_ai100": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       },
       "low_comprehensive": {
-        "samples": 0,
+        "samples": 1,
         "hits3": 0,
         "hits6": 0,
-        "top3_rate": null,
-        "top6_rate": null,
-        "top6_wilson95": null,
-        "max_top6_misses": 0,
-        "issues": []
+        "top3_rate": 0,
+        "top6_rate": 0,
+        "top6_wilson95": [
+          0,
+          0.7934567085261071
+        ],
+        "max_top6_misses": 1,
+        "issues": [
+          2026273
+        ]
       }
     },
-    "common_issues": []
+    "common_issues": [
+      2026273
+    ]
   },
   "retrospective_replay": {
     "per_model": {
       "v7": {
-        "samples": 41,
-        "hits3": 17,
-        "hits6": 25,
-        "top3_rate": 0.4146341463414634,
-        "top6_rate": 0.6097560975609756,
+        "samples": 42,
+        "hits3": 18,
+        "hits6": 26,
+        "top3_rate": 0.42857142857142855,
+        "top6_rate": 0.6190476190476191,
         "top6_wilson95": [
-          0.45726583898692563,
-          0.7434406478467289
+          0.46813768219996377,
+          0.7500047910121407
         ],
         "max_top6_misses": 5,
         "issues": [
@@ -303,22 +425,22 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50": {
         "samples": 50,
-        "hits3": 12,
-        "hits6": 29,
-        "top3_rate": 0.24,
-        "top6_rate": 0.58,
+        "hits3": 11,
+        "hits6": 28,
+        "top3_rate": 0.22,
+        "top6_rate": 0.56,
         "top6_wilson95": [
-          0.4423319668777783,
-          0.7062520276543307
+          0.4230578680014353,
+          0.6883801278976466
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
-          2026198,
           2026199,
           2026200,
           2026201,
@@ -367,86 +489,22 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai100": {
         "samples": 50,
         "hits3": 8,
-        "hits6": 22,
-        "top3_rate": 0.16,
-        "top6_rate": 0.44,
-        "top6_wilson95": [
-          0.3116198721023534,
-          0.5769421319985648
-        ],
-        "max_top6_misses": 7,
-        "issues": [
-          2026223,
-          2026224,
-          2026225,
-          2026226,
-          2026227,
-          2026228,
-          2026229,
-          2026230,
-          2026231,
-          2026232,
-          2026233,
-          2026234,
-          2026235,
-          2026236,
-          2026237,
-          2026238,
-          2026239,
-          2026240,
-          2026241,
-          2026242,
-          2026243,
-          2026244,
-          2026245,
-          2026246,
-          2026247,
-          2026248,
-          2026249,
-          2026250,
-          2026251,
-          2026252,
-          2026253,
-          2026254,
-          2026255,
-          2026256,
-          2026257,
-          2026258,
-          2026259,
-          2026260,
-          2026261,
-          2026262,
-          2026263,
-          2026264,
-          2026265,
-          2026266,
-          2026267,
-          2026268,
-          2026269,
-          2026270,
-          2026271,
-          2026272
-        ]
-      },
-      "comprehensive": {
-        "samples": 50,
-        "hits3": 10,
         "hits6": 21,
-        "top3_rate": 0.2,
+        "top3_rate": 0.16,
         "top6_rate": 0.42,
         "top6_wilson95": [
           0.2937479723456693,
           0.5576680331222217
         ],
-        "max_top6_misses": 12,
+        "max_top6_misses": 7,
         "issues": [
-          2026223,
           2026224,
           2026225,
           2026226,
@@ -495,18 +553,83 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
+        ]
+      },
+      "comprehensive": {
+        "samples": 50,
+        "hits3": 10,
+        "hits6": 20,
+        "top3_rate": 0.2,
+        "top6_rate": 0.4,
+        "top6_wilson95": [
+          0.2760818978624575,
+          0.5381881089724063
+        ],
+        "max_top6_misses": 12,
+        "issues": [
+          2026224,
+          2026225,
+          2026226,
+          2026227,
+          2026228,
+          2026229,
+          2026230,
+          2026231,
+          2026232,
+          2026233,
+          2026234,
+          2026235,
+          2026236,
+          2026237,
+          2026238,
+          2026239,
+          2026240,
+          2026241,
+          2026242,
+          2026243,
+          2026244,
+          2026245,
+          2026246,
+          2026247,
+          2026248,
+          2026249,
+          2026250,
+          2026251,
+          2026252,
+          2026253,
+          2026254,
+          2026255,
+          2026256,
+          2026257,
+          2026258,
+          2026259,
+          2026260,
+          2026261,
+          2026262,
+          2026263,
+          2026264,
+          2026265,
+          2026266,
+          2026267,
+          2026268,
+          2026269,
+          2026270,
+          2026271,
+          2026272,
+          2026273
         ]
       },
       "v7_soft": {
-        "samples": 41,
-        "hits3": 17,
-        "hits6": 25,
-        "top3_rate": 0.4146341463414634,
-        "top6_rate": 0.6097560975609756,
+        "samples": 42,
+        "hits3": 18,
+        "hits6": 26,
+        "top3_rate": 0.42857142857142855,
+        "top6_rate": 0.6190476190476191,
         "top6_wilson95": [
-          0.45726583898692563,
-          0.7434406478467289
+          0.46813768219996377,
+          0.7500047910121407
         ],
         "max_top6_misses": 5,
         "issues": [
@@ -550,18 +673,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "v7_none": {
-        "samples": 41,
-        "hits3": 17,
-        "hits6": 25,
-        "top3_rate": 0.4146341463414634,
-        "top6_rate": 0.6097560975609756,
+        "samples": 42,
+        "hits3": 18,
+        "hits6": 26,
+        "top3_rate": 0.42857142857142855,
+        "top6_rate": 0.6190476190476191,
         "top6_wilson95": [
-          0.45726583898692563,
-          0.7434406478467289
+          0.46813768219996377,
+          0.7500047910121407
         ],
         "max_top6_misses": 5,
         "issues": [
@@ -605,18 +729,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "v7_normalized": {
-        "samples": 41,
+        "samples": 42,
         "hits3": 7,
-        "hits6": 14,
-        "top3_rate": 0.17073170731707318,
-        "top6_rate": 0.34146341463414637,
+        "hits6": 15,
+        "top3_rate": 0.16666666666666666,
+        "top6_rate": 0.35714285714285715,
         "top6_wilson95": [
-          0.2155861736664346,
-          0.4945044564627312
+          0.22988992501626865,
+          0.5083391071292063
         ],
         "max_top6_misses": 5,
         "issues": [
@@ -660,20 +785,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50_unsaturated": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 4,
         "hits6": 8,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.5333333333333333,
+        "top3_rate": 0.25,
+        "top6_rate": 0.5,
         "top6_wilson95": [
-          0.3011663015105079,
-          0.7519077474025355
+          0.2799923761135083,
+          0.7200076238864916
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
           2026258,
           2026259,
@@ -689,20 +815,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50_shrunk": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 3,
         "hits6": 7,
-        "top3_rate": 0.2,
-        "top6_rate": 0.4666666666666667,
+        "top3_rate": 0.1875,
+        "top6_rate": 0.4375,
         "top6_wilson95": [
-          0.24809225259746442,
-          0.6988336984894921
+          0.2309836333518552,
+          0.6682180439322347
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
           2026258,
           2026259,
@@ -718,22 +845,22 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "low_ai100": {
         "samples": 50,
-        "hits3": 16,
-        "hits6": 29,
-        "top3_rate": 0.32,
-        "top6_rate": 0.58,
+        "hits3": 15,
+        "hits6": 28,
+        "top3_rate": 0.3,
+        "top6_rate": 0.56,
         "top6_wilson95": [
-          0.4423319668777783,
-          0.7062520276543307
+          0.4230578680014353,
+          0.6883801278976466
         ],
         "max_top6_misses": 4,
         "issues": [
-          2026223,
           2026224,
           2026225,
           2026226,
@@ -782,7 +909,8 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "low_comprehensive": {
@@ -797,7 +925,6 @@
         ],
         "max_top6_misses": 3,
         "issues": [
-          2026223,
           2026224,
           2026225,
           2026226,
@@ -846,20 +973,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       }
     },
     "common_issue_comparison": {
       "v7": {
-        "samples": 15,
-        "hits3": 4,
-        "hits6": 9,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.6,
+        "samples": 16,
+        "hits3": 5,
+        "hits6": 10,
+        "top3_rate": 0.3125,
+        "top6_rate": 0.625,
         "top6_wilson95": [
-          0.357464427565077,
-          0.8017577191740534
+          0.3864064709793481,
+          0.815190174452472
         ],
         "max_top6_misses": 3,
         "issues": [
@@ -877,20 +1005,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 5,
         "hits6": 9,
-        "top3_rate": 0.3333333333333333,
-        "top6_rate": 0.6,
+        "top3_rate": 0.3125,
+        "top6_rate": 0.5625,
         "top6_wilson95": [
-          0.357464427565077,
-          0.8017577191740534
+          0.33178195606776517,
+          0.7690163666481448
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
           2026258,
           2026259,
@@ -906,18 +1035,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai100": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 4,
         "hits6": 6,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.4,
+        "top3_rate": 0.25,
+        "top6_rate": 0.375,
         "top6_wilson95": [
-          0.19824228082594664,
-          0.642535572434923
+          0.18480982554752806,
+          0.613593529020652
         ],
         "max_top6_misses": 4,
         "issues": [
@@ -935,18 +1065,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "comprehensive": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 4,
         "hits6": 8,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.5333333333333333,
+        "top3_rate": 0.25,
+        "top6_rate": 0.5,
         "top6_wilson95": [
-          0.3011663015105079,
-          0.7519077474025355
+          0.2799923761135083,
+          0.7200076238864916
         ],
         "max_top6_misses": 4,
         "issues": [
@@ -964,18 +1095,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "v7_soft": {
-        "samples": 15,
-        "hits3": 4,
-        "hits6": 9,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.6,
+        "samples": 16,
+        "hits3": 5,
+        "hits6": 10,
+        "top3_rate": 0.3125,
+        "top6_rate": 0.625,
         "top6_wilson95": [
-          0.357464427565077,
-          0.8017577191740534
+          0.3864064709793481,
+          0.815190174452472
         ],
         "max_top6_misses": 3,
         "issues": [
@@ -993,18 +1125,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "v7_none": {
-        "samples": 15,
-        "hits3": 4,
-        "hits6": 9,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.6,
+        "samples": 16,
+        "hits3": 5,
+        "hits6": 10,
+        "top3_rate": 0.3125,
+        "top6_rate": 0.625,
         "top6_wilson95": [
-          0.357464427565077,
-          0.8017577191740534
+          0.3864064709793481,
+          0.815190174452472
         ],
         "max_top6_misses": 3,
         "issues": [
@@ -1022,18 +1155,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "v7_normalized": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 4,
-        "hits6": 5,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.3333333333333333,
+        "hits6": 6,
+        "top3_rate": 0.25,
+        "top6_rate": 0.375,
         "top6_wilson95": [
-          0.15176100694691236,
-          0.5828687484878701
+          0.18480982554752806,
+          0.613593529020652
         ],
         "max_top6_misses": 4,
         "issues": [
@@ -1051,20 +1185,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50_unsaturated": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 4,
         "hits6": 8,
-        "top3_rate": 0.26666666666666666,
-        "top6_rate": 0.5333333333333333,
+        "top3_rate": 0.25,
+        "top6_rate": 0.5,
         "top6_wilson95": [
-          0.3011663015105079,
-          0.7519077474025355
+          0.2799923761135083,
+          0.7200076238864916
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
           2026258,
           2026259,
@@ -1080,20 +1215,21 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "ai50_shrunk": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 3,
         "hits6": 7,
-        "top3_rate": 0.2,
-        "top6_rate": 0.4666666666666667,
+        "top3_rate": 0.1875,
+        "top6_rate": 0.4375,
         "top6_wilson95": [
-          0.24809225259746442,
-          0.6988336984894921
+          0.2309836333518552,
+          0.6682180439322347
         ],
-        "max_top6_misses": 3,
+        "max_top6_misses": 4,
         "issues": [
           2026258,
           2026259,
@@ -1109,18 +1245,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "low_ai100": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 7,
         "hits6": 11,
-        "top3_rate": 0.4666666666666667,
-        "top6_rate": 0.7333333333333333,
+        "top3_rate": 0.4375,
+        "top6_rate": 0.6875,
         "top6_wilson95": [
-          0.4804911034231324,
-          0.8910272389681718
+          0.4440393186673406,
+          0.8583556494803894
         ],
         "max_top6_misses": 2,
         "issues": [
@@ -1138,18 +1275,19 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       },
       "low_comprehensive": {
-        "samples": 15,
+        "samples": 16,
         "hits3": 6,
         "hits6": 10,
-        "top3_rate": 0.4,
-        "top6_rate": 0.6666666666666666,
+        "top3_rate": 0.375,
+        "top6_rate": 0.625,
         "top6_wilson95": [
-          0.41713125151212976,
-          0.8482389930530876
+          0.3864064709793481,
+          0.815190174452472
         ],
         "max_top6_misses": 2,
         "issues": [
@@ -1167,7 +1305,8 @@
           2026269,
           2026270,
           2026271,
-          2026272
+          2026272,
+          2026273
         ]
       }
     },
@@ -1186,133 +1325,134 @@
       2026269,
       2026270,
       2026271,
-      2026272
+      2026272,
+      2026273
     ],
     "warning": "历史回放，仅用于诊断；不计入前瞻命中率，不宣称校准器重新训练回测。基线为已保存正式结果。"
   },
   "latest_prediction": {
-    "issue": 2026273,
-    "created_at": "2026-09-30T01:29:15.875Z",
-    "source_issue": 2026272,
-    "code_sha256": "48d0be4481187512f870732a154c05a2a290a791b99855bcdc618e9d17fff4a4",
-    "source_sha256": "b8fb8b626c73654aa2c5edf1119e1e32cd95a83af6ed483b5933881d0c069d4c",
-    "history_prefix_sha256": "9fa8abe1fe700c37b946cab387a6ed01891e8ec60559847abe904f097db2db63",
+    "issue": 2026274,
+    "created_at": "2026-09-30T18:42:55.839Z",
+    "source_issue": 2026273,
+    "code_sha256": "565f03ca64024b2d9ac758cba8857b7c19c17a059af617c3d206d3b46cd565c2",
+    "source_sha256": "10ebf13042e2a62cdcb9aa9de27f6ba8d9cdedd2c4434b773f7d5bc6854a8a7c",
+    "history_prefix_sha256": "a91b6e5f015ccc0121fa92f032ca18ab30aecf6f15ba205f439533e38ac685d3",
     "models": {
       "ai50": {
         "top3": [
+          "马",
           "猪",
-          "鸡",
-          "马"
+          "鸡"
         ],
         "top6": [
+          "马",
           "猪",
           "鸡",
-          "马",
           "蛇",
-          "鼠",
-          "牛"
+          "猴",
+          "兔"
         ],
         "source": "frozen_formal_snapshot",
         "original_weight_snapshot": "{\"AnalysisPeriods\":50,\"Model\":\"V65RuleScoringEngine\"}",
         "factor_scores": {
+          "马": {
+            "frequency": 96,
+            "trend": 100,
+            "omission": 36,
+            "hot_cold": 50,
+            "period": 76.81595376126073,
+            "consecutive": 70,
+            "eight_zodiac": 2.5
+          },
           "猪": {
             "frequency": 100,
             "trend": 100,
-            "omission": 51.42857142857142,
-            "hot_cold": 90,
+            "omission": 60,
+            "hot_cold": 50,
             "period": 54.82460485473744,
             "consecutive": 70,
-            "eight_zodiac": 0
+            "eight_zodiac": 2.5
           },
           "鸡": {
             "frequency": 100,
             "trend": 100,
-            "omission": 28.799999999999997,
+            "omission": 38.4,
             "hot_cold": 100,
             "period": 46.48364735896139,
             "consecutive": 55,
-            "eight_zodiac": 2
-          },
-          "马": {
-            "frequency": 96,
-            "trend": 100,
-            "omission": 31.5,
-            "hot_cold": 50,
-            "period": 76.81595376126073,
-            "consecutive": 70,
             "eight_zodiac": 0
           },
           "蛇": {
             "frequency": 96,
             "trend": 100,
-            "omission": 0,
+            "omission": 4.186046511627907,
             "hot_cold": 100,
             "period": 48.311370300249145,
             "consecutive": 70,
-            "eight_zodiac": 0
+            "eight_zodiac": 2.5
           },
-          "鼠": {
-            "frequency": 72,
-            "trend": 98.4,
-            "omission": 6.486486486486487,
-            "hot_cold": 90,
-            "period": 40,
+          "猴": {
+            "frequency": 96,
+            "trend": 100,
+            "omission": 8.372093023255815,
+            "hot_cold": 50,
+            "period": 59.58570419306333,
             "consecutive": 70,
-            "eight_zodiac": 2
-          },
-          "牛": {
-            "frequency": 100,
-            "trend": 72,
-            "omission": 53.333333333333336,
-            "hot_cold": 33.333333333333336,
-            "period": 36.40405323887029,
-            "consecutive": 55,
-            "eight_zodiac": 2
+            "eight_zodiac": 0
           },
           "兔": {
             "frequency": 100,
             "trend": 100,
-            "omission": 29.26829268292683,
+            "omission": 36.585365853658544,
             "hot_cold": 50,
             "period": 23.880553491086665,
             "consecutive": 55,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
-          "猴": {
-            "frequency": 100,
-            "trend": 100,
-            "omission": 5,
-            "hot_cold": 33.333333333333336,
-            "period": 46.31625530531197,
+          "鼠": {
+            "frequency": 72,
+            "trend": 98.4,
+            "omission": 9.72972972972973,
+            "hot_cold": 90,
+            "period": 40,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 0
+          },
+          "牛": {
+            "frequency": 100,
+            "trend": 72,
+            "omission": 50.66666666666667,
+            "hot_cold": 33.333333333333336,
+            "period": 36.40405323887029,
+            "consecutive": 55,
+            "eight_zodiac": 0
           },
           "狗": {
             "frequency": 100,
             "trend": 100,
-            "omission": 48,
+            "omission": 54,
             "hot_cold": 33.333333333333336,
             "period": 9.722649573661057,
             "consecutive": 95,
-            "eight_zodiac": 0
+            "eight_zodiac": 2.5
           },
           "羊": {
             "frequency": 48,
             "trend": 21.6,
-            "omission": 27.5,
+            "omission": 30,
             "hot_cold": 50,
             "period": 40,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
           "虎": {
-            "frequency": 72,
-            "trend": 14.399999999999999,
-            "omission": 20,
-            "hot_cold": 10,
-            "period": 40,
+            "frequency": 96,
+            "trend": 91.20000000000002,
+            "omission": 0,
+            "hot_cold": 16.666666666666668,
+            "period": 12.429295203163072,
             "consecutive": 75,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
           "龙": {
             "frequency": 48,
@@ -1321,85 +1461,85 @@
             "hot_cold": 10,
             "period": 40,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           }
         },
         "ranking": [
           {
-            "zodiac": "猪",
+            "zodiac": "马",
             "rank": 1,
-            "total_score": 74.90069619332748
+            "total_score": 74.05878993768903
+          },
+          {
+            "zodiac": "猪",
+            "rank": 2,
+            "total_score": 72.31380646817719
           },
           {
             "zodiac": "鸡",
-            "rank": 2,
-            "total_score": 71.2874579237876
-          },
-          {
-            "zodiac": "马",
             "rank": 3,
-            "total_score": 70.64148225628762
+            "total_score": 71.23382159887889
           },
           {
             "zodiac": "蛇",
             "rank": 4,
-            "total_score": 63.406887746528724
-          },
-          {
-            "zodiac": "鼠",
-            "rank": 5,
-            "total_score": 57.97216479209605
-          },
-          {
-            "zodiac": "牛",
-            "rank": 6,
-            "total_score": 57.05401114836236
-          },
-          {
-            "zodiac": "兔",
-            "rank": 7,
-            "total_score": 55.38738532586015
+            "total_score": 66.76084724774402
           },
           {
             "zodiac": "猴",
+            "rank": 5,
+            "total_score": 60.295575285321654
+          },
+          {
+            "zodiac": "兔",
+            "rank": 6,
+            "total_score": 57.373109876085955
+          },
+          {
+            "zodiac": "鼠",
+            "rank": 7,
+            "total_score": 56.63588951797769
+          },
+          {
+            "zodiac": "牛",
             "rank": 8,
-            "total_score": 55.05374423057729
+            "total_score": 54.52525975366361
           },
           {
             "zodiac": "狗",
             "rank": 9,
-            "total_score": 49.64870297462387
+            "total_score": 53.36867418358113
           },
           {
             "zodiac": "羊",
             "rank": 10,
-            "total_score": 39.06214920445363
+            "total_score": 40.075905515780576
           },
           {
             "zodiac": "虎",
             "rank": 11,
-            "total_score": 33.608318442870775
+            "total_score": 38.44157876829202
           },
           {
             "zodiac": "龙",
             "rank": 12,
-            "total_score": 28.803244670412457
+            "total_score": 29.312561769146324
           }
         ]
       },
       "ai100": {
         "top3": [
           "猪",
-          "猴",
-          "狗"
+          "狗",
+          "兔"
         ],
         "top6": [
           "猪",
-          "猴",
           "狗",
-          "牛",
           "兔",
-          "马"
+          "牛",
+          "马",
+          "猴"
         ],
         "source": "frozen_formal_snapshot",
         "original_weight_snapshot": "{\"AnalysisPeriods\":100,\"Model\":\"V65RuleScoringEngine\"}",
@@ -1407,101 +1547,101 @@
           "猪": {
             "frequency": 100,
             "trend": 100,
-            "omission": 41.73913043478261,
+            "omission": 48.69565217391305,
             "hot_cold": 90,
             "period": 33.41214488312961,
             "consecutive": 85,
-            "eight_zodiac": 0
-          },
-          "猴": {
-            "frequency": 96,
-            "trend": 100,
-            "omission": 4.9411764705882355,
-            "hot_cold": 83.33333333333333,
-            "period": 49.92047846166409,
-            "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
           "狗": {
             "frequency": 84.00000000000001,
             "trend": 100,
-            "omission": 34.285714285714285,
+            "omission": 38.57142857142858,
             "hot_cold": 100,
             "period": 23.95847893966042,
             "consecutive": 95,
-            "eight_zodiac": 0
-          },
-          "牛": {
-            "frequency": 84.00000000000001,
-            "trend": 72,
-            "omission": 42.85714285714286,
-            "hot_cold": 100,
-            "period": 23.069074183792804,
-            "consecutive": 75,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
           "兔": {
             "frequency": 100,
             "trend": 100,
-            "omission": 26.999999999999996,
+            "omission": 33.75,
             "hot_cold": 50,
             "period": 37.15097455011732,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
+          },
+          "牛": {
+            "frequency": 84.00000000000001,
+            "trend": 72,
+            "omission": 47.14285714285714,
+            "hot_cold": 100,
+            "period": 23.069074183792804,
+            "consecutive": 75,
+            "eight_zodiac": 0
           },
           "马": {
             "frequency": 100,
             "trend": 100,
-            "omission": 59.25925925925926,
+            "omission": 56.2962962962963,
             "hot_cold": 22.222222222222225,
             "period": 33.98812649237111,
+            "consecutive": 70,
+            "eight_zodiac": 2.5
+          },
+          "猴": {
+            "frequency": 96,
+            "trend": 100,
+            "omission": 9.882352941176471,
+            "hot_cold": 50,
+            "period": 49.92047846166409,
             "consecutive": 70,
             "eight_zodiac": 0
           },
           "鼠": {
             "frequency": 96,
             "trend": 98.4,
-            "omission": 9.438202247191011,
+            "omission": 14.157303370786519,
             "hot_cold": 30,
             "period": 48.38793672873775,
             "consecutive": 55,
-            "eight_zodiac": 2
-          },
-          "鸡": {
-            "frequency": 72,
-            "trend": 100,
-            "omission": 9.67741935483871,
-            "hot_cold": 100,
-            "period": 0,
-            "consecutive": 55,
-            "eight_zodiac": 2
-          },
-          "虎": {
-            "frequency": 96,
-            "trend": 14.399999999999999,
-            "omission": 20,
-            "hot_cold": 30,
-            "period": 56.268706450609564,
-            "consecutive": 90,
-            "eight_zodiac": 2
+            "eight_zodiac": 0
           },
           "蛇": {
             "frequency": 100,
             "trend": 100,
-            "omission": 0,
-            "hot_cold": 28.57142857142857,
-            "period": 20.663654683398214,
+            "omission": 5.56701030927835,
+            "hot_cold": 33.333333333333336,
+            "period": 27.62915969161137,
             "consecutive": 85,
+            "eight_zodiac": 2.5
+          },
+          "虎": {
+            "frequency": 100,
+            "trend": 91.20000000000002,
+            "omission": 0,
+            "hot_cold": 40,
+            "period": 27.167584420766232,
+            "consecutive": 90,
+            "eight_zodiac": 2.5
+          },
+          "鸡": {
+            "frequency": 72,
+            "trend": 100,
+            "omission": 12.903225806451612,
+            "hot_cold": 100,
+            "period": 0,
+            "consecutive": 55,
             "eight_zodiac": 0
           },
           "羊": {
             "frequency": 72,
             "trend": 21.6,
-            "omission": 42.307692307692314,
+            "omission": 46.15384615384615,
             "hot_cold": 25,
             "period": 51.2483247645345,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           },
           "龙": {
             "frequency": 84.00000000000001,
@@ -1510,69 +1650,69 @@
             "hot_cold": 20,
             "period": 15.117419895084472,
             "consecutive": 70,
-            "eight_zodiac": 2
+            "eight_zodiac": 2.5
           }
         },
         "ranking": [
           {
             "zodiac": "猪",
             "rank": 1,
-            "total_score": 71.32310447801606
-          },
-          {
-            "zodiac": "猴",
-            "rank": 2,
-            "total_score": 69.35869520750424
+            "total_score": 74.97457057262619
           },
           {
             "zodiac": "狗",
+            "rank": 2,
+            "total_score": 68.69168978855703
+          },
+          {
+            "zodiac": "兔",
             "rank": 3,
-            "total_score": 65.48376476768175
+            "total_score": 65.14113275222806
           },
           {
             "zodiac": "牛",
             "rank": 4,
-            "total_score": 64.95672867387586
-          },
-          {
-            "zodiac": "兔",
-            "rank": 5,
-            "total_score": 63.5239637290172
+            "total_score": 63.66465369475113
           },
           {
             "zodiac": "马",
+            "rank": 5,
+            "total_score": 62.18762726233472
+          },
+          {
+            "zodiac": "猴",
             "rank": 6,
-            "total_score": 60.183490289123995
+            "total_score": 61.187705577980765
           },
           {
             "zodiac": "鼠",
             "rank": 7,
-            "total_score": 58.28960297769681
+            "total_score": 57.069500563711706
           },
           {
-            "zodiac": "鸡",
+            "zodiac": "蛇",
             "rank": 8,
-            "total_score": 53.70904064235909
+            "total_score": 54.33380816381844
           },
           {
             "zodiac": "虎",
             "rank": 9,
-            "total_score": 51.10925719615934
+            "total_score": 53.514922180095205
           },
           {
-            "zodiac": "蛇",
+            "zodiac": "鸡",
             "rank": 10,
-            "total_score": 47.9886574811626
+            "total_score": 52.240946737498625
           },
           {
             "zodiac": "羊",
             "rank": 11,
-            "total_score": 47.20457690795837
+            "total_score": 48.33950411347836
           },
           {
             "zodiac": "龙",
             "rank": 12,
-            "total_score": 33.93546883853197
+            "total_score": 34.431665159693175
           }
         ]
       },
@@ -1586,30 +1726,30 @@
           "羊",
           "牛",
           "狗",
-          "兔",
           "猪",
-          "鼠"
+          "兔",
+          "鸡"
         ]
       },
       "v7": {
         "top3": [
-          "虎",
           "龙",
+          "羊",
           "狗"
         ],
         "top6": [
-          "虎",
           "龙",
-          "狗",
           "羊",
+          "狗",
           "牛",
-          "猪"
+          "猪",
+          "马"
         ],
         "source": "frozen_formal_snapshot",
         "feature_snapshot": [
           {
             "Zodiac": "鼠",
-            "Recent3Count": 1,
+            "Recent3Count": 0,
             "Recent5Count": 1,
             "Recent7Count": 1,
             "Recent10Count": 1,
@@ -1618,7 +1758,7 @@
             "Recent30Count": 2,
             "Recent50Count": 3,
             "Recent100Count": 8,
-            "Recent3Rate": 0.3333333333333333,
+            "Recent3Rate": 0,
             "Recent5Rate": 0.2,
             "Recent10Rate": 0.1,
             "Recent20Rate": 0.1,
@@ -1636,29 +1776,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 2,
-            "AverageOmission": 10.314049586776859,
+            "CurrentOmission": 3,
+            "AverageOmission": 10.322314049586776,
             "MaximumOmission": 55,
-            "OmissionDeviation": -8.314049586776859,
-            "OmissionRatio": 0.19391025641025642,
+            "OmissionDeviation": -7.322314049586776,
+            "OmissionRatio": 0.2906325060048039,
             "PreviousOmission": 12,
-            "OmissionStdDev": 10.473921221281326,
+            "OmissionStdDev": 10.467750455749899,
             "Momentum5Vs20": 0.1,
             "Momentum10Vs50": 0.04000000000000001,
             "Momentum20Vs100": 0.020000000000000004,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.08771929824561403,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.08765522279035792,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": 0.2,
-            "OmissionXMomentum10Vs50": 0.08000000000000002,
+            "OmissionXMomentum5Vs20": 0.30000000000000004,
+            "OmissionXMomentum10Vs50": 0.12000000000000002,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": 0.0020000000000000005,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.008771929824561403,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.008765522279035792,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "牛",
@@ -1689,47 +1829,47 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": -1,
             "ShortForbidden": false,
-            "CurrentOmission": 10,
-            "AverageOmission": 11.675925925925926,
+            "CurrentOmission": 11,
+            "AverageOmission": 11.685185185185185,
             "MaximumOmission": 76,
-            "OmissionDeviation": -1.6759259259259256,
-            "OmissionRatio": 0.8564631245043617,
+            "OmissionDeviation": -0.6851851851851851,
+            "OmissionRatio": 0.9413629160063391,
             "PreviousOmission": 10,
-            "OmissionStdDev": 12.571888617145811,
+            "OmissionStdDev": 12.57101910196635,
             "Momentum5Vs20": -0.05,
             "Momentum10Vs50": -0.1,
             "Momentum20Vs100": -0.020000000000000004,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.07821637426900585,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.07815924032140248,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": -0.5,
-            "OmissionXMomentum10Vs50": -1,
+            "OmissionXMomentum5Vs20": -0.55,
+            "OmissionXMomentum10Vs50": -1.1,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": 0.0010000000000000002,
-            "OmissionRatioXRepeatTrend": -0.8564631245043617,
+            "OmissionRatioXRepeatTrend": -0.9413629160063391,
             "Recent10RateXHistoricalRate": 0,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "虎",
-            "Recent3Count": 0,
-            "Recent5Count": 0,
-            "Recent7Count": 0,
-            "Recent10Count": 0,
-            "Recent15Count": 0,
-            "Recent20Count": 0,
-            "Recent30Count": 0,
-            "Recent50Count": 3,
-            "Recent100Count": 8,
-            "Recent3Rate": 0,
-            "Recent5Rate": 0,
-            "Recent10Rate": 0,
-            "Recent20Rate": 0,
-            "Recent50Rate": 0.06,
-            "Recent100Rate": 0.08,
+            "Recent3Count": 1,
+            "Recent5Count": 1,
+            "Recent7Count": 1,
+            "Recent10Count": 1,
+            "Recent15Count": 1,
+            "Recent20Count": 1,
+            "Recent30Count": 1,
+            "Recent50Count": 4,
+            "Recent100Count": 9,
+            "Recent3Rate": 0.3333333333333333,
+            "Recent5Rate": 0.2,
+            "Recent10Rate": 0.1,
+            "Recent20Rate": 0.05,
+            "Recent50Rate": 0.08,
+            "Recent100Rate": 0.09,
             "Gap1RepeatCount": 9,
             "Gap2RepeatCount": 9,
             "Gap3RepeatCount": 4,
@@ -1742,45 +1882,45 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": -1,
             "ShortForbidden": false,
-            "CurrentOmission": 33,
+            "CurrentOmission": 0,
             "AverageOmission": 11.008771929824562,
             "MaximumOmission": 70,
-            "OmissionDeviation": 21.99122807017544,
-            "OmissionRatio": 2.997609561752988,
+            "OmissionDeviation": -11.008771929824562,
+            "OmissionRatio": 0,
             "PreviousOmission": 0,
             "OmissionStdDev": 10.765845615889953,
-            "Momentum5Vs20": 0,
-            "Momentum10Vs50": -0.06,
-            "Momentum20Vs100": -0.08,
-            "CurrentStreak": 0,
-            "LastDrawHit": false,
-            "HistoricalRate": 0.08260233918128655,
-            "ColorTrend": -0.16666666666666666,
+            "Momentum5Vs20": 0.15000000000000002,
+            "Momentum10Vs50": 0.020000000000000004,
+            "Momentum20Vs100": -0.039999999999999994,
+            "CurrentStreak": 1,
+            "LastDrawHit": true,
+            "HistoricalRate": 0.08327246165084003,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
             "OmissionXMomentum5Vs20": 0,
-            "OmissionXMomentum10Vs50": -1.98,
+            "OmissionXMomentum10Vs50": 0,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
-            "LongXShortTrend": 0,
-            "OmissionRatioXRepeatTrend": -2.997609561752988,
-            "Recent10RateXHistoricalRate": 0,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "LongXShortTrend": -0.006,
+            "OmissionRatioXRepeatTrend": 0,
+            "Recent10RateXHistoricalRate": 0.008327246165084004,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "兔",
             "Recent3Count": 0,
-            "Recent5Count": 1,
+            "Recent5Count": 0,
             "Recent7Count": 2,
             "Recent10Count": 2,
             "Recent15Count": 2,
-            "Recent20Count": 3,
+            "Recent20Count": 2,
             "Recent30Count": 4,
             "Recent50Count": 6,
             "Recent100Count": 10,
             "Recent3Rate": 0,
-            "Recent5Rate": 0.2,
+            "Recent5Rate": 0,
             "Recent10Rate": 0.2,
-            "Recent20Rate": 0.15,
+            "Recent20Rate": 0.1,
             "Recent50Rate": 0.12,
             "Recent100Rate": 0.1,
             "Gap1RepeatCount": 13,
@@ -1795,29 +1935,29 @@
             "ShortCycleRepeatCount": 1,
             "RepeatFrequencyTrend": 1,
             "ShortForbidden": false,
-            "CurrentOmission": 4,
-            "AverageOmission": 9.612403100775193,
+            "CurrentOmission": 5,
+            "AverageOmission": 9.62015503875969,
             "MaximumOmission": 58,
-            "OmissionDeviation": -5.612403100775193,
-            "OmissionRatio": 0.4161290322580645,
+            "OmissionDeviation": -4.620155038759689,
+            "OmissionRatio": 0.5197421434327156,
             "PreviousOmission": 0,
-            "OmissionStdDev": 9.460083482529347,
-            "Momentum5Vs20": 0.05000000000000002,
+            "OmissionStdDev": 9.455890087152245,
+            "Momentum5Vs20": -0.1,
             "Momentum10Vs50": 0.08000000000000002,
-            "Momentum20Vs100": 0.04999999999999999,
+            "Momentum20Vs100": 0,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.0935672514619883,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.09349890430971512,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": 0.20000000000000007,
-            "OmissionXMomentum10Vs50": 0.32000000000000006,
+            "OmissionXMomentum5Vs20": -0.5,
+            "OmissionXMomentum10Vs50": 0.4000000000000001,
             "Recent7XShortForbidden": 0,
-            "RepeatXOmission": 0.4161290322580645,
-            "LongXShortTrend": 0.0025000000000000005,
-            "OmissionRatioXRepeatTrend": 0.4161290322580645,
-            "Recent10RateXHistoricalRate": 0.01871345029239766,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "RepeatXOmission": 0.5197421434327156,
+            "LongXShortTrend": 0,
+            "OmissionRatioXRepeatTrend": 0.5197421434327156,
+            "Recent10RateXHistoricalRate": 0.018699780861943027,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "龙",
@@ -1848,29 +1988,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 32,
-            "AverageOmission": 10.7008547008547,
+            "CurrentOmission": 33,
+            "AverageOmission": 10.709401709401709,
             "MaximumOmission": 53,
-            "OmissionDeviation": 21.2991452991453,
-            "OmissionRatio": 2.990415335463259,
+            "OmissionDeviation": 22.29059829059829,
+            "OmissionRatio": 3.0814046288906627,
             "PreviousOmission": 5,
-            "OmissionStdDev": 9.829542908976032,
+            "OmissionStdDev": 9.848475806459822,
             "Momentum5Vs20": 0,
             "Momentum10Vs50": -0.04,
             "Momentum20Vs100": -0.07,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.0847953216374269,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.08473338203067933,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
             "OmissionXMomentum5Vs20": 0,
-            "OmissionXMomentum10Vs50": -1.28,
+            "OmissionXMomentum10Vs50": -1.32,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": 0,
             "OmissionRatioXRepeatTrend": 0,
             "Recent10RateXHistoricalRate": 0,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "蛇",
@@ -1882,13 +2022,13 @@
             "Recent20Count": 2,
             "Recent30Count": 3,
             "Recent50Count": 4,
-            "Recent100Count": 11,
+            "Recent100Count": 10,
             "Recent3Rate": 0.3333333333333333,
             "Recent5Rate": 0.2,
             "Recent10Rate": 0.1,
             "Recent20Rate": 0.1,
             "Recent50Rate": 0.08,
-            "Recent100Rate": 0.11,
+            "Recent100Rate": 0.1,
             "Gap1RepeatCount": 8,
             "Gap2RepeatCount": 10,
             "Gap3RepeatCount": 14,
@@ -1901,29 +2041,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 0,
-            "AverageOmission": 11.55045871559633,
+            "CurrentOmission": 1,
+            "AverageOmission": 11.454545454545455,
             "MaximumOmission": 60,
-            "OmissionDeviation": -11.55045871559633,
-            "OmissionRatio": 0,
-            "PreviousOmission": 3,
-            "OmissionStdDev": 12.314298572426459,
+            "OmissionDeviation": -10.454545454545455,
+            "OmissionRatio": 0.0873015873015873,
+            "PreviousOmission": 17,
+            "OmissionStdDev": 12.299029055274215,
             "Momentum5Vs20": 0.1,
             "Momentum10Vs50": 0.020000000000000004,
-            "Momentum20Vs100": -0.009999999999999995,
-            "CurrentStreak": 1,
-            "LastDrawHit": true,
-            "HistoricalRate": 0.07967836257309942,
-            "ColorTrend": -0.16666666666666666,
+            "Momentum20Vs100": 0,
+            "CurrentStreak": 0,
+            "LastDrawHit": false,
+            "HistoricalRate": 0.07962016070124178,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": 0,
-            "OmissionXMomentum10Vs50": 0,
+            "OmissionXMomentum5Vs20": 0.1,
+            "OmissionXMomentum10Vs50": 0.020000000000000004,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
-            "LongXShortTrend": -0.0009999999999999996,
+            "LongXShortTrend": 0,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.007967836257309941,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.007962016070124178,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "马",
@@ -1954,29 +2094,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 7,
-            "AverageOmission": 11.11504424778761,
+            "CurrentOmission": 8,
+            "AverageOmission": 11.123893805309734,
             "MaximumOmission": 60,
-            "OmissionDeviation": -4.11504424778761,
-            "OmissionRatio": 0.6297770700636943,
+            "OmissionDeviation": -3.1238938053097343,
+            "OmissionRatio": 0.7191726332537789,
             "PreviousOmission": 8,
-            "OmissionStdDev": 11.253909615560733,
+            "OmissionStdDev": 11.25106307139509,
             "Momentum5Vs20": -0.1,
             "Momentum10Vs50": 0.020000000000000004,
             "Momentum20Vs100": -0.03,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.08187134502923976,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.08181154127100074,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": -0.7000000000000001,
-            "OmissionXMomentum10Vs50": 0.14,
+            "OmissionXMomentum5Vs20": -0.8,
+            "OmissionXMomentum10Vs50": 0.16000000000000003,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": 0.003,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.008187134502923977,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.008181154127100075,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "羊",
@@ -2007,29 +2147,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 11,
-            "AverageOmission": 9.952,
+            "CurrentOmission": 12,
+            "AverageOmission": 9.96,
             "MaximumOmission": 73,
-            "OmissionDeviation": 1.048,
-            "OmissionRatio": 1.1053054662379422,
+            "OmissionDeviation": 2.039999999999999,
+            "OmissionRatio": 1.2048192771084336,
             "PreviousOmission": 23,
-            "OmissionStdDev": 10.637184589918515,
+            "OmissionStdDev": 10.638345736062536,
             "Momentum5Vs20": -0.05,
             "Momentum10Vs50": -0.04,
             "Momentum20Vs100": -0.009999999999999995,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.09064327485380116,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.09057706355003653,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": -0.55,
-            "OmissionXMomentum10Vs50": -0.44,
+            "OmissionXMomentum5Vs20": -0.6000000000000001,
+            "OmissionXMomentum10Vs50": -0.48,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": 0.0004999999999999998,
             "OmissionRatioXRepeatTrend": 0,
             "Recent10RateXHistoricalRate": 0,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "猴",
@@ -2040,13 +2180,13 @@
             "Recent15Count": 1,
             "Recent20Count": 1,
             "Recent30Count": 2,
-            "Recent50Count": 5,
+            "Recent50Count": 4,
             "Recent100Count": 8,
             "Recent3Rate": 0.3333333333333333,
             "Recent5Rate": 0.2,
             "Recent10Rate": 0.1,
             "Recent20Rate": 0.05,
-            "Recent50Rate": 0.1,
+            "Recent50Rate": 0.08,
             "Recent100Rate": 0.08,
             "Gap1RepeatCount": 8,
             "Gap2RepeatCount": 11,
@@ -2060,29 +2200,29 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 1,
-            "AverageOmission": 10.801724137931034,
+            "CurrentOmission": 2,
+            "AverageOmission": 10.810344827586206,
             "MaximumOmission": 64,
-            "OmissionDeviation": -9.801724137931034,
-            "OmissionRatio": 0.09257781324820431,
+            "OmissionDeviation": -8.810344827586206,
+            "OmissionRatio": 0.1850079744816587,
             "PreviousOmission": 21,
-            "OmissionStdDev": 10.735230292878748,
+            "OmissionStdDev": 10.72775468449708,
             "Momentum5Vs20": 0.15000000000000002,
-            "Momentum10Vs50": 0,
+            "Momentum10Vs50": 0.020000000000000004,
             "Momentum20Vs100": -0.03,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.08406432748538012,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.08400292184075968,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": 0.15000000000000002,
-            "OmissionXMomentum10Vs50": 0,
+            "OmissionXMomentum5Vs20": 0.30000000000000004,
+            "OmissionXMomentum10Vs50": 0.04000000000000001,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": -0.0045000000000000005,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.008406432748538013,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.008400292184075968,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "鸡",
@@ -2090,7 +2230,7 @@
             "Recent5Count": 1,
             "Recent7Count": 1,
             "Recent10Count": 1,
-            "Recent15Count": 3,
+            "Recent15Count": 2,
             "Recent20Count": 3,
             "Recent30Count": 5,
             "Recent50Count": 5,
@@ -2113,44 +2253,44 @@
             "ShortCycleRepeatCount": 1,
             "RepeatFrequencyTrend": 1,
             "ShortForbidden": false,
-            "CurrentOmission": 3,
-            "AverageOmission": 11.445454545454545,
+            "CurrentOmission": 4,
+            "AverageOmission": 11.454545454545455,
             "MaximumOmission": 67,
-            "OmissionDeviation": -8.445454545454545,
-            "OmissionRatio": 0.26211278792692616,
+            "OmissionDeviation": -7.454545454545455,
+            "OmissionRatio": 0.3492063492063492,
             "PreviousOmission": 9,
-            "OmissionStdDev": 12.167457614201432,
+            "OmissionStdDev": 12.161516325641427,
             "Momentum5Vs20": 0.05000000000000002,
             "Momentum10Vs50": 0,
             "Momentum20Vs100": 0.09,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.07967836257309942,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.07962016070124178,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": 0.15000000000000005,
+            "OmissionXMomentum5Vs20": 0.20000000000000007,
             "OmissionXMomentum10Vs50": 0,
             "Recent7XShortForbidden": 0,
-            "RepeatXOmission": 0.26211278792692616,
+            "RepeatXOmission": 0.3492063492063492,
             "LongXShortTrend": 0.004500000000000001,
-            "OmissionRatioXRepeatTrend": 0.26211278792692616,
-            "Recent10RateXHistoricalRate": 0.007967836257309941,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "OmissionRatioXRepeatTrend": 0.3492063492063492,
+            "Recent10RateXHistoricalRate": 0.007962016070124178,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "狗",
             "Recent3Count": 0,
             "Recent5Count": 0,
             "Recent7Count": 0,
-            "Recent10Count": 2,
+            "Recent10Count": 1,
             "Recent15Count": 2,
             "Recent20Count": 2,
-            "Recent30Count": 3,
+            "Recent30Count": 2,
             "Recent50Count": 5,
             "Recent100Count": 7,
             "Recent3Rate": 0,
             "Recent5Rate": 0,
-            "Recent10Rate": 0.2,
+            "Recent10Rate": 0.1,
             "Recent20Rate": 0.1,
             "Recent50Rate": 0.1,
             "Recent100Rate": 0.07,
@@ -2159,42 +2299,42 @@
             "Gap3RepeatCount": 7,
             "Gap4RepeatCount": 8,
             "Gap5RepeatCount": 7,
-            "Recent10Gap1RepeatCount": 1,
+            "Recent10Gap1RepeatCount": 0,
             "Recent10Gap2RepeatCount": 0,
             "Recent20Gap1RepeatCount": 1,
             "Recent20Gap2RepeatCount": 0,
             "ShortCycleRepeatCount": 1,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 8,
-            "AverageOmission": 10.904347826086957,
+            "CurrentOmission": 9,
+            "AverageOmission": 10.91304347826087,
             "MaximumOmission": 52,
-            "OmissionDeviation": -2.9043478260869566,
-            "OmissionRatio": 0.733652312599681,
+            "OmissionDeviation": -1.9130434782608692,
+            "OmissionRatio": 0.8247011952191236,
             "PreviousOmission": 0,
-            "OmissionStdDev": 10.388098468538914,
+            "OmissionStdDev": 10.386082005881345,
             "Momentum5Vs20": -0.1,
-            "Momentum10Vs50": 0.1,
+            "Momentum10Vs50": 0,
             "Momentum20Vs100": 0.03,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.08333333333333333,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.08327246165084003,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": -0.8,
-            "OmissionXMomentum10Vs50": 0.8,
+            "OmissionXMomentum5Vs20": -0.9,
+            "OmissionXMomentum10Vs50": 0,
             "Recent7XShortForbidden": 0,
-            "RepeatXOmission": 0.733652312599681,
+            "RepeatXOmission": 0.8247011952191236,
             "LongXShortTrend": -0.003,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.016666666666666666,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.008327246165084004,
+            "ColorAffinityXColorTrend": -0.2
           },
           {
             "Zodiac": "猪",
             "Recent3Count": 0,
             "Recent5Count": 0,
-            "Recent7Count": 1,
+            "Recent7Count": 0,
             "Recent10Count": 1,
             "Recent15Count": 2,
             "Recent20Count": 3,
@@ -2219,51 +2359,50 @@
             "ShortCycleRepeatCount": 0,
             "RepeatFrequencyTrend": 0,
             "ShortForbidden": false,
-            "CurrentOmission": 6,
-            "AverageOmission": 12.42156862745098,
+            "CurrentOmission": 7,
+            "AverageOmission": 12.431372549019608,
             "MaximumOmission": 57,
-            "OmissionDeviation": -6.421568627450981,
-            "OmissionRatio": 0.4830307813733228,
+            "OmissionDeviation": -5.431372549019608,
+            "OmissionRatio": 0.5630914826498422,
             "PreviousOmission": 5,
-            "OmissionStdDev": 11.798501296076784,
+            "OmissionStdDev": 11.793575688817787,
             "Momentum5Vs20": -0.15,
             "Momentum10Vs50": -0.01999999999999999,
             "Momentum20Vs100": 0.06,
             "CurrentStreak": 0,
             "LastDrawHit": false,
-            "HistoricalRate": 0.07383040935672515,
-            "ColorTrend": -0.16666666666666666,
+            "HistoricalRate": 0.07377647918188458,
+            "ColorTrend": -0.2,
             "ZodiacColorAffinity": 1,
-            "OmissionXMomentum5Vs20": -0.8999999999999999,
-            "OmissionXMomentum10Vs50": -0.11999999999999994,
+            "OmissionXMomentum5Vs20": -1.05,
+            "OmissionXMomentum10Vs50": -0.13999999999999993,
             "Recent7XShortForbidden": 0,
             "RepeatXOmission": 0,
             "LongXShortTrend": -0.009,
             "OmissionRatioXRepeatTrend": 0,
-            "Recent10RateXHistoricalRate": 0.007383040935672516,
-            "ColorAffinityXColorTrend": -0.16666666666666666
+            "Recent10RateXHistoricalRate": 0.007377647918188459,
+            "ColorAffinityXColorTrend": -0.2
           }
         ]
       },
       "v7_soft": {
         "top3": [
-          "虎",
           "龙",
+          "羊",
           "狗"
         ],
         "top6": [
-          "虎",
           "龙",
-          "狗",
           "羊",
+          "狗",
           "牛",
-          "猪"
+          "猪",
+          "马"
         ],
         "full_ranking": [
-          "虎",
           "龙",
-          "狗",
           "羊",
+          "狗",
           "牛",
           "猪",
           "马",
@@ -2271,21 +2410,22 @@
           "鸡",
           "鼠",
           "猴",
-          "蛇"
+          "蛇",
+          "虎"
         ],
         "scores": {
-          "鼠": 2.33,
-          "牛": 5.325,
-          "虎": 10.687894736842106,
-          "兔": 4.485,
-          "龙": 10.30076923076923,
-          "蛇": 1.54,
-          "马": 4.6899999999999995,
-          "羊": 5.445,
-          "猴": 1.825,
-          "鸡": 3.3750000000000004,
-          "狗": 5.9,
-          "猪": 4.735
+          "鼠": 2.7800000000000002,
+          "牛": 5.775,
+          "虎": 1.265,
+          "兔": 4.66,
+          "龙": 10.308461538461538,
+          "蛇": 1.99,
+          "马": 5.140000000000001,
+          "羊": 5.8950000000000005,
+          "猴": 2.165,
+          "鸡": 3.8250000000000006,
+          "狗": 5.8,
+          "猪": 5.1850000000000005
         },
         "configuration": {
           "frequency_weight": 0.55,
@@ -2299,23 +2439,22 @@
       },
       "v7_none": {
         "top3": [
-          "虎",
           "龙",
+          "羊",
           "狗"
         ],
         "top6": [
-          "虎",
           "龙",
-          "狗",
           "羊",
+          "狗",
           "牛",
-          "猪"
+          "猪",
+          "马"
         ],
         "full_ranking": [
-          "虎",
           "龙",
-          "狗",
           "羊",
+          "狗",
           "牛",
           "猪",
           "马",
@@ -2323,21 +2462,22 @@
           "鸡",
           "鼠",
           "猴",
-          "蛇"
+          "蛇",
+          "虎"
         ],
         "scores": {
-          "鼠": 2.33,
-          "牛": 5.325,
-          "虎": 10.687894736842106,
-          "兔": 4.485,
-          "龙": 10.30076923076923,
-          "蛇": 1.54,
-          "马": 4.6899999999999995,
-          "羊": 5.445,
-          "猴": 1.825,
-          "鸡": 3.3750000000000004,
-          "狗": 5.9,
-          "猪": 4.735
+          "鼠": 2.7800000000000002,
+          "牛": 5.775,
+          "虎": 1.265,
+          "兔": 4.66,
+          "龙": 10.308461538461538,
+          "蛇": 1.99,
+          "马": 5.140000000000001,
+          "羊": 5.8950000000000005,
+          "猴": 2.165,
+          "鸡": 3.8250000000000006,
+          "狗": 5.8,
+          "猪": 5.1850000000000005
         },
         "configuration": {
           "frequency_weight": 0.55,
@@ -2351,45 +2491,45 @@
       },
       "v7_normalized": {
         "top3": [
-          "狗",
           "兔",
+          "狗",
           "猪"
         ],
         "top6": [
-          "狗",
           "兔",
+          "狗",
           "猪",
           "鸡",
           "马",
-          "虎"
+          "牛"
         ],
         "full_ranking": [
-          "狗",
           "兔",
+          "狗",
           "猪",
           "鸡",
           "马",
-          "虎",
           "牛",
           "羊",
           "龙",
           "鼠",
           "蛇",
-          "猴"
+          "猴",
+          "虎"
         ],
         "scores": {
-          "鼠": 0.36818181818181817,
-          "牛": 0.5136363636363637,
-          "虎": 0.5363636363636364,
-          "兔": 0.8045454545454546,
-          "龙": 0.44545454545454544,
-          "蛇": 0.36136363636363644,
-          "马": 0.6068181818181819,
-          "羊": 0.5045454545454546,
-          "猴": 0.2772727272727273,
-          "鸡": 0.6136363636363636,
-          "狗": 0.8772727272727273,
-          "猪": 0.6909090909090909
+          "鼠": 0.4090909090909091,
+          "牛": 0.5045454545454546,
+          "虎": 0.2113636363636364,
+          "兔": 0.8454545454545456,
+          "龙": 0.4863636363636364,
+          "蛇": 0.40227272727272734,
+          "马": 0.6477272727272728,
+          "羊": 0.4954545454545454,
+          "猴": 0.2931818181818182,
+          "鸡": 0.7045454545454547,
+          "狗": 0.8181818181818182,
+          "猪": 0.7818181818181819
         },
         "configuration": {
           "frequency_weight": 0.55,
@@ -2405,86 +2545,79 @@
         "top3": [
           "猪",
           "鸡",
-          "兔"
+          "马"
         ],
         "top6": [
           "猪",
           "鸡",
-          "兔",
           "马",
+          "兔",
           "蛇",
-          "牛"
+          "猴"
         ],
         "full_ranking": [
           "猪",
           "鸡",
-          "兔",
           "马",
+          "兔",
           "蛇",
-          "牛",
-          "狗",
           "猴",
+          "狗",
+          "牛",
           "鼠",
           "羊",
-          "虎",
-          "龙"
+          "龙",
+          "虎"
         ],
         "scores": {
-          "猪": 69.80978710241838,
-          "鸡": 63.2874579237876,
-          "马": 53.09966407446943,
-          "蛇": 48.77416047380145,
-          "鼠": 40.16271024664151,
-          "牛": 44.806738421089634,
-          "兔": 54.660112598587425,
-          "猴": 42.69010786694092,
-          "狗": 43.10324842916933,
-          "羊": 31.56251284081727,
-          "虎": 24.875227533779867,
-          "龙": 20.314517397685186
+          "马": 57.244244483143575,
+          "猪": 68.67744283181355,
+          "鸡": 65.41563978069708,
+          "蛇": 53.58266542956221,
+          "猴": 43.4810298307762,
+          "兔": 56.64583714881323,
+          "鼠": 38.09916224525041,
+          "牛": 41.550714299118155,
+          "狗": 43.18685600176295,
+          "羊": 31.121723697598757,
+          "虎": 19.398669677382923,
+          "龙": 20.823834496419053
         },
         "adjustments": {
+          "马": {
+            "frequency": 40.909090909090914,
+            "trend": 50,
+            "period": 76.81595376126073,
+            "delta": -16.814545454545453,
+            "period_gap_samples": 3
+          },
           "猪": {
             "frequency": 95.45454545454545,
-            "trend": 72.72727272727273,
+            "trend": 81.81818181818183,
             "period": 54.82460485473744,
-            "delta": -5.09090909090909,
+            "delta": -3.6363636363636354,
             "period_gap_samples": 5
           },
           "鸡": {
-            "frequency": 68.18181818181817,
-            "trend": 81.81818181818183,
+            "frequency": 72.72727272727273,
+            "trend": 90.9090909090909,
             "period": 46.48364735896139,
-            "delta": -8,
+            "delta": -5.8181818181818175,
             "period_gap_samples": 4
-          },
-          "马": {
-            "frequency": 40.909090909090914,
-            "trend": 45.45454545454545,
-            "period": 76.81595376126073,
-            "delta": -17.541818181818183,
-            "period_gap_samples": 3
           },
           "蛇": {
             "frequency": 40.909090909090914,
-            "trend": 63.63636363636363,
+            "trend": 72.72727272727273,
             "period": 48.311370300249145,
-            "delta": -14.632727272727273,
+            "delta": -13.178181818181816,
             "period_gap_samples": 3
           },
-          "鼠": {
-            "frequency": 22.727272727272727,
-            "trend": 36.36363636363637,
-            "period": 40,
-            "delta": -17.809454545454546,
-            "period_gap_samples": 2
-          },
-          "牛": {
-            "frequency": 68.18181818181817,
-            "trend": 27.27272727272727,
-            "period": 36.40405323887029,
-            "delta": -12.24727272727273,
-            "period_gap_samples": 4
+          "猴": {
+            "frequency": 40.909090909090914,
+            "trend": 50,
+            "period": 59.58570419306333,
+            "delta": -16.814545454545453,
+            "period_gap_samples": 3
           },
           "兔": {
             "frequency": 95.45454545454545,
@@ -2493,33 +2626,40 @@
             "delta": -0.7272727272727275,
             "period_gap_samples": 5
           },
-          "猴": {
-            "frequency": 68.18181818181817,
-            "trend": 54.54545454545454,
-            "period": 46.31625530531197,
-            "delta": -12.363636363636367,
+          "鼠": {
+            "frequency": 18.181818181818183,
+            "trend": 36.36363636363637,
+            "period": 40,
+            "delta": -18.536727272727273,
+            "period_gap_samples": 2
+          },
+          "牛": {
+            "frequency": 72.72727272727273,
+            "trend": 18.181818181818183,
+            "period": 36.40405323887029,
+            "delta": -12.974545454545453,
             "period_gap_samples": 4
           },
           "狗": {
-            "frequency": 68.18181818181817,
-            "trend": 90.9090909090909,
+            "frequency": 72.72727272727273,
+            "trend": 63.63636363636363,
             "period": 9.722649573661057,
-            "delta": -6.545454545454548,
+            "delta": -10.181818181818182,
             "period_gap_samples": 4
           },
           "羊": {
             "frequency": 4.545454545454546,
-            "trend": 18.181818181818183,
+            "trend": 9.090909090909092,
             "period": 40,
-            "delta": -7.499636363636364,
+            "delta": -8.95418181818182,
             "period_gap_samples": 1
           },
           "虎": {
-            "frequency": 22.727272727272727,
-            "trend": 9.090909090909092,
-            "period": 40,
-            "delta": -8.733090909090908,
-            "period_gap_samples": 2
+            "frequency": 40.909090909090914,
+            "trend": 27.27272727272727,
+            "period": 12.429295203163072,
+            "delta": -19.042909090909095,
+            "period_gap_samples": 3
           },
           "龙": {
             "frequency": 4.545454545454546,
@@ -2557,17 +2697,17 @@
           "猪",
           "鸡",
           "兔",
-          "狗",
           "蛇",
-          "马"
+          "马",
+          "狗"
         ],
         "full_ranking": [
           "猪",
           "鸡",
           "兔",
-          "狗",
           "蛇",
           "马",
+          "狗",
           "牛",
           "猴",
           "鼠",
@@ -2576,61 +2716,54 @@
           "龙"
         ],
         "scores": {
-          "猪": 69.0378503256604,
-          "鸡": 63.912587282194465,
-          "马": 47.736473322217286,
-          "蛇": 49.11188641375162,
-          "鼠": 42.448424532355794,
-          "牛": 47.22379562306825,
-          "兔": 58.839224040013555,
-          "猴": 43.344995812663235,
-          "狗": 50.263666282740694,
-          "羊": 34.229179507483934,
-          "虎": 27.160941819494155,
-          "龙": 22.98118406435185
+          "马": 51.88105373089143,
+          "猪": 67.90550605505557,
+          "鸡": 66.04076913910393,
+          "蛇": 53.92039136951238,
+          "猴": 41.563888992163534,
+          "兔": 60.82494859023936,
+          "鼠": 40.3848765309647,
+          "牛": 43.96777150109678,
+          "狗": 50.347273855334315,
+          "羊": 33.788390364265425,
+          "虎": 26.912810636750308,
+          "龙": 23.490501163085717
         },
         "adjustments": {
+          "马": {
+            "frequency": 40.909090909090914,
+            "trend": 50,
+            "period": 60.05598266047277,
+            "delta": -22.177736206797597,
+            "period_gap_samples": 3
+          },
           "猪": {
             "frequency": 95.45454545454545,
-            "trend": 72.72727272727273,
+            "trend": 81.81818181818183,
             "period": 52.412302427368715,
-            "delta": -5.862845867667081,
+            "delta": -4.408300413121626,
             "period_gap_samples": 5
           },
           "鸡": {
-            "frequency": 68.18181818181817,
-            "trend": 81.81818181818183,
+            "frequency": 72.72727272727273,
+            "trend": 90.9090909090909,
             "period": 48.43717660398284,
-            "delta": -7.3748706415931355,
+            "delta": -5.193052459774954,
             "period_gap_samples": 4
-          },
-          "马": {
-            "frequency": 40.909090909090914,
-            "trend": 45.45454545454545,
-            "period": 60.05598266047277,
-            "delta": -22.90500893407033,
-            "period_gap_samples": 3
           },
           "蛇": {
             "frequency": 40.909090909090914,
-            "trend": 63.63636363636363,
+            "trend": 72.72727272727273,
             "period": 49.36676386259343,
-            "delta": -14.295001332777101,
+            "delta": -12.840455878231644,
             "period_gap_samples": 3
           },
-          "鼠": {
-            "frequency": 22.727272727272727,
-            "trend": 36.36363636363637,
-            "period": 47.142857142857146,
-            "delta": -15.52374025974026,
-            "period_gap_samples": 2
-          },
-          "牛": {
-            "frequency": 68.18181818181817,
-            "trend": 27.27272727272727,
-            "period": 43.95735699505346,
-            "delta": -9.830215525294115,
-            "period_gap_samples": 4
+          "猴": {
+            "frequency": 40.909090909090914,
+            "trend": 50,
+            "period": 53.59463907239875,
+            "delta": -18.73168629315812,
+            "period_gap_samples": 3
           },
           "兔": {
             "frequency": 95.45454545454545,
@@ -2639,33 +2772,40 @@
             "delta": 3.4518387141534053,
             "period_gap_samples": 5
           },
-          "猴": {
-            "frequency": 68.18181818181817,
-            "trend": 54.54545454545454,
-            "period": 48.36278013569421,
-            "delta": -11.70874841791405,
+          "鼠": {
+            "frequency": 18.181818181818183,
+            "trend": 36.36363636363637,
+            "period": 47.142857142857146,
+            "delta": -16.251012987012984,
+            "period_gap_samples": 2
+          },
+          "牛": {
+            "frequency": 72.72727272727273,
+            "trend": 18.181818181818183,
+            "period": 43.95735699505346,
+            "delta": -10.557488252566838,
             "period_gap_samples": 4
           },
           "狗": {
-            "frequency": 68.18181818181817,
-            "trend": 90.9090909090909,
+            "frequency": 72.72727272727273,
+            "trend": 63.63636363636363,
             "period": 32.09895536607158,
-            "delta": 0.6149633081168187,
+            "delta": -3.0214003282468154,
             "period_gap_samples": 4
           },
           "羊": {
             "frequency": 4.545454545454546,
-            "trend": 18.181818181818183,
+            "trend": 9.090909090909092,
             "period": 48.333333333333336,
-            "delta": -4.8329696969696965,
+            "delta": -6.2875151515151515,
             "period_gap_samples": 1
           },
           "虎": {
-            "frequency": 22.727272727272727,
-            "trend": 9.090909090909092,
-            "period": 47.142857142857146,
-            "delta": -6.447376623376622,
-            "period_gap_samples": 2
+            "frequency": 40.909090909090914,
+            "trend": 27.27272727272727,
+            "period": 35.91098570118615,
+            "delta": -11.52876813154171,
+            "period_gap_samples": 3
           },
           "龙": {
             "frequency": 4.545454545454546,
@@ -2693,103 +2833,19 @@
           "score_type": "ranking_score_not_probability"
         }
       },
-      "selector": {
-        "top3": [
-          "虎",
-          "龙",
-          "狗"
-        ],
-        "top6": [
-          "虎",
-          "龙",
-          "狗",
-          "羊",
-          "牛",
-          "猪"
-        ],
-        "chosen_model": "v7",
-        "selection": {
-          "model": "v7",
-          "statistics": [
-            {
-              "key": "v7",
-              "samples": 16,
-              "hits3": 5,
-              "hits6": 10,
-              "top3_rate": 0.3125,
-              "top6_rate": 0.625,
-              "top6_wilson95": [
-                0.3864064709793481,
-                0.815190174452472
-              ],
-              "max_top6_misses": 3,
-              "issues": [
-                2026232,
-                2026258,
-                2026259,
-                2026260,
-                2026261,
-                2026262,
-                2026263,
-                2026264,
-                2026265,
-                2026266,
-                2026267,
-                2026268,
-                2026269,
-                2026270,
-                2026271,
-                2026272
-              ]
-            },
-            {
-              "key": "ai50",
-              "samples": 16,
-              "hits3": 5,
-              "hits6": 9,
-              "top3_rate": 0.3125,
-              "top6_rate": 0.5625,
-              "top6_wilson95": [
-                0.33178195606776517,
-                0.7690163666481448
-              ],
-              "max_top6_misses": 3,
-              "issues": [
-                2026232,
-                2026258,
-                2026259,
-                2026260,
-                2026261,
-                2026262,
-                2026263,
-                2026264,
-                2026265,
-                2026266,
-                2026267,
-                2026268,
-                2026269,
-                2026270,
-                2026271,
-                2026272
-              ]
-            }
-          ],
-          "method": "same_settled_issues_last50_top6_then_top3_then_key"
-        }
-      },
       "low_ai100": {
         "top3": [
           "猪",
-          "猴",
-          "狗"
+          "狗",
+          "兔"
         ],
         "top6": [
           "猪",
-          "猴",
           "狗",
-          "牛",
           "兔",
-          "马"
+          "牛",
+          "马",
+          "猴"
         ],
         "configuration": {
           "objective": "minimize_past_top6_then_top3",
@@ -2802,7 +2858,6 @@
             "reverse"
           ],
           "training_issues": [
-            2026223,
             2026224,
             2026225,
             2026226,
@@ -2851,23 +2906,23 @@
             2026269,
             2026270,
             2026271,
-            2026272
+            2026272,
+            2026273
           ],
           "training_statistics": [
             {
               "key": "original",
               "samples": 50,
               "hits3": 8,
-              "hits6": 22,
+              "hits6": 21,
               "top3_rate": 0.16,
-              "top6_rate": 0.44,
+              "top6_rate": 0.42,
               "top6_wilson95": [
-                0.3116198721023534,
-                0.5769421319985648
+                0.2937479723456693,
+                0.5576680331222217
               ],
               "max_top6_misses": 7,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -2916,7 +2971,8 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
@@ -2932,7 +2988,6 @@
               ],
               "max_top6_misses": 5,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -2981,15 +3036,16 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "shift3",
               "samples": 50,
-              "hits3": 14,
+              "hits3": 13,
               "hits6": 27,
-              "top3_rate": 0.28,
+              "top3_rate": 0.26,
               "top6_rate": 0.54,
               "top6_wilson95": [
                 0.40398634328388083,
@@ -2997,7 +3053,6 @@
               ],
               "max_top6_misses": 6,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3046,23 +3101,23 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "shift6",
               "samples": 50,
-              "hits3": 13,
-              "hits6": 28,
-              "top3_rate": 0.26,
-              "top6_rate": 0.56,
+              "hits3": 14,
+              "hits6": 29,
+              "top3_rate": 0.28,
+              "top6_rate": 0.58,
               "top6_wilson95": [
-                0.4230578680014353,
-                0.6883801278976466
+                0.4423319668777783,
+                0.7062520276543307
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3111,23 +3166,23 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "reverse",
               "samples": 50,
               "hits3": 15,
-              "hits6": 28,
+              "hits6": 29,
               "top3_rate": 0.3,
-              "top6_rate": 0.56,
+              "top6_rate": 0.58,
               "top6_wilson95": [
-                0.4230578680014353,
-                0.6883801278976466
+                0.4423319668777783,
+                0.7062520276543307
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3176,7 +3231,8 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             }
           ],
@@ -3196,9 +3252,9 @@
           "羊",
           "牛",
           "狗",
-          "兔",
           "猪",
-          "鼠"
+          "兔",
+          "鸡"
         ],
         "configuration": {
           "objective": "minimize_past_top6_then_top3",
@@ -3211,7 +3267,6 @@
             "reverse"
           ],
           "training_issues": [
-            2026223,
             2026224,
             2026225,
             2026226,
@@ -3260,23 +3315,23 @@
             2026269,
             2026270,
             2026271,
-            2026272
+            2026272,
+            2026273
           ],
           "training_statistics": [
             {
               "key": "original",
               "samples": 50,
               "hits3": 10,
-              "hits6": 21,
+              "hits6": 20,
               "top3_rate": 0.2,
-              "top6_rate": 0.42,
+              "top6_rate": 0.4,
               "top6_wilson95": [
-                0.2937479723456693,
-                0.5576680331222217
+                0.2760818978624575,
+                0.5381881089724063
               ],
               "max_top6_misses": 12,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3325,7 +3380,8 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
@@ -3341,7 +3397,6 @@
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3390,15 +3445,16 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "shift3",
               "samples": 50,
-              "hits3": 11,
+              "hits3": 10,
               "hits6": 28,
-              "top3_rate": 0.22,
+              "top3_rate": 0.2,
               "top6_rate": 0.56,
               "top6_wilson95": [
                 0.4230578680014353,
@@ -3406,7 +3462,6 @@
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3455,23 +3510,23 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "reverse",
               "samples": 50,
               "hits3": 12,
-              "hits6": 29,
+              "hits6": 30,
               "top3_rate": 0.24,
-              "top6_rate": 0.58,
+              "top6_rate": 0.6,
               "top6_wilson95": [
-                0.4423319668777783,
-                0.7062520276543307
+                0.4618118910275937,
+                0.7239181021375425
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3520,23 +3575,23 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             },
             {
               "key": "shift6",
               "samples": 50,
-              "hits3": 17,
-              "hits6": 29,
-              "top3_rate": 0.34,
-              "top6_rate": 0.58,
+              "hits3": 18,
+              "hits6": 30,
+              "top3_rate": 0.36,
+              "top6_rate": 0.6,
               "top6_wilson95": [
-                0.4423319668777783,
-                0.7062520276543307
+                0.4618118910275937,
+                0.7239181021375425
               ],
               "max_top6_misses": 4,
               "issues": [
-                2026223,
                 2026224,
                 2026225,
                 2026226,
@@ -3585,7 +3640,8 @@
                 2026269,
                 2026270,
                 2026271,
-                2026272
+                2026272,
+                2026273
               ]
             }
           ],
@@ -3593,6 +3649,92 @@
           "rule_ties": "lexicographic",
           "warning": "historical_selection_may_overfit; validate_only_with_frozen_forward_results",
           "comprehensive_unranked_tail": "fixed_hash_tie_break_not_formal_scores"
+        }
+      },
+      "selector": {
+        "top3": [
+          "龙",
+          "羊",
+          "狗"
+        ],
+        "top6": [
+          "龙",
+          "羊",
+          "狗",
+          "牛",
+          "猪",
+          "马"
+        ],
+        "chosen_model": "v7",
+        "selection": {
+          "model": "v7",
+          "statistics": [
+            {
+              "key": "v7",
+              "samples": 17,
+              "hits3": 6,
+              "hits6": 11,
+              "top3_rate": 0.35294117647058826,
+              "top6_rate": 0.6470588235294118,
+              "top6_wilson95": [
+                0.4129996672121182,
+                0.826905138560951
+              ],
+              "max_top6_misses": 3,
+              "issues": [
+                2026232,
+                2026258,
+                2026259,
+                2026260,
+                2026261,
+                2026262,
+                2026263,
+                2026264,
+                2026265,
+                2026266,
+                2026267,
+                2026268,
+                2026269,
+                2026270,
+                2026271,
+                2026272,
+                2026273
+              ]
+            },
+            {
+              "key": "ai50",
+              "samples": 17,
+              "hits3": 5,
+              "hits6": 9,
+              "top3_rate": 0.29411764705882354,
+              "top6_rate": 0.5294117647058824,
+              "top6_wilson95": [
+                0.30962897311549487,
+                0.738351988039119
+              ],
+              "max_top6_misses": 4,
+              "issues": [
+                2026232,
+                2026258,
+                2026259,
+                2026260,
+                2026261,
+                2026262,
+                2026263,
+                2026264,
+                2026265,
+                2026266,
+                2026267,
+                2026268,
+                2026269,
+                2026270,
+                2026271,
+                2026272,
+                2026273
+              ]
+            }
+          ],
+          "method": "same_settled_issues_last50_top6_then_top3_then_key"
         }
       }
     }
