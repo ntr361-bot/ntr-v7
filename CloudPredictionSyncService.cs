@@ -16,7 +16,8 @@ public static class CloudPredictionSyncService
 {
     private const string MachineSyncUrl = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
     private const string GitHubSyncUrl = "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/site/data";
-    private static readonly HttpClient Client = CreateClient();
+    private static readonly HttpClient Client = CreateClient(useProxy: true);
+    private static readonly HttpClient DirectClient = CreateClient(useProxy: false);
     private static readonly CloudSyncSource GitHubSource = new(
         "GitHub V7 正式数据", CreateGitHubSyncRequest);
     private static readonly CloudSyncSource FallbackSource = new(
@@ -102,6 +103,7 @@ public static class CloudPredictionSyncService
                 source,
                 "runtime-state", cancellationToken);
             int merged = SymmetricRuntimeStateSync.MergeIntoLocal(runtimeState);
+            rows += merged;
             AppLogger.Info("V6同构状态同步", $"已合并云端运行状态，补齐预测记录 {merged} 条，状态哈希 {runtimeState.StateHash}");
         }
         catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -196,7 +198,9 @@ public static class CloudPredictionSyncService
     {
         if (prediction.Status != "success" || prediction.Issue <= 0 || prediction.AiZodiac.Count == 0)
             return false;
-        return prediction.AiZodiac.Values.All(IsCompleteModelSnapshot);
+        // Daily archives can contain summary-only models alongside complete
+        // snapshots. Import the complete rows instead of rejecting the issue.
+        return prediction.AiZodiac.Values.Any(IsCompleteModelSnapshot);
     }
 
     /// <summary>
@@ -289,7 +293,8 @@ public static class CloudPredictionSyncService
     private static async Task<T> DownloadAsync<T>(CloudSyncSource source, string resource, CancellationToken cancellationToken)
     {
         using HttpRequestMessage request = source.CreateRequest(resource);
-        using HttpResponseMessage response = await Client.SendAsync(request, cancellationToken);
+        HttpClient client = ReferenceEquals(source, FallbackSource) ? DirectClient : Client;
+        using HttpResponseMessage response = await client.SendAsync(request, cancellationToken);
         if (response.StatusCode == HttpStatusCode.NotFound)
             throw new HttpRequestException("云端同步文件尚未发布", null, response.StatusCode);
         if (!response.IsSuccessStatusCode)
@@ -323,13 +328,9 @@ public static class CloudPredictionSyncService
         long.TryParse(Path.GetFileNameWithoutExtension(value), out long issue) && issue > 0 &&
         Path.GetFileName(value) == value;
 
-    private static HttpClient CreateClient()
+    private static HttpClient CreateClient(bool useProxy)
     {
-        var handler = new HttpClientHandler
-        {
-            // The local proxy fails TLS negotiation with the cloud host.
-            UseProxy = false
-        };
+        var handler = new HttpClientHandler { UseProxy = useProxy };
         var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
         client.DefaultRequestHeaders.UserAgent.ParseAdd(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36");
