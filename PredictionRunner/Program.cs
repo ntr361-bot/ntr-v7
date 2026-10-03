@@ -90,17 +90,6 @@ try
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
 
-    if (arguments.ContainsKey("check-p25-web"))
-    {
-        long targetIssue = issue ?? ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
-        string checkStatePath = Path.Combine(outputDirectory, "p25-web-check.json");
-        P25ScheduledCheckResult result = P25ScheduledWebCheck.Run(targetIssue, checkStatePath);
-        WriteRuntimeState(repositoryRoot);
-        Console.WriteLine(result.Complete
-            ? $"[SUCCESS] P25网页检查完成：{result.Message}"
-            : $"[WARNING] P25网页检查未完成：{result.Message}");
-        return 0;
-    }
 
     if (arguments.ContainsKey("generate-all"))
     {
@@ -108,21 +97,6 @@ try
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
         {
-            long nextIssue = ResolveNextIssue(DatabaseHelper.GetLatestPeriod());
-            if (!issue.HasValue || issue.Value == nextIssue)
-            {
-                try
-                {
-                    bool p25Updated = WebsiteLearningIntegration.Publish(nextIssue);
-                    Console.WriteLine(p25Updated
-                        ? $"[INFO] P25网页资料已写入第{nextIssue}期"
-                        : $"[INFO] 第{nextIssue}期P25网页资料已存在");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[WARNING] 第{nextIssue}期P25网页资料未写入：{ex.Message}");
-                }
-            }
 
             int forwardUpdated = Forward50PredictionPublisher.EnrichPending(dailyOutputDirectory);
             DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
@@ -157,14 +131,6 @@ finally
     }
 }
 
-static long ResolveNextIssue(string? latestPeriod)
-{
-    if (!long.TryParse(latestPeriod, out long latestIssue) || latestIssue <= 0)
-        throw new InvalidDataException("无法从开奖历史确定P25目标期号");
-    int latestYear = checked((int)(latestIssue / 1000));
-    int chinaYear = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(8)).Year;
-    return chinaYear > latestYear ? chinaYear * 1000L + 1L : latestIssue + 1L;
-}
 
 static long? ParseIssue(Dictionary<string, string?> arguments, string key)
 {
@@ -204,7 +170,6 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 parsed["export-state-from"] = values[i];
                 break;
             case "--publish-forward": parsed["publish-forward"] = null; break;
-            case "--check-p25-web": parsed["check-p25-web"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -214,7 +179,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward] [--check-p25-web]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {

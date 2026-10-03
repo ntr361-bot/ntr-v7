@@ -24,7 +24,8 @@ public static class SymmetricRuntimeStateSync
             if (!string.IsNullOrWhiteSpace(json)) memory[ExperimentModels.MemoryKey(key)] = json;
         }
         var draft = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, codeVersion,
-            DatabaseHelper.GetPredictionHistory(int.MaxValue), memory, "", DateTimeOffset.UtcNow.ToString("O"));
+            DatabaseHelper.GetPredictionHistory(int.MaxValue)
+                .Where(row => row.ModelVersion != "P25-Web").ToArray(), memory, "", DateTimeOffset.UtcNow.ToString("O"));
         return draft with { StateHash = Hash(draft) };
     }
 

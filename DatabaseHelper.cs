@@ -325,6 +325,11 @@ namespace 六合分析软件
                     "PredictionSource TEXT DEFAULT '未知来源'");
                 EnsureAutoLearningSchema(conn);
 
+                // P25 网站资料模型已退役，旧数据库升级时清除其正式预测记录。
+                new SQLiteCommand("DELETE FROM PredictionHistory WHERE ModelVersion = 'P25-Web'", conn).ExecuteNonQuery();
+                new SQLiteCommand("DROP TABLE IF EXISTS WebsiteLearningSettlement", conn).ExecuteNonQuery();
+                new SQLiteCommand("DROP TABLE IF EXISTS WebsiteLearningCapture", conn).ExecuteNonQuery();
+
                 // 历史快照不得在初始化时物理去重；旧版本的重复行也要完整保留以便审计。
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue", conn).ExecuteNonQuery();
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue_periods", conn).ExecuteNonQuery();
@@ -474,6 +479,7 @@ namespace 六合分析软件
                                    "Top6HitResult,ReviewDetails,LearningDetails";
             using var read = new SQLiteCommand($@"SELECT {columns} FROM PredictionHistory
                 WHERE AnalysisPeriods NOT IN (0,200)
+                  AND ModelVersion <> 'P25-Web'
                   AND ModelVersion NOT LIKE 'V7%'
                   AND ModelVersion <> '云端 V6.3'
                 ORDER BY Id", source);
@@ -1084,6 +1090,8 @@ namespace 六合分析软件
             string learningDetails = "", string finalRankingJson = "", string baseModelScoresJson = "",
             string featureSnapshotJson = "", string weightSnapshotJson = "", string mappingSnapshotJson = "")
         {
+            if (modelVersion == "P25-Web")
+                throw new InvalidOperationException("P25 网站资料模型已从软件中移除");
             mappingSnapshotJson = string.IsNullOrWhiteSpace(mappingSnapshotJson)
                 ? V65MappingService.CreateSnapshot(issue, ResolveMappingSnapshotDate(issue))
                 : mappingSnapshotJson;
@@ -1305,6 +1313,7 @@ namespace 六合分析软件
 
         public static int MergeSynchronizedPrediction(PredictionRecord record)
         {
+            if (record.ModelVersion == "P25-Web") return 0;
             using SQLiteConnection conn = GetConnection();
             ValidateSynchronizedPrediction(conn, record);
             return InsertSynchronizedPrediction(conn, record);
