@@ -20,7 +20,6 @@ namespace 六合分析软件
         Button btnAnalyze = null!;
         Button btnPredict = null!;
         Button btnCheck = null!;
-        Button btnMlBacktest = null!;
         Button btnV7Models = null!;
         Button btnMacroExperiments = null!;
 
@@ -128,7 +127,6 @@ namespace 六合分析软件
             btnLive.ForeColor = Color.White;
             btnAnalyze = CreateButton("📊 数据中心", 320);
             btnPredict = CreateButton("走势预测", 370);
-            btnMlBacktest = CreateButton("🧪 ML滚动回测", 440);
             btnV7Models = CreateButton("🧠 智能模型实验", 490);
             btnMacroExperiments = CreateButton("🔬 Macro 实验中心", 540);
             btnCheck = CreateButton("📐 自用规律", 640);
@@ -140,7 +138,6 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnLive);
             menuPanel.Controls.Add(btnAnalyze);
             menuPanel.Controls.Add(btnPredict);
-            menuPanel.Controls.Add(btnMlBacktest);
             menuPanel.Controls.Add(btnV7Models);
             menuPanel.Controls.Add(btnMacroExperiments);
             menuPanel.Controls.Add(btnCheck);
@@ -152,7 +149,6 @@ namespace 六合分析软件
             btnLive.Click += BtnLive_Click;
             btnAnalyze.Click += BtnAnalyze_Click;
             btnPredict.Click += BtnPredict_Click;
-            btnMlBacktest.Click += BtnMlBacktest_Click;
             btnV7Models.Click += BtnV7Models_Click;
             btnMacroExperiments.Click += BtnMacroExperiments_Click;
             btnCheck.Click += BtnCheck_Click;
@@ -1047,41 +1043,6 @@ namespace 六合分析软件
         {
             TrendPredictionForm form = new TrendPredictionForm();
             form.ShowDialog();
-        }
-
-        // ML特征实验：只使用目标期之前的数据，不替换现有V6.5预测结果
-        private async void BtnMlBacktest_Click(object? sender, EventArgs e)
-        {
-            btnMlBacktest.Enabled = false;
-            try
-            {
-                var history = DatabaseHelper.GetLatestHistory(int.MaxValue);
-                if (history.Count < 10)
-                {
-                    MessageBox.Show("历史数据不足，至少需要10期后才能进行滚动回测。", "ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-                var result = await Task.Run(() =>
-                {
-                    var lgb = MachineLearningPredictionService.RollingBacktest(history, 50, 30, MlModelKind.LightGbmStyle);
-                    var xgb = MachineLearningPredictionService.RollingBacktest(history, 50, 30, MlModelKind.XgBoostStyle);
-                    var lgbPath = MachineLearningPredictionService.SaveReport(lgb);
-                    var xgbPath = MachineLearningPredictionService.SaveReport(xgb);
-                    var top = MachineLearningPredictionService.Predict(history, 30, MlModelKind.LightGbmStyle).Take(6)
-                        .Select(x => $"{x.Zodiac} {x.Probability:P1}");
-                    return $"LightGBM-style：TOP3 {lgb.Top3HitRate:P1}，TOP6 {lgb.Top6HitRate:P1}，最大连续错 {lgb.MaximumConsecutiveMisses}\n" +
-                           $"XGBoost-style：TOP3 {xgb.Top3HitRate:P1}，TOP6 {xgb.Top6HitRate:P1}，最大连续错 {xgb.MaximumConsecutiveMisses}\n\n" +
-                           $"当前生肖概率（TOP6）：{string.Join("、", top)}\n" +
-                           $"回测记录：{lgbPath}\n{xgbPath}\n\n" +
-                           "说明：该实验模型不写入或覆盖V6.5正式预测；回测每期只读取更早的历史记录。";
-                });
-                MessageBox.Show(result, "V6.5 ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"ML回测失败：{ex.Message}", "V6.5 ML滚动回测", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally { btnMlBacktest.Enabled = true; }
         }
 
         private async void BtnV7Models_Click(object? sender, EventArgs e)
