@@ -8,9 +8,9 @@ namespace 六合分析软件
 {
     public partial class DataAnalysisForm : Form
     {
-        TabControl tabControl;
-        Panel topBar;
-        Label dataInfoLabel;
+        TabControl tabControl = null!;
+        Panel topBar = null!;
+        Label dataInfoLabel = null!;
         DateTime _lastLoadTime;
 
         public DataAnalysisForm()
