@@ -160,16 +160,16 @@ namespace 六合分析软件
             table.Columns.Add("日期", "日期");
             table.Columns.Add("生肖", "生肖");
 
-            table.Columns["Id"].Visible = false;
-            table.Columns["生肖"].Visible = false;
-            table.Columns["日期"].Visible = false;
+            table.Columns["Id"]!.Visible = false;
+            table.Columns["生肖"]!.Visible = false;
+            table.Columns["日期"]!.Visible = false;
 
             // 设置列宽
-            table.Columns["期号"].Width = 100;
-            table.Columns["平码"].Width = 260;
-            table.Columns["特码"].Width = 60;
-            table.Columns["特码生肖"].Width = 80;
-            table.Columns["开奖时间"].Width = 160;
+            table.Columns["期号"]!.Width = 100;
+            table.Columns["平码"]!.Width = 260;
+            table.Columns["特码"]!.Width = 60;
+            table.Columns["特码生肖"]!.Width = 80;
+            table.Columns["开奖时间"]!.Width = 160;
 
             // 平码列隐藏，点击展开按钮再看
             table.CellFormatting += Table_CellFormatting;
@@ -194,8 +194,8 @@ namespace 六合分析软件
             foreach (var r in records)
             {
                 // 显示六合号码 + 特码
-                string numbers6 = r.Numbers;  // 前6个号码
-                string specialNum = r.SpecialNumber; // 第7个号码（特码）
+                string numbers6 = r.Numbers ?? string.Empty;  // 前6个号码
+                string specialNum = r.SpecialNumber ?? string.Empty; // 第7个号码（特码）
 
                 // 如果 database 里的 Numbers 字段已经包含了特码，提取前6个
                 if (string.IsNullOrEmpty(numbers6))
@@ -291,7 +291,7 @@ namespace 六合分析软件
         {
             if (table.Columns[e.ColumnIndex]?.Name == "特码" && e.Value != null)
             {
-                string val = e.Value.ToString();
+                string val = e.Value.ToString() ?? string.Empty;
                 if (int.TryParse(val, out int num))
                 {
                     // 红波: 1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46
@@ -347,7 +347,7 @@ namespace 六合分析软件
                 bool show = false;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (cell.Value != null && cell.Value.ToString().Contains(keyword))
+                    if (cell.Value != null && (cell.Value.ToString() ?? string.Empty).Contains(keyword))
                     {
                         show = true;
                         break;
@@ -413,9 +413,11 @@ namespace 六合分析软件
             int deleted = 0;
             foreach (DataGridViewRow row in table.SelectedRows)
             {
-                int id = (int)row.Cells["Id"].Value;
-                DatabaseHelper.DeleteHistory(id);
-                deleted++;
+                if (row.Cells["Id"].Value is int id)
+                {
+                    DatabaseHelper.DeleteHistory(id);
+                    deleted++;
+                }
             }
 
             LoadData();
