@@ -202,7 +202,7 @@ public static class CloudPredictionSyncService
         string key = ExperimentModels.Canonicalize(modelKey, analysisPeriods);
         if (key != modelKey || new[] { ExperimentModels.Period50, ExperimentModels.Period100,
             ExperimentModels.AllHistory, ExperimentModels.AutoLearning, ExperimentModels.V7,
-            ExperimentModels.V7Auto, ExperimentModels.Regularity50, ExperimentModels.Period50Fair }.Contains(key))
+            ExperimentModels.V7Auto }.Contains(key))
             return key;
         return ExperimentModels.Canonicalize(ResolveModelVersion(archiveVersion), analysisPeriods);
     }
