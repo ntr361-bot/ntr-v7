@@ -62,50 +62,6 @@ public static class AutoLearningSnapshotBuilder
             new Dictionary<string, double>(memory.MetaCoefficients, StringComparer.OrdinalIgnoreCase));
     }
 
-    public static AutoLearningSnapshot Build(AIEngine.PredictResult prediction, ModelMemoryState memory)
-    {
-        var history = DatabaseHelper.GetHistory()
-            .Where(item => !string.IsNullOrWhiteSpace(item.SpecialZodiac))
-            .OrderBy(item => long.TryParse(item.Period, out long issue) ? issue : long.MaxValue)
-            .ToList();
-        var features = FeatureEngine.BuildFeatures(history).ToDictionary(item => item.Zodiac);
-        var ml = MachineLearningPredictionService.Predict(history).ToDictionary(item => item.Zodiac, item => item.Probability);
-        var state = MarketStateEngine.Detect(history);
-        var ai = prediction.AllScores.ToDictionary(item => item.Zodiac, item => item.TotalScore);
-        var baseline = prediction.AllScores.OrderByDescending(item => item.TotalScore).Select(item => item.Zodiac).ToArray();
-
-        var rows = new List<ZodiacMetaFeatures>(baseline.Length);
-        foreach (string zodiac in baseline)
-        {
-            ZodiacFeature feature = features[zodiac];
-            double stateScore = state.PrimaryState switch
-            {
-                MarketStateKind.ShortCycleRepeat => Scale(feature.ShortCycleRepeatCount + feature.RepeatFrequencyTrend, 0, 8),
-                MarketStateKind.HotColdTransition => Scale(feature.Momentum5Vs20 + feature.Momentum10Vs50, -0.3, 0.3),
-                MarketStateKind.OmissionRelease => Scale(feature.OmissionRatio, 0, 3),
-                _ => Scale(feature.HistoricalRate, 0, 0.2)
-            };
-            double ruleScore = 0.45*Scale(feature.Recent20Rate, 0, 0.25)
-                + 0.30*Scale(feature.OmissionRatio, 0, 3)
-                + 0.25*Scale(feature.Momentum10Vs50, -0.2, 0.2);
-            var baseScores = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["AI"] = ai.GetValueOrDefault(zodiac),
-                ["ML"] = ml.GetValueOrDefault(zodiac, 1d/12),
-                ["State"] = stateScore,
-                ["V7"] = ruleScore
-            };
-            var groups = BuildGroups(feature, state.Confidence);
-            rows.Add(new ZodiacMetaFeatures(zodiac, baseScores, groups));
-        }
-
-        AddConsensus(rows);
-        var input = new MetaPredictionInput(prediction.PredictPeriod, rows);
-        var result = new MetaPredictionEngine().Predict(input, memory, baseline);
-        return new AutoLearningSnapshot(input, baseline, result, memory.Weights,
-            new Dictionary<string, double>(memory.MetaCoefficients, StringComparer.OrdinalIgnoreCase));
-    }
-
     public static Dictionary<string, double> BuildGroups(ZodiacFeature feature, double stateConfidence)
     {
         return new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
