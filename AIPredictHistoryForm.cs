@@ -245,7 +245,7 @@ namespace 六合分析软件
             content.Controls.Add(table, 0, 1);
         }
 
-        private void Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void Table_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if ((e.ColumnIndex == table.Columns["HitResult"].Index ||
                  e.ColumnIndex == table.Columns["Top6HitResult"].Index) && e.Value != null)
@@ -483,7 +483,7 @@ namespace 六合分析软件
                 statsLabel.Text = "📊 暂无预测记录。请先进行AI预测，记录会自动保存。";
         }
 
-        private void BtnVerify_Click(object sender, EventArgs e)
+        private void BtnVerify_Click(object? sender, EventArgs e)
         {
             btnVerify.Enabled = false;
             btnVerify.Text = "⏳ 验证中...";
