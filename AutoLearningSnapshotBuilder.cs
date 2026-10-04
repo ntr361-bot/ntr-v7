@@ -22,9 +22,8 @@ public static class AutoLearningSnapshotBuilder
         IReadOnlyList<string>? v7Ranking = null)
     {
         var baseRows = records.Where(record => record.Issue == issue &&
-                record.ModelVersion == "V6.5" &&
-                ExperimentModels.AllKeys.Take(3).Contains(ExperimentModels.ForPeriods(record.AnalysisPeriods)))
-            .GroupBy(record => ExperimentModels.ForPeriods(record.AnalysisPeriods))
+                ExperimentModels.AllKeys.Take(3).Contains(ExperimentModels.Canonicalize(record.ModelVersion, record.AnalysisPeriods)))
+            .GroupBy(record => ExperimentModels.Canonicalize(record.ModelVersion, record.AnalysisPeriods))
             .ToDictionary(group => group.Key, group => group.Single());
         if (baseRows.Count != 3)
             throw new InvalidDataException("自动学习需要同一期完整的50期、100期和全历史预测快照");
