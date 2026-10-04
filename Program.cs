@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using 六合分析软件.MacroReasoning;
 
 namespace 六合分析软件
 {
