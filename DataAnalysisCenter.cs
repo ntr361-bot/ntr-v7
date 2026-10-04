@@ -112,17 +112,17 @@ namespace 六合分析软件
             gridNumbers.Columns.Add("Frequency", "频率");
             gridNumbers.Columns.Add("Level", "热度");
 
-            gridNumbers.Columns["Number"].FillWeight = 10;
-            gridNumbers.Columns["AppearCount"].FillWeight = 12;
-            gridNumbers.Columns["CurrentMissing"].FillWeight = 12;
-            gridNumbers.Columns["MaxMissing"].FillWeight = 12;
-            gridNumbers.Columns["AvgMissing"].FillWeight = 12;
-            gridNumbers.Columns["Frequency"].FillWeight = 10;
-            gridNumbers.Columns["Level"].FillWeight = 12;
+            gridNumbers.Columns["Number"]!.FillWeight = 10;
+            gridNumbers.Columns["AppearCount"]!.FillWeight = 12;
+            gridNumbers.Columns["CurrentMissing"]!.FillWeight = 12;
+            gridNumbers.Columns["MaxMissing"]!.FillWeight = 12;
+            gridNumbers.Columns["AvgMissing"]!.FillWeight = 12;
+            gridNumbers.Columns["Frequency"]!.FillWeight = 10;
+            gridNumbers.Columns["Level"]!.FillWeight = 12;
 
             gridNumbers.CellFormatting += (s, e) =>
             {
-                if (e.ColumnIndex == gridNumbers.Columns["Level"].Index && e.Value != null)
+                if (e.ColumnIndex == gridNumbers.Columns["Level"]!.Index && e.Value != null)
                 {
                     switch (e.Value.ToString())
                     {
@@ -186,7 +186,7 @@ namespace 六合分析软件
 
             gridZodiacs.CellFormatting += (s, e) =>
             {
-                if (e.ColumnIndex == gridZodiacs.Columns["Trend"].Index && e.Value != null)
+                if (e.ColumnIndex == gridZodiacs.Columns["Trend"]!.Index && e.Value != null)
                 {
                     string v = e.Value.ToString();
                     if (v.Contains("上升")) { e.CellStyle.ForeColor = Color.FromArgb(0, 150, 0); e.CellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold); }
@@ -258,16 +258,16 @@ namespace 六合分析软件
             gridMissing.Columns.Add("Appear", "出现次数");
             gridMissing.Columns.Add("Status", "状态");
 
-            gridMissing.Columns["Item"].FillWeight = 10;
-            gridMissing.Columns["CurMiss"].FillWeight = 15;
-            gridMissing.Columns["MaxMiss"].FillWeight = 15;
-            gridMissing.Columns["AvgMiss"].FillWeight = 15;
-            gridMissing.Columns["Appear"].FillWeight = 15;
-            gridMissing.Columns["Status"].FillWeight = 15;
+            gridMissing.Columns["Item"]!.FillWeight = 10;
+            gridMissing.Columns["CurMiss"]!.FillWeight = 15;
+            gridMissing.Columns["MaxMiss"]!.FillWeight = 15;
+            gridMissing.Columns["AvgMiss"]!.FillWeight = 15;
+            gridMissing.Columns["Appear"]!.FillWeight = 15;
+            gridMissing.Columns["Status"]!.FillWeight = 15;
 
             gridMissing.CellFormatting += (s, e) =>
             {
-                if (e.ColumnIndex == gridMissing.Columns["Status"].Index && e.Value != null)
+                if (e.ColumnIndex == gridMissing.Columns["Status"]!.Index && e.Value != null)
                 {
                     if (e.Value.ToString().Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
                 }
