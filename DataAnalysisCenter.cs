@@ -10,11 +10,11 @@ namespace 六合分析软件
     /// </summary>
     public partial class DataAnalysisCenter : Form
     {
-        TabControl tabControl;
-        ComboBox cboPeriods1, cboPeriods2, cboPeriods3;
-        DataGridView gridNumbers, gridZodiacs, gridMissing;
-        Label infoLabel1, infoLabel2, infoLabel3;
-        Button btnRefresh1, btnRefresh2, btnRefresh3;
+        TabControl tabControl = null!;
+        ComboBox cboPeriods1 = null!, cboPeriods2 = null!, cboPeriods3 = null!;
+        DataGridView gridNumbers = null!, gridZodiacs = null!, gridMissing = null!;
+        Label infoLabel1 = null!, infoLabel2 = null!, infoLabel3 = null!;
+        Button btnRefresh1 = null!, btnRefresh2 = null!, btnRefresh3 = null!;
 
         public DataAnalysisCenter()
         {
