@@ -196,48 +196,48 @@ namespace 六合分析软件
             table.Columns.Add("PredictTime", "预测时间");
 
             // 设置列宽（像素）
-            table.Columns["Issue"].Width = 80;
-            table.Columns["AnalysisPeriods"].Width = 70;
-            table.Columns["PredictZodiac"].Width = 100;
-            table.Columns["Top6Zodiac"].Width = 130;
-            table.Columns["PredictNumber"].Width = 150;
-            table.Columns["ActualNumber"].Width = 60;
-            table.Columns["ActualZodiac"].Width = 60;
-            table.Columns["HitResult"].Width = 70;
-            table.Columns["Top6HitResult"].Width = 70;
+            table.Columns["Issue"]!.Width = 80;
+            table.Columns["AnalysisPeriods"]!.Width = 70;
+            table.Columns["PredictZodiac"]!.Width = 100;
+            table.Columns["Top6Zodiac"]!.Width = 130;
+            table.Columns["PredictNumber"]!.Width = 150;
+            table.Columns["ActualNumber"]!.Width = 60;
+            table.Columns["ActualZodiac"]!.Width = 60;
+            table.Columns["HitResult"]!.Width = 70;
+            table.Columns["Top6HitResult"]!.Width = 70;
             if (newModelOnly)
             {
-                table.Columns["ReviewDetails"].MinimumWidth = 420;
-                table.Columns["ReviewDetails"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                table.Columns["ReviewDetails"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                table.Columns["ColorPrediction"].Width = 190;
-                table.Columns["ColorPrediction"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                table.Columns["ColorPrediction"].DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Regular);
+                table.Columns["ReviewDetails"]!.MinimumWidth = 420;
+                table.Columns["ReviewDetails"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                table.Columns["ReviewDetails"]!.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                table.Columns["ColorPrediction"]!.Width = 190;
+                table.Columns["ColorPrediction"]!.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                table.Columns["ColorPrediction"]!.DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Regular);
             }
-            table.Columns["ModelVersion"].Width = 90;
-            table.Columns["PredictionSource"].Width = 90;
+            table.Columns["ModelVersion"]!.Width = 90;
+            table.Columns["PredictionSource"]!.Width = 90;
             // Keep the history table readable at any maximized window size. The
             // previous fixed-width layout left the unused client area blank.
             if (newModelOnly)
             {
-                table.Columns["PredictTime"].Width = 180;
+                table.Columns["PredictTime"]!.Width = 180;
             }
             else
             {
-                table.Columns["PredictTime"].MinimumWidth = 180;
-                table.Columns["PredictTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                table.Columns["PredictTime"]!.MinimumWidth = 180;
+                table.Columns["PredictTime"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
 
             // 号码列自动换行
-            table.Columns["PredictNumber"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            table.Columns["PredictNumber"]!.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             table.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-            table.Columns["HitResult"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            table.Columns["Top6HitResult"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            table.Columns["PredictZodiac"].DefaultCellStyle.ForeColor = Color.FromArgb(30, 30, 60);
-            table.Columns["Top6Zodiac"].DefaultCellStyle.ForeColor = Color.FromArgb(30, 30, 60);
-            table.Columns["PredictZodiac"].DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold);
-            table.Columns["Top6Zodiac"].DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold);
+            table.Columns["HitResult"]!.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            table.Columns["Top6HitResult"]!.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            table.Columns["PredictZodiac"]!.DefaultCellStyle.ForeColor = Color.FromArgb(30, 30, 60);
+            table.Columns["Top6Zodiac"]!.DefaultCellStyle.ForeColor = Color.FromArgb(30, 30, 60);
+            table.Columns["PredictZodiac"]!.DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold);
+            table.Columns["Top6Zodiac"]!.DefaultCellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold);
 
             table.CellFormatting += Table_CellFormatting;
             table.CellPainting += Table_CellPainting;
@@ -247,8 +247,8 @@ namespace 六合分析软件
 
         private void Table_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
-            if ((e.ColumnIndex == table.Columns["HitResult"].Index ||
-                 e.ColumnIndex == table.Columns["Top6HitResult"].Index) && e.Value != null)
+            if ((e.ColumnIndex == table.Columns["HitResult"]!.Index ||
+                 e.ColumnIndex == table.Columns["Top6HitResult"]!.Index) && e.Value != null)
             {
                 if (e.Value.ToString() == "命中")
                 {
@@ -271,13 +271,13 @@ namespace 六合分析软件
         {
             if (newModelOnly && e.RowIndex >= 0 &&
                 table.Columns.Contains("ColorPrediction") &&
-                e.ColumnIndex == table.Columns["ColorPrediction"].Index)
+                e.ColumnIndex == table.Columns["ColorPrediction"]!.Index)
             {
                 PaintColorPredictionCell(e);
                 return;
             }
 
-            if (e.RowIndex < 0 || e.ColumnIndex != table.Columns["PredictNumber"].Index)
+            if (e.RowIndex < 0 || e.ColumnIndex != table.Columns["PredictNumber"]!.Index)
                 return;
 
             string text = Convert.ToString(e.FormattedValue) ?? string.Empty;
