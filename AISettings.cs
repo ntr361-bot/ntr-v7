@@ -38,7 +38,7 @@ namespace 六合分析软件
             public string AnalysisMethod { get; set; } = "热度+遗漏+周期+关联";
         }
 
-        private static Settings _currentSettings;
+        private static Settings _currentSettings = null!;
 
         /// <summary>
         /// 获取当前设置
