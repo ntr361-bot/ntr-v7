@@ -983,11 +983,6 @@ namespace 六合分析软件
             form.ShowDialog();
         }
 
-        private sealed class EmptyMacroExplanationSource : MacroReasoning.IMacroExplanationSource
-        {
-            public MacroReasoning.MacroExplanationRecord? Read(string experiment, long issue) => null;
-        }
-
         private Form CreateReservedDataCenterForm()
         {
             Form form = new Form();
