@@ -153,7 +153,7 @@ public static class CloudPredictionSyncService
                 Top6Zodiac = string.Join(',', top6),
                 AnalysisPeriods = analysisPeriods,
                 ScoreDetails = JsonSerializer.Serialize(item.FactorScores, JsonOptions),
-                ModelVersion = ResolveModelVersion(prediction.ModelVersion),
+                ModelVersion = ResolveImportedModelId(modelKey, prediction.ModelVersion, analysisPeriods),
                 ActualNumber = "",
                 ActualZodiac = "",
                 HitResult = "未开奖",
@@ -183,11 +183,29 @@ public static class CloudPredictionSyncService
         !string.IsNullOrWhiteSpace(item.FeatureSnapshotJson) &&
         !string.IsNullOrWhiteSpace(item.WeightSnapshotJson);
 
-    private static int ParseAnalysisPeriods(string modelKey) =>
-        int.TryParse(modelKey, out int periods) ? periods : 0;
+    private static int ParseAnalysisPeriods(string modelKey) => modelKey switch
+    {
+        ExperimentModels.Period50 => 50,
+        ExperimentModels.Period100 => 100,
+        ExperimentModels.AllHistory => AISettings.AllHistoryModeValue,
+        ExperimentModels.AutoLearning => V7PredictionHistoryService.AutoLearningHistoryKey,
+        "all" or "0" => AISettings.AllHistoryModeValue,
+        "auto" => V7PredictionHistoryService.AutoLearningHistoryKey,
+        _ => int.TryParse(modelKey, out int periods) ? periods : 0
+    };
 
     private static string ResolveModelVersion(string value) =>
         string.IsNullOrWhiteSpace(value) ? AIEngine.Version : value;
+
+    private static string ResolveImportedModelId(string modelKey, string archiveVersion, int analysisPeriods)
+    {
+        string key = ExperimentModels.Canonicalize(modelKey, analysisPeriods);
+        if (key != modelKey || new[] { ExperimentModels.Period50, ExperimentModels.Period100,
+            ExperimentModels.AllHistory, ExperimentModels.AutoLearning, ExperimentModels.V7,
+            ExperimentModels.V7Auto, ExperimentModels.Regularity50, ExperimentModels.Period50Fair }.Contains(key))
+            return key;
+        return ExperimentModels.Canonicalize(ResolveModelVersion(archiveVersion), analysisPeriods);
+    }
 
     private static DateTime ResolvePredictionDate(CloudDailyPrediction prediction) =>
         DateTime.TryParse(prediction.GeneratedAt, out DateTime generated)
