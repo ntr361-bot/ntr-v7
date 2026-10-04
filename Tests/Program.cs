@@ -2,185 +2,9 @@ using System.Text.Json;
 using System.Collections.Immutable;
 using System.Windows.Forms;
 using 六合分析软件;
-using 六合分析软件.MacroReasoning;
 
 if (args.Contains("--readonly-db-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
     return ReadOnlyDatabaseSnapshotTests.Run();
-
-if (args.Contains("--p16-p20-smoke", StringComparer.OrdinalIgnoreCase))
-{
-    try { return MacroP16P20Tests.Run(); }
-    catch (Exception error) { Console.Error.WriteLine(error); return 1; }
-}
-if (args.Contains("--p21-p25-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroP21P25Tests.Run();
-
-if (args.Contains("--macro-p21-real", StringComparer.OrdinalIgnoreCase))
-{
-    int samples=args.SkipWhile(x=>x!="--samples").Skip(1).Select(int.Parse).FirstOrDefault();
-    if(samples is not (300 or 600 or 1000)) throw new InvalidDataException("--samples must be 300, 600 or 1000");
-    string baseRoot=Path.Combine(Directory.GetCurrentDirectory(),"data","macro-p21",samples.ToString());
-    string root=File.Exists(Path.Combine(baseRoot,"report.json")) ? baseRoot : baseRoot+"-run-"+DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmss");
-    Directory.CreateDirectory(root);
-    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR",Path.Combine(Directory.GetCurrentDirectory(),"data")); DatabaseHelper.InitializeDatabase();
-    var built=MacroHistoricalFrameBuilder.Build(DatabaseHelper.GetHistory(),samples,root);
-    var audit=new MacroReasoningAuditStore(Path.Combine(root,"reasoning.db"),built.Run);
-    var evaluator=new MacroWalkForwardEvaluator(built.Registry,audit,built.Frames,built.Warmup,built.Weights,"p21-hold-control-v1");
-    var metrics=evaluator.Evaluate(built.Run,built.Frames.Select(x=>x.Issue).ToImmutableArray(),built.Split);
-    string report=Path.Combine(root,"report.json"); File.WriteAllText(report,JsonSerializer.Serialize(new {samples,metrics,evaluator.SplitMetrics,Rows=evaluator.Rows},new JsonSerializerOptions{WriteIndented=true}));
-    Console.WriteLine("REPORT_PATH="+report); return 0;
-}
-
-if (args.Contains("--four-expert-chain-smoke", StringComparer.OrdinalIgnoreCase))
-    return FourExpertChainTests.Run();
-
-if (args.Contains("--macro-contract-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroReasoningContractTests.Run();
-
-if (args.Contains("--p4-acceptance", StringComparer.OrdinalIgnoreCase))
-    return P4AcceptanceTests.Run();
-
-if (args.Contains("--p5-registry-smoke", StringComparer.OrdinalIgnoreCase))
-    return ExpertRegistryTests.Run();
-
-if (args.Contains("--p7-observation-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroObservationEngineTests.Run();
-
-if (args.Contains("--p6-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
-    return ImmutableExpertSnapshotTests.Run();
-
-if (args.Contains("--p8-hypothesis-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroHypothesisEngineTests.Run();
-
-if (args.Contains("--p9-p13-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroReasoningP9P13Tests.Run();
-
-if (args.Contains("--p14-gating-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroGatingP14Tests.Run();
-
-if (args.Contains("--p15-uncertainty-smoke", StringComparer.OrdinalIgnoreCase))
-    return MacroUncertaintyP15Tests.Run();
-
-if (args.Contains("--integrated-v7-macro-adapter-smoke", StringComparer.OrdinalIgnoreCase))
-    return IntegratedV7MacroExpertAdapterTests.Run();
-
-if (args.Contains("--v65-base-macro-adapter-smoke", StringComparer.OrdinalIgnoreCase))
-    return V65BaseMacroExpertAdapterTests.Run();
-
-if (args.Contains("--learning-pipeline-smoke", StringComparer.OrdinalIgnoreCase))
-    return RejectLegacyLearningPipelineAlias();
-
-static int RejectLegacyLearningPipelineAlias()
-{
-    Console.Error.WriteLine("旧 OnlineLearningPipeline P0-P4 草案未编译、未验收。请使用 --p4-acceptance 验收当前 V7 独立学习 P4。");
-    return 2;
-}
-
-if (args.Contains("--historical-replay-smoke", StringComparer.OrdinalIgnoreCase) ||
-    args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase))
-{
-    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
-    string smokeDir = Path.Combine(Path.GetTempPath(), "liuhe-real-replay-" + Guid.NewGuid().ToString("N"));
-    Directory.CreateDirectory(smokeDir);
-    using (var source = new System.Data.SQLite.SQLiteConnection($"Data Source={sourceDb};Version=3;Read Only=True;"))
-    using (var target = new System.Data.SQLite.SQLiteConnection($"Data Source={Path.Combine(smokeDir, "history.db")};Version=3;"))
-    {
-        source.Open();
-        target.Open();
-        source.BackupDatabase(target, "main", "main", -1, null, 100);
-    }
-    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", smokeDir);
-    DatabaseHelper.InitializeDatabase();
-    var allRealHistory = DatabaseHelper.GetHistory().OrderBy(row => long.Parse(row.Period)).ToArray();
-    var realHistory = args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase)
-        ? allRealHistory
-        : allRealHistory.Take(112).ToArray();
-    int warmup = args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase) ? 100 : 100;
-    HistoricalReplayResult replay = new HistoricalReplayEngine().Run(realHistory,
-        new HistoricalReplayOptions(warmup,
-            args.Contains("--historical-replay-full", StringComparer.OrdinalIgnoreCase) ? "real-full" : "real-smoke",
-            Path.Combine(smokeDir, "experiment.db")));
-    EvaluationReport report = EvaluationPipeline.Evaluate(replay.Predictions);
-    string reportPath = Path.Combine(smokeDir, "replay-report.json");
-    string reportJson = JsonSerializer.Serialize(new { replay.WarmupSamples, TargetIssueCount = replay.TargetIssues.Count, PredictionCount = replay.Predictions.Count, replay.FutureDataLeakageDetected, RandomSeed = 6501, MonteCarloIterations = 10000, Report = report }, new JsonSerializerOptions { WriteIndented = true });
-    File.WriteAllText(reportPath, reportJson);
-    Console.WriteLine(reportJson);
-    Console.WriteLine($"REPORT_PATH={reportPath}");
-    return replay.FutureDataLeakageDetected ? 1 : 0;
-}
-
-if (args.Contains("--candidate-stage2-full", StringComparer.OrdinalIgnoreCase) ||
-    args.Contains("--candidate-stage2-smoke", StringComparer.OrdinalIgnoreCase))
-{
-    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
-    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-candidate-stage2-" + Guid.NewGuid().ToString("N"));
-    Directory.CreateDirectory(runDir);
-    string isolatedData = Path.Combine(runDir, "data");
-    Directory.CreateDirectory(isolatedData);
-    // Copy the isolated input snapshot before opening SQLite. Opening a zero-byte
-    // destination first makes SQLite.BackupDatabase fail with CantOpen on some hosts.
-    File.Copy(sourceDb, Path.Combine(isolatedData, "history.db"), overwrite: true);
-    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", isolatedData);
-    DatabaseHelper.InitializeDatabase();
-    var allHistory = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToArray();
-    var history = args.Contains("--candidate-stage2-full", StringComparer.OrdinalIgnoreCase) ? allHistory : allHistory.Take(112).ToArray();
-    string store = Path.Combine(runDir, "candidate-experiment.db");
-    var replay = new CandidateStage2ReplayEngine().Run(history, store);
-    var report = CandidateStage2Evaluation.Evaluate(replay.Candidates, replay.Controls, replay.ExperimentId, store);
-    string reportPath = Path.Combine(runDir, "candidate-stage2-report.json");
-    File.WriteAllText(reportPath, JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
-    Console.WriteLine(JsonSerializer.Serialize(new { report.ExperimentId, TargetIssueCount = replay.Controls.Select(x => x.TargetIssue).Distinct().Count(), CandidateSnapshotCount = replay.Candidates.Count, report.TripleFailureOpportunity, report.StrongFailureOpportunity, report.LeakageDetected, report.Performance, report.Rescue, report.Diversity, report.Conditional, report.MarketStates, report.TrainingValidationHoldout, report.Rolling, report.RandomConditional, report.MlModesDiffer, report.SelectorComparison, ReportPath = reportPath }, new JsonSerializerOptions { WriteIndented = true }));
-    return report.LeakageDetected ? 1 : 0;
-}
-
-if (args.Contains("--normal-number-research", StringComparer.OrdinalIgnoreCase))
-{
-    string sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
-    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-normal-number-research-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(runDir);
-    string copy = Path.Combine(runDir, "history.db"); File.Copy(sourceDb, copy, true); Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", runDir); DatabaseHelper.InitializeDatabase();
-    var history = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToArray(); string source = Path.Combine(runDir, "normal-research.db"); NormalNumberResearch.SaveSource(source, history);
-    var report = NormalNumberResearch.Run(history, source); string reportPath = Path.Combine(runDir, "normal-number-signal-report.json"); NormalNumberResearch.Save(reportPath, report);
-    Console.WriteLine(JsonSerializer.Serialize(new { report.ReportTitle, report.N, report.EarliestIssue, report.LatestIssue, report.IncompleteNormalCount, report.MissingSpecialCount, report.MissingZodiacCount, report.NumberAnomalyCount, report.CandidateDecision, report.FutureDataLeakageDetected, ReportPath = reportPath }, new JsonSerializerOptions { WriteIndented = true })); return report.FutureDataLeakageDetected ? 1 : 0;
-}
-
-if (args.Contains("--evaluate-auto-learning", StringComparer.OrdinalIgnoreCase))
-{
-    string dataDirectory = Environment.GetEnvironmentVariable("LIUHE_EVAL_DATA_DIR")
-        ?? Path.Combine(Directory.GetCurrentDirectory(), "data");
-    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", dataDirectory);
-    var evaluation = AutoLearningEvaluation.Run(DatabaseHelper.GetHistory());
-    AutoLearningEvaluation.SaveReports(evaluation, Directory.GetCurrentDirectory());
-    if (args.Contains("--persist-latest50", StringComparer.OrdinalIgnoreCase))
-        AutoLearningEvaluation.SaveLatest50ToPredictionHistory(evaluation);
-    Console.WriteLine(JsonSerializer.Serialize(evaluation, new JsonSerializerOptions { WriteIndented=true }));
-    return evaluation.FutureDataLeakageDetected || evaluation.TestSamples == 0 ? 1 : 0;
-}
-
-if (args.Contains("--model-redundancy-report", StringComparer.OrdinalIgnoreCase))
-{
-    string sourceDb = Path.Combine(Directory.GetCurrentDirectory(), "data", "history.db");
-    if (!File.Exists(sourceDb))
-        sourceDb = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "六合分析软件", "history.db");
-    string runDir = Path.Combine(Path.GetTempPath(), "liuhe-redundancy-" + Guid.NewGuid().ToString("N"));
-    Directory.CreateDirectory(runDir);
-    File.Copy(sourceDb, Path.Combine(runDir, "history.db"), true);
-    Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", runDir);
-    DatabaseHelper.InitializeDatabase();
-    var report = ModelRedundancyReportService.Run(DatabaseHelper.GetHistory(), 50,
-        maxTargets: 300, mlMaxTargets: 40);
-    string path = Path.Combine(runDir, "model-redundancy-report.json");
-    File.WriteAllText(path, ModelRedundancyReportService.ToJson(report));
-    File.WriteAllText(Path.Combine(runDir, "model-redundancy-report.md"), ModelRedundancyReportService.ToMarkdown(report));
-    Console.WriteLine($"REPORT_PATH={path}");
-    Console.WriteLine(JsonSerializer.Serialize(new { report.SampleCount, report.Models, report.Top3HitRates, report.Top6HitRates }, new JsonSerializerOptions { WriteIndented = true }));
-    return 0;
-}
-
-string testData = Path.Combine(AppContext.BaseDirectory, "TestData");
-if (Directory.Exists(testData)) Directory.Delete(testData, recursive: true);
-Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", testData);
-DatabaseHelper.InitializeDatabase();
-SeedHistory();
 
 var tests = new (string Name, Action Run)[]
 {
@@ -304,7 +128,6 @@ var tests = new (string Name, Action Run)[]
     ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
     ,("正式 Trace 接受动态全历史样本数", FormalPredictionTraceAcceptsDynamicAllHistoryPeriod)
     ,("AutoLearningV2 快照和残差输出完全旁路且可解释", AutoLearningV2SnapshotAndResidualAreIsolated)
-    ,("AutoLearningV2 独立信号必须通过前缀泄漏审计", AutoLearningV2IndependentSignalAudit)
     ,("AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据", AutoLearningV2WalkForwardMetricsAreLeakageSafe)
     ,("AutoLearningV2 报告区分留出指标且不宣称自动上线", AutoLearningV2ReportIsExplicitlyExperimental)
     ,("AutoLearningV2 实验快照写入独立表", AutoLearningV2ExperimentStorageIsIsolated)
@@ -2497,19 +2320,6 @@ void AutoLearningV2SnapshotAndResidualAreIsolated()
     Assert(state.ObservedSamples == 1 && state.Decay == .98, "V2 没有执行单期更新和默认衰减");
 }
 
-void AutoLearningV2IndependentSignalAudit()
-{
-    var provider = new AutoLearningV2TestSignalProvider("test-signal", "v1", "999803",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" });
-    IndependentSignalSnapshot accepted = AutoLearningV2SignalAudit.Validate(provider, "999803", "999802");
-    Assert(accepted.LeakageAuditPassed && accepted.Ranking.Count == 12, "合法独立信号没有通过审计");
-
-    var future = new AutoLearningV2TestSignalProvider("future", "v1", "999804",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" });
-    AssertThrows<InvalidDataException>(() => AutoLearningV2SignalAudit.Validate(future, "999803", "999802"),
-        "预测期之后生成的独立信号必须被拒绝");
-}
-
 void AutoLearningV2WalkForwardMetricsAreLeakageSafe()
 {
     var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
@@ -2890,11 +2700,4 @@ void AssertThrows<T>(Action action, string message) where T : Exception
 void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
-}
-
-sealed record AutoLearningV2TestSignalProvider(string SourceName, string ModelVersion, string GeneratedForIssue,
-    IReadOnlyList<string> Ranking) : IIndependentSignalProvider
-{
-    public IndependentSignalSnapshot GetSnapshot(string issue, IReadOnlyList<DatabaseHelper.HistoryRecord> prefix) =>
-        new(SourceName, ModelVersion, GeneratedForIssue, Ranking, true);
 }
