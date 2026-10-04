@@ -10,10 +10,10 @@ namespace 六合分析软件
     /// </summary>
     public partial class AIPredictHistoryForm : Form
     {
-        DataGridView table;
-        Label statsLabel;
-        Button btnRefresh;
-        Button btnVerify;
+        DataGridView table = null!;
+        Label statsLabel = null!;
+        Button btnRefresh = null!;
+        Button btnVerify = null!;
         private readonly bool newModelOnly;
         private static readonly Font NumberHitFont = new Font("微软雅黑", 10, FontStyle.Bold);
         private const float WaveHitFontSize = 12f;
