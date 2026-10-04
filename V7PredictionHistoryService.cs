@@ -16,15 +16,15 @@ public static class V7PredictionHistoryService
     /// 仅保留在数据库供研究与成绩榜使用。
     /// </summary>
     public static bool IsV65DisplayedModel(string modelVersion, int analysisPeriods) =>
-        (modelVersion == "V6.5" && analysisPeriods == 100) ||
-        (modelVersion == "V6.5 AutoLearning" && analysisPeriods == AutoLearningHistoryKey);
+        (ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.Period100) ||
+        (ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.AutoLearning && analysisPeriods == AutoLearningHistoryKey);
 
     /// <summary>
     /// AI 预测历史保留整合 V7 与 V7 自动学习；短/中/长/ML 明细继续留在数据库供研究、回测和追溯。
     /// </summary>
     public static bool IsV7DisplayedModel(string modelVersion, int analysisPeriods) =>
-        (modelVersion == "V7" && analysisPeriods == LongTermHistoryKey) ||
-        (modelVersion == "V7 AutoLearning" && analysisPeriods == AutoLearningHistoryKey);
+        (ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.V7 && analysisPeriods == LongTermHistoryKey) ||
+        (ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.V7Auto && analysisPeriods == AutoLearningHistoryKey);
 
     public static void SaveAll(string targetPeriod, IReadOnlyList<DatabaseHelper.HistoryRecord> history)
     {
@@ -36,7 +36,7 @@ public static class V7PredictionHistoryService
 
         V7RecommendedNumberSelection v7Numbers = V7RecommendedNumberService.Select(targetPeriod,
             v7.Probabilities.Select(item => (item.Key, item.Value)), history);
-        SaveEngine(targetPeriod, v7, LongTermHistoryKey, "V7", report.Text, v7Numbers);
+        SaveEngine(targetPeriod, v7, LongTermHistoryKey, ExperimentModels.V7, report.Text, v7Numbers);
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
@@ -65,7 +65,7 @@ public static class V7PredictionHistoryService
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", auto.Result.Ranking.Take(3).Select(item => item.Zodiac)),
             string.Join(",", auto.Result.Ranking.Take(6).Select(item => item.Zodiac)), "",
-            "V6.5 AutoLearning", AutoLearningHistoryKey,
+            ExperimentModels.AutoLearning, AutoLearningHistoryKey,
             $"{autoScores}|{colorDetails}|{colorSnapshot}", learningDetails,
             auto.FinalRankingJson, auto.BaseModelScoresJson, auto.FeatureSnapshotJson, auto.WeightSnapshotJson);
         return new AutoLearningFormalPrediction(auto, color);
@@ -73,7 +73,9 @@ public static class V7PredictionHistoryService
 
     public static bool HasCompleteV65BaseSnapshots(string targetPeriod,
         IReadOnlyList<DatabaseHelper.PredictionRecord> records) =>
-        records.Where(row => row.Issue == targetPeriod && row.ModelVersion == "V6.5")
+        records.Where(row => row.Issue == targetPeriod &&
+                new[] { ExperimentModels.Period50, ExperimentModels.Period100, ExperimentModels.AllHistory }
+                    .Contains(ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods)))
             .Select(row => ExperimentModels.ForPeriods(row.AnalysisPeriods))
             .Distinct(StringComparer.Ordinal)
             .Count() == 3;
@@ -94,7 +96,7 @@ public static class V7PredictionHistoryService
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", result.Ranking.Take(3).Select(item => item.Zodiac)),
             string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), numbers.Numbers,
-            "V7 AutoLearning", AutoLearningHistoryKey,
+            ExperimentModels.V7Auto, AutoLearningHistoryKey,
             $"{scores}|{colorDetails}|{colorSnapshot}|重点号码:{numbers.Details}", learningDetails,
             snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson,
             numbers.MappingSnapshotJson);
@@ -113,8 +115,8 @@ public static class V7PredictionHistoryService
 
     public static string FormatAnalysisLabel(int analysisPeriods, string modelVersion) => analysisPeriods switch
     {
-        AutoLearningHistoryKey when modelVersion == "V6.5 AutoLearning" => "自动学习",
-        LongTermHistoryKey when modelVersion == "V7" => "整合V7",
+        AutoLearningHistoryKey when ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.AutoLearning => "自学习",
+        LongTermHistoryKey when ExperimentModels.Canonicalize(modelVersion, analysisPeriods) == ExperimentModels.V7 => "V7",
         ShortTermHistoryKey when modelVersion.StartsWith("V7") => "50期",
         MediumTermHistoryKey when modelVersion.StartsWith("V7") => "100期",
         LongTermHistoryKey when modelVersion.StartsWith("V7") => "长期",
@@ -125,20 +127,8 @@ public static class V7PredictionHistoryService
         _ => "旧记录"
     };
 
-    public static string FormatModelName(string modelVersion) => modelVersion switch
-    {
-        "V6.5" => "V6.5基础模型",
-        "V6.5 AutoLearning" => "自动学习模型",
-        "V7" => "V7整合模型",
-        "V7 ShortTerm" => "短期模型",
-        "V7 MediumTerm" => "中期模型",
-        "V7 LongTerm" => "长期模型",
-        "V7 ML LightGBM" => "ML LightGBM",
-        "V7 AutoLearning" => "自动学习模型",
-        "V7 AutoLearning Validation" => "自动学习验证",
-        _ when modelVersion.StartsWith("V7 ", StringComparison.OrdinalIgnoreCase) => modelVersion[3..],
-        _ => modelVersion
-    };
+    public static string FormatModelName(string modelVersion) =>
+        ExperimentModels.DisplayName(ExperimentModels.Canonicalize(modelVersion));
 
     public static List<DatabaseHelper.PredictionRecord> GetHistory(int limit = 100) =>
         DatabaseHelper.GetPredictionHistory(int.MaxValue)
@@ -148,17 +138,13 @@ public static class V7PredictionHistoryService
             .Take(Math.Max(0, limit))
             .ToList();
 
-    private static int ModelDisplayOrder(string modelVersion) => modelVersion switch
-    {
-        "V7" => 0,
-        "V7 ShortTerm" => 0,
-        "V7 MediumTerm" => 1,
-        "V7 ML LightGBM" => 2,
-        "V7 AutoLearning" => 3,
-        "V7 LongTerm" => 4,
-        "V7 AutoLearning Validation" => 5,
-        _ => 5
-    };
+    private static int ModelDisplayOrder(string modelVersion) =>
+        ExperimentModels.Canonicalize(modelVersion) switch
+        {
+            ExperimentModels.V7 => 0,
+            ExperimentModels.V7Auto => 1,
+            _ => 5
+        };
 
     public static string ExtractColorPrediction(string scoreDetails)
     {
