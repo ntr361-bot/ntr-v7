@@ -188,7 +188,7 @@ namespace 六合分析软件
             RenderPredictResult(result);
         }
 
-        private async void BtnPredict_Click(object sender, EventArgs e)
+        private async void BtnPredict_Click(object? sender, EventArgs e)
         {
             int selectedPeriod = GetPeriodCount();
             btnPredict.Enabled = false;
@@ -505,7 +505,7 @@ namespace 六合分析软件
             MessageBox.Show("报告已导出。", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void BtnBacktest_Click(object sender, EventArgs e)
+        private void BtnBacktest_Click(object? sender, EventArgs e)
         {
             btnBacktest.Enabled = false;
             btnBacktest.Text = "⏳ 回测中...";
