@@ -9,9 +9,9 @@ namespace 六合分析软件
     /// </summary>
     public partial class DataCheckForm : Form
     {
-        TextBox reportBox;
-        Button btnRun;
-        Label statusLabel;
+        TextBox reportBox = null!;
+        Button btnRun = null!;
+        Label statusLabel = null!;
 
         public DataCheckForm()
         {
