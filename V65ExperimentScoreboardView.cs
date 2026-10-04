@@ -94,17 +94,17 @@ public static class V65ExperimentScoreboardView
         grid.Columns.Add("MaxMiss", "最大连续 TOP6 未中");
         grid.Columns.Add("CurrentMiss", "当前连续未中");
         grid.Columns.Add("Status", "状态");
-        grid.Columns["Group"].Width = 150;
-        grid.Columns["Model"].Width = 150;
-        grid.Columns["Samples"].Width = 82;
-        grid.Columns["Top3"].Width = 76;
-        grid.Columns["Top6"].Width = 76;
-        grid.Columns["Rank"].Width = 92;
-        grid.Columns["Recent20"].Width = 150;
-        grid.Columns["Recent50"].Width = 150;
-        grid.Columns["MaxMiss"].Width = 154;
-        grid.Columns["CurrentMiss"].Width = 126;
-        grid.Columns["Status"].Width = 76;
+        grid.Columns["Group"]!.Width = 150;
+        grid.Columns["Model"]!.Width = 150;
+        grid.Columns["Samples"]!.Width = 82;
+        grid.Columns["Top3"]!.Width = 76;
+        grid.Columns["Top6"]!.Width = 76;
+        grid.Columns["Rank"]!.Width = 92;
+        grid.Columns["Recent20"]!.Width = 150;
+        grid.Columns["Recent50"]!.Width = 150;
+        grid.Columns["MaxMiss"]!.Width = 154;
+        grid.Columns["CurrentMiss"]!.Width = 126;
+        grid.Columns["Status"]!.Width = 76;
         var horizontalScroll = new HScrollBar
         {
             Location = new Point(14, 478),
@@ -134,7 +134,7 @@ public static class V65ExperimentScoreboardView
         grid.Resize += (_, _) => RefreshHorizontalScroll();
         grid.CellFormatting += (_, e) =>
         {
-            if (e.ColumnIndex == grid.Columns["Status"].Index && e.Value is string status)
+            if (e.ColumnIndex == grid.Columns["Status"]!.Index && e.Value is string status)
             {
                 e.CellStyle.Font = new Font(grid.Font, FontStyle.Bold);
                 e.CellStyle.BackColor = status switch
@@ -202,16 +202,16 @@ public static class V65ExperimentScoreboardView
             detailGrid.Columns.Add("Top6Hit", "TOP6结果");
             detailGrid.Columns.Add("Time", "预测时间");
             detailGrid.Columns.Add("Source", "来源");
-            detailGrid.Columns["Model"].Width = 150;
-            detailGrid.Columns["Issue"].Width = 88;
-            detailGrid.Columns["Top3"].Width = 150;
-            detailGrid.Columns["Top6"].Width = 205;
-            detailGrid.Columns["Actual"].Width = 82;
-            detailGrid.Columns["Rank"].Width = 82;
-            detailGrid.Columns["Top3Hit"].Width = 90;
-            detailGrid.Columns["Top6Hit"].Width = 90;
-            detailGrid.Columns["Time"].Width = 150;
-            detailGrid.Columns["Source"].Width = 110;
+            detailGrid.Columns["Model"]!.Width = 150;
+            detailGrid.Columns["Issue"]!.Width = 88;
+            detailGrid.Columns["Top3"]!.Width = 150;
+            detailGrid.Columns["Top6"]!.Width = 205;
+            detailGrid.Columns["Actual"]!.Width = 82;
+            detailGrid.Columns["Rank"]!.Width = 82;
+            detailGrid.Columns["Top3Hit"]!.Width = 90;
+            detailGrid.Columns["Top6Hit"]!.Width = 90;
+            detailGrid.Columns["Time"]!.Width = 150;
+            detailGrid.Columns["Source"]!.Width = 110;
 
             V65ExperimentScoreboardDetailRow[] details = selectedModels
                 .SelectMany(model => V65ExperimentScoreboardService.LoadScorecardDetails(model))
