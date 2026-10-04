@@ -202,6 +202,123 @@ jobs:
 
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
           if (@($manifest.records) -notcontains "$target.json") { throw "manifest does not contain $target.json" }
+
+          $runtimeState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
+          $invalidIssues = @($runtimeState.predictions | Where-Object { [string]$_.issue -notmatch '^\\d+
+
+      - name: Commit generated files
+        if: ${{ inputs.dry_run != true }}
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json
+          if (Test-Path 'experiments/v7-independent-learning-v1/archive.json') {
+            git add experiments/v7-independent-learning-v1/archive.json
+          }
+          if (git diff --cached --quiet) {
+            Write-Host "No prediction changes to commit."
+            exit 0
+          }
+          $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
+          git commit -m "chore: update V7 prediction for issue $issue"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload history database artifact
+        if: ${{ inputs.dry_run != true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: v7-history-db
+          path: data/history.db
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish V7 data to smart ledger
+        if: ${{ inputs.dry_run != true }}
+        shell: pwsh
+        run: |
+          function Invoke-RequiredPublish {
+            param([string]$Url, [hashtable]$Headers, [string]$Body)
+            $lastError = $null
+            for ($attempt = 1; $attempt -le 3; $attempt++) {
+              try {
+                $response = Invoke-RestMethod -Method Post -Uri $Url -Headers $Headers -ContentType 'application/json' -Body $Body -ErrorAction Stop
+                if ($null -ne $response.status -and $response.status -ne 'success') {
+                  throw "发布接口返回异常状态：$($response.status)"
+                }
+                return $response
+              } catch {
+                $lastError = $_
+                if ($attempt -lt 3) { Start-Sleep -Seconds (3 * $attempt) }
+              }
+            }
+            throw "发布失败：$($lastError.Exception.Message)"
+          }
+
+          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
+          $predictions = @{}
+          foreach ($file in $manifest.records) {
+            $predictions[$file] = Get-Content "site/data/daily-records/$file" -Raw | ConvertFrom-Json
+          }
+          $payload = @{
+            history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
+            dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
+            manifest = $manifest
+            modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
+            predictions = $predictions
+          } | ConvertTo-Json -Depth 100 -Compress
+          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
+          $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
+          if (!$env:SITES_SIWC_BYPASS_TOKEN) { throw 'Missing SITES_SIWC_BYPASS_TOKEN Actions secret.' }
+          $headers = @{
+            Authorization = "Bearer $oidc"
+            'OAI-Sites-Authorization' = "Bearer $env:SITES_SIWC_BYPASS_TOKEN"
+          }
+          Invoke-RequiredPublish -Url 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -Body $payload | Out-Host
+
+          $publishedManifest = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/manifest' -Headers $headers -ErrorAction Stop
+          $expected = @($manifest.records | ForEach-Object { [string]$_ } | Sort-Object { [int]($_ -replace '\.json$', '') } -Descending)
+          $actual = @($publishedManifest.records | ForEach-Object { [string]$_ })
+          foreach ($file in $expected) {
+            if ($actual -notcontains $file) { throw "发布校验失败：缺少 $file" }
+          }
+          $latestFile = $expected | Select-Object -First 1
+          if ($latestFile) {
+            Invoke-RestMethod -Uri "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/prediction?file=$latestFile" -Headers $headers -ErrorAction Stop | Out-Null
+          }
+        env:
+          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
+
+  retry-on-failure:
+    needs: [check-trigger, predict]
+    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.check-trigger.outputs.retry_allowed == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Queue one guarded retry
+        shell: pwsh
+        run: |
+          $startIssue = '${{ inputs.start_issue }}'
+          if (!$startIssue) { $startIssue = '2026197' }
+          $body = @{
+            ref = '${{ github.ref_name }}'
+            inputs = @{
+              issue = '${{ inputs.issue }}'
+              start_issue = $startIssue
+              force = '${{ inputs.force }}'
+              dry_run = 'false'
+              refresh_data = 'true'
+              retry_attempt = '1'
+            }
+          } | ConvertTo-Json -Compress
+          Invoke-RestMethod -Method Post -Uri 'https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-prediction.yml/dispatches' -Headers @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = 'application/vnd.github+json'
+            'X-GitHub-Api-Version' = '2022-11-28'
+          } -ContentType 'application/json' -Body $body -ErrorAction Stop
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+ })
+          if ($invalidIssues.Count -gt 0) { throw "runtime-state contains non-numeric prediction issue(s); refusing production publish" }
           Write-Host "Production safety checks passed for issue $target."
 
       - name: Commit generated files
