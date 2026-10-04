@@ -33,7 +33,7 @@ public sealed class HistoricalReplayEngine
             var prefix = history.Take(index).ToArray();
             if (prefix.Any(row => ParseIssue(row.Period) >= targetIssue))
             {
-                findings.Add(new(actual.Period ?? string.Empty, "History", prefix.Max(row => row.Period ?? string.Empty)));
+                findings.Add(new(actual.Period ?? string.Empty, "History", (prefix.Max(row => row.Period ?? string.Empty) ?? string.Empty)));
                 throw new InvalidDataException($"检测到未来数据泄漏：{actual.Period}");
             }
 
