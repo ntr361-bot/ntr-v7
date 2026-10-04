@@ -75,6 +75,13 @@ jobs:
           } | ConvertTo-Json -Depth 100 -Compress
           $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
           $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
-          $headers = @{ Authorization = "Bearer $oidc" }
+          if (!$env:SITES_SIWC_BYPASS_TOKEN) { throw 'Missing SITES_SIWC_BYPASS_TOKEN Actions secret.' }
+          $headers = @{
+            Authorization = "Bearer $oidc"
+            'OAI-Sites-Authorization' = "Bearer $env:SITES_SIWC_BYPASS_TOKEN"
+          }
           $response = Invoke-RestMethod -Method Post -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -ContentType 'application/json' -Body $payload -ErrorAction Stop
           if ($null -ne $response.status -and $response.status -ne 'success') { throw "发布接口返回异常：$($response.status)" }
+
+        env:
+          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
