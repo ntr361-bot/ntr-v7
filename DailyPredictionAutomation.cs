@@ -51,7 +51,7 @@ public static class DailyPredictionAutomation
             AIEngine.SavePredictionHistory(result);
             baseResults.Add(result);
             if (DisplayPeriods.Contains(period))
-                ai[period.ToString()] = CreateCompletePrediction(result);
+                ai[ExperimentModels.ForPeriods(period)] = CreateCompletePrediction(result);
         }
 
         IReadOnlyList<DatabaseHelper.HistoryRecord> learningHistory = DatabaseHelper.GetLatestHistory(int.MaxValue);
@@ -75,7 +75,7 @@ public static class DailyPredictionAutomation
             .Distinct()
             .OrderBy(number => number)
             .ToArray();
-        ai["auto"] = CreateCompleteAutoPrediction(learning, autoTop3, autoTop6, autoNumbers);
+        ai[ExperimentModels.AutoLearning] = CreateCompleteAutoPrediction(learning, autoTop3, autoTop6, autoNumbers);
 
         // This is an isolated audit write. It runs only after all four formal records exist.
         string historyCutoffIssue = DatabaseHelper.GetLatestPeriod();
@@ -214,7 +214,7 @@ public static class DailyPredictionAutomation
                 ?? throw new InvalidDataException($"第{issue}期云端预测文件无法解析");
             JsonObject ai = root["ai_zodiac"] as JsonObject
                 ?? throw new InvalidDataException($"第{issue}期缺少AI预测记录");
-            if (ai["auto"] is not null && ai["200"] is null) continue;
+            if (ai[ExperimentModels.AutoLearning] is not null && ai["auto"] is null && ai["200"] is null) continue;
 
             long prior = chronological.Select(record => long.Parse(record.Period)).LastOrDefault(value => value < issue);
             if (prior == 0) continue;
@@ -238,7 +238,8 @@ public static class DailyPredictionAutomation
                     auto["top6_hit"] = top6.Contains(actual.SpecialZodiac);
                 }
                 ai.Remove("200");
-                ai["auto"] = auto;
+                ai.Remove("auto");
+                ai[ExperimentModels.AutoLearning] = auto;
             }
             AtomicWrite(path, root);
             updated++;
