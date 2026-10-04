@@ -9,29 +9,29 @@ namespace 六合分析软件
 {
     public partial class Form1 : Form
     {
-        Panel menuPanel;
-        Panel mainPanel;
+        Panel menuPanel = null!;
+        Panel mainPanel = null!;
 
-        Button btnHome;
-        Button btnHistory;
-        Button btnZodiacPredict;
-        Button btnAIPredictHistory;
-        Button btnLive;
-        Button btnAnalyze;
-        Button btnPredict;
-        Button btnCheck;
-        Button btnMlBacktest;
-        Button btnV7Models;
-        Button btnMacroExperiments;
+        Button btnHome = null!;
+        Button btnHistory = null!;
+        Button btnZodiacPredict = null!;
+        Button btnAIPredictHistory = null!;
+        Button btnLive = null!;
+        Button btnAnalyze = null!;
+        Button btnPredict = null!;
+        Button btnCheck = null!;
+        Button btnMlBacktest = null!;
+        Button btnV7Models = null!;
+        Button btnMacroExperiments = null!;
 
-        Label titleLabel;
-        Label cloudSyncLabel;
-        TextBox txtNumber;
-        Button btnSaveHistory;
-        Label saveStatus;
-        RadioButton rbDownload100;
-        RadioButton rbDownload300;
-        RadioButton rbDownload500;
+        Label titleLabel = null!;
+        Label cloudSyncLabel = null!;
+        TextBox txtNumber = null!;
+        Button btnSaveHistory = null!;
+        Label saveStatus = null!;
+        RadioButton rbDownload100 = null!;
+        RadioButton rbDownload300 = null!;
+        RadioButton rbDownload500 = null!;
 
         // AI 预测缓存（统一使用 AIEngine）
         const int HomePredictionPeriods = 100;
