@@ -14,13 +14,13 @@ namespace 六合分析软件
     /// </summary>
     public partial class ZodiacPredictForm : Form
     {
-        Panel topBar;
-        ComboBox cboPeriods;
-        Button btnPredict;
-        Button btnBacktest;
-        Panel scrollPanel;
-        Panel resultPanel;
-        Panel backtestPanel;
+        Panel topBar = null!;
+        ComboBox cboPeriods = null!;
+        Button btnPredict = null!;
+        Button btnBacktest = null!;
+        Panel scrollPanel = null!;
+        Panel resultPanel = null!;
+        Panel backtestPanel = null!;
         AIEngine.PredictResult? lastResult;
         Dictionary<int, AIEngine.PredictResult> lastPeriodResults = new();
 
