@@ -816,7 +816,7 @@ namespace 六合分析软件
         }
 
         // 保存记录到数据库
-        private async void BtnSaveHistory_Click(object sender, EventArgs e)
+        private async void BtnSaveHistory_Click(object? sender, EventArgs e)
         {
             // 移除旧状态提示
             var oldStatus = mainPanel.Controls.Find("saveStatus", false);
@@ -855,7 +855,7 @@ namespace 六合分析软件
         }
 
         // 更新历史数据（从网站抓取）
-        private async void BtnUpdateHistory_Click(object sender, EventArgs e)
+        private async void BtnUpdateHistory_Click(object? sender, EventArgs e)
         {
             // 移除旧状态提示
             var oldStatus = mainPanel.Controls.Find("saveStatus", false);
@@ -913,7 +913,7 @@ namespace 六合分析软件
         }
 
         // 测试抓取（不保存数据，仅显示诊断信息）
-        private async void BtnTestCrawl_Click(object sender, EventArgs e)
+        private async void BtnTestCrawl_Click(object? sender, EventArgs e)
         {
             // 移除旧状态提示
             var oldStatus = mainPanel.Controls.Find("saveStatus", false);
@@ -958,41 +958,41 @@ namespace 六合分析软件
         }
 
         // 历史数据
-        private void BtnHistory_Click(object sender, EventArgs e)
+        private void BtnHistory_Click(object? sender, EventArgs e)
         {
             HistoryForm form = new HistoryForm();
             form.ShowDialog();
         }
 
         // AI生肖预测
-        private void BtnZodiacPredict_Click(object sender, EventArgs e)
+        private void BtnZodiacPredict_Click(object? sender, EventArgs e)
         {
             ZodiacPredictForm form = new ZodiacPredictForm();
             form.ShowDialog();
         }
 
         // AI预测历史
-        private void BtnAIPredictHistory_Click(object sender, EventArgs e)
+        private void BtnAIPredictHistory_Click(object? sender, EventArgs e)
         {
             AIPredictHistoryForm form = new AIPredictHistoryForm();
             form.ShowDialog();
         }
 
         // 开奖直播
-        private void BtnLive_Click(object sender, EventArgs e)
+        private void BtnLive_Click(object? sender, EventArgs e)
         {
             LiveStreamForm form = new LiveStreamForm();
             form.ShowDialog();
         }
 
         // 分析
-        private void BtnAnalyze_Click(object sender, EventArgs e)
+        private void BtnAnalyze_Click(object? sender, EventArgs e)
         {
             Form form = CreateReservedDataCenterForm();
             form.ShowDialog();
         }
 
-        private void BtnMacroExperiments_Click(object sender, EventArgs e)
+        private void BtnMacroExperiments_Click(object? sender, EventArgs e)
         {
             // Deliberately empty until a named, immutable experiment is registered.
             // The UI must not manufacture a production experiment or enable Macro.
@@ -1043,14 +1043,14 @@ namespace 六合分析软件
         }
 
         // 预测
-        private void BtnPredict_Click(object sender, EventArgs e)
+        private void BtnPredict_Click(object? sender, EventArgs e)
         {
             TrendPredictionForm form = new TrendPredictionForm();
             form.ShowDialog();
         }
 
         // ML特征实验：只使用目标期之前的数据，不替换现有V6.5预测结果
-        private async void BtnMlBacktest_Click(object sender, EventArgs e)
+        private async void BtnMlBacktest_Click(object? sender, EventArgs e)
         {
             btnMlBacktest.Enabled = false;
             try
@@ -1084,7 +1084,7 @@ namespace 六合分析软件
             finally { btnMlBacktest.Enabled = true; }
         }
 
-        private async void BtnV7Models_Click(object sender, EventArgs e)
+        private async void BtnV7Models_Click(object? sender, EventArgs e)
         {
             btnV7Models.Enabled = false;
             try
@@ -1120,7 +1120,7 @@ namespace 六合分析软件
         }
 
         // 自用规律
-        private void BtnCheck_Click(object sender, EventArgs e)
+        private void BtnCheck_Click(object? sender, EventArgs e)
         {
             ZodiacRuleForm form = new ZodiacRuleForm();
             form.ShowDialog();
