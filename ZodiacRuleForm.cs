@@ -129,19 +129,19 @@ namespace 六合分析软件
             table.Columns.Add("结果", "结果");
             table.Columns.Add("建议结果", "建议");
 
-            table.Columns["期号"].Width = 65;
-            table.Columns["验证期"].Width = 65;
-            table.Columns["首位"].Width = 65;
-            table.Columns["末位"].Width = 65;
-            table.Columns["尾数和"].Width = 45;
-            table.Columns["号码"].Width = 45;
-            table.Columns["生肖"].Width = 45;
-            table.Columns["预测6肖"].Width = 155;
-            table.Columns["建议方向"].Width = 55;
-            table.Columns["建议6肖"].Width = 155;
-            table.Columns["实际生肖"].Width = 55;
-            table.Columns["结果"].Width = 50;
-            table.Columns["建议结果"].Width = 50;
+            table.Columns["期号"]!.Width = 65;
+            table.Columns["验证期"]!.Width = 65;
+            table.Columns["首位"]!.Width = 65;
+            table.Columns["末位"]!.Width = 65;
+            table.Columns["尾数和"]!.Width = 45;
+            table.Columns["号码"]!.Width = 45;
+            table.Columns["生肖"]!.Width = 45;
+            table.Columns["预测6肖"]!.Width = 155;
+            table.Columns["建议方向"]!.Width = 55;
+            table.Columns["建议6肖"]!.Width = 155;
+            table.Columns["实际生肖"]!.Width = 55;
+            table.Columns["结果"]!.Width = 50;
+            table.Columns["建议结果"]!.Width = 50;
 
             table.CellFormatting += (s, e) =>
             {
@@ -709,8 +709,8 @@ namespace 六合分析软件
         private List<string> ShowLatestPrediction(List<DatabaseHelper.HistoryRecord> records, Dictionary<string, string> numToZodiac)
         {
             var preview = this.Controls.Find("predictPreview", true).FirstOrDefault() as Label;
-            var panel = (Panel)preview?.Parent;
             if (preview == null || records.Count < 2) return new List<string>();
+            var panel = preview.Parent;
 
             var latest = records[0]; // 最新一期（降序排列）
             string nums = latest.Numbers ?? "";
