@@ -19,13 +19,13 @@ namespace 六合分析软件
     /// </summary>
     public partial class ZodiacRuleForm : Form
     {
-        DataGridView table;
-        Label statusLabel;
-        Label summaryLabel;
-        Label missAnalysisLabel;
-        FlowLayoutPanel reversePanel;
-        Label reverseTitleLabel;
-        System.Windows.Forms.Timer autoRefreshTimer;
+        DataGridView table = null!;
+        Label statusLabel = null!;
+        Label summaryLabel = null!;
+        Label missAnalysisLabel = null!;
+        FlowLayoutPanel reversePanel = null!;
+        Label reverseTitleLabel = null!;
+        System.Windows.Forms.Timer autoRefreshTimer = null!;
         string lastLoadedPeriod = "";
         int selectedPeriods = 150; // 默认验算今年最新往前150期
 
