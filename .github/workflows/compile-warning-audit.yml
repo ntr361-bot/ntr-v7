@@ -1,0 +1,23 @@
+name: Temporary compile warning audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/compile-warning-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Restore
+        run: dotnet restore PredictionRunner/PredictionRunner.csproj
+      - name: Build only
+        run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
