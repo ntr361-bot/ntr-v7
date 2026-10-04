@@ -72,7 +72,7 @@ namespace 六合分析软件
 
             result.TotalPredictions = testPeriods;
 
-            int hits = 0, numberHits = 0;
+            int hits = 0;
             int currentConsecutiveFail = 0, currentConsecutiveHit = 0;
             result.MaxConsecutiveFail = 0;
             result.MaxConsecutiveHit = 0;
