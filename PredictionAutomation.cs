@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using 六合分析软件.MacroReasoning;
 
 namespace 六合分析软件;
 
