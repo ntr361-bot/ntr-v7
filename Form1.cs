@@ -928,7 +928,7 @@ namespace 六合分析软件
             saveStatus.Text = "正在测试连接...";
             mainPanel.Controls.Add(saveStatus);
 
-            Button btn = (Button)sender;
+            if (sender is not Button btn) return;
             btn.Enabled = false;
 
             try
