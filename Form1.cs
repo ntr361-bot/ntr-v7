@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.WinForms;
-using 六合分析软件.MacroReasoning;
 
 namespace 六合分析软件
 {
@@ -21,7 +20,6 @@ namespace 六合分析软件
         Button btnPredict = null!;
         Button btnCheck = null!;
         Button btnV7Models = null!;
-        Button btnMacroExperiments = null!;
 
         Label titleLabel = null!;
         Label cloudSyncLabel = null!;
@@ -128,7 +126,6 @@ namespace 六合分析软件
             btnAnalyze = CreateButton("📊 数据中心", 320);
             btnPredict = CreateButton("走势预测", 370);
             btnV7Models = CreateButton("🧠 智能模型实验", 490);
-            btnMacroExperiments = CreateButton("🔬 Macro 实验中心", 540);
             btnCheck = CreateButton("📐 自用规律", 640);
 
             menuPanel.Controls.Add(btnHome);
@@ -139,7 +136,6 @@ namespace 六合分析软件
             menuPanel.Controls.Add(btnAnalyze);
             menuPanel.Controls.Add(btnPredict);
             menuPanel.Controls.Add(btnV7Models);
-            menuPanel.Controls.Add(btnMacroExperiments);
             menuPanel.Controls.Add(btnCheck);
 
             btnHome.Click += (s, e) => ShowHome();
@@ -150,7 +146,6 @@ namespace 六合分析软件
             btnAnalyze.Click += BtnAnalyze_Click;
             btnPredict.Click += BtnPredict_Click;
             btnV7Models.Click += BtnV7Models_Click;
-            btnMacroExperiments.Click += BtnMacroExperiments_Click;
             btnCheck.Click += BtnCheck_Click;
 
             // 主显示区域
@@ -986,17 +981,6 @@ namespace 六合分析软件
         {
             Form form = CreateReservedDataCenterForm();
             form.ShowDialog();
-        }
-
-        private void BtnMacroExperiments_Click(object? sender, EventArgs e)
-        {
-            // Deliberately empty until a named, immutable experiment is registered.
-            // The UI must not manufacture a production experiment or enable Macro.
-            var registry = new MacroReasoning.MacroExperimentRegistry();
-            var shadow = new MacroReasoning.MacroLiveShadowService();
-            var explain = new MacroReasoning.ModelExplanationService(new EmptyMacroExplanationSource());
-            new MacroExperimentCenterForm(new MacroReasoning.MacroExperimentCenterModel(registry, shadow,
-                new MacroReasoning.MacroModelAssistant(explain))).ShowDialog(this);
         }
 
         private sealed class EmptyMacroExplanationSource : MacroReasoning.IMacroExplanationSource
