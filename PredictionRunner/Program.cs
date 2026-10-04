@@ -1,6 +1,5 @@
 using System.Text.Json;
 using 六合分析软件;
-using 六合分析软件.MacroReasoning;
 
 string? temporarySnapshotDirectory = null;
 try
