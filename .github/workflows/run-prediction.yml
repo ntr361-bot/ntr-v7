@@ -196,8 +196,12 @@ jobs:
           if ([long]$prediction.issue -ne $target -or $prediction.status -ne 'success') { throw "prediction artifact failed validation for $target" }
           if ([long]$daily.issue -ne $target -or $daily.status -ne 'success') { throw "daily artifact failed validation for $target" }
           if ([long]$daily.source_issue -ne ($target - 1)) { throw "daily source_issue is not target-1 for $target" }
-          if ($null -eq $daily.ai_zodiac.v65_100 -or $null -eq $daily.ai_zodiac.v65_auto) { throw "daily artifact missing 100-period or auto-learning model" }
-          if (@($daily.ai_zodiac.'100'.top6).Count -ne 6 -or @($daily.ai_zodiac.auto.top6).Count -ne 6) { throw "production Top6 output is incomplete" }
+          $model100 = $daily.ai_zodiac.v65_100
+          if ($null -eq $model100) { $model100 = $daily.ai_zodiac.'100' }
+          $modelAuto = $daily.ai_zodiac.v65_auto
+          if ($null -eq $modelAuto) { $modelAuto = $daily.ai_zodiac.auto }
+          if ($null -eq $model100 -or $null -eq $modelAuto) { throw "daily artifact missing 100-period or auto-learning model" }
+          if (@($model100.top6).Count -ne 6 -or @($modelAuto.top6).Count -ne 6) { throw "production Top6 output is incomplete" }
 
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
           if (@($manifest.records) -notcontains "$target.json") { throw "manifest does not contain $target.json" }
