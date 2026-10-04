@@ -295,7 +295,7 @@ namespace 六合分析软件
             {
                 if (gridZodiacMissing.Columns["StatusZ"]!.Index == e.ColumnIndex && e.Value != null)
                 {
-                    if (e.Value.ToString().Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
+                    if ((e.Value.ToString() ?? string.Empty).Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
                 }
             };
 
