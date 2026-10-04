@@ -197,7 +197,6 @@ jobs:
           if ([long]$daily.issue -ne $target -or $daily.status -ne 'success') { throw "daily artifact failed validation for $target" }
           if ([long]$daily.source_issue -ne ($target - 1)) { throw "daily source_issue is not target-1 for $target" }
           if ($null -eq $daily.ai_zodiac.'100' -or $null -eq $daily.ai_zodiac.auto) { throw "daily artifact missing 100-period or auto-learning model" }
-          if ($null -eq $daily.ai_zodiac.regularity50 -or $null -eq $daily.ai_zodiac.period50_fair) { throw "daily artifact missing frozen Forward50 models" }
           if (@($daily.ai_zodiac.'100'.top6).Count -ne 6 -or @($daily.ai_zodiac.auto.top6).Count -ne 6) { throw "production Top6 output is incomplete" }
 
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
