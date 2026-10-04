@@ -296,9 +296,11 @@ namespace 六合分析软件
             e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
 
             bool selected = (e.State & DataGridViewElementStates.Selected) != 0;
-            Color normalColor = selected ? e.CellStyle.SelectionForeColor : e.CellStyle.ForeColor;
+            var cellStyle = e.CellStyle;
+            if (cellStyle == null || e.Graphics == null) return;
+            Color normalColor = selected ? cellStyle.SelectionForeColor : cellStyle.ForeColor;
             Color hitColor = selected ? Color.Yellow : Color.FromArgb(0, 105, 45);
-            Font normalFont = e.CellStyle.Font ?? table.Font;
+            Font normalFont = cellStyle.Font ?? table.Font;
             TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix;
             int left = e.CellBounds.Left + 3;
             int right = e.CellBounds.Right - 3;
@@ -365,7 +367,9 @@ namespace 六合分析软件
             e.PaintBackground(e.CellBounds, true);
             e.Paint(e.CellBounds, DataGridViewPaintParts.Border);
 
-            Font labelFont = e.CellStyle.Font ?? table.Font;
+            var cellStyle = e.CellStyle;
+            if (cellStyle == null || e.Graphics == null) return;
+            Font labelFont = cellStyle.Font ?? table.Font;
             using Font normalColorFont = new Font(labelFont.FontFamily, 10, FontStyle.Regular);
             using Font hitColorFont = new Font(labelFont.FontFamily, 12, FontStyle.Bold);
             TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix |
