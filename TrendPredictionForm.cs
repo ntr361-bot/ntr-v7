@@ -9,10 +9,10 @@ namespace 六合分析软件
 {
     public partial class TrendPredictionForm : Form
     {
-        TabControl tabControl;
-        Panel topBar;
-        Label dataInfoLabel;
-        ComboBox periodSelector;
+        TabControl tabControl = null!;
+        Panel topBar = null!;
+        Label dataInfoLabel = null!;
+        ComboBox periodSelector = null!;
         DateTime _lastLoadTime;
 
         private int SelectedPeriods => periodSelector?.SelectedItem is int periods ? periods : 200;
