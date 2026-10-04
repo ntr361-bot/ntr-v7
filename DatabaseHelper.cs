@@ -751,7 +751,7 @@ namespace 六合分析软件
                     if (HistoryIssueUpperBound.Value is long maxIssue)
                         cmd.Parameters.AddWithValue("@maxIssue", maxIssue);
                     var result = cmd.ExecuteScalar();
-                    return result != null ? result.ToString() : "";
+                    return result?.ToString() ?? "";
                 }
             }
             catch (Exception ex)
@@ -771,7 +771,7 @@ namespace 六合分析软件
                     string sql = "SELECT OpenTime FROM History WHERE OpenTime != '' ORDER BY CAST(Period AS INTEGER) DESC LIMIT 1";
                     SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                     var result = cmd.ExecuteScalar();
-                    return result != null ? result.ToString() : "";
+                    return result?.ToString() ?? "";
                 }
             }
             catch (Exception ex)
