@@ -172,7 +172,7 @@ namespace 六合分析软件
             grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grid.CellFormatting += (s, e) =>
             {
-                if (e.ColumnIndex == grid.Columns["Level"].Index && e.Value != null)
+                if (e.ColumnIndex == grid.Columns["Level"]!.Index && e.Value != null)
                 {
                     string value = e.Value.ToString() ?? "";
                     if (value == "热")
