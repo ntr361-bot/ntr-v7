@@ -188,7 +188,7 @@ namespace 六合分析软件
             {
                 if (e.ColumnIndex == gridZodiacs.Columns["Trend"]!.Index && e.Value != null)
                 {
-                    string v = e.Value.ToString();
+                    string v = e.Value.ToString() ?? string.Empty;
                     if (v.Contains("上升")) { e.CellStyle.ForeColor = Color.FromArgb(0, 150, 0); e.CellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold); }
                     else if (v.Contains("下降")) { e.CellStyle.ForeColor = Color.FromArgb(200, 50, 50); e.CellStyle.Font = new Font("微软雅黑", 10, FontStyle.Bold); }
                     else if (v.Contains("冷")) { e.CellStyle.ForeColor = Color.Gray; }
@@ -269,7 +269,7 @@ namespace 六合分析软件
             {
                 if (e.ColumnIndex == gridMissing.Columns["Status"]!.Index && e.Value != null)
                 {
-                    if (e.Value.ToString().Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
+                    if ((e.Value.ToString() ?? string.Empty).Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
                 }
             };
 
@@ -293,7 +293,7 @@ namespace 六合分析软件
 
             gridZodiacMissing.CellFormatting += (s, e) =>
             {
-                if (gridZodiacMissing.Columns["StatusZ"].Index == e.ColumnIndex && e.Value != null)
+                if (gridZodiacMissing.Columns["StatusZ"]!.Index == e.ColumnIndex && e.Value != null)
                 {
                     if (e.Value.ToString().Contains("⚠️")) { e.CellStyle.ForeColor = Color.Red; e.CellStyle.Font = new Font("微软雅黑", 9, FontStyle.Bold); }
                 }
