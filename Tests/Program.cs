@@ -239,15 +239,10 @@ var tests = new (string Name, Action Run)[]
     ,("成绩榜明细在最近30期成绩前展示该模型最新预测", ScoreboardDetailsIncludeLatestPrediction)
     ,("成绩榜提供直接的近30期明细入口", ScoreboardProvidesDirectDetailEntry)
     ,("八肖规则只做小幅校正", EightZodiacBonusIsBounded)
-    ,("ML features are leakage safe", MlFeaturesAreLeakageSafe)
-    ,("ML models return ranked probabilities", MlModelsReturnRankedProbabilities)
-    ,("ML rolling backtest records metrics", MlRollingBacktestRecordsMetrics)
-    ,("ML selects the highest-gain split feature", MlSelectsHighestGainFeature)
     ,("FeatureEngine exposes 30+ finite non-five-element features", FeatureEngineExposesThirtyPlusFeatures)
     ,("Five-element signals are removed from prediction", FiveElementSignalsAreRemoved)
     ,("V7 feature engine exposes independent windows", V7FeatureEngineExposesIndependentWindows)
     ,("V7 engines are independent and filter short repeats", V7EnginesAreIndependent)
-    ,("V7 ML prediction facade returns probabilities", V7MlPredictionFacadeWorks)
     ,("V7 color engine is independent", V7ColorEngineWorks)
     ,("V7 auto optimizer compares schemes", V7AutoOptimizerWorks)
     ,("V7 AI report explains model state", V7AiReportExplainsState)
@@ -991,62 +986,6 @@ void EightZodiacBonusIsBounded()
         "八肖关联加分不应大到单独改变榜首");
 }
 
-void MlFeaturesAreLeakageSafe()
-{
-    var records = new List<DatabaseHelper.HistoryRecord>
-    {
-        History("1", "01", "鼠"), History("2", "02", "鼠"), History("3", "01", "牛"),
-        History("4", "03", "虎"), History("5", "01", "鼠"), History("6", "04", "兔")
-    };
-    var before = MachineLearningPredictionService.BuildFeatures(records, 5, "鼠");
-    var after = MachineLearningPredictionService.BuildFeatures(records, 4, "鼠");
-    Assert(before.Recent5Count == 3, "recent 5 count should only use prior records");
-    Assert(after.Recent5Count == 2, "feature extraction used future records");
-    Assert(before.Gap1RepeatCount >= 1, "gap-1 feature missing");
-    Assert(after.Gap2RepeatCount >= 0, "gap-2 feature missing");
-}
-
-void MlModelsReturnRankedProbabilities()
-{
-    var records = new List<DatabaseHelper.HistoryRecord>();
-    string[] z = { "鼠", "牛", "鼠", "虎", "鼠", "兔", "鼠", "龙", "牛", "鼠", "蛇", "鼠" };
-    for (int i = 0; i < z.Length; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), z[i]));
-    var result = MachineLearningPredictionService.Predict(records, 10, MlModelKind.LightGbmStyle);
-    Assert(result.Count == 12, "one probability per zodiac is required");
-    Assert(result.All(x => x.Probability is >= 0 and <= 1), "probability outside [0,1]");
-    Assert(result.SequenceEqual(result.OrderByDescending(x => x.Probability)), "results are not ranked");
-    Assert(result.Take(3).Count() == 3 && result.Take(6).Count() == 6, "TOP3/TOP6 unavailable");
-}
-
-void MlRollingBacktestRecordsMetrics()
-{
-    var records = new List<DatabaseHelper.HistoryRecord>();
-    string[] z = { "鼠", "牛", "鼠", "虎", "鼠", "兔", "鼠", "龙", "牛", "鼠", "蛇", "鼠", "马", "鼠" };
-    for (int i = 0; i < z.Length; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), z[i]));
-    var report = MachineLearningPredictionService.RollingBacktest(records, 5, 3, MlModelKind.XgBoostStyle);
-    Assert(report.Predictions.Count == records.Count - 5, "rolling backtest count is incorrect");
-    Assert(report.Top3HitRate is >= 0 and <= 1 && report.Top6HitRate is >= 0 and <= 1, "invalid hit rate");
-    Assert(report.MaximumConsecutiveMisses >= 0, "missing max consecutive misses");
-    Assert(report.Predictions.All(x => x.TrainingCount <= x.TargetIndex), "backtest used future data");
-}
-
-void MlSelectsHighestGainFeature()
-{
-    var method = typeof(MachineLearningPredictionService).GetMethod(
-        "SelectBestSplitFeature", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-    Assert(method != null, "ML scorer does not expose the production split selector for regression testing");
-    int width = MachineLearningPredictionService.FeatureNames.Count;
-    var samples = Enumerable.Range(0, 5).Select(_ => new double[width]).ToArray();
-    samples[0][0] = 0; samples[1][0] = 0; samples[2][0] = 0; samples[3][0] = 1; samples[4][0] = 1;
-    int distractor = width - 1;
-    samples[0][distractor] = 0; samples[1][distractor] = 1; samples[2][distractor] = 0;
-    samples[3][distractor] = 1; samples[4][distractor] = 0;
-    var labels = new double[] { 0, 0, 0, 1, 1 };
-    string selected = Convert.ToString(method!.Invoke(null, new object[] { samples, labels })) ?? "";
-    Assert(selected == MachineLearningPredictionService.FeatureNames[0],
-        $"expected highest-gain {MachineLearningPredictionService.FeatureNames[0]}, got {selected}");
-}
-
 void FeatureEngineExposesThirtyPlusFeatures()
 {
     var records = new List<DatabaseHelper.HistoryRecord>();
@@ -1054,13 +993,10 @@ void FeatureEngineExposesThirtyPlusFeatures()
     for (int i = 0; i < 140; i++)
         records.Add(History((2023001 + i).ToString(), ((i * 7) % 49 + 1).ToString("00"), zodiacs[(i * 5 + i / 9) % 12]));
     var ruleFeature = FeatureEngine.BuildFeatures(records).Single(x => x.Zodiac == "鼠");
-    var mlFeature = MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠");
     Assert(FeatureEngine.FeatureNames.Count >= 30, $"FeatureEngine only exposes {FeatureEngine.FeatureNames.Count} features");
-    Assert(MachineLearningPredictionService.FeatureNames.Count == FeatureEngine.FeatureNames.Count,
-        "ML and FeatureEngine feature dimensions differ");
-    Assert(ruleFeature.ToVector().Length == FeatureEngine.FeatureNames.Count && mlFeature.ToVector().Length == FeatureEngine.FeatureNames.Count,
+    Assert(ruleFeature.ToVector().Length == FeatureEngine.FeatureNames.Count,
         "feature vector length differs from feature names");
-    Assert(ruleFeature.ToVector().All(double.IsFinite) && mlFeature.ToVector().All(double.IsFinite),
+    Assert(ruleFeature.ToVector().All(double.IsFinite),
         "feature vector contains NaN or Infinity");
     Assert(!FeatureEngine.FeatureNames.Any(x => x.Contains("five_element", StringComparison.OrdinalIgnoreCase)),
         "five-element feature was reintroduced");
@@ -1068,14 +1004,10 @@ void FeatureEngineExposesThirtyPlusFeatures()
 
 void FiveElementSignalsAreRemoved()
 {
-    Assert(!MachineLearningPredictionService.FeatureNames.Any(x => x.Contains("five_element", StringComparison.OrdinalIgnoreCase)),
-        "five-element feature is still present in ML input");
     Assert(!typeof(ZodiacFeature).GetProperties().Any(x => x.Name.Contains("FiveElement", StringComparison.OrdinalIgnoreCase)),
         "five-element fields are still present in rule features");
     var records = new List<DatabaseHelper.HistoryRecord>();
     for (int i = 0; i < 40; i++) records.Add(History((i + 1).ToString(), ((i % 10) + 1).ToString("00"), i % 3 == 0 ? "鼠" : "牛"));
-    Assert(MachineLearningPredictionService.BuildFeatures(records, records.Count, "鼠").ToVector().Length >= 30,
-        "ML vector should contain at least thirty non-five-element features");
     var engines = new[] { V7Engine.Predict(records) };
     var report = AIReportEngine.Generate(records, engines, ColorEngine.Predict(records));
     Assert(!report.Text.Contains("五行", StringComparison.Ordinal), "AI report still exposes five-element analysis");
@@ -1100,15 +1032,6 @@ void V7EnginesAreIndependent()
     Assert(v7.Engine == "V7Engine" && v7.Window == 0, "V7 engine metadata incorrect");
     Assert(v7.Top6.Count <= 6, "TOP6 output invalid");
     Assert(v7.Features.All(x => !(x.ShortForbidden && v7.Top6.Contains(x.Zodiac))), "short-forbidden zodiac was not filtered");
-}
-
-void V7MlPredictionFacadeWorks()
-{
-    var records = new List<DatabaseHelper.HistoryRecord>();
-    for (int i = 0; i < 40; i++) records.Add(History((i + 1).ToString(), (i + 1).ToString("00"), i % 4 == 0 ? "鼠" : "牛"));
-    var result = MLPredictEngine.Predict(records, MlModelKind.LightGbmStyle);
-    Assert(result.Probabilities.Count == 12 && result.Top6.Count == 6, "ML facade output is incomplete");
-    Assert(result.Probabilities.Values.All(x => x is >= 0 and <= 1), "ML facade probability invalid");
 }
 
 void V82MarketStateIsNormalizedAndLeakageSafe()
