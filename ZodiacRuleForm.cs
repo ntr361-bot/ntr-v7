@@ -730,7 +730,8 @@ namespace 六合分析软件
             int nextPeriod = int.TryParse(latest.Period, out int lp) ? lp + 1 : 0;
 
             preview.Text = $"⭐ 最新预测: 期号{latest.Period} 首位{fn}(尾{fn%10}) + 末位{ln}(尾{ln%10}) = {tailSum} → {pn:D2}→{zodiac} → 下期({nextPeriod})预测6肖: {string.Join(" ", predicts)}";
-            panel.BackColor = Color.FromArgb(255, 248, 220);
+            if (panel != null)
+                panel.BackColor = Color.FromArgb(255, 248, 220);
 
             // 自动保存预测记录（不删除旧记录）
             return predicts;
@@ -740,7 +741,7 @@ namespace 六合分析软件
         {
             try
             {
-                string dateStr = records.LastOrDefault()?.OpenTime;
+                string? dateStr = records.LastOrDefault()?.OpenTime;
                 if (string.IsNullOrEmpty(dateStr)) dateStr = records.LastOrDefault()?.Date;
                 if (!string.IsNullOrEmpty(dateStr) && dateStr.Length >= 4)
                 {
