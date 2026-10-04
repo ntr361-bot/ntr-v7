@@ -17,3 +17,4 @@ jobs:
       - run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
       - run: dotnet restore Tests/六合分析软件.SmokeTests.csproj
       - run: dotnet build Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-restore
+# rerun
