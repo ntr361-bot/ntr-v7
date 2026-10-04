@@ -10,9 +10,9 @@ namespace 六合分析软件
     /// </summary>
     public partial class LiveStreamForm : Form
     {
-        WebView2 webView;
-        Panel topBar;
-        Label urlLabel;
+        WebView2 webView = null!;
+        Panel topBar = null!;
+        Label urlLabel = null!;
 
         public LiveStreamForm()
         {
