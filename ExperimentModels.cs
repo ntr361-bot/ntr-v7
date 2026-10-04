@@ -9,8 +9,6 @@ public static class ExperimentModels
     public const string AutoLearning = "v65_auto";
     public const string V7 = "v7";
     public const string V7Auto = "v7_auto";
-    public const string Regularity50 = "regularity50";
-    public const string Period50Fair = "period50_fair";
 
     public static string DisplayName(string modelId) => modelId switch
     {
@@ -20,8 +18,6 @@ public static class ExperimentModels
         AutoLearning => "自学习",
         V7 => "V7",
         V7Auto => "V7学习",
-        Regularity50 => "规律50",
-        Period50Fair => "周期50",
         _ => modelId
     };
 
@@ -38,8 +34,6 @@ public static class ExperimentModels
         "AI生肖预测 V7" => V7,
         "V7" => V7,
         "V7 AutoLearning" => V7Auto,
-        "Regularity50" => Regularity50,
-        "Period50Fair" => Period50Fair,
         _ => value
     };
 
