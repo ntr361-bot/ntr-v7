@@ -35,7 +35,7 @@ public static class Forward50PredictionPublisher
             if (root["status"]?.GetValue<string>() != "success") continue;
             JsonObject ai = root["ai_zodiac"] as JsonObject
                 ?? throw new InvalidDataException($"第{issue}期缺少AI预测记录");
-            if (ai["regularity50"] is not null && ai["period50_fair"] is not null) continue;
+            if (ai[ExperimentModels.Regularity50] is not null && ai[ExperimentModels.Period50Fair] is not null) continue;
 
             long prior = history.Select(x => long.Parse(x.Period)).LastOrDefault(x => x < issue);
             if (prior == 0) continue;
@@ -47,9 +47,9 @@ public static class Forward50PredictionPublisher
                     .Select(x => x.SpecialZodiac)
                     .ToArray();
 
-                Add(ai, "regularity50", BuildRegularityScores(seq), issue, prior,
-                    "Regularity50", "冻结公式 · 50期CV稳定度 · Forward前瞻观察");
-                Add(ai, "period50_fair", BuildOldPeriodScores(seq), issue, prior,
+                Add(ai, ExperimentModels.Regularity50, BuildRegularityScores(seq), issue, prior,
+                    ExperimentModels.DisplayName(ExperimentModels.Regularity50), "冻结公式 · 50期CV稳定度 · Forward前瞻观察");
+                Add(ai, ExperimentModels.Period50Fair, BuildOldPeriodScores(seq), issue, prior,
                     "Period50-Fair", "冻结公式 · 旧50期周期 · 无偏同分裁决 · Forward前瞻观察");
             }
 
