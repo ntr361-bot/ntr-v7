@@ -78,15 +78,6 @@ try
         if (arguments.ContainsKey("refresh-only")) return 0;
     }
 
-    if (arguments.ContainsKey("publish-forward"))
-    {
-        int forwardUpdated = Forward50PredictionPublisher.EnrichPending(dailyOutputDirectory);
-        if (Directory.Exists(dailyOutputDirectory) && Directory.EnumerateFiles(dailyOutputDirectory, "*.json").Any())
-            DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
-        Console.WriteLine($"[SUCCESS] Forward50 前瞻旁路已更新 {forwardUpdated} 期");
-        return 0;
-    }
-
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
 
@@ -97,10 +88,6 @@ try
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
         {
-
-            int forwardUpdated = Forward50PredictionPublisher.EnrichPending(dailyOutputDirectory);
-            DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
-            Console.WriteLine($"[INFO] Forward50 前瞻旁路更新 {forwardUpdated} 期");
             CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
             WriteRuntimeState(repositoryRoot);
         }
@@ -169,7 +156,6 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 if (++i >= values.Length) throw new ArgumentException("--export-state-from 缺少数据库路径");
                 parsed["export-state-from"] = values[i];
                 break;
-            case "--publish-forward": parsed["publish-forward"] = null; break;
             case "--help":
             case "-h": parsed["help"] = null; break;
             default: throw new ArgumentException($"未知参数：{values[i]}");
@@ -179,7 +165,7 @@ static Dictionary<string, string?> ParseArguments(string[] values)
 }
 
 static void PrintUsage() => Console.WriteLine(
-    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]] [--publish-forward]");
+    "用法：dotnet run --project PredictionRunner -- [--issue 2026203] [--start-issue 2026197] [--force] [--dry-run] [--refresh-data] [--refresh-only] [--require-advance] [--generate-all] [--rebuild-db] [--rebuild-only] [--export-history] [--export-state [--export-state-from 数据库路径]]");
 
 static void WriteRuntimeState(string repositoryRoot)
 {
