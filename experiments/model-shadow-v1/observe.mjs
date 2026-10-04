@@ -32,10 +32,12 @@ export function buildModels(daily, runtime, prefix) {
   if (!prefix.length || prefix.some(x => Number(x.issue) >= issue)) throw new Error('历史前缀含目标期或未来期');
   const models = {};
   const ai = daily.ai_zodiac || {};
-  for (const [key, id] of [['50', 'ai50'], ['100', 'ai100']]) {
-    const record = baseline(ai[key]?.top3, ai[key]?.top6, {
-      source: 'frozen_formal_snapshot', original_weight_snapshot: ai[key]?.weight_snapshot_json || '',
-      factor_scores: ai[key]?.factor_scores || {}, ranking: ai[key]?.ranking || [],
+  const snapshot50 = ai.v65_50 ?? ai['50'];
+  const snapshot100 = ai.v65_100 ?? ai['100'];
+  for (const [snapshot, id] of [[snapshot50, 'ai50'], [snapshot100, 'ai100']]) {
+    const record = baseline(snapshot?.top3, snapshot?.top6, {
+      source: 'frozen_formal_snapshot', original_weight_snapshot: snapshot?.weight_snapshot_json || '',
+      factor_scores: snapshot?.factor_scores || {}, ranking: snapshot?.ranking || [],
     });
     if (record) models[id] = record;
   }
@@ -66,15 +68,15 @@ export function buildModels(daily, runtime, prefix) {
       }
     }
   }
-  const features = parse(ai['50']?.feature_snapshot_json);
-  if (features.length === 12 && ai['50']?.ranking?.length === 12) {
+  const features = parse(snapshot50?.feature_snapshot_json);
+  if (features.length === 12 && snapshot50?.ranking?.length === 12) {
     const slice = prefix.slice(-50), seq = slice.map(x => x.special_zodiac);
     const n = slice.length;
     const frequency = Object.fromEntries(features.map(x => [x.Zodiac, x.TotalAppear / n]));
     const trend = Object.fromEntries(features.map(x => [x.Zodiac,
       .5 * x.Appear10 / Math.min(10, n) + .3 * x.Appear30 / Math.min(30, n) + .2 * x.Appear50 / Math.min(50, n)]));
     const pf = percentiles(frequency), pt = percentiles(trend);
-    const totals = Object.fromEntries(ai['50'].ranking.map(x => [x.zodiac, x.total_score]));
+    const totals = Object.fromEntries(snapshot50.ranking.map(x => [x.zodiac, x.total_score]));
     for (const config of ['ai50_unsaturated', 'ai50_shrunk']) {
       const scores = {}, adjustments = {};
       for (const f of features) {
@@ -91,7 +93,7 @@ export function buildModels(daily, runtime, prefix) {
         weights: WEIGHTS, calibration: 'preserve_frozen_formal_total_then_apply_factor_delta',
         frequency_trend_transform: 'midrank_percentile_no_saturation', cycle_shrink_prior: 50,
         cycle_shrink_samples: config === 'ai50_shrunk' ? 5 : 0,
-        original_weight_snapshot: ai['50'].weight_snapshot_json || '',
+        original_weight_snapshot: snapshot50.weight_snapshot_json || '',
         weight_provenance: 'fixed_period50_weights_from_V65ExperimentPipeline',
         score_type: 'ranking_score_not_probability',
       } };
