@@ -224,7 +224,7 @@ namespace 六合分析软件
         }
 
         // 导出 CSV - 包含 6个平码 + 特码 + 生肖
-        private void BtnExport_Click(object sender, EventArgs e)
+        private void BtnExport_Click(object? sender, EventArgs e)
         {
             try
             {
@@ -287,7 +287,7 @@ namespace 六合分析软件
             return value;
         }
 
-        private void Table_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void Table_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (table.Columns[e.ColumnIndex]?.Name == "特码" && e.Value != null)
             {
@@ -368,7 +368,7 @@ namespace 六合分析软件
             statusLabel.ForeColor = color;
         }
 
-        private async void BtnUpdate_Click(object sender, EventArgs e)
+        private async void BtnUpdate_Click(object? sender, EventArgs e)
         {
             btnUpdate.Enabled = false;
             SetStatus("正在更新数据...", Color.Gray);
@@ -398,7 +398,7 @@ namespace 六合分析软件
             }
         }
 
-        private void BtnDelete_Click(object sender, EventArgs e)
+        private void BtnDelete_Click(object? sender, EventArgs e)
         {
             if (table.SelectedRows.Count == 0)
             {
@@ -422,13 +422,13 @@ namespace 六合分析软件
             SetStatus($"已删除 {deleted} 条记录", Color.Green);
         }
 
-        private void BtnRefresh_Click(object sender, EventArgs e)
+        private void BtnRefresh_Click(object? sender, EventArgs e)
         {
             LoadData();
             SetStatus("已刷新", Color.Gray);
         }
 
-        private void BtnRepair_Click(object sender, EventArgs e)
+        private void BtnRepair_Click(object? sender, EventArgs e)
         {
             SetStatus("正在修复数据...", Color.Gray);
             Application.DoEvents();
