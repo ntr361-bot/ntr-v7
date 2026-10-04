@@ -822,11 +822,11 @@ namespace 六合分析软件
             var oldStatus = mainPanel.Controls.Find("saveStatus", false);
             foreach (var c in oldStatus) mainPanel.Controls.Remove(c);
 
-            string period = txtNumber?.Text?.Trim();
-            string numbers = mainPanel.Controls.Find("txtNumbers", false)
-                .FirstOrDefault()?.Text?.Trim();
-            string shengxiao = ((ComboBox)mainPanel.Controls.Find("cboShengxiao", false)
-                .FirstOrDefault())?.SelectedItem?.ToString();
+            string period = txtNumber.Text.Trim();
+            var numbersBox = mainPanel.Controls.Find("txtNumbers", false).FirstOrDefault() as TextBox;
+            var zodiacBox = mainPanel.Controls.Find("cboShengxiao", false).FirstOrDefault() as ComboBox;
+            string numbers = numbersBox?.Text?.Trim() ?? string.Empty;
+            string shengxiao = zodiacBox?.SelectedItem?.ToString() ?? string.Empty;
 
             if (string.IsNullOrEmpty(period))
             {
@@ -850,8 +850,8 @@ namespace 六合分析软件
 
             // 清空输入
             txtNumber.Text = "";
-            mainPanel.Controls.Find("txtNumbers", false).FirstOrDefault().Text = "";
-            ((ComboBox)mainPanel.Controls.Find("cboShengxiao", false).FirstOrDefault()).SelectedIndex = -1;
+            if (numbersBox != null) numbersBox.Text = "";
+            if (zodiacBox != null) zodiacBox.SelectedIndex = -1;
         }
 
         // 更新历史数据（从网站抓取）
@@ -872,7 +872,7 @@ namespace 六合分析软件
             mainPanel.Controls.Add(saveStatus);
 
             // 禁用按钮防止重复点击
-            Button btn = (Button)sender;
+            if (sender is not Button btn) return;
             btn.Enabled = false;
 
             try
