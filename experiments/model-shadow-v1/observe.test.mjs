@@ -16,6 +16,19 @@ test('正式结果原样保留，V7/50实验保存真实参数并避免饱和',(
   assert.equal(new Set(Object.values(percentiles({a:1,b:2,c:3}))).size,3);
   for (const model of Object.values(models)) assert.equal(new Set(model.top6).size,6);
 });
+test('规范模型ID和旧模型ID都能读入50期/100期正式快照',()=>{
+  const canonicalDaily=JSON.parse(JSON.stringify(daily));
+  canonicalDaily.ai_zodiac.v65_50=canonicalDaily.ai_zodiac['50'];
+  canonicalDaily.ai_zodiac.v65_100=canonicalDaily.ai_zodiac['100'];
+  delete canonicalDaily.ai_zodiac['50'];
+  delete canonicalDaily.ai_zodiac['100'];
+  const models=buildModels(canonicalDaily,runtime,history);
+  assert.deepEqual(models.ai50.top6,daily.ai_zodiac['50'].top6);
+  assert.deepEqual(models.ai100.top6,daily.ai_zodiac['100'].top6);
+  assert.equal(models.ai50_unsaturated.configuration.weights.period,.32);
+  assert.ok(models.ai50_shrunk);
+});
+
 test('阻止目标期和未来数据进入预测',()=>{
   assert.throws(()=>buildModels(daily,runtime,[...history,{issue:daily.issue,special_zodiac:'猪'}]),/目标期/);
 });
