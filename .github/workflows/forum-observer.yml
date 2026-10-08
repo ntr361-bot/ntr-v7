@@ -8,6 +8,9 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: forum-observer
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -37,5 +40,5 @@ jobs:
         if: always()
         with:
           name: forum-observer-status
-          path: out/
+          path: forum-observer/out/
           if-no-files-found: ignore
