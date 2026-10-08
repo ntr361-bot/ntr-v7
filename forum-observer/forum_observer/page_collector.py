@@ -1,7 +1,7 @@
 """Collect evidence from the forum's rendered DOM when no public API exists."""
 from __future__ import annotations
 
-import json, os, re, shutil, subprocess
+import json, os, re, shutil, subprocess, time
 from collections import Counter
 from urllib.parse import urljoin, urlparse
 from zoneinfo import ZoneInfo
@@ -187,8 +187,7 @@ def _detail(page,url,item,category,max_pages):
     # Never reuse an index across pages or after reloading the list.
     if item.get('href') and 'corpusdetail' in item['href']:
         page.goto(item['href'],wait_until='domcontentloaded',timeout=45000)
-        page.wait_for_timeout(600)
-        return 'corpusdetail' in page.url and (not item['title'] or item['title'] in page.locator('body').inner_text())
+        return _wait_detail(page,item,timeout_seconds=8)
     page.goto(url,wait_until='domcontentloaded',timeout=45000)
     page.wait_for_timeout(800)
     previous=set()
@@ -205,8 +204,8 @@ def _detail(page,url,item,category,max_pages):
                             and _issue(li.locator('.slabel').first.inner_text().strip())==item['issue']
                             and (not item['title'] or
                                  (li.locator('.formtitle').count() and li.locator('.formtitle').first.inner_text().strip()==item['title']))):
-                        li.click(timeout=4000);page.wait_for_timeout(600)
-                        return 'corpusdetail' in page.url and (not item['title'] or item['title'] in page.locator('body').inner_text())
+                        li.click(timeout=4000)
+                        return _wait_detail(page,item,timeout_seconds=8)
         current={x['key'] for x in _listing(page,category)}
         page.evaluate('window.scrollTo(0,document.body.scrollHeight)')
         page.wait_for_timeout(700)
@@ -300,21 +299,45 @@ def _period_marker(line,year):
     return str(year)+(match.group('full') or match.group('short'))
 
 
+def _title_span(text,title):
+    """Match title exactly except for whitespace inserted by the forum UI."""
+    text=str(text)
+    title=str(title).strip()
+    if not title:return None
+    start=text.rfind(title)
+    if start>=0:return (start,start+len(title))
+    characters=[re.escape(ch) for ch in title if not ch.isspace()]
+    if not characters:return None
+    pattern=r'\s*'.join(characters)
+    hits=list(re.finditer(pattern,text))
+    return hits[-1].span() if hits else None
+
+
+def _wait_detail(page,item,timeout_seconds=7):
+    """Wait for a SPA post to render before rejecting an otherwise valid URL."""
+    deadline=time.monotonic()+timeout_seconds
+    while time.monotonic()<deadline:
+        if 'corpusdetail' in page.url:
+            try:
+                text=page.locator('body').inner_text(timeout=2800)
+                if _title_span(text,item.get('title','')) and item.get('author','') in text:
+                    return True
+            except Exception:
+                pass
+        page.wait_for_timeout(650)
+    return False
+
+
 def _article_body(page,item):
     """Bound article text by its *own title* and the comment boundary.
 
-    Reading body.inner_text directly would also include the page's previous
-    draw result (e.g. '第281期 ... 鸡10') and unrelated navigation elements.
-    If the boundary is missing, return no scoreable article text rather than
-    treating the global body as a prediction.
+    The previous draw result in the page's header is not forum author evidence.
     """
     all_text=page.locator('body').inner_text()
     before_comments=all_text.split('最新评论',1)[0]
-    title=str(item.get('title','')).strip()
-    if not title:return ''
-    start=before_comments.rfind(title)
-    if start<0:return ''
-    return before_comments[start+len(title):][:50000].strip()
+    span=_title_span(before_comments,item.get('title',''))
+    if not span:return ''
+    return before_comments[span[1]:][:50000].strip()
 
 
 def current_period_text(text,issue):

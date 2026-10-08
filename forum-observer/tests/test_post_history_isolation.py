@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock
 from forum_observer.page_collector import (
     _article_body, previous_period_records, current_period_text,
-    score_posts, _period_marker, _issue
+    score_posts, _period_marker, _issue, _title_span
 )
 
 
@@ -22,6 +22,13 @@ class ForumPeriodBoundariesTests(unittest.TestCase):
         self.assertNotIn('第281期\n22 19',result)
         self.assertNotIn('鸡/火',result)
         self.assertNotIn('成为第一个评论的人',result)
+
+    def test_title_with_spaced_rendering_is_still_article_boundary(self):
+        title="港澳百家网【无错二波中特】"
+        content="第281期 开鸡10\\n港澳百家网【无错 二波中特】\\n281期：蓝波 绿波"
+        span=_title_span(content,title)
+        self.assertIsNotNone(span)
+        self.assertNotIn("开鸡10",content[span[1]:])
 
     def test_historical_281_record_in_post_282_is_not_prediction(self):
         text=("280期：特码波路→【绿波】【红波】←开:龙15 错\n"
