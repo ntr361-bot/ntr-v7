@@ -84,7 +84,7 @@ def collect_page(url: str, out: Path, target_issue: str | None = None) -> dict[s
     result = {'issue':target_issue or (posts[0]['issue'] if posts else 'unknown'),
               'status':'html_observation' if posts else 'no_posts_found','source_url':url,
               'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
-              'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
+              'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),'rejected':[],
               'selected_count':0,'selected_leaderboard':0,'selected_outside':0,
               'ranking':[{'rank':i+1,'zodiac':z,'score':totals[z]} for i,z in enumerate(ranking)],
               'top1':ranking[:1],'top3':ranking[:3],'top6':ranking[:6],'evidence':posts,
