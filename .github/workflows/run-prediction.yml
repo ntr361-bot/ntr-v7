@@ -137,6 +137,20 @@ jobs:
       - name: Build prediction runner
         run: dotnet build PredictionRunner/PredictionRunner.csproj --configuration Release --no-restore
 
+      - name: Restore original archived Live evidence once
+        shell: pwsh
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if (!(Test-Path 'site/data/prediction-traces/history.json.gz')) {
+            python PredictionRunner/recover_trace_archive.py
+            if ($LASTEXITCODE -ne 0) {
+              Write-Warning 'Historical Live-trace recovery failed; do not fabricate old prediction traces.'
+              exit 1
+            }
+          }
+
       - name: Rebuild history database from committed JSON
         shell: pwsh
         run: |
