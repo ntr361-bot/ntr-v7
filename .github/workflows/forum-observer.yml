@@ -10,7 +10,7 @@ on:
       - ".github/workflows/forum-observer.yml"
   schedule:
     - cron: "40 11 * * *" # 19:40 China
-    - cron: "25 12 * * *" # 20:25 China
+    - cron: "25 12 * * *" # 20:25 China - final collection before 20:30 report
     - cron: "40 14 * * *" # 22:40 China - settle/next-issue
     - cron: "15 15 * * *" # 23:15 China - collect newly released next-issue posts
     - cron: "40 0 * * *"  # 08:40 China - retry settlement when V7 history advances

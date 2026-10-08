@@ -1,0 +1,78 @@
+name: Audit 2026281 forum archive (read-only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/forum-281-audit.yml"
+permissions:
+  contents: read
+jobs:
+  historical-281-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser, OCR
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+          sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Read historical 281 evidence (no main archive or freeze writes)
+        shell: bash
+        run: |
+          set +e
+          python -m forum_observer.auto --config collector-config.json --issue 2026281 --out audit-281
+          code=$?
+          echo "collector_exit_code=$code" > audit-281-exit.txt
+          exit 0
+      - name: Verify strict issue separation and report actual counts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,pathlib,sys
+          out=pathlib.Path('audit-281')
+          status=out/'status.json'
+          if not status.exists():
+              print('AUDIT FAILED: collector generated no status')
+              error=out/'collection-error.json'
+              if error.exists():print(error.read_text())
+              sys.exit(2)
+          s=json.loads(status.read_text(encoding='utf-8'))
+          row={
+            'issue':s.get('issue'),'status':s.get('status'),
+            'raw_posts':s.get('raw_count'),'valid_materials':s.get('valid_materials'),
+            'candidate_materials':s.get('candidate_materials'),
+            'distinct_valid_authors':s.get('distinct_valid_authors'),
+            'excluded_materials':s.get('excluded_materials'),
+            'detail_errors':len(s.get('audit',{}).get('detail_errors',[])),
+            'truncated':s.get('audit',{}).get('truncated'),
+            'top6_observation':s.get('top6',[]),
+          }
+          print(json.dumps(row,ensure_ascii=False,indent=2))
+          assert s.get('issue')=='2026281','Wrong declared issue'
+          evidence=s.get('evidence',[])
+          assert all(p.get('issue')=='2026281' for p in evidence),'CROSS-ISSUE LEAK'
+          assert s.get('valid_materials',0) <= s.get('candidate_materials',0),'Invalid totals'
+          assert s.get('valid_materials',0) == sum(p.get('counted_for_ranking',False) for p in s.get('parsed_predictions',[])),'Count mismatch'
+          if not evidence:raise AssertionError('No historical 281 posts fetched')
+          if row['detail_errors']:print('WARNING: some post details were not retrieved')
+          if s.get('status')!='ready_observation':print('WARNING: result did not meet full observation gate')
+          print('281 isolation and counted-evidence audit passed')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-2026281-historical-audit
+          path: |
+            forum-observer/audit-281/
+            forum-observer/audit-281-exit.txt
+          if-no-files-found: ignore

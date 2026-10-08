@@ -35,6 +35,21 @@ class CycleTests(unittest.TestCase):
         ranks,items=score_posts([row,row])
         self.assertEqual(len(items),1)
         self.assertAlmostEqual(ranks[0]['score'],1/3,places=5)
+    def test_count_only_effective_author_votes(self):
+        post={'author':'甲','issue':'2026281','title':'推荐三肖：鼠牛虎',
+              'body':'','images':[],'detail_url':'https://example.org/1'}
+        rows,works=score_posts([post,dict(post,detail_url='https://example.org/2')])
+        self.assertEqual(sum(p['counted_for_ranking'] for p in works),1)
+        self.assertEqual(len(works),1)
+        self.assertAlmostEqual(rows[0]['score'],1/3,places=5)
+
+    def test_color_note_not_valid_vote(self):
+        post={'author':'甲','issue':'2026281','title':'红肖：鼠牛虎',
+              'body':'','images':[],'detail_url':'https://example.org/1'}
+        ranks,works=score_posts([post])
+        self.assertEqual(ranks,[])
+        self.assertEqual(sum(p['counted_for_ranking'] for p in works),0)
+
     def test_append_only_after_real_draw(self):
         with TemporaryDirectory() as tmp:
             base=Path(tmp);out=base/'out';out.mkdir();archive=base/'archive'

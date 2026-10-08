@@ -281,9 +281,11 @@ def score_posts(posts):
             key=(post['author'],p['play'],tuple(p['picks']),p['mode'])
             if key in seen:continue
             seen.add(key)
-            picks.append({**p,'author':post['author'],'source_url':post['detail_url']})
             ak=(post['author'],p['mode'])
-            if ak in voted or p['mode']=='color_unverified':continue
+            counted=ak not in voted and p['mode']!='color_unverified'
+            picks.append({**p,'author':post['author'],'source_url':post['detail_url'],
+                          'counted_for_ranking':counted})
+            if not counted:continue
             voted.add(ak)
             weight=(-1.0 if p['mode']=='exclude' else 1.0)/len(p['picks'])
             for z in p['picks']:votes[z]+=weight
@@ -334,15 +336,25 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     candidates=set(policy.get('top_authors',[]))
     top_found=sorted({p['author'] for p in posts if p['author'] in candidates})
     other_found=sorted({p['author'] for p in posts if p['author'] not in candidates})
-    valid_authors={p['author'] for p in predictions if p['mode']!='color_unverified'}
-    enough=(len(top_found)>=int(policy.get('min_top_authors',10)) and
+    valid_votes=[p for p in predictions if p['counted_for_ranking']]
+    valid_authors={p['author'] for p in valid_votes}
+    valid_materials=len(valid_votes)
+    rejected_materials=len(predictions)-valid_materials
+    unscored_posts=sum(1 for p in posts if p['detail_url'] not in {v['source_url'] for v in valid_votes})
+    enough=(valid_materials>=int(policy.get('min_valid_materials',25)) and
+            len(top_found)>=int(policy.get('min_top_authors',10)) and
             len(other_found)>=int(policy.get('min_other_authors',5)) and
             len(valid_authors)>=int(policy.get('min_top_authors',10))+int(policy.get('min_other_authors',5)))
     ready=enough and bool(ranking) and not errors and not truncated
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
-            'selected_count':len(valid_authors) if ready else 0,
+            'selected_count':valid_materials if ready else 0,
+            'valid_materials':valid_materials,
+            'candidate_materials':len(predictions),
+            'excluded_materials':rejected_materials,
+            'unscored_posts':unscored_posts,
+            'distinct_valid_authors':len(valid_authors),
             'selected_leaderboard':0,'selected_outside':0,
             'ranking':ranking,'top1':[r['zodiac'] for r in ranking[:1]],
             'top3':[r['zodiac'] for r in ranking[:3]],
@@ -356,6 +368,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'author_selection':{'top20_candidates':len(candidates),
                 'top20_found':top_found,'other_found':other_found,
                 'valid_prediction_authors':len(valid_authors),
+                'valid_materials':valid_materials,
+                'min_valid_materials':int(policy.get('min_valid_materials',25)),
                 'comments_collected':sum(bool(p['comments']) for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
             'note':'Experimental evidence only; candidate author list not verified live leaderboard.'}
