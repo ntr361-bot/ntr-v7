@@ -67,6 +67,67 @@ def rendered_html(url: str, timeout: int = 60) -> str:
     return completed.stdout.decode('utf-8','replace')
 
 
+def _ocr_image(src: str) -> str:
+    """Best-effort OCR for public forum images; never turns OCR failure into data."""
+    tesseract = shutil.which('tesseract')
+    if not tesseract or not src or src.startswith('data:'):
+        return ''
+    try:
+        import urllib.request
+        image = urllib.request.urlopen(src, timeout=15).read()
+        completed = subprocess.run([tesseract, 'stdin', 'stdout', '-l', 'eng+chi_sim'],
+                                   input=image, capture_output=True, timeout=30, check=False)
+        return completed.stdout.decode('utf-8','replace').strip() if completed.returncode == 0 else ''
+    except Exception:
+        return ''
+
+
+def interactive_posts(url: str, target_category: str | None = None) -> list[dict[str, Any]] | None:
+    """Use a real browser to open topics and read dynamically loaded comments."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return None
+    records: list[dict[str, Any]] = []
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True, args=['--no-sandbox'])
+        page = browser.new_page(viewport={'width':1280,'height':1800})
+        page.goto(url, wait_until='networkidle', timeout=90000)
+        page.wait_for_timeout(1500)
+        cards = page.locator('li')
+        snapshots = []
+        for i in range(cards.count()):
+            card = cards.nth(i)
+            category = (card.locator('.ntool .num').last.inner_text().strip()
+                        if card.locator('.ntool .num').count() else '')
+            if target_category and category != target_category:
+                continue
+            issue = card.locator('.slabel').inner_text().strip() if card.locator('.slabel').count() else ''
+            snapshots.append({'index':i,'author':card.locator('.name').inner_text().strip(),
+                              'published_at':card.locator('.time').inner_text().strip(),
+                              'issue':issue,'category':category,
+                              'title':card.locator('.formtitle').inner_text().strip() if card.locator('.formtitle').count() else '',
+                              'body':card.locator('.text').inner_text().strip() if card.locator('.text').count() else ''})
+        for snap in snapshots:
+            page.goto(url, wait_until='networkidle', timeout=90000); page.wait_for_timeout(700)
+            cards = page.locator('li'); card = cards.nth(snap['index'])
+            card.click(); page.wait_for_timeout(1200)
+            detail = page.locator('body').inner_text()
+            marker = detail.find('最新评论')
+            comments = detail[marker:] if marker >= 0 else ''
+            images = []
+            for j in range(page.locator('img').count()):
+                src = page.locator('img').nth(j).get_attribute('src') or ''
+                if src and not src.startswith('data:'):
+                    ocr = _ocr_image(src)
+                    images.append({'src':src,'ocr':ocr,'ocr_status':'recognized' if ocr else 'unreadable_or_nontext'})
+            snap = {**snap,'comments':comments,'images':images,
+                    'comments_collected':bool(comments),'detail_url':page.url}
+            records.append(snap)
+        browser.close()
+    return records
+
+
 def _issue(value: str) -> str:
     text = value.strip()
     # The forum renders the issue label as either "281", "第281期", or
@@ -82,13 +143,21 @@ def collect_page(url: str, out: Path, target_issue: str | None = None,
                  target_category: str | None = None,
                  policy: dict[str, Any] | None = None) -> dict[str, Any]:
     parser = _PostParser(); parser.feed(rendered_html(url)); posts = []
+    interactive = interactive_posts(url, target_category)
+    if interactive:
+        parser.posts = interactive
     parsed_posts = parser.posts[:]
+    if not target_issue and parsed_posts:
+        issue_values = [_issue(p.get('issue','')) for p in parsed_posts if p.get('issue')]
+        target_issue = max(issue_values) if issue_values else None
     for index, raw in enumerate(parser.posts):
         issue = _issue(raw['issue'])
         if target_issue and issue != target_issue: continue
         if target_category and raw.get('category','').strip() != target_category: continue
         title = ' '.join(raw['title'].split()); body = ' '.join(raw['body'].split())
-        text = f'{title} {body}'
+        comments = ' '.join(str(raw.get('comments','')).split())
+        ocr_text = ' '.join(str(x.get('ocr','')) for x in raw.get('images',[]) if isinstance(x,dict))
+        text = f'{title} {body} {comments} {ocr_text}'
         counts = {z: len(re.findall(re.escape(z), text)) for z in ZODIACS}
         posts.append({**raw,'issue':issue,'title':title,'body':body,
                       'source_url':f'{url}#post-{index}','zodiac_mentions':counts})
@@ -100,7 +169,9 @@ def collect_page(url: str, out: Path, target_issue: str | None = None,
         for index, raw in enumerate(parsed_posts):
             issue = _issue(raw['issue'])
             title = ' '.join(raw['title'].split()); body = ' '.join(raw['body'].split())
-            text = f'{title} {body}'
+            comments = ' '.join(str(raw.get('comments','')).split())
+            ocr_text = ' '.join(str(x.get('ocr','')) for x in raw.get('images',[]) if isinstance(x,dict))
+            text = f'{title} {body} {comments} {ocr_text}'
             counts = {z: len(re.findall(re.escape(z), text)) for z in ZODIACS}
             posts.append({**raw,'issue':issue,'title':title,'body':body,
                           'source_url':f'{url}#post-{index}','zodiac_mentions':counts})
@@ -140,7 +211,7 @@ def collect_page(url: str, out: Path, target_issue: str | None = None,
         'min_top_authors':policy.get('min_top_authors',10),
         'min_other_authors':policy.get('min_other_authors',5),
         'comments_requested':bool(policy.get('collect_comments',False)),
-        'comments_collected':False,
+        'comments_collected':bool(interactive and any(p.get('comments_collected') for p in interactive)),
         'author_scores':author_scores,
         'selection_status':'insufficient_comments_pending' if policy.get('collect_comments') else 'list_observation'
     }
