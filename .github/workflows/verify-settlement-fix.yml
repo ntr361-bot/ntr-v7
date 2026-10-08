@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   verify:
@@ -25,7 +26,11 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Build prediction runner (compile only; no live predictions)
         run: dotnet build PredictionRunner/PredictionRunner.csproj -c Release
-      - name: Build smoke tests
-        run: dotnet build Tests/六合分析软件.SmokeTests.csproj -c Release
-      - name: Execute isolated smoke tests
-        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build
+      - name: Restore authentic 280 and 281 trace fixtures (no live prediction)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python PredictionRunner/recover_trace_archive.py
+      - name: Build isolated settlement tests
+        run: dotnet build Tests/SettlementRepairSmoke.csproj -c Release
+      - name: Execute isolated settlement tests
+        run: dotnet run --project Tests/SettlementRepairSmoke.csproj --configuration Release --no-build
