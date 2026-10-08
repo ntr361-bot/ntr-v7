@@ -58,3 +58,9 @@ python -m forum_observer.cli --input input-example.json --output out
 
 ## 自动一期循环（2026-10-08）
 每次按近72小时帖子时间发现真实最新期，忽略旧公告；每期独立采集、严格区分期号与作者，只为有明确推荐／排除词的生肖形成候选投票，未经核实的红蓝肖仅为原始证据。预览可继续更新，但有效作者不足必须报告不完整。达到候选门槛才保存独立实验快照到 forum-observer/archive/issues/<期号>/snapshot.json，该文件不允许覆盖。自动对奖只读取已有 site/data/history.json 的真实 special_zodiac 和 open_time；必须证明快照时间早于开奖，否则阻止对奖。结算写入每期 settlement.json，不覆盖。每天北京时间19:40、20:25、22:40、08:40运行；归档仅写入 forum-observer/archive，不修改正式 V7 / D1。当前榜单未核实，快照和成绩仅属实验观察，禁止冒充正式模型预测。
+
+## 智能账本只读数据出口
+
+自动循环只写入独立的 `forum-observer/archive/` 和新建的 `site/data/forum-observer/`；原 `site/data/history.json` 仅用于读取正式开奖结果，对正式 V7 的预测及历史文件零写入。前端可读取 `site/data/forum-observer/latest.json`，其中 `preview_top6` 为未冻结观察，`prediction_top6` 只有存在不可覆盖快照时才非空；`history.json` 和 `issues/<期号>.json` 记录只读结算。需要账本站点主动接入该地址才会显示，写入 JSON 不等于已经发布账本界面。
+
+夜间22:40和23:15再次检查新一期发布；次日08:40重复检查已确认的开奖结果。任何模拟数据、榜单候选或尚未冻结的结果，不得被界面标为正式命中。

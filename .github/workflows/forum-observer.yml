@@ -12,6 +12,7 @@ on:
     - cron: "40 11 * * *" # 19:40 China
     - cron: "25 12 * * *" # 20:25 China
     - cron: "40 14 * * *" # 22:40 China - settle/next-issue
+    - cron: "15 15 * * *" # 23:15 China - collect newly released next-issue posts
     - cron: "40 0 * * *"  # 08:40 China - retry settlement when V7 history advances
 permissions:
   contents: write
@@ -44,13 +45,13 @@ jobs:
         continue-on-error: true
         run: python -m forum_observer.auto --config collector-config.json --out out
       - name: Cycle snapshots and settlements from verified V7 history
-        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json
+        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
       - name: Archive independent forum data only
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add archive/
+          git add archive/ ../site/data/forum-observer/
           if git diff --cached --quiet; then
             echo "No forum archive changes"
             exit 0
@@ -78,6 +79,8 @@ jobs:
             forum-observer/out/
             forum-observer/archive/latest.json
             forum-observer/archive/summary.json
+            site/data/forum-observer/latest.json
+            site/data/forum-observer/history.json
           if-no-files-found: ignore
       - name: Enforce collection quality
         if: always()

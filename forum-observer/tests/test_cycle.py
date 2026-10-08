@@ -60,4 +60,42 @@ class CycleTests(unittest.TestCase):
             again=settled.read_bytes()
             self.assertEqual(sync(out,archive,history),1)
             self.assertEqual(again,settled.read_bytes())
+    def test_public_feed_draft_then_frozen_and_settled(self):
+        with TemporaryDirectory() as tmp:
+            base=Path(tmp)
+            out=base/'out';out.mkdir()
+            archive=base/'archive'
+            public=base/'site'/'data'/'forum-observer'
+            history=base/'history.json'
+            history.write_text(json.dumps({'records':[]}),encoding='utf-8')
+            status={
+                'issue':'2026282','status':'incomplete_observation','raw_count':5,
+                'ranking':[],'top1':[],'top3':['鼠'],'top6':['鼠','牛'],
+                'fetched_at':'2026-10-08T11:00:00+00:00',
+                'author_selection':{'valid_prediction_authors':2}
+            }
+            (out/'status.json').write_text(json.dumps(status),encoding='utf-8')
+            sync(out,archive,history,public)
+            feed=json.loads((public/'latest.json').read_text(encoding='utf-8'))
+            self.assertFalse(feed['frozen'])
+            self.assertEqual(feed['prediction_top6'],[])
+            self.assertEqual(feed['preview_top6'],['鼠','牛'])
+            status.update(status='ready_observation',top1=['鼠'],
+                          ranking=[{'rank':i+1,'zodiac':z,'score':12-i}
+                                   for i,z in enumerate('鼠牛虎兔龙蛇马羊猴鸡狗猪')],
+                          top3=['鼠','牛','虎'],
+                          top6=['鼠','牛','虎','兔','龙','蛇'])
+            (out/'status.json').write_text(json.dumps(status),encoding='utf-8')
+            sync(out,archive,history,public)
+            feed=json.loads((public/'latest.json').read_text(encoding='utf-8'))
+            self.assertTrue(feed['frozen'])
+            self.assertEqual(len(feed['prediction_top6']),6)
+            history.write_text(json.dumps({'records':[{'issue':'2026282',
+                'special_zodiac':'虎','open_time':'2026-10-08 21:35:31'}]}),encoding='utf-8')
+            sync(out,archive,history,public)
+            feed=json.loads((public/'latest.json').read_text(encoding='utf-8'))
+            self.assertTrue(feed['settlement']['top3_hit'])
+            self.assertEqual(json.loads((public/'history.json').read_text(encoding='utf-8'))['settled_count'],1)
+            self.assertTrue((public/'issues'/'2026282.json').exists())
+
 if __name__=='__main__':unittest.main()

@@ -27,7 +27,7 @@ def draw_time(record):
         return dt.replace(tzinfo=TZ) if dt.tzinfo is None else dt
     except ValueError:return None
 
-def sync(out,archive,history):
+def sync(out,archive,history,public_dir=None):
     archive=Path(archive);out=Path(out)
     status_path=out/'status.json'
     if status_path.exists():
@@ -102,6 +102,57 @@ def sync(out,archive,history):
         'top6_hits':sum(bool(s['top6_hit']) for s in summary),
         'settlements':[{'issue':s['issue'],'rank':s['rank'],
                         'actual':s['actual'],'top3_hit':s['top3_hit'],'top6_hit':s['top6_hit']} for s in summary]})
+    # Read-only, separately namespaced feed. No existing V7 prediction/history
+    # paths are written. The frontend must distinguish drafts from snapshots.
+    if public_dir is not None:
+        public_dir=Path(public_dir)
+        latest_path=archive/'latest.json'
+        latest=json.loads(latest_path.read_text(encoding='utf-8')) if latest_path.exists() else {}
+        current_issue=str(latest.get('issue',''))
+        issue_dir=archive/'issues'/current_issue
+        snap_path=issue_dir/'snapshot.json'
+        settlement_path=issue_dir/'settlement.json'
+        snap=json.loads(snap_path.read_text(encoding='utf-8')) if snap_path.exists() else None
+        settled=json.loads(settlement_path.read_text(encoding='utf-8')) if settlement_path.exists() else None
+        result={
+            'schema_version':1,'model':'forum-observer',
+            'classification':'experimental_unverified_leaderboard',
+            'issue':current_issue or None,
+            'collection_status':latest.get('status','not_collected'),
+            'updated_at':latest.get('updated_at'),
+            'distinct_prediction_authors':latest.get('valid_prediction_authors',0),
+            'preview_top3':latest.get('top3',[]),
+            'preview_top6':latest.get('top6',[]),
+            'frozen':bool(snap),
+            'prediction_top3':snap.get('top3',[]) if snap else [],
+            'prediction_top6':snap.get('top6',[]) if snap else [],
+            'snapshot_digest':snap.get('digest') if snap else None,
+            'settlement':settled,
+            'settled_count':len(summary),
+            'note':'preview fields are unverified observations; only prediction fields are immutable experimental snapshots'
+        }
+        atomic(public_dir/'latest.json',result)
+        atomic(public_dir/'history.json',{
+            'schema_version':1,'model':'forum-observer',
+            'classification':'experimental_unverified_leaderboard',
+            'settled_count':len(summary),
+            'top3_hits':sum(bool(s['top3_hit']) for s in summary),
+            'top6_hits':sum(bool(s['top6_hit']) for s in summary),
+            'settlements':sorted(summary,key=lambda s:str(s['issue']))
+        })
+        for folder in sorted((archive/'issues').glob('20?????')) if (archive/'issues').exists() else []:
+            sp=folder/'snapshot.json'
+            if not sp.exists():
+                continue
+            saved=json.loads(sp.read_text(encoding='utf-8'))
+            st=folder/'settlement.json'
+            atomic(public_dir/'issues'/(folder.name+'.json'),{
+                'issue':folder.name,'classification':saved.get('classification'),
+                'frozen_at':saved.get('fetched_at'),
+                'ranking':saved.get('ranking',[]),'top3':saved.get('top3',[]),
+                'top6':saved.get('top6',[]),'digest':saved.get('digest'),
+                'settlement':json.loads(st.read_text(encoding='utf-8')) if st.exists() else None
+            })
     return len(summary)
 
 if __name__=='__main__':
@@ -109,5 +160,6 @@ if __name__=='__main__':
     p.add_argument('--out',default='out')
     p.add_argument('--archive',default='archive')
     p.add_argument('--history',default='../site/data/history.json')
+    p.add_argument('--public',default=None)
     a=p.parse_args()
-    print('settled records:',sync(a.out,a.archive,a.history))
+    print('settled records:',sync(a.out,a.archive,a.history,a.public))
