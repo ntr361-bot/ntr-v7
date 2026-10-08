@@ -15,6 +15,8 @@ import sqlite3
 import sys
 import tempfile
 import urllib.request
+import urllib.error
+import urllib.parse
 import zipfile
 
 REPO = "ntr361-bot/ntr-v7"
@@ -63,8 +65,26 @@ def recover() -> None:
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
         })
-        with urllib.request.urlopen(request, timeout=60) as response:
-            entries.append(extract_trace(issue, response.read()))
+        # Do not forward the GitHub bearer token to the cross-host, signed
+        # artifact storage redirect; Azure Blob rejects it with HTTP 401.
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                return None
+
+        opener = urllib.request.build_opener(NoRedirect)
+        try:
+            with opener.open(request, timeout=60) as response:
+                data = response.read()
+        except urllib.error.HTTPError as redirect:
+            if redirect.code not in (301, 302, 303, 307, 308):
+                raise
+            signed_url = redirect.headers.get("Location", "")
+            if urllib.parse.urlparse(signed_url).scheme != "https":
+                raise ValueError("Artifact redirect must be HTTPS")
+            # Signed URL carries its own authorization; send NO bearer header.
+            with urllib.request.urlopen(signed_url, timeout=60) as response:
+                data = response.read()
+        entries.append(extract_trace(issue, data))
     body = json.dumps({
         "schemaVersion": "v1", "traces": entries, "outcomes": [],
     }, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
