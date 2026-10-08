@@ -54,3 +54,7 @@ python -m forum_observer.cli --input input-example.json --output out
 - 论坛没有公开 JSON API 时，`forum_observer.page_collector` 使用 Chromium 的无头渲染结果读取页面 DOM。
 - 默认配置指向 `https://x5k1pok.11852.com:8443/#/forum`，只生成带原文、作者、时间和图片证据的观察结果。
 - 页面观察不会自动冒充实时榜单，也不会自动冻结预测；必须另行核实作者榜单和开奖截止时间。
+
+
+## 自动一期循环（2026-10-08）
+每次按近72小时帖子时间发现真实最新期，忽略旧公告；每期独立采集、严格区分期号与作者，只为有明确推荐／排除词的生肖形成候选投票，未经核实的红蓝肖仅为原始证据。预览可继续更新，但有效作者不足必须报告不完整。达到候选门槛才保存独立实验快照到 forum-observer/archive/issues/<期号>/snapshot.json，该文件不允许覆盖。自动对奖只读取已有 site/data/history.json 的真实 special_zodiac 和 open_time；必须证明快照时间早于开奖，否则阻止对奖。结算写入每期 settlement.json，不覆盖。每天北京时间19:40、20:25、22:40、08:40运行；归档仅写入 forum-observer/archive，不修改正式 V7 / D1。当前榜单未核实，快照和成绩仅属实验观察，禁止冒充正式模型预测。

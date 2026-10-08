@@ -1,60 +1,90 @@
-name: Forum observer validation
+name: Forum observer daily cycle
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "forum-observer/forum_observer/**"
+      - "forum-observer/tests/**"
+      - "forum-observer/collector-config.json"
+      - ".github/workflows/forum-observer.yml"
   schedule:
-    - cron: '40 11 * * *' # 19:40 Asia/Shanghai, UTC+8
+    - cron: "40 11 * * *" # 19:40 China
+    - cron: "25 12 * * *" # 20:25 China
+    - cron: "40 14 * * *" # 22:40 China - settle/next-issue
+    - cron: "40 0 * * *"  # 08:40 China - retry settlement when V7 history advances
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: forum-observer-archive
+  cancel-in-progress: false
 defaults:
   run:
     working-directory: forum-observer
 jobs:
-  verify:
+  forum-cycle:
     runs-on: ubuntu-latest
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install interactive browser collector
-        run: pip install playwright
-      - name: Install Chromium and OCR dependencies
-        run: python -m playwright install --with-deps chromium
-      - name: Install Chinese OCR language data
-        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
-      - name: Run tests
+          python-version: "3.12"
+      - name: Install collector and OCR
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+          sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
+      - name: Unit tests
         run: python -m unittest discover -s tests -v
-      - name: Auto collect if configured
+      - name: Observe current issue
+        id: observe
+        continue-on-error: true
+        run: python -m forum_observer.auto --config collector-config.json --out out
+      - name: Cycle snapshots and settlements from verified V7 history
+        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json
+      - name: Archive independent forum data only
         shell: bash
         run: |
-          if [ -f collector-config.json ]; then
-            python -m forum_observer.auto --config collector-config.json --out out
-          else
-            mkdir -p out
-            printf '%s\n' '{"status":"failed","reason":"real forum API configuration not verified"}' > out/collection-error.json
-            echo 'Real collector config absent; no collection attempted.'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add forum-observer/archive/
+          if git diff --cached --quiet; then
+            echo "No forum archive changes"
+            exit 0
           fi
-      - name: Print generated report
+          git commit -m "chore(forum): archive independent observer cycle"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
+      - name: Report status
         if: always()
+        shell: bash
         run: |
           if [ -f out/status.json ]; then
-            echo '--- forum observer report ---'
-            cat out/status.json
-          elif [ -f out/collection-error.json ]; then
-            cat out/collection-error.json
+            python -c "import json; a=json.load(open('out/status.json')); print({k:a.get(k) for k in ('issue','status','raw_count','top6','audit','author_selection')})"
           fi
-      - name: Validate supplied evidence if present
-        shell: bash
-        run: |
-          if [ -f input/current.json ]; then
-            python -m forum_observer.cli --input input/current.json --output out
-          else
-            echo 'No verified input/current.json: collection adapter not configured; do not fabricate predictions.'
-          fi
+          if [ -f archive/summary.json ]; then cat archive/summary.json; fi
+          if [ -f out/collection-error.json ]; then cat out/collection-error.json; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: forum-observer-status
-          path: forum-observer/out/
+          path: |
+            forum-observer/out/
+            forum-observer/archive/latest.json
+            forum-observer/archive/summary.json
           if-no-files-found: ignore
-
+      - name: Enforce collection quality
+        if: always()
+        shell: bash
+        run: |
+          if [ -f out/status.json ]; then
+            python -c "import json,sys; a=json.load(open('out/status.json'));sys.exit(0 if a.get('status')=='ready_observation' else 2)"
+          else
+            echo "No collector status"; exit 2
+          fi
