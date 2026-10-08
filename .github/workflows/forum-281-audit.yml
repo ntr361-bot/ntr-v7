@@ -6,7 +6,7 @@ on:
     paths:
       - ".github/workflows/forum-281-audit.yml"
 permissions:
-  contents: read
+  contents: write
 jobs:
   historical-281-audit:
     runs-on: ubuntu-latest
@@ -68,6 +68,114 @@ jobs:
           if s.get('status')!='ready_observation':print('WARNING: result did not meet full observation gate')
           print('281 isolation and counted-evidence audit passed')
           PY
+      - name: Publish historical 281 audit for ledger (no formal prediction)
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p ../site/data/forum-observer/historical-audits
+          python - <<'PY'
+          import json,os,pathlib
+          from datetime import datetime,timezone
+          base=pathlib.Path('audit-281')
+          status_file=base/'status.json'
+          error_file=base/'collection-error.json'
+          run_id=os.environ.get('GITHUB_RUN_ID','')
+          data={
+              'schema_version':1,
+              'source':'forum-281-historical-audit',
+              'issue':2026281,
+              'historical':True,
+              'frozen':False,
+              'settled':False,
+              'audit_status':'pending',
+              'collection_status':'missing_data',
+              'collected_at':None,
+              'published_at':datetime.now(timezone.utc).isoformat(),
+              'raw_posts':None,
+              'candidate_materials':None,
+              'valid_materials':None,
+              'excluded_materials':None,
+              'unscored_posts':None,
+              'distinct_valid_authors':None,
+              'top3':[],
+              'top6':[],
+              'ranking':[],
+              'evidence_links':[],
+              'errors':[],
+              'run_url':'https://github.com/ntr361-bot/ntr-v7/actions/runs/'+run_id
+          }
+          if status_file.exists():
+              try:
+                  s=json.loads(status_file.read_text(encoding='utf-8'))
+                  evidence=s.get('evidence',[])
+                  predictions=s.get('parsed_predictions',[])
+                  audit=s.get('audit',{})
+                  counted=sum(bool(p.get('counted_for_ranking')) for p in predictions)
+                  matching=(s.get('issue')=='2026281'
+                      and bool(audit.get('issue_filter_strict'))
+                      and isinstance(evidence,list)
+                      and all(p.get('issue')=='2026281' for p in evidence)
+                      and counted==s.get('valid_materials')
+                      and counted<=len(predictions))
+                  data['collection_status']=str(s.get('status','unknown'))
+                  data['collected_at']=s.get('fetched_at')
+                  data['raw_posts']=len(evidence) if isinstance(evidence,list) else None
+                  data['errors']=[str(e.get('reason','unknown'))[:240] for e in audit.get('detail_errors',[])[:40]]
+                  if matching:
+                      data['audit_status']='issue_scoped' if evidence else 'no_281_posts'
+                      for name in ('candidate_materials','valid_materials','excluded_materials','unscored_posts','distinct_valid_authors'):
+                          data[name]=s.get(name,0)
+                      ranks=s.get('ranking',[])
+                      zodiacs='鼠牛虎兔龙蛇马羊猴鸡狗猪'
+                      ranking_ok=(isinstance(ranks,list) and len(ranks)==12
+                          and {x.get('zodiac') for x in ranks}==set(zodiacs)
+                          and [x.get('rank') for x in ranks]==list(range(1,13))
+                          and s.get('top3')==[x.get('zodiac') for x in ranks[:3]]
+                          and s.get('top6')==[x.get('zodiac') for x in ranks[:6]])
+                      if ranking_ok:
+                          data['ranking']=[{'rank':x['rank'],'zodiac':x['zodiac'],'score':x.get('score',0)} for x in ranks]
+                          data['top3']=s['top3']
+                          data['top6']=s['top6']
+                      elif ranks:
+                          data['errors'].append('12生肖排名或Top3/Top6不一致，已隐藏')
+                      seen=set()
+                      for p in predictions:
+                          if not p.get('counted_for_ranking'):continue
+                          url=str(p.get('source_url',''))
+                          if url.startswith('https://') and url not in seen and len(data['evidence_links'])<40:
+                              seen.add(url)
+                              data['evidence_links'].append({'author':str(p.get('author',''))[:80],'url':url})
+                  else:
+                      data['audit_status']='validation_failed'
+                      data['errors'].append('281期范围或有效资料计数验证失败，拒绝展示排名')
+              except Exception as exc:
+                  data['audit_status']='invalid_status'
+                  data['errors'].append('无法解析状态：'+str(exc)[:300])
+          elif error_file.exists():
+              try:
+                  error=json.loads(error_file.read_text(encoding='utf-8'))
+                  data['errors'].append(str(error.get('reason','collector failed'))[:450])
+              except Exception:
+                  data['errors'].append('采集失败，状态文件不可解析')
+          else:
+              data['errors'].append('抓取任务未产生状态文件')
+          target=pathlib.Path('../site/data/forum-observer/historical-audits/2026281.json')
+          target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:data[k] for k in ('issue','audit_status','collection_status','raw_posts','valid_materials','errors')},ensure_ascii=False))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ../site/data/forum-observer/historical-audits/2026281.json
+          if git diff --cached --quiet; then
+            echo "281 audit report unchanged"
+            exit 0
+          fi
+          git commit -m "chore(forum): publish 281 historical audit for ledger"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main || exit 1
+          done
+          exit 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
