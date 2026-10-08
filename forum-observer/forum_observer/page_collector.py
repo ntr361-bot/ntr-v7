@@ -222,14 +222,33 @@ def _detail(page,url,item,category,max_pages):
     return False
 
 
-def _images(page,max_images):
+def _images(page,max_images,article_title=''):
     # The site includes dozens of repeated navbar and advertisement images.
     # Only original article/comment uploads are relevant; dedupe URLs.
+    if not article_title:return []
+    # An image must appear *after the article heading*, not in the previous
+    # draw banner at the top of the page. Missing anchors mean no OCR evidence.
+    try:
+        heading=page.get_by_text(article_title,exact=True).last.bounding_box(timeout=2500)
+    except Exception:
+        return []
+    if not heading:return []
+    minimum=heading['y']+heading['height']
+    comment_heading=page.get_by_text('最新评论',exact=True)
+    max_y=float('inf')
+    if comment_heading.count():
+        try:
+            bound=comment_heading.first.bounding_box(timeout=2500)
+            if bound:max_y=bound['y']
+        except Exception:pass
     raw=page.locator('img').evaluate_all(
-        "els=>els.map(x=>x.getAttribute('data-src')||x.currentSrc||x.getAttribute('src')||'').filter(Boolean)")
+        """els=>els.map(x=>{let r=x.getBoundingClientRect();
+          return {src:x.getAttribute('data-src')||x.currentSrc||x.getAttribute('src')||'',
+            y:r.top}}).filter(x=>x.src)""")
     images=[];seen=set()
-    for src in raw:
-        link=urljoin(page.url,src)
+    for image in raw:
+        if not minimum<=image['y']<max_y:continue
+        link=urljoin(page.url,image['src'])
         u=urlparse(link)
         if u.scheme!='https' or u.hostname not in HOSTS:continue
         if not re.search(r'/tk118files/(?:article|comment)/',u.path):continue
@@ -269,14 +288,99 @@ def _author_comments(text, author):
     return '\n'.join(accepted)
 
 
+
+# A post's issue is its publication period, not the period of every line inside
+# its article. Previous-period "opened ... hit" rows in later posts are retrospective.
+HISTORY_MARKER=re.compile(r'(?<!\d)(?:(?:20\d{2})(?P<full>\d{3})|(?P<short>\d{3}))\s*期\s*[:：]?')
+
+
+def _period_marker(line,year):
+    match=HISTORY_MARKER.search(str(line))
+    if not match:return None
+    return str(year)+(match.group('full') or match.group('short'))
+
+
+def _article_body(page,item):
+    """Bound article text by its *own title* and the comment boundary.
+
+    Reading body.inner_text directly would also include the page's previous
+    draw result (e.g. '第281期 ... 鸡10') and unrelated navigation elements.
+    If the boundary is missing, return no scoreable article text rather than
+    treating the global body as a prediction.
+    """
+    all_text=page.locator('body').inner_text()
+    before_comments=all_text.split('最新评论',1)[0]
+    title=str(item.get('title','')).strip()
+    if not title:return ''
+    start=before_comments.rfind(title)
+    if start<0:return ''
+    return before_comments[start+len(title):][:50000].strip()
+
+
+def current_period_text(text,issue):
+    """Exclude earlier/later period history rows from this issue's voting."""
+    year=str(issue)[:4]
+    current=True
+    seen_marker=False
+    output=[]
+    for line in str(text).splitlines():
+        marker=_period_marker(line,year)
+        if marker:
+            current=marker==issue
+            seen_marker=True
+        if current:
+            output.append(line)
+    return '\n'.join(output)
+
+
+def previous_period_records(text,requested_issue,post):
+    """Return source-attributed retrospective snippets, never eligible votes.
+
+    A 282 article may contain '281期: ... ←开:鸡10 准'. That statement was
+    published after the 281 result, and must not be graded as a 281 forecast.
+    """
+    if not text or post.get('issue')==requested_issue:return []
+    if not post.get('detail_url') or not post.get('author'):return []
+    lines=str(text).splitlines()
+    year=str(requested_issue)[:4]
+    seen=set(); records=[]
+    for index,line in enumerate(lines):
+        if _period_marker(line,year)!=requested_issue:continue
+        excerpt=line.strip()
+        # A wrapped verdict such as "准/错" belongs to its preceding row.
+        for extra in lines[index+1:index+3]:
+            if _period_marker(extra,year):break
+            if re.fullmatch(r'\s*(?:准|错|中|不中|命中|未中)\s*',extra):
+                excerpt+=' '+extra.strip()
+            else:
+                break
+        if not excerpt or excerpt in seen:continue
+        seen.add(excerpt)
+        records.append({
+            'issue':requested_issue,
+            'source_post_issue':post['issue'],
+            'author':post['author'],
+            'source_url':post['detail_url'],
+            'post_published_at':post.get('published_at',''),
+            'content':excerpt[:450],
+            'source_section':'post_article',
+            'classification':'retrospective_after_draw_not_prediction',
+            'counted_for_ranking':False
+        })
+    return records
+
+
 def score_posts(posts):
     votes={z:0.0 for z in ZODIACS}
     picks=[];seen=set();voted=set()
     for post in posts:
         # Reply text is saved as evidence, but must not be attributed to OP.
-        text=post['title']+' '+post['body']+' '+_author_comments(post.get('comments',''),post['author'])
+        body=current_period_text(post['body'],post['issue'])
+        replies=current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
+        text=post['title']+' '+body+' '+replies
         for pic in post.get('images',[]):
-            if '/article/' in pic['src']:text+=' '+pic['ocr']
+            if '/article/' in pic['src']:
+                text+=' '+current_period_text(pic['ocr'],post['issue'])
         for p in extract_picks(text):
             key=(post['author'],p['play'],tuple(p['picks']),p['mode'])
             if key in seen:continue
@@ -301,7 +405,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
         raise ValueError('explicit target issue must use YYYYNNN')
     max_pages=max(1,min(int(policy.get('max_pages',30)),50))
     max_posts=max(1,min(int(policy.get('max_posts',70)),150))
-    posts=[];errors=[]
+    posts=[];errors=[];historical_references=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
         try:
@@ -312,26 +416,56 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
             scoped=[item for item in listing if item['issue']==issue and item['author'] not in ('论坛管理','管理员')]
-            if not scoped:raise ValueError('no matching posts for '+issue)
-            truncated=len(scoped)>max_posts
+            # A completed historical issue may no longer have any original
+            # listing cards. Search next-period posts for explicitly labeled
+            # prior-period rows, but keep those rows separate from predictions.
+            periods=sorted({x['issue'] for x in listing if x['issue']})
+            next_issue=str(int(issue)+1)
+            retrospective=(target_issue is not None and next_issue in periods)
+            next_period=[item for item in listing if retrospective
+                         and item['issue']==next_issue
+                         and item['author'] not in ('论坛管理','管理员')]
+            targets=scoped+next_period
+            if not targets:raise ValueError('no current or next-period posts for '+issue)
+            truncated=len(targets)>max_posts
             cache={}
-            for item in scoped[:max_posts]:
+            for item in targets[:max_posts]:
                 try:
                     if not _detail(page,url,item,target_category,max_pages):
                         errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
                         continue
                     body=page.locator('body').inner_text()
+                    article=_article_body(page,item)
                     imgs=[]
-                    for src in _images(page,min(10,int(policy.get('max_images_per_post',5)))):
+                    for src in _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title']):
                         if src not in cache:cache[src]=_ocr_image(src)
                         imgs.append({'src':src,'ocr':cache[src],
                                      'ocr_status':'recognized' if cache[src] else 'unreadable_or_nontext'})
-                    posts.append({**{k:v for k,v in item.items() if k not in ('key','href')},
-                                  'comments':_comments(body),'images':imgs,'detail_url':page.url})
+                    item_post={**{k:v for k,v in item.items() if k not in ('key','href')},
+                               'body':article,'comments':_comments(body),
+                               'images':imgs,'detail_url':page.url}
+                    if item['issue']==issue:
+                        posts.append(item_post)
+                    else:
+                        # Only the article's own words/images; NEVER body header,
+                        # public result tiles, or other authors' comments.
+                        historical_references.extend(previous_period_records(
+                            article,issue,item_post))
+                        for pic in imgs:
+                            if '/article/' in pic['src']:
+                                historical_references.extend(previous_period_records(
+                                    pic['ocr'],issue,item_post))
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
         finally:
             browser.close()
+    # Deduplicate repeated author + original article quote (including OCR).
+    deduped=[];history_seen=set()
+    for record in historical_references:
+        key=(record['author'],record['source_post_issue'],record['content'])
+        if key not in history_seen:
+            history_seen.add(key);deduped.append(record)
+    historical_references=deduped
     ranking,predictions=score_posts(posts)
     candidates=set(policy.get('top_authors',[]))
     top_found=sorted({p['author'] for p in posts if p['author'] in candidates})
@@ -349,6 +483,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
+            'historical_references':historical_references,
+            'historical_reference_count':len(historical_references),
+            'historical_reference_authors':len({r['author'] for r in historical_references}),
+            'next_period_posts_checked':len(next_period),
             'selected_count':valid_materials if ready else 0,
             'valid_materials':valid_materials,
             'candidate_materials':len(predictions),
@@ -361,6 +499,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'top6':[r['zodiac'] for r in ranking[:6]],
             'evidence':posts,'parsed_predictions':predictions,'rejected':errors,
             'audit':{'listing_count':len(listing),'issue_listing_count':len(scoped),
+                     'next_period_posts_checked':len(next_period),
+                     'historical_reference_count':len(historical_references),
+                     'excluded_draw_header':True,
+                     'post_article_only':True,
                      'truncated':truncated,'detail_errors':errors,'issue_filter_strict':True},
             'progress':{'leaderboard_source':'historic_candidates_unverified',
                         'leaderboard_checked':0,'leaderboard_total':0,
@@ -372,7 +514,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'min_valid_materials':int(policy.get('min_valid_materials',25)),
                 'comments_collected':sum(bool(p['comments']) for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
-            'note':'Experimental evidence only; candidate author list not verified live leaderboard.'}
+            'note':('Retrospective references in next-period posts are not pre-draw forecasts; '
+                    'page top draw results are excluded from scoring. '
+                    'Experimental evidence only; no verified live leaderboard.')}
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result

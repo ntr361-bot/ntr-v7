@@ -17,6 +17,11 @@ def render(result:dict,path:Path)->None:
         "## 十二生肖观察排名",
     ]
     lines += [f"{r['rank']}. {r['zodiac']}：{r['score']}" for r in result.get('ranking',[])]
+    lines += ["", f"**来自下一期帖子的本期历史记录：{result.get('historical_reference_count',0)}条**",
+              f"涉及作者：{result.get('historical_reference_authors',0)}人",
+              "历史回顾不计入有效预测资料；页面顶部的官方开奖记录不参与统计。"]
+    for row in result.get('historical_references',[])[:60]:
+        lines.append(f"- {row['author']}：{row['content']}（来源：{row['source_post_issue']}期，{row['source_url']}）")
     lines += ["", "## 资料校验与错误",
               f"期号严格匹配：{result.get('audit',{}).get('issue_filter_strict',False)}",
               f"详情失败：{len(details)}项",

@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/forum-281-audit.yml"
+      - "forum-observer/forum_observer/page_collector.py"
+      - "forum-observer/tests/test_post_history_isolation.py"
 permissions:
   contents: write
 jobs:
@@ -56,6 +58,8 @@ jobs:
             'detail_errors':len(s.get('audit',{}).get('detail_errors',[])),
             'truncated':s.get('audit',{}).get('truncated'),
             'top6_observation':s.get('top6',[]),
+            'retrospective_281_rows':len(s.get('historical_references',[])),
+            'next_period_posts_checked':s.get('next_period_posts_checked',0),
           }
           print(json.dumps(row,ensure_ascii=False,indent=2))
           assert s.get('issue')=='2026281','Wrong declared issue'
@@ -63,10 +67,22 @@ jobs:
           assert all(p.get('issue')=='2026281' for p in evidence),'CROSS-ISSUE LEAK'
           assert s.get('valid_materials',0) <= s.get('candidate_materials',0),'Invalid totals'
           assert s.get('valid_materials',0) == sum(p.get('counted_for_ranking',False) for p in s.get('parsed_predictions',[])),'Count mismatch'
-          if not evidence:raise AssertionError('No historical 281 posts fetched')
+          references=s.get('historical_references',[])
+          assert isinstance(references,list),'Invalid retro source array'
+          assert s.get('historical_reference_count',0)==len(references),'Retro count mismatch'
+          assert all(p.get('issue')=='2026281'
+                  and p.get('source_post_issue')=='2026282'
+                  and p.get('classification')=='retrospective_after_draw_not_prediction'
+                  and p.get('counted_for_ranking') is False
+                  and str(p.get('source_url','')).startswith('https://')
+                  for p in references),'Retrospective evidence invalid'
+          if not evidence and not references:
+              raise AssertionError('No original 281 posts and no 281 lines in 282 articles')
+          if not evidence:
+              print('281: historical 282-post references available; NOT a pre-draw prediction')
           if row['detail_errors']:print('WARNING: some post details were not retrieved')
           if s.get('status')!='ready_observation':print('WARNING: result did not meet full observation gate')
-          print('281 isolation and counted-evidence audit passed')
+          print('281 direct evidence / retrospective references isolation audit passed')
           PY
       - name: Publish historical 281 audit for ledger (no formal prediction)
         if: always()
@@ -101,6 +117,8 @@ jobs:
               'top6':[],
               'ranking':[],
               'evidence_links':[],
+              'historical_reference_count':0,
+              'retrospective_records':[],
               'errors':[],
               'run_url':'https://github.com/ntr361-bot/ntr-v7/actions/runs/'+run_id
           }
@@ -111,18 +129,37 @@ jobs:
                   predictions=s.get('parsed_predictions',[])
                   audit=s.get('audit',{})
                   counted=sum(bool(p.get('counted_for_ranking')) for p in predictions)
+                  retro=s.get('historical_references',[])
+                  retro_valid=(isinstance(retro,list)
+                      and s.get('historical_reference_count',0)==len(retro)
+                      and all(isinstance(p,dict)
+                          and p.get('issue')=='2026281'
+                          and p.get('source_post_issue')=='2026282'
+                          and p.get('counted_for_ranking') is False
+                          and p.get('classification')=='retrospective_after_draw_not_prediction'
+                          and str(p.get('source_url','')).startswith('https://')
+                          for p in retro))
                   matching=(s.get('issue')=='2026281'
                       and bool(audit.get('issue_filter_strict'))
                       and isinstance(evidence,list)
                       and all(p.get('issue')=='2026281' for p in evidence)
-                      and counted==s.get('valid_materials')
+                      and retro_valid and counted==s.get('valid_materials')
                       and counted<=len(predictions))
                   data['collection_status']=str(s.get('status','unknown'))
                   data['collected_at']=s.get('fetched_at')
                   data['raw_posts']=len(evidence) if isinstance(evidence,list) else None
                   data['errors']=[str(e.get('reason','unknown'))[:240] for e in audit.get('detail_errors',[])[:40]]
                   if matching:
-                      data['audit_status']='issue_scoped' if evidence else 'no_281_posts'
+                      data['audit_status']='issue_scoped' if evidence else ('retrospective_only' if retro else 'no_281_posts')
+                      data['historical_reference_count']=len(retro)
+                      data['retrospective_records']=[{
+                          'author':str(p.get('author',''))[:80],
+                          'source_post_issue':str(p.get('source_post_issue','')),
+                          'source_url':str(p.get('source_url','')),
+                          'post_published_at':str(p.get('post_published_at','')),
+                          'content':str(p.get('content',''))[:450],
+                          'classification':'retrospective_after_draw_not_prediction'
+                      } for p in retro[:80]]
                       for name in ('candidate_materials','valid_materials','excluded_materials','unscored_posts','distinct_valid_authors'):
                           data[name]=s.get(name,0)
                       ranks=s.get('ranking',[])
