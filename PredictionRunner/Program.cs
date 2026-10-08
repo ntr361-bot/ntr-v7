@@ -54,6 +54,9 @@ try
         {
             Console.WriteLine("[WARNING] 未找到 runtime-state.json，本次仅恢复开奖记录");
         }
+        string traceArchive = Path.Combine(repositoryRoot, "site", "data", "prediction-traces", "history.json.gz");
+        int restoredTraces = PredictionTraceArchive.Import(traceArchive);
+        Console.WriteLine($"[INFO] 从不可变档案恢复 {restoredTraces} 条 Trace/Outcome 记录");
         if (arguments.ContainsKey("rebuild-only")) return 0;
     }
 
@@ -87,6 +90,11 @@ try
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
         if (!arguments.ContainsKey("dry-run"))
         {
+            int settlements = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
+            Console.WriteLine($"[INFO] 已同步 {settlements} 条历史预测结算状态（不重算预测、不重放学习）");
+            string traceArchive = Path.Combine(repositoryRoot, "site", "data", "prediction-traces", "history.json.gz");
+            int traces = PredictionTraceArchive.Export(traceArchive);
+            Console.WriteLine($"[INFO] 已归档 {traces} 条不可变 Live Trace");
             CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
             WriteRuntimeState(repositoryRoot);
         }
