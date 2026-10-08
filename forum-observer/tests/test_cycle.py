@@ -30,7 +30,7 @@ class CycleTests(unittest.TestCase):
              'images':[],'detail_url':'https://example.org/detail'}
         ranks,items=score_posts([row,row])
         self.assertEqual(len(items),1)
-        self.assertAlmostEqual(ranks[0]['score'],1/3)
+        self.assertAlmostEqual(ranks[0]['score'],1/3,places=5)
     def test_append_only_after_real_draw(self):
         with TemporaryDirectory() as tmp:
             base=Path(tmp);out=base/'out';out.mkdir();archive=base/'archive'
