@@ -33,6 +33,7 @@ jobs:
             mkdir -p out
             printf '%s\n' '{"status":"failed","reason":"real forum API configuration not verified"}' > out/collection-error.json
             echo 'Real collector config absent; no collection attempted.'
+          fi
       - name: Print generated report
         if: always()
         run: |
@@ -41,7 +42,6 @@ jobs:
             cat out/status.json
           elif [ -f out/collection-error.json ]; then
             cat out/collection-error.json
-          fi
           fi
       - name: Validate supplied evidence if present
         shell: bash
