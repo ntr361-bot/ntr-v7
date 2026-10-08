@@ -3,6 +3,7 @@ from pathlib import Path
 from .collector import collect,atomic_json
 from .report import render
 from .core import freeze
+from .page_collector import collect_page
 from datetime import datetime,timezone
 
 def main():
@@ -13,7 +14,7 @@ def main():
     out=Path(a.out)
     try:
         cfg=json.loads(Path(a.config).read_text(encoding='utf-8'))
-        result=collect(cfg,out)
+        result=collect_page(cfg['forum_url'],out,cfg.get('issue')) if cfg.get('forum_url') else collect(cfg,out)
         render(result,out/result['issue']/'report.md')
         if result['status']=='ready_for_pre_draw_freeze':
             if cfg.get('freeze_enabled',False):

@@ -49,3 +49,8 @@ python -m forum_observer.cli --input input-example.json --output out
 - HTTPS 采集拒绝跨站重定向；作品发布时间不能在未来。
 - `freeze_enabled` 默认关闭；仅在已配置**跨运行不可覆盖的持久化存储**并核实开奖时间后开启。GitHub Actions 的 artifact 不能代替冻结数据库。
 - 本包不包含已验证的论坛 API，配置文件中的 `example.org` 仅为占位。
+
+## V3.1 动态网页采集
+- 论坛没有公开 JSON API 时，`forum_observer.page_collector` 使用 Chromium 的无头渲染结果读取页面 DOM。
+- 默认配置指向 `https://x5k1pok.11852.com:8443/#/forum`，只生成带原文、作者、时间和图片证据的观察结果。
+- 页面观察不会自动冒充实时榜单，也不会自动冻结预测；必须另行核实作者榜单和开奖截止时间。
