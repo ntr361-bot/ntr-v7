@@ -86,9 +86,12 @@ public static class PublishedSettlementReconciliation
                     string[] ranking = JsonSerializer.Deserialize<string[]>(row.ranking)
                         ?? throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
                     rank = Array.IndexOf(ranking, zodiac) + 1;
-                    if (ranking.Length != 12 || ranking.Distinct(StringComparer.Ordinal).Count() != 12 ||
-                        rank == 0)
-                        throw new InvalidDataException($"Incomplete frozen ranking: {issue}, row {row.id}");
+                    // V7's historical issued rank can contain eleven zodiac entries.
+                    // A missing actual zodiac is genuinely unranked (0); never rewrite
+                    // or fabricate a twelfth item in an immutable prediction.
+                    if (ranking.Length < 6 || ranking.Length > 12 ||
+                        ranking.Distinct(StringComparer.Ordinal).Count() != ranking.Length)
+                        throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
                 }
                 if (row.rank > 0 && rank > 0 && row.rank != rank)
                     throw new InvalidDataException($"Frozen actual rank conflict: {issue}, row {row.id}");
