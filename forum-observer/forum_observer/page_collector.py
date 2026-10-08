@@ -65,12 +65,19 @@ def rendered_html(url: str, timeout: int = 60) -> str:
 
 
 def _issue(value: str) -> str:
-    match = re.search(r'(?:20)?26?(\d{3})', value)
-    return '2026' + match.group(1) if match else value.strip()
+    text = value.strip()
+    # The forum renders the issue label as either "281", "第281期", or
+    # occasionally the full "2026281" form.
+    match = re.search(r'(?<!\d)(\d{3})(?!\d)', text)
+    if match:
+        return '2026' + match.group(1)
+    full = re.search(r'20\d{5}', text)
+    return full.group(0) if full else text
 
 
 def collect_page(url: str, out: Path, target_issue: str | None = None) -> dict[str, Any]:
     parser = _PostParser(); parser.feed(rendered_html(url)); posts = []
+    parsed_posts = parser.posts[:]
     for index, raw in enumerate(parser.posts):
         issue = _issue(raw['issue'])
         if target_issue and issue != target_issue: continue
@@ -79,6 +86,18 @@ def collect_page(url: str, out: Path, target_issue: str | None = None) -> dict[s
         counts = {z: len(re.findall(re.escape(z), text)) for z in ZODIACS}
         posts.append({**raw,'issue':issue,'title':title,'body':body,
                       'source_url':f'{url}#post-{index}','zodiac_mentions':counts})
+    filter_fallback = False
+    if target_issue and not posts and parsed_posts:
+        # A stale/malformed issue label should not discard an otherwise useful
+        # rendered-page observation. Keep the evidence and explain the scope.
+        filter_fallback = True
+        for index, raw in enumerate(parsed_posts):
+            issue = _issue(raw['issue'])
+            title = ' '.join(raw['title'].split()); body = ' '.join(raw['body'].split())
+            text = f'{title} {body}'
+            counts = {z: len(re.findall(re.escape(z), text)) for z in ZODIACS}
+            posts.append({**raw,'issue':issue,'title':title,'body':body,
+                          'source_url':f'{url}#post-{index}','zodiac_mentions':counts})
     totals = {z: sum(p['zodiac_mentions'][z] for p in posts) for z in ZODIACS}
     ranking = sorted(ZODIACS,key=lambda z:(-totals[z],ZODIACS.index(z))) if posts else []
     result = {'issue':target_issue or (posts[0]['issue'] if posts else 'unknown'),
@@ -90,7 +109,12 @@ def collect_page(url: str, out: Path, target_issue: str | None = None) -> dict[s
               'top1':ranking[:1],'top3':ranking[:3],'top6':ranking[:6],'evidence':posts,
               'progress':{'leaderboard_source':'not_available','leaderboard_checked':0,
                           'leaderboard_total':0,'outside_checked':len(posts),'blocked':[]},
-              'note':'Rendered-page observation only; no verified leaderboard or freeze was created.'}
+              'note':('Rendered-page observation only; requested issue had no exact label, '
+                      'so all parsed posts were retained. No verified leaderboard or freeze was created.'
+                      if filter_fallback else
+                      'Rendered-page observation only; no verified leaderboard or freeze was created.'),
+              'parsed_count':len(parsed_posts),'issue_filter_fallback':filter_fallback}
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result
+
