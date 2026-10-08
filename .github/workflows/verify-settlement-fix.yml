@@ -1,0 +1,31 @@
+name: Verify Settlement and Trace Fix
+
+on:
+  pull_request:
+    paths:
+      - 'PublishedSettlementReconciliation.cs'
+      - 'PredictionTraceArchive.cs'
+      - 'PredictionRunner/**'
+      - 'Tests/Program.cs'
+      - '.github/workflows/run-prediction.yml'
+      - '.github/workflows/verify-settlement-fix.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build prediction runner (compile only; no live predictions)
+        run: dotnet build PredictionRunner/PredictionRunner.csproj -c Release
+      - name: Build smoke tests
+        run: dotnet build Tests/六合分析软件.SmokeTests.csproj -c Release
+      - name: Execute isolated smoke tests
+        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj --configuration Release --no-build
