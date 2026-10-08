@@ -5,6 +5,9 @@ on:
     - cron: '40 11 * * *' # 19:40 Asia/Shanghai, UTC+8
 permissions:
   contents: read
+defaults:
+  run:
+    working-directory: forum-observer
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -37,6 +40,6 @@ jobs:
         if: always()
         with:
           name: forum-observer-status
-          path: out/
+          path: forum-observer/out/
           if-no-files-found: ignore
 
