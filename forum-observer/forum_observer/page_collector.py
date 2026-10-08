@@ -94,20 +94,42 @@ def interactive_posts(url: str, target_category: str | None = None) -> list[dict
         page = browser.new_page(viewport={'width':1280,'height':1800})
         page.goto(url, wait_until='networkidle', timeout=90000)
         page.wait_for_timeout(1500)
-        cards = page.locator('li')
         snapshots = []
-        for i in range(cards.count()):
-            card = cards.nth(i)
-            category = (card.locator('.ntool .num').last.inner_text().strip()
-                        if card.locator('.ntool .num').count() else '')
-            if target_category and category != target_category:
-                continue
-            issue = card.locator('.slabel').inner_text().strip() if card.locator('.slabel').count() else ''
-            snapshots.append({'index':i,'author':card.locator('.name').inner_text().strip(),
-                              'published_at':card.locator('.time').inner_text().strip(),
-                              'issue':issue,'category':category,
-                              'title':card.locator('.formtitle').inner_text().strip() if card.locator('.formtitle').count() else '',
-                              'body':card.locator('.text').inner_text().strip() if card.locator('.text').count() else ''})
+        seen = set()
+        # The forum is paginated/infinite-scrolling.  A single DOM snapshot is
+        # never a complete daily collection.  Keep loading listing pages until
+        # no new card appears, then inspect every current-issue card.
+        for _page_no in range(50):
+            cards = page.locator('li')
+            for i in range(cards.count()):
+                card = cards.nth(i)
+                key = card.inner_text().strip()
+                if not key or key in seen:
+                    continue
+                seen.add(key)
+                category = (card.locator('.ntool .num').last.inner_text().strip()
+                            if card.locator('.ntool .num').count() else '')
+                if target_category and category != target_category:
+                    continue
+                issue = card.locator('.slabel').inner_text().strip() if card.locator('.slabel').count() else ''
+                snapshots.append({'index':i,'author':card.locator('.name').inner_text().strip(),
+                                  'published_at':card.locator('.time').inner_text().strip(),
+                                  'issue':issue,'category':category,
+                                  'title':card.locator('.formtitle').inner_text().strip() if card.locator('.formtitle').count() else '',
+                                  'body':card.locator('.text').inner_text().strip() if card.locator('.text').count() else ''})
+            before = len(seen)
+            page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+            page.wait_for_timeout(600)
+            next_buttons = page.locator('button, a').filter(has_text='下一页')
+            if next_buttons.count():
+                try:
+                    next_buttons.last.click(timeout=1500)
+                    page.wait_for_timeout(900)
+                    continue
+                except Exception:
+                    pass
+            if len(seen) == before:
+                break
         for snap in snapshots:
             page.goto(url, wait_until='networkidle', timeout=90000); page.wait_for_timeout(700)
             cards = page.locator('li'); card = cards.nth(snap['index'])
@@ -218,4 +240,3 @@ def collect_page(url: str, out: Path, target_issue: str | None = None,
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result
-
