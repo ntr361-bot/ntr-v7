@@ -116,8 +116,8 @@ def interactive_posts(url: str, target_category: str | None = None) -> list[dict
             marker = detail.find('最新评论')
             comments = detail[marker:] if marker >= 0 else ''
             images = []
-            for j in range(page.locator('img').count()):
-                src = page.locator('img').nth(j).get_attribute('src') or ''
+            srcs = page.locator('img').evaluate_all("els => els.map(e => e.getAttribute('src') || '').filter(Boolean)")
+            for src in srcs:
                 if src and not src.startswith('data:'):
                     ocr = _ocr_image(src)
                     images.append({'src':src,'ocr':ocr,'ocr_status':'recognized' if ocr else 'unreadable_or_nontext'})
