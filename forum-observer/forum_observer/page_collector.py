@@ -257,12 +257,24 @@ def extract_picks(text):
     return output
 
 
+def _author_comments(text, author):
+    """Only clearly credited OP replies can count as the OP's evidence."""
+    if not text or not author:
+        return ''
+    parts=re.split(r'(?m)(?=^\d+\s*楼)',text)
+    accepted=[]
+    for part in parts:
+        if re.match(r'^\d+\s*楼',part.strip()) and author in part[:100]:
+            accepted.append(part[:3000])
+    return '\n'.join(accepted)
+
+
 def score_posts(posts):
     votes={z:0.0 for z in ZODIACS}
     picks=[];seen=set();voted=set()
     for post in posts:
         # Reply text is saved as evidence, but must not be attributed to OP.
-        text=post['title']+' '+post['body']
+        text=post['title']+' '+post['body']+' '+_author_comments(post.get('comments',''),post['author'])
         for pic in post.get('images',[]):
             if '/article/' in pic['src']:text+=' '+pic['ocr']
         for p in extract_picks(text):

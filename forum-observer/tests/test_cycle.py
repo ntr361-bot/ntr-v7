@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from forum_observer.page_collector import _issue,current_issue,extract_picks,score_posts,_comments
+from forum_observer.page_collector import _issue,current_issue,extract_picks,score_posts,_comments,_author_comments
 from forum_observer.cycle import sync
 
 class CycleTests(unittest.TestCase):
@@ -25,6 +25,10 @@ class CycleTests(unittest.TestCase):
         self.assertEqual(extract_picks('鸡、马、龙随便一说'),[])
     def test_empty_comments(self):
         self.assertEqual(_comments('最新评论\n成为第一个评论的人\n想说点什么'),'')
+    def test_only_original_author_comments_score(self):
+        content='最新评论\n1楼\n张三 LV.1\n推荐三肖：鼠牛虎\n2楼\n李四 LV.1\n推荐三肖：龙马蛇'
+        self.assertEqual(extract_picks(_author_comments(content,'李四'))[0]['picks'],['龙','马','蛇'])
+        self.assertEqual(extract_picks(_author_comments(content,'王五')),[])
     def test_same_author_vote_dedup(self):
         row={'author':'甲','issue':'2026282','title':'推荐三肖：鼠牛虎','body':'',
              'images':[],'detail_url':'https://example.org/detail'}
