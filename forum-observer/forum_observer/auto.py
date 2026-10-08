@@ -14,7 +14,7 @@ def main():
     out=Path(a.out)
     try:
         cfg=json.loads(Path(a.config).read_text(encoding='utf-8'))
-        result=collect_page(cfg['forum_url'],out,cfg.get('issue')) if cfg.get('forum_url') else collect(cfg,out)
+        result=collect_page(cfg['forum_url'],out,cfg.get('issue'),cfg.get('category'),cfg) if cfg.get('forum_url') else collect(cfg,out)
         render(result,out/result['issue']/'report.md')
         if result['status']=='ready_for_pre_draw_freeze':
             if cfg.get('freeze_enabled',False):
@@ -30,3 +30,4 @@ def main():
         print('Collection failed:',exc,file=sys.stderr)
         return 2
 if __name__=='__main__': sys.exit(main())
+
