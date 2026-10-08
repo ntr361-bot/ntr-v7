@@ -187,7 +187,7 @@ jobs:
 
           $predictionPath = "site/data/predictions/$target.json"
           $dailyPath = "site/data/daily-records/$target.json"
-          foreach ($path in @($predictionPath, $dailyPath, 'site/data/runtime-state.json', 'site/data/daily-records/manifest.json')) {
+          foreach ($path in @($predictionPath, $dailyPath, 'site/data/runtime-state.json', 'site/data/daily-records/manifest.json', 'site/data/prediction-traces/history.json.gz')) {
             if (!(Test-Path $path)) { throw "missing production artifact: $path" }
           }
 
@@ -213,7 +213,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json
+          git add site/data/history.json site/data/predictions site/data/daily-records site/data/runtime-state.json site/data/prediction-traces/history.json.gz
           if (Test-Path 'experiments/v7-independent-learning-v1/archive.json') {
             git add experiments/v7-independent-learning-v1/archive.json
           }
