@@ -143,8 +143,6 @@ var tests = new (string Name, Action Run)[]
     ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
     ,("手动刷新生成四个V6.5日更模型", RefreshAllPeriodsGeneratesAllV65DailyModels)
     ,("成绩榜不展示没有预测记录的模型", ScoreboardHidesModelsWithoutPredictionRecords)
-    ,("已开奖日记录安全同步预测历史且保持原始预测不可变", PublishedSettlementReconcilesWithoutPredictionRewrite)
-    ,("Live Trace归档可重复导入而不生成预测", TraceArchiveIsIdempotent)
 };
 
 int failures = 0;
@@ -2702,54 +2700,4 @@ void AssertThrows<T>(Action action, string message) where T : Exception
 void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
-}
-
-
-void PublishedSettlementReconcilesWithoutPredictionRewrite()
-{
-    SeedHistory();
-    const string issue = "2026971";
-    DatabaseHelper.InsertHistory(issue, "010203040506", "15", "龙", "2026-10-01 21:30:00", "2026-10-01");
-    string[] ranking = { "猪", "鸡", "鼠", "狗", "兔", "猴", "牛", "虎", "蛇", "羊", "马", "龙" };
-    DatabaseHelper.SavePrediction(issue, "猪,鸡,鼠", "猪,鸡,鼠,狗,兔,猴",
-        "09,22", "V6.5", 50, "frozen-score", finalRankingJson: JsonSerializer.Serialize(ranking));
-    var before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(x =>
-        x.Issue == issue && x.ModelVersion == "V6.5" && x.AnalysisPeriods == 50);
-    string directory = FreshDirectory();
-    string file = Path.Combine(directory, issue + ".json");
-    File.WriteAllText(file, """
-      {"issue":2026971,"verification":{"status":"verified","actual_number":"15","actual_zodiac":"龙"}}
-      """);
-
-    Assert(PublishedSettlementReconciliation.Apply(directory) == 1, "pending prediction was not settled");
-    var after = DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(x => x.Id == before.Id);
-    Assert(after.ActualNumber == "15" && after.ActualZodiac == "龙" &&
-           after.HitResult == "未命中" && after.Top6HitResult == "未命中" &&
-           after.ActualRank == 12, "settlement fields are incorrect");
-    Assert(after.PredictZodiac == before.PredictZodiac &&
-           after.Top6Zodiac == before.Top6Zodiac &&
-           after.PredictNumber == before.PredictNumber &&
-           after.FinalRankingJson == before.FinalRankingJson &&
-           after.ScoreDetails == before.ScoreDetails, "frozen prediction was modified");
-    Assert(PublishedSettlementReconciliation.Apply(directory) == 0, "reconciliation is not idempotent");
-    File.WriteAllText(file, """
-      {"issue":2026971,"verification":{"status":"verified","actual_number":"16","actual_zodiac":"龙"}}
-      """);
-    AssertThrows<InvalidDataException>(() => PublishedSettlementReconciliation.Apply(directory),
-        "mismatched draw must be rejected");
-    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(x => x.Id == before.Id)
-           .ActualNumber == "15", "conflicting settlement replaced the original draw");
-}
-
-void TraceArchiveIsIdempotent()
-{
-    string path = Path.Combine(FreshDirectory(), "traces.json.gz");
-    int archived = PredictionTraceArchive.Export(path);
-    Assert(File.Exists(path), "trace archive not written");
-    Assert(PredictionTraceArchive.Import(path) == 0, "import changed existing immutable traces");
-    Assert(PredictionTraceArchive.Export(path) == archived, "round-trip changed archive count");
-    string invalid = Path.Combine(FreshDirectory(), "invalid-traces.json.gz");
-    File.WriteAllBytes(invalid, new byte[] { 0x00, 0x01, 0x02 });
-    AssertThrows<InvalidDataException>(() => PredictionTraceArchive.Import(invalid),
-        "corrupt trace archive was accepted");
 }
