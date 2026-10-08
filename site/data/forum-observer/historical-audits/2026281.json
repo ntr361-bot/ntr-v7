@@ -5,22 +5,36 @@
   "historical": true,
   "frozen": false,
   "settled": false,
-  "audit_status": "pending",
-  "collection_status": "missing_data",
-  "collected_at": null,
-  "published_at": "2026-10-08T16:19:32.559068+00:00",
-  "raw_posts": null,
-  "candidate_materials": null,
-  "valid_materials": null,
-  "excluded_materials": null,
-  "unscored_posts": null,
-  "distinct_valid_authors": null,
+  "audit_status": "retrospective_only",
+  "collection_status": "incomplete_observation",
+  "collected_at": "2026-10-08T23:49:10.284301+00:00",
+  "published_at": "2026-10-08T23:49:10.407008+00:00",
+  "raw_posts": 0,
+  "candidate_materials": 0,
+  "valid_materials": 0,
+  "excluded_materials": 0,
+  "unscored_posts": 0,
+  "distinct_valid_authors": 0,
   "top3": [],
   "top6": [],
   "ranking": [],
   "evidence_links": [],
-  "errors": [
-    "no matching posts for 2026281"
+  "historical_reference_count": 1,
+  "retrospective_records": [
+    {
+      "author": "虎神出山",
+      "source_post_issue": "2026282",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11052686&type=3",
+      "post_published_at": "2026-10-09 02:46",
+      "content": "281期平特一肖狗(45 33)中",
+      "classification": "retrospective_after_draw_not_prediction"
+    }
   ],
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/37806663018"
+  "errors": [
+    "detail not verified",
+    "detail not verified",
+    "detail not verified",
+    "detail not verified"
+  ],
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/37861406937"
 }
