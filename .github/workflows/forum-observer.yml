@@ -20,6 +20,8 @@ jobs:
         run: pip install playwright
       - name: Install Chromium and OCR dependencies
         run: python -m playwright install --with-deps chromium
+      - name: Install Chinese OCR language data
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
       - name: Run tests
         run: python -m unittest discover -s tests -v
       - name: Auto collect if configured
