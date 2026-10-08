@@ -20,6 +20,10 @@ def main():
             if cfg.get('freeze_enabled',False):
                 freeze(result,out,datetime.now(timezone.utc).isoformat(),result['draw_at'])
             return 0
+        if result['status']=='html_observation':
+            # A rendered-page observation is a valid run, but is not a formal
+            # freeze because the live author leaderboard is not verified.
+            return 0
         return 2
     except Exception as exc:
         atomic_json(out/'collection-error.json',{'status':'failed','reason':str(exc)})
