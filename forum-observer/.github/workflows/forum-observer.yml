@@ -1,0 +1,41 @@
+name: Forum observer validation
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * *' # 20:00 Asia/Shanghai, UTC+8
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Auto collect if configured
+        shell: bash
+        run: |
+          if [ -f collector-config.json ]; then
+            python -m forum_observer.auto --config collector-config.json --out out
+          else
+            mkdir -p out
+            printf '%s\n' '{"status":"failed","reason":"real forum API configuration not verified"}' > out/collection-error.json
+            echo 'Real collector config absent; no collection attempted.'
+          fi
+      - name: Validate supplied evidence if present
+        shell: bash
+        run: |
+          if [ -f input/current.json ]; then
+            python -m forum_observer.cli --input input/current.json --output out
+          else
+            echo 'No verified input/current.json: collection adapter not configured; do not fabricate predictions.'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-observer-status
+          path: out/
+          if-no-files-found: ignore

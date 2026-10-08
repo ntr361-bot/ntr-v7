@@ -1,0 +1,33 @@
+{
+  "allowed_hosts": [
+    "example.org"
+  ],
+  "issue_url": "https://example.org/api/latest-issue",
+  "leaderboard_url": "https://example.org/api/leaderboard?issue={issue}",
+  "author_url": "https://example.org/api/works?author={author}&issue={issue}",
+  "outside_authors": [],
+  "request_interval_seconds": 1,
+  "candidate_authors": [
+    "凉人暖颜凉",
+    "为彩出征",
+    "叶落归根",
+    "春兰秋菊",
+    "皇五主",
+    "以实温故",
+    "顺藤摸瓜",
+    "平云以后",
+    "节外生枝",
+    "长青牛牛",
+    "贝贝丹丹",
+    "心灰意冷",
+    "安妮宝贝",
+    "为彩疯狂啦",
+    "竹报三多",
+    "蛋蛋有伤",
+    "小美不美",
+    "石更走己",
+    "斩草除根",
+    "阳光下的真实"
+  ],
+  "freeze_enabled": false
+}
