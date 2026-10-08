@@ -14,6 +14,7 @@ public static class PredictionTraceArchive
 {
     private sealed class Archive
     {
+        public Archive() { }
         public string SchemaVersion { get; set; } = "v1";
         public List<TraceEntry> Traces { get; set; } = new();
         public List<OutcomeEntry> Outcomes { get; set; } = new();
@@ -21,6 +22,7 @@ public static class PredictionTraceArchive
 
     private sealed class TraceEntry
     {
+        public TraceEntry() { }
         public string Issue { get; set; } = "";
         public string PayloadJson { get; set; } = "";
         public string PayloadHash { get; set; } = "";
@@ -28,6 +30,7 @@ public static class PredictionTraceArchive
 
     private sealed class OutcomeEntry
     {
+        public OutcomeEntry() { }
         public string Issue { get; set; } = "";
         public string OutcomeJson { get; set; } = "";
         public string OutcomeHash { get; set; } = "";
