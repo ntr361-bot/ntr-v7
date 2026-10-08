@@ -2,15 +2,12 @@ name: Forum observer validation
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 12 * * *' # 20:00 Asia/Shanghai, UTC+8
+    - cron: '40 11 * * *' # 19:40 Asia/Shanghai, UTC+8
 permissions:
   contents: read
 jobs:
   verify:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: forum-observer
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,5 +37,6 @@ jobs:
         if: always()
         with:
           name: forum-observer-status
-          path: forum-observer/out/
+          path: out/
           if-no-files-found: ignore
+
