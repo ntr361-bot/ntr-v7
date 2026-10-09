@@ -7,6 +7,8 @@ on:
       - ".github/workflows/forum-281-audit.yml"
       - "forum-observer/forum_observer/page_collector.py"
       - "forum-observer/tests/test_post_history_isolation.py"
+      - "forum-observer/forum_observer/author_history.py"
+      - "forum-observer/tests/test_dynamic_history.py"
 permissions:
   contents: write
 jobs:
@@ -60,6 +62,9 @@ jobs:
             'top6_observation':s.get('top6',[]),
             'retrospective_281_rows':len(s.get('historical_references',[])),
             'next_period_posts_checked':s.get('next_period_posts_checked',0),
+            'author_profiles_checked':s.get('author_profiles_checked',0),
+            'author_history_posts_found':s.get('author_profile_history_posts',0),
+            'forum_scroll':s.get('forum_scroll_audit',{}),
           }
           print(json.dumps(row,ensure_ascii=False,indent=2))
           assert s.get('issue')=='2026281','Wrong declared issue'

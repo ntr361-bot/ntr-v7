@@ -11,6 +11,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from .core import ZODIACS
+from .author_history import incremental_scan, open_author_history, open_profile_post
 
 
 class _PostParser(HTMLParser):
@@ -161,29 +162,19 @@ def _listing(page,category):
 
 
 def _pages(page,category,max_pages=25):
-    seen=set(); found=[]
-    for i in range(max_pages):
-        for x in _listing(page,category):
-            if x['key'] not in seen:
-                seen.add(x['key']);found.append(x)
-        before=len(seen)
-        page.evaluate('window.scrollTo(0,document.body.scrollHeight)')
-        page.wait_for_timeout(700)
-        for x in _listing(page,category):
-            if x['key'] not in seen:
-                seen.add(x['key']);found.append(x)
-        if len(seen)>before:continue
-        nexts=page.locator('button, a').filter(has_text='下一页')
-        if not nexts.count():break
-        try:
-            nexts.last.click(timeout=1800);page.wait_for_timeout(700)
-        except Exception:break
-        fresh=_listing(page,category)
-        if not any(x['key'] not in seen for x in fresh):break
-    return found
+    # Scroll in small increments and retain each virtualized card while it is
+    # mounted. Both forum feed and author history lazy-load on user scroll.
+    return incremental_scan(page,lambda: _listing(page,category),
+                            max_steps=max(15,max_pages*4),delay_ms=650)
+
 
 
 def _detail(page,url,item,category,max_pages):
+    # A profile's history card may have no href in this SPA.
+    if item.get('profile_url') and not item.get('href'):
+        if not open_profile_post(page,item,_issue,max_steps=max_pages):
+            return False
+        return _wait_detail(page,item,timeout_seconds=8)
     # Never reuse an index across pages or after reloading the list.
     if item.get('href') and 'corpusdetail' in item['href']:
         page.goto(item['href'],wait_until='domcontentloaded',timeout=45000)
@@ -435,9 +426,46 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             page=browser.new_page(viewport={'width':1280,'height':1800})
             page.goto(url,wait_until='domcontentloaded',timeout=60000)
             page.wait_for_timeout(1100)
-            listing=_pages(page,target_category,max_pages)
+            listing,feed_audit=_pages(page,target_category,max_pages)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
+            # Author profile history is the primary source for past issues.
+            # Discover only profiles we can really open from on-screen author
+            # cards/avatars. Never invent an author-ID URL.
+            author_samples={}
+            for item in listing:
+                name=item.get('author','').strip()
+                if name and name not in ('论坛管理','管理员'):
+                    author_samples.setdefault(name,item)
+            favored=set(policy.get('top_authors',[]))
+            author_order=sorted(author_samples.values(),key=lambda x:(
+                0 if x['issue']==issue else 1,
+                0 if x['author'] in favored else 1,
+                x['author']))
+            author_limit=max(1,min(60,int(policy.get('max_profile_authors',30))))
+            profile_steps=max(1,min(80,int(policy.get('profile_scroll_steps',32))))
+            profile_posts=[];profile_checks=[];profile_errors=[]
+            for sample in author_order[:author_limit]:
+                try:
+                    found,audit=open_author_history(
+                        page,url,sample,_issue,max_steps=profile_steps,delay_ms=650)
+                    profile_checks.append(audit)
+                    if audit.get('error'):
+                        profile_errors.append(audit)
+                        continue
+                    for item in found:
+                        # The author name was verified on their own profile.
+                        if item['author']!=sample['author']:
+                            raise ValueError('profile author mismatch')
+                    profile_posts.extend(found)
+                except Exception as exc:
+                    profile_errors.append({'author':sample['author'],
+                                           'reason':str(exc)[:240]})
+            found_keys={x['key'] for x in listing}
+            for item in profile_posts:
+                if item['key'] not in found_keys:
+                    listing.append(item)
+                    found_keys.add(item['key'])
             scoped=[item for item in listing if item['issue']==issue and item['author'] not in ('论坛管理','管理员')]
             # A completed historical issue may no longer have any original
             # listing cards. Search next-period posts for explicitly labeled
@@ -448,9 +476,14 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             next_period=[item for item in listing if retrospective
                          and item['issue']==next_issue
                          and item['author'] not in ('论坛管理','管理员')]
-            targets=scoped+next_period
+            targets=scoped+[x for x in next_period if x['key'] not in {p['key'] for p in scoped}]
             if not targets:raise ValueError('no current or next-period posts for '+issue)
-            truncated=len(targets)>max_posts
+            truncated=(len(targets)>max_posts or feed_audit.get('truncated',False)
+                       or len(author_samples)>author_limit
+                       or any(x.get('truncated') for x in profile_checks))
+            # Report missing author profiles as explicit incomplete coverage;
+            # do not pretend browsing the visible forum card is exhaustive.
+            profile_incomplete=bool(profile_errors) or len(author_samples)>author_limit
             cache={}
             for item in targets[:max_posts]:
                 try:
@@ -502,10 +535,15 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             len(top_found)>=int(policy.get('min_top_authors',10)) and
             len(other_found)>=int(policy.get('min_other_authors',5)) and
             len(valid_authors)>=int(policy.get('min_top_authors',10))+int(policy.get('min_other_authors',5)))
-    ready=enough and bool(ranking) and not errors and not truncated
+    ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
+            'author_profiles_checked':len(profile_checks),
+            'author_profiles_found':sum(1 for x in profile_checks if not x.get('error')),
+            'author_profile_history_posts':len(profile_posts),
+            'author_profile_errors':profile_errors,
+            'forum_scroll_audit':feed_audit,
             'historical_references':historical_references,
             'historical_reference_count':len(historical_references),
             'historical_reference_authors':len({r['author'] for r in historical_references}),
@@ -522,6 +560,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'top6':[r['zodiac'] for r in ranking[:6]],
             'evidence':posts,'parsed_predictions':predictions,'rejected':errors,
             'audit':{'listing_count':len(listing),'issue_listing_count':len(scoped),
+                     'forum_scroll':feed_audit,
+                     'profile_checks':profile_checks,
+                     'profile_errors':profile_errors,
+                     'author_profiles_discovered':len(author_samples),
+                     'author_profiles_checked':len(profile_checks),
+                     'author_history_posts_found':len(profile_posts),
                      'next_period_posts_checked':len(next_period),
                      'historical_reference_count':len(historical_references),
                      'excluded_draw_header':True,
@@ -537,7 +581,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'min_valid_materials':int(policy.get('min_valid_materials',25)),
                 'comments_collected':sum(bool(p['comments']) for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
-            'note':('Retrospective references in next-period posts are not pre-draw forecasts; '
+            'note':('Forum feed and author pages are progressively scrolled to load cards. '
+                    'Missing author profiles or incomplete scrolling are reported. '
+                    'Retrospective references in next-period posts are not pre-draw forecasts; ' 
                     'page top draw results are excluded from scoring. '
                     'Experimental evidence only; no verified live leaderboard.')}
     out.mkdir(parents=True,exist_ok=True)
