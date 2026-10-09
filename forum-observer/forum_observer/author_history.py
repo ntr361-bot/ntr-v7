@@ -37,7 +37,7 @@ SCROLL_JS = r"""() => {
 
 
 def incremental_scan(page, get_items, max_steps=90, delay_ms=650,
-                     max_empty_bottom_rounds=4):
+                     max_empty_bottom_rounds=4, stop_predicate=None):
     """Progressively scroll the actual feed container, not only window.
 
     Capture after every scroll (virtualized posts may disappear on later
@@ -58,6 +58,16 @@ def incremental_scan(page, get_items, max_steps=90, delay_ms=650,
         for item in get_items():
             key=item.get('key')
             if key is not None:unique.setdefault(key,item)
+        # A period-specific author audit does not need to scroll through every
+        # publication the author has ever made. Stop only on an explicit,
+        # auditable target-window decision, not just the first visible card.
+        if stop_predicate is not None:
+            reason=stop_predicate(list(unique.values()))
+            if reason:
+                return list(unique.values()),{
+                    'steps':step+1,'moves':moves,'end_confirmed':False,
+                    'items_seen':len(unique),'truncated':False,
+                    'stop_reason':str(reason),'scope':'target_issue_window'}
         has_new=len(unique)>old_size
         progressed=move['after']>move['before']+2
         if progressed:moves+=1
@@ -87,6 +97,32 @@ def incremental_scan(page, get_items, max_steps=90, delay_ms=650,
         'steps':max_steps,'moves':moves,'end_confirmed':False,
         'items_seen':len(unique),'truncated':True,
         'reached_bottom':reached_bottom}
+
+
+def target_issue_window(target_issue, older_confirmation_rounds=3):
+    """Close an author's recent history after scrolling beyond target issue.
+
+    This is a *targeted* scan, not proof that the author's entire history was
+    loaded. The cutoff is reached only after older dated issue cards have been
+    visible in several scan rounds. If dates are missing, the bounded step
+    limit applies instead.
+    """
+    past_rounds=0
+    def stop(items):
+        nonlocal past_rounds
+        older=any(str(x.get('issue','')).isdigit()
+                  and len(str(x.get('issue','')))==7
+                  and str(x['issue'])[:4]==str(target_issue)[:4]
+                  and int(x['issue'])<int(target_issue)
+                  for x in items)
+        if older:
+            past_rounds+=1
+            if past_rounds>=older_confirmation_rounds:
+                return "older_period_reached"
+        else:
+            past_rounds=0
+        return None
+    return stop
 
 
 def profile_items(page, author, issue_parser):
@@ -136,7 +172,7 @@ def _has_history_tab(page):
 
 
 def open_author_history(page, forum_url, sample, issue_parser,
-                        max_steps=35,delay_ms=650):
+                        max_steps=12,delay_ms=650,target_issue=None):
     """Enter the *real* author profile by clicking the visible author/avatar.
 
     Never synthesize a URL or assume the route structure; verify both author
@@ -185,9 +221,16 @@ def open_author_history(page, forum_url, sample, issue_parser,
         return [],{'author':author,'error':'history tab author mismatch'}
     posts,audit=incremental_scan(
         page,lambda:profile_items(page,author,issue_parser),
-        max_steps=max_steps,delay_ms=delay_ms)
+        max_steps=max_steps,delay_ms=delay_ms,
+        stop_predicate=target_issue_window(target_issue) if target_issue else None)
+    if target_issue:
+        relevant={str(target_issue),str(int(target_issue)+1)}
+        posts=[item for item in posts if item.get('issue') in relevant]
     for item in posts:item['profile_url']=profile
-    return posts,{'author':author,'profile_url':profile,**audit}
+    return posts,{'author':author,'profile_url':profile,**audit,
+                  'target_issue':target_issue,
+                  'relevant_posts':len(posts),
+                  'all_history_requested':False}
 
 
 def open_profile_post(page,item,issue_parser,max_steps=35):

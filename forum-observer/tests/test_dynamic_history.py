@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from forum_observer.author_history import incremental_scan, profile_items
+from forum_observer.author_history import incremental_scan, profile_items, target_issue_window
 
 
 class LazyLoadTests(unittest.TestCase):
@@ -48,6 +48,41 @@ class LazyLoadTests(unittest.TestCase):
         self.assertTrue(audit['truncated'])
         self.assertFalse(audit['end_confirmed'])
         self.assertGreaterEqual(len(docs),6)
+
+    def test_stops_history_at_old_period_not_all_author_history(self):
+        stop=target_issue_window('2026281',older_confirmation_rounds=3)
+        posts=[{'issue':'2026282'},{'issue':'2026281'}]
+        self.assertIsNone(stop(posts))
+        posts.append({'issue':'2026280'})
+        self.assertIsNone(stop(posts))
+        self.assertIsNone(stop(posts))
+        self.assertEqual(stop(posts),'older_period_reached')
+
+    def test_stops_on_target_window_with_audited_nonexhaustive_status(self):
+        class Page:
+            step=0
+            def evaluate(self,js):
+                self.step+=1
+                return {'before':self.step*200,'after':(self.step+1)*200,
+                        'at_end':False}
+            def wait_for_timeout(self,ms):pass
+        page=Page()
+        rows=[
+            {'key':('282',),'issue':'2026282'},
+            {'key':('281',),'issue':'2026281'},
+            {'key':('280',),'issue':'2026280'},
+        ]
+        def get_items():
+            return [rows[min(page.step,2)]]
+        found,audit=incremental_scan(
+            page,get_items,max_steps=36,delay_ms=1,
+            stop_predicate=target_issue_window('2026281'))
+        self.assertEqual(len(found),3)
+        self.assertEqual(audit['scope'],'target_issue_window')
+        self.assertEqual(audit['stop_reason'],'older_period_reached')
+        self.assertFalse(audit['end_confirmed'])
+        self.assertFalse(audit['truncated'])
+        self.assertLess(audit['steps'],36)
 
     def test_profile_history_does_not_read_global_draw_header(self):
         class Cards:

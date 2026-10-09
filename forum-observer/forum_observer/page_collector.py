@@ -445,10 +445,15 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             author_limit=max(1,min(60,int(policy.get('max_profile_authors',30))))
             profile_steps=max(1,min(80,int(policy.get('profile_scroll_steps',32))))
             profile_posts=[];profile_checks=[];profile_errors=[]
-            for sample in author_order[:author_limit]:
+            # Daily operation only needs CURRENT posts from the live forum.
+            # An explicit historical audit (e.g. 281) opens author histories,
+            # and only as far back as that issue. Never sweep all past issues.
+            profile_samples=author_order[:author_limit] if target_issue else []
+            for sample in profile_samples:
                 try:
                     found,audit=open_author_history(
-                        page,url,sample,_issue,max_steps=profile_steps,delay_ms=650)
+                        page,url,sample,_issue,max_steps=profile_steps,delay_ms=650,
+                        target_issue=issue)
                     profile_checks.append(audit)
                     if audit.get('error'):
                         profile_errors.append(audit)
@@ -479,11 +484,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             targets=scoped+[x for x in next_period if x['key'] not in {p['key'] for p in scoped}]
             if not targets:raise ValueError('no current or next-period posts for '+issue)
             truncated=(len(targets)>max_posts or feed_audit.get('truncated',False)
-                       or len(author_samples)>author_limit
+                       or (bool(target_issue) and len(author_samples)>author_limit)
                        or any(x.get('truncated') for x in profile_checks))
             # Report missing author profiles as explicit incomplete coverage;
             # do not pretend browsing the visible forum card is exhaustive.
-            profile_incomplete=bool(profile_errors) or len(author_samples)>author_limit
+            profile_incomplete=(bool(target_issue) and
+                                (bool(profile_errors) or len(author_samples)>author_limit))
             cache={}
             for item in targets[:max_posts]:
                 try:
@@ -540,6 +546,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
+            'history_scope':'target_issue_and_next_issue' if target_issue else 'not_requested',
+            'all_author_history_scraped':False,
             'author_profiles_found':sum(1 for x in profile_checks if not x.get('error')),
             'author_profile_history_posts':len(profile_posts),
             'author_profile_errors':profile_errors,
