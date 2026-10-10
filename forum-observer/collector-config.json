@@ -24,8 +24,6 @@
     "斩草除根",
     "阳光下的真实"
   ],
-  "min_top_authors": 10,
-  "min_other_authors": 5,
   "collect_comments": true,
   "freeze_enabled": false,
   "issue_mode": "latest",
@@ -35,5 +33,6 @@
   "min_valid_materials": 25,
   "max_profile_authors": 30,
   "profile_scroll_steps": 12,
-  "profile_history_mode": "target_issue_only"
+  "profile_history_mode": "target_issue_only",
+  "max_collection_seconds": 1200
 }

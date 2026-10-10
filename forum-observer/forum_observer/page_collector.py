@@ -399,15 +399,16 @@ def score_posts(posts):
             key=(post['author'],p['play'],tuple(p['picks']),p['mode'])
             if key in seen:continue
             seen.add(key)
-            ak=(post['author'],p['mode'])
-            counted=ak not in voted and p['mode']!='color_unverified'
+            ak=(post['author'],p['play'],p['mode'])
+            eligible=[z for z in ZODIACS if z not in p['picks']] if p['mode']=='exclude' else p['picks']
+            counted=ak not in voted and p['mode']!='color_unverified' and bool(eligible)
             picks.append({**p,'author':post['author'],'source_url':post['detail_url'],
                           'counted_for_ranking':counted})
             if not counted:continue
             voted.add(ak)
-            weight=(-1.0 if p['mode']=='exclude' else 1.0)/len(p['picks'])
-            for z in p['picks']:votes[z]+=weight
-    if not any(p['mode']!='color_unverified' for p in picks):return [],picks
+            weight=1.0/len(eligible)
+            for z in eligible:votes[z]+=weight
+    if not any(p['counted_for_ranking'] for p in picks):return [],picks
     order=sorted(ZODIACS,key=lambda z:(-votes[z],ZODIACS.index(z)))
     return [{'rank':i+1,'zodiac':z,'score':round(votes[z],6)} for i,z in enumerate(order)],picks
 
@@ -420,6 +421,23 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     max_pages=max(1,min(int(policy.get('max_pages',30)),50))
     max_posts=max(1,min(int(policy.get('max_posts',70)),150))
     posts=[];errors=[];historical_references=[]
+    started=time.monotonic()
+    deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
+    out.mkdir(parents=True,exist_ok=True)
+    issue=target_issue
+    def checkpoint(stage):
+        ranking,predictions=score_posts(posts)
+        progress={'issue':issue,'status':'incomplete_observation',
+                  'stage':stage,'fetched_at':datetime.now(timezone.utc).isoformat(),
+                  'raw_count':len(posts),'valid_materials':sum(x['counted_for_ranking'] for x in predictions),
+                  'selected_count':0,'ranking':ranking,'evidence':posts,
+                  'parsed_predictions':predictions,'rejected':errors,
+                  'elapsed_seconds':round(time.monotonic()-started,1)}
+        temp=out/'status.tmp'
+        temp.write_text(json.dumps(progress,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        temp.replace(out/'status.json')
+        print(json.dumps({k:progress[k] for k in ('stage','raw_count','valid_materials','elapsed_seconds')},ensure_ascii=False),flush=True)
+    checkpoint('starting')
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
         try:
@@ -429,6 +447,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             listing,feed_audit=_pages(page,target_category,max_pages)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
+            checkpoint('listing_complete')
             # Author profile history is the primary source for past issues.
             # Discover only profiles we can really open from on-screen author
             # cards/avatars. Never invent an author-ID URL.
@@ -450,6 +469,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             # and only as far back as that issue. Never sweep all past issues.
             profile_samples=author_order[:author_limit] if target_issue else []
             for sample in profile_samples:
+                if time.monotonic()>=deadline:
+                    profile_errors.append({'reason':'collection time budget exhausted'})
+                    break
+                checkpoint('profile: '+sample['author'])
                 try:
                     found,audit=open_author_history(
                         page,url,sample,_issue,max_steps=profile_steps,delay_ms=650,
@@ -492,6 +515,11 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                                 (bool(profile_errors) or len(author_samples)>author_limit))
             cache={}
             for item in targets[:max_posts]:
+                if time.monotonic()>=deadline:
+                    truncated=True
+                    errors.append({'reason':'collection time budget exhausted; remaining posts not checked'})
+                    break
+                checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
                     if not _detail(page,url,item,target_category,max_pages):
                         errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
@@ -500,6 +528,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     article=_article_body(page,item)
                     imgs=[]
                     for src in _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title']):
+                        if time.monotonic()>=deadline:
+                            truncated=True
+                            errors.append({'reason':'collection time budget exhausted during OCR','author':item['author']})
+                            break
                         if src not in cache:cache[src]=_ocr_image(src)
                         imgs.append({'src':src,'ocr':cache[src],
                                      'ocr_status':'recognized' if cache[src] else 'unreadable_or_nontext'})
@@ -519,7 +551,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                                     pic['ocr'],issue,item_post))
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
+                    checkpoint('detail_complete')
         finally:
+            checkpoint('browser_closing')
             browser.close()
     # Deduplicate repeated author + original article quote (including OCR).
     deduped=[];history_seen=set()
@@ -537,10 +571,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     valid_materials=len(valid_votes)
     rejected_materials=len(predictions)-valid_materials
     unscored_posts=sum(1 for p in posts if p['detail_url'] not in {v['source_url'] for v in valid_votes})
-    enough=(valid_materials>=int(policy.get('min_valid_materials',25)) and
-            len(top_found)>=int(policy.get('min_top_authors',10)) and
-            len(other_found)>=int(policy.get('min_other_authors',5)) and
-            len(valid_authors)>=int(policy.get('min_top_authors',10))+int(policy.get('min_other_authors',5)))
+    enough=valid_materials>=int(policy.get('min_valid_materials',25))
     ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
@@ -597,3 +628,4 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result
+

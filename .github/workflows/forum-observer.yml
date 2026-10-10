@@ -43,7 +43,8 @@ jobs:
       - name: Observe current issue
         id: observe
         continue-on-error: true
-        run: python -m forum_observer.auto --config collector-config.json --out out
+        timeout-minutes: 30
+        run: python -u -m forum_observer.auto --config collector-config.json --out out
       - name: Cycle snapshots and settlements from verified V7 history
         run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
       - name: Archive independent forum data only
