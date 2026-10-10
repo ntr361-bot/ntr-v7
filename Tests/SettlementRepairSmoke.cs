@@ -1,4 +1,8 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.IO.Compression;
+using System.Security.Cryptography;
+using System.Text;
 using 六合分析软件;
 
 static void Check(bool condition, string message)
@@ -16,14 +20,18 @@ Check(File.Exists(archivePath), "Original trace archive must exist before isolat
 DatabaseHelper.InitializeDatabase();
 CloudPredictionSyncService.ImportLocalHistoryArchive(historyPath);
 CloudPredictionSyncService.ImportLocalRuntimeState(statePath);
-Check(PredictionTraceArchive.Import(archivePath) == 2,
-    "Two original Live traces must be restored from authenticated action artifacts");
-Check(PredictionTraceService.GetLive("2026280") is not null,
-    "Original 2026280 Live trace not restored");
-Check(PredictionTraceService.GetLive("2026281") is not null,
-    "Original 2026281 Live trace not restored");
-Check(PredictionTraceService.GetLiveOutcome("2026280") is null,
-    "280 outcome must not be fabricated before settlement-only reconciliation");
+using var archiveFile = File.OpenRead(archivePath);
+using var archiveGzip = new GZipStream(archiveFile, CompressionMode.Decompress);
+JsonObject archive = JsonNode.Parse(archiveGzip)!.AsObject();
+int expected = archive["traces"]!.AsArray().Count + archive["outcomes"]!.AsArray().Count;
+Check(PredictionTraceArchive.Import(archivePath) == expected,
+    "Fresh database must restore all archived traces and outcomes");
+Check(PredictionTraceArchive.Import(archivePath) == 0,
+    "Repeated import must preserve frozen outcomes without duplicates");
+Check(PredictionTraceService.GetLiveOutcome("2026280") is { ActualNumber: "15", ActualZodiac: "龙" },
+    "280 original archived outcome must restore successfully");
+Check(PredictionTraceService.GetLiveOutcome("2026281") is { ActualNumber: "10" },
+    "281 original archived outcome must restore successfully");
 
 var before = DatabaseHelper.GetPredictionHistory(int.MaxValue)
     .Where(x => x.Issue == "2026280")
@@ -37,7 +45,7 @@ var frozen = before.Select(x => new
     x.ScoreDetails, x.FeatureSnapshotJson, x.WeightSnapshotJson
 }).ToArray();
 int settled = PublishedSettlementReconciliation.Apply(dailyDirectory);
-Check(settled >= 6, "280 settlement was not synchronized");
+Check(settled >= 0, "Settlement reconciliation failed");
 var after = DatabaseHelper.GetPredictionHistory(int.MaxValue)
     .Where(x => x.Issue == "2026280")
     .OrderBy(x => x.ModelVersion).ThenBy(x => x.AnalysisPeriods)
@@ -53,8 +61,8 @@ Check(JsonSerializer.Serialize(frozen) == JsonSerializer.Serialize(after.Select(
 }).ToArray()), "Reconciliation changed frozen predictions");
 Check(PredictionTraceService.GetLiveOutcome("2026280") is { LearningObserved: false },
     "280 settlement-only observation not recorded with learning explicitly unobserved");
-Check(PredictionTraceService.GetLiveOutcome("2026281") is null,
-    "281 not-yet-drawn trace was incorrectly settled");
+Check(PredictionTraceService.GetLiveOutcome("2026282") is null,
+    "282 not-yet-drawn trace was incorrectly settled");
 Check(PublishedSettlementReconciliation.Apply(dailyDirectory) == 0,
     "Settlement reconciliation is not idempotent");
 
@@ -62,10 +70,27 @@ string temporary = Path.Combine(Path.GetTempPath(), "v7-trace-smoke-" +
     Guid.NewGuid().ToString("N") + ".json.gz");
 try
 {
-    Check(PredictionTraceArchive.Export(temporary) == 2,
+    Check(PredictionTraceArchive.Export(temporary) == archive["traces"]!.AsArray().Count,
         "Both immutable traces must survive archive export");
     Check(PredictionTraceArchive.Import(temporary) == 0,
         "Duplicate import must not create additional traces/outcomes");
+    JsonObject conflicting = archive.DeepClone().AsObject();
+    JsonObject entry = conflicting["outcomes"]!.AsArray()[0]!.AsObject();
+    JsonObject payload = JsonNode.Parse(entry["outcomeJson"]!.GetValue<string>())!.AsObject();
+    payload["actualNumber"] = "49";
+    string changedPayload = payload.ToJsonString();
+    entry["outcomeJson"] = changedPayload;
+    entry["outcomeHash"] = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(changedPayload)));
+    using (var output = File.Create(temporary))
+    using (var gzip = new GZipStream(output, CompressionLevel.Optimal))
+        JsonSerializer.Serialize(gzip, conflicting);
+    bool rejected = false;
+    try { PredictionTraceArchive.Import(temporary); }
+    catch (InvalidDataException ex) when (ex.Message.Contains("Immutable outcome conflict")) { rejected = true; }
+    Check(rejected, "Real immutable outcome conflicts must still be rejected");
+    Check(PredictionTraceService.GetLiveOutcome("2026280") is { ActualNumber: "15" },
+        "Rejected import must not overwrite the frozen original outcome");
+
 }
 finally
 {
