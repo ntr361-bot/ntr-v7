@@ -7,6 +7,7 @@ on:
       - 'PredictionTraceArchive.cs'
       - 'PredictionRunner/**'
       - 'Tests/Program.cs'
+      - 'Tests/SettlementRepairSmoke.cs'
       - '.github/workflows/run-prediction.yml'
       - '.github/workflows/verify-settlement-fix.yml'
 
@@ -26,11 +27,9 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Build prediction runner (compile only; no live predictions)
         run: dotnet build PredictionRunner/PredictionRunner.csproj -c Release
-      - name: Restore authentic 280 and 281 trace fixtures (no live prediction)
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python PredictionRunner/recover_trace_archive.py
       - name: Build isolated settlement tests
         run: dotnet build Tests/SettlementRepairSmoke.csproj -c Release
       - name: Execute isolated settlement tests
+        env:
+          LIUHE_DATA_DIR: ${{ runner.temp }}/settlement-import-regression
         run: dotnet run --project Tests/SettlementRepairSmoke.csproj --configuration Release --no-build
