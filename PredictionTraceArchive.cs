@@ -107,10 +107,12 @@ public static class PredictionTraceArchive
                 "SELECT OutcomeHash FROM PredictionTraceOutcome WHERE TraceId=@traceId",
                 connection, transaction);
             findOutcome.Parameters.AddWithValue("@traceId", traceId);
-            string? existingHash = Convert.ToString(findOutcome.ExecuteScalar());
-            if (existingHash is not null)
+            object? existingHash = findOutcome.ExecuteScalar();
+            // ExecuteScalar returns null when no row exists. Convert.ToString(null)
+            // returns an empty string, which must not be mistaken for a frozen outcome.
+            if (existingHash is not null && existingHash is not DBNull)
             {
-                if (!string.Equals(existingHash, entry.OutcomeHash, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(Convert.ToString(existingHash), entry.OutcomeHash, StringComparison.OrdinalIgnoreCase))
                     throw new InvalidDataException($"Immutable outcome conflict: {entry.Issue}");
             }
             else
