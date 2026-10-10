@@ -1,5 +1,5 @@
 """Independent append-only forum observation cycle. Never writes V7 files."""
-import argparse,hashlib,json
+import argparse,hashlib,json,re
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -32,7 +32,15 @@ def sync(out,archive,history,public_dir=None):
     status_path=out/'status.json'
     if status_path.exists():
         status=json.loads(status_path.read_text(encoding='utf-8'))
-        issue=status['issue']
+        issue=status.get('issue')
+        if not isinstance(issue,str) or not re.fullmatch(r'20\d{5}',issue):
+            # A failed startup must not overwrite the last valid issue or stop
+            # settlement processing for existing immutable snapshots.
+            atomic(archive/'collection-failure.json',status)
+            status=None
+    else:
+        status=None
+    if status is not None:
         atomic(archive/'latest.json',{
             'issue':issue,'status':status['status'],
             'raw_count':status.get('raw_count',0),
@@ -163,3 +171,4 @@ if __name__=='__main__':
     p.add_argument('--public',default=None)
     a=p.parse_args()
     print('settled records:',sync(a.out,a.archive,a.history,a.public))
+

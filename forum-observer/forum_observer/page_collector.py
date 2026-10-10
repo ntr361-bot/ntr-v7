@@ -136,40 +136,35 @@ def current_issue(listing,now=None):
 
 
 def _listing(page,category):
+    # Take one synchronous DOM snapshot. Per-card locators can detach while
+    # this virtualized feed rerenders, each causing a 30-second auto-wait.
+    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
+        const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
+        const kinds = li.querySelectorAll('.ntool .num');
+        return {author:value('.name'), issue:value('.slabel'),
+            published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
+            category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
+            href:[...li.querySelectorAll('a[href]')].map(a=>a.href)
+                .find(h=>h.includes('corpusdetail')) || ''};
+    })""")
     result=[]
-    for li in page.locator('li').all():
-        try:
-            if not li.locator('.name').count() or not li.locator('.slabel').count():continue
-            kind=li.locator('.ntool .num').last.inner_text().strip() if li.locator('.ntool .num').count() else ''
-            if category and kind!=category:continue
-            def field(selector):
-                q=li.locator(selector)
-                return q.first.inner_text().strip() if q.count() else ''
-            author=field('.name'); raw_issue=field('.slabel')
-            if not author or not raw_issue:continue
-            href=''
-            for a in li.locator('a[href]').all():
-                h=a.get_attribute('href') or ''
-                if 'corpusdetail' in h:
-                    href=urljoin(page.url,h);break
-            obj={'author':author,'issue':_issue(raw_issue),'published_at':field('.time'),
-                 'title':field('.formtitle'),'body':field('.text'),'category':kind,'href':href}
-            obj['key']=(obj['author'],obj['issue'],obj['published_at'],obj['title'])
-            result.append(obj)
-        except Exception:
-            continue
+    for obj in rows:
+        if not obj['author'] or not obj['issue']:continue
+        if category and obj['category']!=category:continue
+        obj['issue']=_issue(obj['issue'])
+        obj['key']=(obj['author'],obj['issue'],obj['published_at'],obj['title'])
+        result.append(obj)
     return result
 
 
-def _pages(page,category,max_pages=25):
-    # Scroll in small increments and retain each virtualized card while it is
-    # mounted. Both forum feed and author history lazy-load on user scroll.
+def _pages(page,category,max_pages=25,deadline=None,on_progress=None):
     return incremental_scan(page,lambda: _listing(page,category),
-                            max_steps=max(15,max_pages*4),delay_ms=650)
+                            max_steps=max(15,max_pages*4),delay_ms=650,
+                            deadline=deadline,on_progress=on_progress)
 
 
 
-def _detail(page,url,item,category,max_pages):
+def _detail(page,url,item,category,max_pages,deadline=None):
     # A profile's history card may have no href in this SPA.
     if item.get('profile_url') and not item.get('href'):
         if not open_profile_post(page,item,_issue,max_steps=max_pages):
@@ -183,20 +178,18 @@ def _detail(page,url,item,category,max_pages):
     page.wait_for_timeout(800)
     previous=set()
     for _ in range(max_pages):
-        for i,x in enumerate(_listing(page,category)):
-            if x['key']==item['key']:
-                # Locator nth index must be relative to all li's, not only eligible cards.
-                # Find an exact matching card before clicking.
-                cards=page.locator('li')
-                for n in range(cards.count()):
-                    li=cards.nth(n)
-                    if (li.locator('.name').count() and li.locator('.slabel').count()
-                            and li.locator('.name').first.inner_text().strip()==item['author']
-                            and _issue(li.locator('.slabel').first.inner_text().strip())==item['issue']
-                            and (not item['title'] or
-                                 (li.locator('.formtitle').count() and li.locator('.formtitle').first.inner_text().strip()==item['title']))):
-                        li.click(timeout=4000)
-                        return _wait_detail(page,item,timeout_seconds=8)
+        if deadline is not None and time.monotonic()>=deadline:return False
+        visible=_listing(page,category)
+        if any(x['key']==item['key'] for x in visible):
+            cards=page.locator('.forum-list > li').filter(
+                has=page.locator('.name').filter(has_text=re.compile('^'+re.escape(item['author'])+'$')))
+            if item['title']:
+                cards=cards.filter(has=page.locator('.formtitle').filter(
+                    has_text=re.compile('^'+re.escape(item['title'])+'$')))
+            # Click the actual title link; clicking the entire card may select
+            # the avatar/profile route instead of the article.
+            cards.first.locator('.formtitle').click(timeout=4000)
+            return _wait_detail(page,item,timeout_seconds=8)
         current={x['key'] for x in _listing(page,category)}
         page.evaluate('window.scrollTo(0,document.body.scrollHeight)')
         page.wait_for_timeout(700)
@@ -425,6 +418,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
     out.mkdir(parents=True,exist_ok=True)
     issue=target_issue
+    listing_candidates=[]
     def checkpoint(stage):
         ranking,predictions=score_posts(posts)
         progress={'issue':issue,'status':'incomplete_observation',
@@ -432,19 +426,44 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                   'raw_count':len(posts),'valid_materials':sum(x['counted_for_ranking'] for x in predictions),
                   'selected_count':0,'ranking':ranking,'evidence':posts,
                   'parsed_predictions':predictions,'rejected':errors,
-                  'elapsed_seconds':round(time.monotonic()-started,1)}
+                  'elapsed_seconds':round(time.monotonic()-started,1),
+                  'listing_count':len(listing_candidates)}
         temp=out/'status.tmp'
         temp.write_text(json.dumps(progress,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         temp.replace(out/'status.json')
         print(json.dumps({k:progress[k] for k in ('stage','raw_count','valid_materials','elapsed_seconds')},ensure_ascii=False),flush=True)
     checkpoint('starting')
     with sync_playwright() as pw:
-        browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
+        checkpoint('browser_launch')
+        browser=pw.chromium.launch(headless=True,args=['--no-sandbox'],timeout=30000)
         try:
             page=browser.new_page(viewport={'width':1280,'height':1800})
+            page.set_default_timeout(5000)
+            page.on('requestfailed',lambda request: print(json.dumps({
+                'event':'request_failed','host':urlparse(request.url).hostname,
+                'path':urlparse(request.url).path,'reason':request.failure},
+                ensure_ascii=False),flush=True))
+            checkpoint('forum_navigation')
             page.goto(url,wait_until='domcontentloaded',timeout=60000)
+            checkpoint('forum_render_wait')
             page.wait_for_timeout(1100)
-            listing,feed_audit=_pages(page,target_category,max_pages)
+            (out/'browser-diagnostics.json').write_text(json.dumps({
+                'url':page.url,'title':page.title(),
+                'body_preview':page.locator('body').inner_text(timeout=5000)[:2500]
+            },ensure_ascii=False,indent=2),encoding='utf-8')
+            def scan_progress(items,audit):
+                nonlocal listing_candidates,issue
+                listing_candidates=items
+                if not target_issue:
+                    try:issue=current_issue(items)
+                    except ValueError:pass
+                temp=out/'listing.tmp'
+                temp.write_text(json.dumps({'items':items,'audit':audit},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+                temp.replace(out/'listing.json')
+                checkpoint('forum_scan: '+str(audit['steps']))
+            checkpoint('forum_scan')
+            listing,feed_audit=_pages(page,target_category,max_pages,
+                deadline=min(deadline,time.monotonic()+180),on_progress=scan_progress)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
             checkpoint('listing_complete')
@@ -521,7 +540,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     break
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
-                    if not _detail(page,url,item,target_category,max_pages):
+                    if not _detail(page,url,item,target_category,max_pages,deadline=deadline):
                         errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
                         continue
                     body=page.locator('body').inner_text()

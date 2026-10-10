@@ -5,7 +5,7 @@ This module deliberately does not infer author URLs from usernames.
 """
 from __future__ import annotations
 
-import re
+import re,time
 from urllib.parse import urljoin
 
 
@@ -37,7 +37,8 @@ SCROLL_JS = r"""() => {
 
 
 def incremental_scan(page, get_items, max_steps=90, delay_ms=650,
-                     max_empty_bottom_rounds=4, stop_predicate=None):
+                     max_empty_bottom_rounds=4, stop_predicate=None,
+                     deadline=None, on_progress=None):
     """Progressively scroll the actual feed container, not only window.
 
     Capture after every scroll (virtualized posts may disappear on later
@@ -48,16 +49,24 @@ def incremental_scan(page, get_items, max_steps=90, delay_ms=650,
     moves=0
     reached_bottom=False
     for step in range(max(1,max_steps)):
+        if deadline is not None and time.monotonic()>=deadline:
+            return list(unique.values()),{'steps':step,'moves':moves,
+                'end_confirmed':False,'items_seen':len(unique),'truncated':True,
+                'stop_reason':'scan_time_budget_exhausted'}
         old_size=len(unique)
         for item in get_items():
             key=item.get('key')
             if key is None:continue
             unique.setdefault(key,item)
+        if on_progress is not None:
+            on_progress(list(unique.values()),{'steps':step,'items_seen':len(unique)})
         move=page.evaluate(SCROLL_JS)
         page.wait_for_timeout(delay_ms)
         for item in get_items():
             key=item.get('key')
             if key is not None:unique.setdefault(key,item)
+        if on_progress is not None:
+            on_progress(list(unique.values()),{'steps':step+1,'items_seen':len(unique)})
         # A period-specific author audit does not need to scroll through every
         # publication the author has ever made. Stop only on an explicit,
         # auditable target-window decision, not just the first visible card.
@@ -265,3 +274,4 @@ def open_profile_post(page,item,issue_parser,max_steps=35):
         if step['at_end'] and step['after']==step['before']:
             break
     return False
+
