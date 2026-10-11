@@ -11,7 +11,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
-from .author_history import incremental_scan, open_author_history, open_profile_post
+from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 
 
 class _PostParser(HTMLParser):
@@ -183,20 +183,31 @@ def _detail(page,url,item,category,max_pages,deadline=None):
         if deadline is not None and time.monotonic()>=deadline:return False
         visible=_listing(page,category)
         if any(x['key']==item['key'] for x in visible):
-            cards=page.locator('.forum-list > li').filter(
-                has=page.locator('.name').filter(has_text=re.compile('^'+re.escape(item['author'])+'$')))
-            if item['title']:
-                cards=cards.filter(has=page.locator('.formtitle').filter(
-                    has_text=re.compile('^'+re.escape(item['title'])+'$')))
-            # Click the actual title link; clicking the entire card may select
-            # the avatar/profile route instead of the article.
-            cards.first.locator('.formtitle').click(timeout=4000)
-            return _wait_detail(page,item,timeout_seconds=8)
-        current={x['key'] for x in _listing(page,category)}
-        page.evaluate('window.scrollTo(0,document.body.scrollHeight)')
-        page.wait_for_timeout(700)
+            # The feed is virtualized: a locator may detach between a DOM
+            # snapshot and Playwright's auto-wait click. Find and click the
+            # exact visible article title in one synchronous DOM operation.
+            opened=page.locator('.forum-list > li').evaluate_all(r"""(cards, target) => {
+                for (const li of cards) {
+                    const get = css => li.querySelector(css)?.innerText?.trim() || '';
+                    const label = get('.slabel');
+                    if (get('.name') !== target.author ||
+                        get('.formtitle') !== target.title ||
+                        !label.includes(target.issue.slice(-3))) continue;
+                    const title=li.querySelector('.formtitle');
+                    if (title) {title.click(); return true;}
+                }
+                return false;
+            }""", {'author':item['author'],'title':item['title'],'issue':item['issue']})
+            if opened and _wait_detail(page,item,timeout_seconds=8):
+                return True
+        current={x['key'] for x in visible}
+        # This SPA uses a nested scroll container; window.scrollTo leaves
+        # the virtualized feed in place and makes every detail lookup fail.
+        move=page.evaluate(SCROLL_JS)
+        page.wait_for_timeout(650)
         if any(x['key'] not in current for x in _listing(page,category)):continue
-        nexts=page.locator('button, a').filter(has_text='下一页')
+        if not move.get('at_end'):continue
+        nexts=page.locator('button, a').filter(has_text=re.compile(r'下一页|下页|加载更多'))
         if not nexts.count():break
         try:
             nexts.last.click(timeout=1600);page.wait_for_timeout(700)
