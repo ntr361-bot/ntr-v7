@@ -29,11 +29,15 @@ class CommentImagesTests(unittest.TestCase):
         self.assertEqual(consistent_comment_ocr(first,'284期六肖：鼠牛虎兔龙马','2026284'),'')
         self.assertEqual(consistent_comment_ocr('284期三肖：鼠牛虎','284期三肖：鼠牛虎','2026284'),'')
         self.assertEqual(consistent_comment_ocr(first,'283期六肖：鼠牛虎兔龙蛇','2026284'),'')
+        self.assertEqual(consistent_comment_ocr('上期杀马-41','上期杀马-41','2026284'),'')
+        self.assertEqual(consistent_comment_ocr('六肖：鼠牛虎兔龙蛇','六肖：鼠牛虎兔龙蛇','2026284'),'')
+        self.assertEqual(consistent_comment_ocr('284期杀马41','284期杀马41','2026284'),'')
 
     def setUp(self):
         self.pic=dict(source_section='author_comment',author='甲',author_verified=True,
                       issue='2026284',src='https://example.org/tk118files/comment/image.jpg',
                       ocr='284期六肖：鼠牛虎兔龙蛇',ocr_status='recognized_consistent',
+                      period_verified=True,
                       published_at='2026-10-11T20:00:00+08:00')
         self.post=dict(author='甲',issue='2026284',title='284期作品',body='',
                        images=[self.pic],detail_url='https://example.org/post')
@@ -47,7 +51,7 @@ class CommentImagesTests(unittest.TestCase):
     def test_other_author_unknown_time_uncertain_ocr_and_after_draw_refused(self):
         for changes in (dict(author='乙'),dict(author_verified=False),dict(published_at='未知'),
                         dict(published_at='2026-10-11T22:00:00+08:00'),
-                        dict(ocr_status='recognized'),dict(issue='2026283')):
+                        dict(ocr_status='recognized'),dict(period_verified=False),dict(issue='2026283')):
             image=dict(self.pic,**changes)
             self.assertFalse(eligible_comment_image(image,self.post))
             self.assertEqual(score_posts([dict(self.post,images=[image])])[0],[])

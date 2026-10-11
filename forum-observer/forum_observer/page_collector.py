@@ -367,12 +367,15 @@ def extract_picks(text):
 def consistent_comment_ocr(first,second,issue):
     """Both OCR layouts must independently yield the same valid current plays."""
     def signature(text):
+        if not any(str(issue)[:4]+(m.group('full') or m.group('short'))==str(issue)
+                   for m in HISTORY_MARKER.finditer(str(text))):return []
         rows=extract_picks(current_period_text(text,issue))
         accepted=[]
         for row in rows:
-            if row.get('parse_error'):continue
+            if row.get('parse_error'):return []
+            if '肖' not in row['play']:return []
             try:vote_zodiacs(row['picks'],row['mode'],row['play'],row['excerpt'])
-            except ValueError:continue
+            except ValueError:return []
             accepted.append((row['play'],row['mode'],tuple(sorted(row['picks']))))
         return sorted(set(accepted))
     a=signature(first);b=signature(second)
@@ -464,6 +467,7 @@ def current_period_text(text,issue):
     seen_marker=False
     output=[]
     for line in period_lines(text):
+        if re.search(r'上\s*(?:一\s*)?期|上一回|上回|往期',line):continue
         marker=_period_marker(line,year)
         if marker:
             current=marker==issue

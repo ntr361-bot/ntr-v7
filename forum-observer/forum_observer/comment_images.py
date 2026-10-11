@@ -11,6 +11,7 @@ def eligible_comment_image(pic,post):
     if pic.get('author')!=post.get('author'):return False
     if pic.get('issue')!=post.get('issue'):return False
     if pic.get('ocr_status')!='recognized_consistent':return False
+    if pic.get('period_verified') is not True:return False
     if not pic.get('ocr') or '/comment/' not in pic.get('src',''):return False
     try:
         stamp=datetime.fromisoformat(pic['published_at'])

@@ -18,7 +18,7 @@ def main():
         page.set_default_timeout(5000)
         page.goto(url,wait_until='domcontentloaded',timeout=60000)
         if not _wait_detail(page,parent,timeout_seconds=20):raise ValueError('target post not verified')
-        posts,audit=collect_comments(page,parent,time.monotonic()+240,{})
+        posts,audit=collect_comments(page,parent,time.monotonic()+90,{})
         ranking,parsed=score_posts(posts)
         result=dict(issue=parent['issue'],status='historical_test_only',test_only=True,
                     source_url=url,comment_checks=[audit],evidence=posts,parsed_predictions=parsed,

@@ -8,6 +8,12 @@ from forum_observer.page_collector import current_feed_boundary, current_period_
 
 
 class HistoricalAuditTests(unittest.TestCase):
+    def test_relative_history_cannot_be_current_vote(self):
+        post=dict(author='甲',issue='2026284',title='284期作品',body='上期杀马-41\n(上 期 杀 马 -41)\n284期六肖：鼠牛虎兔龙蛇',images=[],detail_url='https://example.org')
+        _,rows=score_posts([post])
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['mode'],'include')
+
     def test_front_back_legend_does_not_become_separate_six_vote(self):
         post=dict(author='甲',issue='2026284',title='特码前后生肖',
                   body='283期前后六肖【前六肖+狗猪】开牛18准284期前后六肖【前六肖+猴鸡】开？00\n前六肖：鼠牛虎兔龙蛇后六肖：马羊猴鸡狗猪',

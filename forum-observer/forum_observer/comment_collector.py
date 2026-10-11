@@ -15,14 +15,22 @@ def comment_rows(page):
                 .map(img=>img.getAttribute('data-src')||img.src).filter(Boolean)};
     })''')
     for row in rows:
-        row['key']=(row['author'],row['floor'],row['text'],tuple(row['image_urls']))
+        row['image_urls']=list(dict.fromkeys(row['image_urls']))
+        row['key']=(row['author'],row['floor'])
     return rows
 
 
 def collect_comments(page,parent,deadline,policy):
     from .page_collector import LOCAL_TZ,_timestamp,_ocr_image,consistent_comment_ocr,HOSTS
     from urllib.parse import urlparse,urljoin
-    rows,audit=incremental_scan(page,lambda:comment_rows(page),
+    snapshots={}
+    def latest_rows():
+        current=comment_rows(page)
+        for row in current:
+            if row['key'] in snapshots:snapshots[row['key']].update(row)
+            else:snapshots[row['key']]=row
+        return [snapshots[row['key']] for row in current]
+    rows,audit=incremental_scan(page,latest_rows,
         max_steps=int(policy.get('max_comment_scroll_steps',160)),delay_ms=650,
         deadline=deadline)
     now=datetime.now(LOCAL_TZ)
@@ -52,6 +60,7 @@ def collect_comments(page,parent,deadline,policy):
                 text=cache[src]
                 status='recognized_consistent' if text else 'unreadable_or_inconsistent'
             post['images'].append(dict(src=src,ocr=text,ocr_status=status,
+                period_verified=bool(text),
                 source_section='author_comment',author=author,author_verified=True,
                 issue=parent['issue'],published_at=stamp.isoformat()))
         posts.append(post)
