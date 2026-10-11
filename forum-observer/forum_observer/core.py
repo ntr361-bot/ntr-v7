@@ -21,23 +21,27 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-11-clear-only-equal-weight-v2'
+SCORING_RULE_VERSION = '2026-10-11-explicit-six-plus-no-number-inference-v3'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
     'kill_numbers_as_zodiacs': False,
+    'numbers_as_whole_zodiacs': False,
+    'explicit_zodiac_evidence': True,
     'weight_per_material': 1,
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
 
 
-def vote_zodiacs(picks, mode, play=''):
+def vote_zodiacs(picks, mode, play='', evidence=''):
     picks = list(dict.fromkeys(picks))
     if not picks or any(x not in ZODIACS for x in picks):
         raise ValueError('invalid zodiac picks')
+    if re.search(r'映射|换算|号码表', evidence):
+        raise ValueError('number inference is not explicit zodiac evidence')
     if mode == 'exclude':
-        if re.search(r'(?:杀|排除)[^\n:：]*?(?:码|号码)', play):
+        if re.search(r'(?:杀|排除)[^\n:：]*?(?:码|号码|尾|头|波)', play):
             raise ValueError('kill numbers are not kill zodiacs')
         picks = [z for z in ZODIACS if z not in picks]
         if not picks:
@@ -64,7 +68,7 @@ def material_counts(predictions):
 
 
 def normalize(work: Work) -> dict[str,float]:
-    picks = vote_zodiacs(work.picks, work.mode, work.play)
+    picks = vote_zodiacs(work.picks, work.mode, work.play, work.evidence)
     return {z: (1/len(picks) if z in picks else 0.0) for z in ZODIACS}
 
 
@@ -147,3 +151,28 @@ def freeze(result: dict[str,Any], directory: Path, now: str, draw_at: str) -> Pa
     write_once(output,content)
     write_once(output.with_name('freeze.sha256'),(hashlib.sha256(content).hexdigest()+'\n').encode())
     return output
+
+
+def verify_scored_result(result):
+    rows=[p for p in result.get('parsed_predictions',[]) if p.get('counted_for_ranking')]
+    if len(rows)<25 or result.get('valid_materials')!=len(rows):
+        raise ValueError('unverified material count at freeze gate')
+    votes={z:0.0 for z in ZODIACS};seen=set()
+    for row in rows:
+        picks=vote_zodiacs(row['picks'],row['mode'],row['play'],row.get('excerpt',''))
+        if row.get('vote_zodiacs')!=picks:raise ValueError('invalid normalized vote at freeze gate')
+        key=(row['author'],row['play'],row['mode'])
+        if key in seen:raise ValueError('duplicate work at freeze gate')
+        seen.add(key)
+        for z in picks:votes[z]+=1/len(picks)
+    order=sorted(ZODIACS,key=lambda z:(-votes[z],ZODIACS.index(z)))
+    ranking=result.get('ranking',[])
+    if [r['zodiac'] for r in ranking]!=order or any(abs(r['score']-votes[r['zodiac']])>0.00001 for r in ranking):
+        raise ValueError('ranking does not match eligible evidence')
+    if any(result.get(key)!=order[:size] for key,size in [('top1',1),('top3',3),('top6',6)]):
+        raise ValueError('prediction prefix does not match ranking')
+    deadline=datetime.fromisoformat(result['draw_at'])
+    fetched=datetime.fromisoformat(result['fetched_at'])
+    if deadline.tzinfo is None or fetched.tzinfo is None or fetched>=deadline or datetime.now(timezone.utc)>=deadline:
+        raise ValueError('freeze gate is past the verified draw cutoff')
+    return True

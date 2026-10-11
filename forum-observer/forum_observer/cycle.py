@@ -3,7 +3,7 @@ import argparse,hashlib,json,re,shutil
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from .core import ZODIACS
+from .core import ZODIACS, SCORING_RULE_VERSION, verify_scored_result
 
 TZ=ZoneInfo('Asia/Shanghai')
 
@@ -62,6 +62,8 @@ def sync(out,archive,history,public_dir=None):
         report=out/issue/'report.md'
         if report.exists():shutil.copyfile(report,folder/'report.md')
         if status['status']=='ready_observation' and len(status.get('ranking',[]))==12:
+            if status.get('scoring_rule_version')==SCORING_RULE_VERSION:
+                verify_scored_result(status)
             # Immutable experimental snapshot, not a production model freeze.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}
             # Preserve the generation-time counts and rule version in the immutable snapshot.

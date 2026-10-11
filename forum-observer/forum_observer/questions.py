@@ -15,7 +15,7 @@ def _question(excerpt, reason):
 
 def pending_questions(result):
     issue=result.get('issue')
-    posts={p.get('detail_url'):p for p in result.get('evidence',[]) if p.get('issue')==issue}
+    posts={p.get('evidence_id',p.get('detail_url')):p for p in result.get('evidence',[]) if p.get('issue')==issue}
     candidates=list(result.get('unparsed_evidence',[]))
     for row in result.get('parsed_predictions',[]):
         reason=row.get('exclusion_reason') or ''
@@ -25,7 +25,7 @@ def pending_questions(result):
             candidates.append(dict(row,reason=reason))
     groups={};seen=set()
     for row in candidates:
-        source=row.get('source_url');post=posts.get(source)
+        source=row.get('evidence_id',row.get('source_url'));post=posts.get(source)
         if post is None:continue
         excerpt=row.get('excerpt','').strip()
         if not excerpt:continue
@@ -36,7 +36,7 @@ def pending_questions(result):
         if key in seen:continue
         seen.add(key)
         group=groups.setdefault(source,{'author':post.get('author',''), 'issue':issue,
-            'source_url':source,'title':post.get('title',''),
+            'source_url':post.get('detail_url'),'evidence_id':source,'title':post.get('title',''),
             'published_at':post.get('published_at',''),
             'image_urls':list(dict.fromkeys(pic['src'] for pic in post.get('images',[]) if pic.get('src'))),
             'excerpts':[],'counted_for_ranking':False,'status':'pending_user_rule_confirmation'})
@@ -47,7 +47,7 @@ def pending_questions(result):
         unreadable=[pic['src'] for pic in post.get('images',[]) if pic.get('src') and not pic.get('ocr','').strip()]
         if not unreadable:continue
         group=groups.setdefault(source,{'author':post.get('author',''),'issue':issue,
-            'source_url':source,'title':post.get('title',''),'published_at':post.get('published_at',''),
+            'source_url':post.get('detail_url'),'evidence_id':source,'title':post.get('title',''),'published_at':post.get('published_at',''),
             'image_urls':[],'excerpts':[],'counted_for_ranking':False,'status':'pending_user_rule_confirmation'})
         group['image_urls']=list(dict.fromkeys(group['image_urls']+unreadable))
         group['excerpts'].append({'text':'图片未能读出文字','reason':'unreadable_image',

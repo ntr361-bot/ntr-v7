@@ -1,7 +1,7 @@
 """Collect evidence from the forum's rendered DOM when no public API exists."""
 from __future__ import annotations
 
-import json, os, re, shutil, subprocess, time
+import hashlib, json, os, re, shutil, subprocess, time
 from collections import Counter
 from urllib.parse import urljoin, urlparse
 from zoneinfo import ZoneInfo
@@ -146,6 +146,7 @@ def _listing(page,category):
         return {author:value('.name'), issue:value('.slabel'),
             published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
             category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
+            image_urls:[...li.querySelectorAll('.text img')].map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
             href:[...li.querySelectorAll('a[href]')].map(a=>a.href)
                 .find(h=>h.includes('corpusdetail')) || ''};
     })""")
@@ -159,11 +160,41 @@ def _listing(page,category):
     return result
 
 
-def _pages(page,category,max_pages=25,deadline=None,on_progress=None):
+def _pages(page,category,max_pages=25,deadline=None,on_progress=None,stop_predicate=None):
     return incremental_scan(page,lambda: _listing(page,category),
                             max_steps=max(15,max_pages*4),delay_ms=650,
-                            deadline=deadline,on_progress=on_progress)
+                            deadline=deadline,on_progress=on_progress,stop_predicate=stop_predicate)
 
+
+
+def current_feed_boundary(items):
+    recent=[x for x in items if x.get('author') not in ('论坛管理','管理员') and '公告' not in x.get('title','')]
+    if not recent:return None
+    try:issue=current_issue(recent)
+    except ValueError:return None
+    tail=recent[-5:]
+    if (len(tail)==5 and len({x['author'] for x in tail})>=2
+        and all(str(x.get('issue','')).isdigit() and int(x['issue'])<int(issue)
+                and _timestamp(x.get('published_at'),datetime.now(LOCAL_TZ)) for x in tail)):
+        return 'current_issue_boundary_reached'
+    return None
+
+
+def feed_card_post(item, forum_url, now=None):
+    """Use only card-owned DOM text; never the header or neighboring cards."""
+    now=now or datetime.now(LOCAL_TZ)
+    stamp=_timestamp(item.get('published_at'),now)
+    if not stamp or stamp>now+timedelta(minutes=1):
+        raise ValueError('card publication time is not verifiable')
+    identity=hashlib.sha256(json.dumps([item.get(k,'') for k in
+        ('author','issue','published_at','title')],ensure_ascii=False).encode()).hexdigest()[:20]
+    return {**{k:v for k,v in item.items() if k not in ('key','href')},
+        'published_at':stamp.isoformat(),'body':item.get('body',''),
+        'images':[{'src':src,'ocr':'','ocr_status':'not_read_from_card'}
+                  for src in item.get('image_urls',[])],
+        'comments':'','detail_url':item.get('href') or forum_url,
+        'evidence_id':identity,'evidence_scope':'current_feed_card',
+        'comments_coverage':'not_expanded','detail_coverage':'not_opened'}
 
 
 def _detail(page,url,item,category,max_pages,deadline=None):
@@ -308,12 +339,13 @@ def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
     output=extract_front_back_eight(str(text))
     for line in str(text).splitlines():
+        certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*$', '',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
             play=m.group('play')
             picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
             if not picks:continue
-            mode=('unverified' if UNCERTAIN_PATTERN.search(line) or '?' in line or '？' in line else
+            mode=('unverified' if UNCERTAIN_PATTERN.search(certainty_line) or '?' in certainty_line or '？' in certainty_line else
                   'color_unverified' if '红肖' in play or '蓝肖' in play else
                   'exclude' if '杀' in play or '排除' in play else 'include')
             output.append({'play':play,'picks':picks,'mode':mode,'excerpt':line[:450]})
@@ -465,14 +497,14 @@ def score_posts(posts):
                 p['mode']='unverified'
             try:
                 if reason:raise ValueError(reason)
-                eligible=vote_zodiacs(p['picks'],p['mode'],p['play'])
+                eligible=vote_zodiacs(p['picks'],p['mode'],p['play'],p['excerpt'])
             except ValueError as error:
                 eligible=[]
                 reason=str(error)
             if not reason and ak in voted:
                 reason='duplicate author/play'
             counted=reason is None
-            picks.append({**p,'author':post['author'],'source_url':post['detail_url'],
+            picks.append({**p,'author':post['author'],'source_url':post['detail_url'],'evidence_id':post.get('evidence_id',post['detail_url']),
                           'counted_for_ranking':counted,'exclusion_reason':reason,
                           'vote_zodiacs':eligible if counted else [],
                           'weight_per_zodiac':1.0/len(eligible) if counted else 0.0})
@@ -498,12 +530,12 @@ def unparsed_evidence(posts):
         for line in text.splitlines():
             if any(z in line for z in ZODIACS) and line[:450] not in parsed_lines:
                 rejected.append({'author':post['author'],'source_url':post['detail_url'],
-                                 'excerpt':line[:450],'reason':'unsupported or ambiguous play',
+                                 'evidence_id':post.get('evidence_id',post['detail_url']),'excerpt':line[:450],'reason':'unsupported or ambiguous play',
                                  'counted_for_ranking':False})
                 found=True
         if not found and not extract_picks(post['title']+'\n'+text):
             rejected.append({'author':post['author'],'source_url':post['detail_url'],
-                             'excerpt':post['title'][:450],'reason':'no supported current-issue play',
+                             'evidence_id':post.get('evidence_id',post['detail_url']),'excerpt':post['title'][:450],'reason':'no supported current-issue play',
                              'counted_for_ranking':False})
     return rejected
 
@@ -514,7 +546,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     if target_issue and not re.fullmatch(r'20\d{5}',str(target_issue)):
         raise ValueError('explicit target issue must use YYYYNNN')
     max_pages=max(1,min(int(policy.get('max_pages',30)),50))
-    max_posts=max(1,min(int(policy.get('max_posts',150)),500))
+    max_posts=max(1,min(int(policy.get('max_posts',150)),2000))
+    feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[]
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
@@ -549,6 +582,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             checkpoint('forum_navigation')
             page.goto(url,wait_until='domcontentloaded',timeout=60000)
             checkpoint('forum_render_wait')
+            page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=15000)
+            page.get_by_role('tab',name='澳彩',exact=True).click()
+            page.get_by_text('最新',exact=True).click()
             page.wait_for_timeout(1100)
             (out/'browser-diagnostics.json').write_text(json.dumps({
                 'url':page.url,'title':page.title(),
@@ -566,7 +602,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 checkpoint('forum_scan: '+str(audit['steps']))
             checkpoint('forum_scan')
             listing,feed_audit=_pages(page,target_category,max_pages,
-                deadline=min(deadline,time.monotonic()+180),on_progress=scan_progress)
+                deadline=min(deadline,time.monotonic()+300),on_progress=scan_progress,
+                stop_predicate=current_feed_boundary if feed_mode else None)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
             checkpoint('listing_complete')
@@ -589,7 +626,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             # Daily operation only needs CURRENT posts from the live forum.
             # An explicit historical audit (e.g. 281) opens author histories,
             # and only as far back as that issue. Never sweep all past issues.
-            profile_samples=author_order[:author_limit] if target_issue else []
+            profile_samples=author_order[:author_limit] if target_issue and not feed_mode else []
             for sample in profile_samples:
                 if time.monotonic()>=deadline:
                     profile_errors.append({'reason':'collection time budget exhausted'})
@@ -629,11 +666,11 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             targets=prioritize_posts(scoped,favored)+[x for x in prioritize_posts(next_period,favored) if x['key'] not in {p['key'] for p in scoped}]
             if not targets:raise ValueError('no current or next-period posts for '+issue)
             truncated=(len(targets)>max_posts or feed_audit.get('truncated',False)
-                       or (bool(target_issue) and len(author_samples)>author_limit)
+                       or (bool(target_issue) and not feed_mode and len(author_samples)>author_limit)
                        or any(x.get('truncated') for x in profile_checks))
             # Report missing author profiles as explicit incomplete coverage;
             # do not pretend browsing the visible forum card is exhaustive.
-            profile_incomplete=(bool(target_issue) and
+            profile_incomplete=(bool(target_issue) and not feed_mode and
                                 (bool(profile_errors) or len(author_samples)>author_limit))
             cache={}
             for item in targets[:max_posts]:
@@ -641,6 +678,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     truncated=True
                     errors.append({'reason':'collection time budget exhausted; remaining posts not checked'})
                     break
+                if feed_mode:
+                    try:
+                        posts.append(feed_card_post(item,url))
+                    except ValueError as exc:
+                        errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)})
+                    continue
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
                     if not _detail(page,url,item,target_category,max_pages,deadline=deadline):
@@ -692,12 +735,21 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     valid_authors={p['author'] for p in valid_votes}
     valid_materials=len(valid_votes)
     rejected_materials=len(predictions)-valid_materials
-    unscored_posts=sum(1 for p in posts if p['detail_url'] not in {v['source_url'] for v in valid_votes})
+    unscored_posts=sum(1 for p in posts if p.get('evidence_id',p['detail_url']) not in {v.get('evidence_id',v['source_url']) for v in valid_votes})
     enough=valid_materials>=int(policy.get('min_valid_materials',25))
-    ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete
+    seq=int(issue[-3:])
+    if not 1<=seq<=366:raise ValueError('invalid daily issue')
+    draw_day=datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)
+    hour,minute=map(int,policy.get('verified_draw_time','21:32').split(':'))
+    draw_at=draw_day.replace(hour=hour,minute=minute)
+    pre_draw=datetime.now(LOCAL_TZ)<draw_at
+    ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete and pre_draw
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'collection_priority':'configured_leaderboard_candidates_first_then_outside',
-            'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
+            'source_url':url,'collector':'rendered-dom',
+            'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
+            'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
+            'coverage_label':'主列表当期范围完整；评论/图片/作者页未展开' if feed_mode and not truncated else '部分覆盖','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
             'history_scope':'target_issue_and_next_issue' if target_issue else 'not_requested',
@@ -734,7 +786,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'next_period_posts_checked':len(next_period),
                      'historical_reference_count':len(historical_references),
                      'excluded_draw_header':True,
-                     'post_article_only':True,
+                     'post_article_only':not feed_mode,'card_owned_text_only':feed_mode,
                      'truncated':truncated,'detail_errors':errors,'issue_filter_strict':True},
             'progress':{'leaderboard_source':'historic_candidates_unverified',
                         'leaderboard_checked':0,'leaderboard_total':0,
@@ -757,4 +809,3 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result
-
