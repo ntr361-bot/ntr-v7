@@ -58,6 +58,9 @@ def sync(out,archive,history,public_dir=None):
         if status['status']=='ready_observation' and len(status.get('ranking',[]))==12:
             # Immutable experimental snapshot, not a production model freeze.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}
+            # Preserve the generation-time counts and rule version in the immutable snapshot.
+            for key in ('valid_materials','scoring_rule_version','scoring_rules','material_counts'):
+                if key in status:core[key]=status[key]
             core['classification']='experimental_unverified_leaderboard'
             core['evidence_refs']=[{'author':p['author'],'url':p['detail_url']}
                                     for p in status.get('evidence',[]) if p.get('detail_url')]
