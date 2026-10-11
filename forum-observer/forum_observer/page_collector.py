@@ -208,9 +208,12 @@ def _detail(page,url,item,category,max_pages,deadline=None):
         page.goto(item['href'],wait_until='domcontentloaded',timeout=45000)
         return _wait_detail(page,item,timeout_seconds=8)
     page.goto(url,wait_until='domcontentloaded',timeout=45000)
+    page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=15000)
+    page.get_by_role('tab',name='澳彩',exact=True).click()
+    page.get_by_text('最新',exact=True).click()
     page.wait_for_timeout(800)
     previous=set()
-    for _ in range(max_pages):
+    for _ in range(max_pages*4):
         if deadline is not None and time.monotonic()>=deadline:return False
         visible=_listing(page,category)
         if any(x['key']==item['key'] for x in visible):
