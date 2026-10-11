@@ -167,10 +167,10 @@ def _pages(page,category,max_pages=25,deadline=None,on_progress=None,stop_predic
 
 
 
-def current_feed_boundary(items):
+def current_feed_boundary(items,target_issue=None):
     recent=[x for x in items if x.get('author') not in ('论坛管理','管理员') and '公告' not in x.get('title','')]
     if not recent:return None
-    try:issue=current_issue(recent)
+    try:issue=target_issue or current_issue(recent)
     except ValueError:return None
     tail=recent[-5:]
     if (len(tail)==5 and len({x['author'] for x in tail})>=2
@@ -603,7 +603,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             checkpoint('forum_scan')
             listing,feed_audit=_pages(page,target_category,max_pages,
                 deadline=min(deadline,time.monotonic()+300),on_progress=scan_progress,
-                stop_predicate=current_feed_boundary if feed_mode else None)
+                stop_predicate=(lambda items:current_feed_boundary(items,target_issue)) if feed_mode else None)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
             checkpoint('listing_complete')
@@ -680,7 +680,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     break
                 if feed_mode:
                     try:
-                        posts.append(feed_card_post(item,url))
+                        captured=feed_card_post(item,url)
+                        if item['issue']==issue:
+                            posts.append(captured)
+                        else:
+                            historical_references.extend(previous_period_records(
+                                captured['body'],issue,captured))
                     except ValueError as exc:
                         errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)})
                     continue

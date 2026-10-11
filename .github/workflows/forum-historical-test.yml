@@ -1,0 +1,48 @@
+name: Forum explicit-period read-only test
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Historical issue to test (YYYYNNN)"
+        required: true
+        default: "2026284"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/forum-historical-test.yml"
+      - "forum-observer/forum_observer/audit.py"
+permissions:
+  contents: read
+concurrency:
+  group: forum-historical-test
+  cancel-in-progress: false
+defaults:
+  run:
+    working-directory: forum-observer
+jobs:
+  historical-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install automated collector
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Test requested issue without archive or publication
+        env:
+          AUDIT_ISSUE: ${{ inputs.issue || '2026284' }}
+        run: python -u -m forum_observer.audit --config collector-config.json --issue "$AUDIT_ISSUE" --out test-out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-historical-test-${{ inputs.issue || '2026284' }}
+          path: forum-observer/test-out/
+          if-no-files-found: error
