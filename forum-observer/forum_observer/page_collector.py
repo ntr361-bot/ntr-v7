@@ -249,9 +249,53 @@ def _comments(text):
     return c[:12000] if re.search(r'\d+楼',c) else ''
 
 
+FRONT_BACK_ZODIACS={'前肖':tuple('鼠牛虎兔龙蛇'),'后肖':tuple('马羊猴鸡狗猪')}
+GROUP_DEFINITION=re.compile(r'(?P<group>前肖|后肖)\s*[:：=]?\s*[（(【\[](?P<picks>[^）)】\]\n]+)[）)】\]]')
+EIGHT_EXPRESSION=re.compile(
+    r'(?P<group>前肖|后肖)\s*[+＋]\s*(?P<extra>(?:['+ZODIAC_CLASS+r'][\s、，,]*){2})(?=\s*[】\]）)])')
+
+
+def extract_front_back_eight(text):
+    """Front/back six plus two distinct outside zodiacs is one eight-zodiac vote.
+
+    Require explicit consistent definitions in this evidence. Do not infer a
+    missing/garbled legend, reinterpret kills, or count draw-result placeholders.
+    """
+    definitions={}; invalid=False; definition_evidence=[]
+    for m in GROUP_DEFINITION.finditer(text):
+        group=m.group('group')
+        content=m.group('picks')
+        chars=[c for c in content if c in ZODIACS]
+        if (re.sub('['+ZODIAC_CLASS+r'\s、，,]','',content)
+                or len(chars)!=6 or set(chars)!=set(FRONT_BACK_ZODIACS[group])):
+            invalid=True
+        definitions[group]=chars
+        definition_evidence.append(m.group(0))
+    output=[]
+    for line in text.splitlines():
+        if not re.search(r'前后二肖|八肖',line):continue
+        for match in EIGHT_EXPRESSION.finditer(line):
+            group=match.group('group')
+            extra=[c for c in match.group('extra') if c in ZODIACS]
+            before=line[:match.start()]
+            error=None
+            if UNCERTAIN_PATTERN.search(line) or re.search(r'杀|排除|[?？]',before):
+                error='ambiguous or unsupported front/back direction'
+            elif invalid or set(definitions)!=set(FRONT_BACK_ZODIACS):
+                error='missing or inconsistent front/back definitions'
+            elif len(set(extra))!=2 or set(extra)&set(FRONT_BACK_ZODIACS[group]):
+                error='front/back plus two must yield 8 distinct zodiacs'
+            picks=list(dict.fromkeys([*definitions.get(group,[]),*extra]))
+            output.append({'play':'八肖（前后二肖）','picks':picks,
+                'mode':'unverified' if error else 'include',
+                'excerpt':line[:450],'raw_expression':match.group(0),
+                'definition_evidence':definition_evidence,'parse_error':error})
+    return output
+
+
 def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
-    output=[]
+    output=extract_front_back_eight(str(text))
     for line in str(text).splitlines():
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
@@ -405,10 +449,11 @@ def score_posts(posts):
             if key in seen:continue
             seen.add(key)
             ak=(post['author'],p['play'],p['mode'])
-            reason=None
+            reason=p.get('parse_error')
             if UNCERTAIN_PATTERN.search(post['title']):
                 p['mode']='unverified'
             try:
+                if reason:raise ValueError(reason)
                 eligible=vote_zodiacs(p['picks'],p['mode'],p['play'])
             except ValueError as error:
                 eligible=[]
@@ -437,9 +482,10 @@ def unparsed_evidence(posts):
         for pic in post.get('images',[]):
             if '/article/' in pic['src']:
                 text+='\n'+current_period_text(pic.get('ocr',''),post['issue'])
+        parsed_lines={p['excerpt'] for p in extract_picks(post['title']+'\n'+text)}
         found=False
         for line in text.splitlines():
-            if any(z in line for z in ZODIACS) and not extract_picks(line):
+            if any(z in line for z in ZODIACS) and line[:450] not in parsed_lines:
                 rejected.append({'author':post['author'],'source_url':post['detail_url'],
                                  'excerpt':line[:450],'reason':'unsupported or ambiguous play',
                                  'counted_for_ranking':False})
