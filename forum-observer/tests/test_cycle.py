@@ -30,18 +30,18 @@ class CycleTests(unittest.TestCase):
         self.assertEqual(extract_picks(_author_comments(content,'李四'))[0]['picks'],['龙','马','蛇'])
         self.assertEqual(extract_picks(_author_comments(content,'王五')),[])
     def test_same_author_vote_dedup(self):
-        row={'author':'甲','issue':'2026282','title':'推荐三肖：鼠牛虎','body':'',
+        row={'author':'甲','issue':'2026282','title':'推荐六肖：鼠牛虎兔龙蛇','body':'',
              'images':[],'detail_url':'https://example.org/detail'}
         ranks,items=score_posts([row,row])
         self.assertEqual(len(items),1)
-        self.assertAlmostEqual(ranks[0]['score'],1/3,places=5)
+        self.assertAlmostEqual(ranks[0]['score'],1/6,places=5)
     def test_count_only_effective_author_votes(self):
-        post={'author':'甲','issue':'2026281','title':'推荐三肖：鼠牛虎',
+        post={'author':'甲','issue':'2026281','title':'推荐六肖：鼠牛虎兔龙蛇',
               'body':'','images':[],'detail_url':'https://example.org/1'}
         rows,works=score_posts([post,dict(post,detail_url='https://example.org/2')])
         self.assertEqual(sum(p['counted_for_ranking'] for p in works),1)
         self.assertEqual(len(works),1)
-        self.assertAlmostEqual(rows[0]['score'],1/3,places=5)
+        self.assertAlmostEqual(rows[0]['score'],1/6,places=5)
 
     def test_color_note_not_valid_vote(self):
         post={'author':'甲','issue':'2026281','title':'红肖：鼠牛虎',

@@ -21,16 +21,42 @@ class Work:
     evidence: str = ''
 
 
-def normalize(work: Work) -> dict[str,float]:
-    picks = list(dict.fromkeys(work.picks))
+SCORING_RULE_VERSION = '2026-10-11-six-plus-kill-complement-v1'
+SCORING_RULES = {
+    'minimum_recommendation_zodiacs': 6,
+    'kill_zodiac_vote': 'remaining_zodiacs',
+    'kill_numbers_as_zodiacs': False,
+    'weight_per_material': 1,
+}
+
+
+def vote_zodiacs(picks, mode, play=''):
+    picks = list(dict.fromkeys(picks))
     if not picks or any(x not in ZODIACS for x in picks):
         raise ValueError('invalid zodiac picks')
-    if work.mode == 'exclude':
+    if mode == 'exclude':
+        if re.search(r'(?:杀|排除)[^\n:：]*?(?:码|号码)', play):
+            raise ValueError('kill numbers are not kill zodiacs')
         picks = [z for z in ZODIACS if z not in picks]
-    elif work.mode != 'include':
-        raise ValueError('unknown mode')
-    if not picks:
-        raise ValueError('no remaining zodiac')
+        if not picks:
+            raise ValueError('no remaining zodiac')
+    elif mode == 'include':
+        if len(picks) < 6:
+            raise ValueError('recommendation requires at least 6 distinct zodiacs')
+    else:
+        raise ValueError('unknown or unverified mode')
+    return picks
+
+
+def material_counts(predictions):
+    return {
+        'recommend': sum(p.get('counted_for_ranking', False) and p['mode'] == 'include' for p in predictions),
+        'kill_zodiac': sum(p.get('counted_for_ranking', False) and p['mode'] == 'exclude' for p in predictions),
+    }
+
+
+def normalize(work: Work) -> dict[str,float]:
+    picks = vote_zodiacs(work.picks, work.mode, work.play)
     return {z: (1/len(picks) if z in picks else 0.0) for z in ZODIACS}
 
 
@@ -82,6 +108,8 @@ def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderbo
             score[zodiac]+=value
     ranking = sorted(ZODIACS,key=lambda z:(-score[z],ZODIACS.index(z))) if selected else []
     return {
+        'scoring_rule_version':SCORING_RULE_VERSION,'scoring_rules':SCORING_RULES,
+        'material_counts':{'recommend':sum(w.mode=='include' for w in selected),'kill_zodiac':sum(w.mode=='exclude' for w in selected)},
         'issue':issue,'status':'ready_for_pre_draw_freeze' if selected else 'insufficient_verified_samples',
         'raw_count':len(candidates),'valid_leaderboard':a,'valid_outside':b,
         'selected_count':len(selected),'selected_leaderboard':3*n if selected else 0,

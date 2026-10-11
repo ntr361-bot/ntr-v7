@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
-from .core import ZODIACS
+from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
 from .author_history import incremental_scan, open_author_history, open_profile_post
 
 
@@ -90,7 +90,7 @@ def _ocr_image(src: str) -> str:
 
 LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
-PICK_PATTERN=re.compile(r'(?P<play>(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖))\s*[:：=\-、【】]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
+PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖))\s*[:：=\-、【】]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
 
 
@@ -393,10 +393,19 @@ def score_posts(posts):
             if key in seen:continue
             seen.add(key)
             ak=(post['author'],p['play'],p['mode'])
-            eligible=[z for z in ZODIACS if z not in p['picks']] if p['mode']=='exclude' else p['picks']
-            counted=ak not in voted and p['mode']!='color_unverified' and bool(eligible)
+            reason=None
+            try:
+                eligible=vote_zodiacs(p['picks'],p['mode'],p['play'])
+            except ValueError as error:
+                eligible=[]
+                reason=str(error)
+            if not reason and ak in voted:
+                reason='duplicate author/play'
+            counted=reason is None
             picks.append({**p,'author':post['author'],'source_url':post['detail_url'],
-                          'counted_for_ranking':counted})
+                          'counted_for_ranking':counted,'exclusion_reason':reason,
+                          'vote_zodiacs':eligible if counted else [],
+                          'weight_per_zodiac':1.0/len(eligible) if counted else 0.0})
             if not counted:continue
             voted.add(ak)
             weight=1.0/len(eligible)
@@ -421,7 +430,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     listing_candidates=[]
     def checkpoint(stage):
         ranking,predictions=score_posts(posts)
-        progress={'issue':issue,'status':'incomplete_observation',
+        progress={'scoring_rule_version':SCORING_RULE_VERSION,'scoring_rules':SCORING_RULES,
+                  'material_counts':material_counts(predictions),'issue':issue,'status':'incomplete_observation',
                   'stage':stage,'fetched_at':datetime.now(timezone.utc).isoformat(),
                   'raw_count':len(posts),'valid_materials':sum(x['counted_for_ranking'] for x in predictions),
                   'selected_count':0,'ranking':ranking,'evidence':posts,
@@ -608,6 +618,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'next_period_posts_checked':len(next_period),
             'selected_count':valid_materials if ready else 0,
             'valid_materials':valid_materials,
+            'scoring_rule_version':SCORING_RULE_VERSION,'scoring_rules':SCORING_RULES,
+            'material_counts':material_counts(predictions),
             'candidate_materials':len(predictions),
             'excluded_materials':rejected_materials,
             'unscored_posts':unscored_posts,

@@ -51,11 +51,11 @@ class ForumPeriodBoundariesTests(unittest.TestCase):
 
     def test_282_vote_cannot_come_from_281_historic_rows(self):
         post={'author':'甲','issue':'2026282','title':'282期作品',
-              'body':'281期：推荐三肖：鼠牛虎\n282期：推荐三肖：龙蛇马',
+              'body':'281期：推荐三肖：鼠牛虎\n282期：推荐六肖：龙蛇马羊猴鸡',
               'images':[],'detail_url':'https://example.org/corpusdetail/282'}
         ranking,works=score_posts([post])
         self.assertEqual(len(works),1)
-        self.assertEqual(works[0]['picks'],['龙','蛇','马'])
+        self.assertEqual(works[0]['picks'],['龙','蛇','马','羊','猴','鸡'])
         self.assertEqual(sum(x['counted_for_ranking'] for x in works),1)
         self.assertEqual(ranking[0]['zodiac'],'龙')
         self.assertAlmostEqual(next(x['score'] for x in ranking if x['zodiac']=='鼠'),0.0)

@@ -14,7 +14,7 @@ class PipelineTests(unittest.TestCase):
             if 'leaderboard' in url:return top
             from urllib.parse import parse_qs,urlparse
             author=parse_qs(urlparse(url).query)['author'][0]
-            return [dict(author=author,issue='2026281',play='特码生肖',source_url=url,published_at='2026-10-08T19:00:00+08:00',picks=['鼠'],evidence='特码鼠')]
+            return [dict(author=author,issue='2026281',play='特码生肖',source_url=url,published_at='2026-10-08T19:00:00+08:00',picks=['鼠','牛','虎','兔','龙','蛇'],evidence='特码鼠')]
         cfg={'allowed_hosts':['example.org'],'issue_url':'https://example.org/latest','leaderboard_url':'https://example.org/leaderboard?issue={issue}','author_url':'https://example.org/works?author={author}&issue={issue}','outside_authors':outside,'request_interval_seconds':0}
         with TemporaryDirectory() as d:
             r=collect(cfg,Path(d),fake)
@@ -24,7 +24,7 @@ class PipelineTests(unittest.TestCase):
     def test_settlement_immutable(self):
         from datetime import datetime
         authors={f'a{i}' for i in range(15)}
-        works=[dict(author=f'a{i}',source_group='leaderboard' if i<15 else 'outside',issue='2026281',play='特码生肖',source_url=f'https://example.org/{i}',published_at='2026-10-08T19:00:00+08:00',picks=['鼠'],evidence='特码鼠') for i in range(25)]
+        works=[dict(author=f'a{i}',source_group='leaderboard' if i<15 else 'outside',issue='2026281',play='特码生肖',source_url=f'https://example.org/{i}',published_at='2026-10-08T19:00:00+08:00',picks=['鼠','牛','虎','兔','龙','蛇'],evidence='特码鼠') for i in range(25)]
         r=calculate('2026281','2026-10-08T21:00:00+08:00',works,authors)
         with TemporaryDirectory() as d:
             folder=freeze(r,Path(d),'2026-10-08T20:00:00+08:00','2026-10-08T21:00:00+08:00').parent
