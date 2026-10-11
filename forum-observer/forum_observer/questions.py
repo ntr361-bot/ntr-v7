@@ -50,6 +50,7 @@ def pending_questions(result):
             'source_url':post.get('detail_url'),'evidence_id':source,'title':post.get('title',''),'published_at':post.get('published_at',''),
             'image_urls':[],'excerpts':[],'counted_for_ranking':False,'status':'pending_user_rule_confirmation'})
         group['image_urls']=list(dict.fromkeys(group['image_urls']+unreadable))
-        group['excerpts'].append({'text':'图片未能读出文字','reason':'unreadable_image',
-                                 'question':'请提供这张图片的当期原文并解释玩法，避免根据模糊图片猜测。'})
+        statuses=list(dict.fromkeys(pic.get('ocr_status','unreadable_image') for pic in post.get('images',[]) if pic.get('src') in unreadable))
+        group['excerpts'].append({'text':'图片尚无可用解析；处理状态：'+', '.join(statuses),'reason':', '.join(statuses),
+                                 'question':'未处理图片将续跑；无法确认的玩法请提供当期原文和解释，确认前不计分。'})
     return list(groups.values())

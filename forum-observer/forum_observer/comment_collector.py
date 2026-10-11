@@ -21,7 +21,7 @@ def comment_rows(page):
 
 
 def collect_comments(page,parent,deadline,policy):
-    from .page_collector import LOCAL_TZ,_timestamp,_ocr_image,consistent_comment_ocr,HOSTS
+    from .page_collector import LOCAL_TZ,_timestamp,HOSTS
     from urllib.parse import urlparse,urljoin
     snapshots={}
     def latest_rows():
@@ -34,7 +34,7 @@ def collect_comments(page,parent,deadline,policy):
         max_steps=int(policy.get('max_comment_scroll_steps',160)),delay_ms=650,
         deadline=deadline)
     now=datetime.now(LOCAL_TZ)
-    posts=[];rejected=[];cache={}
+    posts=[];rejected=[]
     for row in rows:
         author=row['author'];stamp=_timestamp(row['published_at'],now)
         if not author or author in ('论坛管理','管理员') or not stamp:
@@ -52,18 +52,22 @@ def collect_comments(page,parent,deadline,policy):
         for raw in row['image_urls']:
             src=urljoin(page.url,raw);u=urlparse(src)
             if u.scheme!='https' or u.hostname not in HOSTS or '/tk118files/comment/' not in u.path:continue
-            text='';status='not_recognized'
-            if time.monotonic()<deadline:
-                if src not in cache:
-                    first=_ocr_image(src,6);second=_ocr_image(src,11)
-                    cache[src]=consistent_comment_ocr(first,second,parent['issue'])
-                text=cache[src]
-                status='recognized_consistent' if text else 'unreadable_or_inconsistent'
-            post['images'].append(dict(src=src,ocr=text,ocr_status=status,
-                period_verified=bool(text),
-                source_section='author_comment',author=author,author_verified=True,
-                issue=parent['issue'],published_at=stamp.isoformat()))
+            post['images'].append(dict(src=src,ocr='',ocr_status='pending',
+                period_verified=False,source_section='author_comment',author=author,
+                author_verified=True,issue=parent['issue'],published_at=stamp.isoformat()))
         posts.append(post)
+    from .image_queue import ImageQueue,attach_result
+    queue=ImageQueue(policy.get('image_queue_state','archive/image-queue/state.json'),
+                     policy.get('image_cache_dir','.image-cache'))
+    keys=[queue.enqueue(pic['src']) for post in posts for pic in post['images']]
+    if keys:
+        jobs=queue.process(keys,deadline,workers=int(policy.get('image_workers',3)))
+        for post in posts:
+            for pic in post['images']:
+                job=jobs[queue.enqueue(pic['src'])]
+                pic.update(attach_result(job,post))
+    from collections import Counter
+    audit.update(image_status_counts=dict(Counter(pic['ocr_status'] for post in posts for pic in post['images'])))
     audit.update(rows_seen=len(rows),verified_rows=len(posts),rejected_rows=rejected,
                  images_seen=sum(len(p['images']) for p in posts),
                  images_recognized=sum(bool(i['ocr']) for p in posts for i in p['images']))

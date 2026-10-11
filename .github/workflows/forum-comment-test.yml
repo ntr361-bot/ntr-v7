@@ -8,12 +8,14 @@ on:
       - "forum-observer/forum_observer/comment_probe.py"
       - "forum-observer/forum_observer/comment_image_test.py"
       - "forum-observer/forum_observer/comment_collector.py"
+      - "forum-observer/forum_observer/image_queue.py"
+      - "forum-observer/tests/test_image_queue.py"
 permissions:
   contents: read
 jobs:
   comments:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: forum-observer
@@ -25,11 +27,23 @@ jobs:
         with:
           python-version: "3.12"
       - run: |
-          pip install playwright
-          python -m playwright install --with-deps chromium
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            forum-observer/.image-cache/
+            forum-observer/comment-test-out/image-queue.json
+          key: forum-images-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: forum-images-${{ runner.os }}-
       - run: python -m unittest discover -s tests -v
-      - run: python -u -m forum_observer.comment_image_test
+      - run: python -u -m forum_observer.image_queue_test
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            forum-observer/.image-cache/
+            forum-observer/comment-test-out/image-queue.json
+          key: forum-images-${{ runner.os }}-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

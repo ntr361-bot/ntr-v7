@@ -11,6 +11,7 @@ def render(result:dict,path:Path)->None:
         f"抓取资料记录：{result.get('raw_count',0)}条；解析候选：{result.get('candidate_materials',0)}份",
         f"覆盖范围：{result.get('coverage_label','未知')}",
         f"评论区检查：{len(result.get('comment_checks',[]))}帖；评论资料记录：{result.get('comment_records',0)}条；图片发现：{sum(c.get('images_seen',0) for c in result.get('comment_checks',[]))}张；识别一致：{sum(c.get('images_recognized',0) for c in result.get('comment_checks',[]))}张",
+        f"图片处理状态：{[c.get('image_status_counts',{}) for c in result.get('comment_checks',[])]}",
         f"未计分候选：{result.get('excluded_materials',0)}份；无有效评分的帖子：{result.get('unscored_posts',0)}篇",
         f"有效作者：{result.get('distinct_valid_authors',0)}人；需要至少：{a.get('min_valid_materials','未知')}份有效资料",
         f"优先作者名单内发现作者：{len(a.get('top20_found',[]))}人；其他作者：{len(a.get('other_found',[]))}人",

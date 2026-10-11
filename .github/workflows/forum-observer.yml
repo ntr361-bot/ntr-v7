@@ -40,11 +40,23 @@ jobs:
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            forum-observer/.image-cache/
+          key: forum-images-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: forum-images-${{ runner.os }}-
       - name: Observe current issue
         id: observe
         continue-on-error: true
         timeout-minutes: 30
         run: python -u -m forum_observer.auto --config collector-config.json --out out
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            forum-observer/.image-cache/
+          key: forum-images-${{ runner.os }}-${{ github.run_id }}
       - name: Cycle snapshots and settlements from verified V7 history
         run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
       - name: Archive independent forum data only
