@@ -91,6 +91,8 @@ def _ocr_image(src: str) -> str:
 LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
 PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖))\s*[:：=\-、【】]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
+UNCERTAIN_PATTERN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
+BARE_KILL_PATTERN=re.compile(r'(?<![\u4e00-\u9fff])(?P<play>杀)\s*[:：]?\s*(?P<picks>['+ZODIAC_CLASS+r']+)')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
 
 
@@ -248,15 +250,24 @@ def _comments(text):
 
 
 def extract_picks(text):
+    """Only explicit supported plays; ambiguity never becomes a vote."""
     output=[]
-    for m in PICK_PATTERN.finditer(str(text)):
-        play=m.group('play')
-        picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
-        if not picks:continue
-        mode=('color_unverified' if '红肖' in play or '蓝肖' in play else
-              'exclude' if '杀' in play or '排除' in play else 'include')
-        output.append({'play':play,'picks':picks,'mode':mode,'excerpt':m.group(0)[:90]})
+    for line in str(text).splitlines():
+        matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
+        for m in sorted(matches,key=lambda m:m.start()):
+            play=m.group('play')
+            picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
+            if not picks:continue
+            mode=('unverified' if UNCERTAIN_PATTERN.search(line) or '?' in line or '？' in line else
+                  'color_unverified' if '红肖' in play or '蓝肖' in play else
+                  'exclude' if '杀' in play or '排除' in play else 'include')
+            output.append({'play':play,'picks':picks,'mode':mode,'excerpt':line[:450]})
     return output
+
+
+def prioritize_posts(items, favored):
+    """Stable collection priority only; all eligible materials retain equal weight."""
+    return sorted(items,key=lambda item:0 if item['author'] in favored else 1)
 
 
 def _author_comments(text, author):
@@ -274,7 +285,7 @@ def _author_comments(text, author):
 
 # A post's issue is its publication period, not the period of every line inside
 # its article. Previous-period "opened ... hit" rows in later posts are retrospective.
-HISTORY_MARKER=re.compile(r'(?<!\d)(?:(?:20\d{2})(?P<full>\d{3})|(?P<short>\d{3}))\s*期\s*[:：]?')
+HISTORY_MARKER=re.compile(r'(?<!\d)(?:(?:20\d{2})(?P<full>\d{3})|(?P<short>\d{3}))\s*(?:期\s*[:：]?|[:：])')
 
 
 def _period_marker(line,year):
@@ -384,16 +395,19 @@ def score_posts(posts):
         # Reply text is saved as evidence, but must not be attributed to OP.
         body=current_period_text(post['body'],post['issue'])
         replies=current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
-        text=post['title']+' '+body+' '+replies
+        text=current_period_text(post['title'],post['issue'])+'\n'+body+'\n'+replies
         for pic in post.get('images',[]):
             if '/article/' in pic['src']:
-                text+=' '+current_period_text(pic['ocr'],post['issue'])
-        for p in extract_picks(text):
+                text+='\n'+current_period_text(pic['ocr'],post['issue'])
+        parsed=extract_picks(text)
+        for p in parsed:
             key=(post['author'],p['play'],tuple(p['picks']),p['mode'])
             if key in seen:continue
             seen.add(key)
             ak=(post['author'],p['play'],p['mode'])
             reason=None
+            if UNCERTAIN_PATTERN.search(post['title']):
+                p['mode']='unverified'
             try:
                 eligible=vote_zodiacs(p['picks'],p['mode'],p['play'])
             except ValueError as error:
@@ -415,13 +429,35 @@ def score_posts(posts):
     return [{'rank':i+1,'zodiac':z,'score':round(votes[z],6)} for i,z in enumerate(order)],picks
 
 
+def unparsed_evidence(posts):
+    rejected=[]
+    for post in posts:
+        text=current_period_text(post['body'],post['issue'])
+        text+='\n'+current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
+        for pic in post.get('images',[]):
+            if '/article/' in pic['src']:
+                text+='\n'+current_period_text(pic.get('ocr',''),post['issue'])
+        found=False
+        for line in text.splitlines():
+            if any(z in line for z in ZODIACS) and not extract_picks(line):
+                rejected.append({'author':post['author'],'source_url':post['detail_url'],
+                                 'excerpt':line[:450],'reason':'unsupported or ambiguous play',
+                                 'counted_for_ranking':False})
+                found=True
+        if not found and not extract_picks(post['title']+'\n'+text):
+            rejected.append({'author':post['author'],'source_url':post['detail_url'],
+                             'excerpt':post['title'][:450],'reason':'no supported current-issue play',
+                             'counted_for_ranking':False})
+    return rejected
+
+
 def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     from playwright.sync_api import sync_playwright
     policy=policy or {}
     if target_issue and not re.fullmatch(r'20\d{5}',str(target_issue)):
         raise ValueError('explicit target issue must use YYYYNNN')
     max_pages=max(1,min(int(policy.get('max_pages',30)),50))
-    max_posts=max(1,min(int(policy.get('max_posts',70)),150))
+    max_posts=max(1,min(int(policy.get('max_posts',150)),500))
     posts=[];errors=[];historical_references=[]
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
@@ -533,7 +569,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             next_period=[item for item in listing if retrospective
                          and item['issue']==next_issue
                          and item['author'] not in ('论坛管理','管理员')]
-            targets=scoped+[x for x in next_period if x['key'] not in {p['key'] for p in scoped}]
+            targets=prioritize_posts(scoped,favored)+[x for x in prioritize_posts(next_period,favored) if x['key'] not in {p['key'] for p in scoped}]
             if not targets:raise ValueError('no current or next-period posts for '+issue)
             truncated=(len(targets)>max_posts or feed_audit.get('truncated',False)
                        or (bool(target_issue) and len(author_samples)>author_limit)
@@ -603,6 +639,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     enough=valid_materials>=int(policy.get('min_valid_materials',25))
     ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
+            'collection_priority':'configured_leaderboard_candidates_first_then_outside',
             'source_url':url,'collector':'rendered-dom','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
@@ -629,6 +666,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'top3':[r['zodiac'] for r in ranking[:3]],
             'top6':[r['zodiac'] for r in ranking[:6]],
             'evidence':posts,'parsed_predictions':predictions,'rejected':errors,
+            'unparsed_evidence':unparsed_evidence(posts),
             'audit':{'listing_count':len(listing),'issue_listing_count':len(scoped),
                      'forum_scroll':feed_audit,
                      'profile_checks':profile_checks,

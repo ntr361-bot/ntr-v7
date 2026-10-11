@@ -21,12 +21,14 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-11-six-plus-kill-complement-v1'
+SCORING_RULE_VERSION = '2026-10-11-clear-only-equal-weight-v2'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
     'kill_numbers_as_zodiacs': False,
     'weight_per_material': 1,
+    'uncertain_materials': 'excluded',
+    'author_ratio': None,
 }
 
 
@@ -43,6 +45,12 @@ def vote_zodiacs(picks, mode, play=''):
     elif mode == 'include':
         if len(picks) < 6:
             raise ValueError('recommendation requires at least 6 distinct zodiacs')
+        count=re.search(r'([一二三四五六七八九十]|\d{1,2})肖',play)
+        if count:
+            label=count.group(1)
+            expected=int(label) if label.isdigit() else '一二三四五六七八九十'.index(label)+1
+            if expected!=len(picks):
+                raise ValueError('declared zodiac count does not match picks')
     else:
         raise ValueError('unknown or unverified mode')
     return picks
@@ -72,6 +80,9 @@ def validate_work(raw: dict[str,Any], issue: str, cutoff: str) -> Work:
     end = datetime.fromisoformat(cutoff)
     if posted.tzinfo is None or end.tzinfo is None or posted >= end or posted > datetime.now(timezone.utc):
         raise ValueError('not verifiably pre-draw')
+    from .page_collector import UNCERTAIN_PATTERN
+    if UNCERTAIN_PATTERN.search(w.play+'\n'+w.evidence):
+        raise ValueError('uncertain or unsupported evidence')
     normalize(w)
     return w
 
@@ -95,13 +106,9 @@ def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderbo
     for w in accepted:
         groups[w.source_group].append(w)
     a,b = len(groups['leaderboard']),len(groups['outside'])
-    eligible = a>=15 and b>=10
-    # Only a strictly 3:2 subset is used; select deterministically by publication time and source.
-    n = min(a//3,b//2)
-    selected = []
-    if eligible and n>=5:
-        for g,count in [('leaderboard',3*n),('outside',2*n)]:
-            selected.extend(sorted(groups[g],key=lambda w:(w.published_at,w.author,w.play,w.source_url))[:count])
+    # No leaderboard/outside quota. Every verified material contributes one unit.
+    selected = sorted(accepted,key=lambda w:(0 if w.source_group=='leaderboard' else 1,
+                                           w.published_at,w.author,w.play,w.source_url)) if a+b>=25 else []
     score = defaultdict(float)
     for w in selected:
         for zodiac,value in normalize(w).items():
@@ -112,8 +119,8 @@ def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderbo
         'material_counts':{'recommend':sum(w.mode=='include' for w in selected),'kill_zodiac':sum(w.mode=='exclude' for w in selected)},
         'issue':issue,'status':'ready_for_pre_draw_freeze' if selected else 'insufficient_verified_samples',
         'raw_count':len(candidates),'valid_leaderboard':a,'valid_outside':b,
-        'selected_count':len(selected),'selected_leaderboard':3*n if selected else 0,
-        'selected_outside':2*n if selected else 0,
+        'selected_count':len(selected),'selected_leaderboard':sum(w.source_group=='leaderboard' for w in selected),
+        'selected_outside':sum(w.source_group=='outside' for w in selected),
         'rejected':rejected,
         'ranking':[{'rank':i+1,'zodiac':z,'score':round(score[z],8)} for i,z in enumerate(ranking)],
         'top1':ranking[:1], 'top3':ranking[:3], 'top6':ranking[:6],

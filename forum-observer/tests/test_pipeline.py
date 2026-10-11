@@ -18,9 +18,9 @@ class PipelineTests(unittest.TestCase):
         cfg={'allowed_hosts':['example.org'],'issue_url':'https://example.org/latest','leaderboard_url':'https://example.org/leaderboard?issue={issue}','author_url':'https://example.org/works?author={author}&issue={issue}','outside_authors':outside,'request_interval_seconds':0}
         with TemporaryDirectory() as d:
             r=collect(cfg,Path(d),fake)
-            self.assertEqual(r['selected_count'],25)
+            self.assertEqual(r['selected_count'],30)
             self.assertEqual(r['progress']['leaderboard_checked'],20)
-            self.assertEqual(collect(cfg,Path(d),fake)['selected_count'],25)
+            self.assertEqual(collect(cfg,Path(d),fake)['selected_count'],30)
     def test_settlement_immutable(self):
         from datetime import datetime
         authors={f'a{i}' for i in range(15)}

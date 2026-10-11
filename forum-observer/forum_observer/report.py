@@ -11,7 +11,7 @@ def render(result:dict,path:Path)->None:
         f"抓取帖子：{result.get('raw_count',0)}篇；解析候选：{result.get('candidate_materials',0)}份",
         f"未计分候选：{result.get('excluded_materials',0)}份；无有效评分的帖子：{result.get('unscored_posts',0)}篇",
         f"有效作者：{result.get('distinct_valid_authors',0)}人；需要至少：{a.get('min_valid_materials','未知')}份有效资料",
-        f"旧名单内发现作者：{len(a.get('top20_found',[]))}人；其他作者：{len(a.get('other_found',[]))}人",
+        f"优先作者名单内发现作者：{len(a.get('top20_found',[]))}人；其他作者：{len(a.get('other_found',[]))}人",
         f"抓取时间：{result.get('fetched_at','')}",
         f"来源：{result.get('source_url','')}", "",
         f"观察Top1：{'、'.join(result.get('top1',[])) or '无'}",
@@ -23,6 +23,13 @@ def render(result:dict,path:Path)->None:
     lines += ["", f"**来自下一期帖子的本期历史记录：{result.get('historical_reference_count',0)}条**",
               f"涉及作者：{result.get('historical_reference_authors',0)}人",
               "历史回顾不计入有效预测资料；页面顶部的官方开奖记录不参与统计。"]
+    lines += ["", "采集顺序：优先作者名单，再扩展榜外；有效资料等权，不设3:2配额。",
+              "优先作者名单的身份不代表已核实当日实时榜单。", "", "## 排除资料"]
+    for row in result.get('parsed_predictions',[]):
+        if not row.get('counted_for_ranking'):
+            lines.append(f"- {row['author']}：{row.get('excerpt','')}；排除原因：{row.get('exclusion_reason','')}；{row['source_url']}")
+    for row in result.get('unparsed_evidence',[]):
+        lines.append(f"- {row['author']}：无法明确解析当期玩法，排除；{row['source_url']}")
     for row in result.get('historical_references',[])[:60]:
         lines.append(f"- {row['author']}：{row['content']}（来源：{row['source_post_issue']}期，{row['source_url']}）")
     lines += ["", "## 资料校验与错误",
