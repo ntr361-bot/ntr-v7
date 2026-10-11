@@ -4,10 +4,35 @@ from datetime import datetime
 from unittest.mock import patch
 from pathlib import Path
 from forum_observer.audit import run
-from forum_observer.page_collector import current_feed_boundary, LOCAL_TZ
+from forum_observer.page_collector import current_feed_boundary, current_period_text, score_posts, LOCAL_TZ
 
 
 class HistoricalAuditTests(unittest.TestCase):
+    def test_front_back_legend_does_not_become_separate_six_vote(self):
+        post=dict(author='甲',issue='2026284',title='特码前后生肖',
+                  body='283期前后六肖【前六肖+狗猪】开牛18准284期前后六肖【前六肖+猴鸡】开？00\n前六肖：鼠牛虎兔龙蛇后六肖：马羊猴鸡狗猪',
+                  images=[],detail_url='https://example.org')
+        _, rows=score_posts([post])
+        valid=[p for p in rows if p['counted_for_ranking']]
+        self.assertEqual(len(valid),1)
+        self.assertEqual(valid[0]['play'],'八肖（前后二肖）')
+        self.assertEqual(set(valid[0]['picks']),set('鼠牛虎兔龙蛇猴鸡'))
+
+    def test_inline_previous_period_kills_never_vote_for_current_period(self):
+        for body in ('270杀龙 271杀猪 284杀虎',
+                     '269。杀蛇。开鸡22 283。杀牛。开牛18 284。杀虎。开？',
+                     '271期：杀鼠鸡猪开猴35准 284期：杀虎开？',
+                     '284期六肖:猪马牛鸡虎龙六码:32.13.42.10.29.03281期六肖:鼠牛鸡虎兔马'):
+            clean=current_period_text(body,'2026284')
+            self.assertNotIn('271',clean)
+            self.assertNotIn('283',clean)
+            self.assertNotIn('281',clean)
+            post=dict(author='甲',issue='2026284',title='284期',body=body,images=[],detail_url='https://example.org')
+            _, rows=score_posts([post])
+            counted=[r for r in rows if r['counted_for_ranking']]
+            self.assertEqual(len(counted),1)
+            self.assertEqual(counted[0]['picks'],list('猪马牛鸡虎龙') if '六肖' in body else ['虎'])
+
     def test_explicit_period_does_not_stop_at_next_period_boundary(self):
         stamp=datetime.now(LOCAL_TZ).strftime('%Y-%m-%d %H:%M')
         rows=[dict(author=str(i),issue='2026285',published_at=stamp,title='资料') for i in range(2)]

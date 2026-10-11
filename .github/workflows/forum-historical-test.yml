@@ -11,6 +11,8 @@ on:
     paths:
       - ".github/workflows/forum-historical-test.yml"
       - "forum-observer/forum_observer/audit.py"
+      - "forum-observer/forum_observer/page_collector.py"
+      - "forum-observer/tests/test_historical_audit.py"
 permissions:
   contents: read
 concurrency:

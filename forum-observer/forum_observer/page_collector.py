@@ -303,10 +303,13 @@ def extract_front_back_eight(text):
     Require explicit consistent definitions in this evidence. Do not infer a
     missing/garbled legend, reinterpret kills, or count draw-result placeholders.
     """
+    text=re.sub(r'(前|后)六肖',r'\1肖',str(text))
+    text=re.sub(r'(前肖|后肖)[ \t]*[:：=][ \t]*((?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])',r'\1(\2)',text)
     definitions={}; invalid=False; definition_evidence=[]
     for m in GROUP_DEFINITION.finditer(text):
         group=m.group('group')
         content=m.group('picks')
+        if re.search(r'前肖|后肖|[+＋]',content):continue
         chars=[c for c in content if c in ZODIACS]
         if (re.sub('['+ZODIAC_CLASS+r'\s、，,]','',content)
                 or len(chars)!=6 or set(chars)!=set(FRONT_BACK_ZODIACS[group])):
@@ -315,13 +318,14 @@ def extract_front_back_eight(text):
         definition_evidence.append(m.group(0))
     output=[]
     for line in text.splitlines():
-        if not re.search(r'前后二肖|八肖',line):continue
+        if not re.search(r'前后二肖|前后六肖|前后肖|前后生肖|八肖',line):continue
         for match in EIGHT_EXPRESSION.finditer(line):
             group=match.group('group')
             extra=[c for c in match.group('extra') if c in ZODIACS]
             before=line[:match.start()]
             error=None
-            if UNCERTAIN_PATTERN.search(line) or re.search(r'杀|排除|[?？]',before):
+            certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$', '',line)
+            if UNCERTAIN_PATTERN.search(certainty_line) or re.search(r'杀|排除|[?？]',before):
                 error='ambiguous or unsupported front/back direction'
             elif invalid or set(definitions)!=set(FRONT_BACK_ZODIACS):
                 error='missing or inconsistent front/back definitions'
@@ -342,6 +346,8 @@ def extract_picks(text):
         certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*$', '',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
+            # Front/back group definitions are legends, not six-zodiac tips.
+            if m.start() and line[m.start()-1] in '前后':continue
             play=m.group('play')
             picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
             if not picks:continue
@@ -372,7 +378,15 @@ def _author_comments(text, author):
 
 # A post's issue is its publication period, not the period of every line inside
 # its article. Previous-period "opened ... hit" rows in later posts are retrospective.
-HISTORY_MARKER=re.compile(r'(?<!\d)(?:(?:20\d{2})(?P<full>\d{3})|(?P<short>\d{3}))\s*(?:期\s*[:：]?|[:：])')
+HISTORY_MARKER=re.compile(r'(?:(?<!\d)(?:20\d{2})(?P<full>\d{3})|(?P<short>\d{3})(?:(?=\s*期)|(?<!\d\d\d\d)))\s*(?:期\s*[:：]?|[:：]|[。．.]\s*(?=杀)|(?=杀))')
+
+
+def period_lines(text):
+    """DOM cards can collapse all historical rows into a single line."""
+    value=str(text)
+    starts={m.start() for m in HISTORY_MARKER.finditer(value)}
+    return ''.join(('\n' if i in starts and i else '')+ch
+                   for i,ch in enumerate(value)).splitlines()
 
 
 def _period_marker(line,year):
@@ -428,7 +442,7 @@ def current_period_text(text,issue):
     current=True
     seen_marker=False
     output=[]
-    for line in str(text).splitlines():
+    for line in period_lines(text):
         marker=_period_marker(line,year)
         if marker:
             current=marker==issue
@@ -446,7 +460,7 @@ def previous_period_records(text,requested_issue,post):
     """
     if not text or post.get('issue')==requested_issue:return []
     if not post.get('detail_url') or not post.get('author'):return []
-    lines=str(text).splitlines()
+    lines=period_lines(text)
     year=str(requested_issue)[:4]
     seen=set(); records=[]
     for index,line in enumerate(lines):
