@@ -1,5 +1,5 @@
 """Independent append-only forum observation cycle. Never writes V7 files."""
-import argparse,hashlib,json,re
+import argparse,hashlib,json,re,shutil
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -54,7 +54,13 @@ def sync(out,archive,history,public_dir=None):
             'audit':status.get('audit',{}),'top3':status.get('top3',[]),
             'top6':status.get('top6',[]),'ranking':status.get('ranking',[]),
             'author_selection':status.get('author_selection',{}),
-            'parsed_predictions':status.get('parsed_predictions',[])})
+            'parsed_predictions':status.get('parsed_predictions',[]),
+            'pending_rule_questions':status.get('pending_rule_questions',[])})
+        atomic(folder/'pending-rule-questions.json',{'issue':issue,
+            'fetched_at':status['fetched_at'],
+            'questions':status.get('pending_rule_questions',[])})
+        report=out/issue/'report.md'
+        if report.exists():shutil.copyfile(report,folder/'report.md')
         if status['status']=='ready_observation' and len(status.get('ranking',[]))==12:
             # Immutable experimental snapshot, not a production model freeze.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}

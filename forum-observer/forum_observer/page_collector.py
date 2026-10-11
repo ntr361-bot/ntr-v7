@@ -740,6 +740,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     'Retrospective references in next-period posts are not pre-draw forecasts; ' 
                     'page top draw results are excluded from scoring. '
                     'Experimental evidence only; no verified live leaderboard.')}
+    from .questions import pending_questions
+    result['pending_rule_questions']=pending_questions(result)
+    result['pending_rule_question_count']=len(result['pending_rule_questions'])
     out.mkdir(parents=True,exist_ok=True)
     (out/'status.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return result
