@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
+from .comment_images import eligible_comment_image
 
 
 class _PostParser(HTMLParser):
@@ -72,7 +73,7 @@ def rendered_html(url: str, timeout: int = 60) -> str:
     return completed.stdout.decode('utf-8','replace')
 
 
-def _ocr_image(src: str) -> str:
+def _ocr_image(src: str, psm=None) -> str:
     """Best-effort OCR for public forum images; never turns OCR failure into data."""
     tesseract = shutil.which('tesseract')
     if not tesseract or not src or src.startswith('data:'):
@@ -80,7 +81,9 @@ def _ocr_image(src: str) -> str:
     try:
         import urllib.request
         image = urllib.request.urlopen(src, timeout=15).read()
-        completed = subprocess.run([tesseract, 'stdin', 'stdout', '-l', 'eng+chi_sim'],
+        command=[tesseract, 'stdin', 'stdout', '-l', 'eng+chi_sim']
+        if psm is not None:command+=['--psm',str(psm)]
+        completed = subprocess.run(command,
                                    input=image, capture_output=True, timeout=30, check=False)
         return completed.stdout.decode('utf-8','replace').strip() if completed.returncode == 0 else ''
     except Exception:
@@ -361,6 +364,21 @@ def extract_picks(text):
     return output
 
 
+def consistent_comment_ocr(first,second,issue):
+    """Both OCR layouts must independently yield the same valid current plays."""
+    def signature(text):
+        rows=extract_picks(current_period_text(text,issue))
+        accepted=[]
+        for row in rows:
+            if row.get('parse_error'):continue
+            try:vote_zodiacs(row['picks'],row['mode'],row['play'],row['excerpt'])
+            except ValueError:continue
+            accepted.append((row['play'],row['mode'],tuple(sorted(row['picks']))))
+        return sorted(set(accepted))
+    a=signature(first);b=signature(second)
+    return first if a and a==b else ''
+
+
 def prioritize_posts(items, favored):
     """Stable collection priority only; all eligible materials retain equal weight."""
     return sorted(items,key=lambda item:0 if item['author'] in favored else 1)
@@ -501,7 +519,7 @@ def score_posts(posts):
         replies=current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
         text=current_period_text(post['title'],post['issue'])+'\n'+body+'\n'+replies
         for pic in post.get('images',[]):
-            if '/article/' in pic['src']:
+            if '/article/' in pic['src'] or eligible_comment_image(pic,post):
                 text+='\n'+current_period_text(pic['ocr'],post['issue'])
         parsed=extract_picks(text)
         for p in parsed:
@@ -540,7 +558,7 @@ def unparsed_evidence(posts):
         text=current_period_text(post['body'],post['issue'])
         text+='\n'+current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
         for pic in post.get('images',[]):
-            if '/article/' in pic['src']:
+            if '/article/' in pic['src'] or eligible_comment_image(pic,post):
                 text+='\n'+current_period_text(pic.get('ocr',''),post['issue'])
         parsed_lines={p['excerpt'] for p in extract_picks(post['title']+'\n'+text)}
         found=False
@@ -565,7 +583,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     max_pages=max(1,min(int(policy.get('max_pages',30)),50))
     max_posts=max(1,min(int(policy.get('max_posts',150)),2000))
     feed_mode=policy.get('collection_mode')=='current_feed'
-    posts=[];errors=[];historical_references=[]
+    posts=[];errors=[];historical_references=[];comment_checks=[]
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
     out.mkdir(parents=True,exist_ok=True)
@@ -739,6 +757,27 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
                     checkpoint('detail_complete')
+            if feed_mode and policy.get('collect_comment_images',False):
+                from .comment_collector import collect_comments
+                explicit=[p for p in posts if re.search(r'评论区|评论.*(?:更新|资料)|(?:更新|资料).*评论',p['title']+'\n'+p['body'])]
+                for parent in explicit:
+                    if time.monotonic()>=deadline:
+                        truncated=True
+                        errors.append({'reason':'comment collection time budget exhausted'})
+                        break
+                    item=next(x for x in scoped if x['author']==parent['author'] and x['title']==parent['title'])
+                    if not _detail(page,url,item,target_category,max_pages,deadline):
+                        errors.append({'author':parent['author'],'title':parent['title'],'reason':'comment detail not verified'})
+                        continue
+                    seq=int(issue[-3:]);h,m=map(int,policy.get('verified_draw_time','21:32').split(':'))
+                    cutoff=(datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)).replace(hour=h,minute=m)
+                    children,check=collect_comments(page,dict(parent,draw_at=cutoff.isoformat()),deadline,policy)
+                    check.update(author=parent['author'],title=parent['title'],source_url=page.url)
+                    comment_checks.append(check)
+                    posts.extend(children)
+                    if check.get('truncated'):truncated=True
+                    parent['comments_coverage']='verified_comment_rows'
+                    parent['detail_url']=page.url
         finally:
             checkpoint('browser_closing')
             browser.close()
@@ -771,7 +810,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
             'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
-            'coverage_label':'主列表当期范围完整；评论/图片/作者页未展开' if feed_mode and not truncated else '部分覆盖','fetched_at':datetime.now(timezone.utc).isoformat(),
+            'comment_image_policy':'explicit_comment_posts' if policy.get('collect_comment_images') else 'not_expanded',
+            'comment_checks':comment_checks,
+            'comment_records':sum(p.get('evidence_scope')=='verified_comment' for p in posts),
+            'coverage_label':('主列表当期范围完整；已展开明确提示评论资料的帖子，其他评论/图片/作者页未展开' if policy.get('collect_comment_images') else '主列表当期范围完整；评论/图片/作者页未展开') if feed_mode and not truncated else '部分覆盖','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
             'history_scope':'target_issue_and_next_issue' if target_issue else 'not_requested',
@@ -801,6 +843,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'audit':{'listing_count':len(listing),'issue_listing_count':len(scoped),
                      'forum_scroll':feed_audit,
                      'profile_checks':profile_checks,
+                     'comment_checks':comment_checks,
                      'profile_errors':profile_errors,
                      'author_profiles_discovered':len(author_samples),
                      'author_profiles_checked':len(profile_checks),
@@ -818,7 +861,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'valid_prediction_authors':len(valid_authors),
                 'valid_materials':valid_materials,
                 'min_valid_materials':int(policy.get('min_valid_materials',25)),
-                'comments_collected':sum(bool(p['comments']) for p in posts),
+                'comments_collected':sum(bool(p['comments']) or p.get('evidence_scope')=='verified_comment' for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
             'note':('Forum feed and author pages are progressively scrolled to load cards. '
                     'Missing author profiles or incomplete scrolling are reported. '

@@ -36,6 +36,7 @@ jobs:
         run: |
           pip install playwright
           python -m playwright install --with-deps chromium
+          sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Test requested issue without archive or publication
