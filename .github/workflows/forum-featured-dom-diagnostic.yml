@@ -1,0 +1,56 @@
+name: Forum featured DOM diagnostic read-only
+on:
+  push:
+    branches: [fix/forum-featured-dom-and-text-20261012]
+    paths:
+      - ".github/workflows/forum-featured-dom-diagnostic.yml"
+permissions:
+  contents: read
+jobs:
+  badge-dom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Capture genuine featured-badge DOM without collecting or archiving
+        run: |
+          python - <<'PY'
+          import json,time
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as pw:
+            browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
+            try:
+              page=browser.new_page(viewport={'width':1280,'height':1800})
+              page.goto('https://x5k1pok.11852.com:8443/#/forum',wait_until='domcontentloaded',timeout=60000)
+              page.get_by_role('tab',name='澳彩',exact=True).click(timeout=20000)
+              page.get_by_text('最新',exact=True).click(timeout=20000)
+              page.wait_for_timeout(1200)
+              rows=page.locator('.forum-list > li').evaluate_all("""cards=>cards.map(li=>{
+                const get=sel=>li.querySelector(sel)?.innerText?.trim()||'';
+                const issue=li.querySelector('.slabel');
+                const leaves=[...li.querySelectorAll('*')].filter(e=>
+                  e.children.length===0 && (e.textContent||'').trim()==='精');
+                return {author:get('.name'), title:get('.formtitle'), issue:get('.slabel'),
+                  badge_leaves:leaves.map(e=>({html:e.outerHTML.slice(0,700),
+                    parent:e.parentElement?.outerHTML.slice(0,1600),
+                    path:e.parentElement?.className||'',
+                    parent_text:e.parentElement?.innerText.slice(0,140)})),
+                  header_html:issue?.parentElement?.parentElement?.outerHTML.slice(0,3000),
+                  card_head:li.outerHTML.slice(0,2600)};
+              })""")
+              samples=[r for r in rows if r['badge_leaves'] or r['author'] in ('贝贝丹丹','半场开香槟','叶落归根')]
+              print(json.dumps({'visible_cards':len(rows),'matched':samples[:14]},ensure_ascii=False,indent=2))
+            finally:
+              browser.close()
+          PY
