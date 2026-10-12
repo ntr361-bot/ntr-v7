@@ -1,0 +1,107 @@
+name: Forum live capability probe (read-only, no freeze)
+on:
+  push:
+    branches:
+      - test/forum-live-probe-20261012
+    paths:
+      - ".github/workflows/forum-live-probe-test.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: forum-live-capability-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser and image recognition
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
+      - name: Verify parser rules
+        run: python -m unittest discover -s tests -v
+      - name: Prepare independent read-only test config
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          cfg=json.loads(pathlib.Path('collector-config.json').read_text(encoding='utf-8'))
+          cfg['freeze_enabled']=False
+          cfg['issue']=None
+          cfg['collection_mode']='current_feed'
+          cfg['image_queue_state']=os.path.join(os.environ['RUNNER_TEMP'],'forum-probe-ocr-queue.json')
+          cfg['image_cache_dir']=os.path.join(os.environ['RUNNER_TEMP'],'forum-probe-ocr-cache')
+          pathlib.Path('probe-config.json').write_text(json.dumps(cfg,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('TEST MODE ONLY: no archive, no cycle, no main push, no freeze, no settlement, no ledger writes')
+          PY
+      - name: Collect latest live forum issue (test-only)
+        id: collect
+        timeout-minutes: 24
+        continue-on-error: true
+        run: python -u -m forum_observer.auto --config probe-config.json --out probe-out
+      - name: Summarize coverage and assert no freeze
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          out=pathlib.Path('probe-out')
+          status=out/'status.json'
+          failure=out/'collection-error.json'
+          summary={'test_only':True,'freeze_disabled':True,
+                   'archival_publication':False,'ledger_sync':False,
+                   'collector_exit_outcome':'${{ steps.collect.outcome }}'}
+          if status.exists():
+              d=json.loads(status.read_text(encoding='utf-8'))
+              audit=d.get('audit') or {}
+              profiles=audit.get('profile_checks') or []
+              comments=audit.get('comment_checks') or []
+              summary.update({key:d.get(key) for key in
+                  ('issue','status','raw_count','valid_materials','distinct_valid_authors',
+                   'candidate_materials','excluded_materials','pending_rule_question_count',
+                   'top3','top6','collection_status','comment_candidate_threads',
+                   'comment_checked_threads','comment_unchecked_threads',
+                   'article_image_audit','fetched_at')})
+              summary['author_profiles_checked']=d.get('author_profiles_checked',len(profiles))
+              summary['comments_checked']=len(comments)
+              summary['comment_images_seen']=sum(int(x.get('images_seen',0)) for x in comments)
+              summary['comment_images_accepted']=sum(
+                  int((x.get('image_status_counts') or {}).get('recognized_consistent',0))
+                  for x in comments)
+              summary['comment_image_status_counts']={}
+              for c in comments:
+                  for k,v in (c.get('image_status_counts') or {}).items():
+                      summary['comment_image_status_counts'][k]=summary['comment_image_status_counts'].get(k,0)+v
+              summary['collector_stage']=d.get('stage','complete')
+              summary['errors']=d.get('rejected',[])[:12]
+          if failure.exists():summary['collector_exception']=json.loads(failure.read_text(encoding='utf-8'))
+          freezes=list(out.rglob('freeze.json'))+list(out.rglob('snapshot.json'))
+          summary['unexpected_freeze_files']=[str(x) for x in freezes]
+          pathlib.Path('probe-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          if freezes:raise SystemExit('Safety failure: test generated a freeze/snapshot')
+          PY
+      - name: Upload test report only (never publish)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-live-capability-probe
+          path: |
+            forum-observer/probe-out/
+            forum-observer/probe-summary.json
+          retention-days: 7
+          if-no-files-found: warn
