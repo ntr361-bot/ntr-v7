@@ -24,13 +24,13 @@ def _actionable_unparsed(excerpt, post):
                                   '小龙女'):
         return False
     # Copied ranking decorations and bare one-zodiac lists are not new rules.
-    if re.fullmatch(r'[-—\\s]*[' + ''.join(ZODIACS) + r']', excerpt):
+    if re.fullmatch(r'[-—\s]*[' + ''.join(ZODIACS) + r']', excerpt):
         return False
     # Only meaningful rule-bearing text belongs in the user clarification queue.
     return bool(re.search(
         r'前肖|后肖|家禽|家畜|野兽|家野|尽中尽|固定杀肖|混合杀肖|'
-        r'杀肖次数|[零一二三四五六七八九十\\d]+次|'
-        r'[一二三四五六七八九十\\d]{1,2}肖|红肖|蓝肖|生肖|特码',
+        r'杀肖次数|[零一二三四五六七八九十\d]+次|'
+        r'[一二三四五六七八九十\d]{1,2}肖|红肖|蓝肖|生肖|特码',
         excerpt
     ) or len(set(c for c in excerpt if c in ZODIACS)) >= 6)
 
