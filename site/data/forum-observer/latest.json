@@ -4,36 +4,49 @@
   "classification": "experimental_unverified_leaderboard",
   "issue": "2026285",
   "collection_status": "incomplete_observation",
-  "raw_count": 391,
-  "valid_materials": 15,
-  "pending_rule_question_count": 371,
-  "article_image_audit": {
-    "images_seen": 0,
-    "unique_images": 0,
-    "recognized_consistent": 0,
-    "image_status_counts": {},
-    "image_limit_reached": false
-  },
-  "updated_at": "2026-10-12T00:51:02.311529+00:00",
-  "distinct_prediction_authors": 9,
+  "raw_count": 175,
+  "valid_materials": 10,
+  "pending_rule_question_count": 10,
+  "article_image_audit": {},
+  "updated_at": "2026-10-12T13:10:46.804600+00:00",
+  "distinct_prediction_authors": 5,
   "preview_top3": [
-    "蛇",
-    "马",
-    "鼠"
-  ],
-  "preview_top6": [
-    "蛇",
-    "马",
     "鼠",
     "兔",
-    "猪",
-    "龙"
+    "马"
   ],
-  "frozen": false,
-  "prediction_top3": [],
-  "prediction_top6": [],
-  "snapshot_digest": null,
+  "preview_top6": [
+    "鼠",
+    "兔",
+    "马",
+    "狗",
+    "蛇",
+    "猪"
+  ],
+  "frozen": true,
+  "prediction_top3": [
+    "鼠",
+    "兔",
+    "马"
+  ],
+  "prediction_top6": [
+    "鼠",
+    "兔",
+    "马",
+    "狗",
+    "蛇",
+    "猪"
+  ],
+  "snapshot_digest": "542c2e0e847215385cb165de521f251a26e8a897017ca1581f3043e4659ab9b8",
   "settlement": null,
   "settled_count": 0,
-  "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
+  "note": "人工授权例外冻结：有效资料10份、5位作者，未达到默认25份门槛；评论覆盖不完整。",
+  "publication_exception": {
+    "authorized_at": "2026-10-12T21:17:59+08:00",
+    "reason": "User explicitly authorized freezing and publishing this 10-material rescue",
+    "default_minimum": 25,
+    "actual_valid_materials": 10,
+    "original_collection_status": "incomplete_observation",
+    "collector_run_id": 38252041816
+  }
 }
