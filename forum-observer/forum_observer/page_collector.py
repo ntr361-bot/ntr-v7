@@ -147,7 +147,14 @@ def _listing(page,category):
     rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
         const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
         const kinds = li.querySelectorAll('.ntool .num');
-        return {author:value('.name'), issue:value('.slabel'),
+        // Only the separate orange "精" badge beside the issue; never post text.
+        const periodBadge = li.querySelector('.slabel');
+        const badgeRow = periodBadge?.parentElement;
+        const isFeatured = !!badgeRow && [...badgeRow.querySelectorAll('*')].some(el =>
+            el !== periodBadge && !periodBadge.contains(el) &&
+            el.children.length === 0 && (el.textContent || '').trim() === '精' &&
+            !el.closest('.formtitle, .text, .name, .comment-item, .user-info'));
+        return {author:value('.name'), issue:value('.slabel'), is_featured:isFeatured,
             published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
             category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
             image_urls:[...li.querySelectorAll('.text img')].map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
@@ -202,17 +209,23 @@ def feed_card_post(item, forum_url, now=None):
 
 
 def _detail(page,url,item,category,max_pages,deadline=None):
+    if deadline is not None and time.monotonic() >= deadline:return False
+    def remaining_ms(default):
+        return default if deadline is None else max(1,min(default,int((deadline-time.monotonic())*1000)))
+    def wait_detail():
+        seconds=8 if deadline is None else min(8,max(0,deadline-time.monotonic()))
+        return _wait_detail(page,item,timeout_seconds=seconds)
     # A profile's history card may have no href in this SPA.
     if item.get('profile_url') and not item.get('href'):
         if not open_profile_post(page,item,_issue,max_steps=max_pages):
             return False
-        return _wait_detail(page,item,timeout_seconds=8)
+        return wait_detail()
     # Never reuse an index across pages or after reloading the list.
     if item.get('href') and 'corpusdetail' in item['href']:
-        page.goto(item['href'],wait_until='domcontentloaded',timeout=45000)
-        return _wait_detail(page,item,timeout_seconds=8)
-    page.goto(url,wait_until='domcontentloaded',timeout=45000)
-    page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=15000)
+        page.goto(item['href'],wait_until='domcontentloaded',timeout=remaining_ms(45000))
+        return wait_detail()
+    page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(45000))
+    page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=remaining_ms(15000))
     page.get_by_role('tab',name='澳彩',exact=True).click()
     page.get_by_text('最新',exact=True).click()
     page.wait_for_timeout(800)
@@ -236,7 +249,7 @@ def _detail(page,url,item,category,max_pages,deadline=None):
                 }
                 return false;
             }""", {'author':item['author'],'title':item['title'],'issue':item['issue']})
-            if opened and _wait_detail(page,item,timeout_seconds=8):
+            if opened and wait_detail():
                 return True
         current={x['key'] for x in visible}
         # This SPA uses a nested scroll container; window.scrollTo leaves
@@ -384,8 +397,9 @@ def consistent_comment_ocr(first,second,issue):
 
 
 def prioritize_posts(items, favored):
-    """Stable collection priority only; all eligible materials retain equal weight."""
-    return sorted(items,key=lambda item:0 if item['author'] in favored else 1)
+    """Featured first; every accepted evidence row still has the same vote weight."""
+    return sorted(items,key=lambda item:(
+        item.get('is_featured') is not True, item['author'] not in favored))
 
 
 def _author_comments(text, author):
@@ -591,7 +605,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     max_posts=max(1,min(int(policy.get('max_posts',150)),2000))
     feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[];comment_checks=[]
-    comment_targets=[];comment_target_total=0;profile_budget_exhausted=False
+    comment_targets=[];comment_target_total=0;comment_attempted=0;profile_budget_exhausted=False
     article_image_audit={}
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
@@ -788,16 +802,20 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                         truncated=True
                         errors.append({'reason':'comment collection time budget exhausted; threads remain'})
                         break
+                    comment_attempted+=1
+                    post_deadline=min(deadline-45,time.monotonic()+
+                        max(10,min(120,int(policy.get('max_post_seconds',75)))))
                     try:
-                        if not _detail(page,url,item,target_category,max_pages,deadline):
+                        if not _detail(page,url,item,target_category,max_pages,post_deadline):
                             errors.append({'author':parent['author'],'title':parent['title'],
                                            'reason':'comment detail not verified'})
                             continue
                         seq=int(issue[-3:]);h,m=map(int,policy.get('verified_draw_time','21:32').split(':'))
                         cutoff=(datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)).replace(hour=h,minute=m)
-                        thread_deadline=min(deadline-45,time.monotonic()+max(10,min(60,int(policy.get('comment_scan_seconds',25)))))
+                        thread_deadline=min(post_deadline,time.monotonic()+max(10,min(60,int(policy.get('comment_scan_seconds',25)))))
                         children,check=collect_comments(page,dict(parent,draw_at=cutoff.isoformat()),thread_deadline,policy)
-                        check.update(author=parent['author'],title=parent['title'],source_url=page.url)
+                        check.update(author=parent['author'],title=parent['title'],source_url=page.url,
+                                     is_featured=parent.get('is_featured') is True)
                         comment_checks.append(check)
                         posts.extend(children)
                         if check.get('truncated'):truncated=True
