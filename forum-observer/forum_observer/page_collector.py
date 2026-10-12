@@ -620,6 +620,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[];comment_checks=[]
     comment_targets=[];comment_target_total=0;comment_attempted=0;profile_budget_exhausted=False
+    comment_retry_attempts=0;thread_states={};completed_thread_cache={}
     article_image_audit={}
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
@@ -678,6 +679,15 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 stop_predicate=(lambda items:current_feed_boundary(items,target_issue)) if feed_mode else None)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
+            # Cache only completed verified threads from this same period/version.
+            cache_path=out.parent/'archive'/'issues'/issue/'completed-threads.json'
+            if feed_mode and cache_path.exists():
+                try:
+                    prior=json.loads(cache_path.read_text(encoding='utf-8'))
+                    if prior.get('issue')==issue and prior.get('rule_version')==SCORING_RULE_VERSION:
+                        completed_thread_cache=dict(prior.get('threads',{}))
+                except (OSError, ValueError, TypeError):
+                    completed_thread_cache={}
             checkpoint('listing_complete')
             # Author profile history is the primary source for past issues.
             # Discover only profiles we can really open from on-screen author
@@ -812,17 +822,39 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 # Reply authors can publish image predictions on any thread.
                 comment_targets,comment_target_total=choose_comment_threads(posts,scoped,policy)
                 for parent,item in comment_targets:
+                    thread_id=parent['evidence_id']
+                    cached=completed_thread_cache.get(thread_id)
+                    if cached and cached.get('state')=='checked' and cached.get('parent',{}).get('issue')==issue:
+                        parent.update(cached['parent'])
+                        posts.extend(cached.get('children',[]))
+                        comment_checks.append(dict(cached.get('audit',{}),reused_from_archive=True))
+                        thread_states[thread_id]={'status':'checked','author':parent['author'],
+                                                 'title':parent['title'],'attempts':0,'reused':True}
+                        continue
+                    thread_states[thread_id]={'status':'queued','author':parent['author'],
+                                             'title':parent['title'],'attempts':0}
                     if time.monotonic()>=deadline-45:
                         truncated=True
                         errors.append({'reason':'comment collection time budget exhausted; threads remain'})
                         break
                     comment_attempted+=1
+                    thread_states[thread_id]['attempts']=1
                     post_deadline=min(deadline-45,time.monotonic()+
                         max(10,min(120,int(policy.get('max_post_seconds',75)))))
                     try:
-                        if not _detail(page,url,item,target_category,max_pages,post_deadline):
+                        opened=_detail(page,url,item,target_category,max_pages,post_deadline)
+                        if not opened and time.monotonic()<post_deadline-10:
+                            comment_retry_attempts+=1
+                            thread_states[thread_id]['attempts']=2
+                            opened=_detail(page,url,item,target_category,max_pages,post_deadline)
+                        if not opened:
+                            expired=time.monotonic()>=post_deadline-10
+                            thread_states[thread_id].update(
+                                status='timeout' if expired else 'failed',
+                                reason='comment detail not verified')
                             errors.append({'author':parent['author'],'title':parent['title'],
                                            'reason':'comment detail not verified'})
+                            if expired:truncated=True
                             continue
                         # Read full same-author article text, not just the feed-card excerpt.
                         # It shares the per-post budget with the comment scan.
@@ -836,14 +868,37 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                         children,check=collect_comments(page,dict(parent,draw_at=cutoff.isoformat()),thread_deadline,policy)
                         check.update(author=parent['author'],title=parent['title'],source_url=page.url,
                                      is_featured=parent.get('is_featured') is True)
+                        # No valid current-period play means the author may still
+                        # publish later; do not mark that thread completed.
+                        _,votes_in_thread=score_posts([parent,*children])
+                        playable=any(v['counted_for_ranking'] for v in votes_in_thread)
+                        state=('timeout' if check.get('truncated') else
+                               'checked' if playable else 'pending_publish')
+                        thread_states[thread_id].update(
+                            status=state,
+                            reason='no verified current-issue play' if state=='pending_publish'
+                            else 'incomplete dynamic comment scan' if state=='timeout' else '')
+                        check['thread_state']=state
                         comment_checks.append(check)
                         posts.extend(children)
                         if check.get('truncated'):truncated=True
-                        parent['comments_coverage']='verified_comment_rows'
+                        parent['comments_coverage']='partial_comment_rows' if state=='timeout' else 'verified_comment_rows'
                         parent['detail_url']=page.url
+                        if state=='checked':
+                            completed_thread_cache[thread_id]={
+                                'state':'checked','parent':dict(parent),
+                                'children':children,'audit':check}
                     except Exception as exc:
+                        expired=time.monotonic()>=post_deadline-10
+                        thread_states[thread_id].update(
+                            status='timeout' if expired else 'failed',reason=str(exc)[:210])
+                        if expired:truncated=True
                         errors.append({'author':parent['author'],'title':parent['title'],
                                        'reason':'comment collection: '+str(exc)[:210]})
+                for parent,item in comment_targets:
+                    thread_states.setdefault(parent['evidence_id'],{
+                        'status':'queued','author':parent['author'],
+                        'title':parent['title'],'attempts':0})
         finally:
             checkpoint('browser_closing')
             browser.close()
@@ -871,7 +926,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     hour,minute=map(int,policy.get('verified_draw_time','21:32').split(':'))
     draw_at=draw_day.replace(hour=hour,minute=minute)
     pre_draw=datetime.now(LOCAL_TZ)<draw_at
-    ready=enough and bool(ranking) and not errors and not truncated and not profile_incomplete and pre_draw
+    # Only a bounded sample is required, not exhaustive browsing of hundreds
+    # of forum threads. Partial coverage remains explicit in the audit.
+    ready=enough and bool(ranking) and pre_draw and (
+        feed_mode or (not errors and not truncated and not profile_incomplete))
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'collection_priority':'featured_then_reply_hint_then_direct_link_then_favored_author',
             'source_url':url,'collector':'rendered-dom',
@@ -926,8 +984,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'article_image_audit':article_image_audit,
                      'comment_candidate_threads':comment_target_total,
                      'comment_attempted_threads':comment_attempted,
-                     'comment_checked_threads':len(comment_checks),
-                     'comment_completed_threads':sum(not c.get('truncated',False) for c in comment_checks),
+                     'comment_checked_threads':sum(x['status']=='checked' for x in thread_states.values()),
+             'comment_thread_states':thread_states,
+             'comment_thread_state_counts':dict(Counter(x['status'] for x in thread_states.values())),
+             'comment_retry_attempts':comment_retry_attempts,
+             'completed_thread_cache':completed_thread_cache,
+                     'comment_completed_threads':sum(x['status']=='checked' for x in thread_states.values()),
                      'featured_found_threads':sum(p.get('is_featured') is True for p in scoped),
                      'featured_selected_threads':sum(p.get('is_featured') is True for p,_ in comment_targets),
                      'featured_checked_threads':sum(c.get('is_featured') is True for c in comment_checks),
