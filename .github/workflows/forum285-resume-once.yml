@@ -1,0 +1,108 @@
+name: Forum 285 unfinished-text continuation (read-only)
+on:
+  push:
+    branches:
+      - test/forum285-resume-unfinished-20261012
+    paths:
+      - ".github/workflows/forum285-resume-once.yml"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  continue-unfinished-285:
+    runs-on: ubuntu-latest
+    timeout-minutes: 44
+    defaults:
+      run:
+        working-directory: forum-observer
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser and collector
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Compile and run tests, including resume safety
+        run: |
+          python -m compileall -q forum_observer tests
+          python -m unittest discover -s tests -v
+      - name: Read previous completed test artifacts
+        run: |
+          gh run download 38201187201 --repo "${{ github.repository }}" --name forum-live-text-probe-no-freeze --dir prior-first
+          gh run download 38206524174 --repo "${{ github.repository }}" --name forum-text-retest-no-freeze --dir prior-second
+          test -s prior-first/live-probe/status.json
+          test -s prior-second/retest-out/status.json
+      - name: Build exact 285 resume manifest
+        run: |
+          python -m forum_observer.resume_retest prepare \
+            --first prior-first/live-probe/status.json \
+            --second prior-second/retest-out/status.json \
+            --config collector-config.json \
+            --out resume-config.json
+      - name: Collect only previously unchecked 285 threads
+        timeout-minutes: 33
+        shell: bash
+        run: |
+          set +e
+          python -u -m forum_observer.auto --config resume-config.json --out continuation-out
+          code=$?
+          echo "$code" > continuation-exit.txt
+          echo "collector_exit_code=$code"
+          exit 0
+      - name: Re-score combined evidence using current code
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -s prior-first/live-probe/status.json ] || [ ! -s prior-second/retest-out/status.json ]; then
+            echo 'Prior test artifacts missing, refusing to invent merged results'
+            exit 2
+          fi
+          if [ ! -s continuation-out/status.json ]; then
+            echo 'No complete collector status, refusing to claim merged results'
+            cat continuation-out/collection-error.json 2>/dev/null || true
+            exit 2
+          fi
+          python -m forum_observer.resume_retest merge \
+            --first prior-first/live-probe/status.json \
+            --second prior-second/retest-out/status.json \
+            --new continuation-out/status.json \
+            --out combined-result
+      - name: Verify no frozen or tracked outputs were changed
+        if: always()
+        run: |
+          if find continuation-out combined-result -type f \( -name "snapshot.json" -o -name "freeze.json" -o -name "settlement.json" \) 2>/dev/null | grep -q .; then
+            echo "Unsafe archive/frozen output found"; exit 3
+          fi
+          git -C .. diff --exit-code
+          git -C .. diff --cached --exit-code
+      - name: Upload raw continuation and merged 285 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum285-resumed-and-merged-no-freeze
+          path: |
+            forum-observer/continuation-out/
+            forum-observer/continuation-exit.txt
+            forum-observer/resume-config.json
+            forum-observer/combined-result/
+          if-no-files-found: warn
+      - name: Mark incomplete scan without hiding test evidence
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('combined-result/merged-285-summary.json')
+          if not p.exists():
+            raise SystemExit('No verifiable merged report was produced')
+          report=json.loads(p.read_text(encoding='utf-8'))
+          if report['collection_status']!='ready_observation':
+            print('INCOMPLETE collection; merged sample only, not formal forecast')
+            raise SystemExit(2)
+          PY
