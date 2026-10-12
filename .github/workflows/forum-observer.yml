@@ -49,7 +49,7 @@ jobs:
       - name: Observe current issue
         id: observe
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 35
         run: python -u -m forum_observer.auto --config collector-config.json --out out
       - uses: actions/cache/save@v4
         if: always()

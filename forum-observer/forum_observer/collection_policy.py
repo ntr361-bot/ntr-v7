@@ -45,10 +45,10 @@ def choose_comment_threads(posts, scoped, policy):
         title_body = str(post.get("title", "")) + "\n" + str(post.get("body", ""))
         hint = bool(_COMMENT_HINT.search(title_body))
         direct = "corpusdetail" in (item.get("href") or "")
-        candidates.append((post, item, hint, direct, post.get("author") in favored))
-    # Threads explicitly mentioning replies first; then verifiable direct
-    # links; then historically preferred authors. Keep the original DOM order
-    # when these attributes tie.
-    candidates.sort(key=lambda row: (not row[2], not row[3], not row[4]))
-    limit = max(1, min(80, int(policy.get("max_comment_threads", 30))))
+        featured = post.get("is_featured") is True and item.get("is_featured") is True
+        candidates.append((post, item, featured, hint, direct, post.get("author") in favored))
+    # "精" is an actual card badge, not a title keyword or proof of accuracy.
+    # Remaining order: explicit reply hint, direct URL, favored author, DOM order.
+    candidates.sort(key=lambda row: (not row[2], not row[3], not row[4], not row[5]))
+    limit = max(1, min(200, int(policy.get("max_comment_threads", 30))))
     return [(p, item) for p, item, *_ in candidates[:limit]], len(candidates)

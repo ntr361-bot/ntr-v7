@@ -36,16 +36,17 @@
   "max_profile_authors": 30,
   "profile_scroll_steps": 12,
   "profile_history_mode": "target_issue_only",
-  "max_collection_seconds": 600,
+  "max_collection_seconds": 1800,
   "collection_mode": "current_feed",
   "verified_draw_time": "21:32",
   "daily_profile_authors": 4,
-  "max_comment_threads": 30,
-  "comment_scan_seconds": 25,
+  "max_comment_threads": 120,
+  "comment_scan_seconds": 35,
   "max_comment_scroll_steps": 30,
   "min_comment_reserve_seconds": 180,
   "collect_article_images": true,
   "max_feed_images": 40,
   "image_workers": 3,
-  "min_valid_authors": 5
+  "min_valid_authors": 5,
+  "max_post_seconds": 75
 }

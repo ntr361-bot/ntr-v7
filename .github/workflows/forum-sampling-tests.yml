@@ -1,0 +1,31 @@
+name: Verify Forum Sampling (no collection)
+on:
+  pull_request:
+    paths:
+      - "forum-observer/forum_observer/**"
+      - "forum-observer/tests/**"
+      - "forum-observer/collector-config.json"
+      - ".github/workflows/forum-sampling-tests.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sampling-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install unit-test dependencies
+        run: pip install playwright pillow
+      - name: Compile forum Python only
+        run: python -m compileall -q forum_observer tests
+      - name: Run isolated unit tests (no live scraping)
+        run: python -m unittest discover -s tests -v

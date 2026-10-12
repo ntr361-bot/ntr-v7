@@ -34,6 +34,29 @@ class DailyCollectionPolicyTests(unittest.TestCase):
         self.assertEqual([post["author"] for post, _ in selected], ["乙", "丙", "丁"])
         self.assertTrue(all(item["issue"] == post["issue"] for post, item in selected))
 
+    def test_featured_marker_beats_comment_hint_and_author_priority(self):
+        scoped = [
+            dict(author='普通', issue='2026285', title='评论区更新', href=''),
+            dict(author='重点', issue='2026285', title='普通帖', href=''),
+            dict(author='精选', issue='2026285', title='普通帖', href='', is_featured=True),
+            dict(author='误报', issue='2026285', title='精华预测', href='', is_featured=False),
+        ]
+        posts = [dict(row, evidence_scope='current_feed_card', body='')
+                 for row in scoped]
+        chosen, total = choose_comment_threads(posts, scoped, {
+            'max_comment_threads': 3, 'top_authors': ['重点']})
+        self.assertEqual(total, 4)
+        self.assertEqual([post['author'] for post, _ in chosen],
+                         ['精选', '普通', '重点'])
+
+    def test_featured_only_if_listing_card_confirms_it(self):
+        scoped = [dict(author='甲', issue='2026285', title='标题', is_featured=False)]
+        posts = [dict(scoped[0], evidence_scope='current_feed_card', is_featured=True)]
+        chosen, total = choose_comment_threads(posts, scoped, {})
+        self.assertEqual(total, 1)
+        self.assertEqual(len(chosen), 1)
+        self.assertFalse(chosen[0][1]['is_featured'])
+
     def test_comment_posts_and_unverified_source_cards_are_excluded(self):
         scoped = [dict(author="甲", issue="2026285", title="当期", href="")]
         posts = [
