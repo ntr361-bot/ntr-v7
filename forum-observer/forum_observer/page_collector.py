@@ -13,6 +13,7 @@ from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 from .comment_images import eligible_comment_image
+from .collection_policy import choose_profile_samples, choose_comment_threads
 
 
 class _PostParser(HTMLParser):
@@ -588,6 +589,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     max_posts=max(1,min(int(policy.get('max_posts',150)),2000))
     feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[];comment_checks=[]
+    comment_targets=[];comment_target_total=0;profile_budget_exhausted=False
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
     out.mkdir(parents=True,exist_ok=True)
@@ -657,16 +659,22 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             favored=set(policy.get('top_authors',[]))
             author_order=sorted(author_samples.values(),key=lambda x:(
                 0 if x['issue']==issue else 1,
+                0 if (feed_mode and 'corpusdetail' in (x.get('href') or '')) else 1 if feed_mode else 0,
                 0 if x['author'] in favored else 1,
-                x['author']))
+                '' if feed_mode else x['author']))
             author_limit=max(1,min(60,int(policy.get('max_profile_authors',30))))
             profile_steps=max(1,min(80,int(policy.get('profile_scroll_steps',32))))
             profile_posts=[];profile_checks=[];profile_errors=[]
             # Daily operation only needs CURRENT posts from the live forum.
             # An explicit historical audit (e.g. 281) opens author histories,
             # and only as far back as that issue. Never sweep all past issues.
-            profile_samples=author_order[:author_limit] if target_issue and not feed_mode else []
+            profile_samples=choose_profile_samples(author_order,target_issue,feed_mode,policy)
             for sample in profile_samples:
+                # Author discovery is bounded: leave room for verified reply
+                # authors and their images before the collection deadline.
+                if feed_mode and time.monotonic()>=deadline-max(180,int(policy.get('min_comment_reserve_seconds',180))):
+                    profile_budget_exhausted=True
+                    break
                 if time.monotonic()>=deadline:
                     profile_errors.append({'reason':'collection time budget exhausted'})
                     break
@@ -761,27 +769,34 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
                     checkpoint('detail_complete')
-            if feed_mode and policy.get('collect_comment_images',False):
+            if feed_mode and policy.get('collect_comments',False):
                 from .comment_collector import collect_comments
-                explicit=[p for p in posts if re.search(r'评论区|评论.*(?:更新|资料)|(?:更新|资料).*评论',p['title']+'\n'+p['body'])]
-                for parent in explicit:
-                    if time.monotonic()>=deadline:
+                # Do not depend on the thread title saying "see comments".
+                # Reply authors can publish image predictions on any thread.
+                comment_targets,comment_target_total=choose_comment_threads(posts,scoped,policy)
+                for parent,item in comment_targets:
+                    if time.monotonic()>=deadline-45:
                         truncated=True
-                        errors.append({'reason':'comment collection time budget exhausted'})
+                        errors.append({'reason':'comment collection time budget exhausted; threads remain'})
                         break
-                    item=next(x for x in scoped if x['author']==parent['author'] and x['title']==parent['title'])
-                    if not _detail(page,url,item,target_category,max_pages,deadline):
-                        errors.append({'author':parent['author'],'title':parent['title'],'reason':'comment detail not verified'})
-                        continue
-                    seq=int(issue[-3:]);h,m=map(int,policy.get('verified_draw_time','21:32').split(':'))
-                    cutoff=(datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)).replace(hour=h,minute=m)
-                    children,check=collect_comments(page,dict(parent,draw_at=cutoff.isoformat()),deadline,policy)
-                    check.update(author=parent['author'],title=parent['title'],source_url=page.url)
-                    comment_checks.append(check)
-                    posts.extend(children)
-                    if check.get('truncated'):truncated=True
-                    parent['comments_coverage']='verified_comment_rows'
-                    parent['detail_url']=page.url
+                    try:
+                        if not _detail(page,url,item,target_category,max_pages,deadline):
+                            errors.append({'author':parent['author'],'title':parent['title'],
+                                           'reason':'comment detail not verified'})
+                            continue
+                        seq=int(issue[-3:]);h,m=map(int,policy.get('verified_draw_time','21:32').split(':'))
+                        cutoff=(datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)).replace(hour=h,minute=m)
+                        thread_deadline=min(deadline-45,time.monotonic()+max(10,min(60,int(policy.get('comment_scan_seconds',25)))))
+                        children,check=collect_comments(page,dict(parent,draw_at=cutoff.isoformat()),thread_deadline,policy)
+                        check.update(author=parent['author'],title=parent['title'],source_url=page.url)
+                        comment_checks.append(check)
+                        posts.extend(children)
+                        if check.get('truncated'):truncated=True
+                        parent['comments_coverage']='verified_comment_rows'
+                        parent['detail_url']=page.url
+                    except Exception as exc:
+                        errors.append({'author':parent['author'],'title':parent['title'],
+                                       'reason':'comment collection: '+str(exc)[:210]})
         finally:
             checkpoint('browser_closing')
             browser.close()
@@ -814,12 +829,17 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
             'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
-            'comment_image_policy':'explicit_comment_posts' if policy.get('collect_comment_images') else 'not_expanded',
+            'comment_image_policy':'prioritized_current_issue_threads' if policy.get('collect_comments') else 'not_expanded',
             'comment_checks':comment_checks,
             'comment_records':sum(p.get('evidence_scope')=='verified_comment' for p in posts),
-            'coverage_label':('主列表当期范围完整；已展开明确提示评论资料的帖子，其他评论/图片/作者页未展开' if policy.get('collect_comment_images') else '主列表当期范围完整；评论/图片/作者页未展开') if feed_mode and not truncated else '部分覆盖','fetched_at':datetime.now(timezone.utc).isoformat(),
+            'coverage_label':('当期列表、限额作者主页和优先评论帖：抽样检查，非全覆盖' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
+            'author_profile_budget_exhausted':profile_budget_exhausted,
+            'comment_candidate_threads':comment_target_total,
+            'comment_selected_threads':len(comment_targets),
+            'comment_checked_threads':len(comment_checks),
+            'comment_unchecked_threads':max(0,comment_target_total-len(comment_checks)),
             'history_scope':'target_issue_and_next_issue' if target_issue else 'not_requested',
             'all_author_history_scraped':False,
             'author_profiles_found':sum(1 for x in profile_checks if not x.get('error')),
@@ -848,6 +868,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'forum_scroll':feed_audit,
                      'profile_checks':profile_checks,
                      'comment_checks':comment_checks,
+                     'comment_candidate_threads':comment_target_total,
+                     'comment_checked_threads':len(comment_checks),
+                     'profile_budget_exhausted':profile_budget_exhausted,
                      'profile_errors':profile_errors,
                      'author_profiles_discovered':len(author_samples),
                      'author_profiles_checked':len(profile_checks),
