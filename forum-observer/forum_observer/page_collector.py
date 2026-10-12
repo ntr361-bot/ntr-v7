@@ -147,13 +147,10 @@ def _listing(page,category):
     rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
         const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
         const kinds = li.querySelectorAll('.ntool .num');
-        // Only the separate orange "精" badge beside the issue; never post text.
-        const periodBadge = li.querySelector('.slabel');
-        const badgeRow = periodBadge?.parentElement;
-        const isFeatured = !!badgeRow && [...badgeRow.querySelectorAll('*')].some(el =>
-            el !== periodBadge && !periodBadge.contains(el) &&
-            el.children.length === 0 && (el.textContent || '').trim() === '精' &&
-            !el.closest('.formtitle, .text, .name, .comment-item, .user-info'));
+        // Verified from the live forum: the orange "精" glyph is a small
+        // data-URI PNG under .title .van19 .up, NOT a text node.
+        // Limit the selector to the title badge; exclude author/body images.
+        const isFeatured = !!li.querySelector('.title .van19 > span.up > img.icon');
         return {author:value('.name'), issue:value('.slabel'), is_featured:isFeatured,
             published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
             category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
