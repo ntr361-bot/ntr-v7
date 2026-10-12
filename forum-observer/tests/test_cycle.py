@@ -23,6 +23,35 @@ class CycleTests(unittest.TestCase):
         self.assertEqual(p[0]['mode'],'include')
         self.assertEqual(p[1]['mode'],'exclude')
         self.assertEqual(extract_picks('鸡、马、龙随便一说'),[])
+    def test_explicit_nine_zodiac_win_and_draw_placeholder(self):
+        examples=[
+            ('285期:九肖中特【龙兔羊鼠牛鸡虎猴蛇】开:？00准',9),
+            ('285期:↑六肖中特↓【鼠虎龙兔羊猪】开:？00准',6),
+            ('285期六肖【龙兔鼠猪鸡羊】开？00准',6),
+            ('285期:精品六肖【狗猪羊蛇牛兔】开:？00准',6),
+        ]
+        for sample,count in examples:
+            with self.subTest(sample=sample):
+                rows=extract_picks(sample)
+                self.assertEqual(len(rows),1)
+                self.assertEqual(len(rows[0]['picks']),count)
+                self.assertEqual(rows[0]['mode'],'include')
+                self.assertEqual(sum(p['counted_for_ranking'] for p in
+                  score_posts([dict(author='甲',issue='2026285',title='285期推荐',
+                      body=sample,images=[],detail_url='https://example.org/285')])[1]),1)
+
+    def test_text_not_auto_convert_into_zodiac_or_small_tip(self):
+        samples=[
+            '285期九肖号码:02,03,04,05,06,07,08,09,10',
+            '285期三肖【鼠牛虎】开:？00准',
+            '285期:大小单双【鼠牛虎兔龙蛇】开:？00准',
+        ]
+        for sample in samples:
+            with self.subTest(sample=sample):
+                result=score_posts([dict(author='甲',issue='2026285',title='285期',
+                  body=sample,images=[],detail_url='https://example.org/285')])
+                self.assertEqual(result[0],[])
+
     def test_empty_comments(self):
         self.assertEqual(_comments('最新评论\n成为第一个评论的人\n想说点什么'),'')
     def test_only_original_author_comments_score(self):
