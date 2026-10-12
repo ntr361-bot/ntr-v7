@@ -150,5 +150,7 @@ def attach_result(job,post):
             verified=stamp.tzinfo is not None and stamp<cutoff
         except (KeyError,ValueError,TypeError):
             verified=False
+        if not verified:
+            return dict(ocr='',ocr_status='article_source_time_unverified',period_verified=False)
     result=reconcile_passes(job.get('passes',{}).get('6',''),job.get('passes',{}).get('11',''),post['issue'],verified)
     return dict(result,raw_ocr_passes=job.get('passes',{}))
