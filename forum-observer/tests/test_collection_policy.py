@@ -40,6 +40,19 @@ class DailyCollectionPolicyTests(unittest.TestCase):
         self.assertEqual([post["author"] for post, _ in selected], ["乙", "丙", "丁"])
         self.assertTrue(all(item["issue"] == post["issue"] for post, item in selected))
 
+    def test_access_gated_featured_goes_behind_public_eligible_text(self):
+        scoped=[
+            dict(author='加密',issue='2026285',title='285期',is_featured=True),
+            dict(author='公开',issue='2026285',title='九肖中特',is_featured=False),
+            dict(author='加精公开',issue='2026285',title='285期',is_featured=True),
+        ]
+        posts=[dict(x,evidence_scope='current_feed_card',
+                    body=('帖子加密区,点击查看' if x['author']=='加密' else '推荐六肖 鼠牛虎兔龙蛇'))
+               for x in scoped]
+        selected,total=choose_comment_threads(posts,scoped,dict(max_comment_threads=3))
+        self.assertEqual(total,3)
+        self.assertEqual([p['author'] for p,_ in selected],['加精公开','公开','加密'])
+
     def test_featured_marker_beats_comment_hint_and_author_priority(self):
         scoped = [
             dict(author='普通', issue='2026285', title='评论区更新', href=''),

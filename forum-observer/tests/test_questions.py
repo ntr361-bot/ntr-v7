@@ -25,6 +25,23 @@ class PendingQuestionsTests(unittest.TestCase):
         self.assertEqual(len(pending_questions(r)[0]['excerpts']),1)
         r['evidence'][0]['issue']='2026283'
         self.assertEqual(pending_questions(r),[])
+    def test_site_footer_synthetic_reply_and_text_first_images_not_questions(self):
+        r=self.result()
+        r['evidence'][0]['images']=[dict(src='https://example.org/a.png',
+            ocr='',ocr_status='deferred_text_first')]
+        r['unparsed_evidence']=[
+            dict(source_url='https://example.org/a',excerpt='小龙女'),
+            dict(source_url='https://example.org/a',excerpt='2026284期评论资料'),
+            dict(source_url='https://example.org/a',excerpt='-鼠'),
+            dict(source_url='https://example.org/a',excerpt='285期:九肖中特【鼠牛虎兔龙蛇马羊猴】',
+                 reason='unsupported or ambiguous play'),
+        ]
+        q=pending_questions(r)
+        self.assertEqual(len(q),1)
+        self.assertEqual(len(q[0]['excerpts']),1)
+        self.assertIn('九肖中特',q[0]['excerpts'][0]['text'])
+        self.assertEqual(q[0]['image_urls'],[])
+
     def test_known_rejections_are_not_unknown_rules(self):
         r=self.result();r['unparsed_evidence']=[]
         r['parsed_predictions']=[{'source_url':'https://example.org/a','excerpt':'推荐三肖:鼠牛虎',

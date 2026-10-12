@@ -51,9 +51,17 @@ def choose_comment_threads(posts, scoped, policy):
         hint = bool(_COMMENT_HINT.search(title_body))
         direct = "corpusdetail" in (item.get("href") or "")
         featured = post.get("is_featured") is True and item.get("is_featured") is True
-        candidates.append((post, item, featured, hint, direct, post.get("author") in favored))
-    # "精" is an actual card badge, not a title keyword or proof of accuracy.
-    # Remaining order: explicit reply hint, direct URL, favored author, DOM order.
-    candidates.sort(key=lambda row: (not row[2], not row[3], not row[4], not row[5]))
+        # Reading access-gated text cannot be inferred from its preview.
+        # Put it behind public threads without trying to bypass access controls.
+        gated = bool(re.search(r"帖子加密区|购买后可见|付费解锁", str(post.get("body", ""))))
+        # Prefer public current-post text containing >=6 distinct zodiacs as
+        # a sampling hint only; actual scoring still validates every play.
+        has_six = len(set(c for c in title_body if c in "鼠牛虎兔龙蛇马羊猴鸡狗猪")) >= 6
+        candidates.append((post, item, featured, hint, direct,
+                           post.get("author") in favored, gated, has_six))
+    # Public, truly featured cards first. Then comment hints, substantial
+    # text, a direct link, favored authors, and stable forum order.
+    candidates.sort(key=lambda row: (row[6], not row[2], not row[3],
+                                     not row[7], not row[4], not row[5]))
     limit = max(1, min(200, int(policy.get("max_comment_threads", 30))))
     return [(p, item) for p, item, *_ in candidates[:limit]], len(candidates)

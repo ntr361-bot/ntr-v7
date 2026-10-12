@@ -94,7 +94,7 @@ def _ocr_image(src: str, psm=None) -> str:
 
 LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
-PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖))\s*[:：=\-、【】]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
+PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓]*\s*[:：=\-、【】〔〕(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
 UNCERTAIN_PATTERN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
 BARE_KILL_PATTERN=re.compile(r'(?<![\u4e00-\u9fff])(?P<play>杀)\s*[:：]?\s*(?P<picks>['+ZODIAC_CLASS+r']+)')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
@@ -147,13 +147,9 @@ def _listing(page,category):
     rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
         const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
         const kinds = li.querySelectorAll('.ntool .num');
-        // Only the separate orange "精" badge beside the issue; never post text.
-        const periodBadge = li.querySelector('.slabel');
-        const badgeRow = periodBadge?.parentElement;
-        const isFeatured = !!badgeRow && [...badgeRow.querySelectorAll('*')].some(el =>
-            el !== periodBadge && !periodBadge.contains(el) &&
-            el.children.length === 0 && (el.textContent || '').trim() === '精' &&
-            !el.closest('.formtitle, .text, .name, .comment-item, .user-info'));
+        // Live page confirms the orange "精" is an image, not text:
+        // <span class="up"><img class="icon" src="data:image/png;base64,...">
+        const isFeatured = !!li.querySelector('.title .van19 > span.up > img.icon');
         return {author:value('.name'), issue:value('.slabel'), is_featured:isFeatured,
             published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
             category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
@@ -363,7 +359,7 @@ def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
     output=extract_front_back_eight(str(text))
     for line in str(text).splitlines():
-        certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*$', '',line)
+        certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$', '',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
             # Front/back group definitions are legends, not six-zodiac tips.
