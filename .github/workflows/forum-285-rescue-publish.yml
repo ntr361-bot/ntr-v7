@@ -1,0 +1,100 @@
+name: Freeze and publish 285 evening rescue
+on:
+  push:
+    branches: [rescue/forum-285-20261012-2050]
+    paths: [.github/workflows/forum-285-rescue-publish.yml]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: forum-285-rescue-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - name: Wait for the featured-only 15-minute collector
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner=context.repo.owner, repo=context.repo.repo;
+            for(let i=0;i<72;i++){
+              const {data:r}=await github.rest.actions.getWorkflowRun({owner,repo,run_id:38252041816});
+              core.info('Collector status: '+r.status+' / '+r.conclusion);
+              if(r.status==='completed'){
+                if(r.conclusion!=='success')throw new Error('Collector did not pass: '+r.conclusion);
+                return;
+              }
+              await new Promise(resolve=>setTimeout(resolve,20000));
+            }
+            throw new Error('Collector wait deadline reached');
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: publication
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: forum-285-evening-rescue-evidence
+          github-token: ${{ github.token }}
+          run-id: 38252041816
+          path: publication/forum-observer/rescue-out
+      - name: Validate and freeze the collected featured-only result
+        working-directory: publication/forum-observer
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          from forum_observer.core import verify_scored_result
+          from forum_observer.cycle import sync
+          out=pathlib.Path('rescue-out')
+          s=json.loads((out/'status.json').read_text(encoding='utf-8'))
+          assert s['issue']=='2026285' and s['status']=='ready_observation'
+          assert s.get('distinct_valid_authors',0)>=5
+          verify_scored_result(s)
+          listing=json.loads((out/'listing.json').read_text(encoding='utf-8'))
+          featured={(p['author'],p.get('href')) for p in listing['items'] if p.get('is_featured') is True and p.get('issue')=='2026285'}
+          assert featured, 'No featured current-issue posts'
+          snapshot=pathlib.Path('archive/issues/2026285/snapshot.json')
+          assert not snapshot.exists(), 'Existing frozen snapshot preserved; refusing replacement'
+          sync(out,'archive','../site/data/history.json','../site/data/forum-observer')
+          assert snapshot.exists(), 'No pre-draw snapshot was generated'
+          public=json.loads(pathlib.Path('../site/data/forum-observer/latest.json').read_text(encoding='utf-8'))
+          assert public['issue']=='2026285' and public['frozen'] is True
+          print(json.dumps({k:public[k] for k in ('issue','valid_materials','frozen','prediction_top3','prediction_top6','snapshot_digest')},ensure_ascii=False))
+          PY
+      - name: Publish independent forum archive to main
+        working-directory: publication
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add forum-observer/archive/ site/data/forum-observer/
+          git diff --cached --exit-code && exit 1
+          git commit -m "chore(forum): freeze and publish 285 featured-only evening rescue"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main || exit 1
+          done
+          exit 1
+      - name: Verify the committed ledger feed
+        working-directory: publication
+        run: |
+          git fetch origin main
+          git show origin/main:site/data/forum-observer/latest.json > /tmp/forum-285-published.json
+          python - <<'PY'
+          import json
+          s=json.load(open('/tmp/forum-285-published.json'))
+          assert s['issue']=='2026285' and s['frozen'] is True
+          assert len(s['prediction_top6'])==6 and s['snapshot_digest']
+          print('Verified main forum feed: 2026285 frozen and eligible for ledger display')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-285-rescue-publication-report
+          path: |
+            publication/forum-observer/archive/issues/2026285/
+            publication/site/data/forum-observer/latest.json
+          if-no-files-found: ignore
