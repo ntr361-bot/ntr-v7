@@ -21,7 +21,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-11-explicit-six-plus-no-number-inference-v3'
+SCORING_RULE_VERSION = '2026-10-12-explicit-six-plus-nine-priority-v4'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -106,6 +106,19 @@ def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderbo
             accepted.append(w)
         except (TypeError, ValueError, KeyError) as e:
             rejected.append({'index':i,'reason':str(e),'source_url':raw.get('source_url')})
+    # One author's nine-zodiac recommendation supersedes their six-zodiac
+    # recommendation in the same issue, even across separate posts.
+    nine_authors = {(w.author.strip().casefold(), w.issue) for w in accepted
+                    if w.mode == 'include' and re.search(r'(?:九|9)肖', w.play)}
+    retained = []
+    for w in accepted:
+        if (w.mode == 'include' and re.search(r'(?:六|6)肖', w.play)
+                and (w.author.strip().casefold(), w.issue) in nine_authors):
+            rejected.append({'reason': 'superseded_by_same_author_nine_zodiac',
+                             'source_url': w.source_url, 'author': w.author})
+        else:
+            retained.append(w)
+    accepted = retained
     groups = {'leaderboard':[], 'outside':[]}
     for w in accepted:
         groups[w.source_group].append(w)
@@ -157,6 +170,14 @@ def verify_scored_result(result):
     rows=[p for p in result.get('parsed_predictions',[]) if p.get('counted_for_ranking')]
     if len(rows)<25 or result.get('valid_materials')!=len(rows):
         raise ValueError('unverified material count at freeze gate')
+    nine_authors = {(row['author'].strip().casefold(), row.get('issue', result.get('issue')))
+                    for row in rows if row.get('mode') == 'include'
+                    and re.search(r'(?:九|9)肖', row.get('play',''))}
+    for row in rows:
+        if (row.get('mode') == 'include'
+                and re.search(r'(?:六|6)肖', row.get('play',''))
+                and (row['author'].strip().casefold(), row.get('issue', result.get('issue'))) in nine_authors):
+            raise ValueError('same author six-zodiac vote duplicated with nine-zodiac vote')
     votes={z:0.0 for z in ZODIACS};seen=set()
     for row in rows:
         picks=vote_zodiacs(row['picks'],row['mode'],row['play'],row.get('excerpt',''))
