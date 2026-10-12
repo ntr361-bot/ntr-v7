@@ -60,7 +60,8 @@ def pending_questions(result):
         group=groups.setdefault(source,{'author':post.get('author',''), 'issue':issue,
             'source_url':post.get('detail_url'),'evidence_id':source,'title':post.get('title',''),
             'published_at':post.get('published_at',''),
-            'image_urls':list(dict.fromkeys(pic['src'] for pic in post.get('images',[]) if pic.get('src'))),
+            'image_urls':list(dict.fromkeys(pic['src'] for pic in post.get('images',[])
+                if pic.get('src') and pic.get('ocr_status')!='deferred_text_first')),
             'excerpts':[],'counted_for_ranking':False,'status':'pending_user_rule_confirmation'})
         reason=row.get('reason') or 'unsupported or ambiguous play'
         group['excerpts'].append({'text':excerpt,'reason':reason,'question':_question(excerpt,reason)})
