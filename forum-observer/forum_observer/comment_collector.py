@@ -56,16 +56,23 @@ def collect_comments(page,parent,deadline,policy):
                 period_verified=False,source_section='author_comment',author=author,
                 author_verified=True,issue=parent['issue'],published_at=stamp.isoformat()))
         posts.append(post)
-    from .image_queue import ImageQueue,attach_result
-    queue=ImageQueue(policy.get('image_queue_state','archive/image-queue/state.json'),
-                     policy.get('image_cache_dir','.image-cache'))
-    keys=[queue.enqueue(pic['src']) for post in posts for pic in post['images']]
-    if keys:
-        jobs=queue.process(keys,deadline,workers=int(policy.get('image_workers',3)))
+    # In text-first mode preserve the original image/source for later review,
+    # but do not download, run OCR, send images anywhere or give them votes.
+    if policy.get('collect_comment_images',True):
+        from .image_queue import ImageQueue,attach_result
+        queue=ImageQueue(policy.get('image_queue_state','archive/image-queue/state.json'),
+                         policy.get('image_cache_dir','.image-cache'))
+        keys=[queue.enqueue(pic['src']) for post in posts for pic in post['images']]
+        if keys:
+            jobs=queue.process(keys,deadline,workers=int(policy.get('image_workers',3)))
+            for post in posts:
+                for pic in post['images']:
+                    job=jobs[queue.enqueue(pic['src'])]
+                    pic.update(attach_result(job,post))
+    else:
         for post in posts:
             for pic in post['images']:
-                job=jobs[queue.enqueue(pic['src'])]
-                pic.update(attach_result(job,post))
+                pic.update(ocr='',ocr_status='deferred_text_first',period_verified=False)
     from collections import Counter
     audit.update(image_status_counts=dict(Counter(pic['ocr_status'] for post in posts for pic in post['images'])))
     audit.update(rows_seen=len(rows),verified_rows=len(posts),rejected_rows=rejected,

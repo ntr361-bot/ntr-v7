@@ -20,7 +20,12 @@ def choose_profile_samples(author_order, target_issue, feed_mode, policy):
         return []
     limit = max(1, min(60, int(policy.get("max_profile_authors", 30))))
     if feed_mode:
-        limit = min(limit, max(1, min(8, int(policy.get("daily_profile_authors", 4)))))
+        # Current-issue cards already supply authors; spend daily time on
+        # priority article/reply text rather than opening author histories.
+        daily_limit = max(0, min(8, int(policy.get("daily_profile_authors", 4))))
+        if daily_limit == 0:
+            return []
+        limit = min(limit, daily_limit)
     return author_order[:limit]
 
 

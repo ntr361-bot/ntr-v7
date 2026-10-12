@@ -23,6 +23,29 @@ class CommentImagesTests(unittest.TestCase):
         _, parsed=score_posts(posts)
         self.assertEqual({p['author'] for p in parsed if p['counted_for_ranking']},{'甲','乙'})
 
+    def test_text_first_retains_comment_image_url_without_ocr_or_votes(self):
+        rows=[dict(author='甲',published_at='2026-10-11 20:00',
+                   floor='1楼',text='推荐六肖：鼠牛虎兔龙蛇',
+                   image_urls=['https://x5k1pok.11852.com:8443/tk118files/comment/a.png'],
+                   key=('甲','1楼'))]
+        parent=dict(author='楼主',title='资料',issue='2026284',
+                    evidence_id='parent',draw_at='2026-10-11T21:32:00+08:00')
+        with patch('forum_observer.comment_collector.incremental_scan',
+                   return_value=(rows,dict(truncated=False))):
+            with patch('forum_observer.image_queue.ImageQueue') as queue:
+                class Page:url='https://example.org/post'
+                posts,audit=collect_comments(Page(),parent,0,{'collect_comment_images':False})
+                queue.assert_not_called()
+        self.assertEqual(audit['images_seen'],1)
+        self.assertEqual(audit['images_recognized'],0)
+        image=posts[0]['images'][0]
+        self.assertEqual(image['ocr_status'],'deferred_text_first')
+        self.assertFalse(image['period_verified'])
+        self.assertIn('/tk118files/comment/',image['src'])
+        ranks,materials=score_posts(posts)
+        self.assertEqual(len(ranks),12)
+        self.assertEqual(sum(x['counted_for_ranking'] for x in materials),1)
+
     def test_ocr_plays_must_agree_and_short_tips_cannot_pass(self):
         first='284期六肖：鼠牛虎兔龙蛇'
         self.assertEqual(consistent_comment_ocr(first,'284期 六肖【鼠牛虎兔龙蛇】','2026284'),first)

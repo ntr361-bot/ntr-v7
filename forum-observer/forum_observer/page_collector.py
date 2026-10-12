@@ -810,6 +810,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                             errors.append({'author':parent['author'],'title':parent['title'],
                                            'reason':'comment detail not verified'})
                             continue
+                        # Read full same-author article text, not just the feed-card excerpt.
+                        # It shares the per-post budget with the comment scan.
+                        article_text=_article_body(page,item)
+                        if article_text:
+                            parent['body']=article_text
+                            parent['detail_coverage']='verified_article_text'
                         seq=int(issue[-3:]);h,m=map(int,policy.get('verified_draw_time','21:32').split(':'))
                         cutoff=(datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)).replace(hour=h,minute=m)
                         thread_deadline=min(post_deadline,time.monotonic()+max(10,min(60,int(policy.get('comment_scan_seconds',25)))))
@@ -857,11 +863,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
             'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
-            'comment_image_policy':'prioritized_current_issue_threads' if policy.get('collect_comments') else 'not_expanded',
+            'comment_image_policy':('text_first_deferred' if not policy.get('collect_comment_images',True)
+                                    else 'prioritized_current_issue_threads') if policy.get('collect_comments') else 'not_expanded',
             'comment_checks':comment_checks,
             'article_image_audit':article_image_audit,
             'comment_records':sum(p.get('evidence_scope')=='verified_comment' for p in posts),
-            'coverage_label':('当期列表、限额作者主页和优先评论帖：抽样检查，非全覆盖' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
+            'coverage_label':('当期列表、优先正文和评论文字：抽样检查，非全覆盖' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
             'author_profile_budget_exhausted':profile_budget_exhausted,
