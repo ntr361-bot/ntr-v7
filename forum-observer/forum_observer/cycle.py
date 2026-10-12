@@ -52,6 +52,7 @@ def sync(out,archive,history,public_dir=None):
             'top6':status.get('top6',[]),
             'notes':status.get('note','')})
         folder=archive/'issues'/issue
+        persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
             'issue':issue,'fetched_at':status['fetched_at'],'status':status['status'],
             'audit':status.get('audit',{}),'top3':status.get('top3',[]),
