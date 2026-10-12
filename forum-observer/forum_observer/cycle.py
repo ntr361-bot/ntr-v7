@@ -33,7 +33,7 @@ def persist_completed_threads(folder, status):
     issue=status.get('issue')
     if (not isinstance(incoming,dict) or
             status.get('scoring_rule_version')!=SCORING_RULE_VERSION or
-            not isinstance(issue,str) or not re.fullmatch(r'20\\d{5}',issue)):
+            not isinstance(issue,str) or not re.fullmatch(r'20\d{5}',issue)):
         return 0
     destination=folder/'completed-threads.json'
     existing={}
@@ -44,7 +44,9 @@ def persist_completed_threads(folder, status):
             if not isinstance(existing,dict):
                 raise ValueError('invalid completed thread cache')
         else:
-            raise ValueError('completed thread cache issue/version mismatch')
+            # Stale rule/period caches cannot be reused. A fresh checkpoint
+            # replaces them only when newly verified current evidence exists.
+            existing={}
     accepted={}
     for key, entry in incoming.items():
         if (not isinstance(key,str) or not isinstance(entry,dict)
