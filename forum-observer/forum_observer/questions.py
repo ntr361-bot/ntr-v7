@@ -13,6 +13,28 @@ def _question(excerpt, reason):
     return '这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。'
 
 
+def _actionable_unparsed(excerpt, post):
+    """Only ask about actual, source-owned play rules; omit common UI debris.
+
+    This does NOT add any votes or convert unclear evidence into predictions.
+    """
+    excerpt = str(excerpt).strip()
+    if not excerpt or excerpt in (post.get('title', '').strip(),
+                                  str(post.get('issue', '')) + '期评论资料',
+                                  '小龙女'):
+        return False
+    # Copied ranking decorations and bare one-zodiac lists are not new rules.
+    if re.fullmatch(r'[-—\\s]*[' + ''.join(ZODIACS) + r']', excerpt):
+        return False
+    # Only meaningful rule-bearing text belongs in the user clarification queue.
+    return bool(re.search(
+        r'前肖|后肖|家禽|家畜|野兽|家野|尽中尽|固定杀肖|混合杀肖|'
+        r'杀肖次数|[零一二三四五六七八九十\\d]+次|'
+        r'[一二三四五六七八九十\\d]{1,2}肖|红肖|蓝肖|生肖|特码',
+        excerpt
+    ) or len(set(c for c in excerpt if c in ZODIACS)) >= 6)
+
+
 def pending_questions(result):
     issue=result.get('issue')
     posts={p.get('evidence_id',p.get('detail_url')):p for p in result.get('evidence',[]) if p.get('issue')==issue}
@@ -28,7 +50,7 @@ def pending_questions(result):
         source=row.get('evidence_id',row.get('source_url'));post=posts.get(source)
         if post is None:continue
         excerpt=row.get('excerpt','').strip()
-        if not excerpt:continue
+        if not excerpt or not _actionable_unparsed(excerpt, post):continue
         # Definitions are supporting evidence, not standalone unknown plays.
         remaining=re.sub(r'(?:前肖|后肖)\s*[:：=]?\s*[（(【\[].*?[）)】\]]','',excerpt)
         if not remaining.strip():continue
@@ -44,7 +66,10 @@ def pending_questions(result):
         group['excerpts'].append({'text':excerpt,'reason':reason,'question':_question(excerpt,reason)})
     # If OCR failed, retain the original image URL and request its text/meaning.
     for source,post in posts.items():
-        unreadable=[pic['src'] for pic in post.get('images',[]) if pic.get('src') and not pic.get('ocr','').strip()]
+        # Text-first is a deliberate policy, not an OCR failure/question.
+        unreadable=[pic['src'] for pic in post.get('images',[])
+                    if pic.get('src') and not pic.get('ocr','').strip()
+                    and pic.get('ocr_status')!='deferred_text_first']
         if not unreadable:continue
         group=groups.setdefault(source,{'author':post.get('author',''),'issue':issue,
             'source_url':post.get('detail_url'),'evidence_id':source,'title':post.get('title',''),'published_at':post.get('published_at',''),
