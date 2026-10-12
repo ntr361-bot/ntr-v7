@@ -21,13 +21,15 @@ class DailyCollectionPolicyTests(unittest.TestCase):
             return dict(author=name, issue=issue, title=title, href=href)
         scoped = [item("甲", "没有提示评论"), item("乙", "评论区发资料"),
                   item("丙", "普通帖子", "https://forum.test/corpusdetail/3"),
-                  item("丁", "另一个普通帖子"), item("旧", "旧帖", issue="2026284")]
+                  item("丁", "另一个普通帖子")]
         posts = [dict(x, evidence_scope="current_feed_card", body="") for x in scoped]
         posts.append(dict(posts[0]))  # virtualized-list duplicate
+        posts.append(dict(author="旧", issue="2026284", title="旧帖", body="",
+                          evidence_scope="current_feed_card"))
         posts.append(dict(posts[0], evidence_scope="verified_comment"))
         cfg = dict(max_comment_threads=3, top_authors=["丁"])
         selected, total = choose_comment_threads(posts, scoped, cfg)
-        self.assertEqual(total, 5)
+        self.assertEqual(total, 4)
         self.assertEqual(len(selected), 3)
         self.assertEqual([post["author"] for post, _ in selected], ["乙", "丙", "丁"])
         self.assertTrue(all(item["issue"] == post["issue"] for post, item in selected))
