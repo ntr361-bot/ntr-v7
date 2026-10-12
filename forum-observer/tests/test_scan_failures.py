@@ -20,6 +20,10 @@ class ScanFailureTests(unittest.TestCase):
         posts = _listing(page, '澳门')
         self.assertEqual(len(posts), 1)
         self.assertEqual(posts[0]['issue'], '2026283')
+        self.assertTrue(posts[1]['is_featured'])
+        dom_script = page.locator.return_value.evaluate_all.call_args.args[0]
+        self.assertIn(".title .van19 > span.up > img.icon", dom_script)
+        self.assertNotIn("textContent || '').trim() === '精'", dom_script)
         page.locator.assert_called_once_with('.forum-list > li')
         page.locator.return_value.evaluate_all.assert_called_once()
         page.locator.return_value.all.assert_not_called()
