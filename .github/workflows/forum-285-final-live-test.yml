@@ -1,0 +1,107 @@
+name: Forum 285 final live test (no freeze/no publish)
+on:
+  push:
+    branches:
+      - test/forum-285-final-no-freeze-20261012
+    paths:
+      - .github/workflows/forum-285-final-live-test.yml
+
+permissions:
+  contents: read
+concurrency:
+  group: forum-285-oneoff-final-live-test
+  cancel-in-progress: false
+
+jobs:
+  live-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser for real forum data
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Check Python and rule logic
+        run: |
+          python -m compileall -q forum_observer tests
+          python -m unittest discover -s tests -v
+      - name: Force read-only one-time test configuration
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          cfg=json.loads(pathlib.Path('collector-config.json').read_text(encoding='utf-8'))
+          cfg.update(freeze_enabled=False, issue=None,
+                     collect_article_images=False, collect_comment_images=False,
+                     max_collection_seconds=1800)
+          pathlib.Path('final-test-config.json').write_text(json.dumps(cfg,ensure_ascii=False,indent=2))
+          assert cfg['freeze_enabled'] is False
+          assert cfg['collect_comment_images'] is False
+          assert cfg['collect_article_images'] is False
+          print('Test only. Frozen prediction and site publication are disabled.')
+          PY
+      - name: Capture live forum sample without freeze or archive
+        id: collect
+        continue-on-error: true
+        timeout-minutes: 34
+        run: |
+          mkdir -p final-test-285
+          set +e
+          python -u -m forum_observer.auto --config final-test-config.json --out final-test-285
+          code=$?
+          echo "$code" > final-test-285/collector-exit-code.txt
+          exit "$code"
+      - name: Report test metrics and safety
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          out=pathlib.Path('final-test-285')
+          p=out/'status.json'
+          if p.exists():
+              s=json.loads(p.read_text(encoding='utf-8'))
+              keys=('issue','status','raw_count','candidate_materials','valid_materials',
+                    'distinct_valid_authors','excluded_materials','pending_rule_question_count',
+                    'comment_candidate_threads','comment_attempted_threads',
+                    'comment_checked_threads','comment_unchecked_threads',
+                    'comment_thread_state_counts','comment_retry_attempts',
+                    'pre_draw_verified','scoring_rule_version','top6')
+              data={k:s.get(k) for k in keys}
+              data['audit_truncated']=s.get('audit',{}).get('truncated')
+              data['errors']=s.get('rejected',[])[:8]
+          else:
+              error=out/'collection-error.json'
+              data={'status':'no_result','failure':error.read_text(encoding='utf-8') if error.exists() else 'no collector output'}
+          assert not list(out.glob('**/freeze.json')),'Test unexpectedly froze a prediction'
+          print(json.dumps(data,ensure_ascii=False,indent=2))
+          (out/'test-summary.json').write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+      - name: Upload test evidence only (not ledger or archive)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-285-final-readonly-test
+          path: forum-observer/final-test-285/
+          if-no-files-found: warn
+      - name: Mark collection problems without hiding test report
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,pathlib,sys
+          p=pathlib.Path('final-test-285/status.json')
+          if not p.exists():sys.exit('No forum status.json produced')
+          s=json.loads(p.read_text(encoding='utf-8'))
+          if s.get('issue')!='2026285':sys.exit('Unexpected live issue: '+str(s.get('issue')))
+          if s.get('status')!='ready_observation':
+              sys.exit('Collection not ready: '+str(s.get('status'))+
+                       '; inspect artifact before deciding whether source coverage was insufficient')
+          print('Live sample meets configured threshold; no freeze or ledger publication occurred.')
+          PY
