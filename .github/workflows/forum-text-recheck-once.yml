@@ -1,0 +1,131 @@
+name: Forum text collection retest (no freeze)
+on:
+  push:
+    branches:
+      - test/forum-text-recheck-20261012
+    paths:
+      - .github/workflows/forum-text-recheck-once.yml
+permissions:
+  contents: read
+jobs:
+  text-retest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install text-only collector
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Compile and unit-test current revision
+        run: |
+          python -m compileall -q forum_observer tests
+          python -m unittest discover -s tests -v
+      - name: Prepare isolated test settings
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          config=json.loads(Path('collector-config.json').read_text(encoding='utf-8'))
+          config.update(freeze_enabled=False,collect_article_images=False,collect_comment_images=False,
+                        issue=None,collection_mode='current_feed',image_queue_state='retest-out/image-queue.json')
+          Path('retest-config.json').write_text(json.dumps(config,ensure_ascii=False,indent=2),encoding='utf-8')
+          assert config['max_collection_seconds']==1800
+          assert config['max_post_seconds']==75
+          print('Read-only retest; no freeze/archive/settlement/site updates',flush=True)
+          print('Time budget:',config['max_collection_seconds'],'seconds, text only',flush=True)
+          PY
+      - name: Collect current-issue forum text
+        id: collector
+        timeout-minutes: 33
+        shell: bash
+        run: |
+          set +e
+          python -u -m forum_observer.auto --config retest-config.json --out retest-out
+          code=$?
+          echo "$code" > retest-exit.txt
+          echo "collector_exit_code=$code"
+          exit 0
+      - name: Summarize genuine retest evidence
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import collections,json
+          from pathlib import Path
+          status=Path('retest-out/status.json')
+          summary=dict(test_only=True,freeze_disabled=True,archive_publication=False,
+                       settlement_disabled=True,ledger_write=False,visual_api=False,
+                       collector_exit=Path('retest-exit.txt').read_text().strip() if Path('retest-exit.txt').exists() else None)
+          if status.exists():
+              s=json.loads(status.read_text(encoding='utf-8'))
+              keys=('issue','status','fetched_at','raw_count','valid_materials','candidate_materials',
+                    'excluded_materials','distinct_valid_authors','featured_found_threads',
+                    'featured_selected_threads','featured_checked_threads','comment_candidate_threads',
+                    'comment_selected_threads','comment_attempted_threads','comment_checked_threads',
+                    'comment_completed_threads','comment_unchecked_threads','comment_image_policy',
+                    'top3','top6','ranking')
+              summary.update({key:s.get(key) for key in keys})
+              audit=s.get('audit') or {}
+              summary['listing_count']=audit.get('listing_count')
+              summary['issue_listing_count']=audit.get('issue_listing_count')
+              summary['truncated']=audit.get('truncated')
+              summary['scroll']=audit.get('forum_scroll')
+              summary['detail_errors']=audit.get('detail_errors',[])[:40]
+              summary['comment_records']=s.get('comment_records')
+              summary['rule_questions']=len(s.get('pending_rule_questions') or [])
+              summary['invalid_reasons']=dict(collections.Counter(
+                  p.get('exclusion_reason') or 'other' for p in s.get('parsed_predictions',[])
+                  if not p.get('counted_for_ranking')))
+              summary['sample_featured_checks']=[
+                  {k:check.get(k) for k in ('author','title','is_featured','verified_rows','rows_seen','truncated')}
+                  for check in (s.get('comment_checks') or []) if check.get('is_featured') is True][:15]
+              pics=[pic for post in s.get('evidence',[]) for pic in post.get('images',[])]
+              summary['image_status_counts']=dict(collections.Counter(pic.get('ocr_status') for pic in pics))
+              summary['image_records']=len(pics)
+          else:
+              p=Path('retest-out/collection-error.json')
+              summary['collector_failure']=json.loads(p.read_text(encoding='utf-8')) if p.exists() else 'No status/error file'
+          Path('retest-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+      - name: Assert no freeze or changes to tracked repo files
+        if: always()
+        run: |
+          if [ -d retest-out ] && find retest-out -type f \( -name snapshot.json -o -name freeze.json \) | grep -q .; then
+            echo 'Unsafe frozen result in retest directory'; exit 1
+          fi
+          git -C .. diff --exit-code
+          git -C .. diff --cached --exit-code
+      - name: Upload independent retest report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-text-retest-no-freeze
+          path: |
+            forum-observer/retest-out/
+            forum-observer/retest-summary.json
+            forum-observer/retest-exit.txt
+          if-no-files-found: warn
+      - name: Flag incomplete observations accurately
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          f=Path('retest-out/status.json')
+          if not f.exists():
+              raise SystemExit('No completed observation status; see artifact')
+          row=json.loads(f.read_text(encoding='utf-8'))
+          if row.get('status')!='ready_observation':
+              print('INCOMPLETE observation: this is not a frozen or official prediction')
+              raise SystemExit(2)
+          PY
