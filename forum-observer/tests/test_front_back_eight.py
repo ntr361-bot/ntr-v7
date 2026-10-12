@@ -42,7 +42,13 @@ class FrontBackEightTests(unittest.TestCase):
 
     def test_history_excluded_and_ocr_text_uses_same_parser(self):
         text='283期:前后二肖【前肖+狗羊】 特开:牛18准\n284期:前后二肖【后肖+虎牛】 特开:?00准\n'+LEGEND
-        _,records=self.score('',[{'src':'https://example.org/article/a.png','ocr':text}])
+        verified_image={'src':'https://jmz.chunshengsh.com/tk118files/article/a.png',
+                        'ocr':text,'ocr_status':'recognized_consistent',
+                        'period_verified':True}
+        # Test the history parser with image evidence that has passed both OCR
+        # agreement and source/date checks. Raw OCR alone must not be a vote.
+        self.assertEqual(self.score('',[dict(verified_image,ocr_status='not_read_from_card')])[0],[])
+        _,records=self.score('',[verified_image])
         self.assertEqual(len(records),1)
         self.assertEqual(records[0]['picks'],list('马羊猴鸡狗猪虎牛'))
 
