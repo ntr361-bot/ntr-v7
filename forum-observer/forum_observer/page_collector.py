@@ -825,7 +825,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     valid_materials=len(valid_votes)
     rejected_materials=len(predictions)-valid_materials
     unscored_posts=sum(1 for p in posts if p.get('evidence_id',p['detail_url']) not in {v.get('evidence_id',v['source_url']) for v in valid_votes})
-    enough=valid_materials>=int(policy.get('min_valid_materials',25))
+    enough=(valid_materials>=int(policy.get('min_valid_materials',25))
+            and len(valid_authors)>=int(policy.get('min_valid_authors',5)))
     seq=int(issue[-3:])
     if not 1<=seq<=366:raise ValueError('invalid daily issue')
     draw_day=datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)
@@ -899,6 +900,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'valid_prediction_authors':len(valid_authors),
                 'valid_materials':valid_materials,
                 'min_valid_materials':int(policy.get('min_valid_materials',25)),
+                'min_valid_authors':int(policy.get('min_valid_authors',5)),
                 'comments_collected':sum(bool(p['comments']) or p.get('evidence_scope')=='verified_comment' for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
             'note':('Forum feed and author pages are progressively scrolled to load cards. '
