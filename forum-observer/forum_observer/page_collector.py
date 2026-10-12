@@ -659,8 +659,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             favored=set(policy.get('top_authors',[]))
             author_order=sorted(author_samples.values(),key=lambda x:(
                 0 if x['issue']==issue else 1,
+                0 if (feed_mode and 'corpusdetail' in (x.get('href') or '')) else 1 if feed_mode else 0,
                 0 if x['author'] in favored else 1,
-                x['author']))
+                '' if feed_mode else x['author']))
             author_limit=max(1,min(60,int(policy.get('max_profile_authors',30))))
             profile_steps=max(1,min(80,int(policy.get('profile_scroll_steps',32))))
             profile_posts=[];profile_checks=[];profile_errors=[]
