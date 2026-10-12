@@ -61,8 +61,9 @@ Check(JsonSerializer.Serialize(frozen) == JsonSerializer.Serialize(after.Select(
 }).ToArray()), "Reconciliation changed frozen predictions");
 Check(PredictionTraceService.GetLiveOutcome("2026280") is { LearningObserved: false },
     "280 settlement-only observation not recorded with learning explicitly unobserved");
-Check(PredictionTraceService.GetLiveOutcome("2026282") is null,
-    "282 not-yet-drawn trace was incorrectly settled");
+string nextIssue = (long.Parse(DatabaseHelper.GetLatestPeriod()) + 1).ToString();
+Check(PredictionTraceService.GetLiveOutcome(nextIssue) is null,
+    "Next not-yet-drawn trace was incorrectly settled");
 Check(PublishedSettlementReconciliation.Apply(dailyDirectory) == 0,
     "Settlement reconciliation is not idempotent");
 

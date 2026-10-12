@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
-from pipeline_guard import ROOT, plan, validate
+from pipeline_guard import ROOT, plan, validate, read
 
 
 class PipelineTests(unittest.TestCase):
@@ -12,6 +12,10 @@ class PipelineTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name) / 'data'
         shutil.copytree(ROOT, self.root)
+        history = read(self.root / 'history.json')
+        self.draw = int(history['latest_issue'])
+        self.next = self.draw + 1
+        self.draw_date = dt.datetime.fromisoformat(next(r for r in history['records'] if int(r['issue']) == self.draw)['open_time']).date()
 
     def tearDown(self):
         self.temp.cleanup()
@@ -21,25 +25,25 @@ class PipelineTests(unittest.TestCase):
         value = json.loads(file.read_text()); mutate(value); file.write_text(json.dumps(value))
 
     def test_committed_snapshot(self):
-        self.assertEqual(validate(self.root), 2026285)
+        self.assertEqual(validate(self.root), self.next)
         self.assertEqual(plan(self.root)['generate'], 'false')
 
     def test_partial_forecast_never_runs_model(self):
-        (self.root / 'daily-records/2026285.json').unlink()
+        (self.root / f'daily-records/{self.next}.json').unlink()
         with self.assertRaisesRegex(ValueError, 'Partial frozen'):
             plan(self.root)
 
     def test_old_issue_never_regenerated(self):
-        with self.assertRaises(ValueError): plan(self.root, requested='2026284')
+        with self.assertRaises(ValueError): plan(self.root, requested=str(self.draw))
 
     def test_unchanged_current_draw_is_safe_but_stale_draw_fails(self):
-        now = dt.datetime(2026, 10, 12, 9, tzinfo=dt.timezone(dt.timedelta(hours=8)))
+        now = dt.datetime.combine(self.draw_date + dt.timedelta(days=1), dt.time(9), dt.timezone(dt.timedelta(hours=8)))
         self.assertEqual(plan(self.root, scheduled=True, now=now)['generate'], 'false')
         with self.assertRaisesRegex(ValueError, 'not current'):
             plan(self.root, scheduled=True, now=now + dt.timedelta(days=1))
 
     def test_unsettled_runtime_or_duplicate_manifest_fails(self):
-        self.change('runtime-state.json', lambda d: next(r for r in d['predictions'] if r['issue']=='2026284').update(hitResult='未开奖'))
+        self.change('runtime-state.json', lambda d: next(r for r in d['predictions'] if int(r['issue']) == self.draw).update(hitResult='未开奖'))
         with self.assertRaises(ValueError): validate(self.root)
 
     def test_duplicate_manifest_fails(self):
