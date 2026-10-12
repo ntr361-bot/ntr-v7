@@ -35,6 +35,8 @@ on:
   schedule:
     - cron: "0 14 * * *"
     - cron: "0 15 * * *"
+    # Guarded catch-up when the draw source becomes available after 23:00 CST.
+    - cron: "0 16,17,18,19 * * *"
     # Mobile ledger checks for an explicit V7 run request every 15 minutes.
     - cron: "7,22,37,52 * * * *"
 
@@ -61,7 +63,7 @@ jobs:
           if ('${{ inputs.force }}' -eq 'true') { throw 'Frozen production forecasts cannot be overwritten.' }
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
-          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *'
+          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *' -or $schedule -eq '0 16,17,18,19 * * *'
           if ($schedule -eq '0 15 * * *') {
             # A green mobile polling run may have skipped prediction. Check committed
             # artifacts again at 23:00; planning skips every existing frozen forecast.
