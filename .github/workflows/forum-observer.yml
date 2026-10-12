@@ -35,7 +35,7 @@ jobs:
           python-version: "3.12"
       - name: Install collector and OCR
         run: |
-          pip install playwright
+          pip install playwright pillow
           python -m playwright install --with-deps chromium
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
       - name: Unit tests

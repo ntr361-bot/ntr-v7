@@ -6,6 +6,32 @@ from urllib.request import urlopen
 from urllib.parse import urlparse
 
 
+def prepare_ocr_image(path):
+    """Improve small/forum-screenshot text without changing evidence pixels on disk.
+
+    The original downloaded image and its SHA remain untouched. Failure to
+    preprocess safely falls back to the original file. Pillow is optional for
+    local tests; the Actions collector installs it explicitly.
+    """
+    try:
+        from PIL import Image, ImageEnhance, ImageOps
+        with Image.open(path) as opened:
+            img = ImageOps.exif_transpose(opened).convert("RGB")
+            width, height = img.size
+            if width < 30 or height < 15 or width * height > 20_000_000:
+                return path
+            scale = max(1, min(3, (1600 + width - 1) // width))
+            if scale > 1:
+                img = img.resize((width * scale, height * scale), Image.Resampling.LANCZOS)
+            img = ImageOps.autocontrast(ImageOps.grayscale(img))
+            img = ImageEnhance.Contrast(img).enhance(1.4)
+            prepared = path.with_suffix(".ocr.png")
+            img.save(prepared, format="PNG")
+            return prepared
+    except Exception:
+        return path
+
+
 class ImageQueue:
     def __init__(self,state,cache):
         self.state=Path(state);self.cache=Path(cache);self.cache.mkdir(parents=True,exist_ok=True)
@@ -30,7 +56,7 @@ class ImageQueue:
         try:
             from .page_collector import HOSTS
             u=urlparse(url)
-            if u.scheme!='https' or u.hostname not in HOSTS or '/tk118files/comment/' not in u.path:
+            if u.scheme!='https' or u.hostname not in HOSTS or not re.search(r'/tk118files/(?:comment|article)/',u.path):
                 raise ValueError('unapproved_image_source')
             if not path.exists():
                 with urlopen(url,timeout=15) as response:
@@ -43,9 +69,10 @@ class ImageQueue:
         executable=shutil.which('tesseract')
         if not executable:return dict(result,status='ocr_failed',reason='tesseract_unavailable')
         texts={};errors={}
+        ocr_path=prepare_ocr_image(path)
         for psm in (6,11):
             try:
-                completed=subprocess.run([executable,str(path),'stdout','-l','eng+chi_sim','--psm',str(psm)],
+                completed=subprocess.run([executable,str(ocr_path),'stdout','-l','eng+chi_sim','--psm',str(psm)],
                     capture_output=True,timeout=30,env=dict(os.environ,OMP_THREAD_LIMIT='1'))
                 if completed.returncode:
                     errors[str(psm)]=completed.stderr.decode('utf-8','replace')[-500:]
@@ -53,7 +80,7 @@ class ImageQueue:
             except Exception as exc:errors[str(psm)]=str(exc)
         if errors:return dict(result,status='ocr_failed',reason='ocr_execution_failed',errors=errors,passes=texts)
         if not any(texts.values()):return dict(result,status='ocr_failed',reason='no_text_detected',passes=texts)
-        return dict(result,status='ocr_complete',passes=texts,image_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        return dict(result,status='ocr_complete',passes=texts,image_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),ocr_preprocessed=ocr_path!=path)
 
     def process(self,keys,deadline,workers=3,worker=None):
         workers=max(1,min(4,workers))
@@ -110,5 +137,20 @@ def attach_result(job,post):
     if job['status']!='ocr_complete':
         return dict(ocr='',ocr_status=job['status'],reason=job.get('reason'),period_verified=False)
     verified=post.get('author_verified') is True and post.get('evidence_scope')=='verified_comment'
+    if post.get('evidence_scope')=='current_feed_card' and '/tk118files/article/' in job.get('url',''):
+        # A rendered card has already established the period and timestamp.
+        # Only use that context when its author's publication was pre-draw.
+        from datetime import datetime,timedelta
+        from zoneinfo import ZoneInfo
+        try:
+            period=str(post['issue'])
+            stamp=datetime.fromisoformat(post['published_at'])
+            cutoff=(datetime(int(period[:4]),1,1,tzinfo=ZoneInfo('Asia/Shanghai'))
+                    +timedelta(days=int(period[-3:])-1)).replace(hour=21,minute=32)
+            verified=stamp.tzinfo is not None and stamp<cutoff
+        except (KeyError,ValueError,TypeError):
+            verified=False
+        if not verified:
+            return dict(ocr='',ocr_status='article_source_time_unverified',period_verified=False)
     result=reconcile_passes(job.get('passes',{}).get('6',''),job.get('passes',{}).get('11',''),post['issue'],verified)
     return dict(result,raw_ocr_passes=job.get('passes',{}))

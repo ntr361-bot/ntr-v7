@@ -524,7 +524,8 @@ def score_posts(posts):
         replies=current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
         text=current_period_text(post['title'],post['issue'])+'\n'+body+'\n'+replies
         for pic in post.get('images',[]):
-            if '/article/' in pic['src'] or eligible_comment_image(pic,post):
+            if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
+                    or eligible_comment_image(pic,post)):
                 text+='\n'+current_period_text(pic['ocr'],post['issue'])
         parsed=extract_picks(text)
         for p in parsed:
@@ -563,7 +564,8 @@ def unparsed_evidence(posts):
         text=current_period_text(post['body'],post['issue'])
         text+='\n'+current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
         for pic in post.get('images',[]):
-            if '/article/' in pic['src'] or eligible_comment_image(pic,post):
+            if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
+                    or eligible_comment_image(pic,post)):
                 text+='\n'+current_period_text(pic.get('ocr',''),post['issue'])
         parsed_lines={p['excerpt'] for p in extract_picks(post['title']+'\n'+text)}
         found=False
@@ -590,6 +592,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[];comment_checks=[]
     comment_targets=[];comment_target_total=0;profile_budget_exhausted=False
+    article_image_audit={}
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
     out.mkdir(parents=True,exist_ok=True)
@@ -769,6 +772,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
                     checkpoint('detail_complete')
+            if feed_mode and policy.get('collect_article_images',True):
+                from .feed_images import process_feed_images
+                # Leave a separate budget for replies and their pictures.
+                article_image_deadline=min(deadline-145,time.monotonic()+105)
+                article_image_audit=process_feed_images(posts,article_image_deadline,policy)
+                checkpoint('article_image_ocr_complete')
             if feed_mode and policy.get('collect_comments',False):
                 from .comment_collector import collect_comments
                 # Do not depend on the thread title saying "see comments".
@@ -816,7 +825,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     valid_materials=len(valid_votes)
     rejected_materials=len(predictions)-valid_materials
     unscored_posts=sum(1 for p in posts if p.get('evidence_id',p['detail_url']) not in {v.get('evidence_id',v['source_url']) for v in valid_votes})
-    enough=valid_materials>=int(policy.get('min_valid_materials',25))
+    enough=(valid_materials>=int(policy.get('min_valid_materials',25))
+            and len(valid_authors)>=int(policy.get('min_valid_authors',5)))
     seq=int(issue[-3:])
     if not 1<=seq<=366:raise ValueError('invalid daily issue')
     draw_day=datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)
@@ -831,6 +841,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
             'comment_image_policy':'prioritized_current_issue_threads' if policy.get('collect_comments') else 'not_expanded',
             'comment_checks':comment_checks,
+            'article_image_audit':article_image_audit,
             'comment_records':sum(p.get('evidence_scope')=='verified_comment' for p in posts),
             'coverage_label':('当期列表、限额作者主页和优先评论帖：抽样检查，非全覆盖' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
@@ -868,6 +879,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'forum_scroll':feed_audit,
                      'profile_checks':profile_checks,
                      'comment_checks':comment_checks,
+                     'article_image_audit':article_image_audit,
                      'comment_candidate_threads':comment_target_total,
                      'comment_checked_threads':len(comment_checks),
                      'profile_budget_exhausted':profile_budget_exhausted,
@@ -888,6 +900,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'valid_prediction_authors':len(valid_authors),
                 'valid_materials':valid_materials,
                 'min_valid_materials':int(policy.get('min_valid_materials',25)),
+                'min_valid_authors':int(policy.get('min_valid_authors',5)),
                 'comments_collected':sum(bool(p['comments']) or p.get('evidence_scope')=='verified_comment' for p in posts),
                 'selection_status':'threshold_met' if ready else 'insufficient_or_unverified'},
             'note':('Forum feed and author pages are progressively scrolled to load cards. '

@@ -43,5 +43,9 @@
   "max_comment_threads": 30,
   "comment_scan_seconds": 25,
   "max_comment_scroll_steps": 30,
-  "min_comment_reserve_seconds": 180
+  "min_comment_reserve_seconds": 180,
+  "collect_article_images": true,
+  "max_feed_images": 40,
+  "image_workers": 3,
+  "min_valid_authors": 5
 }
