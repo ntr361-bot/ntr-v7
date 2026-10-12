@@ -16,7 +16,7 @@ class ScanFailureTests(unittest.TestCase):
             dict(author='甲', issue='283', published_at='刚刚', title='三肖',
                  body='鼠牛虎', category='澳门', href=''),
             dict(author='乙', issue='283', published_at='刚刚', title='三肖',
-                 body='鼠牛虎', category='香港', href='')]
+                 body='鼠牛虎', category='香港', href='', is_featured=True)]
         posts = _listing(page, '澳门')
         self.assertEqual(len(posts), 1)
         self.assertEqual(posts[0]['issue'], '2026283')
