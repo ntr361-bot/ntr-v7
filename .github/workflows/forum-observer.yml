@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "40 11 * * *" # 19:40 China
     - cron: "40 14 * * *" # 22:40 China - settle/next-issue
-    - cron: "15 15 * * *" # 23:15 China - collect newly released next-issue posts
+    - cron: "15 15 * * *" # 23:15 China - settle only, never collect new posts
     - cron: "40 0 * * *"  # 08:40 China - retry settlement when V7 history advances
 permissions:
   contents: write
