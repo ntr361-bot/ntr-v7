@@ -56,7 +56,7 @@ class ImageQueue:
         try:
             from .page_collector import HOSTS
             u=urlparse(url)
-            if u.scheme!='https' or u.hostname not in HOSTS or '/tk118files/comment/' not in u.path:
+            if u.scheme!='https' or u.hostname not in HOSTS or not re.search(r'/tk118files/(?:comment|article)/',u.path):
                 raise ValueError('unapproved_image_source')
             if not path.exists():
                 with urlopen(url,timeout=15) as response:
@@ -137,5 +137,18 @@ def attach_result(job,post):
     if job['status']!='ocr_complete':
         return dict(ocr='',ocr_status=job['status'],reason=job.get('reason'),period_verified=False)
     verified=post.get('author_verified') is True and post.get('evidence_scope')=='verified_comment'
+    if post.get('evidence_scope')=='current_feed_card' and '/tk118files/article/' in job.get('url',''):
+        # A rendered card has already established the period and timestamp.
+        # Only use that context when its author's publication was pre-draw.
+        from datetime import datetime,timedelta
+        from zoneinfo import ZoneInfo
+        try:
+            period=str(post['issue'])
+            stamp=datetime.fromisoformat(post['published_at'])
+            cutoff=(datetime(int(period[:4]),1,1,tzinfo=ZoneInfo('Asia/Shanghai'))
+                    +timedelta(days=int(period[-3:])-1)).replace(hour=21,minute=32)
+            verified=stamp.tzinfo is not None and stamp<cutoff
+        except (KeyError,ValueError,TypeError):
+            verified=False
     result=reconcile_passes(job.get('passes',{}).get('6',''),job.get('passes',{}).get('11',''),post['issue'],verified)
     return dict(result,raw_ocr_passes=job.get('passes',{}))
