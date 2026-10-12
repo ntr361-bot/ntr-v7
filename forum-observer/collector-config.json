@@ -26,7 +26,7 @@
   ],
   "collect_comments": true,
   "collect_comment_images": true,
-  "comment_detail_policy": "explicit_comment_posts",
+  "comment_detail_policy": "prioritized_current_issue_threads",
   "freeze_enabled": false,
   "issue_mode": "latest",
   "max_pages": 50,
@@ -38,5 +38,10 @@
   "profile_history_mode": "target_issue_only",
   "max_collection_seconds": 600,
   "collection_mode": "current_feed",
-  "verified_draw_time": "21:32"
+  "verified_draw_time": "21:32",
+  "daily_profile_authors": 4,
+  "max_comment_threads": 30,
+  "comment_scan_seconds": 25,
+  "max_comment_scroll_steps": 30,
+  "min_comment_reserve_seconds": 180
 }
