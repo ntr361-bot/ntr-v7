@@ -38,10 +38,21 @@ jobs:
         run: |
           python - <<'PY'
           import json,pathlib
+          source=pathlib.Path('forum_observer/page_collector.py')
+          code=source.read_text(encoding='utf-8')
+          anchor="            if not listing:raise ValueError('no forum posts or authors found')"
+          replacement="            listing=[item for item in listing if item.get('is_featured') is True]\n"+anchor
+          assert code.count(anchor)==1, 'Featured-only filter anchor mismatch'
+          code=code.replace(anchor,replacement)
+          scope="            scoped=[item for item in listing if item['issue']==issue and item['author'] not in ('论坛管理','管理员')]"
+          assert code.count(scope)==1, 'Featured-only scope anchor mismatch'
+          code=code.replace(scope,scope+"\n            assert all(item.get('is_featured') is True for item in scoped), 'Non-featured post in rescue scope'")
+          source.write_text(code,encoding='utf-8')
+          print('Rescue filter active: only featured posts and their comments are eligible.')
           cfg=json.loads(pathlib.Path('collector-config.json').read_text(encoding='utf-8'))
           cfg.update(freeze_enabled=False, issue='2026285',
                      collect_article_images=False, collect_comment_images=False,
-                     max_collection_seconds=900)
+                     max_collection_seconds=900, daily_profile_authors=0)
           pathlib.Path('final-test-config.json').write_text(json.dumps(cfg,ensure_ascii=False,indent=2))
           assert cfg['freeze_enabled'] is False
           assert cfg['collect_comment_images'] is False
