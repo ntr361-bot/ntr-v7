@@ -16,6 +16,12 @@ class DailyCollectionPolicyTests(unittest.TestCase):
         self.assertEqual(len(choose_profile_samples(authors, None, True,
                          dict(daily_profile_authors=99))), 8)
 
+    def test_text_first_daily_scan_skips_profiles_and_keeps_target_history(self):
+        authors = [dict(author=str(i), issue='2026285') for i in range(20)]
+        cfg = dict(max_profile_authors=30, daily_profile_authors=0)
+        self.assertEqual(choose_profile_samples(authors, None, True, cfg), [])
+        self.assertEqual(len(choose_profile_samples(authors, '2026284', False, cfg)),20)
+
     def test_threads_without_comment_hint_are_still_candidates(self):
         def item(name, title, href="", issue="2026285"):
             return dict(author=name, issue=issue, title=title, href=href)
