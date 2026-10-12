@@ -47,6 +47,8 @@ jobs:
           scope="            scoped=[item for item in listing if item['issue']==issue and item['author'] not in ('论坛管理','管理员')]"
           assert code.count(scope)==1, 'Featured-only scope anchor mismatch'
           code=code.replace(scope,scope+"\n            assert all(item.get('is_featured') is True for item in scoped), 'Non-featured post in rescue scope'")
+          code=code.replace('profile_samples=choose_profile_samples(author_order,target_issue,feed_mode,policy)', 'profile_samples=[]')
+          code=code.replace('retrospective=(target_issue is not None and next_issue in periods)', 'retrospective=False')
           source.write_text(code,encoding='utf-8')
           print('Rescue filter active: only featured posts and their comments are eligible.')
           cfg=json.loads(pathlib.Path('collector-config.json').read_text(encoding='utf-8'))
