@@ -563,6 +563,24 @@ def score_posts(posts):
             voted.add(ak)
             weight=1.0/len(eligible)
             for z in eligible:votes[z]+=weight
+    # De-duplicate across an author's different posts as well as within a
+    # post. A verified 九肖 recommendation replaces the same author's 六肖.
+    # Exclusions such as 单肖杀码 remain independent valid eleven-zodiac votes.
+    nine_authors = {p['author'].strip().casefold() for p in picks
+                    if p['counted_for_ranking'] and p['mode'] == 'include'
+                    and re.search(r'(?:九|9)肖', p['play'])}
+    for p in picks:
+        if (p['counted_for_ranking'] and p['mode'] == 'include'
+                and re.search(r'(?:六|6)肖', p['play'])
+                and p['author'].strip().casefold() in nine_authors):
+            p.update(counted_for_ranking=False,
+                     exclusion_reason='superseded_by_same_author_nine_zodiac',
+                     vote_zodiacs=[], weight_per_zodiac=0.0)
+    votes={z:0.0 for z in ZODIACS}
+    for p in picks:
+        if p['counted_for_ranking']:
+            for z in p['vote_zodiacs']:
+                votes[z]+=p['weight_per_zodiac']
     if not any(p['counted_for_ranking'] for p in picks):return [],picks
     order=sorted(ZODIACS,key=lambda z:(-votes[z],ZODIACS.index(z)))
     return [{'rank':i+1,'zodiac':z,'score':round(votes[z],6)} for i,z in enumerate(order)],picks
