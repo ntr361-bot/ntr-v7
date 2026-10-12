@@ -71,6 +71,16 @@ jobs:
           fi
           git commit -m "chore(forum): archive independent observer cycle"
           for attempt in 1 2 3; do
+            git fetch origin main
+            # Old runs must never rebase a stale collector's archive onto
+            # a newer parser/rule revision, especially frozen predictions.
+            if ! git -C .. diff --quiet HEAD origin/main -- \
+                 forum-observer/forum_observer/ \
+                 forum-observer/collector-config.json \
+                 .github/workflows/forum-observer.yml; then
+              echo "A newer collector revision exists on main; skip stale archive publication."
+              exit 0
+            fi
             if git push origin HEAD:main; then exit 0; fi
             git pull --rebase origin main
           done
