@@ -14,13 +14,13 @@ class ScanFailureTests(unittest.TestCase):
         page = Mock()
         page.locator.return_value.evaluate_all.return_value = [
             dict(author='甲', issue='283', published_at='刚刚', title='三肖',
-                 body='鼠牛虎', category='澳门', href=''),
+                 body='鼠牛虎', category='澳门', href='', is_featured=True),
             dict(author='乙', issue='283', published_at='刚刚', title='三肖',
                  body='鼠牛虎', category='香港', href='', is_featured=True)]
         posts = _listing(page, '澳门')
         self.assertEqual(len(posts), 1)
         self.assertEqual(posts[0]['issue'], '2026283')
-        self.assertTrue(posts[1]['is_featured'])
+        self.assertTrue(posts[0]['is_featured'])
         dom_script = page.locator.return_value.evaluate_all.call_args.args[0]
         self.assertIn(".title .van19 > span.up > img.icon", dom_script)
         self.assertNotIn("textContent || '').trim() === '精'", dom_script)
