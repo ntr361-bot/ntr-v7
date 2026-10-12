@@ -6,6 +6,7 @@ the existing current-issue, publication-time and six-plus-zodiacs validators.
 from __future__ import annotations
 
 import re
+import json
 
 _COMMENT_HINT = re.compile(r"评论区|评论.*(?:更新|资料)|(?:更新|资料).*评论")
 
@@ -63,5 +64,14 @@ def choose_comment_threads(posts, scoped, policy):
     # text, a direct link, favored authors, and stable forum order.
     candidates.sort(key=lambda row: (row[6], not row[2], not row[3],
                                      not row[7], not row[4], not row[5]))
+    total = len(candidates)
+    # Only an explicitly provided resume manifest enables skip behavior.
+    # A (author, issue, title) tuple must match exactly; no guessing from
+    # similarity or preview text. The normal daily collector is unchanged.
+    already_complete = set(policy.get("completed_thread_keys", ()))
+    if already_complete:
+        candidates = [row for row in candidates if json.dumps(
+            list((row[0].get("author"), row[0].get("issue"), row[0].get("title"))),
+            ensure_ascii=False, separators=(",", ":")) not in already_complete]
     limit = max(1, min(200, int(policy.get("max_comment_threads", 30))))
-    return [(p, item) for p, item, *_ in candidates[:limit]], len(candidates)
+    return [(p, item) for p, item, *_ in candidates[:limit]], total
