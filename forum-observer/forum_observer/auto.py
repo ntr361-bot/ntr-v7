@@ -11,10 +11,15 @@ def main():
     p.add_argument('--config',default='collector-config.json')
     p.add_argument('--out',default='out')
     p.add_argument('--issue',default=None,help='Strict YYYYNNN override for read-only historical audit')
+    p.add_argument('--max-collection-seconds',type=int,default=None,
+                   help='Bound a scheduled scan to the local daily publication cutoff')
     a=p.parse_args()
     out=Path(a.out)
     try:
         cfg=json.loads(Path(a.config).read_text(encoding='utf-8'))
+        if a.max_collection_seconds is not None:
+            if a.max_collection_seconds < 60: raise ValueError('collection budget must be >= 60 seconds')
+            cfg['max_collection_seconds']=min(int(cfg.get('max_collection_seconds',1800)),a.max_collection_seconds)
         result=collect_page(cfg['forum_url'],out,a.issue or cfg.get('issue'),cfg.get('category'),cfg) if cfg.get('forum_url') else collect(cfg,out)
         render(result,out/result['issue']/'report.md')
         if result['status']=='ready_for_pre_draw_freeze':
