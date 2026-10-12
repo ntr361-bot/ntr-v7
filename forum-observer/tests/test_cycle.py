@@ -4,9 +4,51 @@ from tempfile import TemporaryDirectory
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from forum_observer.page_collector import _issue,current_issue,extract_picks,score_posts,_comments,_author_comments
-from forum_observer.cycle import sync
+from forum_observer.cycle import sync, persist_completed_threads
+from forum_observer.core import SCORING_RULE_VERSION
 
 class CycleTests(unittest.TestCase):
+    def test_completed_thread_checkpoint_is_same_period_and_append_only(self):
+        with TemporaryDirectory() as tmp:
+            folder=Path(tmp)/'archive'/'issues'/'2026285'
+            def make(key,author):
+                return {'state':'checked',
+                        'parent':{'issue':'2026285','author':author},
+                        'children':[],'audit':{'rows_seen':2}}
+            status={'issue':'2026285','scoring_rule_version':SCORING_RULE_VERSION,
+                    'completed_thread_cache':{
+                        'id-a':make('id-a','甲'),
+                        'pending':{'state':'pending_publish','parent':{'issue':'2026285'}},
+                        'old':{'state':'checked','parent':{'issue':'2026284'},
+                               'children':[],'audit':{}}}}
+            self.assertEqual(persist_completed_threads(folder,status),1)
+            path=folder/'completed-threads.json'
+            saved=json.loads(path.read_text())
+            self.assertEqual(list(saved['threads']),['id-a'])
+            original=path.read_bytes()
+            self.assertEqual(persist_completed_threads(folder,status),0)
+            self.assertEqual(path.read_bytes(),original)
+            status['completed_thread_cache']['id-a']=make('id-a','篡改')
+            status['completed_thread_cache']['id-b']=make('id-b','乙')
+            self.assertEqual(persist_completed_threads(folder,status),1)
+            saved=json.loads(path.read_text())
+            self.assertEqual(saved['threads']['id-a']['parent']['author'],'甲')
+            self.assertIn('id-b',saved['threads'])
+
+    def test_completed_thread_checkpoint_refuses_invalid_or_stale_rule(self):
+        with TemporaryDirectory() as tmp:
+            folder=Path(tmp)/'archive'/'issues'/'2026285'
+            parent={'state':'checked','parent':{'issue':'2026285'},
+                    'children':[],'audit':{}}
+            status={'issue':'2026285','scoring_rule_version':'obsolete',
+                    'completed_thread_cache':{'id-a':parent}}
+            self.assertEqual(persist_completed_threads(folder,status),0)
+            self.assertFalse((folder/'completed-threads.json').exists())
+            status['scoring_rule_version']=SCORING_RULE_VERSION
+            status['completed_thread_cache']['id-a']['parent']['issue']='2026284'
+            self.assertEqual(persist_completed_threads(folder,status),0)
+            self.assertFalse((folder/'completed-threads.json').exists())
+
     def test_latest_ignores_old_365_notice(self):
         now=datetime(2026,10,8,23,5,tzinfo=ZoneInfo('Asia/Shanghai'))
         docs=[{'issue':'2026365','published_at':'2026-09-25 15:28','author':'论坛管理','title':'公告'},

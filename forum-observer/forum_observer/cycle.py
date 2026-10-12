@@ -27,6 +27,44 @@ def draw_time(record):
         return dt.replace(tzinfo=TZ) if dt.tzinfo is None else dt
     except ValueError:return None
 
+def persist_completed_threads(folder, status):
+    """Append only verified same-period/same-rule completed thread checkpoints."""
+    incoming=status.get('completed_thread_cache', {})
+    issue=status.get('issue')
+    if (not isinstance(incoming,dict) or
+            status.get('scoring_rule_version')!=SCORING_RULE_VERSION or
+            not isinstance(issue,str) or not re.fullmatch(r'20\d{5}',issue)):
+        return 0
+    destination=folder/'completed-threads.json'
+    existing={}
+    if destination.exists():
+        prior=json.loads(destination.read_text(encoding='utf-8'))
+        if prior.get('issue')==issue and prior.get('rule_version')==SCORING_RULE_VERSION:
+            existing=prior.get('threads',{})
+            if not isinstance(existing,dict):
+                raise ValueError('invalid completed thread cache')
+        else:
+            # Stale rule/period caches cannot be reused. A fresh checkpoint
+            # replaces them only when newly verified current evidence exists.
+            existing={}
+    accepted={}
+    for key, entry in incoming.items():
+        if (not isinstance(key,str) or not isinstance(entry,dict)
+                or entry.get('state')!='checked'
+                or not isinstance(entry.get('parent'),dict)
+                or entry['parent'].get('issue')!=issue
+                or not isinstance(entry.get('children'),list)
+                or not isinstance(entry.get('audit'),dict)):
+            continue
+        accepted[key]=entry
+    # Do not rewrite an already checked original entry in another run.
+    additions={k:v for k,v in accepted.items() if k not in existing}
+    if additions:
+        atomic(destination, {'issue':issue,'rule_version':SCORING_RULE_VERSION,
+                             'threads':{**existing,**additions}})
+    return len(additions)
+
+
 def sync(out,archive,history,public_dir=None):
     archive=Path(archive);out=Path(out)
     status_path=out/'status.json'
@@ -52,6 +90,7 @@ def sync(out,archive,history,public_dir=None):
             'top6':status.get('top6',[]),
             'notes':status.get('note','')})
         folder=archive/'issues'/issue
+        persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
             'issue':issue,'fetched_at':status['fetched_at'],'status':status['status'],
             'audit':status.get('audit',{}),'top3':status.get('top3',[]),

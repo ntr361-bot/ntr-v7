@@ -27,6 +27,25 @@ class RuleGateTests(unittest.TestCase):
         self.assertEqual(vote_zodiacs(list("鼠牛虎兔龙蛇"),"include","六肖"), list("鼠牛虎兔龙蛇"))
         self.assertEqual(len(vote_zodiacs(["鼠"],"exclude","杀肖")),11)
 
+    def test_same_author_nine_overrides_six_without_double_scoring(self):
+        six=self.post('六肖【鼠牛虎兔龙蛇】', author='王道人', title='六肖')
+        nine=self.post('九肖【鼠牛虎兔龙蛇马羊猴】', author='王道人', title='九肖')
+        ranking, rows=score_posts([six,nine])
+        self.assertEqual(len([r for r in rows if r['counted_for_ranking']]), 1)
+        six_rows=[r for r in rows if '六肖' in r['play']]
+        self.assertTrue(six_rows)
+        self.assertTrue(all(r['exclusion_reason']=='superseded_by_same_author_nine_zodiac' for r in six_rows))
+        self.assertEqual(len(ranking),12)
+        self.assertAlmostEqual(sum(r['score'] for r in ranking),1.0, places=5)
+
+    def test_single_zodiac_kill_is_an_eleven_zodiac_vote(self):
+        ranking, rows=score_posts([self.post('杀肖【鼠】',author='甲',title='杀肖')])
+        counted=[p for p in rows if p['counted_for_ranking']]
+        self.assertEqual(len(counted),1)
+        self.assertEqual(counted[0]['mode'],'exclude')
+        self.assertEqual(len(counted[0]['vote_zodiacs']),11)
+        self.assertEqual(ranking[-1]['zodiac'],'鼠')
+
     def test_draw_placeholder_is_not_an_uncertain_prediction(self):
         for ending in ("开？00","开《？》","开00"):
             ranking, rows=score_posts([self.post("六肖【鼠牛虎兔龙蛇】"+ending)])
