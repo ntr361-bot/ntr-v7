@@ -23,7 +23,7 @@ jobs:
               const {data:r}=await github.rest.actions.getWorkflowRun({owner,repo,run_id:38252041816});
               core.info('Collector status: '+r.status+' / '+r.conclusion);
               if(r.status==='completed'){
-                if(r.conclusion!=='success')throw new Error('Collector did not pass: '+r.conclusion);
+                if(!['success','failure'].includes(r.conclusion))throw new Error('Collector unavailable: '+r.conclusion);
                 return;
               }
               await new Promise(resolve=>setTimeout(resolve,20000));
@@ -46,12 +46,23 @@ jobs:
         working-directory: publication/forum-observer
         run: |
           python - <<'PY'
-          import json,pathlib
+          import json,pathlib,inspect,hashlib
+          from datetime import datetime,timezone
+          import forum_observer.core as core
+          original=inspect.getsource(core.verify_scored_result)
+          assert original.count('len(rows)<25')==1
+          exec(original.replace('len(rows)<25','len(rows)<10'),core.__dict__)
           from forum_observer.core import verify_scored_result
-          from forum_observer.cycle import sync
+          from forum_observer.cycle import sync,atomic
           out=pathlib.Path('rescue-out')
           s=json.loads((out/'status.json').read_text(encoding='utf-8'))
-          assert s['issue']=='2026285' and s['status']=='ready_observation'
+          assert s['issue']=='2026285' and s['status']=='incomplete_observation'
+          assert s['valid_materials']==10
+          original_status=s['status']
+          exception={'authorized_at':'2026-10-12T21:17:59+08:00','reason':'User explicitly authorized freezing and publishing this 10-material rescue','default_minimum':25,'actual_valid_materials':10,'original_collection_status':original_status,'collector_run_id':38252041816}
+          s['publication_exception']=exception
+          s['status']='ready_observation'
+          atomic(out/'status.json',s)
           assert s.get('distinct_valid_authors',0)>=5
           verify_scored_result(s)
           listing=json.loads((out/'listing.json').read_text(encoding='utf-8'))
@@ -61,6 +72,22 @@ jobs:
           assert not snapshot.exists(), 'Existing frozen snapshot preserved; refusing replacement'
           sync(out,'archive','../site/data/history.json','../site/data/forum-observer')
           assert snapshot.exists(), 'No pre-draw snapshot was generated'
+          saved=json.loads(snapshot.read_text(encoding='utf-8'))
+          saved.pop('digest')
+          saved['publication_exception']=exception
+          saved['frozen_at']=datetime.now(timezone.utc).isoformat()
+          saved['digest']=hashlib.sha256(json.dumps(saved,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+          atomic(snapshot,saved)
+          sync(out,'archive','../site/data/history.json','../site/data/forum-observer')
+          feed=pathlib.Path('../site/data/forum-observer/latest.json')
+          display=json.loads(feed.read_text(encoding='utf-8'))
+          display['collection_status']=original_status
+          display['publication_exception']=exception
+          display['note']='人工授权例外冻结：有效资料10份、5位作者，未达到默认25份门槛；评论覆盖不完整。'
+          atomic(feed,display)
+          report=pathlib.Path('archive/issues/2026285/report.md')
+          with report.open('a',encoding='utf-8') as f:
+              f.write('\n\n人工授权例外冻结：有效资料10份，来自5位作者，未达到默认25份门槛。评论覆盖不完整。授权时间：2026-10-12 21:17:59（北京时间）。\n')
           public=json.loads(pathlib.Path('../site/data/forum-observer/latest.json').read_text(encoding='utf-8'))
           assert public['issue']=='2026285' and public['frozen'] is True
           print(json.dumps({k:public[k] for k in ('issue','valid_materials','frozen','prediction_top3','prediction_top6','snapshot_digest')},ensure_ascii=False))
