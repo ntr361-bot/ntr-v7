@@ -13,7 +13,7 @@ on:
         default: "2026197"
         type: string
       force:
-        description: "Overwrite an existing prediction"
+        description: "Deprecated: production frozen forecasts cannot be overwritten"
         required: false
         default: false
         type: boolean
@@ -35,6 +35,8 @@ on:
   schedule:
     - cron: "0 14 * * *"
     - cron: "0 15 * * *"
+    # Guarded catch-up when the draw source becomes available after 23:00 CST.
+    - cron: "0 16,17,18,19 * * *"
     # Mobile ledger checks for an explicit V7 run request every 15 minutes.
     - cron: "7,22,37,52 * * * *"
 
@@ -58,38 +60,14 @@ jobs:
         id: decide
         shell: pwsh
         run: |
+          if ('${{ inputs.force }}' -eq 'true') { throw 'Frozen production forecasts cannot be overwritten.' }
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
-          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *'
+          $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *' -or $schedule -eq '0 16,17,18,19 * * *'
           if ($schedule -eq '0 15 * * *') {
-            try {
-              $headers = @{
-                Authorization = "Bearer $env:GITHUB_TOKEN"
-                Accept = 'application/vnd.github+json'
-                'X-GitHub-Api-Version' = '2022-11-28'
-              }
-              $uri = 'https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-prediction.yml/runs?event=schedule&per_page=20'
-              $runs = (Invoke-RestMethod -Uri $uri -Headers $headers).workflow_runs
-              $windowStart = [DateTimeOffset]::UtcNow.Date.AddHours(13.5)
-              $currentRunId = [long]'${{ github.run_id }}'
-              $primary = $runs |
-                Where-Object {
-                  [long]$_.id -ne $currentRunId -and
-                  [DateTimeOffset]::Parse($_.run_started_at) -ge $windowStart -and
-                  [DateTimeOffset]::Parse($_.run_started_at) -lt [DateTimeOffset]::UtcNow
-                } |
-                Sort-Object { [DateTimeOffset]::Parse($_.run_started_at) } -Descending |
-                Select-Object -First 1
-              $shouldRun = $null -eq $primary -or $primary.conclusion -ne 'success'
-              if ($null -ne $primary) {
-                Write-Host "22:00 run $($primary.id) conclusion: $($primary.conclusion)"
-              } else {
-                Write-Host 'No 22:00 run found; enabling the 23:00 retry.'
-              }
-            } catch {
-              Write-Warning "Could not inspect the 22:00 run; enabling the safe retry: $($_.Exception.Message)"
-              $shouldRun = $true
-            }
+            # A green mobile polling run may have skipped prediction. Check committed
+            # artifacts again at 23:00; planning skips every existing frozen forecast.
+            $shouldRun = $true
           } elseif ($schedule -eq '7,22,37,52 * * * *') {
             try {
               $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
@@ -161,31 +139,31 @@ jobs:
         shell: pwsh
         run: |
           $arguments = @('--refresh-data', '--refresh-only')
-          if ('${{ github.event_name }}' -eq 'schedule') { $arguments += '--require-advance' }
           if ('${{ inputs.dry_run }}' -eq 'true') { $arguments += '--dry-run' }
           dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
 
-      - name: Validate historical data
-        shell: pwsh
-        run: |
-          $arguments = @('--dry-run', '--generate-all')
-          if ('${{ inputs.issue }}') { $arguments += @('--issue', '${{ inputs.issue }}') }
-          $startIssue = '${{ inputs.start_issue }}'
-          if (!$startIssue) { $startIssue = '2026197' }
-          $arguments += @('--start-issue', $startIssue)
-          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
+      - name: Export refreshed draw archive without predicting
+        if: ${{ inputs.dry_run != true }}
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --export-history
 
-      - name: Generate prediction
+      - name: Plan next issue without running any model
+        id: plan
+        shell: pwsh
+        env:
+          REQUESTED_ISSUE: ${{ inputs.issue }}
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' }}
+        run: python scripts/pipeline_guard.py plan
+
+      - name: Settle existing formal forecasts before generating next issue
         if: ${{ inputs.dry_run != true }}
         shell: pwsh
+        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --settle-only
+
+      - name: Generate only a missing next prediction
+        if: ${{ inputs.dry_run != true && steps.plan.outputs.generate == 'true' }}
+        shell: pwsh
         run: |
-          $arguments = @('--generate-all')
-          if ('${{ inputs.issue }}') { $arguments += @('--issue', '${{ inputs.issue }}') }
-          $startIssue = '${{ inputs.start_issue }}'
-          if (!$startIssue) { $startIssue = '2026197' }
-          $arguments += @('--start-issue', $startIssue)
-          if ('${{ inputs.force }}' -eq 'true') { $arguments += '--force' }
-          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- @arguments
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --generate-all --preserve-frozen --issue '${{ steps.plan.outputs.target }}'
 
       - name: Production safety checks
         if: ${{ inputs.dry_run != true }}
@@ -219,6 +197,8 @@ jobs:
 
           $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
           if (@($manifest.records) -notcontains "$target.json") { throw "manifest does not contain $target.json" }
+          python scripts/pipeline_guard.py validate
+          if ($LASTEXITCODE -ne 0) { throw 'Formal snapshot consistency failed.' }
           Write-Host "Production safety checks passed for issue $target."
 
       - name: Commit generated files
@@ -237,7 +217,13 @@ jobs:
           }
           $issue = (Get-Content site/data/predictions/latest.json | ConvertFrom-Json).latest_issue
           git commit -m "chore: update V7 prediction for issue $issue"
-          git push origin HEAD:${{ github.ref_name }}
+          for ($attempt = 1; $attempt -le 3; $attempt++) {
+            git push origin HEAD:${{ github.ref_name }}
+            if ($LASTEXITCODE -eq 0) { exit 0 }
+            git pull --rebase origin '${{ github.ref_name }}'
+            if ($LASTEXITCODE -ne 0) { throw 'Commit conflict; refusing to overwrite archived predictions.' }
+          }
+          throw 'Could not persist generated artifacts after three guarded attempts.'
 
       - name: Upload history database artifact
         if: ${{ inputs.dry_run != true }}
@@ -304,31 +290,9 @@ jobs:
         env:
           SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
 
-  retry-on-failure:
-    needs: [check-trigger, predict]
-    if: ${{ always() && needs.check-trigger.outputs.should_run == 'true' && needs.check-trigger.outputs.retry_allowed == 'true' && needs.predict.result == 'failure' && inputs.retry_attempt != '1' && inputs.dry_run != true }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Queue one guarded retry
+      - name: Report pipeline failure
+        if: ${{ failure() }}
         shell: pwsh
         run: |
-          $startIssue = '${{ inputs.start_issue }}'
-          if (!$startIssue) { $startIssue = '2026197' }
-          $body = @{
-            ref = '${{ github.ref_name }}'
-            inputs = @{
-              issue = '${{ inputs.issue }}'
-              start_issue = $startIssue
-              force = '${{ inputs.force }}'
-              dry_run = 'false'
-              refresh_data = 'true'
-              retry_attempt = '1'
-            }
-          } | ConvertTo-Json -Compress
-          Invoke-RestMethod -Method Post -Uri 'https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-prediction.yml/dispatches' -Headers @{
-            Authorization = "Bearer $env:GITHUB_TOKEN"
-            Accept = 'application/vnd.github+json'
-            'X-GitHub-Api-Version' = '2022-11-28'
-          } -ContentType 'application/json' -Body $body -ErrorAction Stop
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          Write-Host '::error::Formal pipeline failed. Inspect failed step; committed data will be retried by Sync V7 State. Never force or rerun frozen forecasts.'
+          'Formal pipeline failed; see job logs. No automatic model rerun was dispatched.' >> $env:GITHUB_STEP_SUMMARY

@@ -2,6 +2,11 @@ name: Sync V7 State to Smart Ledger
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "45 * * * *"
+  workflow_run:
+    workflows: ["Run V7 Isolated Prediction"]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -12,15 +17,21 @@ permissions:
   id-token: write
 
 concurrency:
-  group: sync-v7-state-to-smart-ledger
-  cancel-in-progress: true
+  group: v7-isolated-prediction-generation
+  cancel-in-progress: false
 
 jobs:
   sync:
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main') }}
     runs-on: windows-latest
     steps:
       - name: Checkout current committed state
         uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Validate committed snapshot (no models, no writes)
+        run: python scripts/pipeline_guard.py validate
 
       - name: Publish current V7 state to smart ledger
         shell: pwsh
@@ -70,3 +81,10 @@ jobs:
 
         env:
           SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
+
+      - name: Report synchronization failure
+        if: ${{ failure() }}
+        shell: pwsh
+        run: |
+          Write-Host '::error::Committed prediction synchronization failed; no formal model was run. Next hourly synchronization retries this snapshot.'
+          'Committed-state publish failed. See logs; no prediction was regenerated.' >> $env:GITHUB_STEP_SUMMARY
