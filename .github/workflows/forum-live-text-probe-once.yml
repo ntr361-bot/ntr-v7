@@ -1,0 +1,118 @@
+name: Forum live text probe (one-off, no freeze)
+on:
+  push:
+    branches:
+      - test/forum-live-text-probe-20261012
+    paths:
+      - .github/workflows/forum-live-text-probe-once.yml
+permissions:
+  contents: read
+jobs:
+  forum-text-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install rendered-text collector only
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Unit tests (before real collection)
+        run: python -m unittest discover -s tests -v
+      - name: Force no-freeze text-only test config
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cfg=json.loads(Path('collector-config.json').read_text(encoding='utf-8'))
+          cfg.update(freeze_enabled=False,collect_article_images=False,collect_comment_images=False,
+                     issue=None,collection_mode='current_feed')
+          Path('probe-config.json').write_text(json.dumps(cfg,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('SAFE TEST: text only, no freeze, no archive, no settlement, no V7, no ledger')
+          print('budget_seconds',cfg['max_collection_seconds'],'per_post_seconds',cfg['max_post_seconds'])
+          PY
+      - name: Collect latest current-issue text (read-only test)
+        id: collect
+        timeout-minutes: 33
+        shell: bash
+        run: |
+          set +e
+          python -u -m forum_observer.auto --config probe-config.json --out live-probe
+          code=$?
+          echo "$code" > live-probe-exit.txt
+          echo "collector_exit_code=$code"
+          exit 0
+      - name: Summarize actual coverage
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('live-probe/status.json')
+          fields=['issue','status','fetched_at','raw_count','valid_materials',
+            'candidate_materials','excluded_materials','distinct_valid_authors',
+            'featured_found_threads','featured_selected_threads','featured_checked_threads',
+            'comment_candidate_threads','comment_selected_threads','comment_attempted_threads',
+            'comment_checked_threads','comment_completed_threads','comment_unchecked_threads',
+            'comment_image_policy','top3','top6']
+          report={'test_only':True,'freeze_disabled':True,'archival_publication':False,
+                  'ledger_sync':False,'settlement_disabled':True,'visual_model_disabled':True,
+                  'collector_exit':Path('live-probe-exit.txt').read_text().strip() if Path('live-probe-exit.txt').exists() else 'no exit record'}
+          if p.exists():
+            d=json.loads(p.read_text(encoding='utf-8'))
+            report.update({k:d.get(k) for k in fields})
+            audit=d.get('audit') or {}
+            report['feed_scan']=audit.get('forum_scroll',{})
+            report['truncated']=audit.get('truncated')
+            report['detail_errors']=audit.get('detail_errors',[])[:20]
+            report['comment_checks_sample']=[
+               {k:x.get(k) for k in ('author','title','is_featured','rows_seen','verified_rows','truncated','stop_reason')}
+               for x in (audit.get('comment_checks') or [])[:12]]
+            report['rule_pending_count']=d.get('pending_rule_question_count')
+            report['verified_text_rows']=sum(p.get('evidence_scope')=='verified_comment' for p in d.get('evidence',[]))
+          else:
+            f=Path('live-probe/collection-error.json')
+            report['collector_failure']=json.loads(f.read_text(encoding='utf-8')) if f.exists() else 'missing status and failure'
+          Path('live-probe-summary.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+      - name: Assert no frozen artifacts or tracked file writes
+        if: always()
+        run: |
+          if find live-probe -name snapshot.json -o -name freeze.json 2>/dev/null | grep -q .; then
+            echo "UNEXPECTED FREEZE"; exit 1
+          fi
+          git -C .. diff --exit-code
+          git -C .. diff --cached --exit-code
+      - name: Upload test-only report and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-live-text-probe-no-freeze
+          path: |
+            forum-observer/live-probe/
+            forum-observer/live-probe-summary.json
+            forum-observer/live-probe-exit.txt
+          if-no-files-found: warn
+      - name: Flag incomplete test as incomplete
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('live-probe/status.json')
+          if not p.exists():raise SystemExit('Collection did not produce final status')
+          r=json.loads(p.read_text(encoding='utf-8'))
+          if r.get('status')!='ready_observation':
+             print('Coverage INCOMPLETE; report reflects genuine partial results')
+             raise SystemExit(2)
+          PY
