@@ -10,7 +10,7 @@ permissions:
   contents: read
 concurrency:
   group: forum-285-evening-rescue
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   live-only:
@@ -41,7 +41,7 @@ jobs:
           cfg=json.loads(pathlib.Path('collector-config.json').read_text(encoding='utf-8'))
           cfg.update(freeze_enabled=False, issue='2026285',
                      collect_article_images=False, collect_comment_images=False,
-                     max_collection_seconds=1800)
+                     max_collection_seconds=900)
           pathlib.Path('final-test-config.json').write_text(json.dumps(cfg,ensure_ascii=False,indent=2))
           assert cfg['freeze_enabled'] is False
           assert cfg['collect_comment_images'] is False
@@ -51,7 +51,7 @@ jobs:
       - name: Capture live forum sample without freeze or archive
         id: collect
         continue-on-error: true
-        timeout-minutes: 34
+        timeout-minutes: 19
         run: |
           mkdir -p final-test-285
           set +e
