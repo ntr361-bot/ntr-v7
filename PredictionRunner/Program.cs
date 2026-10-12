@@ -47,7 +47,7 @@ try
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WARNING] 运行状态恢复失败，本次仅使用开奖记录继续（{ex.Message}）");
+                throw new InvalidDataException("Runtime state restore failed; refusing to generate with missing formal model memory", ex);
             }
         }
         else
@@ -83,11 +83,24 @@ try
     long? issue = ParseIssue(arguments, "issue");
     long? startIssue = ParseIssue(arguments, "start-issue");
 
+    if (arguments.ContainsKey("settle-only"))
+    {
+        DailyPredictionAutomation.VerifyPublishedPredictions(dailyOutputDirectory);
+        DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
+        int settled = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
+        PredictionTraceArchive.Export(Path.Combine(repositoryRoot, "site", "data", "prediction-traces", "history.json.gz"));
+        CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
+        WriteRuntimeState(repositoryRoot);
+        Console.WriteLine($"[SUCCESS] Settlement-only reconciliation: {settled}; no predictions generated");
+        return 0;
+    }
+
 
     if (arguments.ContainsKey("generate-all"))
     {
         DailyPredictionAutomation.GenerateMissing(outputDirectory, dailyOutputDirectory,
-            issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"));
+            issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"),
+            preserveFrozen: arguments.ContainsKey("preserve-frozen"));
         if (!arguments.ContainsKey("dry-run"))
         {
             int settlements = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
@@ -150,6 +163,8 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 parsed["start-issue"] = values[i];
                 break;
             case "--force": parsed["force"] = null; break;
+            case "--settle-only": parsed["settle-only"] = null; break;
+            case "--preserve-frozen": parsed["preserve-frozen"] = null; break;
             case "--dry-run": parsed["dry-run"] = null; break;
             case "--refresh-data": parsed["refresh-data"] = null; break;
             case "--refresh-only": parsed["refresh-only"] = null; break;

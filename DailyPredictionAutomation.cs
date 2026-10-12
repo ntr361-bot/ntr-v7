@@ -155,8 +155,10 @@ public static class DailyPredictionAutomation
     }
 
     public static IReadOnlyList<long> GenerateMissing(string predictionDirectory, string outputDirectory,
-        long? requestedIssue = null, long? startIssue = null, bool force = false, bool dryRun = false)
+        long? requestedIssue = null, long? startIssue = null, bool force = false, bool dryRun = false,
+        bool preserveFrozen = false)
     {
+        if (preserveFrozen && force) throw new InvalidOperationException("Frozen production predictions cannot be forced");
         DatabaseHelper.InitializeDatabase();
         long[] draws = DatabaseHelper.GetLatestHistory(int.MaxValue)
             .Select(record => long.Parse(record.Period)).OrderBy(issue => issue).ToArray();
@@ -188,7 +190,7 @@ public static class DailyPredictionAutomation
         if (targets.Length == 0) Console.WriteLine("[SUCCESS] 所有预测功能的每期记录已齐全");
         if (!dryRun)
         {
-            int upgraded = UpgradeArchivedAutoLearning(outputDirectory);
+            int upgraded = preserveFrozen ? 0 : UpgradeArchivedAutoLearning(outputDirectory);
             Console.WriteLine($"[INFO] 已将{upgraded}期云端200期旧卡片替换为自动学习记录");
             int verified = VerifyPublishedPredictions(outputDirectory);
             Console.WriteLine($"[INFO] 已写入{verified}期预测命中结果");
@@ -261,6 +263,10 @@ public static class DailyPredictionAutomation
             JsonObject root = JsonNode.Parse(File.ReadAllText(path))?.AsObject()
                 ?? throw new InvalidDataException($"第{issue}期预测文件无法解析");
             JsonObject? existing = root["verification"] as JsonObject;
+            if (existing?["status"]?.GetValue<string>() == "verified" &&
+                (existing["actual_number"]?.GetValue<string>() != draw.SpecialNumber ||
+                 existing["actual_zodiac"]?.GetValue<string>() != draw.SpecialZodiac))
+                throw new InvalidDataException($"Frozen settlement conflicts with original draw: {issue}");
             if (existing?["status"]?.GetValue<string>() == "verified" &&
                 existing["actual_number"]?.GetValue<string>() == draw.SpecialNumber &&
                 existing["actual_zodiac"]?.GetValue<string>() == draw.SpecialZodiac)
