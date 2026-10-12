@@ -5,11 +5,11 @@
   "historical": true,
   "frozen": false,
   "settled": false,
-  "audit_status": "pending",
-  "collection_status": "missing_data",
-  "collected_at": null,
-  "published_at": "2026-10-12T00:39:59.435007+00:00",
-  "raw_posts": null,
+  "audit_status": "validation_failed",
+  "collection_status": "incomplete_observation",
+  "collected_at": "2026-10-12T03:35:57.249892+00:00",
+  "published_at": "2026-10-12T03:35:57.502955+00:00",
+  "raw_posts": 0,
   "candidate_materials": null,
   "valid_materials": null,
   "excluded_materials": null,
@@ -22,7 +22,7 @@
   "historical_reference_count": 0,
   "retrospective_records": [],
   "errors": [
-    "抓取任务未产生状态文件"
+    "281期范围或有效资料计数验证失败，拒绝展示排名"
   ],
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/38188832274"
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/38200135543"
 }
