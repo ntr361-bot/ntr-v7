@@ -3,6 +3,7 @@ import unittest
 from forum_observer.collection_policy import (
     choose_profile_samples,
     choose_comment_threads,
+    comment_thread_budget_seconds,
 )
 
 
@@ -67,6 +68,24 @@ class DailyCollectionPolicyTests(unittest.TestCase):
         self.assertEqual(total, 4)
         self.assertEqual([post['author'] for post, _ in chosen],
                          ['精选', '普通', '重点'])
+
+    def test_featured_threads_get_priority_time_without_starving_others(self):
+        config = {'max_featured_post_seconds': 35, 'max_post_seconds': 20}
+        self.assertEqual(comment_thread_budget_seconds({'is_featured': True}, config), 35)
+        self.assertEqual(comment_thread_budget_seconds({'is_featured': False}, config), 20)
+        self.assertEqual(comment_thread_budget_seconds({'is_featured': True},
+                         {'max_featured_post_seconds': 1000}), 60)
+        self.assertEqual(comment_thread_budget_seconds({'is_featured': False},
+                         {'max_post_seconds': 1}), 10)
+
+    def test_production_config_does_not_enable_image_ocr(self):
+        import json
+        from pathlib import Path
+        config = json.loads((Path(__file__).resolve().parent.parent /
+                             'collector-config.json').read_text(encoding='utf-8'))
+        self.assertFalse(config['collect_comment_images'])
+        self.assertFalse(config['collect_article_images'])
+        self.assertLessEqual(config['comment_scan_seconds'], 20)
 
     def test_featured_only_if_listing_card_confirms_it(self):
         scoped = [dict(author='甲', issue='2026285', title='标题', is_featured=False)]
