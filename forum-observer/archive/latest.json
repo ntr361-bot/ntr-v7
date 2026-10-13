@@ -1,24 +1,27 @@
 {
-  "issue": "2026285",
-  "status": "ready_observation",
-  "raw_count": 175,
-  "valid_materials": 10,
-  "pending_rule_question_count": 10,
+  "issue": "2026286",
+  "status": "incomplete_observation",
+  "raw_count": 548,
+  "valid_materials": 24,
+  "pending_rule_question_count": 61,
   "article_image_audit": {},
-  "valid_prediction_authors": 5,
-  "updated_at": "2026-10-12T13:10:46.804600+00:00",
+  "valid_prediction_authors": 24,
+  "updated_at": "2026-10-13T12:23:08.161017+00:00",
   "top3": [
-    "鼠",
-    "兔",
-    "马"
+    "马",
+    "猪",
+    "羊"
   ],
   "top6": [
-    "鼠",
-    "兔",
     "马",
-    "狗",
+    "猪",
+    "羊",
+    "龙",
     "蛇",
-    "猪"
+    "狗"
   ],
-  "notes": "Forum feed and author pages are progressively scrolled to load cards. Missing author profiles or incomplete scrolling are reported. Retrospective references in next-period posts are not pre-draw forecasts; page top draw results are excluded from scoring. Experimental evidence only; no verified live leaderboard."
+  "notes": "User-authorized pre-draw immutable 24-material exception snapshot, despite incomplete collection; below normal 25-material quality threshold. Experimental observer only; do not label standard-qualified. Source GitHub Actions run 38394359459.",
+  "freeze_classification": "manual_exception_below_minimum_materials",
+  "freeze_snapshot": "issues/2026286/snapshot.json",
+  "freeze_authorized_at": "2026-10-13T20:59:06+08:00"
 }
