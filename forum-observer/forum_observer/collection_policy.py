@@ -37,7 +37,8 @@ def comment_thread_budget_seconds(parent, policy):
     """
     key = "max_featured_post_seconds" if parent.get("is_featured") is True else "max_post_seconds"
     default = 35 if parent.get("is_featured") is True else 20
-    return max(10, min(60, int(policy.get(key, default))))
+    cap = 180 if policy.get("retrospective_exhaustive") else 60
+    return max(10, min(cap, int(policy.get(key, default))))
 
 
 def choose_comment_threads(posts, scoped, policy):
@@ -74,5 +75,6 @@ def choose_comment_threads(posts, scoped, policy):
     # text, a direct link, favored authors, and stable forum order.
     candidates.sort(key=lambda row: (row[6], not row[2], not row[3],
                                      not row[7], not row[4], not row[5]))
-    limit = max(1, min(200, int(policy.get("max_comment_threads", 30))))
+    cap = 10000 if policy.get("retrospective_exhaustive") else 200
+    limit = max(1, min(cap, int(policy.get("max_comment_threads", 30))))
     return [(p, item) for p, item, *_ in candidates[:limit]], len(candidates)
