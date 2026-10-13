@@ -117,8 +117,6 @@ def sync(out,archive,history,public_dir=None):
                  bool(status.get('draw_at')))
         eligible=(status.get('status')=='ready_observation' and full_ranking) or partial
         if eligible:
-            if status.get('scoring_rule_version')==SCORING_RULE_VERSION:
-                verify_scored_result(status,min_materials=1 if partial else 25)
             # Immutable, explicitly quality-labelled experimental snapshot.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}
             for key in ('valid_materials','scoring_rule_version','scoring_rules','material_counts'):
@@ -136,11 +134,13 @@ def sync(out,archive,history,public_dir=None):
             captured=datetime.fromisoformat(status['fetched_at'])
             in_time=(draw_cutoff is None or
                      (draw_cutoff.tzinfo is not None and captured.tzinfo is not None
-                      and captured<draw_cutoff and now<draw_cutoff))
+                      and captured<=now and captured<draw_cutoff and now<draw_cutoff))
             drawn=set()
             if Path(history).exists():
                 drawn={str(r['issue']) for r in json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])}
             if in_time and issue not in drawn and not (folder/'snapshot.json').exists():
+                if status.get('scoring_rule_version')==SCORING_RULE_VERSION:
+                    verify_scored_result(status,min_materials=1 if partial else 25)
                 core['frozen_at']=now.isoformat()
                 core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
                 write_once(folder/'snapshot.json',core)
