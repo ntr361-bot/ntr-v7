@@ -615,8 +615,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     policy=policy or {}
     if target_issue and not re.fullmatch(r'20\d{5}',str(target_issue)):
         raise ValueError('explicit target issue must use YYYYNNN')
-    max_pages=max(1,min(int(policy.get('max_pages',30)),50))
-    max_posts=max(1,min(int(policy.get('max_posts',150)),2000))
+    max_pages=max(1,min(int(policy.get('max_pages',30)),500 if policy.get('retrospective_exhaustive') else 50))
+    max_posts=max(1,min(int(policy.get('max_posts',150)),100000 if policy.get('retrospective_exhaustive') else 2000))
     feed_mode=policy.get('collection_mode')=='current_feed'
     posts=[];errors=[];historical_references=[];comment_checks=[]
     comment_targets=[];comment_target_total=0;comment_attempted=0;profile_budget_exhausted=False
@@ -675,7 +675,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 checkpoint('forum_scan: '+str(audit['steps']))
             checkpoint('forum_scan')
             listing,feed_audit=_pages(page,target_category,max_pages,
-                deadline=min(deadline,time.monotonic()+300),on_progress=scan_progress,
+                deadline=deadline if policy.get('retrospective_exhaustive') else min(deadline,time.monotonic()+300),on_progress=scan_progress,
                 stop_predicate=(lambda items:current_feed_boundary(items,target_issue)) if feed_mode else None)
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
@@ -770,6 +770,17 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     try:
                         captured=feed_card_post(item,url)
                         if item['issue']==issue:
+                            # Retrospective evidence must have verifiable pre-draw
+                            # publication time. A later post is not an original
+                            # contemporaneous prediction even if it mentions 286.
+                            if policy.get('retrospective_exhaustive'):
+                                seq=int(issue[-3:])
+                                draw_day=datetime(int(issue[:4]),1,1,tzinfo=LOCAL_TZ)+timedelta(days=seq-1)
+                                hh,mm=map(int,policy.get('verified_draw_time','21:32').split(':'))
+                                if datetime.fromisoformat(captured['published_at'])>=draw_day.replace(hour=hh,minute=mm):
+                                    errors.append({'reason':'post_published_after_prediction_cutoff',
+                                                   'author':captured['author'],'title':captured['title']})
+                                    continue
                             posts.append(captured)
                         else:
                             historical_references.extend(previous_period_records(
