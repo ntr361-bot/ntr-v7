@@ -117,3 +117,49 @@ jobs:
         run: |
           Write-Host '::error::Committed prediction synchronization failed; no formal model was run. Next hourly synchronization retries this snapshot.'
           'Committed-state publish failed. See logs; no prediction was regenerated.' >> $env:GITHUB_STEP_SUMMARY
+
+  forum-settle:
+    # Reuse the formal models' draw-history/update cycle. This is an independent
+    # downstream consumer; it never runs a prediction model or edits V7 files.
+    # It also runs when formal ledger transport fails, as long as verified
+    # history has actually been committed to main.
+    needs: sync
+    if: ${{ always() && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: forum-observer-archive
+      cancel-in-progress: false
+    steps:
+      - name: Checkout verified committed draw history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Settle forum snapshots using formal draw history (no collection)
+        working-directory: forum-observer
+        run: |
+          python -m forum_observer.cycle --out out --archive archive \
+            --history ../site/data/history.json --public ../site/data/forum-observer
+
+      - name: Commit only independently namespaced forum settlements
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add forum-observer/archive/ site/data/forum-observer/
+          if git diff --cached --quiet; then
+            echo "No new verified forum settlement; no commit needed."
+            exit 0
+          fi
+          git commit -m "chore(forum): settle from formal verified draw history"
+          # Fail closed on a concurrent commit; the existing hourly sync
+          # will retry from a fresh main rather than rebasing stale snapshots.
+          if ! git push origin HEAD:main; then
+            echo "::error::main advanced; forum settlement left unpushed for a fresh retry"
+            exit 1
+          fi
