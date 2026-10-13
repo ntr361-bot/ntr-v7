@@ -65,7 +65,7 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None):
+def sync(out,archive,history,public_dir=None,live_draws=None):
     archive=Path(archive);out=Path(out)
     status_path=out/'status.json'
     if status_path.exists():
@@ -148,6 +148,14 @@ def sync(out,archive,history,public_dir=None):
         raise ValueError('verified draw history file absent')
     draws=json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])
     by_issue={str(r['issue']):r for r in draws}
+    for candidate in live_draws or []:
+        issue=str(candidate['issue'])
+        prior=by_issue.get(issue)
+        if prior is not None:
+            if prior.get('special_zodiac')!=candidate['special_zodiac']:
+                raise ValueError('formal/live draw conflict for '+issue)
+            continue  # Formal history wins when both confirm the same result.
+        by_issue[issue]=candidate
     summary=[]
     for folder in sorted((archive/'issues').glob('20?????')) if (archive/'issues').exists() else []:
         snap_path=folder/'snapshot.json'
@@ -172,7 +180,7 @@ def sync(out,archive,history,public_dir=None):
             rank=next((v['rank'] for v in snap['ranking'] if v['zodiac']==zodiac),None)
             if rank is None:raise ValueError('rank missing for actual zodiac')
             write_once(folder/'settlement.json',{
-                'issue':issue,'actual':zodiac,'actual_source':'site/data/history.json',
+                'issue':issue,'actual':zodiac,'actual_source':actual.get('actual_source','site/data/history.json'),
                 'drawn_at':drawn_at.isoformat(),'snapshot_digest':digest,
                 'snapshot_at':snap['fetched_at'],'rank':rank,
                 'top1_hit':zodiac in snap['top1'],
@@ -257,6 +265,16 @@ if __name__=='__main__':
     p.add_argument('--archive',default='archive')
     p.add_argument('--history',default='../site/data/history.json')
     p.add_argument('--public',default=None)
+    p.add_argument('--ledger-live-results',default=None,
+                   help='Read the existing smart ledger live results API, never its fallback data')
     a=p.parse_args()
-    print('settled records:',sync(a.out,a.archive,a.history,a.public))
+    live=[]
+    if a.ledger_live_results:
+        try:
+            from .live_draw import fetch_live_draws
+            live=fetch_live_draws(a.ledger_live_results)
+            print('Verified live ledger draw records:',len(live))
+        except Exception as error:
+            print('Live result unavailable; using verified committed V7 history only:',error)
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live))
 
