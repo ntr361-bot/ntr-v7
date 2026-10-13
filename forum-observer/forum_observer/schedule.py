@@ -79,7 +79,7 @@ def ensure_daily_report(archive, now):
     else:
         lines += ["有效资料：未核实", "冻结状态：无", "缺失原因：本期未生成可验证的采集报告或模型任务未正常完成"]
     folder.mkdir(parents=True,exist_ok=True)
-    report.write_text("\\n".join(lines)+"\\n",encoding="utf-8")
+    report.write_text("\n".join(lines)+"\n",encoding="utf-8")
     latest=root/"latest.json"
     if not snapshot:
         prev=json.loads(latest.read_text(encoding="utf-8")) if latest.exists() else {}
@@ -89,7 +89,7 @@ def ensure_daily_report(archive, now):
                 "raw_count":0,"valid_materials":0,"valid_prediction_authors":0,
                 "top3":[],"top6":[],"updated_at":now.isoformat(),
                 "notes":"No verified current-issue collector data; nightly failure report only."
-            },ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+            },ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print("Nightly report generated:",report)
     return False
 
