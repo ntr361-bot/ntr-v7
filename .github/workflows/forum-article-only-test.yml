@@ -1,0 +1,64 @@
+name: Forum article-only 10-post validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/forum-article-only-test.yml']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Collect ten article details and verify isolation
+        run: |
+          python -u - <<'PY'
+          import json,time
+          from pathlib import Path
+          from forum_observer.page_collector import collect_page
+          cfg=json.loads(Path('collector-config.json').read_text())
+          cfg.update(max_posts=10,max_pages=5,max_collection_seconds=600,daily_profile_authors=0,freeze_enabled=False)
+          start=time.monotonic()
+          out=Path('article-only-test')
+          result=collect_page(cfg['forum_url'],out,None,cfg.get('category'),cfg)
+          posts=result['evidence']
+          summary={
+              'issue':result['issue'],
+              'elapsed_seconds':round(time.monotonic()-start,1),
+              'requested_posts':10,
+              'detail_posts':len(posts),
+              'nonempty_article_posts':sum(bool(p['body'].strip()) for p in posts),
+              'valid_materials':result['valid_materials'],
+              'distinct_valid_authors':result['distinct_valid_authors'],
+              'comment_records':result['comment_records'],
+              'comment_attempted_threads':result['comment_attempted_threads'],
+              'errors':result['rejected'],
+              'posts':[{'author':p['author'],'title':p['title'],'url':p['detail_url'],'body_chars':len(p['body']),'excerpt':p['body'][:180],'comments':p['comments'],'detail_coverage':p.get('detail_coverage')} for p in posts],
+              'frozen':False,'published':False
+          }
+          print('VALIDATION_SUMMARY '+json.dumps(summary,ensure_ascii=False))
+          assert len(posts)==10, 'Fewer than 10 article details retrieved'
+          assert all(p['body'].strip() and p.get('detail_coverage')=='verified_article_text' for p in posts), 'Missing verified article text'
+          assert all(p['comments']=='' and not p.get('images') and p.get('evidence_scope')=='post_article' for p in posts)
+          assert result['comment_records']==0 and result['comment_attempted_threads']==0
+          assert not result['completed_thread_cache']
+          assert not list(out.rglob('snapshot.json'))
+          print('ARTICLE_ONLY_VALIDATION_PASSED')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-article-only-10-post-test
+          path: forum-observer/article-only-test/
