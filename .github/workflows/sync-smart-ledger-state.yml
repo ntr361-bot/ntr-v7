@@ -129,6 +129,7 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      id-token: write
     concurrency:
       group: forum-observer-archive
       cancel-in-progress: false
@@ -139,9 +140,25 @@ jobs:
           ref: main
           persist-credentials: true
 
-      - name: Settle forum snapshots using formal draw history (no collection)
+      - name: Settle forum snapshots using authenticated read-only ledger results
         working-directory: forum-observer
+        shell: bash
+        env:
+          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
         run: |
+          set -euo pipefail
+          # The smart-ledger site is access-protected. Read it using the exact
+          # OIDC/bypass mechanism already used by the formal V7 sync.
+          if [ -n "${SITES_SIWC_BYPASS_TOKEN:-}" ] && [ -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" ]; then
+            if TOKEN_RESPONSE="$(curl -fsS --max-time 12 \
+                -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+                "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=smart-ledger-v7")"; then
+              export FORUM_LEDGER_AUTH_BEARER="$(printf '%s' "$TOKEN_RESPONSE" |
+                python3 -c 'import json,sys;print(json.load(sys.stdin)["value"])')"
+            else
+              echo "Could not obtain read-only ledger authorization; fallback to committed draw history."
+            fi
+          fi
           python -m forum_observer.cycle --out out --archive archive \
             --history ../site/data/history.json --public ../site/data/forum-observer \
             --ledger-live-results https://smart-ledger-2026.ntr133.chatgpt.site/api/results
