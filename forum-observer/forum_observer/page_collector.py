@@ -612,7 +612,12 @@ def unparsed_evidence(posts):
 
 def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     from playwright.sync_api import sync_playwright
-    policy=policy or {}
+    policy=dict(policy or {})
+    # Production collection is restricted to verified article detail text.
+    policy['collect_comments']=False
+    policy['collect_comment_images']=False
+    policy['collect_article_images']=False
+    article_only=True
     if target_issue and not re.fullmatch(r'20\d{5}',str(target_issue)):
         raise ValueError('explicit target issue must use YYYYNNN')
     max_pages=max(1,min(int(policy.get('max_pages',30)),500 if policy.get('retrospective_exhaustive') else 50))
@@ -681,7 +686,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             issue=target_issue or current_issue(listing)
             # Cache only completed verified threads from this same period/version.
             cache_path=out.parent/'archive'/'issues'/issue/'completed-threads.json'
-            if feed_mode and cache_path.exists():
+            if feed_mode and policy.get('collect_comments',False) and cache_path.exists():
                 try:
                     prior=json.loads(cache_path.read_text(encoding='utf-8'))
                     if prior.get('issue')==issue and prior.get('rule_version')==SCORING_RULE_VERSION:
@@ -766,7 +771,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     truncated=True
                     errors.append({'reason':'collection time budget exhausted; remaining posts not checked'})
                     break
-                if feed_mode:
+                if feed_mode and not article_only:
                     try:
                         captured=feed_card_post(item,url)
                         if item['issue']==issue:
@@ -790,13 +795,13 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     continue
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
-                    if not _detail(page,url,item,target_category,max_pages,deadline=deadline):
+                    if not _detail(page,url,item,target_category,max_pages,deadline=min(deadline,time.monotonic()+int(policy.get('max_featured_post_seconds',35) if item.get('is_featured') else policy.get('max_post_seconds',20)))):
                         errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
                         continue
                     body=page.locator('body').inner_text()
                     article=_article_body(page,item)
                     imgs=[]
-                    for src in _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title']):
+                    for src in ([] if article_only else _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title'])):
                         if time.monotonic()>=deadline:
                             truncated=True
                             errors.append({'reason':'collection time budget exhausted during OCR','author':item['author']})
@@ -805,7 +810,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                         imgs.append({'src':src,'ocr':cache[src],
                                      'ocr_status':'recognized' if cache[src] else 'unreadable_or_nontext'})
                     item_post={**{k:v for k,v in item.items() if k not in ('key','href')},
-                               'body':article,'comments':_comments(body),
+                               'body':article,'comments':'',
+                               'evidence_scope':'post_article',
+                               'detail_coverage':'verified_article_text',
+                               'comments_coverage':'disabled',
                                'images':imgs,'detail_url':page.url}
                     if item['issue']==issue:
                         posts.append(item_post)
@@ -959,13 +967,13 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'collection_priority':'featured_then_reply_hint_then_direct_link_then_favored_author',
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
-            'evidence_scope':'current_feed_card' if feed_mode else 'post_article',
+            'evidence_scope':'post_article',
             'comment_image_policy':('text_first_deferred' if not policy.get('collect_comment_images',True)
                                     else 'prioritized_current_issue_threads') if policy.get('collect_comments') else 'not_expanded',
             'comment_checks':comment_checks,
             'article_image_audit':article_image_audit,
             'comment_records':sum(p.get('evidence_scope')=='verified_comment' for p in posts),
-            'coverage_label':('当期列表、优先正文和评论文字：抽样检查，非全覆盖' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
+            'coverage_label':('当期帖子正文详情：抽样检查，评论采集已关闭' if feed_mode else '历史期目标采集') if not truncated else '部分覆盖：超时或未完成','fetched_at':datetime.now(timezone.utc).isoformat(),
             'raw_count':len(posts),'valid_leaderboard':0,'valid_outside':len(posts),
             'author_profiles_checked':len(profile_checks),
             'author_profile_budget_exhausted':profile_budget_exhausted,
@@ -1033,7 +1041,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'next_period_posts_checked':len(next_period),
                      'historical_reference_count':len(historical_references),
                      'excluded_draw_header':True,
-                     'post_article_only':not feed_mode,'card_owned_text_only':feed_mode,
+                     'post_article_only':True,'card_owned_text_only':False,
                      'truncated':truncated,'detail_errors':errors,'issue_filter_strict':True},
             'progress':{'leaderboard_source':'historic_candidates_unverified',
                         'leaderboard_checked':0,'leaderboard_total':0,
