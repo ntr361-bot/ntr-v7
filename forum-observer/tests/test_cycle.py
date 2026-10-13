@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 from forum_observer.page_collector import _issue,current_issue,extract_picks,score_posts,_comments,_author_comments
 from forum_observer.cycle import sync, persist_completed_threads
 from forum_observer.core import SCORING_RULE_VERSION
+from unittest.mock import patch
 
 class CycleTests(unittest.TestCase):
     def test_completed_thread_checkpoint_is_same_period_and_append_only(self):
@@ -120,6 +121,84 @@ class CycleTests(unittest.TestCase):
         ranks,works=score_posts([post])
         self.assertEqual(ranks,[])
         self.assertEqual(sum(p['counted_for_ranking'] for p in works),0)
+
+    def test_one_valid_material_still_freezes_as_below_minimum_before_draw(self):
+        with TemporaryDirectory() as tmp:
+            from datetime import timezone
+            base=Path(tmp);out=base/'out';out.mkdir()
+            archive=base/'archive';history=base/'history.json'
+            history.write_text(json.dumps({'records': []}),encoding='utf-8')
+            issue='2026289'
+            source=dict(author='甲',issue=issue,title='289期推荐六肖：鼠牛虎兔龙蛇',
+                        body='',images=[],detail_url='https://example.org/thread-1')
+            ranking,predictions=score_posts([source])
+            self.assertEqual(sum(p['counted_for_ranking'] for p in predictions),1)
+            status=dict(issue=issue,status='incomplete_observation',
+                ranking=ranking,top1=[r['zodiac'] for r in ranking[:1]],
+                top3=[r['zodiac'] for r in ranking[:3]],
+                top6=[r['zodiac'] for r in ranking[:6]],
+                scoring_rule_version=SCORING_RULE_VERSION,
+                valid_materials=1,parsed_predictions=predictions,evidence=[source],
+                fetched_at='2026-10-16T20:20:00+08:00',
+                draw_at='2026-10-16T21:32:00+08:00',pre_draw_verified=True,
+                author_selection={'min_valid_materials':25,'valid_prediction_authors':1})
+            (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
+            class Clock(datetime):
+                @classmethod
+                def now(cls,tz=None):
+                    fixed=datetime(2026,10,16,20,30,tzinfo=ZoneInfo('Asia/Shanghai'))
+                    return fixed.astimezone(tz) if tz else fixed
+            with patch('forum_observer.cycle.datetime',Clock):
+                sync(out,archive,history)
+            path=archive/'issues'/issue/'snapshot.json'
+            self.assertTrue(path.is_file())
+            snapshot=json.loads(path.read_text())
+            self.assertEqual(snapshot['valid_materials'],1)
+            self.assertEqual(snapshot['quality_status'],'below_minimum_samples')
+            self.assertEqual(snapshot['top6'],[r['zodiac'] for r in ranking[:6]])
+            unchanged=path.read_bytes()
+            status['ranking']=list(reversed(ranking))
+            (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
+            with patch('forum_observer.cycle.datetime',Clock):
+                sync(out,archive,history)
+            self.assertEqual(path.read_bytes(),unchanged)
+
+    def test_no_valid_material_does_not_fabricate_freeze(self):
+        with TemporaryDirectory() as tmp:
+            base=Path(tmp);out=base/'out';out.mkdir()
+            archive=base/'archive';history=base/'history.json'
+            history.write_text(json.dumps({'records':[]}),encoding='utf-8')
+            status={'issue':'2026289','status':'incomplete_observation',
+                    'valid_materials':0,'ranking':[], 'top3':[], 'top6':[],
+                    'fetched_at':'2026-10-16T20:20:00+08:00',
+                    'pre_draw_verified':True,'draw_at':'2026-10-16T21:32:00+08:00'}
+            (out/'status.json').write_text(json.dumps(status),encoding='utf-8')
+            sync(out,archive,history)
+            self.assertFalse((archive/'issues'/'2026289'/'snapshot.json').exists())
+
+    def test_verified_ledger_draw_settles_without_changing_formal_history(self):
+        with TemporaryDirectory() as tmp:
+            base=Path(tmp);out=base/'out';out.mkdir();archive=base/'archive'
+            history=base/'history.json'
+            history.write_text(json.dumps({'records':[]}),encoding='utf-8')
+            folder=archive/'issues'/'2026286';folder.mkdir(parents=True)
+            import hashlib
+            snapshot={'issue':'2026286','fetched_at':'2026-10-13T20:20:00+08:00',
+                      'ranking':[{'rank':i+1,'zodiac':z} for i,z in enumerate(
+                                  '鼠牛虎兔龙蛇马羊猴鸡狗猪')],
+                      'top1':['鼠'],'top3':['鼠','牛','虎'],
+                      'top6':['鼠','牛','虎','兔','龙','蛇']}
+            snapshot['digest']=hashlib.sha256(json.dumps(
+                snapshot,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+            (folder/'snapshot.json').write_text(json.dumps(snapshot,ensure_ascii=False))
+            draw={'issue':'2026286','special_zodiac':'虎',
+                  'open_time':'2026-10-13T21:35:00+08:00',
+                  'actual_source':'smart-ledger:/api/results'}
+            sync(out,archive,history,live_draws=[draw])
+            settled=json.loads((folder/'settlement.json').read_text())
+            self.assertEqual(settled['actual'],'虎')
+            self.assertEqual(settled['actual_source'],'smart-ledger:/api/results')
+            self.assertEqual(json.loads(history.read_text())['records'],[])
 
     def test_append_only_after_real_draw(self):
         with TemporaryDirectory() as tmp:
