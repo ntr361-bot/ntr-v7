@@ -59,6 +59,9 @@ jobs:
           path: |
             forum-observer/.image-cache/
           key: forum-images-${{ runner.os }}-${{ github.run_id }}
+      - name: Ensure nightly issue report even if collection produced no data
+        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
+        run: python -m forum_observer.schedule --archive archive --ensure-report
       - name: Cycle snapshots and settlements from verified V7 history
         run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
       - name: Archive independent forum data only
@@ -117,7 +120,7 @@ jobs:
         shell: bash
         run: |
           if [ -f out/status.json ]; then
-            python -c "import json,sys; a=json.load(open('out/status.json'));sys.exit(0 if a.get('status')=='ready_observation' else 2)"
+            python -c "import json,sys,pathlib; a=json.load(open('out/status.json')); f=pathlib.Path('archive/issues')/str(a.get('issue',''))/'snapshot.json'; p=pathlib.Path('archive/issues')/str(a.get('issue',''))/'report.md'; ok=f.is_file() and p.is_file(); print('Frozen nightly report:',f,'valid_materials:',a.get('valid_materials',0),'minimum:',a.get('author_selection',{}).get('min_valid_materials',25));sys.exit(0 if ok else 2)"
           else
             echo "No collector status"; exit 2
           fi
