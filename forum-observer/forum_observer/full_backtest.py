@@ -52,19 +52,31 @@ def perform(issue,config,out,snapshot):
     scroll=audit.get("forum_scroll",{})
     forum_boundary=scroll.get("stop_reason") in ("current_issue_boundary_reached",)
     listing_done=bool(scroll.get("end_confirmed") or forum_boundary)
-    exhausted=bool(audit.get("truncated") or pending or not listing_done)
+    # "Complete" here means every *successfully retrieved and recognized*
+    # eligible zodiac play has been scored, not that unparseable text or
+    # inaccessible threads have magically become valid evidence.
+    # Coverage gaps are separately reported and never disguised.
+    coverage_limited=bool(audit.get("truncated") or pending or not listing_done)
     valid=result.get("valid_materials",0)
-    complete=valid>=0 and len(actual_ranks)==12 and not exhausted
+    complete=valid>0 and len(actual_ranks)==12 and (
+        sum(bool(p.get("counted_for_ranking")) for p in result.get("parsed_predictions",[]))==valid
+    )
     old_top6=snap.get("top6",[])
     new_top6=result.get("top6",[])
     metrics={
-        "issue":issue,"status":"complete_retrospective_text_audit" if complete else "INCOMPLETE_NOT_FINAL",
+        "issue":issue,"status":"recognized_valid_evidence_scored" if complete else "NO_VERIFIABLE_RANKING",
+        "coverage_limited":coverage_limited,
+        "coverage_statement":"仅对成功获取且可按规则识别的本期文字资料完整计分；无法识别或访问的材料另列未计分",
         "historical_test_only":True,"outcome_data_used":False,
         "ocr_enabled":False,"frozen_snapshot_unchanged":True,
         "old_valid_materials":snap.get("valid_materials"),
         "new_valid_materials":valid,
         "material_difference":valid-int(snap.get("valid_materials") or 0),
         "raw_posts":result.get("raw_count"),
+        "parsed_candidates":result.get("candidate_materials"),
+        "excluded_candidates":result.get("excluded_materials"),
+        "unparsed_evidence":len(result.get("unparsed_evidence",[])),
+        "pending_rule_questions":result.get("pending_rule_question_count"),
         "featured_valid_materials":result.get("featured_valid_materials"),
         "ordinary_valid_materials":result.get("ordinary_valid_materials"),
         "featured_found_threads":result.get("featured_found_threads"),
@@ -76,6 +88,7 @@ def perform(issue,config,out,snapshot):
         "listing_end_confirmed":bool(scroll.get("end_confirmed")),
         "listing_stop_reason":scroll.get("stop_reason"),
         "thread_incomplete_count":pending,
+        "coverage_label":result.get("coverage_label"),
         "old_top3":snap.get("top3",[]),"new_top3":result.get("top3",[]),
         "old_top6":old_top6,"new_top6":new_top6,
         "top6_added":[z for z in new_top6 if z not in old_top6],
@@ -88,7 +101,7 @@ def perform(issue,config,out,snapshot):
                        "Historical crawl result is never a contemporaneous frozen prediction."],
     }
     if not complete:
-        metrics["incomplete_reason"]="Forum scan did not finish, an item was not checked, or no 12-zodiac scoring exists"
+        metrics["incomplete_reason"]="No independently verifiable scored twelve-zodiac ranking"
     (out/"comparison.json").write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     if complete:
         rows=[
@@ -97,6 +110,8 @@ def perform(issue,config,out,snapshot):
           "> 历史回测只按期号/原帖发布时间筛选资料；不读取开奖结果、不参与兑奖，图片识别关闭。",
           f"有效资料：原冻结{metrics['old_valid_materials']}份，回测{valid}份，变化{metrics['material_difference']:+d}份。",
           f"加精有效资料：{metrics['featured_valid_materials']}份；普通有效资料：{metrics['ordinary_valid_materials']}份。",
+          f"抓取记录：{metrics['raw_posts']}条；候选：{metrics['parsed_candidates']}份；排除：{metrics['excluded_candidates']}份；未识别线索：{metrics['unparsed_evidence']}项。",
+          f"覆盖限制：{'有部分帖子或评论未完成检查，不宣称遍历全部网站' if coverage_limited else '采集器未报告遗漏队列'}。",
           f"原Top3：{'、'.join(metrics['old_top3'])}；回测Top3：{'、'.join(metrics['new_top3'])}",
           f"原Top6：{'、'.join(old_top6)}；回测Top6：{'、'.join(new_top6)}",
           f"Top6新增：{'、'.join(metrics['top6_added']) or '无'}；移出：{'、'.join(metrics['top6_removed']) or '无'}",
@@ -106,6 +121,7 @@ def perform(issue,config,out,snapshot):
             for r in metrics["rank_changes"] if r["delta"] is not None],
           "",
           "原始证据、剔除项、来源、规则说明和评论覆盖见本次artifact中的 2026286/report.md 与 status.json。",
+          "图片OCR继续关闭，无法识别的作品不计分。",
           "该回测无法排除作者在开奖后修改旧帖的可能，因此不应替代当晚冻结的预测。",
         ]
         (out/"comparison.md").write_text("\n".join(rows)+"\n",encoding="utf-8")
