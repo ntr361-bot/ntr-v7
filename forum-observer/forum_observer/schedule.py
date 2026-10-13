@@ -52,14 +52,60 @@ def decide(now, archive):
     return True, issue, min(MAX_SECONDS, remaining), "missing_snapshot_retry"
 
 
+def ensure_daily_report(archive, now):
+    """Publish an honest issue-scoped nightly report even without a collector run.
+
+    Never fabricate qualifying evidence or produce a freeze in this path.
+    """
+    issue=current_issue(now)
+    root=Path(archive)
+    folder=root/"issues"/issue
+    report=folder/"report.md"
+    if report.exists():
+        print("PASS: nightly report exists:",report)
+        return True
+    snap_path=folder/"snapshot.json"
+    snapshot=json.loads(snap_path.read_text(encoding="utf-8")) if snap_path.exists() else None
+    lines=[f"# 论坛 {issue} 本期报告","",
+           f"核查时间：{now.astimezone(TZ).isoformat()}",
+           "状态："+("冻结快照存在，但原采集报告缺失" if snapshot else "未获得可冻结资料；没有本期冻结预测"),
+           "这是自动核查生成的状态报告，不是采集成功报告，也不包含虚构排名。"]
+    if snapshot:
+        lines += [
+            f"有效资料：{snapshot.get('valid_materials','未知')}份",
+            f"冻结质量：{snapshot.get('quality_status',snapshot.get('freeze_classification','历史快照'))}",
+            "冻结Top3："+'、'.join(snapshot.get('top3',[])),
+            "冻结Top6："+'、'.join(snapshot.get('top6',[]))]
+    else:
+        lines += ["有效资料：未核实", "冻结状态：无", "缺失原因：本期未生成可验证的采集报告或模型任务未正常完成"]
+    folder.mkdir(parents=True,exist_ok=True)
+    report.write_text("\\n".join(lines)+"\\n",encoding="utf-8")
+    latest=root/"latest.json"
+    if not snapshot:
+        prev=json.loads(latest.read_text(encoding="utf-8")) if latest.exists() else {}
+        if str(prev.get("issue",""))<issue:
+            latest.write_text(json.dumps({
+                "issue":issue,"status":"missing_collection_report",
+                "raw_count":0,"valid_materials":0,"valid_prediction_authors":0,
+                "top3":[],"top6":[],"updated_at":now.isoformat(),
+                "notes":"No verified current-issue collector data; nightly failure report only."
+            },ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    print("Nightly report generated:",report)
+    return False
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--archive", default="archive")
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT"))
     parser.add_argument("--require-snapshot", action="store_true")
+    parser.add_argument("--ensure-report", action="store_true")
     a = parser.parse_args()
     now = datetime.now(TZ)
     issue = current_issue(now)
+    if a.ensure_report:
+        ensure_daily_report(a.archive, now)
+        return 0
     if a.require_snapshot:
         if not snapshot_exists(a.archive, issue):
             raise SystemExit(f"ERROR: {issue} has no immutable forum snapshot at daily audit")
