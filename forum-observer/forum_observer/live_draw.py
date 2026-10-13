@@ -3,7 +3,7 @@
 No historical V7 files or D1 rows are modified. The endpoint's fallback payload
 is never accepted for a new settlement.
 """
-import json,re
+import json,os,re
 from datetime import datetime,timezone
 from urllib.request import Request,urlopen
 from zoneinfo import ZoneInfo
@@ -52,7 +52,13 @@ def normalize_live_draws(payload, now=None):
 def fetch_live_draws(url,timeout=12):
     if not url.startswith("https://"):
         raise ValueError("HTTPS required for read-only ledger result source")
-    request=Request(url,headers={"Accept":"application/json","User-Agent":"forum-observer-settlement/1"})
+    headers={"Accept":"application/json","User-Agent":"forum-observer-settlement/1"}
+    oidc=os.environ.get("FORUM_LEDGER_AUTH_BEARER")
+    bypass=os.environ.get("SITES_SIWC_BYPASS_TOKEN")
+    if oidc and bypass:
+        headers["Authorization"]="Bearer "+oidc
+        headers["OAI-Sites-Authorization"]="Bearer "+bypass
+    request=Request(url,headers=headers)
     with urlopen(request,timeout=timeout) as response:
         if response.status!=200:raise ValueError("ledger results HTTP "+str(response.status))
         data=response.read(2_000_001)
