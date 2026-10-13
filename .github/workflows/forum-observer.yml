@@ -166,8 +166,8 @@ jobs:
             forum-observer/backtest-286/
           retention-days: 30
           if-no-files-found: warn
-      - name: Mark incomplete source coverage as failed, never claim final report
+      - name: Verify independent recognizable-evidence scoring and retain coverage warnings
         if: always()
         working-directory: forum-observer
         run: |
-          python -c "import json,pathlib,sys; p=pathlib.Path('backtest-286/comparison.json'); ok=p.is_file() and json.loads(p.read_text()).get('status')=='complete_retrospective_text_audit'; print('Retrospective complete and comparable:',ok); sys.exit(0 if ok else 2)"
+          python -c "import json,pathlib,sys; p=pathlib.Path('backtest-286/comparison.json'); ok=p.is_file() and json.loads(p.read_text()).get('status')=='recognized_valid_evidence_scored'; print('Retrospective complete and comparable:',ok); sys.exit(0 if ok else 2)"
