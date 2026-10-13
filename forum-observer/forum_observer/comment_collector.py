@@ -48,7 +48,8 @@ def collect_comments(page,parent,deadline,policy):
             body=row['text'],comments='',images=[],detail_url=page.url,
             published_at=stamp.isoformat(),evidence_id=identity,
             evidence_scope='verified_comment',parent_author=parent['author'],
-            comment_floor=row['floor'],author_verified=True,parent_title=parent['title'])
+            comment_floor=row['floor'],author_verified=True,parent_title=parent['title'],
+            origin_thread_featured=parent.get('is_featured') is True)
         for raw in row['image_urls']:
             src=urljoin(page.url,raw);u=urlparse(src)
             if u.scheme!='https' or u.hostname not in HOSTS or '/tk118files/comment/' not in u.path:continue
