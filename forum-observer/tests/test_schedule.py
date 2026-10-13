@@ -6,7 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from zoneinfo import ZoneInfo
 
-from forum_observer.schedule import current_issue, decide, snapshot_exists
+from forum_observer.schedule import current_issue, decide, snapshot_exists, ensure_daily_report
 
 TZ = ZoneInfo("Asia/Shanghai")
 
@@ -44,6 +44,19 @@ class ScheduleTests(unittest.TestCase):
             self.write_snapshot(tmp, "2026285")
             self.assertTrue(decide(self.at(19, 10, 13), tmp)[0])
             self.assertEqual(current_issue(self.at(19, 10, 13)), "2026286")
+
+    def test_nightly_report_is_saved_even_without_any_verified_material(self):
+        with TemporaryDirectory() as tmp:
+            archive=Path(tmp)
+            self.assertFalse(ensure_daily_report(archive,self.at(20,30,13)))
+            report=archive/'issues'/'2026286'/'report.md'
+            self.assertTrue(report.is_file())
+            text=report.read_text(encoding='utf-8')
+            self.assertIn('没有本期冻结预测',text)
+            self.assertEqual(ensure_daily_report(archive,self.at(20,30,13)),True)
+            self.assertEqual(report.read_text(encoding='utf-8'),text)
+            self.assertFalse((archive/'issues'/'2026286'/'snapshot.json').exists())
+            self.assertEqual(json.loads((archive/'latest.json').read_text())['issue'],'2026286')
 
     def test_invalid_existing_snapshot_is_not_replaced(self):
         with TemporaryDirectory() as tmp:
