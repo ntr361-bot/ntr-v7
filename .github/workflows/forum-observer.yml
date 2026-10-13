@@ -7,14 +7,6 @@ on:
     branches: [forum-gpt-trigger]
     paths:
       - 'forum-observer/triggers/**'
-  schedule:
-    - cron: "10 11 * * *" # 19:10 China - early collection (avoids one missed cron)
-    - cron: "40 11 * * *" # 19:40 China - retry only if no snapshot
-    - cron: "0 12 * * *"  # 20:00 China - last bounded retry
-    - cron: "30 12 * * *" # 20:30 China - snapshot audit, NO collection
-    - cron: "40 14 * * *" # 22:40 China - settle/next-issue
-    - cron: "15 15 * * *" # 23:15 China - settle only, never collect new posts
-    - cron: "40 0 * * *"  # 08:40 China - retry settlement when V7 history advances
 permissions:
   contents: write
 concurrency:
@@ -37,7 +29,7 @@ jobs:
           python-version: "3.12"
       - name: Decide current-issue collection
         id: collection-gate
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.schedule == '10 11 * * *' || github.event.schedule == '40 11 * * *' || github.event.schedule == '0 12 * * *'
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
         run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
@@ -53,7 +45,7 @@ jobs:
           key: forum-images-${{ runner.os }}-${{ github.run_id }}
           restore-keys: forum-images-${{ runner.os }}-
       - name: Observe current issue
-        # Early/backup schedules are idempotent; never rescan a frozen issue.
+        # GPT/manual triggers are idempotent; never rescan a frozen issue.
         if: steps.collection-gate.outputs.collect == 'true'
         id: observe
         continue-on-error: true
@@ -93,9 +85,6 @@ jobs:
             git pull --rebase origin main
           done
           exit 1
-      - name: Audit immutable snapshot at 20:30
-        if: github.event_name == 'schedule' && github.event.schedule == '30 12 * * *'
-        run: python -m forum_observer.schedule --archive archive --require-snapshot
       - name: Report status
         if: always()
         shell: bash
@@ -117,7 +106,7 @@ jobs:
             site/data/forum-observer/history.json
           if-no-files-found: ignore
       - name: Enforce collection quality
-        # Retry/collection schedules are verified only when Observe actually ran.
+        # GPT/manual collection is verified only when Observe actually ran.
         if: always() && steps.observe.outcome != 'skipped'
         shell: bash
         run: |
