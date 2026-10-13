@@ -48,6 +48,11 @@ jobs:
                 return $response
               } catch {
                 $lastError = $_
+                if ($attempt -eq 3 -and $_.ErrorDetails.Message) {
+                  # Print only the site's bounded JSON error body, never headers or bearer tokens.
+                  $reason = [string]$_.ErrorDetails.Message
+                  Write-Warning ("V7 sync API response: " + $reason.Substring(0, [Math]::Min(800, $reason.Length)))
+                }
                 if ($attempt -lt 3) { Start-Sleep -Seconds (3 * $attempt) }
               }
             }
