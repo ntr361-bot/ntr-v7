@@ -13,7 +13,7 @@ from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 from .comment_images import eligible_comment_image
-from .collection_policy import choose_profile_samples, choose_comment_threads
+from .collection_policy import choose_profile_samples, choose_comment_threads, comment_thread_budget_seconds
 
 
 class _PostParser(HTMLParser):
@@ -840,7 +840,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     comment_attempted+=1
                     thread_states[thread_id]['attempts']=1
                     post_deadline=min(deadline-45,time.monotonic()+
-                        max(10,min(120,int(policy.get('max_post_seconds',75)))))
+                        comment_thread_budget_seconds(parent, policy))
                     try:
                         opened=_detail(page,url,item,target_category,max_pages,post_deadline)
                         if not opened and time.monotonic()<post_deadline-10:
@@ -916,6 +916,20 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     valid_votes=[p for p in predictions if p['counted_for_ranking']]
     valid_authors={p['author'] for p in valid_votes}
     valid_materials=len(valid_votes)
+    # Audit actual counted votes from featured source threads, not the number
+    # of featured cards discovered in the scrolling forum listing.
+    post_by_evidence={p.get('evidence_id',p.get('detail_url')):p for p in posts}
+    featured_valid_materials=sum(
+        bool((post_by_evidence.get(v.get('evidence_id')) or {}).get('is_featured') is True
+             or (post_by_evidence.get(v.get('evidence_id')) or {}).get('origin_thread_featured') is True)
+        for v in valid_votes)
+    featured_attempted_threads=sum(
+        bool(parent.get('is_featured') is True and
+             thread_states.get(parent['evidence_id'],{}).get('attempts',0)>0)
+        for parent,_ in comment_targets)
+    featured_completed_threads=sum(
+        bool(check.get('is_featured') is True and check.get('thread_state')=='checked')
+        for check in comment_checks)
     rejected_materials=len(predictions)-valid_materials
     unscored_posts=sum(1 for p in posts if p.get('evidence_id',p['detail_url']) not in {v.get('evidence_id',v['source_url']) for v in valid_votes})
     enough=(valid_materials>=int(policy.get('min_valid_materials',25))
@@ -956,6 +970,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'featured_found_threads':sum(p.get('is_featured') is True for p in scoped),
             'featured_selected_threads':sum(p.get('is_featured') is True for p,_ in comment_targets),
             'featured_checked_threads':sum(c.get('is_featured') is True for c in comment_checks),
+            'featured_attempted_threads':featured_attempted_threads,
+            'featured_completed_threads':featured_completed_threads,
+            'featured_valid_materials':featured_valid_materials,
+            'ordinary_valid_materials':valid_materials-featured_valid_materials,
             'comment_unchecked_threads':max(0,comment_target_total-
                 sum(x['status']=='checked' for x in thread_states.values())),
             'history_scope':'target_issue_and_next_issue' if target_issue else 'not_requested',
