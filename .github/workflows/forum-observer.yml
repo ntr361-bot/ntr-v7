@@ -17,6 +17,7 @@ defaults:
     working-directory: forum-observer
 jobs:
   forum-cycle:
+    if: ${{ github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') }}
     runs-on: ubuntu-latest
     timeout-minutes: 80
     steps:
@@ -124,3 +125,49 @@ jobs:
           else
             echo "No collector status"; exit 2
           fi
+
+  forum-286-retrospective:
+    # Explicit one-off run only. Never called by the 19:40/20:30 schedule.
+    if: ${{ github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout current collector and preserved frozen baseline
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install public forum browser (no OCR)
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Run collector unit tests
+        working-directory: forum-observer
+        run: python -m unittest discover -s tests -q
+      - name: Crawl all reachable 286 text, comments and score independently
+        id: backtest
+        working-directory: forum-observer
+        continue-on-error: true
+        run: |
+          python -u -m forum_observer.full_backtest \
+            --issue 2026286 --config collector-config.json \
+            --out backtest-286 --snapshot archive/issues/2026286/snapshot.json
+      - name: Upload isolated historical evidence and comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-286-exhaustive-text-backtest
+          path: |
+            forum-observer/backtest-286/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Mark incomplete source coverage as failed, never claim final report
+        if: always()
+        working-directory: forum-observer
+        run: |
+          python -c "import json,pathlib,sys; p=pathlib.Path('backtest-286/comparison.json'); ok=p.is_file() and json.loads(p.read_text()).get('status')=='complete_retrospective_text_audit'; print('Retrospective complete and comparable:',ok); sys.exit(0 if ok else 2)"
