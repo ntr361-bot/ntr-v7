@@ -143,6 +143,8 @@ class CycleTests(unittest.TestCase):
                 draw_at='2026-10-16T21:32:00+08:00',pre_draw_verified=True,
                 author_selection={'min_valid_materials':25,'valid_prediction_authors':1})
             (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
+            (out/issue).mkdir()
+            (out/issue/'report.md').write_text(f'# 论坛 {issue} 采集成绩单\\n\\n有效资料：1份\\n',encoding='utf-8')
             class Clock(datetime):
                 @classmethod
                 def now(cls,tz=None):
@@ -156,6 +158,9 @@ class CycleTests(unittest.TestCase):
             self.assertEqual(snapshot['valid_materials'],1)
             self.assertEqual(snapshot['quality_status'],'below_minimum_samples')
             self.assertEqual(snapshot['top6'],[r['zodiac'] for r in ranking[:6]])
+            report_text=(archive/'issues'/issue/'report.md').read_text(encoding='utf-8')
+            self.assertIn('**本期冻结状态：未达标实验冻结**',report_text)
+            self.assertIn('标准门槛25份',report_text)
             unchanged=path.read_bytes()
             status['ranking']=list(reversed(ranking))
             (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
