@@ -144,7 +144,7 @@ class CycleTests(unittest.TestCase):
                 author_selection={'min_valid_materials':25,'valid_prediction_authors':1})
             (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
             (out/issue).mkdir()
-            (out/issue/'report.md').write_text(f'# 论坛 {issue} 采集成绩单\\n\\n有效资料：1份\\n',encoding='utf-8')
+            (out/issue/'report.md').write_text(f'# 论坛 {issue} 采集成绩单\n\n有效资料：1份\n',encoding='utf-8')
             class Clock(datetime):
                 @classmethod
                 def now(cls,tz=None):
