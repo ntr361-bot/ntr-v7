@@ -144,6 +144,28 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
                 core['frozen_at']=now.isoformat()
                 core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
                 write_once(folder/'snapshot.json',core)
+        # The human-readable report must explicitly say if the immutable
+        # snapshot was frozen with fewer than 25 valid samples.
+        saved_snapshot=folder/'snapshot.json'
+        frozen_report=folder/'report.md'
+        if saved_snapshot.exists() and frozen_report.exists():
+            saved=json.loads(saved_snapshot.read_text(encoding='utf-8'))
+            source=frozen_report.read_text(encoding='utf-8')
+            marker='**本期冻结状态：'
+            if marker not in source:
+                count=saved.get('valid_materials','未知')
+                minimum=saved.get('minimum_valid_materials',25)
+                quality=('未达标实验冻结' if isinstance(count,int) and count<minimum
+                         else '实验冻结')
+                annotation=(f"**本期冻结状态：{quality}**；有效资料{count}份，"
+                            f"标准门槛{minimum}份；冻结时间"
+                            f"{saved.get('frozen_at',saved.get('fetched_at','未知'))}；"
+                            f"不可变摘要：{saved.get('digest','未知')}\\n")
+                if '\\n\\n' in source:
+                    source=source.replace('\\n\\n','\\n\\n'+annotation+'\\n',1)
+                else:
+                    source+=annotation
+                frozen_report.write_text(source,encoding='utf-8')
     if not Path(history).exists():
         raise ValueError('verified draw history file absent')
     draws=json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])
