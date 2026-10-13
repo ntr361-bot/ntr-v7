@@ -160,9 +160,9 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
                 annotation=(f"**本期冻结状态：{quality}**；有效资料{count}份，"
                             f"标准门槛{minimum}份；冻结时间"
                             f"{saved.get('frozen_at',saved.get('fetched_at','未知'))}；"
-                            f"不可变摘要：{saved.get('digest','未知')}\\n")
-                if '\\n\\n' in source:
-                    source=source.replace('\\n\\n','\\n\\n'+annotation+'\\n',1)
+                            f"不可变摘要：{saved.get('digest','未知')}\n")
+                if '\n\n' in source:
+                    source=source.replace('\n\n','\n\n'+annotation+'\n',1)
                 else:
                     source+=annotation
                 frozen_report.write_text(source,encoding='utf-8')
