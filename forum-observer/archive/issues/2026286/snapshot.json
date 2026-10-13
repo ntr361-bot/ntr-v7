@@ -1,0 +1,112 @@
+{
+  "issue": "2026286",
+  "ranking": [
+    {
+      "rank": 1,
+      "zodiac": "马",
+      "score": 2.52601
+    },
+    {
+      "rank": 2,
+      "zodiac": "猪",
+      "score": 2.42601
+    },
+    {
+      "rank": 3,
+      "zodiac": "羊",
+      "score": 2.248232
+    },
+    {
+      "rank": 4,
+      "zodiac": "龙",
+      "score": 2.168434
+    },
+    {
+      "rank": 5,
+      "zodiac": "蛇",
+      "score": 2.144192
+    },
+    {
+      "rank": 6,
+      "zodiac": "狗",
+      "score": 2.101768
+    },
+    {
+      "rank": 7,
+      "zodiac": "鼠",
+      "score": 1.956566
+    },
+    {
+      "rank": 8,
+      "zodiac": "鸡",
+      "score": 1.768434
+    },
+    {
+      "rank": 9,
+      "zodiac": "牛",
+      "score": 1.754545
+    },
+    {
+      "rank": 10,
+      "zodiac": "兔",
+      "score": 1.734343
+    },
+    {
+      "rank": 11,
+      "zodiac": "猴",
+      "score": 1.592677
+    },
+    {
+      "rank": 12,
+      "zodiac": "虎",
+      "score": 1.578788
+    }
+  ],
+  "top1": [
+    "马"
+  ],
+  "top3": [
+    "马",
+    "猪",
+    "羊"
+  ],
+  "top6": [
+    "马",
+    "猪",
+    "羊",
+    "龙",
+    "蛇",
+    "狗"
+  ],
+  "fetched_at": "2026-10-13T20:59:06+08:00",
+  "valid_materials": 24,
+  "scoring_rule_version": "2026-10-12-explicit-six-plus-nine-priority-v4",
+  "scoring_rules": {
+    "minimum_recommendation_zodiacs": 6,
+    "kill_zodiac_vote": "remaining_zodiacs",
+    "kill_numbers_as_zodiacs": false,
+    "numbers_as_whole_zodiacs": false,
+    "explicit_zodiac_evidence": true,
+    "weight_per_material": 1,
+    "uncertain_materials": "excluded",
+    "author_ratio": null
+  },
+  "material_counts": {
+    "recommend": 13,
+    "kill_zodiac": 11
+  },
+  "classification": "experimental_unverified_leaderboard",
+  "freeze_classification": "manual_exception_below_minimum_materials",
+  "source_status": "incomplete_observation",
+  "source_observed_at": "2026-10-13T12:23:08.161017+00:00",
+  "source_run_id": 38394359459,
+  "source_artifact_id": 11811893137,
+  "valid_authors": 24,
+  "minimum_valid_materials": 25,
+  "collection_complete": false,
+  "coverage_label": "部分覆盖：超时或未完成",
+  "freeze_authorization": "user_explicit_request_2026-10-13",
+  "draw_at": "2026-10-13T21:32:00+08:00",
+  "note": "User-authorized exception: freeze the original 24-sample ranking unchanged, without representing it as a passing 25-sample prediction. Original collection incomplete; no additional evidence manufactured.",
+  "digest": "f650f540de16b6afb2c144128ecaa4b2f3a45d3a21ce1d4efd7a8ad9fec083a1"
+}
