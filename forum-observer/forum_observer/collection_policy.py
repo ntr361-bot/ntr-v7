@@ -29,6 +29,17 @@ def choose_profile_samples(author_order, target_issue, feed_mode, policy):
     return author_order[:limit]
 
 
+def comment_thread_budget_seconds(parent, policy):
+    """Bound each thread so early slow posts cannot starve later featured posts.
+
+    The featured queue is examined first. Ordinary posts receive a smaller
+    budget; unread or incomplete threads stay explicitly unverified.
+    """
+    key = "max_featured_post_seconds" if parent.get("is_featured") is True else "max_post_seconds"
+    default = 35 if parent.get("is_featured") is True else 20
+    return max(10, min(60, int(policy.get(key, default))))
+
+
 def choose_comment_threads(posts, scoped, policy):
     """Return independently sourced current-issue posts worth checking.
 
