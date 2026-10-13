@@ -8,10 +8,14 @@ def render(result:dict,path:Path)->None:
         f"**有效资料：{result.get('valid_materials',0)}份**（经期号核对、去重且实际计分）",
         f"计分规则：{result.get('scoring_rule_version','历史规则')}",
         f"有效推荐：{result.get('material_counts',{}).get('recommend',0)}份；有效杀肖：{result.get('material_counts',{}).get('kill_zodiac',0)}份",
+        f"加精来源有效资料：{result.get('featured_valid_materials','未统计')}份；普通来源有效资料：{result.get('ordinary_valid_materials','未统计')}份",
+        f"加精帖发现：{result.get('featured_found_threads',0)}篇；优先入队：{result.get('featured_selected_threads',0)}篇；"
+        f"实际尝试：{result.get('featured_attempted_threads',0)}篇；完整检查确认玩法：{result.get('featured_completed_threads',0)}篇",
         f"抓取资料记录：{result.get('raw_count',0)}条；解析候选：{result.get('candidate_materials',0)}份",
         f"覆盖范围：{result.get('coverage_label','未知')}",
         f"评论区检查：{len(result.get('comment_checks',[]))}帖；评论资料记录：{result.get('comment_records',0)}条；图片发现：{sum(c.get('images_seen',0) for c in result.get('comment_checks',[]))}张；识别一致：{sum(c.get('images_recognized',0) for c in result.get('comment_checks',[]))}张",
         f"图片处理状态：{[c.get('image_status_counts',{}) for c in result.get('comment_checks',[])]}",
+        f"评论区图片识别：{'启用' if result.get('comment_image_policy') == 'prioritized_current_issue_threads' else '未启用（只记录图片URL，不计分）'}",
         f"未计分候选：{result.get('excluded_materials',0)}份；无有效评分的帖子：{result.get('unscored_posts',0)}篇",
         f"有效作者：{result.get('distinct_valid_authors',0)}人；需要至少：{a.get('min_valid_materials','未知')}份有效资料",
         f"优先作者名单内发现作者：{len(a.get('top20_found',[]))}人；其他作者：{len(a.get('other_found',[]))}人",
@@ -26,7 +30,7 @@ def render(result:dict,path:Path)->None:
     lines += ["", f"**来自下一期帖子的本期历史记录：{result.get('historical_reference_count',0)}条**",
               f"涉及作者：{result.get('historical_reference_authors',0)}人",
               "历史回顾不计入有效预测资料；页面顶部的官方开奖记录不参与统计。"]
-    lines += ["", "采集顺序：优先作者名单，再扩展榜外；有效资料等权，不设3:2配额。",
+    lines += ["", "采集顺序：先检查公开加精帖正文与评论文字，再扩大到普通帖；不等于只采用加精帖。有效资料等权，不设3:2配额。",
               "优先作者名单的身份不代表已核实当日实时榜单。", "", "## 排除资料"]
     for row in result.get('parsed_predictions',[]):
         if not row.get('counted_for_ranking'):
