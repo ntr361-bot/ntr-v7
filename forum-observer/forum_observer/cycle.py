@@ -103,23 +103,47 @@ def sync(out,archive,history,public_dir=None):
             'questions':status.get('pending_rule_questions',[])})
         report=out/issue/'report.md'
         if report.exists():shutil.copyfile(report,folder/'report.md')
-        if status['status']=='ready_observation' and len(status.get('ranking',[]))==12:
+        valid_count=int(status.get('valid_materials') or 0)
+        standard_minimum=int(status.get('author_selection',{}).get('min_valid_materials',25))
+        full_ranking=(len(status.get('ranking',[]))==12
+                      and len({r.get('zodiac') for r in status['ranking']})==12
+                      and len(status.get('top3',[]))==3
+                      and len(status.get('top6',[]))==6)
+        # Partial evidence may be frozen, but it must still be real, scored,
+        # from this issue, and captured before the draw. Never invent a vote.
+        partial=(status.get('status')=='incomplete_observation' and
+                 0<valid_count<standard_minimum and full_ranking and
+                 status.get('pre_draw_verified') is True and
+                 bool(status.get('draw_at')))
+        eligible=(status.get('status')=='ready_observation' and full_ranking) or partial
+        if eligible:
             if status.get('scoring_rule_version')==SCORING_RULE_VERSION:
-                verify_scored_result(status)
-            # Immutable experimental snapshot, not a production model freeze.
+                verify_scored_result(status,min_materials=1 if partial else 25)
+            # Immutable, explicitly quality-labelled experimental snapshot.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}
-            # Preserve the generation-time counts and rule version in the immutable snapshot.
             for key in ('valid_materials','scoring_rule_version','scoring_rules','material_counts'):
                 if key in status:core[key]=status[key]
             core['classification']='experimental_unverified_leaderboard'
+            core['minimum_valid_materials']=standard_minimum
+            core['quality_status']='below_minimum_samples' if valid_count<standard_minimum else 'meets_minimum_samples'
+            core['collection_status']=status['status']
             core['evidence_refs']=[{'author':p['author'],'url':p['detail_url']}
                                     for p in status.get('evidence',[]) if p.get('detail_url')]
-            core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
-            # Refuse to snapshot after a confirmed draw.
+            # Refuse to create a new snapshot after either the announced cutoff
+            # or a verified draw; existing snapshots remain untouched.
+            now=datetime.now(timezone.utc)
+            draw_cutoff=datetime.fromisoformat(status['draw_at']) if status.get('draw_at') else None
+            captured=datetime.fromisoformat(status['fetched_at'])
+            in_time=(draw_cutoff is None or
+                     (draw_cutoff.tzinfo is not None and captured.tzinfo is not None
+                      and captured<draw_cutoff and now<draw_cutoff))
             drawn=set()
             if Path(history).exists():
                 drawn={str(r['issue']) for r in json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])}
-            if issue not in drawn:write_once(folder/'snapshot.json',core)
+            if in_time and issue not in drawn and not (folder/'snapshot.json').exists():
+                core['frozen_at']=now.isoformat()
+                core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+                write_once(folder/'snapshot.json',core)
     if not Path(history).exists():
         raise ValueError('verified draw history file absent')
     draws=json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])
@@ -192,6 +216,9 @@ def sync(out,archive,history,public_dir=None):
             'prediction_top3':snap.get('top3',[]) if snap else [],
             'prediction_top6':snap.get('top6',[]) if snap else [],
             'snapshot_digest':snap.get('digest') if snap else None,
+            'freeze_quality_status':snap.get('quality_status',
+                snap.get('freeze_classification','legacy_unclassified')) if snap else None,
+            'freeze_minimum_valid_materials':snap.get('minimum_valid_materials') if snap else None,
             'settlement':settled,
             'settled_count':len(summary),
             'note':'preview fields are unverified observations; only prediction fields are immutable experimental snapshots'
@@ -216,6 +243,10 @@ def sync(out,archive,history,public_dir=None):
                 'frozen_at':saved.get('fetched_at'),
                 'ranking':saved.get('ranking',[]),'top3':saved.get('top3',[]),
                 'top6':saved.get('top6',[]),'digest':saved.get('digest'),
+                'quality_status':saved.get('quality_status',
+                    saved.get('freeze_classification','legacy_unclassified')),
+                'valid_materials':saved.get('valid_materials'),
+                'minimum_valid_materials':saved.get('minimum_valid_materials'),
                 'settlement':json.loads(st.read_text(encoding='utf-8')) if st.exists() else None
             })
     return len(summary)
