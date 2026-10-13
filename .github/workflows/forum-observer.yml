@@ -29,7 +29,9 @@ jobs:
           python-version: "3.12"
       - name: Decide current-issue collection
         id: collection-gate
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        # Only GPT's collect marker (or explicit manual dispatch) may enter forum scraping.
+        # Audit/settlement/reconciliation triggers must never collect new evidence.
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
         run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
@@ -85,6 +87,9 @@ jobs:
             git pull --rebase origin main
           done
           exit 1
+      - name: Audit immutable current-issue snapshot (GPT audit only)
+        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
+        run: python -m forum_observer.schedule --archive archive --require-snapshot
       - name: Report status
         if: always()
         shell: bash
