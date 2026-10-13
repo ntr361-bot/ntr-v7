@@ -2,9 +2,9 @@
   "schema_version": 1,
   "model": "forum-observer",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 1,
-  "top3_hits": 1,
-  "top6_hits": 1,
+  "settled_count": 2,
+  "top3_hits": 2,
+  "top6_hits": 2,
   "settlements": [
     {
       "issue": "2026285",
@@ -15,6 +15,19 @@
       "snapshot_at": "2026-10-12T13:10:46.804600+00:00",
       "rank": 1,
       "top1_hit": true,
+      "top3_hit": true,
+      "top6_hit": true,
+      "classification": "experimental_unverified_leaderboard"
+    },
+    {
+      "issue": "2026286",
+      "actual": "羊",
+      "actual_source": "smart-ledger:/api/results",
+      "drawn_at": "2026-10-13T21:35:31+08:00",
+      "snapshot_digest": "f650f540de16b6afb2c144128ecaa4b2f3a45d3a21ce1d4efd7a8ad9fec083a1",
+      "snapshot_at": "2026-10-13T20:59:06+08:00",
+      "rank": 3,
+      "top1_hit": false,
       "top3_hit": true,
       "top6_hit": true,
       "classification": "experimental_unverified_leaderboard"
