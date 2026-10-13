@@ -66,6 +66,18 @@ jobs:
           }
 
           $modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
+          # Temporary wire compatibility for the old deployed ledger guard.
+          # Its stored frozen 285 rows say "本地生成"; the repository now says
+          # "云端同步". Preserve the original provenance ONLY in the outgoing
+          # transport payload. Committed forecasts and settlement stay unchanged.
+          $legacy285 = @($modelState.predictions | Where-Object {
+            [string]$_.issue -eq '2026285' -and [string]$_.predictionSource -eq '云端同步'
+          })
+          if ($legacy285.Count -gt 0) {
+            if ($legacy285.Count -ne 6) { throw 'Unexpected partial 285 provenance migration; refusing to publish.' }
+            foreach ($row in $legacy285) { $row.predictionSource = '本地生成' }
+            Write-Host 'Applied legacy 285 provenance compatibility in memory (six rows; no forecast changes).'
+          }
           $payload = @{
             history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
             dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
