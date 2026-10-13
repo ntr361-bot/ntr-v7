@@ -166,9 +166,10 @@ def freeze(result: dict[str,Any], directory: Path, now: str, draw_at: str) -> Pa
     return output
 
 
-def verify_scored_result(result):
+def verify_scored_result(result, min_materials=25):
+    """Verify the unchanged scoring rules; sample count is an audit policy, not a vote rule."""
     rows=[p for p in result.get('parsed_predictions',[]) if p.get('counted_for_ranking')]
-    if len(rows)<25 or result.get('valid_materials')!=len(rows):
+    if len(rows)<min_materials or result.get('valid_materials')!=len(rows):
         raise ValueError('unverified material count at freeze gate')
     nine_authors = {(row['author'].strip().casefold(), row.get('issue', result.get('issue')))
                     for row in rows if row.get('mode') == 'include'
