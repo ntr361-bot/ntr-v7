@@ -1,6 +1,12 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
+  # ChatGPT task writes a daily marker to an isolated trigger branch.
+  # Always check out main for collection; trigger files never enter main.
+  push:
+    branches: [forum-gpt-trigger]
+    paths:
+      - 'forum-observer/triggers/**'
   schedule:
     - cron: "10 11 * * *" # 19:10 China - early collection (avoids one missed cron)
     - cron: "40 11 * * *" # 19:40 China - retry only if no snapshot
@@ -24,13 +30,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Decide current-issue collection
         id: collection-gate
-        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '10 11 * * *' || github.event.schedule == '40 11 * * *' || github.event.schedule == '0 12 * * *'
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.schedule == '10 11 * * *' || github.event.schedule == '40 11 * * *' || github.event.schedule == '0 12 * * *'
         run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
