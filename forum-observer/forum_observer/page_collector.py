@@ -228,6 +228,8 @@ def feed_card_post(item, forum_url, now=None):
 
 def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
     diagnostic=diagnostic if diagnostic is not None else {}
+    if item.get('article_id'):
+        diagnostic['expected_article_id']=item['article_id']
     if deadline is not None and time.monotonic() >= deadline:
         diagnostic['verification']='post_budget_exhausted'
         return False
@@ -613,6 +615,8 @@ def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
                 # article. Titles/authors in the old feed are NOT a detail.
                 diagnostic['detail_shell_seen']=(
                     '阅读数' in text and '历史帖子' in text and '最新评论' in text)
+                if diagnostic['detail_shell_seen'] and not diagnostic['title_seen']:
+                    diagnostic['detail_preview']=text[:360].replace('\\n',' | ')
                 if (diagnostic['title_seen'] and diagnostic['author_seen']
                         and diagnostic['detail_shell_seen']):
                     diagnostic['verification']='verified'
