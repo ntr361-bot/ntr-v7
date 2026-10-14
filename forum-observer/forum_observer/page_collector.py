@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
 from .evidence_audit import audit_material, admit_one_material_per_author
+from .confirmed_play import extract_confirmed
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 from .comment_images import eligible_comment_image
 from .collection_policy import choose_profile_samples, choose_comment_threads, comment_thread_budget_seconds
@@ -600,10 +601,11 @@ def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
     output=(extract_front_back_eight(str(text))
             +extract_named_group_plus_two(str(text))
-            +extract_big_small(str(text)))
+            +extract_big_small(str(text))
+            +extract_confirmed(str(text)))
     for line in str(text).splitlines():
         # Choice/legend needs article-level direction, never generic "生肖" parsing.
-        if re.search(r'胆[大小](?:生肖|肖)', line):
+        if re.search(r'胆[大小](?:生肖|肖)|胆大胆小|单肖\s*[:：]|双肖\s*[:：]|灭庄', line):
             continue
         certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$', '',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
