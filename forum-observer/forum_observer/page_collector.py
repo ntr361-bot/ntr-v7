@@ -204,13 +204,16 @@ def feed_card_post(item, forum_url, now=None):
         'comments_coverage':'not_expanded','detail_coverage':'not_opened'}
 
 
-def _detail(page,url,item,category,max_pages,deadline=None):
-    if deadline is not None and time.monotonic() >= deadline:return False
+def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
+    diagnostic=diagnostic if diagnostic is not None else {}
+    if deadline is not None and time.monotonic() >= deadline:
+        diagnostic['verification']='post_budget_exhausted'
+        return False
     def remaining_ms(default):
         return default if deadline is None else max(1,min(default,int((deadline-time.monotonic())*1000)))
     def wait_detail():
         seconds=8 if deadline is None else min(8,max(0,deadline-time.monotonic()))
-        return _wait_detail(page,item,timeout_seconds=seconds)
+        return _wait_detail(page,item,timeout_seconds=seconds,diagnostic=diagnostic)
     # A profile's history card may have no href in this SPA.
     if item.get('profile_url') and not item.get('href'):
         if not open_profile_post(page,item,_issue,max_steps=max_pages):
@@ -218,9 +221,17 @@ def _detail(page,url,item,category,max_pages,deadline=None):
         return wait_detail()
     # Never reuse an index across pages or after reloading the list.
     if item.get('href') and 'corpusdetail' in item['href']:
-        page.goto(item['href'],wait_until='domcontentloaded',timeout=remaining_ms(45000))
-        return wait_detail()
-    page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(45000))
+        diagnostic['navigation']='direct_detail_url'
+        try:
+            page.goto(item['href'],wait_until='domcontentloaded',timeout=remaining_ms(12000))
+            if wait_detail():return True
+        except Exception as exc:
+            diagnostic['direct_link_error']=type(exc).__name__
+        # Direct deep links can fail in this SPA; retry the original card
+        # through its own feed without trusting an unverified landing page.
+        if deadline is not None and time.monotonic()>=deadline:return False
+    diagnostic['navigation']='feed_card_fallback'
+    page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
     page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=remaining_ms(15000))
     page.get_by_role('tab',name='澳彩',exact=True).click()
     page.get_by_text('最新',exact=True).click()
@@ -245,8 +256,10 @@ def _detail(page,url,item,category,max_pages,deadline=None):
                 }
                 return false;
             }""", {'author':item['author'],'title':item['title'],'issue':item['issue']})
-            if opened and wait_detail():
-                return True
+            if opened:
+                diagnostic['card_clicked']=True
+                if wait_detail():
+                    return True
         current={x['key'] for x in visible}
         # This SPA uses a nested scroll container; window.scrollTo leaves
         # the virtualized feed in place and makes every detail lookup fail.
@@ -262,6 +275,9 @@ def _detail(page,url,item,category,max_pages,deadline=None):
         updated={x['key'] for x in _listing(page,category)}
         if not updated.difference(previous|current):break
         previous|=current
+    diagnostic.setdefault('verification','card_not_found')
+    if diagnostic.get('verification')=='verified':
+        diagnostic['verification']='card_not_found'
     return False
 
 
@@ -444,18 +460,34 @@ def _title_span(text,title):
     return hits[-1].span() if hits else None
 
 
-def _wait_detail(page,item,timeout_seconds=7):
-    """Wait for a SPA post to render before rejecting an otherwise valid URL."""
+def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
+    """Verify the exact SPA detail page and report which check failed.
+
+    A slow/virtualized forum must never be mistaken for an unreadable zodiac
+    prediction. Do not accept a feed card or a global draw-result banner.
+    """
+    diagnostic=diagnostic if diagnostic is not None else {}
     deadline=time.monotonic()+timeout_seconds
+    diagnostic.update(detail_url_seen=False,title_seen=False,author_seen=False)
     while time.monotonic()<deadline:
+        diagnostic['last_url']=page.url[:240]
         if 'corpusdetail' in page.url:
+            diagnostic['detail_url_seen']=True
             try:
-                text=page.locator('body').inner_text(timeout=2800)
-                if _title_span(text,item.get('title','')) and item.get('author','') in text:
+                text=page.locator('body').inner_text(timeout=1200)
+                diagnostic['title_seen']=bool(_title_span(text,item.get('title','')))
+                diagnostic['author_seen']=bool(item.get('author') and item['author'] in text)
+                if diagnostic['title_seen'] and diagnostic['author_seen']:
+                    diagnostic['verification']='verified'
                     return True
-            except Exception:
-                pass
-        page.wait_for_timeout(650)
+            except Exception as exc:
+                diagnostic['body_read_error']=type(exc).__name__
+        page.wait_for_timeout(400)
+    diagnostic['verification']=(
+        'detail_url_missing' if not diagnostic['detail_url_seen'] else
+        'title_mismatch' if not diagnostic['title_seen'] else
+        'author_mismatch' if not diagnostic['author_seen'] else
+        'detail_timeout')
     return False
 
 
@@ -795,11 +827,22 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     continue
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
-                    if not _detail(page,url,item,target_category,max_pages,deadline=min(deadline,time.monotonic()+int(policy.get('max_featured_post_seconds',35) if item.get('is_featured') else policy.get('max_post_seconds',20)))):
-                        errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
+                    detail_diagnostic={}
+                    if not _detail(page,url,item,target_category,max_pages,
+                                   deadline=min(deadline,time.monotonic()+int(
+                                       policy.get('max_featured_post_seconds',35) if item.get('is_featured')
+                                       else policy.get('max_post_seconds',20))),
+                                   diagnostic=detail_diagnostic):
+                        errors.append({'author':item['author'],'title':item['title'],
+                                       'reason':'detail not verified',
+                                       'detail_diagnostic':detail_diagnostic})
                         continue
-                    body=page.locator('body').inner_text()
                     article=_article_body(page,item)
+                    if not article:
+                        errors.append({'author':item['author'],'title':item['title'],
+                                       'reason':'verified detail has no extractable article text',
+                                       'detail_diagnostic':detail_diagnostic})
+                        continue
                     imgs=[]
                     for src in ([] if article_only else _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title'])):
                         if time.monotonic()>=deadline:
