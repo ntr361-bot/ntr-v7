@@ -236,6 +236,31 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
     def wait_detail():
         seconds=8 if deadline is None else min(8,max(0,deadline-time.monotonic()))
         return _wait_detail(page,item,timeout_seconds=seconds,diagnostic=diagnostic)
+    # Prefer changing the hash in an already initialized Vue forum.
+    # A full reload of a deep link can briefly show the feed at a detail URL.
+    if item.get('article_id') and item.get('href'):
+        diagnostic['navigation']='in_app_article_id_primary'
+        try:
+            page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
+            page.get_by_role('tab',name='澳彩',exact=True).wait_for(
+                state='visible',timeout=remaining_ms(15000))
+            page.get_by_role('tab',name='澳彩',exact=True).click()
+            page.get_by_text('最新',exact=True).click()
+            navigated=page.evaluate(r"""href => {
+                const target=new URL(href,window.location.href);
+                const [path,query='']=target.hash.split('?');
+                const params=new URLSearchParams(query);
+                const id=Number(params.get('id'));
+                if(target.origin!==window.location.origin ||
+                   path!=='#/corpusdetail' || !Number.isSafeInteger(id) ||
+                   id<=0 || params.get('type')!=='3')return false;
+                window.location.hash=target.hash;
+                return true;
+            }""",item['href'])
+            if navigated and wait_detail():return True
+            diagnostic['in_app_primary_verified']=False
+        except Exception as exc:
+            diagnostic['in_app_primary_error']=type(exc).__name__
     # A profile's history card may have no href in this SPA.
     if item.get('profile_url') and not item.get('href'):
         if not open_profile_post(page,item,_issue,max_steps=max_pages):
