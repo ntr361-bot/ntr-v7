@@ -265,9 +265,12 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
         diagnostic['navigation']='in_app_article_id'
         navigated=page.evaluate(r"""href => {
             const target=new URL(href,window.location.href);
+            const [path,query='']=target.hash.split('?');
+            const params=new URLSearchParams(query);
+            const id=Number(params.get('id'));
             if(target.origin!==window.location.origin ||
-               !/^#\\/corpusdetail\\?id=\\d+&type=3$/.test(target.hash))
-                return false;
+               path!=='#/corpusdetail' || !Number.isSafeInteger(id) ||
+               id<=0 || params.get('type')!=='3')return false;
             window.location.hash=target.hash;
             return true;
         }""",item['href'])
