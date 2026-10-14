@@ -58,6 +58,44 @@ def audit_material(row, evidence_text):
             opposite = _literal_sequence(excerpt, "胆" + other + "肖:")
         if len(opposite) != 6 or len(set(group + opposite)) != 12:
             return "audit: incomplete or conflicting big/small definitions"
+    elif play == "八肖（家野组合）":
+        # Independently reconstruct the vote from the report evidence, rather
+        # than trusting the extractor's picks / group expansion.
+        expression = str(row.get("raw_expression", ""))
+        if not expression or expression not in excerpt or expression not in evidence_text:
+            return "audit: missing named-group expression"
+        m = re.fullmatch(
+            r"(家禽|家畜|野兽)[ \t]*[+＋][ \t]*"
+            r"([鼠牛虎兔龙蛇马羊猴鸡狗猪 \t、，,]+)", expression)
+        if not m:
+            return "audit: invalid named-group expression"
+        name = m.group(1)
+        extras = [z for z in m.group(2) if z in ZODIACS]
+        # Read literal source definitions using an independently written
+        # pattern. Refuse ambiguous/missing counterparts and corrupt lists.
+        found = re.findall(
+            r"(家禽|家畜|野兽)[ \t]*[:：=][ \t]*"
+            r"((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})"
+            r"(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])", excerpt)
+        definitions = {}
+        for label, raw in found:
+            definitions.setdefault(label, []).append(
+                [z for z in raw if z in ZODIACS])
+        if "家禽" in definitions and "家畜" in definitions:
+            return "audit: competing domestic-group definitions"
+        domestic = "家禽" if "家禽" in definitions else "家畜"
+        other = "野兽" if name != "野兽" else domestic
+        if len(definitions.get(name, [])) != 1 or len(definitions.get(other, [])) != 1:
+            return "audit: missing or duplicate named-group definition"
+        base = definitions[name][0]
+        other_set = definitions[other][0]
+        if (len(base) != 6 or len(set(base)) != 6
+                or len(other_set) != 6 or len(set(base + other_set)) != 12):
+            return "audit: incorrect named-group partition"
+        if len(extras) != 2 or len(set(extras)) != 2 or set(extras) & set(base):
+            return "audit: invalid group extras"
+        if picks != list(dict.fromkeys([*base, *extras])) or len(picks) != 8:
+            return "audit: named-group vote does not match literal article"
     elif play == "杀":
         # The old parser counted only 鸡 in "杀鸡 猴 龙 鼠 牛 马".
         explicit = _literal_sequence(excerpt, "杀")
