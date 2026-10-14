@@ -22,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-14-double-audit-named-group-v6'
+SCORING_RULE_VERSION = '2026-10-14-confirmed-play-nine-priority-v7'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -33,6 +33,9 @@ SCORING_RULES = {
     'max_materials_per_author_per_issue': 1,
     'independent_text_audit': True,
     'named_group_plus_two': 'same_article_verified_six_plus_two',
+    'kill_zodiac_max_count': 6,
+    'nine_zodiac_priority': 'unique_explicit_nine_over_all_other_plays',
+    'unclear_or_conflicting_multiple_plays': 'exclude_pending_review',
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
@@ -45,6 +48,8 @@ def vote_zodiacs(picks, mode, play='', evidence=''):
     if re.search(r'映射|换算|号码表', evidence):
         raise ValueError('number inference is not explicit zodiac evidence')
     if mode == 'exclude':
+        if len(picks)>6:
+            raise ValueError('kill more than six zodiacs is not eligible')
         if re.search(r'(?:杀|排除)[^\n:：]*?(?:码|号码|尾|头|波)', play):
             raise ValueError('kill numbers are not kill zodiacs')
         picks = [z for z in ZODIACS if z not in picks]
