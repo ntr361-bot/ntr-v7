@@ -31,7 +31,8 @@ class DetailVerificationTests(unittest.TestCase):
                     href='https://example.com/#/corpusdetail/17',
                     key=('作者甲','2026287','刚刚','预测标题'))
         verify.side_effect=[False,True]
-        listing.return_value=[target]
+        # Card timestamp changes after SPA reload; article identity is stable.
+        listing.return_value=[dict(target, key=('作者甲','2026287','两分钟前','预测标题'))]
         page=Mock()
         page.url='https://example.com/#/forum'
         page.locator.return_value.evaluate_all.return_value=True
@@ -42,13 +43,15 @@ class DetailVerificationTests(unittest.TestCase):
         self.assertEqual(page.goto.call_count,2)
         self.assertEqual(diag['navigation'],'feed_card_fallback')
         self.assertTrue(diag['card_clicked'])
+        self.assertEqual(diag['matching_card_count'],1)
+        self.assertIn('scrollTop=0',str(page.evaluate.call_args_list[0].args[0]))
 
     def test_unrelated_contest_and_navigation_are_not_article(self):
         page=Mock()
         page.locator.return_value.inner_text.return_value=(
             '开奖公告 第287期 牛12\n标题甲\n'
             '推荐六肖：鼠牛虎兔龙蛇\n'
-            '参赛贴  第287期特肖\n'
+            '参赛贴\u00a0\u00a0第287期特肖\n'
             '三肖中特：牛兔羊\n网址大全\n最新帖子'
         )
         text=_article_body(page,{'title':'标题甲'})
