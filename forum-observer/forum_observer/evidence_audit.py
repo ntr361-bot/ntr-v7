@@ -37,27 +37,85 @@ def audit_material(row, evidence_text):
     if not picks or len(picks) != len(set(picks)) or any(z not in ZODIACS for z in picks):
         return "audit: invalid or duplicated zodiac picks"
     if "胆大" in excerpt or "胆小" in excerpt or "胆大" in play or "胆小" in play:
-        if play != "六肖（胆大）" and play != "六肖（胆小）":
+        if play not in ("六肖（胆大）", "六肖（胆小）"):
             return "audit: unverified big/small direction"
         direction = "大" if "胆大" in play else "小"
-        # A source must explicitly choose a group for the current issue.
-        chosen = re.findall(
+        selections = (re.findall(
             r"(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆([大小])生肖(?=\s*开|[\s，。,])",
-            evidence_text,
-        )
-        if chosen != [direction]:
+            excerpt) + re.findall(
+            r"(?:20\d{5}|\d{3})\s*期\s*胆大胆小\s*【\s*胆([大小])\s*】",
+            excerpt))
+        if selections != [direction]:
             return "audit: ambiguous big/small selection"
-        group = _literal_sequence(excerpt, "胆" + direction + "肖:")
-        if not group:
-            group = _literal_sequence(excerpt, "胆" + direction + "生肖:")
-        if group != picks or len(group) != 6:
-            return "audit: big/small zodiac group mismatch"
-        other = "小" if direction == "大" else "大"
-        opposite = _literal_sequence(excerpt, "胆" + other + "生肖:")
-        if not opposite:
-            opposite = _literal_sequence(excerpt, "胆" + other + "肖:")
-        if len(opposite) != 6 or len(set(group + opposite)) != 12:
+        groups = {}
+        for side in ("大", "小"):
+            matches = re.findall(
+                r"胆"+side+r"(?:生肖|肖)?\s*[:：]\s*"
+                r"((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})"
+                r"(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])", excerpt)
+            groups[side] = [[z for z in m if z in ZODIACS] for m in matches]
+            if len(groups[side]) != 1 or len(set(groups[side][0])) != 6:
+                return "audit: invalid big/small group"
+        if len(set(groups["大"][0]+groups["小"][0])) != 12:
             return "audit: incomplete or conflicting big/small definitions"
+        if picks != groups[direction][0]:
+            return "audit: big/small zodiac group mismatch"
+    elif play == "八肖（单双组合）":
+        expr = str(row.get("raw_expression",""))
+        if not expr or expr not in excerpt:
+            return "audit: missing single/double expression"
+        m = re.fullmatch(
+            r"(单肖|双肖)\s*[+＋]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){2})",
+            expr)
+        if not m:
+            return "audit: invalid single/double combination"
+        defs={}
+        for side in ("单肖","双肖"):
+            matches=re.findall(side+r"\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])",excerpt)
+            defs[side]=[[z for z in x if z in ZODIACS] for x in matches]
+            if len(defs[side])!=1 or len(set(defs[side][0]))!=6:
+                return "audit: invalid single/double definitions"
+        if len(set(defs["单肖"][0]+defs["双肖"][0]))!=12:
+            return "audit: single/double definitions not complementary"
+        extra=[z for z in m.group(2) if z in ZODIACS]
+        chosen=defs[m.group(1)][0]+extra
+        if len(set(chosen))!=8 or chosen!=picks:
+            return "audit: single/double combination mismatch"
+    elif play.startswith("六肖（选"):
+        expression=str(row.get("raw_expression",""))
+        if not expression or expression not in excerpt:
+            return "audit: missing selected six-zodiac category"
+        f=re.fullmatch(r"(?:20\d{5}|\d{3})\s*期\s*前后六肖\s*【\s*(前肖|后肖)\s*】",expression)
+        h=re.fullmatch(r"(?:20\d{5}|\d{3})\s*期\s*家野六肖\s*【\s*(家畜|家禽|野兽|野獸)\s*】",expression)
+        if not (f or h):
+            return "audit: unrecognized selected category expression"
+        labels=("前六肖","后六肖") if f else ("家","野")
+        found={}
+        if f:
+            for k in labels:
+                terms=re.findall(k+r"\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})",excerpt)
+                found[k]=[[z for z in term if z in ZODIACS] for term in terms]
+            wanted="前六肖" if f.group(1)=="前肖" else "后六肖"
+        else:
+            terms=re.findall(r"(家禽|家畜|野兽|野獸)\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})",excerpt)
+            found["家"]=[[z for z in term if z in ZODIACS] for k,term in terms if k in ("家禽","家畜")]
+            found["野"]=[[z for z in term if z in ZODIACS] for k,term in terms if k in ("野兽","野獸")]
+            wanted="家" if h.group(1) in ("家禽","家畜") else "野"
+        if any(len(found[k])!=1 or len(set(found[k][0]))!=6 for k in labels):
+            return "audit: invalid group definitions"
+        if len(set(found[labels[0]][0]+found[labels[1]][0]))!=12:
+            return "audit: category definitions do not partition all zodiacs"
+        if picks!=found[wanted][0]:
+            return "audit: selected category does not match picks"
+    elif play == "🔪杀肖":
+        m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
+        if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:
+            return "audit: truncated knife kill zodiac list"
+    elif (play.endswith("（明确推荐）") or
+          (play in ("六肖","七肖","八肖","九肖") and row.get("raw_expression"))):
+        raw=str(row.get("raw_expression",""))
+        if not raw or raw not in excerpt or [z for z in raw if z in ZODIACS]!=picks:
+            return "audit: direct recommendation disagrees with source"
     elif play == "八肖（家野组合）":
         # Independently reconstruct the vote from the report evidence, rather
         # than trusting the extractor's picks / group expansion.
@@ -122,12 +180,15 @@ def admit_one_material_per_author(rows):
         if len(group) <= 1:
             continue
         nine = [r for r in group if r.get("mode") == "include"
+                and len(r.get("vote_zodiacs", [])) == 9
                 and re.search(r"(?:九|9)肖", str(r.get("play", "")))]
-        six = [r for r in group if r.get("mode") == "include"
-               and re.search(r"(?:六|6)肖", str(r.get("play", "")))]
+        nine_votes = {tuple(r["vote_zodiacs"]) for r in nine}
         signatures = {(r.get("mode"), tuple(r.get("vote_zodiacs", []))) for r in group}
-        if len(nine) == 1 and len(nine) + len(six) == len(group):
-            chosen = nine[0]
+        if nine and len(nine_votes) == 1:
+            # The user explicitly chose *nine over every other play*,
+            # regardless of whether the other play recommends or kills.
+            chosen = min(nine, key=lambda r: (
+                str(r.get("source_url", "")), str(r.get("play", ""))))
             reason = "superseded_by_same_author_nine_zodiac"
         elif len(signatures) == 1:
             # Equal votes have no selection consequence; choose deterministically.
