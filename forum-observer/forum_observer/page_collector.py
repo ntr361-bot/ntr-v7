@@ -500,7 +500,16 @@ def _article_body(page,item):
     before_comments=all_text.split('最新评论',1)[0]
     span=_title_span(before_comments,item.get('title',''))
     if not span:return ''
-    return before_comments[span[1]:][:50000].strip()
+    article=before_comments[span[1]:][:50000].strip()
+    # Below these headings the SPA embeds unrelated site-wide contest,
+    # navigation and recommendation widgets. They are not author evidence.
+    footer=re.search(
+        r'(?m)^[ \\t]*(?:参赛贴[ \\t]*第[0-9０-９]{3}期|网址大全|'
+        r'0149导航|49图库|六合宝典|最新帖子|相关推荐)[ \\t]*(?:$|[^\\n]*)',
+        article)
+    if footer:
+        article=article[:footer.start()].rstrip()
+    return article
 
 
 def current_period_text(text,issue):
