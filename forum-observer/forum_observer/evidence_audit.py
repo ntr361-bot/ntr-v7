@@ -85,7 +85,8 @@ def audit_material(row, evidence_text):
         m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
         if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:
             return "audit: truncated knife kill zodiac list"
-    elif play.endswith("（明确推荐）"):
+    elif (play.endswith("（明确推荐）") or
+          (play in ("六肖","七肖","八肖","九肖") and row.get("raw_expression"))):
         raw=str(row.get("raw_expression",""))
         if not raw or raw not in excerpt or [z for z in raw if z in ZODIACS]!=picks:
             return "audit: direct recommendation disagrees with source"
