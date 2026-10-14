@@ -97,7 +97,7 @@ LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
 PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓]*\s*[:：=\-、【】〔〕(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
 UNCERTAIN_PATTERN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
-BARE_KILL_PATTERN=re.compile(r'(?<![\u4e00-\u9fff])(?P<play>杀)\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
+BARE_KILL_PATTERN=re.compile(r'(?:(?<![\u4e00-\u9fff])|(?<=期))(?P<play>杀)\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
 BIG_SMALL_GROUP=re.compile(r'胆(?P<group>大|小)(?:生肖|肖)\s*[:：=]\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])')
 BIG_SMALL_CHOICE=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆(?P<group>大|小)生肖(?=\s*开|[\s，。,])')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
