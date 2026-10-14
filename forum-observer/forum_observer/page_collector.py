@@ -504,8 +504,8 @@ def _article_body(page,item):
     # Below these headings the SPA embeds unrelated site-wide contest,
     # navigation and recommendation widgets. They are not author evidence.
     footer=re.search(
-        r'(?m)^[ \\t]*(?:参赛贴[ \\t]*第[0-9０-９]{3}期|网址大全|'
-        r'0149导航|49图库|六合宝典|最新帖子|相关推荐)[ \\t]*(?:$|[^\\n]*)',
+        r'(?m)^[ \t]*(?:参赛贴[ \t]*第[0-9０-９]{3}期|网址大全|'
+        r'0149导航|49图库|六合宝典|最新帖子|相关推荐)',
         article)
     if footer:
         article=article[:footer.start()].rstrip()
