@@ -151,7 +151,7 @@ def _listing(page,category):
         while(parent && !Array.isArray(parent.__vue__?.$data?.list))
             parent=parent.parentElement;
         const articles=parent?.__vue__?.$data?.list||[];
-        const norm=s=>String(s||'').replace(/\\s+/g,' ').trim();
+        const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
         const origin=window.location.href.split('#')[0];
         return cards.map(li => {
             const value=selector=>li.querySelector(selector)?.innerText?.trim()||'';
