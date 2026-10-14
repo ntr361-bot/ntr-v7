@@ -37,27 +37,58 @@ def audit_material(row, evidence_text):
     if not picks or len(picks) != len(set(picks)) or any(z not in ZODIACS for z in picks):
         return "audit: invalid or duplicated zodiac picks"
     if "胆大" in excerpt or "胆小" in excerpt or "胆大" in play or "胆小" in play:
-        if play != "六肖（胆大）" and play != "六肖（胆小）":
+        if play not in ("六肖（胆大）", "六肖（胆小）"):
             return "audit: unverified big/small direction"
         direction = "大" if "胆大" in play else "小"
-        # A source must explicitly choose a group for the current issue.
-        chosen = re.findall(
+        selections = (re.findall(
             r"(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆([大小])生肖(?=\s*开|[\s，。,])",
-            evidence_text,
-        )
-        if chosen != [direction]:
+            excerpt) + re.findall(
+            r"(?:20\d{5}|\d{3})\s*期\s*胆大胆小\s*【\s*胆([大小])\s*】",
+            excerpt))
+        if selections != [direction]:
             return "audit: ambiguous big/small selection"
-        group = _literal_sequence(excerpt, "胆" + direction + "肖:")
-        if not group:
-            group = _literal_sequence(excerpt, "胆" + direction + "生肖:")
-        if group != picks or len(group) != 6:
-            return "audit: big/small zodiac group mismatch"
-        other = "小" if direction == "大" else "大"
-        opposite = _literal_sequence(excerpt, "胆" + other + "生肖:")
-        if not opposite:
-            opposite = _literal_sequence(excerpt, "胆" + other + "肖:")
-        if len(opposite) != 6 or len(set(group + opposite)) != 12:
+        groups = {}
+        for side in ("大", "小"):
+            matches = re.findall(
+                r"胆"+side+r"(?:生肖|肖)?\s*[:：]\s*"
+                r"((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})"
+                r"(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])", excerpt)
+            groups[side] = [[z for z in m if z in ZODIACS] for m in matches]
+            if len(groups[side]) != 1 or len(set(groups[side][0])) != 6:
+                return "audit: invalid big/small group"
+        if len(set(groups["大"][0]+groups["小"][0])) != 12:
             return "audit: incomplete or conflicting big/small definitions"
+        if picks != groups[direction][0]:
+            return "audit: big/small zodiac group mismatch"
+    elif play == "八肖（单双组合）":
+        expr = str(row.get("raw_expression",""))
+        if not expr or expr not in excerpt:
+            return "audit: missing single/double expression"
+        m = re.fullmatch(
+            r"(单肖|双肖)\s*[+＋]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){2})",
+            expr)
+        if not m:
+            return "audit: invalid single/double combination"
+        defs={}
+        for side in ("单肖","双肖"):
+            matches=re.findall(side+r"\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])",excerpt)
+            defs[side]=[[z for z in x if z in ZODIACS] for x in matches]
+            if len(defs[side])!=1 or len(set(defs[side][0]))!=6:
+                return "audit: invalid single/double definitions"
+        if len(set(defs["单肖"][0]+defs["双肖"][0]))!=12:
+            return "audit: single/double definitions not complementary"
+        extra=[z for z in m.group(2) if z in ZODIACS]
+        chosen=defs[m.group(1)][0]+extra
+        if len(set(chosen))!=8 or chosen!=picks:
+            return "audit: single/double combination mismatch"
+    elif play == "🔪杀肖":
+        m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
+        if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:
+            return "audit: truncated knife kill zodiac list"
+    elif play.endswith("（明确推荐）"):
+        raw=str(row.get("raw_expression",""))
+        if not raw or raw not in excerpt or [z for z in raw if z in ZODIACS]!=picks:
+            return "audit: direct recommendation disagrees with source"
     elif play == "八肖（家野组合）":
         # Independently reconstruct the vote from the report evidence, rather
         # than trusting the extractor's picks / group expansion.
