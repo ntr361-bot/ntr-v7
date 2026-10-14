@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "forum-observer",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 2,
+  "settled_count": 3,
   "top3_hits": 2,
   "top6_hits": 2,
   "settlements": [
@@ -30,6 +30,19 @@
       "top1_hit": false,
       "top3_hit": true,
       "top6_hit": true,
+      "classification": "experimental_unverified_leaderboard"
+    },
+    {
+      "issue": "2026287",
+      "actual": "猪",
+      "actual_source": "smart-ledger:/api/results",
+      "drawn_at": "2026-10-14T21:35:30+08:00",
+      "snapshot_digest": "70ff1bf25a9b43d0622d6d8761148ec93b53664877a1ad15a0056caae7b6d8bd",
+      "snapshot_at": "2026-10-14T11:48:56.988681+00:00",
+      "rank": 12,
+      "top1_hit": false,
+      "top3_hit": false,
+      "top6_hit": false,
       "classification": "experimental_unverified_leaderboard"
     }
   ]
