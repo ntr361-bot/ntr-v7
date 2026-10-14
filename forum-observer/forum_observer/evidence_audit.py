@@ -81,6 +81,32 @@ def audit_material(row, evidence_text):
         chosen=defs[m.group(1)][0]+extra
         if len(set(chosen))!=8 or chosen!=picks:
             return "audit: single/double combination mismatch"
+    elif play.startswith("六肖（选"):
+        expression=str(row.get("raw_expression",""))
+        if not expression or expression not in excerpt:
+            return "audit: missing selected six-zodiac category"
+        f=re.fullmatch(r"(?:20\d{5}|\d{3})\s*期\s*前后六肖\s*【\s*(前肖|后肖)\s*】",expression)
+        h=re.fullmatch(r"(?:20\d{5}|\d{3})\s*期\s*家野六肖\s*【\s*(家畜|家禽|野兽|野獸)\s*】",expression)
+        if not (f or h):
+            return "audit: unrecognized selected category expression"
+        labels=("前六肖","后六肖") if f else ("家","野")
+        found={}
+        if f:
+            for k in labels:
+                terms=re.findall(k+r"\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})",excerpt)
+                found[k]=[[z for z in term if z in ZODIACS] for term in terms]
+            wanted="前六肖" if f.group(1)=="前肖" else "后六肖"
+        else:
+            terms=re.findall(r"(家禽|家畜|野兽|野獸)\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){6})",excerpt)
+            found["家"]=[[z for z in term if z in ZODIACS] for k,term in terms if k in ("家禽","家畜")]
+            found["野"]=[[z for z in term if z in ZODIACS] for k,term in terms if k in ("野兽","野獸")]
+            wanted="家" if h.group(1) in ("家禽","家畜") else "野"
+        if any(len(found[k])!=1 or len(set(found[k][0]))!=6 for k in labels):
+            return "audit: invalid group definitions"
+        if len(set(found[labels[0]][0]+found[labels[1]][0]))!=12:
+            return "audit: category definitions do not partition all zodiacs"
+        if picks!=found[wanted][0]:
+            return "audit: selected category does not match picks"
     elif play == "🔪杀肖":
         m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
         if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:
