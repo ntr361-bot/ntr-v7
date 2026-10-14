@@ -66,6 +66,19 @@ jobs:
                     return output;
                   }""")
                   print('VUE_CARD_PROBE '+json.dumps(state,ensure_ascii=False)[:13000])
+                  data=page.locator('.forum-list > li').first.evaluate("""li=>{
+                    let el=li;
+                    while(el && !Array.isArray(el.__vue__?.$data?.list))el=el.parentElement;
+                    const arr=el?.__vue__?.$data?.list||[];
+                    return {length:arr.length,fields:Object.keys(arr[0]||{}),
+                      rows:arr.slice(0,12).map(x=>({
+                        id:x.articleId,issue:x.periodStr,title:x.title,
+                        description:String(x.description||'').slice(0,60),
+                        author:x.memberName||x.userName||x.nickName||x.nickname||'',
+                        sampleKeys:Object.keys(x).filter(k=>/name|user|title|member|period|article|type/i.test(k))
+                      }))};
+                  }""")
+                  print('ARTICLE_ID_PROBE '+json.dumps(data,ensure_ascii=False)[:11000])
 
                   if cards:
                       page.locator('.forum-list > li .formtitle').first.click(timeout=2500)
