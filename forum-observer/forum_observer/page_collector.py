@@ -619,7 +619,16 @@ def extract_picks(text):
                   'color_unverified' if '红肖' in play or '蓝肖' in play else
                   'exclude' if '杀' in play or '排除' in play else 'include')
             output.append({'play':play,'picks':picks,'mode':mode,'excerpt':line[:450]})
-    return output
+    # Exact same prediction captured by both a local confirmed recognizer and
+    # the older parser is one candidate, not a second author vote.
+    unique=[];seen_votes=set()
+    for row in output:
+        key=(row['mode'],tuple(row['picks']))
+        if key in seen_votes:
+            continue
+        seen_votes.add(key)
+        unique.append(row)
+    return unique
 
 
 def consistent_comment_ocr(first,second,issue):
