@@ -46,10 +46,10 @@ class DetailVerificationTests(unittest.TestCase):
     def test_unrelated_contest_and_navigation_are_not_article(self):
         page=Mock()
         page.locator.return_value.inner_text.return_value=(
-            '开奖公告 第287期 牛12\\n标题甲\\n'
-            '推荐六肖：鼠牛虎兔龙蛇\\n'
-            '参赛贴  第287期特肖\\n'
-            '三肖中特：牛兔羊\\n网址大全\\n最新帖子'
+            '开奖公告 第287期 牛12\n标题甲\n'
+            '推荐六肖：鼠牛虎兔龙蛇\n'
+            '参赛贴  第287期特肖\n'
+            '三肖中特：牛兔羊\n网址大全\n最新帖子'
         )
         text=_article_body(page,{'title':'标题甲'})
         self.assertEqual(text,'推荐六肖：鼠牛虎兔龙蛇')
