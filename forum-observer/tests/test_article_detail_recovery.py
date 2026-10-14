@@ -9,7 +9,7 @@ class DetailVerificationTests(unittest.TestCase):
     def test_exact_article_author_and_detail_route_required(self):
         page=Mock()
         page.url='https://example.com/#/corpusdetail/17'
-        page.locator.return_value.inner_text.return_value='作者甲\n预测标题\n推荐六肖 鼠牛虎兔龙蛇'
+        page.locator.return_value.inner_text.return_value='历史帖子\n作者甲\n阅读数\n预测标题\n推荐六肖 鼠牛虎兔龙蛇\n最新评论'
         diagnostic={}
         self.assertTrue(_wait_detail(page,dict(author='作者甲',title='预测标题'),
                                      timeout_seconds=0.5,diagnostic=diagnostic))
