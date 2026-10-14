@@ -252,10 +252,17 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
             }
             el=el.parentElement;
         }
-        const root=document.scrollingElement||document.documentElement;
-        const before=root.scrollTop;
-        root.scrollTop=0;
-        return {found:false,before,after:root.scrollTop};
+        // Match author_history.SCROLL_JS: this site's actual scroll area
+        // is sometimes NOT an ancestor of the rendered article card.
+        const candidates=[...document.querySelectorAll('div,main,section,scroll-view')]
+            .filter(e=>e.scrollHeight>e.clientHeight+40)
+            .filter(e=>/(auto|scroll)/.test(getComputedStyle(e).overflowY));
+        candidates.sort((a,b)=>(b.clientHeight>=a.clientHeight?1:-1));
+        const target=candidates[0]||document.scrollingElement||document.documentElement;
+        const before=target.scrollTop;
+        target.scrollTop=0;
+        return {found:!!candidates.length,source:candidates.length?'candidate':'document',
+                before,after:target.scrollTop,candidate_count:candidates.length};
     }""")
     page.wait_for_timeout(400)
     previous=set()
