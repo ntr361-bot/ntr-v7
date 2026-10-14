@@ -27,6 +27,36 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Regression tests (no formal V7 or snapshot writes)
         run: python -m unittest discover -s tests -v
+      - name: Probe dynamic card identities (read-only)
+        run: |
+          python -u - <<'PY'
+          import json
+          from playwright.sync_api import sync_playwright
+          from pathlib import Path
+          url=json.loads(Path('collector-config.json').read_text())['forum_url']
+          with sync_playwright() as pw:
+              browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
+              try:
+                  page=browser.new_page(viewport={'width':1280,'height':1800})
+                  page.goto(url,wait_until='domcontentloaded',timeout=60000)
+                  page.get_by_role('tab',name='澳彩',exact=True).click(timeout=15000)
+                  page.get_by_text('最新',exact=True).click(timeout=15000)
+                  page.wait_for_timeout(900)
+                  cards=page.locator('.forum-list > li').evaluate_all("""nodes=>nodes.slice(0,8).map(li=>({
+                    title:li.querySelector('.formtitle')?.innerText?.trim(),
+                    author:li.querySelector('.name')?.innerText?.trim(),
+                    hrefs:[...li.querySelectorAll('a')].map(x=>x.href),
+                    data:li.dataset,
+                    html:li.outerHTML.slice(0,2200)
+                  }))""")
+                  print('CARD_DOM_PROBE '+json.dumps(cards,ensure_ascii=False))
+                  if cards:
+                      page.locator('.forum-list > li .formtitle').first.click(timeout=2500)
+                      page.wait_for_timeout(1600)
+                      print('CARD_NAV_PROBE '+json.dumps({'url':page.url,
+                          'text':page.locator('body').inner_text(timeout=2000)[:1200]},ensure_ascii=False))
+              finally:browser.close()
+          PY
       - name: Collect ten article details and verify isolation
         run: |
           python -u - <<'PY'
