@@ -117,6 +117,7 @@ jobs:
           assert len(posts)==10, 'Fewer than 10 article details retrieved'
           assert all(p['body'].strip() and p.get('detail_coverage')=='verified_article_text' for p in posts), 'Missing verified article text'
           assert all(p['comments']=='' and not p.get('images') and p.get('evidence_scope')=='post_article' for p in posts)
+          assert all(not any(q['author']!=p['author'] and '\\n'+q['author']+'\\n' in p['body'] for q in posts) for p in posts), 'Article text includes other forum authors (feed contamination)'
           assert result['comment_records']==0 and result['comment_attempted_threads']==0
           assert not result['completed_thread_cache']
           assert not list(out.rglob('snapshot.json'))
