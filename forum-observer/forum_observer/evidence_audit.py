@@ -122,12 +122,15 @@ def admit_one_material_per_author(rows):
         if len(group) <= 1:
             continue
         nine = [r for r in group if r.get("mode") == "include"
+                and len(r.get("vote_zodiacs", [])) == 9
                 and re.search(r"(?:九|9)肖", str(r.get("play", "")))]
-        six = [r for r in group if r.get("mode") == "include"
-               and re.search(r"(?:六|6)肖", str(r.get("play", "")))]
+        nine_votes = {tuple(r["vote_zodiacs"]) for r in nine}
         signatures = {(r.get("mode"), tuple(r.get("vote_zodiacs", []))) for r in group}
-        if len(nine) == 1 and len(nine) + len(six) == len(group):
-            chosen = nine[0]
+        if nine and len(nine_votes) == 1:
+            # The user explicitly chose *nine over every other play*,
+            # regardless of whether the other play recommends or kills.
+            chosen = min(nine, key=lambda r: (
+                str(r.get("source_url", "")), str(r.get("play", ""))))
             reason = "superseded_by_same_author_nine_zodiac"
         elif len(signatures) == 1:
             # Equal votes have no selection consequence; choose deterministically.
