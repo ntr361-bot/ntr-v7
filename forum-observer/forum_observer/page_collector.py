@@ -236,25 +236,53 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
     page.get_by_role('tab',name='澳彩',exact=True).click()
     page.get_by_text('最新',exact=True).click()
     page.wait_for_timeout(800)
+    # The SPA restores its nested scroll offset between visits. Without
+    # resetting it, an earlier card stays above the viewport and a downward
+    # scan can never find it again.
+    diagnostic['feed_scroll_reset']=page.evaluate(r"""() => {
+        const card=document.querySelector('.forum-list > li');
+        let el=card;
+        while(el) {
+            const css=getComputedStyle(el);
+            if(el.scrollHeight>el.clientHeight+24 &&
+               /(auto|scroll)/.test(css.overflowY)) {
+                const before=el.scrollTop;
+                el.scrollTop=0;
+                return {found:true,before,after:el.scrollTop};
+            }
+            el=el.parentElement;
+        }
+        const root=document.scrollingElement||document.documentElement;
+        const before=root.scrollTop;
+        root.scrollTop=0;
+        return {found:false,before,after:root.scrollTop};
+    }""")
+    page.wait_for_timeout(400)
     previous=set()
     for _ in range(max_pages*4):
         if deadline is not None and time.monotonic()>=deadline:return False
         visible=_listing(page,category)
-        if any(x['key']==item['key'] for x in visible):
+        matching=[x for x in visible if x.get('author')==item.get('author')
+                  and x.get('issue')==item.get('issue')
+                  and x.get('title')==item.get('title')]
+        if matching:
+            # Relative timestamps can change while the SPA is reloaded.
+            # Use stable identity for navigation only; archive keys still
+            # preserve publication time. Refuse ambiguous duplicate cards.
+            diagnostic['matching_card_count']=len(matching)
+        if len(matching)==1:
             # The feed is virtualized: a locator may detach between a DOM
             # snapshot and Playwright's auto-wait click. Find and click the
             # exact visible article title in one synchronous DOM operation.
             opened=page.locator('.forum-list > li').evaluate_all(r"""(cards, target) => {
-                for (const li of cards) {
-                    const get = css => li.querySelector(css)?.innerText?.trim() || '';
-                    const label = get('.slabel');
-                    if (get('.name') !== target.author ||
-                        get('.formtitle') !== target.title ||
-                        !label.includes(target.issue.slice(-3))) continue;
-                    const title=li.querySelector('.formtitle');
-                    if (title) {title.click(); return true;}
-                }
-                return false;
+                const get=(li,css)=>li.querySelector(css)?.innerText?.trim() || '';
+                const found=cards.filter(li=>get(li,'.name')===target.author
+                    && get(li,'.formtitle')===target.title
+                    && get(li,'.slabel').includes(target.issue.slice(-3)));
+                if(found.length!==1)return false;
+                const title=found[0].querySelector('.formtitle');
+                if(!title)return false;
+                title.click();return true;
             }""", {'author':item['author'],'title':item['title'],'issue':item['issue']})
             if opened:
                 diagnostic['card_clicked']=True
@@ -504,7 +532,7 @@ def _article_body(page,item):
     # Below these headings the SPA embeds unrelated site-wide contest,
     # navigation and recommendation widgets. They are not author evidence.
     footer=re.search(
-        r'(?m)^[ \t]*(?:参赛贴[ \t]*第[0-9０-９]{3}期|网址大全|'
+        r'(?m)^[^\S\n]*(?:参赛贴[^\S\n]*第[0-9０-９]{3}期|网址大全|'
         r'0149导航|49图库|六合宝典|最新帖子|相关推荐)',
         article)
     if footer:
