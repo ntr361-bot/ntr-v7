@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from forum_observer.page_collector import _detail, _wait_detail
+from forum_observer.page_collector import _detail, _wait_detail, _article_body
 
 
 class DetailVerificationTests(unittest.TestCase):
@@ -42,6 +42,19 @@ class DetailVerificationTests(unittest.TestCase):
         self.assertEqual(page.goto.call_count,2)
         self.assertEqual(diag['navigation'],'feed_card_fallback')
         self.assertTrue(diag['card_clicked'])
+
+    def test_unrelated_contest_and_navigation_are_not_article(self):
+        page=Mock()
+        page.locator.return_value.inner_text.return_value=(
+            '开奖公告 第287期 牛12\\n标题甲\\n'
+            '推荐六肖：鼠牛虎兔龙蛇\\n'
+            '参赛贴  第287期特肖\\n'
+            '三肖中特：牛兔羊\\n网址大全\\n最新帖子'
+        )
+        text=_article_body(page,{'title':'标题甲'})
+        self.assertEqual(text,'推荐六肖：鼠牛虎兔龙蛇')
+        self.assertNotIn('参赛贴',text)
+        self.assertNotIn('网址大全',text)
 
     @patch('forum_observer.page_collector._listing')
     @patch('forum_observer.page_collector._wait_detail')
