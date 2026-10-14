@@ -144,19 +144,41 @@ def current_issue(listing,now=None):
 def _listing(page,category):
     # Take one synchronous DOM snapshot. Per-card locators can detach while
     # this virtualized feed rerenders, each causing a 30-second auto-wait.
-    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
-        const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
-        const kinds = li.querySelectorAll('.ntool .num');
-        // Live page confirms the orange "精" is an image, not text:
-        // <span class="up"><img class="icon" src="data:image/png;base64,...">
-        const isFeatured = !!li.querySelector('.title .van19 > span.up > img.icon');
-        return {author:value('.name'), issue:value('.slabel'), is_featured:isFeatured,
-            published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
-            category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
-            image_urls:[...li.querySelectorAll('.text img')].map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
-            href:[...li.querySelectorAll('a[href]')].map(a=>a.href)
-                .find(h=>h.includes('corpusdetail')) || ''};
-    })""")
+    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => {
+        // Live Vue feed cards have no href. Capture exact article IDs now,
+        // before scrolling removes their associated loaded list entries.
+        let parent=cards[0];
+        while(parent && !Array.isArray(parent.__vue__?.$data?.list))
+            parent=parent.parentElement;
+        const articles=parent?.__vue__?.$data?.list||[];
+        const norm=s=>String(s||'').replace(/\\s+/g,' ').trim();
+        const origin=window.location.href.split('#')[0];
+        return cards.map(li => {
+            const value=selector=>li.querySelector(selector)?.innerText?.trim()||'';
+            const kinds=li.querySelectorAll('.ntool .num');
+            const author=value('.name'), title=value('.formtitle');
+            const issue=value('.slabel'), published=value('.time');
+            const matches=articles.filter(a=>
+                norm(a.username)===norm(author) &&
+                norm(a.title)===norm(title) &&
+                String(a.periodStr||a.period)===issue &&
+                Number.isSafeInteger(Number(a.articleId)) &&
+                Number(a.articleId)>0);
+            // Never guess an ID if multiple posts share author/title/issue.
+            const exact=matches.length>1 ?
+                matches.filter(a=>norm(a.createTime)===norm(published)) : matches;
+            const id=exact.length===1 ? Number(exact[0].articleId) : null;
+            const link=[...li.querySelectorAll('a[href]')].map(a=>a.href)
+                .find(h=>h.includes('corpusdetail')) || '';
+            const isFeatured=!!li.querySelector('.title .van19 > span.up > img.icon');
+            return {author, issue, is_featured:isFeatured,
+                published_at:published, title, body:value('.text'),
+                category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
+                image_urls:[...li.querySelectorAll('.text img')]
+                    .map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
+                article_id:id, href:link || (id ? origin+'#/corpusdetail?id='+id+'&type=3' : '')};
+        });
+    }""")
     result=[]
     for obj in rows:
         if not obj['author'] or not obj['issue']:continue
