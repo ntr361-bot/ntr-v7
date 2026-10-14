@@ -72,7 +72,7 @@ def extract_confirmed(text):
         for match in SEQ.finditer(line):
             z=picks(match.group(0))
             if len(z)==expected and len(set(z))==expected:
-                out.append(dict(play=("九肖" if expected==9 else str(expected)+"肖")+"（明确推荐）",
+                out.append(dict(play={6:"六肖",7:"七肖",8:"八肖",9:"九肖"}[expected],
                                 picks=z,mode="include",
                                 excerpt=(title[:60]+" | "+line[:380])[:450],
                                 raw_expression=match.group(0)))
