@@ -508,6 +508,63 @@ def extract_front_back_eight(text):
     return output
 
 
+NAMED_GROUP_DEFINITION = re.compile(
+    r'(?P<group>家禽|家畜|野兽)[ \t]*[:：=][ \t]*'
+    r'(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])')
+NAMED_GROUP_COMBINATION = re.compile(
+    r'(?P<group>家禽|家畜|野兽)[ \t]*[+＋][ \t]*'
+    r'(?P<extra>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){2})'
+    r'(?!['+ZODIAC_CLASS+r'])(?=[ \t]*[】\]）)]|[ \t]*(?:开|$))')
+
+
+def extract_named_group_plus_two(text):
+    """Use only this article's explicit 6-zodiac definition plus 2 named extras."""
+    text = str(text)
+    definitions = {}
+    for match in NAMED_GROUP_DEFINITION.finditer(text):
+        group = match.group('group')
+        definitions.setdefault(group, []).append(
+            [z for z in match.group('picks') if z in ZODIACS])
+    output = []
+    for line in text.splitlines():
+        for match in NAMED_GROUP_COMBINATION.finditer(line):
+            group = match.group('group')
+            extras = [z for z in match.group('extra') if z in ZODIACS]
+            base_definitions = definitions.get(group, [])
+            other_group = '野兽' if group in ('家禽', '家畜') else (
+                '家禽' if '家禽' in definitions else '家畜')
+            other_definitions = definitions.get(other_group, [])
+            error = None
+            # Never turn the legend alone into a forecast, nor infer a legend
+            # from another author or from the customary meaning of 家禽/家畜.
+            if UNCERTAIN_PATTERN.search(line[:match.start()]) or re.search(
+                    r'杀|排除|[?？]', line[:match.start()]):
+                error = 'ambiguous or excluded named-group direction'
+            elif len(base_definitions) != 1 or len(other_definitions) != 1:
+                error = 'missing or conflicting named-group definitions'
+            elif ('家禽' in definitions and '家畜' in definitions):
+                error = 'conflicting domestic group names in article'
+            elif (len(set(base_definitions[0])) != 6
+                  or len(set(other_definitions[0])) != 6
+                  or len(set(base_definitions[0] + other_definitions[0])) != 12):
+                error = 'named-group definitions must partition twelve zodiacs'
+            elif len(set(extras)) != 2 or set(extras) & set(base_definitions[0]):
+                error = 'named-group plus two must yield 8 distinct zodiacs'
+            base = base_definitions[0] if base_definitions else []
+            chosen = list(dict.fromkeys([*base, *extras]))
+            proof = [m.group(0).strip() for m in NAMED_GROUP_DEFINITION.finditer(text)]
+            output.append({
+                'play': '八肖（家野组合）',
+                'picks': chosen,
+                'mode': 'unverified' if error else 'include',
+                'excerpt': (line[:260] + ' | ' + ' | '.join(proof))[:450],
+                'raw_expression': match.group(0),
+                'definition_evidence': proof,
+                'parse_error': error,
+            })
+    return output
+
+
 def extract_big_small(text):
     """Explicit current-issue choice of one of two complementary six-sho groups."""
     text = str(text)
@@ -541,7 +598,9 @@ def extract_big_small(text):
 
 def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
-    output=extract_front_back_eight(str(text))+extract_big_small(str(text))
+    output=(extract_front_back_eight(str(text))
+            +extract_named_group_plus_two(str(text))
+            +extract_big_small(str(text)))
     for line in str(text).splitlines():
         # Choice/legend needs article-level direction, never generic "生肖" parsing.
         if re.search(r'胆[大小](?:生肖|肖)', line):

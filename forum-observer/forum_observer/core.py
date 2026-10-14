@@ -22,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-14-double-audit-one-author-v5'
+SCORING_RULE_VERSION = '2026-10-14-double-audit-named-group-v6'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -32,6 +32,7 @@ SCORING_RULES = {
     'weight_per_material': 1,
     'max_materials_per_author_per_issue': 1,
     'independent_text_audit': True,
+    'named_group_plus_two': 'same_article_verified_six_plus_two',
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
