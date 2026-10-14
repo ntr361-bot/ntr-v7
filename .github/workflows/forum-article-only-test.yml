@@ -3,7 +3,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['.github/workflows/forum-article-only-test.yml']
+    paths: ['.github/workflows/forum-article-only-test.yml', 'forum-observer/forum_observer/page_collector.py', 'forum-observer/tests/test_article_detail_recovery.py']
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/forum-article-only-test.yml', 'forum-observer/forum_observer/page_collector.py', 'forum-observer/tests/test_article_detail_recovery.py']
 permissions:
   contents: read
 jobs:
@@ -22,6 +25,68 @@ jobs:
         run: |
           pip install playwright
           python -m playwright install --with-deps chromium
+      - name: Regression tests (no formal V7 or snapshot writes)
+        run: python -m unittest discover -s tests -v
+      - name: Probe dynamic card identities (read-only)
+        run: |
+          python -u - <<'PY'
+          import json
+          from playwright.sync_api import sync_playwright
+          from pathlib import Path
+          url=json.loads(Path('collector-config.json').read_text())['forum_url']
+          with sync_playwright() as pw:
+              browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
+              try:
+                  page=browser.new_page(viewport={'width':1280,'height':1800})
+                  page.goto(url,wait_until='domcontentloaded',timeout=60000)
+                  page.get_by_role('tab',name='澳彩',exact=True).click(timeout=15000)
+                  page.get_by_text('最新',exact=True).click(timeout=15000)
+                  page.wait_for_timeout(900)
+                  cards=page.locator('.forum-list > li').evaluate_all("""nodes=>nodes.slice(0,8).map(li=>({
+                    title:li.querySelector('.formtitle')?.innerText?.trim(),
+                    author:li.querySelector('.name')?.innerText?.trim(),
+                    hrefs:[...li.querySelectorAll('a')].map(x=>x.href),
+                    data:li.dataset,
+                    html:li.outerHTML.slice(0,2200)
+                  }))""")
+                  print('CARD_DOM_PROBE '+json.dumps(cards,ensure_ascii=False))
+                  state=page.locator('.forum-list > li').first.evaluate("""li=>{
+                    const output=[];
+                    for(let el=li,depth=0;el&&depth<12;el=el.parentElement,depth++){
+                      const vm=el.__vue__;
+                      if(!vm)continue;
+                      const data=vm.$data||{};
+                      const props=vm.$props||{};
+                      const candidates=Object.entries(data)
+                        .filter(([k,v])=>/list|data|post|forum|article|item/i.test(k))
+                        .map(([k,v])=>({key:k,value:JSON.stringify(v)?.slice(0,1800)}));
+                      output.push({depth,tag:el.tagName,vmKeys:Object.keys(data),
+                        propKeys:Object.keys(props),candidates});
+                    }
+                    return output;
+                  }""")
+                  print('VUE_CARD_PROBE '+json.dumps(state,ensure_ascii=False)[:13000])
+                  data=page.locator('.forum-list > li').first.evaluate("""li=>{
+                    let el=li;
+                    while(el && !Array.isArray(el.__vue__?.$data?.list))el=el.parentElement;
+                    const arr=el?.__vue__?.$data?.list||[];
+                    return {length:arr.length,fields:Object.keys(arr[0]||{}),
+                      rows:arr.slice(0,12).map(x=>({
+                        id:x.articleId,issue:x.periodStr,title:x.title,
+                        description:String(x.description||'').slice(0,60),
+                        author:x.memberName||x.userName||x.nickName||x.nickname||'',
+                        sampleKeys:Object.keys(x).filter(k=>/name|user|title|member|period|article|type/i.test(k))
+                      }))};
+                  }""")
+                  print('ARTICLE_ID_PROBE '+json.dumps(data,ensure_ascii=False)[:11000])
+
+                  if cards:
+                      page.locator('.forum-list > li .formtitle').first.click(timeout=2500)
+                      page.wait_for_timeout(1600)
+                      print('CARD_NAV_PROBE '+json.dumps({'url':page.url,
+                          'text':page.locator('body').inner_text(timeout=2000)[:1200]},ensure_ascii=False))
+              finally:browser.close()
+          PY
       - name: Collect ten article details and verify isolation
         run: |
           python -u - <<'PY'
@@ -52,6 +117,7 @@ jobs:
           assert len(posts)==10, 'Fewer than 10 article details retrieved'
           assert all(p['body'].strip() and p.get('detail_coverage')=='verified_article_text' for p in posts), 'Missing verified article text'
           assert all(p['comments']=='' and not p.get('images') and p.get('evidence_scope')=='post_article' for p in posts)
+          assert all(not any(q['author']!=p['author'] and '\n'+q['author']+'\n' in p['body'] for q in posts) for p in posts), 'Article text includes other forum authors (feed contamination)'
           assert result['comment_records']==0 and result['comment_attempted_threads']==0
           assert not result['completed_thread_cache']
           assert not list(out.rglob('snapshot.json'))

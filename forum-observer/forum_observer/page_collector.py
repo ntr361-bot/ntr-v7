@@ -144,19 +144,41 @@ def current_issue(listing,now=None):
 def _listing(page,category):
     # Take one synchronous DOM snapshot. Per-card locators can detach while
     # this virtualized feed rerenders, each causing a 30-second auto-wait.
-    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => cards.map(li => {
-        const value = selector => li.querySelector(selector)?.innerText?.trim() || '';
-        const kinds = li.querySelectorAll('.ntool .num');
-        // Live page confirms the orange "精" is an image, not text:
-        // <span class="up"><img class="icon" src="data:image/png;base64,...">
-        const isFeatured = !!li.querySelector('.title .van19 > span.up > img.icon');
-        return {author:value('.name'), issue:value('.slabel'), is_featured:isFeatured,
-            published_at:value('.time'), title:value('.formtitle'), body:value('.text'),
-            category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
-            image_urls:[...li.querySelectorAll('.text img')].map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
-            href:[...li.querySelectorAll('a[href]')].map(a=>a.href)
-                .find(h=>h.includes('corpusdetail')) || ''};
-    })""")
+    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => {
+        // Live Vue feed cards have no href. Capture exact article IDs now,
+        // before scrolling removes their associated loaded list entries.
+        let parent=cards[0];
+        while(parent && !Array.isArray(parent.__vue__?.$data?.list))
+            parent=parent.parentElement;
+        const articles=parent?.__vue__?.$data?.list||[];
+        const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
+        const origin=window.location.href.split('#')[0];
+        return cards.map(li => {
+            const value=selector=>li.querySelector(selector)?.innerText?.trim()||'';
+            const kinds=li.querySelectorAll('.ntool .num');
+            const author=value('.name'), title=value('.formtitle');
+            const issue=value('.slabel'), published=value('.time');
+            const matches=articles.filter(a=>
+                norm(a.username)===norm(author) &&
+                norm(a.title)===norm(title) &&
+                String(a.periodStr||a.period)===issue &&
+                Number.isSafeInteger(Number(a.articleId)) &&
+                Number(a.articleId)>0);
+            // Never guess an ID if multiple posts share author/title/issue.
+            const exact=matches.length>1 ?
+                matches.filter(a=>norm(a.createTime)===norm(published)) : matches;
+            const id=exact.length===1 ? Number(exact[0].articleId) : null;
+            const link=[...li.querySelectorAll('a[href]')].map(a=>a.href)
+                .find(h=>h.includes('corpusdetail')) || '';
+            const isFeatured=!!li.querySelector('.title .van19 > span.up > img.icon');
+            return {author, issue, is_featured:isFeatured,
+                published_at:published, title, body:value('.text'),
+                category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
+                image_urls:[...li.querySelectorAll('.text img')]
+                    .map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
+                article_id:id, href:link || (id ? origin+'#/corpusdetail?id='+id+'&type=3' : '')};
+        });
+    }""")
     result=[]
     for obj in rows:
         if not obj['author'] or not obj['issue']:continue
@@ -204,13 +226,43 @@ def feed_card_post(item, forum_url, now=None):
         'comments_coverage':'not_expanded','detail_coverage':'not_opened'}
 
 
-def _detail(page,url,item,category,max_pages,deadline=None):
-    if deadline is not None and time.monotonic() >= deadline:return False
+def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
+    diagnostic=diagnostic if diagnostic is not None else {}
+    if item.get('article_id'):
+        diagnostic['expected_article_id']=item['article_id']
+    if deadline is not None and time.monotonic() >= deadline:
+        diagnostic['verification']='post_budget_exhausted'
+        return False
     def remaining_ms(default):
         return default if deadline is None else max(1,min(default,int((deadline-time.monotonic())*1000)))
     def wait_detail():
         seconds=8 if deadline is None else min(8,max(0,deadline-time.monotonic()))
-        return _wait_detail(page,item,timeout_seconds=seconds)
+        return _wait_detail(page,item,timeout_seconds=seconds,diagnostic=diagnostic)
+    # Prefer changing the hash in an already initialized Vue forum.
+    # A full reload of a deep link can briefly show the feed at a detail URL.
+    if item.get('article_id') and item.get('href'):
+        diagnostic['navigation']='in_app_article_id_primary'
+        try:
+            page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
+            page.get_by_role('tab',name='澳彩',exact=True).wait_for(
+                state='visible',timeout=remaining_ms(15000))
+            page.get_by_role('tab',name='澳彩',exact=True).click()
+            page.get_by_text('最新',exact=True).click()
+            navigated=page.evaluate(r"""href => {
+                const target=new URL(href,window.location.href);
+                const [path,query='']=target.hash.split('?');
+                const params=new URLSearchParams(query);
+                const id=Number(params.get('id'));
+                if(target.origin!==window.location.origin ||
+                   path!=='#/corpusdetail' || !Number.isSafeInteger(id) ||
+                   id<=0 || params.get('type')!=='3')return false;
+                window.location.hash=target.hash;
+                return true;
+            }""",item['href'])
+            if navigated and wait_detail():return True
+            diagnostic['in_app_primary_verified']=False
+        except Exception as exc:
+            diagnostic['in_app_primary_error']=type(exc).__name__
     # A profile's history card may have no href in this SPA.
     if item.get('profile_url') and not item.get('href'):
         if not open_profile_post(page,item,_issue,max_steps=max_pages):
@@ -218,50 +270,148 @@ def _detail(page,url,item,category,max_pages,deadline=None):
         return wait_detail()
     # Never reuse an index across pages or after reloading the list.
     if item.get('href') and 'corpusdetail' in item['href']:
-        page.goto(item['href'],wait_until='domcontentloaded',timeout=remaining_ms(45000))
-        return wait_detail()
-    page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(45000))
+        diagnostic['navigation']='direct_detail_url'
+        try:
+            page.goto(item['href'],wait_until='domcontentloaded',timeout=remaining_ms(12000))
+            if wait_detail():return True
+        except Exception as exc:
+            diagnostic['direct_link_error']=type(exc).__name__
+        # Direct deep links can fail in this SPA; retry the original card
+        # through its own feed without trusting an unverified landing page.
+        if deadline is not None and time.monotonic()>=deadline:return False
+    diagnostic['navigation']='feed_card_fallback'
+    page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
     page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=remaining_ms(15000))
     page.get_by_role('tab',name='澳彩',exact=True).click()
     page.get_by_text('最新',exact=True).click()
-    page.wait_for_timeout(800)
+    page.wait_for_timeout(500)
+    if item.get('article_id') and item.get('href'):
+        # Hash changes inside an initialized Vue SPA trigger the actual
+        # article component; loading a deep URL alone may leave the feed
+        # visible, with a plausible title and author but WRONG page content.
+        diagnostic['navigation']='in_app_article_id'
+        navigated=page.evaluate(r"""href => {
+            const target=new URL(href,window.location.href);
+            const [path,query='']=target.hash.split('?');
+            const params=new URLSearchParams(query);
+            const id=Number(params.get('id'));
+            if(target.origin!==window.location.origin ||
+               path!=='#/corpusdetail' || !Number.isSafeInteger(id) ||
+               id<=0 || params.get('type')!=='3')return false;
+            window.location.hash=target.hash;
+            return true;
+        }""",item['href'])
+        if navigated and wait_detail():
+            return True
+        diagnostic['in_app_route_verified']=False
+        # Re-enter the forum before bounded original-card fallback.
+        page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
+        page.get_by_role('tab',name='澳彩',exact=True).click(timeout=remaining_ms(15000))
+        page.get_by_text('最新',exact=True).click()
+        page.wait_for_timeout(350)
+    # The SPA restores its nested scroll offset between visits. Without
+    # resetting it, an earlier card stays above the viewport and a downward
+    # scan can never find it again.
+    diagnostic['feed_scroll_reset']=page.evaluate(r"""() => {
+        const card=document.querySelector('.forum-list > li');
+        let el=card;
+        while(el) {
+            const css=getComputedStyle(el);
+            if(el.scrollHeight>el.clientHeight+24 &&
+               /(auto|scroll)/.test(css.overflowY)) {
+                const before=el.scrollTop;
+                el.scrollTop=0;
+                return {found:true,before,after:el.scrollTop};
+            }
+            el=el.parentElement;
+        }
+        // Match author_history.SCROLL_JS: this site's actual scroll area
+        // is sometimes NOT an ancestor of the rendered article card.
+        const candidates=[...document.querySelectorAll('div,main,section,scroll-view')]
+            .filter(e=>e.scrollHeight>e.clientHeight+40)
+            .filter(e=>/(auto|scroll)/.test(getComputedStyle(e).overflowY));
+        candidates.sort((a,b)=>(b.clientHeight>=a.clientHeight?1:-1));
+        const target=candidates[0]||document.scrollingElement||document.documentElement;
+        const before=target.scrollTop;
+        target.scrollTop=0;
+        return {found:!!candidates.length,source:candidates.length?'candidate':'document',
+                before,after:target.scrollTop,candidate_count:candidates.length};
+    }""")
+    page.wait_for_timeout(400)
     previous=set()
-    for _ in range(max_pages*4):
-        if deadline is not None and time.monotonic()>=deadline:return False
+    stable_bottom_rounds=0
+    seen_card_keys=set()
+    for step in range(max(15,max_pages*4)):
+        diagnostic['scan_steps']=step+1
+        if deadline is not None and time.monotonic()>=deadline:
+            diagnostic['stop_reason']='post_budget_exhausted_during_scan'
+            return False
         visible=_listing(page,category)
-        if any(x['key']==item['key'] for x in visible):
+        seen_card_keys.update(x['key'] for x in visible)
+        diagnostic['visible_cards_seen']=len(seen_card_keys)
+        matching=[x for x in visible if x.get('author')==item.get('author')
+                  and x.get('issue')==item.get('issue')
+                  and x.get('title')==item.get('title')]
+        if matching:
+            # Relative timestamps can change while the SPA is reloaded.
+            # Use stable identity for navigation only; archive keys still
+            # preserve publication time. Refuse ambiguous duplicate cards.
+            diagnostic['matching_card_count']=len(matching)
+        if len(matching)==1:
             # The feed is virtualized: a locator may detach between a DOM
             # snapshot and Playwright's auto-wait click. Find and click the
             # exact visible article title in one synchronous DOM operation.
             opened=page.locator('.forum-list > li').evaluate_all(r"""(cards, target) => {
-                for (const li of cards) {
-                    const get = css => li.querySelector(css)?.innerText?.trim() || '';
-                    const label = get('.slabel');
-                    if (get('.name') !== target.author ||
-                        get('.formtitle') !== target.title ||
-                        !label.includes(target.issue.slice(-3))) continue;
-                    const title=li.querySelector('.formtitle');
-                    if (title) {title.click(); return true;}
-                }
-                return false;
+                const get=(li,css)=>li.querySelector(css)?.innerText?.trim() || '';
+                const found=cards.filter(li=>get(li,'.name')===target.author
+                    && get(li,'.formtitle')===target.title
+                    && get(li,'.slabel').includes(target.issue.slice(-3)));
+                if(found.length!==1)return false;
+                const title=found[0].querySelector('.formtitle');
+                if(!title)return false;
+                title.click();return true;
             }""", {'author':item['author'],'title':item['title'],'issue':item['issue']})
-            if opened and wait_detail():
-                return True
+            if opened:
+                diagnostic['card_clicked']=True
+                if wait_detail():
+                    return True
         current={x['key'] for x in visible}
         # This SPA uses a nested scroll container; window.scrollTo leaves
         # the virtualized feed in place and makes every detail lookup fail.
         move=page.evaluate(SCROLL_JS)
         page.wait_for_timeout(650)
-        if any(x['key'] not in current for x in _listing(page,category)):continue
-        if not move.get('at_end'):continue
+        after_cards=_listing(page,category)
+        discovered={x['key'] for x in after_cards}
+        seen_card_keys.update(discovered)
+        diagnostic['visible_cards_seen']=len(seen_card_keys)
+        if discovered.difference(previous|current) or move.get('after',0)>move.get('before',0)+2:
+            stable_bottom_rounds=0
+            previous.update(current)
+            continue
+        if not move.get('at_end'):
+            stable_bottom_rounds=0
+            continue
+        # Ajax loads more cards after the apparent bottom. The initial scan
+        # waits four stable rounds; detail lookup must do the same, or it
+        # stops before reaching cards already found by the initial scan.
+        stable_bottom_rounds+=1
+        if stable_bottom_rounds<4:continue
         nexts=page.locator('button, a').filter(has_text=re.compile(r'下一页|下页|加载更多'))
-        if not nexts.count():break
+        if not nexts.count():
+            diagnostic['stop_reason']='stable_feed_bottom'
+            break
         try:
-            nexts.last.click(timeout=1600);page.wait_for_timeout(700)
-        except Exception:break
-        updated={x['key'] for x in _listing(page,category)}
-        if not updated.difference(previous|current):break
-        previous|=current
+            nexts.last.click(timeout=1600)
+            page.wait_for_timeout(700)
+            stable_bottom_rounds=0
+        except Exception:
+            diagnostic['stop_reason']='pagination_unavailable'
+            break
+    else:
+        diagnostic['stop_reason']='scan_step_limit'
+    diagnostic.setdefault('verification','card_not_found')
+    if diagnostic.get('verification')=='verified':
+        diagnostic['verification']='card_not_found'
     return False
 
 
@@ -444,18 +594,42 @@ def _title_span(text,title):
     return hits[-1].span() if hits else None
 
 
-def _wait_detail(page,item,timeout_seconds=7):
-    """Wait for a SPA post to render before rejecting an otherwise valid URL."""
+def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
+    """Verify the exact SPA detail page and report which check failed.
+
+    A slow/virtualized forum must never be mistaken for an unreadable zodiac
+    prediction. Do not accept a feed card or a global draw-result banner.
+    """
+    diagnostic=diagnostic if diagnostic is not None else {}
     deadline=time.monotonic()+timeout_seconds
+    diagnostic.update(detail_url_seen=False,title_seen=False,author_seen=False)
     while time.monotonic()<deadline:
+        diagnostic['last_url']=page.url[:240]
         if 'corpusdetail' in page.url:
+            diagnostic['detail_url_seen']=True
             try:
-                text=page.locator('body').inner_text(timeout=2800)
-                if _title_span(text,item.get('title','')) and item.get('author','') in text:
+                text=page.locator('body').inner_text(timeout=1200)
+                diagnostic['title_seen']=bool(_title_span(text,item.get('title','')))
+                diagnostic['author_seen']=bool(item.get('author') and item['author'] in text)
+                # A hash URL changes before Vue swaps the feed for the
+                # article. Titles/authors in the old feed are NOT a detail.
+                diagnostic['detail_shell_seen']=(
+                    '阅读数' in text and '历史帖子' in text and '最新评论' in text)
+                if diagnostic['detail_shell_seen'] and not diagnostic['title_seen']:
+                    diagnostic['detail_preview']=text[:360].replace('\\n',' | ')
+                if (diagnostic['title_seen'] and diagnostic['author_seen']
+                        and diagnostic['detail_shell_seen']):
+                    diagnostic['verification']='verified'
                     return True
-            except Exception:
-                pass
-        page.wait_for_timeout(650)
+            except Exception as exc:
+                diagnostic['body_read_error']=type(exc).__name__
+        page.wait_for_timeout(400)
+    diagnostic['verification']=(
+        'detail_url_missing' if not diagnostic['detail_url_seen'] else
+        'title_mismatch' if not diagnostic['title_seen'] else
+        'author_mismatch' if not diagnostic['author_seen'] else
+        'detail_shell_not_loaded' if not diagnostic.get('detail_shell_seen') else
+        'detail_timeout')
     return False
 
 
@@ -468,7 +642,16 @@ def _article_body(page,item):
     before_comments=all_text.split('最新评论',1)[0]
     span=_title_span(before_comments,item.get('title',''))
     if not span:return ''
-    return before_comments[span[1]:][:50000].strip()
+    article=before_comments[span[1]:][:50000].strip()
+    # Below these headings the SPA embeds unrelated site-wide contest,
+    # navigation and recommendation widgets. They are not author evidence.
+    footer=re.search(
+        r'(?m)^[^\S\n]*(?:参赛贴[^\S\n]*第[0-9０-９]{3}期|网址大全|'
+        r'0149导航|49图库|六合宝典|最新帖子|相关推荐)',
+        article)
+    if footer:
+        article=article[:footer.start()].rstrip()
+    return article
 
 
 def current_period_text(text,issue):
@@ -795,11 +978,22 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     continue
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
-                    if not _detail(page,url,item,target_category,max_pages,deadline=min(deadline,time.monotonic()+int(policy.get('max_featured_post_seconds',35) if item.get('is_featured') else policy.get('max_post_seconds',20)))):
-                        errors.append({'author':item['author'],'title':item['title'],'reason':'detail not verified'})
+                    detail_diagnostic={}
+                    if not _detail(page,url,item,target_category,max_pages,
+                                   deadline=min(deadline,time.monotonic()+int(
+                                       policy.get('max_featured_post_seconds',35) if item.get('is_featured')
+                                       else policy.get('max_post_seconds',20))),
+                                   diagnostic=detail_diagnostic):
+                        errors.append({'author':item['author'],'title':item['title'],
+                                       'reason':'detail not verified',
+                                       'detail_diagnostic':detail_diagnostic})
                         continue
-                    body=page.locator('body').inner_text()
                     article=_article_body(page,item)
+                    if not article:
+                        errors.append({'author':item['author'],'title':item['title'],
+                                       'reason':'verified detail has no extractable article text',
+                                       'detail_diagnostic':detail_diagnostic})
+                        continue
                     imgs=[]
                     for src in ([] if article_only else _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title'])):
                         if time.monotonic()>=deadline:
