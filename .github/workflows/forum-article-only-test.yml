@@ -50,6 +50,23 @@ jobs:
                     html:li.outerHTML.slice(0,2200)
                   }))""")
                   print('CARD_DOM_PROBE '+json.dumps(cards,ensure_ascii=False))
+                  state=page.locator('.forum-list > li').first.evaluate("""li=>{
+                    const output=[];
+                    for(let el=li,depth=0;el&&depth<12;el=el.parentElement,depth++){
+                      const vm=el.__vue__;
+                      if(!vm)continue;
+                      const data=vm.$data||{};
+                      const props=vm.$props||{};
+                      const candidates=Object.entries(data)
+                        .filter(([k,v])=>/list|data|post|forum|article|item/i.test(k))
+                        .map(([k,v])=>({key:k,value:JSON.stringify(v)?.slice(0,1800)}));
+                      output.push({depth,tag:el.tagName,vmKeys:Object.keys(data),
+                        propKeys:Object.keys(props),candidates});
+                    }
+                    return output;
+                  }""")
+                  print('VUE_CARD_PROBE '+json.dumps(state,ensure_ascii=False)[:13000])
+
                   if cards:
                       page.locator('.forum-list > li .formtitle').first.click(timeout=2500)
                       page.wait_for_timeout(1600)
