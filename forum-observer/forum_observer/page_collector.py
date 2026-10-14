@@ -560,7 +560,12 @@ def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
                 text=page.locator('body').inner_text(timeout=1200)
                 diagnostic['title_seen']=bool(_title_span(text,item.get('title','')))
                 diagnostic['author_seen']=bool(item.get('author') and item['author'] in text)
-                if diagnostic['title_seen'] and diagnostic['author_seen']:
+                # A hash URL changes before Vue swaps the feed for the
+                # article. Titles/authors in the old feed are NOT a detail.
+                diagnostic['detail_shell_seen']=(
+                    '阅读数' in text and '历史帖子' in text and '最新评论' in text)
+                if (diagnostic['title_seen'] and diagnostic['author_seen']
+                        and diagnostic['detail_shell_seen']):
                     diagnostic['verification']='verified'
                     return True
             except Exception as exc:
@@ -570,6 +575,7 @@ def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
         'detail_url_missing' if not diagnostic['detail_url_seen'] else
         'title_mismatch' if not diagnostic['title_seen'] else
         'author_mismatch' if not diagnostic['author_seen'] else
+        'detail_shell_not_loaded' if not diagnostic.get('detail_shell_seen') else
         'detail_timeout')
     return False
 
