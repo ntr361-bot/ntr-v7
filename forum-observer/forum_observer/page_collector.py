@@ -266,9 +266,16 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
     }""")
     page.wait_for_timeout(400)
     previous=set()
-    for _ in range(max_pages*4):
-        if deadline is not None and time.monotonic()>=deadline:return False
+    stable_bottom_rounds=0
+    seen_card_keys=set()
+    for step in range(max(15,max_pages*4)):
+        diagnostic['scan_steps']=step+1
+        if deadline is not None and time.monotonic()>=deadline:
+            diagnostic['stop_reason']='post_budget_exhausted_during_scan'
+            return False
         visible=_listing(page,category)
+        seen_card_keys.update(x['key'] for x in visible)
+        diagnostic['visible_cards_seen']=len(seen_card_keys)
         matching=[x for x in visible if x.get('author')==item.get('author')
                   and x.get('issue')==item.get('issue')
                   and x.get('title')==item.get('title')]
@@ -300,16 +307,35 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
         # the virtualized feed in place and makes every detail lookup fail.
         move=page.evaluate(SCROLL_JS)
         page.wait_for_timeout(650)
-        if any(x['key'] not in current for x in _listing(page,category)):continue
-        if not move.get('at_end'):continue
+        after_cards=_listing(page,category)
+        discovered={x['key'] for x in after_cards}
+        seen_card_keys.update(discovered)
+        diagnostic['visible_cards_seen']=len(seen_card_keys)
+        if discovered.difference(previous|current) or move.get('after',0)>move.get('before',0)+2:
+            stable_bottom_rounds=0
+            previous.update(current)
+            continue
+        if not move.get('at_end'):
+            stable_bottom_rounds=0
+            continue
+        # Ajax loads more cards after the apparent bottom. The initial scan
+        # waits four stable rounds; detail lookup must do the same, or it
+        # stops before reaching cards already found by the initial scan.
+        stable_bottom_rounds+=1
+        if stable_bottom_rounds<4:continue
         nexts=page.locator('button, a').filter(has_text=re.compile(r'下一页|下页|加载更多'))
-        if not nexts.count():break
+        if not nexts.count():
+            diagnostic['stop_reason']='stable_feed_bottom'
+            break
         try:
-            nexts.last.click(timeout=1600);page.wait_for_timeout(700)
-        except Exception:break
-        updated={x['key'] for x in _listing(page,category)}
-        if not updated.difference(previous|current):break
-        previous|=current
+            nexts.last.click(timeout=1600)
+            page.wait_for_timeout(700)
+            stable_bottom_rounds=0
+        except Exception:
+            diagnostic['stop_reason']='pagination_unavailable'
+            break
+    else:
+        diagnostic['stop_reason']='scan_step_limit'
     diagnostic.setdefault('verification','card_not_found')
     if diagnostic.get('verification')=='verified':
         diagnostic['verification']='card_not_found'
