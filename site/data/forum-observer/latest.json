@@ -2,57 +2,45 @@
   "schema_version": 1,
   "model": "forum-observer",
   "classification": "experimental_unverified_leaderboard",
-  "issue": "2026286",
-  "collection_status": "incomplete_observation",
-  "raw_count": 548,
-  "valid_materials": 24,
-  "pending_rule_question_count": 61,
+  "issue": "2026287",
+  "collection_status": "ready_observation",
+  "raw_count": 493,
+  "valid_materials": 53,
+  "pending_rule_question_count": 117,
   "article_image_audit": {},
-  "updated_at": "2026-10-13T12:23:08.161017+00:00",
-  "distinct_prediction_authors": 24,
+  "updated_at": "2026-10-14T11:48:56.988681+00:00",
+  "distinct_prediction_authors": 47,
   "preview_top3": [
-    "马",
-    "猪",
-    "羊"
+    "龙",
+    "猴",
+    "牛"
   ],
   "preview_top6": [
-    "马",
-    "猪",
-    "羊",
     "龙",
+    "猴",
+    "牛",
+    "兔",
     "蛇",
-    "狗"
+    "羊"
   ],
   "frozen": true,
   "prediction_top3": [
-    "马",
-    "猪",
-    "羊"
+    "龙",
+    "猴",
+    "牛"
   ],
   "prediction_top6": [
-    "马",
-    "猪",
-    "羊",
     "龙",
+    "猴",
+    "牛",
+    "兔",
     "蛇",
-    "狗"
+    "羊"
   ],
-  "snapshot_digest": "f650f540de16b6afb2c144128ecaa4b2f3a45d3a21ce1d4efd7a8ad9fec083a1",
-  "freeze_quality_status": "manual_exception_below_minimum_materials",
+  "snapshot_digest": "70ff1bf25a9b43d0622d6d8761148ec93b53664877a1ad15a0056caae7b6d8bd",
+  "freeze_quality_status": "meets_minimum_samples",
   "freeze_minimum_valid_materials": 25,
-  "settlement": {
-    "issue": "2026286",
-    "actual": "羊",
-    "actual_source": "smart-ledger:/api/results",
-    "drawn_at": "2026-10-13T21:35:31+08:00",
-    "snapshot_digest": "f650f540de16b6afb2c144128ecaa4b2f3a45d3a21ce1d4efd7a8ad9fec083a1",
-    "snapshot_at": "2026-10-13T20:59:06+08:00",
-    "rank": 3,
-    "top1_hit": false,
-    "top3_hit": true,
-    "top6_hit": true,
-    "classification": "experimental_unverified_leaderboard"
-  },
+  "settlement": null,
   "settled_count": 2,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
 }
