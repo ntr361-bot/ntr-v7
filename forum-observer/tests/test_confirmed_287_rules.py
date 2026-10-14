@@ -47,6 +47,24 @@ class ConfirmedPlayTests(unittest.TestCase):
         admit_one_material_per_author(rows)
         self.assertEqual([r["play"] for r in rows if r["counted_for_ranking"]],["九肖"])
 
+    def test_single_front_group_with_verified_legend(self):
+        body=("286期前后六肖【后肖】开羊24准\n"
+              "287期前后六肖【前肖】开？00准\n"
+              "前六肖：鼠牛虎兔龙蛇\n后六肖：马羊猴鸡狗猪")
+        _,rows=score_posts([post("桃红柳绿",body,"287期前后六肖")])
+        selected=[r for r in rows if r["counted_for_ranking"]]
+        self.assertEqual(len(selected),1,rows)
+        self.assertEqual(selected[0]["picks"],list("鼠牛虎兔龙蛇"))
+
+    def test_single_domestic_group_with_article_defined_alias(self):
+        body=("286期家野六肖【野兽】开羊24错\n"
+              "287期家野六肖【家畜】开？00准\n"
+              "家禽：牛、马、羊、鸡、狗、猪\n野獸：鼠、虎、兔、龙、蛇、猴")
+        _,rows=score_posts([post("瓜田李下",body,"287期家野六肖")])
+        selected=[r for r in rows if r["counted_for_ranking"]]
+        self.assertEqual(len(selected),1,rows)
+        self.assertEqual(selected[0]["picks"],list("牛马羊鸡狗猪"))
+
     def test_plain_bracket_six_and_not_miezhuang(self):
         _,rows=score_posts([post("加油您最胖","【猪鸡马虎鼠龙】","六肖中特")])
         self.assertEqual(sum(r["counted_for_ranking"] for r in rows),1,rows)
