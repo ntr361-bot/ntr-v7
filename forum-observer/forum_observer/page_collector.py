@@ -11,6 +11,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from .core import ZODIACS, vote_zodiacs, material_counts, SCORING_RULE_VERSION, SCORING_RULES
+from .evidence_audit import audit_material, admit_one_material_per_author
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 from .comment_images import eligible_comment_image
 from .collection_policy import choose_profile_samples, choose_comment_threads, comment_thread_budget_seconds
@@ -96,7 +97,9 @@ LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
 PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓]*\s*[:：=\-、【】〔〕(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
 UNCERTAIN_PATTERN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
-BARE_KILL_PATTERN=re.compile(r'(?<![\u4e00-\u9fff])(?P<play>杀)\s*[:：]?\s*(?P<picks>['+ZODIAC_CLASS+r']+)')
+BARE_KILL_PATTERN=re.compile(r'(?<![\u4e00-\u9fff])(?P<play>杀)\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
+BIG_SMALL_GROUP=re.compile(r'胆(?P<group>大|小)(?:生肖|肖)\s*[:：=]\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])')
+BIG_SMALL_CHOICE=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆(?P<group>大|小)生肖(?=\s*开|[\s，。,])')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
 
 
@@ -505,10 +508,44 @@ def extract_front_back_eight(text):
     return output
 
 
+def extract_big_small(text):
+    """Explicit current-issue choice of one of two complementary six-sho groups."""
+    text = str(text)
+    matches = list(BIG_SMALL_GROUP.finditer(text))
+    if not matches:
+        return []
+    defs = {"大": [], "小": []}
+    for m in matches:
+        defs[m.group("group")].append([c for c in m.group("picks") if c in ZODIACS])
+    choices = BIG_SMALL_CHOICE.findall(text)
+    error = None
+    if not choices or len(set(choices)) != 1:
+        error = "ambiguous big/small selection"
+    elif any(len(values) != 1 for values in defs.values()):
+        error = "missing or conflicting big/small definitions"
+    elif any(len(set(values[0])) != 6 for values in defs.values()):
+        error = "big/small group must contain six distinct zodiacs"
+    elif len(set(defs["大"][0] + defs["小"][0])) != 12:
+        error = "big/small groups must partition all twelve zodiacs"
+    direction = choices[0] if choices else "大"
+    chosen = defs[direction][0] if defs[direction] else []
+    evidence = " | ".join([m.group(0).strip() for m in matches])
+    selection = next((m.group(0) for m in BIG_SMALL_CHOICE.finditer(text)), "")
+    return [{"play": "六肖（胆" + direction + "）", "picks": chosen,
+             "mode": "unverified" if error else "include",
+             "excerpt": selection + " | " + evidence,
+             "parse_error": error}] if chosen else [{"play": "胆大小肖",
+             "picks": [], "mode": "unverified", "excerpt": selection + " | " + evidence,
+             "parse_error": error or "missing big/small selected group"}]
+
+
 def extract_picks(text):
     """Only explicit supported plays; ambiguity never becomes a vote."""
-    output=extract_front_back_eight(str(text))
+    output=extract_front_back_eight(str(text))+extract_big_small(str(text))
     for line in str(text).splitlines():
+        # Choice/legend needs article-level direction, never generic "生肖" parsing.
+        if re.search(r'胆[大小](?:生肖|肖)', line):
+            continue
         certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$', '',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
@@ -731,6 +768,8 @@ def score_posts(posts):
                 p['mode']='unverified'
             try:
                 if reason:raise ValueError(reason)
+                audit_error=audit_material(p,text)
+                if audit_error:raise ValueError(audit_error)
                 eligible=vote_zodiacs(p['picks'],p['mode'],p['play'],p['excerpt'])
             except ValueError as error:
                 eligible=[]
@@ -738,7 +777,7 @@ def score_posts(posts):
             if not reason and ak in voted:
                 reason='duplicate author/play'
             counted=reason is None
-            picks.append({**p,'author':post['author'],'source_url':post['detail_url'],'evidence_id':post.get('evidence_id',post['detail_url']),
+            picks.append({**p,'author':post['author'],'issue':post['issue'],'source_url':post['detail_url'],'evidence_id':post.get('evidence_id',post['detail_url']),
                           'counted_for_ranking':counted,'exclusion_reason':reason,
                           'vote_zodiacs':eligible if counted else [],
                           'weight_per_zodiac':1.0/len(eligible) if counted else 0.0})
@@ -746,19 +785,9 @@ def score_posts(posts):
             voted.add(ak)
             weight=1.0/len(eligible)
             for z in eligible:votes[z]+=weight
-    # De-duplicate across an author's different posts as well as within a
-    # post. A verified 九肖 recommendation replaces the same author's 六肖.
-    # Exclusions such as 单肖杀码 remain independent valid eleven-zodiac votes.
-    nine_authors = {p['author'].strip().casefold() for p in picks
-                    if p['counted_for_ranking'] and p['mode'] == 'include'
-                    and re.search(r'(?:九|9)肖', p['play'])}
-    for p in picks:
-        if (p['counted_for_ranking'] and p['mode'] == 'include'
-                and re.search(r'(?:六|6)肖', p['play'])
-                and p['author'].strip().casefold() in nine_authors):
-            p.update(counted_for_ranking=False,
-                     exclusion_reason='superseded_by_same_author_nine_zodiac',
-                     vote_zodiacs=[], weight_per_zodiac=0.0)
+    # Exact user rule: one author / one issue / one adopted material.
+    # The verifier declines unresolved conflicting plays rather than guessing.
+    admit_one_material_per_author(picks)
     votes={z:0.0 for z in ZODIACS}
     for p in picks:
         if p['counted_for_ranking']:

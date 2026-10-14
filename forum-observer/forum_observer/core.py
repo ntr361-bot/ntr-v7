@@ -5,6 +5,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from .evidence_audit import admit_one_material_per_author, audit_material
 
 ZODIACS = ('鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪')
 
@@ -21,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-12-explicit-six-plus-nine-priority-v4'
+SCORING_RULE_VERSION = '2026-10-14-double-audit-one-author-v5'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -29,6 +30,8 @@ SCORING_RULES = {
     'numbers_as_whole_zodiacs': False,
     'explicit_zodiac_evidence': True,
     'weight_per_material': 1,
+    'max_materials_per_author_per_issue': 1,
+    'independent_text_audit': True,
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
@@ -106,19 +109,16 @@ def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderbo
             accepted.append(w)
         except (TypeError, ValueError, KeyError) as e:
             rejected.append({'index':i,'reason':str(e),'source_url':raw.get('source_url')})
-    # One author's nine-zodiac recommendation supersedes their six-zodiac
-    # recommendation in the same issue, even across separate posts.
-    nine_authors = {(w.author.strip().casefold(), w.issue) for w in accepted
-                    if w.mode == 'include' and re.search(r'(?:九|9)肖', w.play)}
-    retained = []
-    for w in accepted:
-        if (w.mode == 'include' and re.search(r'(?:六|6)肖', w.play)
-                and (w.author.strip().casefold(), w.issue) in nine_authors):
-            rejected.append({'reason': 'superseded_by_same_author_nine_zodiac',
-                             'source_url': w.source_url, 'author': w.author})
-        else:
-            retained.append(w)
-    accepted = retained
+    # Both structured input and scraped text use the same author admission gate.
+    candidate_rows=[dict(author=w.author, issue=w.issue, play=w.play,
+                         mode=w.mode, vote_zodiacs=vote_zodiacs(w.picks,w.mode,w.play,w.evidence),
+                         source_url=w.source_url, counted_for_ranking=True) for w in accepted]
+    admit_one_material_per_author(candidate_rows)
+    for work,row in zip(accepted,candidate_rows):
+        if not row['counted_for_ranking']:
+            rejected.append({'reason':row['exclusion_reason'], 'source_url':work.source_url,
+                             'author':work.author})
+    accepted=[work for work,row in zip(accepted,candidate_rows) if row['counted_for_ranking']]
     groups = {'leaderboard':[], 'outside':[]}
     for w in accepted:
         groups[w.source_group].append(w)
@@ -181,10 +181,12 @@ def verify_scored_result(result, min_materials=25):
             raise ValueError('same author six-zodiac vote duplicated with nine-zodiac vote')
     votes={z:0.0 for z in ZODIACS};seen=set()
     for row in rows:
+        audit_error=audit_material(row,row.get('excerpt',''))
+        if audit_error:raise ValueError('independent audit failed at freeze gate: '+audit_error)
         picks=vote_zodiacs(row['picks'],row['mode'],row['play'],row.get('excerpt',''))
         if row.get('vote_zodiacs')!=picks:raise ValueError('invalid normalized vote at freeze gate')
-        key=(row['author'],row['play'],row['mode'])
-        if key in seen:raise ValueError('duplicate work at freeze gate')
+        key=(str(row['author']).strip().casefold(), row.get('issue', result.get('issue')))
+        if key in seen:raise ValueError('duplicate author at freeze gate')
         seen.add(key)
         for z in picks:votes[z]+=1/len(picks)
     order=sorted(ZODIACS,key=lambda z:(-votes[z],ZODIACS.index(z)))

@@ -39,11 +39,12 @@ class EqualWeightTests(unittest.TestCase):
         self.assertEqual(rows, [])
         self.assertEqual(works[0]['exclusion_reason'], 'kill numbers are not kill zodiacs')
 
-    def test_recommendations_and_kills_combine_equal_weights(self):
+    def test_conflicting_recommendation_and_kill_from_same_author_need_selection(self):
         rows, works = score_posts([self.post('推荐六肖：鼠牛虎兔龙蛇\n杀二肖：鼠牛')])
-        self.assertEqual(sum(w['counted_for_ranking'] for w in works), 2)
-        self.assertAlmostEqual(sum(r['score'] for r in rows), 2, places=5)
-        self.assertAlmostEqual(next(r['score'] for r in rows if r['zodiac']=='鼠'), 1/6, places=5)
+        self.assertEqual(sum(w['counted_for_ranking'] for w in works), 0)
+        self.assertEqual(rows, [])
+        self.assertTrue(all('ambiguous multiple materials from same author' == w['exclusion_reason']
+                            for w in works))
 
     def test_structured_input_obeys_same_rules(self):
         from forum_observer.core import vote_zodiacs
