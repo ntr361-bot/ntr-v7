@@ -257,7 +257,28 @@ def _detail(page,url,item,category,max_pages,deadline=None,diagnostic=None):
     page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=remaining_ms(15000))
     page.get_by_role('tab',name='澳彩',exact=True).click()
     page.get_by_text('最新',exact=True).click()
-    page.wait_for_timeout(800)
+    page.wait_for_timeout(500)
+    if item.get('article_id') and item.get('href'):
+        # Hash changes inside an initialized Vue SPA trigger the actual
+        # article component; loading a deep URL alone may leave the feed
+        # visible, with a plausible title and author but WRONG page content.
+        diagnostic['navigation']='in_app_article_id'
+        navigated=page.evaluate(r"""href => {
+            const target=new URL(href,window.location.href);
+            if(target.origin!==window.location.origin ||
+               !/^#\\/corpusdetail\\?id=\\d+&type=3$/.test(target.hash))
+                return false;
+            window.location.hash=target.hash;
+            return true;
+        }""",item['href'])
+        if navigated and wait_detail():
+            return True
+        diagnostic['in_app_route_verified']=False
+        # Re-enter the forum before bounded original-card fallback.
+        page.goto(url,wait_until='domcontentloaded',timeout=remaining_ms(12000))
+        page.get_by_role('tab',name='澳彩',exact=True).click(timeout=remaining_ms(15000))
+        page.get_by_text('最新',exact=True).click()
+        page.wait_for_timeout(350)
     # The SPA restores its nested scroll offset between visits. Without
     # resetting it, an earlier card stays above the viewport and a downward
     # scan can never find it again.
