@@ -59,6 +59,11 @@ def extract_confirmed(text):
     heading=TITLE.search(title)
     target=NUMBER.get(heading.group(1) or heading.group(2)) if heading else None
     for line in lines[1:]:
+        # A naked question mark, negation or uncertainty is NOT a selection.
+        # A regular unopened result placeholder after 开 is allowed.
+        normalized = re.sub(r"开\s*[:：]?\s*[《【(（]?\s*[?？]+\s*(?:00)?\s*[》】)）]?\s*(?:准|中|对)?\s*$","",line)
+        if re.search(r"不确定|不是|取消|可能|待核实|待确认|疑似|或许|不推荐|不杀|[?？]",normalized):
+            continue
         if re.search(r"家禽|家畜|野兽|野獸|前肖|后肖|前六肖|后六肖|单肖|双肖|胆大|胆小|灭庄|杀码|杀肖|🔪",line):
             continue
         local=TITLE.search(line)
