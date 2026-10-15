@@ -164,43 +164,55 @@ def audit_material(row, evidence_text):
     return None
 
 
-def admit_one_material_per_author(rows):
-    """Mutate scored candidate rows in place without inventing a play priority.
+def _admission_priority(row):
+    """Lower value is preferred, based only on an independently verified play."""
+    if row.get("mode") == "include":
+        # Structured works may only have normalized votes, while scraped works
+        # retain the literal picks. Never treat an exclude complement as a tip.
+        count = len(row.get("picks") or row.get("vote_zodiacs") or [])
+        if count in (9, 8, 7, 6):
+            return 9 - count
+        return 4
+    if row.get("mode") == "exclude":
+        return 5
+    return 6
 
-    Identical votes are interchangeable. A unique nine-zodiac recommendation
-    overrides six-zodiac recommendations. Any other conflict is excluded
-    pending a user's selection; there must never be two votes from one author.
+
+def admit_one_material_per_author(rows):
+    """Choose exactly ONE verified material per author per issue.
+
+    Preference: nine, eight, seven, six, other valid recommendation, valid
+    zodiac kill. For equal priority select the earliest ORIGINAL publication,
+    then a stable source URL / play / literal picks tiebreak. No actual result,
+    historical hit rate, or zodiac identity is used for selection.
+
+    Invalid and uncertain rows were excluded by the independent parser before
+    this function. Unselected rows remain as auditable, zero-weight records.
     """
     by_author = defaultdict(list)
     for row in rows:
         if row.get("counted_for_ranking"):
-            key = (str(row.get("issue", "")), str(row.get("author", "")).strip().casefold())
+            key = (str(row.get("issue", "")).strip(),
+                   str(row.get("author", "")).strip().casefold())
             by_author[key].append(row)
+
     for group in by_author.values():
         if len(group) <= 1:
             continue
-        nine = [r for r in group if r.get("mode") == "include"
-                and len(r.get("vote_zodiacs", [])) == 9
-                and re.search(r"(?:九|9)肖", str(r.get("play", "")))]
-        nine_votes = {tuple(r["vote_zodiacs"]) for r in nine}
-        signatures = {(r.get("mode"), tuple(r.get("vote_zodiacs", []))) for r in group}
-        if nine and len(nine_votes) == 1:
-            # The user explicitly chose *nine over every other play*,
-            # regardless of whether the other play recommends or kills.
-            chosen = min(nine, key=lambda r: (
-                str(r.get("source_url", "")), str(r.get("play", ""))))
-            reason = "superseded_by_same_author_nine_zodiac"
-        elif len(signatures) == 1:
-            # Equal votes have no selection consequence; choose deterministically.
-            chosen = min(group, key=lambda r: (
-                str(r.get("source_url", "")), str(r.get("play", ""))))
-            reason = "duplicate author/identical vote"
-        else:
-            chosen = None
-            reason = "ambiguous multiple materials from same author"
-        for r in group:
-            if r is chosen:
+
+        chosen = min(group, key=lambda r: (
+            _admission_priority(r),
+            str(r.get("published_at") or "9999-12-31T23:59:59"),
+            str(r.get("source_url") or ""),
+            str(r.get("play") or ""),
+            "".join(r.get("picks") or r.get("vote_zodiacs") or []),
+        ))
+        for row in group:
+            if row is chosen:
                 continue
-            r.update(counted_for_ranking=False, exclusion_reason=reason,
-                     vote_zodiacs=[], weight_per_zodiac=0.0)
+            reason = ("superseded_by_same_author_higher_priority"
+                      if _admission_priority(row) > _admission_priority(chosen)
+                      else "duplicate author/equal priority earlier source")
+            row.update(counted_for_ranking=False, exclusion_reason=reason,
+                       vote_zodiacs=[], weight_per_zodiac=0.0)
     return rows
