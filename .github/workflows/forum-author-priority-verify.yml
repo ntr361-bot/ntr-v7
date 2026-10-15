@@ -4,6 +4,8 @@ on:
     branches: [fix/forum-author-one-vote-priority-20261015]
     paths:
       - '.github/workflows/forum-author-priority-verify.yml'
+      - 'forum-observer/tests/**'
+      - 'forum-observer/forum_observer/**'
 permissions:
   contents: read
   actions: read
