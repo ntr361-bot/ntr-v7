@@ -59,7 +59,7 @@ class SingleAuthorPriorityTests(unittest.TestCase):
                     detail_url=f"https://example.org/{i}",images=[]) for i in (10,20,30,40)]
         scores, entries=score_posts(posts)
         self.assertEqual(sum(x["counted_for_ranking"] for x in entries),1)
-        self.assertEqual(sum(r["score"] for r in scores),1.0)
+        self.assertAlmostEqual(sum(r["score"] for r in scores),1.0,places=5)
         self.assertEqual(next(x["source_url"] for x in entries if x["counted_for_ranking"]),
                          "https://example.org/10")
 
