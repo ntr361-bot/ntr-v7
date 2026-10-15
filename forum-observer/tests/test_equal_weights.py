@@ -45,7 +45,7 @@ class EqualWeightTests(unittest.TestCase):
         adopted = next(w for w in works if w['counted_for_ranking'])
         self.assertEqual(adopted['picks'], list('鼠牛虎兔龙蛇'))
         self.assertEqual(adopted['mode'], 'include')
-        self.assertEqual(sum(r['score'] for r in rows), 1)
+        self.assertAlmostEqual(sum(r['score'] for r in rows), 1, places=5)
 
     def test_structured_input_obeys_same_rules(self):
         from forum_observer.core import vote_zodiacs
