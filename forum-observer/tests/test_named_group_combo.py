@@ -78,9 +78,10 @@ class NamedGroupComboTests(unittest.TestCase):
         body = ('287期家野两肖【家禽+猴鼠】\n'+DOMESTIC+'\n'+WILD
                 +'\n推荐六肖：鼠牛虎兔龙蛇')
         ranking, rows = score_posts([post(body)])
-        self.assertEqual(sum(r['counted_for_ranking'] for r in rows),0)
-        self.assertTrue(all(r['exclusion_reason']=='ambiguous multiple materials from same author'
-                            for r in rows if r['play'] in ('八肖（家野组合）','推荐六肖')))
+        chosen=[r for r in rows if r['counted_for_ranking']]
+        self.assertEqual(len(chosen),1)
+        self.assertEqual(chosen[0]['play'],'八肖（家野组合）')
+        self.assertAlmostEqual(sum(r['score'] for r in ranking),1,places=5)
 
     def test_front_back_legacy_eight_still_valid(self):
         body = ('287期前后六肖【后六肖+虎牛】开:？00准\n'
