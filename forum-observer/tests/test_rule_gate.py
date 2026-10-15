@@ -34,7 +34,7 @@ class RuleGateTests(unittest.TestCase):
         self.assertEqual(len([r for r in rows if r['counted_for_ranking']]), 1)
         six_rows=[r for r in rows if '六肖' in r['play']]
         self.assertTrue(six_rows)
-        self.assertTrue(all(r['exclusion_reason']=='superseded_by_same_author_nine_zodiac' for r in six_rows))
+        self.assertTrue(all(r['exclusion_reason']=='superseded_by_same_author_higher_priority' for r in six_rows))
         self.assertEqual(len(ranking),12)
         self.assertAlmostEqual(sum(r['score'] for r in ranking),1.0, places=5)
 

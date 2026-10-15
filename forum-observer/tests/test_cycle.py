@@ -105,14 +105,15 @@ class CycleTests(unittest.TestCase):
         row={'author':'甲','issue':'2026282','title':'推荐六肖：鼠牛虎兔龙蛇','body':'',
              'images':[],'detail_url':'https://example.org/detail'}
         ranks,items=score_posts([row,row])
-        self.assertEqual(len(items),1)
+        self.assertEqual(sum(p['counted_for_ranking'] for p in items),1)
+        self.assertEqual(len(items),2)  # Retain unadopted evidence for audit.
         self.assertAlmostEqual(ranks[0]['score'],1/6,places=5)
     def test_count_only_effective_author_votes(self):
         post={'author':'甲','issue':'2026281','title':'推荐六肖：鼠牛虎兔龙蛇',
               'body':'','images':[],'detail_url':'https://example.org/1'}
         rows,works=score_posts([post,dict(post,detail_url='https://example.org/2')])
         self.assertEqual(sum(p['counted_for_ranking'] for p in works),1)
-        self.assertEqual(len(works),1)
+        self.assertEqual(len(works),2)  # One adopted + one excluded copy.
         self.assertAlmostEqual(rows[0]['score'],1/6,places=5)
 
     def test_color_note_not_valid_vote(self):

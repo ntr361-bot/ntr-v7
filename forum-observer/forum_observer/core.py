@@ -22,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-14-confirmed-play-nine-priority-v7'
+SCORING_RULE_VERSION = '2026-10-15-one-author-9-8-7-6-priority-v8'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -34,8 +34,8 @@ SCORING_RULES = {
     'independent_text_audit': True,
     'named_group_plus_two': 'same_article_verified_six_plus_two',
     'kill_zodiac_max_count': 6,
-    'nine_zodiac_priority': 'unique_explicit_nine_over_all_other_plays',
-    'unclear_or_conflicting_multiple_plays': 'exclude_pending_review',
+    'one_author_play_priority': 'nine_eight_seven_six_other_recommendation_then_valid_kill',
+    'same_priority_tiebreak': 'earliest_source_published_at_then_stable_source_identity',
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
@@ -101,24 +101,22 @@ def validate_work(raw: dict[str,Any], issue: str, cutoff: str) -> Work:
 
 
 def calculate(issue: str, cutoff: str, candidates: list[dict[str,Any]], leaderboard_authors: set[str]) -> dict[str,Any]:
-    accepted, rejected, seen = [], [], set()
+    accepted, rejected = [], []
     for i, raw in enumerate(candidates):
         try:
             w = validate_work(raw, issue, cutoff)
             expected_group = 'leaderboard' if w.author in leaderboard_authors else 'outside'
             if w.source_group != expected_group:
                 raise ValueError('author group does not match verified leaderboard')
-            key = (w.author.strip().casefold(), w.play.strip().casefold())
-            if key in seen:
-                raise ValueError('duplicate author/play')
-            seen.add(key)
             accepted.append(w)
         except (TypeError, ValueError, KeyError) as e:
             rejected.append({'index':i,'reason':str(e),'source_url':raw.get('source_url')})
     # Both structured input and scraped text use the same author admission gate.
     candidate_rows=[dict(author=w.author, issue=w.issue, play=w.play,
-                         mode=w.mode, vote_zodiacs=vote_zodiacs(w.picks,w.mode,w.play,w.evidence),
-                         source_url=w.source_url, counted_for_ranking=True) for w in accepted]
+                         mode=w.mode, picks=w.picks,
+                         vote_zodiacs=vote_zodiacs(w.picks,w.mode,w.play,w.evidence),
+                         published_at=w.published_at, source_url=w.source_url,
+                         counted_for_ranking=True) for w in accepted]
     admit_one_material_per_author(candidate_rows)
     for work,row in zip(accepted,candidate_rows):
         if not row['counted_for_ranking']:

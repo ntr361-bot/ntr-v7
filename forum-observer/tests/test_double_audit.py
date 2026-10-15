@@ -56,9 +56,11 @@ class DoubleAuditTests(unittest.TestCase):
     def test_dandan_conflicting_plays_not_given_six_votes(self):
         body="杀四肖：鸡鼠狗猪\n杀三肖：鼠狗猪\n八肖：牛兔羊猴蛇马虎龙\n精选六肖：牛兔羊猴蛇马"
         ranks,rows=score_posts([post("贝贝丹丹",body)])
-        self.assertEqual(ranks,[])
-        self.assertEqual(sum(r["counted_for_ranking"] for r in rows),0)
-        self.assertTrue(all(r["exclusion_reason"]=="ambiguous multiple materials from same author" for r in rows))
+        selected=[r for r in rows if r["counted_for_ranking"]]
+        self.assertEqual(len(selected),1)
+        self.assertEqual(selected[0]["play"],"八肖")
+        self.assertEqual(selected[0]["picks"],list("牛兔羊猴蛇马虎龙"))
+        self.assertAlmostEqual(sum(r["score"] for r in ranks),1,places=5)
 
     def test_two_authors_each_one_vote_and_freeze_checks_duplicates(self):
         posts=[post("甲","推荐六肖：鼠牛虎兔龙蛇"),

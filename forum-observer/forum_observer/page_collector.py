@@ -816,8 +816,7 @@ def previous_period_records(text,requested_issue,post):
 
 
 def score_posts(posts):
-    votes={z:0.0 for z in ZODIACS}
-    picks=[];seen=set();voted=set()
+    picks=[]
     for post in posts:
         # Reply text is saved as evidence, but must not be attributed to OP.
         body=current_period_text(post['body'],post['issue'])
@@ -829,10 +828,6 @@ def score_posts(posts):
                 text+='\n'+current_period_text(pic['ocr'],post['issue'])
         parsed=extract_picks(text)
         for p in parsed:
-            key=(post['author'],p['play'],tuple(p['picks']),p['mode'])
-            if key in seen:continue
-            seen.add(key)
-            ak=(post['author'],p['play'],p['mode'])
             reason=p.get('parse_error')
             if UNCERTAIN_PATTERN.search(post['title']):
                 p['mode']='unverified'
@@ -844,19 +839,13 @@ def score_posts(posts):
             except ValueError as error:
                 eligible=[]
                 reason=str(error)
-            if not reason and ak in voted:
-                reason='duplicate author/play'
             counted=reason is None
-            picks.append({**p,'author':post['author'],'issue':post['issue'],'source_url':post['detail_url'],'evidence_id':post.get('evidence_id',post['detail_url']),
+            picks.append({**p,'author':post['author'],'issue':post['issue'],'source_url':post['detail_url'],'published_at':post.get('published_at',''),'evidence_id':post.get('evidence_id',post['detail_url']),
                           'counted_for_ranking':counted,'exclusion_reason':reason,
                           'vote_zodiacs':eligible if counted else [],
                           'weight_per_zodiac':1.0/len(eligible) if counted else 0.0})
-            if not counted:continue
-            voted.add(ak)
-            weight=1.0/len(eligible)
-            for z in eligible:votes[z]+=weight
     # Exact user rule: one author / one issue / one adopted material.
-    # The verifier declines unresolved conflicting plays rather than guessing.
+    # Verified alternatives are compared by a frozen, outcome-blind priority.
     admit_one_material_per_author(picks)
     votes={z:0.0 for z in ZODIACS}
     for p in picks:

@@ -41,10 +41,9 @@ class EqualWeightTests(unittest.TestCase):
 
     def test_conflicting_recommendation_and_kill_from_same_author_need_selection(self):
         rows, works = score_posts([self.post('推荐六肖：鼠牛虎兔龙蛇\n杀二肖：鼠牛')])
-        self.assertEqual(sum(w['counted_for_ranking'] for w in works), 0)
-        self.assertEqual(rows, [])
-        self.assertTrue(all('ambiguous multiple materials from same author' == w['exclusion_reason']
-                            for w in works))
+        self.assertEqual(sum(w['counted_for_ranking'] for w in works), 1)
+        self.assertEqual(next(w['mode'] for w in works if w['counted_for_ranking']), 'include')
+        self.assertAlmostEqual(sum(row['score'] for row in rows), 1, places=5)
 
     def test_structured_input_obeys_same_rules(self):
         from forum_observer.core import vote_zodiacs
