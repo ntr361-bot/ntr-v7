@@ -1,6 +1,9 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
+  # Backup at 19:40 Asia/Shanghai (11:40 UTC); GPT push remains primary.
+  schedule:
+    - cron: '40 11 * * *'
   # ChatGPT task writes a daily marker to an isolated trigger branch.
   # Always check out main for collection; trigger files never enter main.
   push:
@@ -30,9 +33,9 @@ jobs:
           python-version: "3.12"
       - name: Decide current-issue collection
         id: collection-gate
-        # Only GPT's collect marker (or explicit manual dispatch) may enter forum scraping.
+        # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
         run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
