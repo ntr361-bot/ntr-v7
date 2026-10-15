@@ -25,7 +25,7 @@ class AuthorPriorityTests(unittest.TestCase):
             adopted=[r for r in rows if r["counted_for_ranking"]]
             self.assertEqual(len(adopted),1,rows)
             self.assertEqual(adopted[0]["source_url"],base+"nine")
-            self.assertEqual(adopted[0]["play"],"推荐九肖")
+            self.assertEqual(adopted[0]["play"],"九肖")
             self.assertAlmostEqual(sum(r["score"] for r in ranking),1,places=5)
 
     def test_eight_over_seven_six_and_kill_without_nine(self):
