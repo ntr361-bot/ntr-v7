@@ -97,7 +97,7 @@ public static class V7PredictionHistoryService
             string.Join(",", result.Ranking.Take(3).Select(item => item.Zodiac)),
             string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), numbers.Numbers,
             ExperimentModels.V7Auto, AutoLearningHistoryKey,
-            $"{scores}|{colorDetails}|{colorSnapshot}|重点号码:{numbers.Details}", learningDetails,
+            $"{scores}|{colorDetails}|{colorSnapshot}", learningDetails,
             snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson,
             numbers.MappingSnapshotJson);
     }
@@ -180,7 +180,7 @@ public static class V7PredictionHistoryService
         string scores = string.Join(";", result.Probabilities.OrderByDescending(x => x.Value)
             .Select(x => $"{x.Key}:{x.Value:F4}"));
         DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), numbers.Numbers,
-            modelVersion, historyKey, $"{scores}|重点号码:{numbers.Details}", report,
+            modelVersion, historyKey, $"{scores}", report,
             System.Text.Json.JsonSerializer.Serialize(result.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
             "", System.Text.Json.JsonSerializer.Serialize(result.Features), "", numbers.MappingSnapshotJson);
     }

@@ -247,8 +247,6 @@ public static class PredictionAutomation
             throw new InvalidDataException("预测结果期号不正确");
         if (result.Top3.Count == 0 || result.Top6.Count == 0)
             throw new InvalidDataException("预测生肖列表为空");
-        if (result.RecommendedNumbers.Count == 0)
-            throw new InvalidDataException("预测号码列表为空");
         if (result.Top3.Any(zodiac => !ValidZodiacs.Contains(zodiac)) ||
             result.Top6.Any(zodiac => !ValidZodiacs.Contains(zodiac)))
             throw new InvalidDataException("预测结果包含非法生肖");
@@ -260,8 +258,7 @@ public static class PredictionAutomation
             throw new InvalidDataException("输出状态不是 success");
         if (!element.GetProperty("validation").GetProperty("passed").GetBoolean())
             throw new InvalidDataException("输出校验状态未通过");
-        if (element.GetProperty("prediction").GetProperty("zodiacs").GetArrayLength() == 0 ||
-            element.GetProperty("prediction").GetProperty("numbers").GetArrayLength() == 0)
+        if (element.GetProperty("prediction").GetProperty("zodiacs").GetArrayLength() == 0)
             throw new InvalidDataException("输出预测内容为空");
     }
 

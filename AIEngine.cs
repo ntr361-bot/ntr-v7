@@ -169,7 +169,7 @@ namespace 六合分析软件
                 WindowResults = v2Result.WindowResults
             };
 
-            BuildRecommendedNumbers(result, periods);
+            // 用户已停用号码推荐；生肖排序不变，号码字段保持为空。
 
             // 构建 GPT 分析提示词
             var hotZodiacs = engine.GetHotZodiacs(periods);
@@ -335,71 +335,6 @@ namespace 六合分析软件
             _memoryCache = null;
             _memoryCacheKey = "";
             JsonFileCache.RemoveByPrefix("ai-prediction-");
-        }
-
-        /// <summary>
-        /// 在重点生肖对应号码中，根据真实特码历史做二次筛选。
-        /// </summary>
-        private static void BuildRecommendedNumbers(PredictResult result, int periods, int takeCount = 8)
-        {
-            try
-            {
-                var latest = DatabaseHelper.GetLatestHistory(1);
-                string year = latest.FirstOrDefault()?.OpenTime?.Length >= 4
-                    ? latest[0].OpenTime.Substring(0, 4)
-                    : latest.FirstOrDefault()?.Date?.Length >= 4 ? latest[0].Date.Substring(0, 4) : "";
-                string yearPet = string.IsNullOrEmpty(year) ? "" : DatabaseHelper.GetYearPetPublic(year);
-                if (string.IsNullOrEmpty(yearPet) || result.Top3.Count == 0) return;
-
-                var map = DataCrawler.BuildShengXiaoMapPublic(yearPet);
-                int historyLimit = AISettings.ResolveHistoryLimit(periods);
-                var history = DatabaseHelper.GetLatestHistory(historyLimit)
-                    .Select(h => int.TryParse(h.SpecialNumber, out int n) && n >= 1 && n <= 49 ? (int?)n : null)
-                    .ToList();
-                var zodiacScores = result.AllScores.ToDictionary(s => s.Zodiac, s => s.TotalScore);
-                var candidates = new List<(int number, string zodiac, double score, string detail)>();
-
-                foreach (string zodiac in result.Top3)
-                {
-                    if (!map.TryGetValue(zodiac, out var zodiacNumbers)) continue;
-                    foreach (string text in zodiacNumbers)
-                    {
-                        if (!int.TryParse(text, out int number)) continue;
-                        int total = history.Count(n => n == number);
-                        int recent10 = history.Take(10).Count(n => n == number);
-                        int recent30 = history.Take(30).Count(n => n == number);
-                        int missing = history.TakeWhile(n => n != number).Count();
-                        double expectedAppear = Math.Max(1.0, history.Count / 49.0);
-                        double frequencyScore = Math.Min(100, total / expectedAppear * 50);
-                        double recentScore = Math.Min(100, recent10 * 35 + recent30 * 8);
-                        double avgInterval = total > 0 ? (double)history.Count / total : 49;
-                        double omissionScore = Math.Max(0, 100 - Math.Abs(missing - avgInterval) / Math.Max(1, avgInterval) * 60);
-                        double zodiacScore = zodiacScores.GetValueOrDefault(zodiac);
-                        double score = zodiacScore * 0.50 + recentScore * 0.20 +
-                            frequencyScore * 0.15 + omissionScore * 0.15;
-                        string detail = $"{number:D2}({zodiac})={score:F1}[肖{zodiacScore:F1},近10:{recent10},近30:{recent30},总:{total},漏:{missing}]";
-                        candidates.Add((number, zodiac, score, detail));
-                    }
-                }
-
-                var selected = new List<(int number, string zodiac, double score, string detail)>();
-                foreach (string zodiac in result.Top3)
-                {
-                    var best = candidates.Where(c => c.zodiac == zodiac).OrderByDescending(c => c.score).FirstOrDefault();
-                    if (best.number > 0) selected.Add(best);
-                }
-                selected.AddRange(candidates.OrderByDescending(c => c.score)
-                    .Where(c => selected.All(s => s.number != c.number))
-                    .Take(Math.Max(0, takeCount - selected.Count)));
-                selected = selected.OrderByDescending(c => c.score).ToList();
-                result.RecommendedNumbers = selected.Select(c => c.number).ToList();
-                result.NumberScoreDetails = string.Join(";", selected.Select(c => c.detail));
-            }
-            catch
-            {
-                result.RecommendedNumbers.Clear();
-                result.NumberScoreDetails = "";
-            }
         }
 
         /// <summary>
