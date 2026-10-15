@@ -53,12 +53,26 @@ class DoubleAuditTests(unittest.TestCase):
         self.assertEqual(next(r["play"] for r in rows if r["counted_for_ranking"]),"九肖")
         self.assertAlmostEqual(sum(r["score"] for r in ranks),1,places=5)
 
-    def test_dandan_conflicting_plays_not_given_six_votes(self):
+    def test_dandan_reposting_kills_and_eight_sho_is_only_one_vote(self):
         body="杀四肖：鸡鼠狗猪\n杀三肖：鼠狗猪\n八肖：牛兔羊猴蛇马虎龙\n精选六肖：牛兔羊猴蛇马"
-        ranks,rows=score_posts([post("贝贝丹丹",body)])
-        self.assertEqual(ranks,[])
-        self.assertEqual(sum(r["counted_for_ranking"] for r in rows),0)
-        self.assertTrue(all(r["exclusion_reason"]=="ambiguous multiple materials from same author" for r in rows))
+        posts=[post("贝贝丹丹",body),post("贝贝丹丹","杀一肖：猪"),
+               post("贝贝丹丹","杀三肖：鼠狗猪")]
+        ranks,rows=score_posts(posts)
+        adopted=[r for r in rows if r["counted_for_ranking"]]
+        self.assertEqual(len(adopted),1,rows)
+        self.assertEqual(adopted[0]["play"],"八肖")
+        self.assertEqual(adopted[0]["mode"],"include")
+        self.assertAlmostEqual(sum(r["score"] for r in ranks),1,places=5)
+        self.assertEqual(sum("猪" in r["vote_zodiacs"] for r in adopted),0)
+
+    def test_repeated_pig_kills_from_one_author_only_have_one_vote(self):
+        posts=[post("贝贝丹丹","杀一肖：猪") for _ in range(8)]
+        ranks,rows=score_posts(posts)
+        adopted=[r for r in rows if r["counted_for_ranking"]]
+        self.assertEqual(len(adopted),1,rows)
+        self.assertEqual(len(adopted[0]["vote_zodiacs"]),11)
+        self.assertNotIn("猪",adopted[0]["vote_zodiacs"])
+        self.assertAlmostEqual(sum(r["score"] for r in ranks),1,places=5)
 
     def test_two_authors_each_one_vote_and_freeze_checks_duplicates(self):
         posts=[post("甲","推荐六肖：鼠牛虎兔龙蛇"),
