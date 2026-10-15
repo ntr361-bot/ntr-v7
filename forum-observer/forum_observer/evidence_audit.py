@@ -164,43 +164,68 @@ def audit_material(row, evidence_text):
     return None
 
 
-def admit_one_material_per_author(rows):
-    """Mutate scored candidate rows in place without inventing a play priority.
+def _material_priority(row):
+    """Only verified, explicit recommendations take precedence over kill votes.
 
-    Identical votes are interchangeable. A unique nine-zodiac recommendation
-    overrides six-zodiac recommendations. Any other conflict is excluded
-    pending a user's selection; there must never be two votes from one author.
+    Nine > eight > seven > six; other valid recommendations follow,
+    then explicit kill-zodiac materials. Never treat the complement of
+    a kill as a recommendation of that many zodiacs.
+    """
+    if row.get("mode") == "include":
+        size = len(row.get("picks") or row.get("vote_zodiacs") or [])
+        return {9: 0, 8: 1, 7: 2, 6: 3}.get(size, 4)
+    return 5
+
+
+def _material_order(row):
+    """Stable, draw-independent tie-break for prolific/reposting authors.
+
+    Use the earliest evidenced publication time within the strongest play.
+    If timestamps are unavailable, select deterministically from source URL,
+    original excerpt, and picks -- never from results or zodiac scores.
+    """
+    published = str(row.get("published_at") or "").strip()
+    return (
+        _material_priority(row),
+        0 if published else 1,
+        published,
+        str(row.get("source_url") or ""),
+        str(row.get("evidence_id") or ""),
+        str(row.get("excerpt") or row.get("evidence") or ""),
+        "".join(row.get("picks") or []),
+    )
+
+
+def admit_one_material_per_author(rows):
+    """Select at most one verified material per author and issue, across posts.
+
+    Aggregate/reposting authors have exactly the same one-vote ceiling as
+    everyone else. Select highest-priority valid play; within a tier keep
+    the earliest verifiable submission (stable URL tie-break).
+    All other rows retain explicit exclusion reasons for audit purposes.
     """
     by_author = defaultdict(list)
     for row in rows:
         if row.get("counted_for_ranking"):
-            key = (str(row.get("issue", "")), str(row.get("author", "")).strip().casefold())
+            key = (str(row.get("issue", "")),
+                   str(row.get("author", "")).strip().casefold())
             by_author[key].append(row)
     for group in by_author.values():
         if len(group) <= 1:
             continue
-        nine = [r for r in group if r.get("mode") == "include"
-                and len(r.get("vote_zodiacs", [])) == 9
-                and re.search(r"(?:九|9)肖", str(r.get("play", "")))]
-        nine_votes = {tuple(r["vote_zodiacs"]) for r in nine}
-        signatures = {(r.get("mode"), tuple(r.get("vote_zodiacs", []))) for r in group}
-        if nine and len(nine_votes) == 1:
-            # The user explicitly chose *nine over every other play*,
-            # regardless of whether the other play recommends or kills.
-            chosen = min(nine, key=lambda r: (
-                str(r.get("source_url", "")), str(r.get("play", ""))))
-            reason = "superseded_by_same_author_nine_zodiac"
-        elif len(signatures) == 1:
-            # Equal votes have no selection consequence; choose deterministically.
-            chosen = min(group, key=lambda r: (
-                str(r.get("source_url", "")), str(r.get("play", ""))))
-            reason = "duplicate author/identical vote"
-        else:
-            chosen = None
-            reason = "ambiguous multiple materials from same author"
-        for r in group:
-            if r is chosen:
+        chosen = min(group, key=_material_order)
+        chosen_priority = _material_priority(chosen)
+        for row in group:
+            if row is chosen:
                 continue
-            r.update(counted_for_ranking=False, exclusion_reason=reason,
-                     vote_zodiacs=[], weight_per_zodiac=0.0)
+            if row.get("mode") == chosen.get("mode") and row.get("vote_zodiacs") == chosen.get("vote_zodiacs"):
+                reason = "duplicate author/identical vote"
+            elif chosen_priority == 0 and _material_priority(row) > 0:
+                reason = "superseded_by_same_author_nine_zodiac"
+            elif chosen_priority < _material_priority(row):
+                reason = "superseded_by_same_author_higher_priority"
+            else:
+                reason = "same_author_same_priority_earliest_material"
+            row.update(counted_for_ranking=False, exclusion_reason=reason,
+                       vote_zodiacs=[], weight_per_zodiac=0.0)
     return rows
