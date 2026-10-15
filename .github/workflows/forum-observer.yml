@@ -1,9 +1,11 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
-  # Backup at 19:40 Asia/Shanghai (11:40 UTC); GPT push remains primary.
+  # GPT push remains primary. Scheduled retries use Asia/Shanghai time (UTC+8).
+  # Each run passes the existing immutable-snapshot and 20:25 cutoff gates.
   schedule:
-    - cron: '40 11 * * *'
+    - cron: '40,45,50 11 * * *'
+    - cron: '0 12 * * *'
   # ChatGPT task writes a daily marker to an isolated trigger branch.
   # Always check out main for collection; trigger files never enter main.
   push:
