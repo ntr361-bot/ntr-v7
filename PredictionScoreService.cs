@@ -43,11 +43,9 @@ namespace 六合分析软件
                 AnalysisPeriods = periodRange,
                 PredictTime = DateTime.Now
             };
-            string yearPet = ResolveYearPet(targetYear);
 
             // 获取基础统计数据
             var zodiacStats = ZodiacStatisticsService.Calculate(periodRange);
-            var numberStats = NumberStatisticsService.Calculate(periodRange);
             var missingReport = MissingNumberService.Calculate(periodRange);
 
             string[] allZodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
@@ -139,7 +137,7 @@ namespace 六合分析软件
                     $"遗漏{zStat.CurrentMissing}期(均{zMissing?.AvgMissing ?? 0:F1}) | 近10期{zStat.Recent10Count}次";
 
                 // 号码映射必须随预测年份生肖轮转，年份生肖额外包含49号。
-                prediction.Number = GetZodiacNumbers(zodiac, yearPet);
+                // 只保留生肖评分，不再生成号码推荐。
 
                 result.Predictions.Add(prediction);
             }

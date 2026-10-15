@@ -65,16 +65,7 @@ public static class DailyPredictionAutomation
         string[] autoTop3 = learning.Result.Ranking.Take(3).Select(item => item.Zodiac).ToArray();
         string[] autoTop6 = learning.Result.Ranking.Take(6).Select(item => item.Zodiac).ToArray();
         int targetYear = checked((int)(targetIssue / 1000));
-        string yearPet = DatabaseHelper.GetYearPetPublic(targetYear.ToString());
-        Dictionary<string, List<string>> zodiacNumbers = DataCrawler.BuildShengXiaoMapPublic(yearPet);
-        int[] autoNumbers = autoTop6
-            .Where(zodiacNumbers.ContainsKey)
-            .SelectMany(zodiac => zodiacNumbers[zodiac])
-            .Select(value => int.TryParse(value, out int number) ? number : 0)
-            .Where(number => number > 0)
-            .Distinct()
-            .OrderBy(number => number)
-            .ToArray();
+        int[] autoNumbers = Array.Empty<int>();
         ai[ExperimentModels.AutoLearning] = CreateCompleteAutoPrediction(learning, autoTop3, autoTop6, autoNumbers);
 
         // This is an isolated audit write. It runs only after all four formal records exist.
@@ -226,12 +217,7 @@ public static class DailyPredictionAutomation
                 AutoLearningSnapshot learning = V7PredictionHistoryService.BuildAutoLearningSnapshot(issue.ToString(), prefix);
                 string[] top3 = learning.Result.Ranking.Take(3).Select(item => item.Zodiac).ToArray();
                 string[] top6 = learning.Result.Ranking.Take(6).Select(item => item.Zodiac).ToArray();
-                int targetYear = checked((int)(issue / 1000));
-                string yearPet = DatabaseHelper.GetYearPetPublic(targetYear.ToString());
-                Dictionary<string, List<string>> map = DataCrawler.BuildShengXiaoMapPublic(yearPet);
-                int[] numbers = top6.Where(map.ContainsKey).SelectMany(zodiac => map[zodiac])
-                    .Select(value => int.TryParse(value, out int number) ? number : 0)
-                    .Where(number => number > 0).Distinct().OrderBy(number => number).ToArray();
+                int[] numbers = Array.Empty<int>();
                 JsonObject auto = JsonSerializer.SerializeToNode(
                     CreateCompleteAutoPrediction(learning, top3, top6, numbers), JsonOptions)!.AsObject();
                 if (actualByIssue.TryGetValue(issue, out DatabaseHelper.HistoryRecord? actual))
