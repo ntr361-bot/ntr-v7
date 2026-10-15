@@ -1,0 +1,114 @@
+name: Forum 287 isolated replay (historical evidence)
+on:
+  push:
+    branches: [forum-287-retest-20261015]
+    paths:
+      - '.github/workflows/forum-287-retest.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout newest main implementation
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install parser dependencies
+        run: pip install playwright pillow
+      - name: Download original 287 pre-draw collector evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p forum-observer/retest-input
+          gh run download 38558406561 --repo ntr361-bot/ntr-v7 --name forum-observer-status --dir forum-observer/retest-input
+          find forum-observer/retest-input -maxdepth 5 -type f -print
+      - name: Replay scoring using newest parser without browser or publication
+        working-directory: forum-observer
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import json, subprocess
+          from forum_observer.page_collector import score_posts
+          from forum_observer.core import SCORING_RULE_VERSION, ZODIACS, vote_zodiacs
+
+          target = '2026287'
+          candidates=[]
+          for file in Path('retest-input').rglob('status.json'):
+              try: data=json.loads(file.read_text(encoding='utf-8'))
+              except Exception: continue
+              if str(data.get('issue'))==target and isinstance(data.get('evidence'),list):
+                  candidates.append((file,data))
+          if not candidates:
+              raise RuntimeError('Original 287 status.json with raw evidence not found; no fabricated replay')
+          source,original=max(candidates,key=lambda pair:len(pair[1]['evidence']))
+          posts=original['evidence']
+          if len(posts)<100:
+              raise RuntimeError('Original raw pre-draw material unexpectedly incomplete')
+          if any(str(p.get('issue'))!=target for p in posts):
+              raise RuntimeError('Input contains cross-period evidence; refusing replay')
+          ranking,parsed=score_posts(posts)
+          selected=[p for p in parsed if p.get('counted_for_ranking')]
+          if not selected or len(ranking)!=12:
+              raise RuntimeError('Replay produced no complete ranking')
+          authors=[p['author'].strip().casefold() for p in selected]
+          if len(authors)!=len(set(authors)):
+              raise RuntimeError('Latest scoring violates one-author-one-vote')
+          if any(vote_zodiacs(p['picks'],p['mode'],p['play'],p.get('excerpt',''))!=p['vote_zodiacs'] for p in selected):
+              raise RuntimeError('Latest scoring has incompatible normalized votes')
+          scores={z:0.0 for z in ZODIACS}
+          for row in selected:
+              for z in row['vote_zodiacs']:
+                  scores[z]+=1/len(row['vote_zodiacs'])
+          if any(abs(r['score']-scores[r['zodiac']])>0.00001 for r in ranking):
+              raise RuntimeError('Latest ranking does not match selected votes')
+          frozen=json.loads(Path('archive/issues/2026287/snapshot.json').read_text(encoding='utf-8'))
+          old_rank=[r['zodiac'] for r in frozen['ranking']]
+          new_rank=[r['zodiac'] for r in ranking]
+          new_top6=new_rank[:6]
+          diff={
+              'kind':'isolated_read_only_replay_of_original_pre_draw_evidence',
+              'issue':target,
+              'main_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'source_run_id':38558406561,
+              'source_path':str(source),
+              'scoring_rule_version':SCORING_RULE_VERSION,
+              'original_fetched_at':original.get('fetched_at'),
+              'raw_evidence_posts':len(posts),
+              'original_valid_materials':frozen.get('valid_materials'),
+              'retested_valid_materials':len(selected),
+              'original_distinct_authors':len({p['author'].strip().casefold() for p in original.get('parsed_predictions',[]) if p.get('counted_for_ranking')}),
+              'retested_distinct_authors':len(set(authors)),
+              'original_top6':frozen.get('top6'),
+              'retested_top6':new_top6,
+              'original_ranking':frozen['ranking'],
+              'retested_ranking':ranking,
+              'changed_top6':frozen.get('top6')!=new_top6,
+              'selected_plays':dict(Counter(p['play'] for p in selected)),
+              'rejected_reasons':dict(Counter(str(p.get('exclusion_reason')) for p in parsed if not p.get('counted_for_ranking'))),
+              'selected_materials':selected,
+              'unselected_materials':[p for p in parsed if not p.get('counted_for_ranking')],
+              'settlement_reference_only':'287 result was already drawn; this replay must never replace pre-draw snapshot'
+          }
+          Path('retest-287').mkdir(exist_ok=True)
+          Path('retest-287/comparison.json').write_text(json.dumps(diff,ensure_ascii=False,indent=2),encoding='utf-8')
+          report={k:v for k,v in diff.items() if k not in ('selected_materials','unselected_materials','original_ranking','retested_ranking')}
+          print('REPLAY_287_SUMMARY '+json.dumps(report,ensure_ascii=False),flush=True)
+          assert len(selected)<=len(set(authors))
+          PY
+      - name: Upload standalone replay report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum-287-latest-code-isolated-replay
+          path: forum-observer/retest-287/
+          retention-days: 30
+          if-no-files-found: warn
