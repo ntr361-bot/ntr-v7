@@ -13,7 +13,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from .core import ZODIACS, SCORING_RULE_VERSION
+from .core import ZODIACS
 
 SCHEMA = 1
 
@@ -68,10 +68,13 @@ def frozen_evidence(folder):
     check.pop("digest", None)
     if not isinstance(digest, str) or sha256(check) != digest:
         raise ValueError("snapshot digest mismatch")
-    if snapshot.get("scoring_rule_version") != SCORING_RULE_VERSION:
-        raise ValueError("unsupported scoring rule; no retroactive reinterpretation")
-    if snapshot.get("scoring_rules", {}).get("max_materials_per_author_per_issue") != 1:
-        raise ValueError("no single-author evidence guarantee")
+    # The frozen rule version is evidence, not an instruction to run today's rules.
+    # Historical profiles must survive future, unrelated scoring-rule revisions.
+    rules = snapshot.get("scoring_rules")
+    if not isinstance(snapshot.get("scoring_rule_version"), str) or not isinstance(rules, dict):
+        raise ValueError("missing frozen scoring rule")
+    if rules.get("max_materials_per_author_per_issue") != 1 or rules.get("weight_per_material") != 1:
+        raise ValueError("no verified single-author equal-weight rule")
     if snapshot.get("classification") != "experimental_unverified_leaderboard":
         raise ValueError("not an experimental frozen observation")
     if obs.get("fetched_at") != snapshot.get("fetched_at"):
