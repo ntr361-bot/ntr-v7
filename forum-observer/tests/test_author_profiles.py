@@ -94,6 +94,19 @@ class AuthorProfilesTests(unittest.TestCase):
             save(folder / "snapshot.json", snap)
             self.assertEqual(build(archive)["created_issue_records"], 1)
 
+    def test_sealed_author_history_survives_later_observation_refresh(self):
+        with TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "archive"
+            folder = fixture(archive)
+            self.assertEqual(build(archive)["profiles"], 2)
+            obs = json.loads((folder / "observation.json").read_text())
+            obs["fetched_at"] = "2026-10-17T15:00:00+00:00"
+            save(folder / "observation.json", obs)
+            result = build(archive)
+            self.assertEqual(result["created_issue_records"], 0)
+            self.assertEqual(result["profiles"], 2)
+            self.assertEqual(result["skipped_issues"], [])
+
     def test_conflicting_settlement_is_not_a_hit(self):
         with TemporaryDirectory() as tmp:
             archive = Path(tmp) / "archive"
