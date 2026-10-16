@@ -1,0 +1,54 @@
+name: Forum author history (frozen evidence only)
+on:
+  pull_request:
+    paths:
+      - 'forum-observer/forum_observer/author_profiles.py'
+      - 'forum-observer/tests/test_author_profiles.py'
+      - '.github/workflows/forum-author-profiles.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'forum-observer/forum_observer/author_profiles.py'
+      - '.github/workflows/forum-author-profiles.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: forum-observer-archive
+  cancel-in-progress: false
+defaults:
+  run:
+    working-directory: forum-observer
+jobs:
+  author-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: ${{ github.event_name != 'pull_request' }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify append-only author memory
+        run: python -m unittest discover -s tests -p 'test_author_profiles.py' -v
+      - name: Derive historical author records without collecting or rescoring
+        run: python -m forum_observer.author_profiles --archive archive
+      - name: Commit independent author memory only
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add archive/author-profiles/
+          if git diff --cached --quiet; then
+            echo "No author memory changes"
+            exit 0
+          fi
+          git commit -m "chore(forum): append verified author memory"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
