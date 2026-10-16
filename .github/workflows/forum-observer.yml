@@ -70,6 +70,9 @@ jobs:
         run: python -m forum_observer.schedule --archive archive --ensure-report
       - name: Cycle snapshots and settlements from verified V7 history
         run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
+      - name: Record author history from verified frozen evidence only
+        # Separate append-only author memory; no scraping, score updates or frozen edits.
+        run: python -m forum_observer.author_profiles --archive archive
       - name: Archive independent forum data only
         shell: bash
         run: |
