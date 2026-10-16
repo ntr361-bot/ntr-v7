@@ -14,7 +14,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: forum-observer-archive
+  group: forum-author-memory
   cancel-in-progress: false
 defaults:
   run:
