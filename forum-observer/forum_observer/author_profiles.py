@@ -174,6 +174,27 @@ def write_once(path, value):
         return False
 
 
+
+def read_sealed_record(path, folder):
+    """Read a prior immutable author record without trusting a mutable later observation."""
+    record = load(path)
+    digest = record.get("record_digest")
+    payload = dict(record)
+    payload.pop("record_digest", None)
+    if digest != sha256(payload):
+        raise ValueError("author record was altered: " + Path(path).name)
+    snapshot = load(Path(folder) / "snapshot.json")
+    snap_payload = dict(snapshot)
+    snap_payload.pop("digest", None)
+    if snapshot.get("digest") != sha256(snap_payload):
+        raise ValueError("snapshot digest mismatch")
+    if (record.get("issue") != Path(folder).name or
+            record.get("snapshot_digest") != snapshot.get("digest") or
+            record.get("fetched_at") != snapshot.get("fetched_at")):
+        raise ValueError("sealed author record no longer matches immutable snapshot")
+    return record
+
+
 def valid_settlement(folder, record):
     path = Path(folder) / "settlement.json"
     if not path.is_file():
@@ -203,11 +224,16 @@ def build(archive):
         if not (folder / "snapshot.json").is_file():
             continue
         try:
-            candidate = frozen_evidence(folder)
             record_path = destination / "records" / (folder.name + ".json")
-            if write_once(record_path, candidate):
-                created += 1
-            record = load(record_path)
+            if record_path.is_file():
+                # Later status refreshes may rewrite observation.json. Never erase
+                # a previously verified, sealed history record from the index.
+                record = read_sealed_record(record_path, folder)
+            else:
+                candidate = frozen_evidence(folder)
+                if write_once(record_path, candidate):
+                    created += 1
+                record = read_sealed_record(record_path, folder)
             actual = valid_settlement(folder, record)
             for item in record["materials"]:
                 entries.append((record, item, actual))
