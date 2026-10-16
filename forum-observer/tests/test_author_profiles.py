@@ -83,6 +83,17 @@ class AuthorProfilesTests(unittest.TestCase):
             self.assertEqual(record_path.read_bytes(), first)
             self.assertTrue(all(x["identity_status"] == "nickname_only_unverified_account" for x in settled))
 
+    def test_historical_frozen_rule_survives_future_code_rule_changes(self):
+        with TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "archive"
+            folder = fixture(archive)
+            snap = json.loads((folder / "snapshot.json").read_text())
+            snap["scoring_rule_version"] = "2027-frozen-author-rule"
+            snap.pop("digest")
+            snap["digest"] = sha256(snap)
+            save(folder / "snapshot.json", snap)
+            self.assertEqual(build(archive)["created_issue_records"], 1)
+
     def test_conflicting_settlement_is_not_a_hit(self):
         with TemporaryDirectory() as tmp:
             archive = Path(tmp) / "archive"
