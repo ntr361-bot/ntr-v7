@@ -36,7 +36,7 @@ def record(out, state, data=None, error=None, issue=None):
             for key in ('issue', 'stage', 'raw_count', 'valid_materials',
                         'successful_post_opens', 'article_details',
                         'article_texts_extracted', 'article_details_completed',
-                        'last_verified_post'):
+                        'last_verified_post', 'last_attempted_post', 'priority_audit'):
                 if data.get(key) is not None:
                     value[key] = data[key]
             value['progress_updated_at'] = data.get('fetched_at')

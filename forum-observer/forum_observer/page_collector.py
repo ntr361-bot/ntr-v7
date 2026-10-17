@@ -1234,13 +1234,10 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
         bool((post_by_evidence.get(v.get('evidence_id')) or {}).get('is_featured') is True
              or (post_by_evidence.get(v.get('evidence_id')) or {}).get('origin_thread_featured') is True)
         for v in valid_votes)
-    featured_attempted_threads=sum(
-        bool(parent.get('is_featured') is True and
-             thread_states.get(parent['evidence_id'],{}).get('attempts',0)>0)
-        for parent,_ in comment_targets)
-    featured_completed_threads=sum(
-        bool(check.get('is_featured') is True and check.get('thread_state')=='checked')
-        for check in comment_checks)
+    article_metrics=article_progress.snapshot()
+    featured_body=article_metrics['article_details']['featured']
+    featured_attempted_threads=featured_body['attempted']
+    featured_completed_threads=featured_body['completed']
     rejected_materials=len(predictions)-valid_materials
     unscored_posts=sum(1 for p in posts if p.get('evidence_id',p['detail_url']) not in {v.get('evidence_id',v['source_url']) for v in valid_votes})
     enough=(valid_materials>=int(policy.get('min_valid_materials',25))
@@ -1256,7 +1253,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     ready=enough and bool(ranking) and pre_draw and (
         feed_mode or (not errors and not truncated and not profile_incomplete))
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
-            'collection_priority':'featured_then_reply_hint_then_direct_link_then_favored_author',
+            'collection_priority':'featured_article_before_ordinary_then_favored_author',
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
             'evidence_scope':'post_article',
@@ -1279,8 +1276,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'comment_retry_attempts':comment_retry_attempts,
             'completed_thread_cache':completed_thread_cache,
             'featured_found_threads':sum(p.get('is_featured') is True for p in scoped),
-            'featured_selected_threads':sum(p.get('is_featured') is True for p,_ in comment_targets),
-            'featured_checked_threads':sum(c.get('is_featured') is True for c in comment_checks),
+            'featured_selected_threads':featured_body['queued'],
+            'featured_checked_threads':featured_body['completed'],
             'featured_attempted_threads':featured_attempted_threads,
             'featured_completed_threads':featured_completed_threads,
             'featured_valid_materials':featured_valid_materials,
@@ -1324,8 +1321,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                      'comment_retry_attempts':comment_retry_attempts,
                      'comment_completed_threads':sum(x['status']=='checked' for x in thread_states.values()),
                      'featured_found_threads':sum(p.get('is_featured') is True for p in scoped),
-                     'featured_selected_threads':sum(p.get('is_featured') is True for p,_ in comment_targets),
-                     'featured_checked_threads':sum(c.get('is_featured') is True for c in comment_checks),
+                     'featured_selected_threads':featured_body['queued'],
+                     'featured_checked_threads':featured_body['completed'],
+                     'featured_attempted_threads':featured_body['attempted'],
+                     'featured_completed_threads':featured_body['completed'],
+                     'article_details':article_metrics['article_details'],
+                     'priority_audit':article_metrics['priority_audit'],
                      'profile_budget_exhausted':profile_budget_exhausted,
                      'profile_errors':profile_errors,
                      'author_profiles_discovered':len(author_samples),

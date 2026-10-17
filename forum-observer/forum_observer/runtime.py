@@ -84,6 +84,8 @@ def metrics(data):
             'article_texts_extracted': data.get('article_texts_extracted'),
             'article_details_completed': data.get('article_details_completed'),
             'last_verified_post': data.get('last_verified_post'),
+            'last_attempted_post': data.get('last_attempted_post'),
+            'priority_audit': data.get('priority_audit'),
             'raw_count': data.get('raw_count'), 'stage': data.get('stage'),
             'progress_updated_at': data.get('fetched_at'),
             'coverage_label': data.get('coverage_label')}
