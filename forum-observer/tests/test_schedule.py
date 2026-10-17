@@ -30,7 +30,9 @@ class ScheduleTests(unittest.TestCase):
             self.assertEqual(decide(self.at(19, 10), tmp)[:3],
                              (True, "2026285", 1800))
             self.assertEqual(decide(self.at(20, 0), tmp)[:3],
-                             (True, "2026285", 1410))
+                             (True, "2026285", 1800))
+            self.assertEqual(decide(self.at(20, 40), tmp)[:3],
+                             (True, "2026285", 1110))
             self.write_snapshot(tmp, "2026285")
             self.assertEqual(decide(self.at(19, 40), tmp)[3],
                              "immutable_snapshot_exists")
@@ -38,7 +40,7 @@ class ScheduleTests(unittest.TestCase):
 
     def test_cutoff_and_next_day_never_backfill(self):
         with TemporaryDirectory() as tmp:
-            self.assertEqual(decide(self.at(20, 24), tmp)[3],
+            self.assertEqual(decide(self.at(20, 59), tmp)[3],
                              "daily_collection_cutoff_passed")
             self.assertFalse(decide(self.at(21, 0), tmp)[0])
             self.write_snapshot(tmp, "2026285")

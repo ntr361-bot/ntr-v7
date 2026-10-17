@@ -1,0 +1,43 @@
+name: Forum startup watchdog
+on:
+  workflow_run:
+    workflows: [Forum observer daily cycle]
+    types: [completed]
+  schedule:
+    - cron: '47,57 11 * * *'
+    - cron: '7,17,37 12 * * *'
+  workflow_dispatch:
+    inputs:
+      recover:
+        description: Allow at most three safe recovery dispatches per local day
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: forum-startup-watchdog
+  cancel-in-progress: false
+jobs:
+  verify-startup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify collector steps and record recovery outcome
+        working-directory: forum-observer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECOVER: ${{ github.event_name != 'workflow_dispatch' || inputs.recover }}
+        run: |
+          if [ "$RECOVER" = "true" ]; then
+            python -m forum_observer.watchdog --recover
+          else
+            python -m forum_observer.watchdog
+          fi

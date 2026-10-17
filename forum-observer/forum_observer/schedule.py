@@ -13,7 +13,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Shanghai")
-CUTOFF_HOUR, CUTOFF_MINUTE = 20, 25
+CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
 MAX_SECONDS = 1800
 PUBLISH_RESERVE_SECONDS = 90
 
