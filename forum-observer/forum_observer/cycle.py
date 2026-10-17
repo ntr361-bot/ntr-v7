@@ -338,5 +338,8 @@ if __name__=='__main__':
             print('Verified live ledger draw records:',len(live))
         except Exception as error:
             print('Live result unavailable; using verified committed V7 history only:',error)
-    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=a.defer_freeze,finalize=a.finalize))
+    # Older GitHub rerun attempts may retain their original workflow YAML.
+    # Never freeze early from the CLI when --finalize was not explicitly passed.
+    defer=a.defer_freeze or not a.finalize
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize))
 
