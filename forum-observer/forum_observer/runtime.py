@@ -88,7 +88,29 @@ def metrics(data):
             'priority_audit': data.get('priority_audit'),
             'raw_count': data.get('raw_count'), 'stage': data.get('stage'),
             'progress_updated_at': data.get('fetched_at'),
+            'collection_status': data.get('collection_status') or data.get('status'),
+            'quality_summary': {
+                'detail_errors': len(data.get('audit', {}).get('detail_errors', [])),
+                'truncated': data.get('audit', {}).get('truncated'),
+                'unextracted_current_posts': max(0, data['successful_post_opens'] - data['article_texts_extracted'])
+                    if data.get('successful_post_opens') is not None and data.get('article_texts_extracted') is not None else None},
             'coverage_label': data.get('coverage_label')}
+
+
+def quality_failure_reason(data):
+    audit=data.get('audit') or {}
+    reasons=[]
+    if audit.get('detail_errors'):
+        reasons.append('detail_errors=' + str(len(audit['detail_errors'])))
+    if audit.get('truncated'):
+        reasons.append('coverage_truncated=true')
+    opened=data.get('successful_post_opens')
+    extracted=data.get('article_texts_extracted')
+    if opened is not None and extracted is not None and opened > extracted:
+        reasons.append('unextracted_current_posts=' + str(opened-extracted))
+    if data.get('raw_count') == 0:
+        reasons.append('no_target_article_records')
+    return 'collection_quality_failed: ' + '; '.join(reasons) if reasons else None
 
 
 def activity(data, now):
@@ -118,10 +140,13 @@ def publish(state, error=None):
         data = read_json(snapshot.parent / 'draft-status.json') or read_json(snapshot.parent / 'observation.json')
     if state == 'collecting':
         state = activity(data, now)
+    local = read_json('out/monitor/latest.json')
+    if state != 'starting' and not data.get('stage') and local.get('issue') == issue and local.get('run_id') == os.environ.get('GITHUB_RUN_ID'):
+        data = dict(data, stage=local.get('stage'))
     if state == 'finished':
         if os.environ.get('JOB_STATUS') == 'failure':
             state = 'failed'
-            error = error or read_json('out/collection-error.json').get('reason') or 'Workflow step failed; inspect steps and watchdog classification'
+            error = error or read_json('out/collection-error.json').get('reason') or quality_failure_reason(data) or 'Workflow step failed before a specific collector error was available; inspect Actions steps'
         elif test_mode:
             state = 'test_completed' if os.environ.get('OBSERVE_OUTCOME') == 'success' else 'test_incomplete'
         elif os.environ.get('FINALIZE_CYCLE') == 'true':
@@ -211,7 +236,7 @@ def supervise():
                 return 124
             time.sleep(2)
         safe_publish('collected' if process.returncode == 0 else 'incomplete',
-                     read_json('out/collection-error.json').get('reason') if process.returncode else None)
+                     (read_json('out/collection-error.json').get('reason') or quality_failure_reason(read_json('out/status.json'))) if process.returncode else None)
         return process.returncode
     except BaseException as exc:
         safe_publish('interrupted', type(exc).__name__ + ': ' + str(exc))

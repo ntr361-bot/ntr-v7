@@ -78,3 +78,16 @@ class TraceTests(unittest.TestCase):
             self.assertNotIn('forum_observer.auto',command)
             self.assertNotIn('--freeze',command)
             self.assertEqual(publish.call_args.args[0], 'failed')
+
+    def test_quality_failure_reports_body_gap_without_calling_it_empty_collection(self):
+        d={'raw_count':534,'successful_post_opens':538,'article_texts_extracted':534,
+           'audit':{'detail_errors':[{}]*5,'truncated':False}}
+        reason=runtime.quality_failure_reason(d)
+        self.assertIn('detail_errors=5',reason)
+        self.assertIn('unextracted_current_posts=4',reason)
+        self.assertNotIn('no_target_article_records',reason)
+        self.assertEqual(runtime.metrics(d)['quality_summary']['unextracted_current_posts'],4)
+
+    def test_quality_success_does_not_invent_error_and_truncation_is_distinct(self):
+        self.assertIsNone(runtime.quality_failure_reason({'raw_count':2,'audit':{'detail_errors':[],'truncated':False}}))
+        self.assertIn('coverage_truncated=true',runtime.quality_failure_reason({'raw_count':2,'audit':{'truncated':True}}))
