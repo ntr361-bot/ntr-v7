@@ -1,5 +1,13 @@
 name: Verify Forum Sampling (no collection)
 on:
+  schedule:
+    - cron: '50 10 * * *'
+  push:
+    branches: [main]
+    paths:
+      - "forum-observer/forum_observer/**"
+      - "forum-observer/tests/**"
+      - ".github/workflows/forum-*.yml"
   pull_request:
     paths:
       - "forum-observer/forum_observer/**"

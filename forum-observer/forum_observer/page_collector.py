@@ -16,6 +16,7 @@ from .confirmed_play import extract_confirmed
 from .author_history import SCROLL_JS, incremental_scan, open_author_history, open_profile_post
 from .comment_images import eligible_comment_image
 from .collection_policy import choose_profile_samples, choose_comment_threads, comment_thread_budget_seconds
+from .progress import ArticleProgress
 
 
 class _PostParser(HTMLParser):
@@ -898,6 +899,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     comment_targets=[];comment_target_total=0;comment_attempted=0;profile_budget_exhausted=False
     comment_retry_attempts=0;thread_states={};completed_thread_cache={}
     article_image_audit={}
+    article_progress=ArticleProgress()
     started=time.monotonic()
     deadline=started+max(60,int(policy.get('max_collection_seconds',1200)))
     out.mkdir(parents=True,exist_ok=True)
@@ -912,7 +914,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                   'selected_count':0,'ranking':ranking,'evidence':posts,
                   'parsed_predictions':predictions,'rejected':errors,
                   'elapsed_seconds':round(time.monotonic()-started,1),
-                  'listing_count':len(listing_candidates)}
+                  'listing_count':len(listing_candidates), **article_progress.snapshot()}
         temp=out/'status.tmp'
         temp.write_text(json.dumps(progress,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         temp.replace(out/'status.json')
@@ -1037,6 +1039,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             profile_incomplete=(bool(target_issue) and not feed_mode and
                                 (bool(profile_errors) or len(author_samples)>author_limit))
             cache={}
+            article_progress.queue([item for item in targets[:max_posts] if item['issue']==issue])
             for item in targets[:max_posts]:
                 if time.monotonic()>=deadline:
                     truncated=True
@@ -1064,6 +1067,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     except ValueError as exc:
                         errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)})
                     continue
+                if item['issue']==issue:article_progress.mark(item,'attempted')
                 checkpoint('detail: '+item['author']+' '+item['title'])
                 try:
                     detail_diagnostic={}
@@ -1076,12 +1080,14 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                                        'reason':'detail not verified',
                                        'detail_diagnostic':detail_diagnostic})
                         continue
+                    if item['issue']==issue:article_progress.mark(item,'opened')
                     article=_article_body(page,item)
                     if not article:
                         errors.append({'author':item['author'],'title':item['title'],
                                        'reason':'verified detail has no extractable article text',
                                        'detail_diagnostic':detail_diagnostic})
                         continue
+                    if item['issue']==issue:article_progress.extracted(item,page.url,article)
                     imgs=[]
                     for src in ([] if article_only else _images(page,min(10,int(policy.get('max_images_per_post',5))),item['title'])):
                         if time.monotonic()>=deadline:
@@ -1110,6 +1116,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                                     pic['ocr'],issue,item_post))
                 except Exception as exc:
                     errors.append({'author':item['author'],'title':item['title'],'reason':str(exc)[:250]})
+                finally:
+                    if item['issue']==issue:article_progress.mark(item,'completed')
                     checkpoint('detail_complete')
             if feed_mode and policy.get('collect_article_images',True):
                 from .feed_images import process_feed_images
@@ -1295,6 +1303,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'excluded_materials':rejected_materials,
             'unscored_posts':unscored_posts,
             'distinct_valid_authors':len(valid_authors),
+            **article_progress.snapshot(),
             'selected_leaderboard':0,'selected_outside':0,
             'ranking':ranking,'top1':[r['zodiac'] for r in ranking[:1]],
             'top3':[r['zodiac'] for r in ranking[:3]],
