@@ -1,0 +1,897 @@
+{
+  "issue": 2026291,
+  "generated_at": "2026-10-17T16:53:33.0051258\u002B00:00",
+  "status": "success",
+  "model_version": "AI\u751F\u8096\u9884\u6D4B V7",
+  "source_issue": "2026290",
+  "ai_zodiac": {
+    "v65_50": {
+      "analysis_periods": 50,
+      "top3": [
+        "\u7334",
+        "\u9E21",
+        "\u9F20"
+      ],
+      "top6": [
+        "\u7334",
+        "\u9E21",
+        "\u9F20",
+        "\u9A6C",
+        "\u86C7",
+        "\u732A"
+      ],
+      "numbers": [],
+      "confidence": "\u4F4E",
+      "best_model": "\u5468\u671F\u002B\u9057\u6F0F\u002B\u9891\u7387\u6A21\u578B",
+      "ranking": [
+        {
+          "zodiac": "\u7334",
+          "rank": 1,
+          "total_score": 66.22058330642817
+        },
+        {
+          "zodiac": "\u9E21",
+          "rank": 2,
+          "total_score": 62.09685020088729
+        },
+        {
+          "zodiac": "\u9F20",
+          "rank": 3,
+          "total_score": 59.02277172040841
+        },
+        {
+          "zodiac": "\u9A6C",
+          "rank": 4,
+          "total_score": 57.145089181654534
+        },
+        {
+          "zodiac": "\u86C7",
+          "rank": 5,
+          "total_score": 56.89198083494012
+        },
+        {
+          "zodiac": "\u732A",
+          "rank": 6,
+          "total_score": 56.21440788215799
+        },
+        {
+          "zodiac": "\u725B",
+          "rank": 7,
+          "total_score": 50.18615104600268
+        },
+        {
+          "zodiac": "\u5154",
+          "rank": 8,
+          "total_score": 48.128333994009814
+        },
+        {
+          "zodiac": "\u864E",
+          "rank": 9,
+          "total_score": 46.949396192771204
+        },
+        {
+          "zodiac": "\u7F8A",
+          "rank": 10,
+          "total_score": 45.659833722972714
+        },
+        {
+          "zodiac": "\u72D7",
+          "rank": 11,
+          "total_score": 36.629629502973515
+        },
+        {
+          "zodiac": "\u9F99",
+          "rank": 12,
+          "total_score": 31.516052644281178
+        }
+      ],
+      "factor_scores": {
+        "\u7334": {
+          "frequency": 96,
+          "trend": 100,
+          "omission": 43.63636363636364,
+          "hot_cold": 100,
+          "period": 29.191991239103498,
+          "consecutive": 70,
+          "eight_zodiac": 0
+        },
+        "\u9E21": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 50.81081081081081,
+          "hot_cold": 37.5,
+          "period": 41.970512017340845,
+          "consecutive": 70,
+          "eight_zodiac": 0
+        },
+        "\u9F20": {
+          "frequency": 72,
+          "trend": 98.4,
+          "omission": 21.42857142857143,
+          "hot_cold": 90,
+          "period": 40,
+          "consecutive": 70,
+          "eight_zodiac": 0
+        },
+        "\u9A6C": {
+          "frequency": 96,
+          "trend": 100,
+          "omission": 7.659574468085108,
+          "hot_cold": 16.666666666666668,
+          "period": 63.394360565776054,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        },
+        "\u86C7": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 7.692307692307693,
+          "hot_cold": 90,
+          "period": 23.76375001375125,
+          "consecutive": 85,
+          "eight_zodiac": 1
+        },
+        "\u732A": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 23.076923076923077,
+          "hot_cold": 50,
+          "period": 32.451590398361596,
+          "consecutive": 50,
+          "eight_zodiac": 1
+        },
+        "\u725B": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 44.21052631578947,
+          "hot_cold": 12.5,
+          "period": 20.702530666740195,
+          "consecutive": 55,
+          "eight_zodiac": 1
+        },
+        "\u5154": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 0,
+          "hot_cold": 50,
+          "period": 25.763303723198295,
+          "consecutive": 55,
+          "eight_zodiac": 0
+        },
+        "\u864E": {
+          "frequency": 48,
+          "trend": 33.599999999999994,
+          "omission": 20,
+          "hot_cold": 100,
+          "period": 40,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        },
+        "\u7F8A": {
+          "frequency": 48,
+          "trend": 93.60000000000001,
+          "omission": 9.6,
+          "hot_cold": 50,
+          "period": 40,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        },
+        "\u72D7": {
+          "frequency": 100,
+          "trend": 60.00000000000001,
+          "omission": 40,
+          "hot_cold": 12.5,
+          "period": 1.9725803665117336,
+          "consecutive": 95,
+          "eight_zodiac": 1
+        },
+        "\u9F99": {
+          "frequency": 24,
+          "trend": 16.799999999999997,
+          "omission": 12,
+          "hot_cold": 100,
+          "period": 20,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        }
+      },
+      "final_ranking_json": "[\u0022\\u7334\u0022,\u0022\\u9E21\u0022,\u0022\\u9F20\u0022,\u0022\\u9A6C\u0022,\u0022\\u86C7\u0022,\u0022\\u732A\u0022,\u0022\\u725B\u0022,\u0022\\u5154\u0022,\u0022\\u864E\u0022,\u0022\\u7F8A\u0022,\u0022\\u72D7\u0022,\u0022\\u9F99\u0022]",
+      "base_model_scores_json": "{\u0022\\u7334\u0022:66.22058330642817,\u0022\\u9E21\u0022:62.09685020088729,\u0022\\u9F20\u0022:59.02277172040841,\u0022\\u9A6C\u0022:57.145089181654534,\u0022\\u86C7\u0022:56.89198083494012,\u0022\\u732A\u0022:56.21440788215799,\u0022\\u725B\u0022:50.18615104600268,\u0022\\u5154\u0022:48.128333994009814,\u0022\\u864E\u0022:46.949396192771204,\u0022\\u7F8A\u0022:45.659833722972714,\u0022\\u72D7\u0022:36.629629502973515,\u0022\\u9F99\u0022:31.516052644281178}",
+      "feature_snapshot_json": "[{\u0022Zodiac\u0022:\u0022\\u7334\u0022,\u0022TotalScore\u0022:66.22058330642817,\u0022FrequencyScore\u0022:96,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:43.63636363636364,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:29.191991239103498,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:4,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:4,\u0022Appear100\u0022:4,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:8,\u0022MaxOmission\u0022:22,\u0022AvgOmission\u0022:11,\u0022OmissionPosition\u0022:0.7272727272727273,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u9E21\u0022,\u0022TotalScore\u0022:62.09685020088729,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:50.81081081081081,\u0022HotColdScore\u0022:37.5,\u0022PeriodPatternScore\u0022:41.970512017340845,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:7,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:7,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:9,\u0022MaxOmission\u0022:10,\u0022AvgOmission\u0022:6.166666666666667,\u0022OmissionPosition\u0022:1.4594594594594594,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u9F20\u0022,\u0022TotalScore\u0022:59.02277172040841,\u0022FrequencyScore\u0022:72,\u0022RecentTrendScore\u0022:98.4,\u0022OmissionScore\u0022:21.42857142857143,\u0022HotColdScore\u0022:90,\u0022PeriodPatternScore\u0022:40,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:3,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:3,\u0022Appear100\u0022:3,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:5,\u0022MaxOmission\u0022:15,\u0022AvgOmission\u0022:14,\u0022OmissionPosition\u0022:0.35714285714285715,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u9A6C\u0022,\u0022TotalScore\u0022:57.145089181654534,\u0022FrequencyScore\u0022:96,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:7.659574468085108,\u0022HotColdScore\u0022:16.666666666666668,\u0022PeriodPatternScore\u0022:63.394360565776054,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:4,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:4,\u0022Appear100\u0022:4,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:2,\u0022MaxOmission\u0022:23,\u0022AvgOmission\u0022:15.666666666666666,\u0022OmissionPosition\u0022:0.12765957446808512,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u86C7\u0022,\u0022TotalScore\u0022:56.89198083494012,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:7.692307692307693,\u0022HotColdScore\u0022:90,\u0022PeriodPatternScore\u0022:23.76375001375125,\u0022ConsecutiveScore\u0022:85,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:6,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:4,\u0022Appear50\u0022:6,\u0022Appear100\u0022:6,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:1,\u0022MaxOmission\u0022:18,\u0022AvgOmission\u0022:7.8,\u0022OmissionPosition\u0022:0.12820512820512822,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u732A\u0022,\u0022TotalScore\u0022:56.21440788215799,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:23.076923076923077,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:32.451590398361596,\u0022ConsecutiveScore\u0022:50,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:6,\u0022Appear5\u0022:0,\u0022Appear10\u0022:2,\u0022Appear30\u0022:3,\u0022Appear50\u0022:6,\u0022Appear100\u0022:6,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:3,\u0022MaxOmission\u0022:18,\u0022AvgOmission\u0022:7.8,\u0022OmissionPosition\u0022:0.38461538461538464,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u725B\u0022,\u0022TotalScore\u0022:50.18615104600268,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:44.21052631578947,\u0022HotColdScore\u0022:12.5,\u0022PeriodPatternScore\u0022:20.702530666740195,\u0022ConsecutiveScore\u0022:55,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:5,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:5,\u0022Appear100\u0022:5,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:7,\u0022MaxOmission\u0022:21,\u0022AvgOmission\u0022:9.5,\u0022OmissionPosition\u0022:0.7368421052631579,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u5154\u0022,\u0022TotalScore\u0022:48.128333994009814,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:0,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:25.763303723198295,\u0022ConsecutiveScore\u0022:55,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:5,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:5,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:0,\u0022MaxOmission\u0022:22,\u0022AvgOmission\u0022:10.75,\u0022OmissionPosition\u0022:0,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u864E\u0022,\u0022TotalScore\u0022:46.949396192771204,\u0022FrequencyScore\u0022:48,\u0022RecentTrendScore\u0022:33.599999999999994,\u0022OmissionScore\u0022:20,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:40,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:2,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:2,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:15,\u0022MaxOmission\u0022:2,\u0022AvgOmission\u0022:2,\u0022OmissionPosition\u0022:7.5,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u7F8A\u0022,\u0022TotalScore\u0022:45.659833722972714,\u0022FrequencyScore\u0022:48,\u0022RecentTrendScore\u0022:93.60000000000001,\u0022OmissionScore\u0022:9.6,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:40,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:2,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:2,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:4,\u0022MaxOmission\u0022:25,\u0022AvgOmission\u0022:25,\u0022OmissionPosition\u0022:0.16,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u72D7\u0022,\u0022TotalScore\u0022:36.629629502973515,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:60.00000000000001,\u0022OmissionScore\u0022:40,\u0022HotColdScore\u0022:12.5,\u0022PeriodPatternScore\u0022:1.9725803665117336,\u0022ConsecutiveScore\u0022:95,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:5,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:5,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:16,\u0022MaxOmission\u0022:20,\u0022AvgOmission\u0022:8,\u0022OmissionPosition\u0022:2,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u9F99\u0022,\u0022TotalScore\u0022:31.516052644281178,\u0022FrequencyScore\u0022:24,\u0022RecentTrendScore\u0022:16.799999999999997,\u0022OmissionScore\u0022:12,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:20,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:1,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:1,\u0022Appear50\u0022:1,\u0022Appear100\u0022:1,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:10,\u0022MaxOmission\u0022:50,\u0022AvgOmission\u0022:50,\u0022OmissionPosition\u0022:0.2,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022}]",
+      "weight_snapshot_json": "{\u0022AnalysisPeriods\u0022:50,\u0022Model\u0022:\u0022V65RuleScoringEngine\u0022}"
+    },
+    "v65_100": {
+      "analysis_periods": 100,
+      "top3": [
+        "\u9E21",
+        "\u725B",
+        "\u7334"
+      ],
+      "top6": [
+        "\u9E21",
+        "\u725B",
+        "\u7334",
+        "\u72D7",
+        "\u732A",
+        "\u7F8A"
+      ],
+      "numbers": [],
+      "confidence": "\u4F4E",
+      "best_model": "\u5468\u671F\u002B\u9891\u7387\u002B\u51B7\u70ED\u6A21\u578B",
+      "ranking": [
+        {
+          "zodiac": "\u9E21",
+          "rank": 1,
+          "total_score": 73.49543748320822
+        },
+        {
+          "zodiac": "\u725B",
+          "rank": 2,
+          "total_score": 70.94538048397163
+        },
+        {
+          "zodiac": "\u7334",
+          "rank": 3,
+          "total_score": 65.14546218765405
+        },
+        {
+          "zodiac": "\u72D7",
+          "rank": 4,
+          "total_score": 64.21589990375948
+        },
+        {
+          "zodiac": "\u732A",
+          "rank": 5,
+          "total_score": 59.66553301606513
+        },
+        {
+          "zodiac": "\u7F8A",
+          "rank": 6,
+          "total_score": 58.74556996542451
+        },
+        {
+          "zodiac": "\u9F20",
+          "rank": 7,
+          "total_score": 58.65926900116648
+        },
+        {
+          "zodiac": "\u5154",
+          "rank": 8,
+          "total_score": 57.45846709620856
+        },
+        {
+          "zodiac": "\u86C7",
+          "rank": 9,
+          "total_score": 54.921402959393426
+        },
+        {
+          "zodiac": "\u9A6C",
+          "rank": 10,
+          "total_score": 52.101741249334715
+        },
+        {
+          "zodiac": "\u864E",
+          "rank": 11,
+          "total_score": 44.34409292829288
+        },
+        {
+          "zodiac": "\u9F99",
+          "rank": 12,
+          "total_score": 30.221646565409927
+        }
+      ],
+      "factor_scores": {
+        "\u9E21": {
+          "frequency": 84.00000000000001,
+          "trend": 100,
+          "omission": 50.81081081081081,
+          "hot_cold": 100,
+          "period": 41.970512017340845,
+          "consecutive": 70,
+          "eight_zodiac": 0
+        },
+        "\u725B": {
+          "frequency": 84.00000000000001,
+          "trend": 100,
+          "omission": 35.49295774647887,
+          "hot_cold": 100,
+          "period": 38.590903220868626,
+          "consecutive": 55,
+          "eight_zodiac": 1
+        },
+        "\u7334": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 50.526315789473685,
+          "hot_cold": 40,
+          "period": 43.55891950124416,
+          "consecutive": 85,
+          "eight_zodiac": 0
+        },
+        "\u72D7": {
+          "frequency": 84.00000000000001,
+          "trend": 60.00000000000001,
+          "omission": 56.2962962962963,
+          "hot_cold": 100,
+          "period": 20.363192973480803,
+          "consecutive": 95,
+          "eight_zodiac": 1
+        },
+        "\u732A": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 20,
+          "hot_cold": 50,
+          "period": 31.326501598389143,
+          "consecutive": 85,
+          "eight_zodiac": 1
+        },
+        "\u7F8A": {
+          "frequency": 60.00000000000001,
+          "trend": 93.60000000000001,
+          "omission": 11.03448275862069,
+          "hot_cold": 33.333333333333336,
+          "period": 85.68977057702445,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        },
+        "\u9F20": {
+          "frequency": 96,
+          "trend": 98.4,
+          "omission": 24.137931034482758,
+          "hot_cold": 30,
+          "period": 48.416538684329026,
+          "consecutive": 75,
+          "eight_zodiac": 0
+        },
+        "\u5154": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 0,
+          "hot_cold": 50,
+          "period": 39.016327886369375,
+          "consecutive": 75,
+          "eight_zodiac": 0
+        },
+        "\u86C7": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 6.315789473684211,
+          "hot_cold": 50,
+          "period": 22.755200804390174,
+          "consecutive": 85,
+          "eight_zodiac": 1
+        },
+        "\u9A6C": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 13.750000000000002,
+          "hot_cold": 25,
+          "period": 27.351684274322107,
+          "consecutive": 90,
+          "eight_zodiac": 1
+        },
+        "\u864E": {
+          "frequency": 96,
+          "trend": 33.599999999999994,
+          "omission": 55,
+          "hot_cold": 16.666666666666668,
+          "period": 15.13315752084945,
+          "consecutive": 75,
+          "eight_zodiac": 1
+        },
+        "\u9F99": {
+          "frequency": 72,
+          "trend": 16.799999999999997,
+          "omission": 35.714285714285715,
+          "hot_cold": 10,
+          "period": 11.439452793346227,
+          "consecutive": 70,
+          "eight_zodiac": 1
+        }
+      },
+      "final_ranking_json": "[\u0022\\u9E21\u0022,\u0022\\u725B\u0022,\u0022\\u7334\u0022,\u0022\\u72D7\u0022,\u0022\\u732A\u0022,\u0022\\u7F8A\u0022,\u0022\\u9F20\u0022,\u0022\\u5154\u0022,\u0022\\u86C7\u0022,\u0022\\u9A6C\u0022,\u0022\\u864E\u0022,\u0022\\u9F99\u0022]",
+      "base_model_scores_json": "{\u0022\\u9E21\u0022:73.49543748320822,\u0022\\u725B\u0022:70.94538048397163,\u0022\\u7334\u0022:65.14546218765405,\u0022\\u72D7\u0022:64.21589990375948,\u0022\\u732A\u0022:59.66553301606513,\u0022\\u7F8A\u0022:58.74556996542451,\u0022\\u9F20\u0022:58.65926900116648,\u0022\\u5154\u0022:57.45846709620856,\u0022\\u86C7\u0022:54.921402959393426,\u0022\\u9A6C\u0022:52.101741249334715,\u0022\\u864E\u0022:44.34409292829288,\u0022\\u9F99\u0022:30.221646565409927}",
+      "feature_snapshot_json": "[{\u0022Zodiac\u0022:\u0022\\u9E21\u0022,\u0022TotalScore\u0022:73.49543748320822,\u0022FrequencyScore\u0022:84.00000000000001,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:50.81081081081081,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:41.970512017340845,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:7,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:7,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:9,\u0022MaxOmission\u0022:10,\u0022AvgOmission\u0022:6.166666666666667,\u0022OmissionPosition\u0022:1.4594594594594594,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u725B\u0022,\u0022TotalScore\u0022:70.94538048397163,\u0022FrequencyScore\u0022:84.00000000000001,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:35.49295774647887,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:38.590903220868626,\u0022ConsecutiveScore\u0022:55,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:7,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:5,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:7,\u0022MaxOmission\u0022:21,\u0022AvgOmission\u0022:11.833333333333334,\u0022OmissionPosition\u0022:0.5915492957746479,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u7334\u0022,\u0022TotalScore\u0022:65.14546218765405,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:50.526315789473685,\u0022HotColdScore\u0022:40,\u0022PeriodPatternScore\u0022:43.55891950124416,\u0022ConsecutiveScore\u0022:85,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:9,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:4,\u0022Appear100\u0022:9,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:8,\u0022MaxOmission\u0022:22,\u0022AvgOmission\u0022:9.5,\u0022OmissionPosition\u0022:0.8421052631578947,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u72D7\u0022,\u0022TotalScore\u0022:64.21589990375948,\u0022FrequencyScore\u0022:84.00000000000001,\u0022RecentTrendScore\u0022:60.00000000000001,\u0022OmissionScore\u0022:56.2962962962963,\u0022HotColdScore\u0022:100,\u0022PeriodPatternScore\u0022:20.363192973480803,\u0022ConsecutiveScore\u0022:95,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:7,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:16,\u0022MaxOmission\u0022:31,\u0022AvgOmission\u0022:13.5,\u0022OmissionPosition\u0022:1.1851851851851851,\u0022HotColdTrend\u0022:\u0022\\u4E0A\\u6DA8\u0022},{\u0022Zodiac\u0022:\u0022\\u732A\u0022,\u0022TotalScore\u0022:59.66553301606513,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:20,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:31.326501598389143,\u0022ConsecutiveScore\u0022:85,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:11,\u0022Appear5\u0022:0,\u0022Appear10\u0022:2,\u0022Appear30\u0022:3,\u0022Appear50\u0022:6,\u0022Appear100\u0022:11,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:3,\u0022MaxOmission\u0022:22,\u0022AvgOmission\u0022:9,\u0022OmissionPosition\u0022:0.3333333333333333,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u7F8A\u0022,\u0022TotalScore\u0022:58.74556996542451,\u0022FrequencyScore\u0022:60.00000000000001,\u0022RecentTrendScore\u0022:93.60000000000001,\u0022OmissionScore\u0022:11.03448275862069,\u0022HotColdScore\u0022:33.333333333333336,\u0022PeriodPatternScore\u0022:85.68977057702445,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:5,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:5,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:4,\u0022MaxOmission\u0022:25,\u0022AvgOmission\u0022:21.75,\u0022OmissionPosition\u0022:0.1839080459770115,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u9F20\u0022,\u0022TotalScore\u0022:58.65926900116648,\u0022FrequencyScore\u0022:96,\u0022RecentTrendScore\u0022:98.4,\u0022OmissionScore\u0022:24.137931034482758,\u0022HotColdScore\u0022:30,\u0022PeriodPatternScore\u0022:48.416538684329026,\u0022ConsecutiveScore\u0022:75,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:8,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:3,\u0022Appear100\u0022:8,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:5,\u0022MaxOmission\u0022:24,\u0022AvgOmission\u0022:12.428571428571429,\u0022OmissionPosition\u0022:0.40229885057471265,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u5154\u0022,\u0022TotalScore\u0022:57.45846709620856,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:0,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:39.016327886369375,\u0022ConsecutiveScore\u0022:75,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:9,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:9,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:0,\u0022MaxOmission\u0022:22,\u0022AvgOmission\u0022:11,\u0022OmissionPosition\u0022:0,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u86C7\u0022,\u0022TotalScore\u0022:54.921402959393426,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:6.315789473684211,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:22.755200804390174,\u0022ConsecutiveScore\u0022:85,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:11,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:4,\u0022Appear50\u0022:6,\u0022Appear100\u0022:11,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:1,\u0022MaxOmission\u0022:21,\u0022AvgOmission\u0022:9.5,\u0022OmissionPosition\u0022:0.10526315789473684,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u9A6C\u0022,\u0022TotalScore\u0022:52.101741249334715,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:13.750000000000002,\u0022HotColdScore\u0022:25,\u0022PeriodPatternScore\u0022:27.351684274322107,\u0022ConsecutiveScore\u0022:90,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:12,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:4,\u0022Appear100\u0022:12,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:2,\u0022MaxOmission\u0022:23,\u0022AvgOmission\u0022:8.727272727272727,\u0022OmissionPosition\u0022:0.22916666666666669,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u864E\u0022,\u0022TotalScore\u0022:44.34409292829288,\u0022FrequencyScore\u0022:96,\u0022RecentTrendScore\u0022:33.599999999999994,\u0022OmissionScore\u0022:55,\u0022HotColdScore\u0022:16.666666666666668,\u0022PeriodPatternScore\u0022:15.13315752084945,\u0022ConsecutiveScore\u0022:75,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:8,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:8,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:15,\u0022MaxOmission\u0022:34,\u0022AvgOmission\u0022:12,\u0022OmissionPosition\u0022:1.25,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u9F99\u0022,\u0022TotalScore\u0022:30.221646565409927,\u0022FrequencyScore\u0022:72,\u0022RecentTrendScore\u0022:16.799999999999997,\u0022OmissionScore\u0022:35.714285714285715,\u0022HotColdScore\u0022:10,\u0022PeriodPatternScore\u0022:11.439452793346227,\u0022ConsecutiveScore\u0022:70,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:6,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:1,\u0022Appear50\u0022:1,\u0022Appear100\u0022:6,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:10,\u0022MaxOmission\u0022:40,\u0022AvgOmission\u0022:16.8,\u0022OmissionPosition\u0022:0.5952380952380952,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022}]",
+      "weight_snapshot_json": "{\u0022AnalysisPeriods\u0022:100,\u0022Model\u0022:\u0022V65RuleScoringEngine\u0022}"
+    },
+    "v65_all": {
+      "analysis_periods": 1386,
+      "top3": [
+        "\u7334",
+        "\u9F20",
+        "\u725B"
+      ],
+      "top6": [
+        "\u7334",
+        "\u9F20",
+        "\u725B",
+        "\u732A",
+        "\u9A6C",
+        "\u7F8A"
+      ],
+      "numbers": [],
+      "confidence": "\u4F4E",
+      "best_model": "\u5468\u671F\u002B\u9891\u7387\u002B\u8D70\u52BF\u6A21\u578B",
+      "ranking": [
+        {
+          "zodiac": "\u7334",
+          "rank": 1,
+          "total_score": 51.79943199906945
+        },
+        {
+          "zodiac": "\u9F20",
+          "rank": 2,
+          "total_score": 49.23483887271276
+        },
+        {
+          "zodiac": "\u725B",
+          "rank": 3,
+          "total_score": 47.863804914132864
+        },
+        {
+          "zodiac": "\u732A",
+          "rank": 4,
+          "total_score": 47.61419669760536
+        },
+        {
+          "zodiac": "\u9A6C",
+          "rank": 5,
+          "total_score": 47.06079111971306
+        },
+        {
+          "zodiac": "\u7F8A",
+          "rank": 6,
+          "total_score": 46.94547969956759
+        },
+        {
+          "zodiac": "\u9E21",
+          "rank": 7,
+          "total_score": 46.86111139208479
+        },
+        {
+          "zodiac": "\u72D7",
+          "rank": 8,
+          "total_score": 46.3868125266919
+        },
+        {
+          "zodiac": "\u5154",
+          "rank": 9,
+          "total_score": 46.0287164705093
+        },
+        {
+          "zodiac": "\u864E",
+          "rank": 10,
+          "total_score": 44.03881956538838
+        },
+        {
+          "zodiac": "\u86C7",
+          "rank": 11,
+          "total_score": 43.66498722723556
+        },
+        {
+          "zodiac": "\u9F99",
+          "rank": 12,
+          "total_score": 42.66446753184114
+        }
+      ],
+      "factor_scores": {
+        "\u7334": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 41.18343195266272,
+          "hot_cold": 50,
+          "period": 8.654834348827944,
+          "consecutive": 100,
+          "eight_zodiac": 0
+        },
+        "\u9F20": {
+          "frequency": 100,
+          "trend": 98.4,
+          "omission": 26.10587382160986,
+          "hot_cold": 50,
+          "period": 8.982374135225356,
+          "consecutive": 100,
+          "eight_zodiac": 0
+        },
+        "\u725B": {
+          "frequency": 93.5064935064935,
+          "trend": 100,
+          "omission": 32.755102040816325,
+          "hot_cold": 50,
+          "period": 1.4046389136195492,
+          "consecutive": 85,
+          "eight_zodiac": 1
+        },
+        "\u732A": {
+          "frequency": 89.17748917748918,
+          "trend": 100,
+          "omission": 13.38192419825073,
+          "hot_cold": 50,
+          "period": 12.031100300735186,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u9A6C": {
+          "frequency": 97.83549783549785,
+          "trend": 100,
+          "omission": 9.774545454545455,
+          "hot_cold": 50,
+          "period": 7.637881186410955,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u7F8A": {
+          "frequency": 100,
+          "trend": 93.60000000000001,
+          "omission": 21.549601737871107,
+          "hot_cold": 50,
+          "period": 3.789745524021082,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u9E21": {
+          "frequency": 96.10389610389609,
+          "trend": 100,
+          "omission": 43.23144104803494,
+          "hot_cold": 38.095238095238095,
+          "period": 2.7262149705521432,
+          "consecutive": 100,
+          "eight_zodiac": 0
+        },
+        "\u72D7": {
+          "frequency": 99.56709956709958,
+          "trend": 60.00000000000001,
+          "omission": 53.27472527472527,
+          "hot_cold": 35.82089552238806,
+          "period": 13.048934084828101,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u5154": {
+          "frequency": 100,
+          "trend": 100,
+          "omission": 0,
+          "hot_cold": 50,
+          "period": 11.036131734896326,
+          "consecutive": 100,
+          "eight_zodiac": 0
+        },
+        "\u864E": {
+          "frequency": 99.56709956709958,
+          "trend": 33.599999999999994,
+          "omission": 54.83443708609271,
+          "hot_cold": 50,
+          "period": 9.3517664879471,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u86C7": {
+          "frequency": 96.96969696969697,
+          "trend": 100,
+          "omission": 4.904270986745214,
+          "hot_cold": 50,
+          "period": 0.3562972502296202,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        },
+        "\u9F99": {
+          "frequency": 100,
+          "trend": 16.799999999999997,
+          "omission": 50.8029197080292,
+          "hot_cold": 50,
+          "period": 15.263427949505981,
+          "consecutive": 100,
+          "eight_zodiac": 1
+        }
+      },
+      "final_ranking_json": "[\u0022\\u7334\u0022,\u0022\\u9F20\u0022,\u0022\\u725B\u0022,\u0022\\u732A\u0022,\u0022\\u9A6C\u0022,\u0022\\u7F8A\u0022,\u0022\\u9E21\u0022,\u0022\\u72D7\u0022,\u0022\\u5154\u0022,\u0022\\u864E\u0022,\u0022\\u86C7\u0022,\u0022\\u9F99\u0022]",
+      "base_model_scores_json": "{\u0022\\u7334\u0022:51.79943199906945,\u0022\\u9F20\u0022:49.23483887271276,\u0022\\u725B\u0022:47.863804914132864,\u0022\\u732A\u0022:47.61419669760536,\u0022\\u9A6C\u0022:47.06079111971306,\u0022\\u7F8A\u0022:46.94547969956759,\u0022\\u9E21\u0022:46.86111139208479,\u0022\\u72D7\u0022:46.3868125266919,\u0022\\u5154\u0022:46.0287164705093,\u0022\\u864E\u0022:44.03881956538838,\u0022\\u86C7\u0022:43.66498722723556,\u0022\\u9F99\u0022:42.66446753184114}",
+      "feature_snapshot_json": "[{\u0022Zodiac\u0022:\u0022\\u7334\u0022,\u0022TotalScore\u0022:51.79943199906945,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:41.18343195266272,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:8.654834348827944,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:117,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:4,\u0022Appear100\u0022:9,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:8,\u0022MaxOmission\u0022:65,\u0022AvgOmission\u0022:11.655172413793103,\u0022OmissionPosition\u0022:0.6863905325443788,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u9F20\u0022,\u0022TotalScore\u0022:49.23483887271276,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:98.4,\u0022OmissionScore\u0022:26.10587382160986,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:8.982374135225356,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:121,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:3,\u0022Appear100\u0022:8,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:5,\u0022MaxOmission\u0022:56,\u0022AvgOmission\u0022:11.491666666666667,\u0022OmissionPosition\u0022:0.435097897026831,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u725B\u0022,\u0022TotalScore\u0022:47.863804914132864,\u0022FrequencyScore\u0022:93.5064935064935,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:32.755102040816325,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:1.4046389136195492,\u0022ConsecutiveScore\u0022:85,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:108,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:5,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:7,\u0022MaxOmission\u0022:77,\u0022AvgOmission\u0022:12.822429906542055,\u0022OmissionPosition\u0022:0.5459183673469388,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u732A\u0022,\u0022TotalScore\u0022:47.61419669760536,\u0022FrequencyScore\u0022:89.17748917748918,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:13.38192419825073,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:12.031100300735186,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:103,\u0022Appear5\u0022:0,\u0022Appear10\u0022:2,\u0022Appear30\u0022:3,\u0022Appear50\u0022:6,\u0022Appear100\u0022:11,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:3,\u0022MaxOmission\u0022:58,\u0022AvgOmission\u0022:13.450980392156863,\u0022OmissionPosition\u0022:0.2230320699708455,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u9A6C\u0022,\u0022TotalScore\u0022:47.06079111971306,\u0022FrequencyScore\u0022:97.83549783549785,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:9.774545454545455,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:7.637881186410955,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:113,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:4,\u0022Appear100\u0022:12,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:2,\u0022MaxOmission\u0022:61,\u0022AvgOmission\u0022:12.276785714285714,\u0022OmissionPosition\u0022:0.16290909090909092,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u7F8A\u0022,\u0022TotalScore\u0022:46.94547969956759,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:93.60000000000001,\u0022OmissionScore\u0022:21.549601737871107,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:3.789745524021082,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:125,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:5,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:4,\u0022MaxOmission\u0022:74,\u0022AvgOmission\u0022:11.137096774193548,\u0022OmissionPosition\u0022:0.3591600289645185,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u9E21\u0022,\u0022TotalScore\u0022:46.86111139208479,\u0022FrequencyScore\u0022:96.10389610389609,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:43.23144104803494,\u0022HotColdScore\u0022:38.095238095238095,\u0022PeriodPatternScore\u0022:2.7262149705521432,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:111,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:7,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:9,\u0022MaxOmission\u0022:68,\u0022AvgOmission\u0022:12.49090909090909,\u0022OmissionPosition\u0022:0.7205240174672489,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u72D7\u0022,\u0022TotalScore\u0022:46.3868125266919,\u0022FrequencyScore\u0022:99.56709956709958,\u0022RecentTrendScore\u0022:60.00000000000001,\u0022OmissionScore\u0022:53.27472527472527,\u0022HotColdScore\u0022:35.82089552238806,\u0022PeriodPatternScore\u0022:13.048934084828101,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:115,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:7,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:16,\u0022MaxOmission\u0022:53,\u0022AvgOmission\u0022:11.973684210526315,\u0022OmissionPosition\u0022:1.3362637362637364,\u0022HotColdTrend\u0022:\u0022\\u4E0B\\u964D\u0022},{\u0022Zodiac\u0022:\u0022\\u5154\u0022,\u0022TotalScore\u0022:46.0287164705093,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:0,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:11.036131734896326,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:0,\u0022TotalAppear\u0022:129,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:3,\u0022Appear50\u0022:5,\u0022Appear100\u0022:9,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:0,\u0022MaxOmission\u0022:59,\u0022AvgOmission\u0022:10.7109375,\u0022OmissionPosition\u0022:0,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u864E\u0022,\u0022TotalScore\u0022:44.03881956538838,\u0022FrequencyScore\u0022:99.56709956709958,\u0022RecentTrendScore\u0022:33.599999999999994,\u0022OmissionScore\u0022:54.83443708609271,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:9.3517664879471,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:115,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:2,\u0022Appear50\u0022:2,\u0022Appear100\u0022:8,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:15,\u0022MaxOmission\u0022:71,\u0022AvgOmission\u0022:11.921052631578947,\u0022OmissionPosition\u0022:1.2582781456953642,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u86C7\u0022,\u0022TotalScore\u0022:43.66498722723556,\u0022FrequencyScore\u0022:96.96969696969697,\u0022RecentTrendScore\u0022:100,\u0022OmissionScore\u0022:4.904270986745214,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:0.3562972502296202,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:112,\u0022Appear5\u0022:0,\u0022Appear10\u0022:1,\u0022Appear30\u0022:4,\u0022Appear50\u0022:6,\u0022Appear100\u0022:11,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:1,\u0022MaxOmission\u0022:61,\u0022AvgOmission\u0022:12.234234234234235,\u0022OmissionPosition\u0022:0.0817378497790869,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022},{\u0022Zodiac\u0022:\u0022\\u9F99\u0022,\u0022TotalScore\u0022:42.66446753184114,\u0022FrequencyScore\u0022:100,\u0022RecentTrendScore\u0022:16.799999999999997,\u0022OmissionScore\u0022:50.8029197080292,\u0022HotColdScore\u0022:50,\u0022PeriodPatternScore\u0022:15.263427949505981,\u0022ConsecutiveScore\u0022:100,\u0022EightZodiacScore\u0022:1,\u0022TotalAppear\u0022:117,\u0022Appear5\u0022:0,\u0022Appear10\u0022:0,\u0022Appear30\u0022:1,\u0022Appear50\u0022:1,\u0022Appear100\u0022:6,\u0022Appear200\u0022:0,\u0022CurrentOmission\u0022:10,\u0022MaxOmission\u0022:54,\u0022AvgOmission\u0022:11.810344827586206,\u0022OmissionPosition\u0022:0.8467153284671534,\u0022HotColdTrend\u0022:\u0022\\u5E73\\u7A33\u0022}]",
+      "weight_snapshot_json": "{\u0022AnalysisPeriods\u0022:1386,\u0022Model\u0022:\u0022V65RuleScoringEngine\u0022}"
+    },
+    "v65_auto": {
+      "analysis_periods": 7250,
+      "top3": [
+        "\u9E21",
+        "\u72D7",
+        "\u864E"
+      ],
+      "top6": [
+        "\u9E21",
+        "\u72D7",
+        "\u864E",
+        "\u7334",
+        "\u725B",
+        "\u9F20"
+      ],
+      "numbers": [],
+      "confidence": "\u5DF2\u5B66\u4E60",
+      "best_model": "\u81EA\u52A8\u5B66\u4E60\u6A21\u578B",
+      "ranking": [
+        {
+          "zodiac": "\u9E21",
+          "rank": 1,
+          "total_score": 0.12786000684918486
+        },
+        {
+          "zodiac": "\u72D7",
+          "rank": 2,
+          "total_score": 0.10542444690341349
+        },
+        {
+          "zodiac": "\u864E",
+          "rank": 3,
+          "total_score": 0.0984928575149472
+        },
+        {
+          "zodiac": "\u7334",
+          "rank": 4,
+          "total_score": 0.09541972498368556
+        },
+        {
+          "zodiac": "\u725B",
+          "rank": 5,
+          "total_score": 0.09382228212395129
+        },
+        {
+          "zodiac": "\u9F20",
+          "rank": 6,
+          "total_score": 0.09022567758918203
+        },
+        {
+          "zodiac": "\u732A",
+          "rank": 7,
+          "total_score": 0.08888110744624993
+        },
+        {
+          "zodiac": "\u86C7",
+          "rank": 8,
+          "total_score": 0.07915921505305855
+        },
+        {
+          "zodiac": "\u9A6C",
+          "rank": 9,
+          "total_score": 0.07281585443279841
+        },
+        {
+          "zodiac": "\u7F8A",
+          "rank": 10,
+          "total_score": 0.05233269367530729
+        },
+        {
+          "zodiac": "\u5154",
+          "rank": 11,
+          "total_score": 0.04903316769280541
+        },
+        {
+          "zodiac": "\u9F99",
+          "rank": 12,
+          "total_score": 0.04653296573541601
+        }
+      ],
+      "factor_scores": {
+        "\u9E21": {
+          "frequency": 0.9166666666666666,
+          "trend": 1,
+          "omission": 0.5,
+          "hot_cold": 0.8333333333333334,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u72D7": {
+          "frequency": 0.16666666666666666,
+          "trend": 0.75,
+          "omission": 0.4166666666666667,
+          "hot_cold": 1,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u864E": {
+          "frequency": 0.3333333333333333,
+          "trend": 0.16666666666666666,
+          "omission": 0.25,
+          "hot_cold": 0.9166666666666666,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u7334": {
+          "frequency": 1,
+          "trend": 0.8333333333333334,
+          "omission": 1,
+          "hot_cold": 0.75,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u725B": {
+          "frequency": 0.5,
+          "trend": 0.9166666666666666,
+          "omission": 0.8333333333333334,
+          "hot_cold": 0.5833333333333334,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u9F20": {
+          "frequency": 0.8333333333333334,
+          "trend": 0.5,
+          "omission": 0.9166666666666666,
+          "hot_cold": 0.4166666666666667,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u732A": {
+          "frequency": 0.5833333333333334,
+          "trend": 0.6666666666666666,
+          "omission": 0.75,
+          "hot_cold": 0.5,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u86C7": {
+          "frequency": 0.6666666666666666,
+          "trend": 0.3333333333333333,
+          "omission": 0.16666666666666666,
+          "hot_cold": 0.3333333333333333,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u9A6C": {
+          "frequency": 0.75,
+          "trend": 0.25,
+          "omission": 0.6666666666666666,
+          "hot_cold": 0.16666666666666666,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u7F8A": {
+          "frequency": 0.25,
+          "trend": 0.5833333333333334,
+          "omission": 0.5833333333333334,
+          "hot_cold": 0.25,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u5154": {
+          "frequency": 0.4166666666666667,
+          "trend": 0.4166666666666667,
+          "omission": 0.3333333333333333,
+          "hot_cold": 0.08333333333333333,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        },
+        "\u9F99": {
+          "frequency": 0.08333333333333333,
+          "trend": 0.08333333333333333,
+          "omission": 0.08333333333333333,
+          "hot_cold": 0.6666666666666666,
+          "period": 0,
+          "consecutive": 0,
+          "eight_zodiac": 0
+        }
+      },
+      "final_ranking_json": "[\u0022\\u9E21\u0022,\u0022\\u72D7\u0022,\u0022\\u864E\u0022,\u0022\\u7334\u0022,\u0022\\u725B\u0022,\u0022\\u9F20\u0022,\u0022\\u732A\u0022,\u0022\\u86C7\u0022,\u0022\\u9A6C\u0022,\u0022\\u7F8A\u0022,\u0022\\u5154\u0022,\u0022\\u9F99\u0022]",
+      "base_model_scores_json": "{\u0022\\u7334\u0022:{\u0022AI\u0022:1,\u0022ML\u0022:0.8333333333333334,\u0022State\u0022:1,\u0022V7\u0022:0.75},\u0022\\u9F20\u0022:{\u0022AI\u0022:0.8333333333333334,\u0022ML\u0022:0.5,\u0022State\u0022:0.9166666666666666,\u0022V7\u0022:0.4166666666666667},\u0022\\u725B\u0022:{\u0022AI\u0022:0.5,\u0022ML\u0022:0.9166666666666666,\u0022State\u0022:0.8333333333333334,\u0022V7\u0022:0.5833333333333334},\u0022\\u732A\u0022:{\u0022AI\u0022:0.5833333333333334,\u0022ML\u0022:0.6666666666666666,\u0022State\u0022:0.75,\u0022V7\u0022:0.5},\u0022\\u9A6C\u0022:{\u0022AI\u0022:0.75,\u0022ML\u0022:0.25,\u0022State\u0022:0.6666666666666666,\u0022V7\u0022:0.16666666666666666},\u0022\\u7F8A\u0022:{\u0022AI\u0022:0.25,\u0022ML\u0022:0.5833333333333334,\u0022State\u0022:0.5833333333333334,\u0022V7\u0022:0.25},\u0022\\u9E21\u0022:{\u0022AI\u0022:0.9166666666666666,\u0022ML\u0022:1,\u0022State\u0022:0.5,\u0022V7\u0022:0.8333333333333334},\u0022\\u72D7\u0022:{\u0022AI\u0022:0.16666666666666666,\u0022ML\u0022:0.75,\u0022State\u0022:0.4166666666666667,\u0022V7\u0022:1},\u0022\\u5154\u0022:{\u0022AI\u0022:0.4166666666666667,\u0022ML\u0022:0.4166666666666667,\u0022State\u0022:0.3333333333333333,\u0022V7\u0022:0.08333333333333333},\u0022\\u864E\u0022:{\u0022AI\u0022:0.3333333333333333,\u0022ML\u0022:0.16666666666666666,\u0022State\u0022:0.25,\u0022V7\u0022:0.9166666666666666},\u0022\\u86C7\u0022:{\u0022AI\u0022:0.6666666666666666,\u0022ML\u0022:0.3333333333333333,\u0022State\u0022:0.16666666666666666,\u0022V7\u0022:0.3333333333333333},\u0022\\u9F99\u0022:{\u0022AI\u0022:0.08333333333333333,\u0022ML\u0022:0.08333333333333333,\u0022State\u0022:0.08333333333333333,\u0022V7\u0022:0.6666666666666666}}",
+      "feature_snapshot_json": "{\u0022Issue\u0022:\u00222026291\u0022,\u0022Zodiacs\u0022:[{\u0022Zodiac\u0022:\u0022\\u7334\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:1,\u0022ML\u0022:0.8333333333333334,\u0022State\u0022:1,\u0022V7\u0022:0.75},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0.5}},{\u0022Zodiac\u0022:\u0022\\u9F20\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.8333333333333334,\u0022ML\u0022:0.5,\u0022State\u0022:0.9166666666666666,\u0022V7\u0022:0.4166666666666667},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u725B\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.5,\u0022ML\u0022:0.9166666666666666,\u0022State\u0022:0.8333333333333334,\u0022V7\u0022:0.5833333333333334},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u732A\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.5833333333333334,\u0022ML\u0022:0.6666666666666666,\u0022State\u0022:0.75,\u0022V7\u0022:0.5},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u9A6C\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.75,\u0022ML\u0022:0.25,\u0022State\u0022:0.6666666666666666,\u0022V7\u0022:0.16666666666666666},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u7F8A\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.25,\u0022ML\u0022:0.5833333333333334,\u0022State\u0022:0.5833333333333334,\u0022V7\u0022:0.25},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0.5}},{\u0022Zodiac\u0022:\u0022\\u9E21\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.9166666666666666,\u0022ML\u0022:1,\u0022State\u0022:0.5,\u0022V7\u0022:0.8333333333333334},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u72D7\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.16666666666666666,\u0022ML\u0022:0.75,\u0022State\u0022:0.4166666666666667,\u0022V7\u0022:1},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u5154\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.4166666666666667,\u0022ML\u0022:0.4166666666666667,\u0022State\u0022:0.3333333333333333,\u0022V7\u0022:0.08333333333333333},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0.5}},{\u0022Zodiac\u0022:\u0022\\u864E\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.3333333333333333,\u0022ML\u0022:0.16666666666666666,\u0022State\u0022:0.25,\u0022V7\u0022:0.9166666666666666},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u86C7\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.6666666666666666,\u0022ML\u0022:0.3333333333333333,\u0022State\u0022:0.16666666666666666,\u0022V7\u0022:0.3333333333333333},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:0}},{\u0022Zodiac\u0022:\u0022\\u9F99\u0022,\u0022BaseScores\u0022:{\u0022AI\u0022:0.08333333333333333,\u0022ML\u0022:0.08333333333333333,\u0022State\u0022:0.08333333333333333,\u0022V7\u0022:0.6666666666666666},\u0022FeatureGroups\u0022:{\u0022model_consensus\u0022:1}}]}",
+      "weight_snapshot_json": "{\u0022AI\u0022:0.3209080841730262,\u0022ML\u0022:0.1184733292248594,\u0022State\u0022:0,\u0022V7\u0022:0.5606185866021144,\u0022Sum\u0022:1}"
+    }
+  },
+  "special_rule": {
+    "source_issue": "2026290",
+    "first_number": 8,
+    "last_number": 2,
+    "tail_sum": 10,
+    "mapped_number": 10,
+    "mapped_zodiac": "\u9E21",
+    "zodiacs": [
+      "\u9E21",
+      "\u864E",
+      "\u7334",
+      "\u9F99",
+      "\u72D7",
+      "\u5154"
+    ]
+  },
+  "comprehensive_score": [
+    {
+      "zodiac": "\u9F99",
+      "numbers": "",
+      "total_score": 70,
+      "confidence": "\u9AD8",
+      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F10\u671F(\u574711.5) | \u8FD110\u671F0\u6B21"
+    },
+    {
+      "zodiac": "\u864E",
+      "numbers": "",
+      "total_score": 66,
+      "confidence": "\u4E2D",
+      "reason": "\u9891\u73878.3% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F15\u671F(\u574711.9) | \u8FD110\u671F0\u6B21"
+    },
+    {
+      "zodiac": "\u72D7",
+      "numbers": "",
+      "total_score": 66,
+      "confidence": "\u4E2D",
+      "reason": "\u9891\u73878.3% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F16\u671F(\u574711.9) | \u8FD110\u671F0\u6B21"
+    },
+    {
+      "zodiac": "\u7334",
+      "numbers": "",
+      "total_score": 63,
+      "confidence": "\u4E2D",
+      "reason": "\u9891\u73878.4% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F8\u671F(\u574711.5) | \u8FD110\u671F1\u6B21"
+    },
+    {
+      "zodiac": "\u9F20",
+      "numbers": "",
+      "total_score": 57,
+      "confidence": "\u4E2D",
+      "reason": "\u9891\u73878.7% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F5\u671F(\u574711.2) | \u8FD110\u671F1\u6B21"
+    },
+    {
+      "zodiac": "\u7F8A",
+      "numbers": "",
+      "total_score": 57,
+      "confidence": "\u4E2D",
+      "reason": "\u9891\u73879.0% | \u8D8B\u52BF:\u2192 \u5E73\u7A33 | \u9057\u6F0F4\u671F(\u574711.2) | \u8FD110\u671F1\u6B21"
+    }
+  ],
+  "ensemble": [
+    {
+      "zodiac": "\u7334",
+      "final_score": 0.5365,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.57 | \u9057\u6F0F0.70 | \u6A21\u5F0F0.34 | \u52A8\u91CF0.33"
+    },
+    {
+      "zodiac": "\u72D7",
+      "final_score": 0.5324,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.57 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.33 | \u52A8\u91CF0.00"
+    },
+    {
+      "zodiac": "\u864E",
+      "final_score": 0.5201,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.50 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.37 | \u52A8\u91CF0.00"
+    },
+    {
+      "zodiac": "\u9F99",
+      "final_score": 0.5126,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.43 | \u9057\u6F0F0.90 | \u6A21\u5F0F0.42 | \u52A8\u91CF0.00"
+    },
+    {
+      "zodiac": "\u9E21",
+      "final_score": 0.5007,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73870.96 | \u8D8B\u52BF0.43 | \u9057\u6F0F0.70 | \u6A21\u5F0F0.36 | \u52A8\u91CF0.50"
+    },
+    {
+      "zodiac": "\u7F8A",
+      "final_score": 0.4959,
+      "confidence": "\u4F4E",
+      "reason": "\u9891\u73871.00 | \u8D8B\u52BF0.57 | \u9057\u6F0F0.40 | \u6A21\u5F0F0.18 | \u52A8\u91CF1.00"
+    }
+  ],
+  "validation": {
+    "passed": true,
+    "warnings": []
+  },
+  "verification": {
+    "status": "pending",
+    "actual_number": null,
+    "actual_zodiac": null,
+    "message": "\u7B49\u5F85\u5F00\u5956"
+  }
+}
