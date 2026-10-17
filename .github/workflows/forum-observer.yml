@@ -1,6 +1,13 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
+  # GPT push remains primary. Scheduled retries use Asia/Shanghai time (UTC+8).
+  # Collector runs publish immediate drafts; 21:00 and backup slots finalize once.
+  schedule:
+    - cron: '40,45,50 11 * * *'
+    - cron: '0 12 * * *'
+    # Beijing 21:00 final freeze (and best-effort 21:05/21:10 backups).
+    - cron: '0,5,10 13 * * *'
   # ChatGPT task writes a daily marker to an isolated trigger branch.
   # Always check out main for collection; trigger files never enter main.
   push:
@@ -30,10 +37,17 @@ jobs:
           python-version: "3.12"
       - name: Decide current-issue collection
         id: collection-gate
-        # Only GPT's collect marker (or explicit manual dispatch) may enter forum scraping.
+        # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
-        run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
+        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
+        env:
+          MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ "$MANUAL_DISPATCH" = "true" ]; then
+            python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --manual
+          else
+            python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT"
+          fi
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
         run: |
@@ -63,8 +77,20 @@ jobs:
       - name: Ensure nightly issue report even if collection produced no data
         if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
         run: python -m forum_observer.schedule --archive archive --ensure-report
-      - name: Cycle snapshots and settlements from verified V7 history
-        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer
+      - name: Publish completed-run report or finalize nightly freeze
+        env:
+          FINALIZE_CYCLE: ${{ github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *' }}
+        run: |
+          if [ "$FINALIZE_CYCLE" = "true" ]; then
+            python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
+          else
+            # An observation report is published after every completed scan.
+            # Do not create immutable predictions until the 21:00 finalizer.
+            python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --defer-freeze
+          fi
+      - name: Record author history from verified frozen evidence only
+        # Separate append-only author memory; no scraping, score updates or frozen edits.
+        run: python -m forum_observer.author_profiles --archive archive
       - name: Archive independent forum data only
         shell: bash
         run: |
@@ -95,6 +121,44 @@ jobs:
       - name: Audit immutable current-issue snapshot (GPT audit only)
         if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
         run: python -m forum_observer.schedule --archive archive --require-snapshot
+      - name: Publish independent monitor status
+        if: always()
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OBSERVE_OUTCOME: ${{ steps.observe.outcome }}
+          GATE_COLLECT: ${{ steps.collection-gate.outputs.collect }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess, datetime, base64, urllib.request, urllib.error
+          now=datetime.datetime.now(datetime.timezone.utc).isoformat()
+          status_path=pathlib.Path('out/status.json')
+          data={}
+          if status_path.exists():
+              try: data=json.loads(status_path.read_text())
+              except Exception: pass
+          outcome=os.environ.get('OBSERVE_OUTCOME','')
+          job=os.environ.get('JOB_STATUS','')
+          state='failed' if job=='failure' or outcome=='failure' else ('completed' if outcome=='success' else 'skipped')
+          report={'schema_version':1,'state':state,'issue':data.get('issue'),'run_id':os.environ.get('GITHUB_RUN_ID'),'run_url':f"https://github.com/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ.get('GITHUB_RUN_ID')}",'updated_at':now,'successful_post_opens':data.get('successful_post_opens'),'valid_materials':data.get('valid_materials'),'valid_authors':data.get('valid_authors'),'error':None if state=='completed' else ('Collection failed or a preceding step failed' if state=='failed' else 'Collection skipped by schedule or freeze gate')}
+          repo=os.environ['GITHUB_REPOSITORY']; url=f'https://api.github.com/repos/{repo}/contents/forum-observer/status/latest.json'
+          headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'}
+          for attempt in range(3):
+              try:
+                  req=urllib.request.Request(url,headers=headers)
+                  with urllib.request.urlopen(req,timeout=15) as resp: old=json.load(resp)
+                  old_content=json.loads(base64.b64decode(old['content']).decode())
+                  if old_content.get('updated_at') and old_content['updated_at']>now:
+                      print('Newer monitor state exists; skip stale update'); break
+                  payload={'message':'chore(forum): update runtime monitor','branch':'main','sha':old['sha'],'content':base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode()).decode()}
+                  req=urllib.request.Request(url,data=json.dumps(payload).encode(),headers=headers,method='PUT')
+                  with urllib.request.urlopen(req,timeout=20) as resp: print('Monitor updated:',resp.status)
+                  break
+              except Exception as exc:
+                  print('Monitor update attempt',attempt+1,'failed:',repr(exc))
+          PY
       - name: Report status
         if: always()
         shell: bash
@@ -116,12 +180,12 @@ jobs:
             site/data/forum-observer/history.json
           if-no-files-found: ignore
       - name: Enforce collection quality
-        # GPT/manual collection is verified only when Observe actually ran.
+        # A completed collection must publish its draft report, not freeze early.
         if: always() && steps.observe.outcome != 'skipped'
         shell: bash
         run: |
           if [ -f out/status.json ]; then
-            python -c "import json,sys,pathlib; a=json.load(open('out/status.json')); f=pathlib.Path('archive/issues')/str(a.get('issue',''))/'snapshot.json'; p=pathlib.Path('archive/issues')/str(a.get('issue',''))/'report.md'; ok=f.is_file() and p.is_file(); print('Frozen nightly report:',f,'valid_materials:',a.get('valid_materials',0),'minimum:',a.get('author_selection',{}).get('min_valid_materials',25));sys.exit(0 if ok else 2)"
+            python -c "import json,sys,pathlib; a=json.load(open('out/status.json')); f=pathlib.Path('archive/issues')/str(a.get('issue',''))/'draft-status.json'; p=pathlib.Path('archive/issues')/str(a.get('issue',''))/'report.md'; ok=f.is_file() and p.is_file(); print('Published collector report:',p,'valid_materials:',a.get('valid_materials',0),'minimum:',a.get('author_selection',{}).get('min_valid_materials',25));sys.exit(0 if ok else 2)"
           else
             echo "No collector status"; exit 2
           fi
