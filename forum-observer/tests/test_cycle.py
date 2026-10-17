@@ -221,6 +221,14 @@ class CycleTests(unittest.TestCase):
                     sync(out,archive,history,finalize=True)
 
                 clock['now']='2026-10-18T21:00:30+08:00'
+                original_draft=(folder/'draft-status.json').read_bytes()
+                late=json.loads((out/'status.json').read_text(encoding='utf-8'))
+                late['fetched_at']='2026-10-18T21:00:01+08:00'
+                (out/'status.json').write_text(json.dumps(late,ensure_ascii=False),encoding='utf-8')
+                with self.assertRaisesRegex(ValueError,'after 21:00'):
+                    sync(out,archive,history,defer_freeze=True)
+                self.assertEqual((folder/'draft-status.json').read_bytes(),original_draft)
+                save(2)
                 sync(out,archive,history,finalize=True)
                 snap=folder/'snapshot.json'
                 self.assertTrue(snap.is_file())
