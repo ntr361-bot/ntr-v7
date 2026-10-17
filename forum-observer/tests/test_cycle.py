@@ -151,7 +151,7 @@ class CycleTests(unittest.TestCase):
                 def now(cls,tz=None):
                     fixed=datetime(2026,10,16,20,30,tzinfo=ZoneInfo('Asia/Shanghai'))
                     return fixed.astimezone(tz) if tz else fixed
-            with patch('forum_observer.cycle.datetime',Clock):
+            with patch('forum_observer.cycle.datetime',Clock), patch('forum_observer.core.datetime',Clock):
                 sync(out,archive,history)
             path=archive/'issues'/issue/'snapshot.json'
             self.assertTrue(path.is_file())
@@ -165,7 +165,7 @@ class CycleTests(unittest.TestCase):
             unchanged=path.read_bytes()
             status['ranking']=list(reversed(ranking))
             (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),encoding='utf-8')
-            with patch('forum_observer.cycle.datetime',Clock):
+            with patch('forum_observer.cycle.datetime',Clock), patch('forum_observer.core.datetime',Clock):
                 sync(out,archive,history)
             self.assertEqual(path.read_bytes(),unchanged)
 
