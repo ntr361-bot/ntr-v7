@@ -7,14 +7,10 @@ on:
         required: true
         default: "2026284"
   push:
-    branches: [main]
-    paths:
-      - ".github/workflows/forum-historical-test.yml"
-      - "forum-observer/forum_observer/audit.py"
-      - "forum-observer/forum_observer/page_collector.py"
-      - "forum-observer/tests/test_historical_audit.py"
+    branches: [forum-monitor-test]
+    paths: ['forum-observer/triggers/test-290.json']
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: forum-historical-test
   cancel-in-progress: false
@@ -24,28 +20,43 @@ defaults:
 jobs:
   historical-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Record test startup
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
+        run: python -m forum_observer.runtime starting
       - name: Install automated collector
         run: |
           pip install playwright
           python -m playwright install --with-deps chromium
-          sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-sim
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Test requested issue without archive or publication
+        id: observe
         env:
-          AUDIT_ISSUE: ${{ inputs.issue || '2026284' }}
-        run: python -u -m forum_observer.audit --config collector-config.json --issue "$AUDIT_ISSUE" --out test-out
+          GH_TOKEN: ${{ github.token }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
+        run: python -u -m forum_observer.runtime supervise
+      - name: Record test completion
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
+          OBSERVE_OUTCOME: ${{ steps.observe.outcome }}
+          JOB_STATUS: ${{ job.status }}
+        run: python -m forum_observer.runtime finished
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: forum-historical-test-${{ inputs.issue || '2026284' }}
-          path: forum-observer/test-out/
+          name: forum-historical-test-${{ inputs.issue || '2026290' }}
+          path: forum-observer/out/
           if-no-files-found: error
