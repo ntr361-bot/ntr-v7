@@ -1,8 +1,8 @@
 import unittest
 from datetime import datetime, timezone
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
-from forum_observer.runtime import GitHub, metrics, activity
+from forum_observer.runtime import GitHub, metrics, activity, supervise
 from forum_observer.progress import ArticleProgress
 from forum_observer.watchdog import check, classify
 
@@ -118,6 +118,26 @@ class RuntimeWatchdogTests(unittest.TestCase):
         github = object.__new__(GitHub)
         with self.assertRaises(ValueError):
             github.write('forum-observer/archive/issues/2026290/snapshot.json', {})
+
+    @patch('forum_observer.runtime.safe_publish')
+    @patch('forum_observer.runtime.decide', return_value=(False, '2026290', 0, 'immutable_snapshot_exists'))
+    @patch('forum_observer.runtime.subprocess.Popen')
+    def test_supervisor_does_not_start_child_for_frozen_issue(self, popen, gate, publish):
+        self.assertEqual(supervise(), 0)
+        popen.assert_not_called()
+
+    @patch('forum_observer.runtime.safe_publish')
+    @patch('forum_observer.runtime.threading.Thread')
+    @patch('forum_observer.runtime.time.monotonic', side_effect=[0, 60])
+    @patch('forum_observer.runtime.decide', return_value=(True, '2026290', 60, 'missing_snapshot_retry'))
+    @patch('forum_observer.runtime.subprocess.Popen')
+    def test_supervisor_enforces_actual_process_time_bound(self, popen, gate, clock, thread, publish):
+        process = Mock()
+        process.poll.return_value = None
+        popen.return_value = process
+        self.assertEqual(supervise(), 124)
+        process.terminate.assert_called()
+        process.wait.assert_called_with(timeout=10)
 
 
 if __name__ == '__main__':
