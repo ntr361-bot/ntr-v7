@@ -7,17 +7,32 @@
   "event": "push",
   "test_only": true,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39045021116",
-  "updated_at": "2026-10-17T15:26:43.814495+00:00",
+  "updated_at": "2026-10-17T15:27:47.414490+00:00",
   "error": null,
-  "valid_materials": null,
-  "valid_authors": null,
-  "successful_post_opens": null,
-  "article_details": null,
-  "article_texts_extracted": null,
-  "article_details_completed": null,
+  "valid_materials": 0,
+  "valid_authors": 0,
+  "successful_post_opens": 0,
+  "article_details": {
+    "featured": {
+      "queued": 0,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    },
+    "ordinary": {
+      "queued": 0,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 0,
+  "article_details_completed": 0,
   "last_verified_post": null,
-  "raw_count": null,
-  "stage": null,
-  "progress_updated_at": null,
+  "raw_count": 0,
+  "stage": "forum_scan: 69",
+  "progress_updated_at": "2026-10-17T15:27:47.342693+00:00",
   "coverage_label": null
 }
