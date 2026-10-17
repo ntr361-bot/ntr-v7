@@ -1,0 +1,78 @@
+{
+  "kind": "artifact_verification",
+  "verified_at": "2026-10-17T15:39:29.031155+00:00",
+  "run_id": "39045021116",
+  "attempt": 1,
+  "issue": "2026290",
+  "test_only": true,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39045021116",
+  "artifact_id": 12105279436,
+  "artifact_sha256": "b443384e2094ef1a3b6fac76eabfd5f91572a1c8cc380fdf06a48fb204872229",
+  "trace": {
+    "events": 1574,
+    "sequences_contiguous": true,
+    "start": "2026-10-17T15:26:43.905133+00:00",
+    "end": "2026-10-17T15:36:59.939655+00:00",
+    "terminal_state": "incomplete",
+    "heartbeats": 41
+  },
+  "featured_priority": {
+    "verified": true,
+    "first_ordinary_at": "2026-10-17T15:30:07.243771+00:00",
+    "featured_at_first_ordinary": {
+      "queued": 78,
+      "attempted": 78,
+      "opened": 78,
+      "extracted": 78,
+      "completed": 78
+    }
+  },
+  "collection": {
+    "raw_count": 534,
+    "valid_materials": 87,
+    "distinct_valid_authors": 87,
+    "material_counts": {
+      "recommend": 62,
+      "kill_zodiac": 25
+    },
+    "article_details": {
+      "featured": {
+        "queued": 78,
+        "attempted": 78,
+        "opened": 78,
+        "extracted": 78,
+        "completed": 78
+      },
+      "ordinary": {
+        "queued": 460,
+        "attempted": 460,
+        "opened": 460,
+        "extracted": 456,
+        "completed": 460
+      }
+    },
+    "featured_valid_materials": 16,
+    "ordinary_valid_materials": 71
+  },
+  "recognition": {
+    "adopted": 87,
+    "distinct_authors": 87,
+    "invalid_zodiac_records": 0
+  },
+  "quality": {
+    "truncated": false,
+    "detail_errors": 5,
+    "current_posts_without_text": 4,
+    "reason": "5 verified details had no extractable article text: 4 target-period posts, 1 supplemental reference post"
+  },
+  "limitations": [
+    "Collection quality gate did not pass; monitoring continuity and featured-first order were verified independently.",
+    "This run used ad1d30da; later report-counter and terminal-diagnostic fixes were tested locally against this artifact."
+  ],
+  "frozen_data_changes": 0,
+  "remote_monitor": {
+    "events": 14,
+    "max_gap_seconds": 63.93
+  },
+  "repair_commit": "cd48ee9d2c9bf132972369af2e64e64ce48b0625"
+}
