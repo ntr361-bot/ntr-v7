@@ -169,6 +169,70 @@ class CycleTests(unittest.TestCase):
                 sync(out,archive,history)
             self.assertEqual(path.read_bytes(),unchanged)
 
+    def test_report_is_immediate_and_rerunnable_until_2100_then_immutable(self):
+        with TemporaryDirectory() as tmp:
+            base=Path(tmp);out=base/'out';out.mkdir()
+            archive=base/'archive';history=base/'history.json'
+            history.write_text(json.dumps({'records':[]}),encoding='utf-8')
+            issue='2026291'
+            clock={'now':'2026-10-18T20:15:00+08:00'}
+            class Clock(datetime):
+                @classmethod
+                def now(cls,tz=None):
+                    fixed=datetime.fromisoformat(clock['now'])
+                    return fixed.astimezone(tz) if tz else fixed
+            sources=[
+                dict(author='甲',issue=issue,title='291期推荐六肖：鼠牛虎兔龙蛇',
+                     body='',images=[],detail_url='https://example.org/1'),
+                dict(author='乙',issue=issue,title='291期推荐六肖：马羊猴鸡狗猪',
+                     body='',images=[],detail_url='https://example.org/2')]
+            def save(count):
+                ranking,rows=score_posts(sources[:count])
+                status=dict(issue=issue,status='incomplete_observation',
+                    ranking=ranking,top1=[r['zodiac'] for r in ranking[:1]],
+                    top3=[r['zodiac'] for r in ranking[:3]],
+                    top6=[r['zodiac'] for r in ranking[:6]],
+                    scoring_rule_version=SCORING_RULE_VERSION,
+                    valid_materials=count,parsed_predictions=rows,
+                    evidence=sources[:count],
+                    fetched_at='2026-10-18T20:14:00+08:00',
+                    draw_at='2026-10-18T21:32:00+08:00',
+                    pre_draw_verified=True,
+                    author_selection={'min_valid_materials':25,
+                                      'valid_prediction_authors':count})
+                (out/'status.json').write_text(json.dumps(status,ensure_ascii=False),
+                                              encoding='utf-8')
+                (out/issue).mkdir(exist_ok=True)
+                (out/issue/'report.md').write_text(
+                    f'# 论坛291期采集成绩单\n\n有效资料：{count}份\n',encoding='utf-8')
+            with patch('forum_observer.cycle.datetime',Clock), patch('forum_observer.core.datetime',Clock):
+                save(1)
+                sync(out,archive,history,defer_freeze=True)
+                folder=archive/'issues'/issue
+                self.assertTrue((folder/'draft-status.json').exists())
+                self.assertFalse((folder/'snapshot.json').exists())
+                self.assertIn('有效资料：1份',(folder/'report.md').read_text())
+
+                save(2)
+                sync(out,archive,history,defer_freeze=True)
+                self.assertFalse((folder/'snapshot.json').exists())
+                self.assertIn('有效资料：2份',(folder/'report.md').read_text())
+                with self.assertRaisesRegex(ValueError,'before 21:00'):
+                    sync(out,archive,history,finalize=True)
+
+                clock['now']='2026-10-18T21:00:30+08:00'
+                sync(out,archive,history,finalize=True)
+                snap=folder/'snapshot.json'
+                self.assertTrue(snap.is_file())
+                self.assertEqual(json.loads(snap.read_text())['valid_materials'],2)
+                original=snap.read_bytes()
+                frozen_report=(folder/'report.md').read_bytes()
+                save(1)
+                sync(out,archive,history,defer_freeze=True)
+                sync(out,archive,history,finalize=True)
+                self.assertEqual(snap.read_bytes(),original)
+                self.assertEqual((folder/'report.md').read_bytes(),frozen_report)
+
     def test_pre_draw_fixture_is_independent_of_server_date(self):
         # Reproduce the missed-clock bug under next-day, year-end and leap-day clocks.
         # The fixture must override both consumers; production cutoff checks stay active.
