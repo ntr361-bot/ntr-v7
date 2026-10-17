@@ -169,6 +169,22 @@ class CycleTests(unittest.TestCase):
                 sync(out,archive,history)
             self.assertEqual(path.read_bytes(),unchanged)
 
+    def test_pre_draw_fixture_is_independent_of_server_date(self):
+        # Reproduce the missed-clock bug under next-day, year-end and leap-day clocks.
+        # The fixture must override both consumers; production cutoff checks stay active.
+        for stamp in ('2026-10-17T20:30:00+08:00',
+                      '2026-12-31T23:59:59+08:00',
+                      '2027-01-01T00:00:00+08:00',
+                      '2028-02-29T12:00:00+08:00'):
+            with self.subTest(server_time=stamp):
+                class ServerClock(datetime):
+                    @classmethod
+                    def now(cls,tz=None):
+                        fixed=datetime.fromisoformat(stamp)
+                        return fixed.astimezone(tz) if tz else fixed
+                with patch('forum_observer.cycle.datetime',ServerClock), patch('forum_observer.core.datetime',ServerClock):
+                    self.test_one_valid_material_still_freezes_as_below_minimum_before_draw()
+
     def test_no_valid_material_does_not_fabricate_freeze(self):
         with TemporaryDirectory() as tmp:
             base=Path(tmp);out=base/'out';out.mkdir()
@@ -270,3 +286,4 @@ class CycleTests(unittest.TestCase):
             self.assertTrue((public/'issues'/'2026282.json').exists())
 
 if __name__=='__main__':unittest.main()
+
