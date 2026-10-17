@@ -104,6 +104,17 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             elif (archive/'issues'/issue/'snapshot.json').exists():
                 # Never change frozen reports, observations, or previews.
                 status=None
+    if defer_freeze and status is not None:
+        # A collection completing after the 21:00 freeze deadline must not
+        # replace a valid pre-cutoff draft. Leave its output artifact intact
+        # for diagnostics, and fail this run explicitly.
+        expected=f"{now_local.year}{now_local.timetuple().tm_yday:03d}"
+        captured=datetime.fromisoformat(status['fetched_at'])
+        cutoff=now_local.replace(hour=21,minute=0,second=0,microsecond=0)
+        if issue!=expected:
+            raise ValueError('collector report is not for the current local-day issue')
+        if captured.tzinfo is None or captured.astimezone(TZ)>cutoff:
+            raise ValueError('collector completed after 21:00; preserved prior draft')
     if status is not None:
         atomic(archive/'latest.json',{
             'issue':issue,'status':status['status'],
