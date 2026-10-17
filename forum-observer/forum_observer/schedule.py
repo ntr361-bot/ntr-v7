@@ -13,7 +13,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Shanghai")
-CUTOFF_HOUR, CUTOFF_MINUTE = 20, 25
+CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
 MAX_SECONDS = 1800
 PUBLISH_RESERVE_SECONDS = 90
 
@@ -38,18 +38,27 @@ def snapshot_exists(archive, issue):
     return True
 
 
-def decide(now, archive):
+def decide(now, archive, manual=False):
     """Return (collect, issue, seconds, reason). Fail closed after cutoff."""
     local = now.astimezone(TZ)
     issue = current_issue(now)
     if snapshot_exists(archive, issue):
         return False, issue, 0, "immutable_snapshot_exists"
+    draft=Path(archive)/'issues'/issue/'draft-status.json'
+    if not manual and draft.exists():
+        # Backups stop once sufficient real current-issue evidence has been
+        # collected. Manual dispatch / GitHub rerun may still rescan until 21:00.
+        previous=json.loads(draft.read_text(encoding='utf-8'))
+        if (previous.get('issue')==issue and
+                previous.get('status')=='ready_observation' and
+                int(previous.get('valid_materials') or 0)>=25):
+            return False, issue, 0, "completed_draft_waiting_for_21_freeze"
     cutoff = local.replace(hour=CUTOFF_HOUR, minute=CUTOFF_MINUTE,
                            second=0, microsecond=0)
     remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
     if remaining < 60:
         return False, issue, 0, "daily_collection_cutoff_passed"
-    return True, issue, min(MAX_SECONDS, remaining), "missing_snapshot_retry"
+    return True, issue, min(MAX_SECONDS, remaining), ("manual_rerun" if manual else "missing_or_incomplete_draft_retry")
 
 
 def ensure_daily_report(archive, now):
@@ -100,6 +109,7 @@ def main():
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT"))
     parser.add_argument("--require-snapshot", action="store_true")
     parser.add_argument("--ensure-report", action="store_true")
+    parser.add_argument("--manual", action="store_true",help="Allow an explicit rerun before the freeze deadline")
     a = parser.parse_args()
     now = datetime.now(TZ)
     issue = current_issue(now)
@@ -107,11 +117,15 @@ def main():
         ensure_daily_report(a.archive, now)
         return 0
     if a.require_snapshot:
+        if (now.hour,now.minute)<(CUTOFF_HOUR,CUTOFF_MINUTE):
+            print(f"PENDING: {issue} final freeze is scheduled at 21:00 Asia/Shanghai")
+            return 0
         if not snapshot_exists(a.archive, issue):
             raise SystemExit(f"ERROR: {issue} has no immutable forum snapshot at daily audit")
         print(f"PASS: {issue} immutable forum snapshot exists")
         return 0
-    collect, issue, seconds, reason = decide(now, a.archive)
+    manual=a.manual or int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1
+    collect, issue, seconds, reason = decide(now, a.archive,manual=manual)
     print(json.dumps({"issue":issue, "collect":collect,
                       "max_seconds":seconds, "reason":reason},
                      ensure_ascii=False), flush=True)
