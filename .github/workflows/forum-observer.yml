@@ -134,7 +134,7 @@ jobs:
                   old_content=json.loads(base64.b64decode(old['content']).decode())
                   if old_content.get('updated_at') and old_content['updated_at']>now:
                       print('Newer monitor state exists; skip stale update'); break
-                  payload={'message':'chore(forum): update runtime monitor','branch':'main','sha':old['sha'],'content':base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2)+'\\n').encode()).decode()}
+                  payload={'message':'chore(forum): update runtime monitor','branch':'main','sha':old['sha'],'content':base64.b64encode((json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode()).decode()}
                   req=urllib.request.Request(url,data=json.dumps(payload).encode(),headers=headers,method='PUT')
                   with urllib.request.urlopen(req,timeout=20) as resp: print('Monitor updated:',resp.status)
                   break
