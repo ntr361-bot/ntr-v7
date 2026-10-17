@@ -1,0 +1,70 @@
+name: Forum 290 bounded supplementary collection
+on:
+  push:
+    branches: [rescue/forum-290-20261017]
+    paths: ['.github/workflows/forum-290-rescue.yml']
+permissions:
+  contents: read
+concurrency:
+  group: forum-290-supplementary
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install text browser only
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Verify unchanged scoring and isolation
+        run: python -m unittest discover -s tests -q
+      - name: Collect current 290 articles with hard 21:00 stop
+        continue-on-error: true
+        run: |
+          python -u - <<'PY'
+          import datetime,json,pathlib,subprocess,sys,time
+          from zoneinfo import ZoneInfo
+          now=datetime.datetime.now(ZoneInfo('Asia/Shanghai'))
+          cutoff=now.replace(hour=21,minute=0,second=0,microsecond=0)
+          seconds=min(1800,int((cutoff-now).total_seconds())-60)
+          if now.date().isoformat()!='2026-10-17' or seconds<60:
+              raise SystemExit('Supplementary collection window closed; no next-day backfill')
+          out=pathlib.Path('supplementary-290')
+          print(json.dumps({'issue':'2026290','actual_start':now.isoformat(),'max_seconds':seconds,'hard_stop':'2026-10-17T21:00:00+08:00','frozen':False}),flush=True)
+          cmd=['timeout','--signal=TERM','--kill-after=10s',str(seconds)+'s',sys.executable,'-u','-m','forum_observer.auto','--issue','2026290','--out',str(out),'--max-collection-seconds',str(max(60,seconds-30))]
+          process=subprocess.Popen(cmd)
+          while process.poll() is None:
+              p=out/'status.json'
+              if p.exists():
+                  try:
+                      d=json.loads(p.read_text())
+                      print('VERIFIED_PROGRESS '+json.dumps({k:d.get(k) for k in ('issue','fetched_at','stage','successful_post_opens','article_texts_extracted','article_details_completed','article_details','valid_materials','last_verified_post')},ensure_ascii=False),flush=True)
+                  except (ValueError,OSError): pass
+              try: process.wait(timeout=30)
+              except subprocess.TimeoutExpired: pass
+          print('COLLECTOR_EXIT',process.returncode,flush=True)
+          if (out/'status.json').exists():
+              d=json.loads((out/'status.json').read_text())
+              print('SUPPLEMENTARY_RESULT '+json.dumps({k:d.get(k) for k in ('issue','status','raw_count','valid_materials','distinct_valid_authors','successful_post_opens','article_texts_extracted','article_details','coverage_label','top3','top6','fetched_at')},ensure_ascii=False),flush=True)
+          assert not list(out.rglob('snapshot.json')), 'Supplementary collection cannot freeze'
+          raise SystemExit(process.returncode)
+          PY
+      - name: Verify original freezes and formal data untouched
+        if: always()
+        run: git diff --exit-code -- archive/ ../site/data/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-290-supplementary-no-freeze
+          path: forum-observer/supplementary-290/
+          if-no-files-found: warn
