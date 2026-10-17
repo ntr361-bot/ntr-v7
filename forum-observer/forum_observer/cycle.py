@@ -65,19 +65,45 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None,live_draws=None):
+def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False):
+    """Publish each collector report immediately; freeze only via the nightly finalizer.
+
+    Existing callers retain the original immediate-freeze behavior. Production
+    GitHub Actions explicitly uses defer_freeze for collection and finalize
+    for the 21:00 Asia/Shanghai nightly freeze.
+    """
+    if defer_freeze and finalize:
+        raise ValueError('defer_freeze and finalize cannot be combined')
     archive=Path(archive);out=Path(out)
-    status_path=out/'status.json'
-    if status_path.exists():
-        status=json.loads(status_path.read_text(encoding='utf-8'))
-        issue=status.get('issue')
-        if not isinstance(issue,str) or not re.fullmatch(r'20\d{5}',issue):
-            # A failed startup must not overwrite the last valid issue or stop
-            # settlement processing for existing immutable snapshots.
-            atomic(archive/'collection-failure.json',status)
-            status=None
+    now_local=datetime.now(TZ)
+    issue=f"{now_local.year}{now_local.timetuple().tm_yday:03d}"
+    folder=archive/'issues'/issue
+    if finalize:
+        # Manual dispatch does not finalize, and schedule delays must not
+        # permit early freezing or freezing another day's pending evidence.
+        if (now_local.hour,now_local.minute)<(21,0):
+            raise ValueError('nightly forum freeze is not permitted before 21:00')
+        draft=folder/'draft-status.json'
+        status=json.loads(draft.read_text(encoding='utf-8')) if draft.exists() and not (folder/'snapshot.json').exists() else None
+        if status is not None:
+            if status.get('issue')!=issue:
+                raise ValueError('draft period mismatch; refusing freeze')
+            fetched=datetime.fromisoformat(status['fetched_at'])
+            cutoff=now_local.replace(hour=21,minute=0,second=0,microsecond=0)
+            if fetched.tzinfo is None or fetched.astimezone(TZ)>cutoff:
+                raise ValueError('post-cutoff draft cannot be frozen')
     else:
-        status=None
+        status_path=out/'status.json'
+        status=json.loads(status_path.read_text(encoding='utf-8')) if status_path.exists() else None
+        if status is not None:
+            issue=status.get('issue')
+            if not isinstance(issue,str) or not re.fullmatch(r'20\d{5}',issue):
+                # Bad startup cannot change the last valid frozen issue.
+                atomic(archive/'collection-failure.json',status)
+                status=None
+            elif (archive/'issues'/issue/'snapshot.json').exists():
+                # Never change frozen reports, observations, or previews.
+                status=None
     if status is not None:
         atomic(archive/'latest.json',{
             'issue':issue,'status':status['status'],
@@ -90,6 +116,10 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
             'top6':status.get('top6',[]),
             'notes':status.get('note','')})
         folder=archive/'issues'/issue
+        if defer_freeze:
+            # Update only the mutable pre-freeze draft. A manual rerun replaces
+            # the previous draft; old immutable snapshots remain untouched.
+            atomic(folder/'draft-status.json',status)
         persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
             'issue':issue,'fetched_at':status['fetched_at'],'status':status['status'],
@@ -116,7 +146,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
                  status.get('pre_draw_verified') is True and
                  bool(status.get('draw_at')))
         eligible=(status.get('status')=='ready_observation' and full_ranking) or partial
-        if eligible:
+        if eligible and not defer_freeze:
             # Immutable, explicitly quality-labelled experimental snapshot.
             core={k:status[k] for k in ('issue','fetched_at','ranking','top1','top3','top6')}
             for key in ('valid_materials','scoring_rule_version','scoring_rules','material_counts'):
@@ -135,6 +165,9 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
             in_time=(draw_cutoff is None or
                      (draw_cutoff.tzinfo is not None and captured.tzinfo is not None
                       and captured<=now and captured<draw_cutoff and now<draw_cutoff))
+            if finalize:
+                cutoff=now.astimezone(TZ).replace(hour=21,minute=0,second=0,microsecond=0)
+                in_time=in_time and captured.astimezone(TZ)<=cutoff
             drawn=set()
             if Path(history).exists():
                 drawn={str(r['issue']) for r in json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])}
@@ -166,6 +199,11 @@ def sync(out,archive,history,public_dir=None,live_draws=None):
                 else:
                     source+=annotation
                 frozen_report.write_text(source,encoding='utf-8')
+    if finalize and not (folder/'report.md').exists():
+        # A completely failed run still gets an honest zero-evidence report;
+        # it never manufactures a prediction or immutable snapshot.
+        from .schedule import ensure_daily_report
+        ensure_daily_report(archive,now_local)
     if not Path(history).exists():
         raise ValueError('verified draw history file absent')
     draws=json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])
@@ -287,6 +325,8 @@ if __name__=='__main__':
     p.add_argument('--archive',default='archive')
     p.add_argument('--history',default='../site/data/history.json')
     p.add_argument('--public',default=None)
+    p.add_argument('--defer-freeze',action='store_true',help='Publish a replaceable report immediately; defer immutable freeze')
+    p.add_argument('--finalize',action='store_true',help='At 21:00 freeze last verified current-day draft')
     p.add_argument('--ledger-live-results',default=None,
                    help='Read the existing smart ledger live results API, never its fallback data')
     a=p.parse_args()
@@ -298,5 +338,5 @@ if __name__=='__main__':
             print('Verified live ledger draw records:',len(live))
         except Exception as error:
             print('Live result unavailable; using verified committed V7 history only:',error)
-    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live))
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=a.defer_freeze,finalize=a.finalize))
 
