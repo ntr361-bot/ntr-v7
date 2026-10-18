@@ -30,7 +30,7 @@ python -m forum_observer.cli --input input-example.json --output out
 4. 自动报告Markdown、开奖后结算、账本同步OIDC：需要现有合法接口与凭据配置。
 5. 生产环境持久化：Actions临时文件系统不等于可靠数据库；冻结文件应保存到受保护持久存储，禁止自动覆盖。
 
-**注意**：GitHub Actions的cron是近似调度，可能延迟，不能保证20:00精确开始或20:30完成。仅有定时workflow不代表论坛采集已自动化。
+**当前时间安排（Asia/Shanghai）**：GPT 19:40通过独立触发分支启动；GitHub Actions 19:40、19:45、19:50、20:00为采集备用。采集完成立即发布观察报告，21:00才冻结最后一份已核验当期草稿；21:05、21:10只作幂等补救。GitHub cron可能延迟，必须核实实际run及同run_id的监控，不能把定时配置或提交当作成功启动。
 
 **不修改D1、不运行V7、不覆盖任何冻结预测。**
 
@@ -59,7 +59,7 @@ python -m forum_observer.cli --input input-example.json --output out
 
 
 ## 自动一期循环（2026-10-08）
-每次按近72小时帖子时间发现真实最新期，忽略旧公告；每期独立采集、严格区分期号与作者，只为有明确推荐／排除词的生肖形成候选投票，未经核实的红蓝肖仅为原始证据。预览可继续更新，但有效作者不足必须报告不完整。达到候选门槛才保存独立实验快照到 forum-observer/archive/issues/<期号>/snapshot.json，该文件不允许覆盖。自动对奖只读取已有 site/data/history.json 的真实 special_zodiac 和 open_time；必须证明快照时间早于开奖，否则阻止对奖。结算写入每期 settlement.json，不覆盖。每天北京时间19:40、20:25、22:40、08:40运行；归档仅写入 forum-observer/archive，不修改正式 V7 / D1。当前榜单未核实，快照和成绩仅属实验观察，禁止冒充正式模型预测。
+每次按近72小时帖子时间发现真实最新期，忽略旧公告；每期独立采集、严格区分期号与作者，只为有明确推荐／排除词的生肖形成候选投票，未经核实的红蓝肖仅为原始证据。预览可继续更新，但有效作者不足必须报告不完整。达到候选门槛才保存独立实验快照到 forum-observer/archive/issues/<期号>/snapshot.json，该文件不允许覆盖。自动对奖只读取已有 site/data/history.json 的真实 special_zodiac 和 open_time；必须证明快照时间早于开奖，否则阻止对奖。结算写入每期 settlement.json，不覆盖。每天采集、冻结时间按本页当前时间安排执行；GPT审查触发也必须进入21:00最终冻结流程，代码禁止21:00前冻结。归档仅写入独立论坛目录，不修改正式 V7 / D1。当前榜单未核实，快照和成绩仅属实验观察，禁止冒充正式模型预测。
 
 ## 智能账本只读数据出口
 
