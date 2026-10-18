@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Shanghai",
+  "issue": "2026291",
+  "mode": "audit_only",
+  "intent": "At the unique 21:00 finalization point, verify the latest validated draft and run final freeze, audit, and archive only. If a valid immutable snapshot already exists, verify it without overwrite. Preserve under-25 experimental freeze classification and incomplete collection marker; never fabricate rankings or mark as threshold-compliant. If zero verified samples or no verifiable full 12-zodiac ranking exists, produce a failure/missing report without a frozen ranking.",
+  "finalize": true,
+  "collect": false,
+  "rescore": false,
+  "freeze_overwrite": false,
+  "settlement_change": false,
+  "ocr_comments": false,
+  "ocr_article_images": false
+}
