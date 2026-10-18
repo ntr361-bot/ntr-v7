@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026291",
+  "state": "collecting_effectively",
+  "run_id": "39126533907",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39126533907",
+  "updated_at": "2026-10-18T12:20:19.808706+00:00",
+  "error": null,
+  "valid_materials": 47,
+  "valid_authors": 47,
+  "successful_post_opens": 224,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 183,
+      "opened": 182,
+      "extracted": 179,
+      "completed": 182
+    }
+  },
+  "article_texts_extracted": 221,
+  "article_details_completed": 224,
+  "last_verified_post": {
+    "author": "好料再现",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108640&type=3",
+    "verified_at": "2026-10-18T12:20:19.346937+00:00",
+    "text_length": 25,
+    "text_sha256": "4916df911796ab6a0957b5f52ebabe96f77235481f17db248ecbb8a20c9a8ba2"
+  },
+  "last_attempted_post": {
+    "author": "啊懒啊",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108639&type=3",
+    "attempt_index": 225
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-18T12:18:25.445237+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 221,
+  "stage": "detail: 啊懒啊 291期:大小中特 免费公开",
+  "progress_updated_at": "2026-10-18T12:20:19.512006+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
