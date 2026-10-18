@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026291",
+  "state": "collecting_effectively",
+  "run_id": "39126533907",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39126533907",
+  "updated_at": "2026-10-18T12:19:15.672460+00:00",
+  "error": null,
+  "valid_materials": 31,
+  "valid_authors": 31,
+  "successful_post_opens": 127,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 85,
+      "opened": 85,
+      "extracted": 85,
+      "completed": 85
+    }
+  },
+  "article_texts_extracted": 127,
+  "article_details_completed": 127,
+  "last_verified_post": {
+    "author": "鸿兴学府",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11111900&type=3",
+    "verified_at": "2026-10-18T12:19:15.582454+00:00",
+    "text_length": 52,
+    "text_sha256": "5c616fbb5b02839defb2eb5ae99ae08bd2ca9a891de0da19e01052227c34154c"
+  },
+  "last_attempted_post": {
+    "author": "鸿兴学府",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11111900&type=3",
+    "attempt_index": 127
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-18T12:18:25.445237+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 127,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-18T12:19:15.643064+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
