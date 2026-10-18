@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39126533907",
-  "updated_at": "2026-10-18T12:18:12.706394+00:00",
+  "updated_at": "2026-10-18T12:19:15.672460+00:00",
   "error": null,
-  "valid_materials": 5,
-  "valid_authors": 5,
-  "successful_post_opens": 18,
+  "valid_materials": 31,
+  "valid_authors": 31,
+  "successful_post_opens": 127,
   "article_details": {
     "featured": {
       "queued": 42,
-      "attempted": 19,
-      "opened": 18,
-      "extracted": 18,
-      "completed": 18
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
     },
     "ordinary": {
       "queued": 476,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 85,
+      "opened": 85,
+      "extracted": 85,
+      "completed": 85
     }
   },
-  "article_texts_extracted": 18,
-  "article_details_completed": 18,
+  "article_texts_extracted": 127,
+  "article_details_completed": 127,
   "last_verified_post": {
-    "author": "路过大叔",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11112633&type=3",
-    "verified_at": "2026-10-18T12:18:12.541943+00:00",
-    "text_length": 532,
-    "text_sha256": "1d38fb86c2b0f42e817e085d577bbd8372510a43886a0cfe35d57bab868bce34"
+    "author": "鸿兴学府",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11111900&type=3",
+    "verified_at": "2026-10-18T12:19:15.582454+00:00",
+    "text_length": 52,
+    "text_sha256": "5c616fbb5b02839defb2eb5ae99ae08bd2ca9a891de0da19e01052227c34154c"
   },
   "last_attempted_post": {
-    "author": "大家都中",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11113757&type=3",
-    "attempt_index": 19
+    "author": "鸿兴学府",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11111900&type=3",
+    "attempt_index": 127
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-18T12:18:25.445237+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 18,
-  "stage": "detail: 大家都中 澳门杀一尾：291期",
-  "progress_updated_at": "2026-10-18T12:18:12.550859+00:00",
+  "raw_count": 127,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-18T12:19:15.643064+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
