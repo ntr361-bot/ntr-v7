@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026291",
+  "state": "collecting_effectively",
+  "run_id": "39126533907",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39126533907",
+  "updated_at": "2026-10-18T12:23:29.353812+00:00",
+  "error": null,
+  "valid_materials": 80,
+  "valid_authors": 80,
+  "successful_post_opens": 485,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 444,
+      "opened": 443,
+      "extracted": 439,
+      "completed": 443
+    }
+  },
+  "article_texts_extracted": 481,
+  "article_details_completed": 485,
+  "last_verified_post": {
+    "author": "竹报彡多",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108133&type=3",
+    "verified_at": "2026-10-18T12:23:28.989626+00:00",
+    "text_length": 3440,
+    "text_sha256": "48ea5cbb6e616f7fd3d2463e24dd5170e2ac6218e0614504b1fb6d36a49e6e32"
+  },
+  "last_attempted_post": {
+    "author": "澳门蓝月亮",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108132&type=3",
+    "attempt_index": 486
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-18T12:18:25.445237+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 481,
+  "stage": "detail: 澳门蓝月亮 蓝月亮论坛【六肖12码】",
+  "progress_updated_at": "2026-10-18T12:23:29.240222+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
