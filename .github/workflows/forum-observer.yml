@@ -44,9 +44,9 @@ jobs:
         id: collection-gate
         # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):')))
+        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
-          MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+          MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
         run: |
           if [ "$MANUAL_DISPATCH" = "true" ]; then
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --manual
@@ -74,7 +74,7 @@ jobs:
         timeout-minutes: 35
         env:
           GH_TOKEN: ${{ github.token }}
-          MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+          MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
         run: python -u -m forum_observer.runtime supervise
       - uses: actions/cache/save@v4
         if: always()
