@@ -1,67 +1,31 @@
 {
   "schema_version": 2,
-  "issue": "2026291",
-  "state": "frozen",
-  "run_id": "39129651562",
+  "issue": "2026292",
+  "state": "starting",
+  "run_id": "39144475961",
   "attempt": 1,
-  "event": "push",
+  "event": "schedule",
   "test_only": false,
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39129651562",
-  "updated_at": "2026-10-18T13:00:39.385675+00:00",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39144475961",
+  "updated_at": "2026-10-18T16:19:36.421050+00:00",
   "error": null,
-  "valid_materials": 85,
-  "valid_authors": 85,
-  "successful_post_opens": 518,
-  "article_details": {
-    "featured": {
-      "queued": 42,
-      "attempted": 42,
-      "opened": 42,
-      "extracted": 42,
-      "completed": 42
-    },
-    "ordinary": {
-      "queued": 476,
-      "attempted": 476,
-      "opened": 476,
-      "extracted": 472,
-      "completed": 476
-    }
-  },
-  "article_texts_extracted": 514,
-  "article_details_completed": 518,
-  "last_verified_post": {
-    "author": "头条号",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108021&type=3",
-    "verified_at": "2026-10-18T12:23:56.627867+00:00",
-    "text_length": 636,
-    "text_sha256": "256e37a170b4501de920f0cd48a6b3c487edb26a051e342819f84946544474ad"
-  },
-  "last_attempted_post": {
-    "author": "头条号",
-    "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108021&type=3",
-    "attempt_index": 518
-  },
-  "priority_audit": {
-    "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": {
-      "at": "2026-10-18T12:18:25.445237+00:00",
-      "featured_queued": 42,
-      "featured_attempted": 42,
-      "featured_completed": 42
-    },
-    "violation_count": 0,
-    "state": "verified"
-  },
-  "raw_count": 514,
+  "valid_materials": null,
+  "valid_authors": null,
+  "successful_post_opens": null,
+  "article_details": null,
+  "article_texts_extracted": null,
+  "article_details_completed": null,
+  "last_verified_post": null,
+  "last_attempted_post": null,
+  "priority_audit": null,
+  "raw_count": null,
   "stage": null,
-  "progress_updated_at": "2026-10-18T12:23:57.319657+00:00",
-  "collection_status": "ready_observation",
+  "progress_updated_at": null,
+  "collection_status": null,
   "quality_summary": {
-    "detail_errors": 4,
-    "truncated": false,
-    "unextracted_current_posts": 4
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": null
   },
-  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+  "coverage_label": null
 }
