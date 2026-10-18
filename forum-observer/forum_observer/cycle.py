@@ -319,7 +319,11 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             st=folder/'settlement.json'
             atomic(public_dir/'issues'/(folder.name+'.json'),{
                 'issue':folder.name,'classification':saved.get('classification'),
-                'frozen_at':saved.get('fetched_at'),
+                # Prefer the immutable freeze event timestamp. Old snapshots
+                # without frozen_at retain their legacy display fallback.
+                'frozen_at':saved.get('frozen_at') or saved.get('fetched_at'),
+                'freeze_time_source':('snapshot_frozen_at' if saved.get('frozen_at')
+                                      else 'legacy_collection_time_fallback'),
                 'ranking':saved.get('ranking',[]),'top3':saved.get('top3',[]),
                 'top6':saved.get('top6',[]),'digest':saved.get('digest'),
                 'quality_status':saved.get('quality_status',
