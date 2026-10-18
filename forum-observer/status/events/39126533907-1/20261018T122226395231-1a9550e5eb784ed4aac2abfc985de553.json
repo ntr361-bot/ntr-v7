@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026291",
+  "state": "collecting_effectively",
+  "run_id": "39126533907",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39126533907",
+  "updated_at": "2026-10-18T12:22:26.395231+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 401,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 360,
+      "opened": 359,
+      "extracted": 356,
+      "completed": 359
+    }
+  },
+  "article_texts_extracted": 398,
+  "article_details_completed": 401,
+  "last_verified_post": {
+    "author": "西南二尾王",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108436&type=3",
+    "verified_at": "2026-10-18T12:22:25.606934+00:00",
+    "text_length": 156,
+    "text_sha256": "b54f72a616b26b2302b52693b1f3e49a458dd20bdf7f989001b4d61b1061c5f8"
+  },
+  "last_attempted_post": {
+    "author": "水东枭雄",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11108427&type=3",
+    "attempt_index": 402
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-18T12:18:25.445237+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 398,
+  "stage": "detail: 水东枭雄 291期：三半单双",
+  "progress_updated_at": "2026-10-18T12:22:25.807818+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
