@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026292",
+  "state": "collecting_effectively",
+  "run_id": "39251536324",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39251536324",
+  "updated_at": "2026-10-19T12:29:24.013866+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 423,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 461,
+      "attempted": 382,
+      "opened": 381,
+      "extracted": 379,
+      "completed": 381
+    }
+  },
+  "article_texts_extracted": 421,
+  "article_details_completed": 423,
+  "last_verified_post": {
+    "author": "赛马会",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114851&type=3",
+    "verified_at": "2026-10-19T12:29:23.645410+00:00",
+    "text_length": 15,
+    "text_sha256": "a3f55aa827ac5639e9073562191398973f742d8327da12a290d978de937fc1a4"
+  },
+  "last_attempted_post": {
+    "author": "马赛克",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114850&type=3",
+    "attempt_index": 424
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-19T12:25:09.951485+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 421,
+  "stage": "detail: 马赛克 292期:《传真内幕预测大小》",
+  "progress_updated_at": "2026-10-19T12:29:23.936052+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
