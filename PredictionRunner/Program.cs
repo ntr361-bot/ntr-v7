@@ -194,14 +194,20 @@ static void WriteRuntimeState(string repositoryRoot)
     string output = Path.Combine(repositoryRoot, "site", "data", "runtime-state.json");
     Directory.CreateDirectory(Path.GetDirectoryName(output)!);
     SymmetricRuntimeStateSnapshot snapshot = SymmetricRuntimeStateSync.Export("V6.5");
+    string json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = false
+    });
+    if (StableSnapshotFile.HasSameContent(output, json, "generated_at"))
+    {
+        Console.WriteLine("[INFO] Runtime snapshot unchanged; preserving committed bytes and timestamp");
+        return;
+    }
     string temporary = output + $".{Guid.NewGuid():N}.tmp";
     try
     {
-        File.WriteAllText(temporary, JsonSerializer.Serialize(snapshot, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = false
-        }));
+        File.WriteAllText(temporary, json);
         using JsonDocument _ = JsonDocument.Parse(File.ReadAllBytes(temporary));
         File.Move(temporary, output, true);
     }

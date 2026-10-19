@@ -370,11 +370,16 @@ public static class DailyPredictionAutomation
 
     private static void AtomicWrite<T>(string path, T value)
     {
+        string json = JsonSerializer.Serialize(value, JsonOptions);
+        // Forecast files keep their existing freeze guard. Only mutable aggregate
+        // envelopes may ignore their publication timestamp.
+        if ((Path.GetFileName(path) is "manifest.json" or "history.json") &&
+            StableSnapshotFile.HasSameContent(path, json, "updated_at")) return;
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
         string temporary = path + $".{Guid.NewGuid():N}.tmp";
         try
         {
-            File.WriteAllText(temporary, JsonSerializer.Serialize(value, JsonOptions));
+            File.WriteAllText(temporary, json);
             using JsonDocument parsed = JsonDocument.Parse(File.ReadAllBytes(temporary));
             if (parsed.RootElement.GetProperty("status").GetString() != "success")
                 throw new InvalidDataException("预测记录校验失败");
