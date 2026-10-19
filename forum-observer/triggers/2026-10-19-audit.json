@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-19",
+  "timezone": "Asia/Shanghai",
+  "issue": "2026292",
+  "mode": "audit_only",
+  "intent": "At the unique 21:00 finalization point, read the latest verified draft and perform final freeze, audit, and archive only. Do not recollect, rescore, overwrite any existing freeze, or alter D1/formal V7. If valid snapshot already exists, verify it without overwrite. Preserve under-25 experimental classification when applicable; never fabricate rankings.",
+  "finalize": true,
+  "collect": false,
+  "rescore": false,
+  "freeze_overwrite": false,
+  "settlement_change": false,
+  "ocr_comments": false,
+  "ocr_article_images": false
+}
