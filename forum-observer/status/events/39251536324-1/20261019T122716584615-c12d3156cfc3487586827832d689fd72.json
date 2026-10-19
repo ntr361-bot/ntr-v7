@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026292",
+  "state": "collecting_effectively",
+  "run_id": "39251536324",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39251536324",
+  "updated_at": "2026-10-19T12:27:16.584615+00:00",
+  "error": null,
+  "valid_materials": 47,
+  "valid_authors": 47,
+  "successful_post_opens": 247,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 461,
+      "attempted": 206,
+      "opened": 205,
+      "extracted": 203,
+      "completed": 205
+    }
+  },
+  "article_texts_extracted": 245,
+  "article_details_completed": 247,
+  "last_verified_post": {
+    "author": "风吹草动",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11115034&type=3",
+    "verified_at": "2026-10-19T12:27:16.216405+00:00",
+    "text_length": 19,
+    "text_sha256": "04cf3bf2f1bc29b4d1d55a86bc2a3058fd5220dc451a7a4fe096468c9f6e660b"
+  },
+  "last_attempted_post": {
+    "author": "世外桃源",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11115033&type=3",
+    "attempt_index": 248
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-19T12:25:09.951485+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 245,
+  "stage": "detail: 世外桃源 292期：大小中特",
+  "progress_updated_at": "2026-10-19T12:27:16.371410+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
