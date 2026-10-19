@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026293",
+  "state": "collecting_effectively",
+  "run_id": "39296986015",
+  "attempt": 1,
+  "event": "schedule",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39296986015",
+  "updated_at": "2026-10-19T17:49:20.384355+00:00",
+  "error": null,
+  "valid_materials": 18,
+  "valid_authors": 18,
+  "successful_post_opens": 111,
+  "article_details": {
+    "featured": {
+      "queued": 31,
+      "attempted": 31,
+      "opened": 31,
+      "extracted": 30,
+      "completed": 31
+    },
+    "ordinary": {
+      "queued": 335,
+      "attempted": 80,
+      "opened": 80,
+      "extracted": 80,
+      "completed": 80
+    }
+  },
+  "article_texts_extracted": 110,
+  "article_details_completed": 111,
+  "last_verified_post": {
+    "author": "昙花一现",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121199&type=3",
+    "verified_at": "2026-10-19T17:49:20.357518+00:00",
+    "text_length": 21,
+    "text_sha256": "7d7fe77a77cf03ffff045e38c017f18c232f105fa37c73465c7ba83e9c0d4085"
+  },
+  "last_attempted_post": {
+    "author": "昙花一现",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121199&type=3",
+    "attempt_index": 111
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-19T17:48:37.367606+00:00",
+      "featured_queued": 31,
+      "featured_attempted": 31,
+      "featured_completed": 31
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 110,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-19T17:49:20.374500+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
