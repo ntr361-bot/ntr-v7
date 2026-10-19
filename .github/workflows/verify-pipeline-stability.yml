@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'DailyPredictionAutomation.cs'
+      - 'StableSnapshotFile.cs'
       - 'PredictionRunner/**'
       - 'Tests/PipelineSettlementSmoke*'
       - 'scripts/pipeline_guard.py'

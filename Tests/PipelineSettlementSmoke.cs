@@ -15,6 +15,17 @@ string temporary = Path.Combine(data!, "daily");
 Directory.CreateDirectory(temporary);
 foreach (string file in Directory.GetFiles(Path.Combine(source, "daily-records"), "*.json"))
     File.Copy(file, Path.Combine(temporary, Path.GetFileName(file)), true);
+DailyPredictionAutomation.UpdateManifest(temporary);
+string manifestBefore = File.ReadAllText(Path.Combine(temporary, "manifest.json"));
+string historyBefore = File.ReadAllText(Path.Combine(temporary, "history.json"));
+DailyPredictionAutomation.UpdateManifest(temporary);
+Check(manifestBefore == File.ReadAllText(Path.Combine(temporary, "manifest.json")) &&
+    historyBefore == File.ReadAllText(Path.Combine(temporary, "history.json")), "Timestamp-only aggregate rewrite");
+string stablePath = Path.Combine(data!, "runtime-envelope.json");
+File.WriteAllText(stablePath, "{\"generated_at\":\"old\",\"predictions\":[{\"issue\":1,\"hit\":false}]}");
+Check(StableSnapshotFile.HasSameContent(stablePath, "{\"predictions\":[{\"issue\":1,\"hit\":false}],\"generated_at\":\"new\"}", "generated_at"), "Envelope timestamp caused content change");
+Check(!StableSnapshotFile.HasSameContent(stablePath, "{\"predictions\":[{\"issue\":1,\"hit\":true}],\"generated_at\":\"new\"}", "generated_at"), "Settlement change was suppressed");
+Check(!StableSnapshotFile.HasSameContent(stablePath, "{\"predictions\":[{\"issue\":2,\"hit\":false}],\"generated_at\":\"new\"}", "generated_at"), "Next issue was suppressed");
 DatabaseHelper.InitializeDatabase();
 CloudPredictionSyncService.ImportLocalHistoryArchive(Path.Combine(source, "history.json"));
 CloudPredictionSyncService.ImportLocalRuntimeState(Path.Combine(source, "runtime-state.json"));

@@ -33,6 +33,14 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Partial frozen'):
             plan(self.root)
 
+    def test_repeated_trigger_is_noop_and_next_missing_issue_is_allowed(self):
+        for _ in range(3):
+            self.assertEqual(plan(self.root)['generate'], 'false')
+        # Only remove COPIED files; this checks the planner without any model run.
+        for folder in ('predictions', 'daily-records'):
+            (self.root / folder / f'{self.next}.json').unlink()
+        self.assertEqual(plan(self.root), {'target': str(self.next), 'generate': 'true'})
+
     def test_old_issue_never_regenerated(self):
         with self.assertRaises(ValueError): plan(self.root, requested=str(self.draw))
 
