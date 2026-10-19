@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026293",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "39296986015",
   "attempt": 1,
   "event": "schedule",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39296986015",
-  "updated_at": "2026-10-19T17:51:29.091442+00:00",
+  "updated_at": "2026-10-19T17:51:54.227733+00:00",
   "error": null,
-  "valid_materials": 46,
-  "valid_authors": 46,
-  "successful_post_opens": 329,
+  "valid_materials": 50,
+  "valid_authors": 50,
+  "successful_post_opens": 366,
   "article_details": {
     "featured": {
       "queued": 31,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 335,
-      "attempted": 299,
-      "opened": 298,
-      "extracted": 298,
-      "completed": 298
+      "attempted": 335,
+      "opened": 335,
+      "extracted": 335,
+      "completed": 335
     }
   },
-  "article_texts_extracted": 328,
-  "article_details_completed": 329,
+  "article_texts_extracted": 365,
+  "article_details_completed": 366,
   "last_verified_post": {
-    "author": "河南漯河市澳门研究生",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120693&type=3",
-    "verified_at": "2026-10-19T17:51:28.680863+00:00",
-    "text_length": 15,
-    "text_sha256": "44342a68f6c65d714bf15fcdf08387afeb26e093f6e36b437fd2302f5049bcf7"
+    "author": "老六神算",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120749&type=3",
+    "verified_at": "2026-10-19T17:51:52.865727+00:00",
+    "text_length": 19,
+    "text_sha256": "8383ff860fdfcb3b1e0938108f9ff38bc900f8fc41a4e8423859294f4af68583"
   },
   "last_attempted_post": {
-    "author": "赌神不是神",
+    "author": "老六神算",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120685&type=3",
-    "attempt_index": 330
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120749&type=3",
+    "attempt_index": 366
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 328,
-  "stage": "detail: 赌神不是神 澳门",
-  "progress_updated_at": "2026-10-19T17:51:28.820837+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 365,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-19T17:51:53.200800+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
