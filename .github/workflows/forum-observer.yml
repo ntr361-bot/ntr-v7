@@ -87,7 +87,7 @@ jobs:
         run: python -m forum_observer.schedule --archive archive --ensure-report
       - name: Publish completed-run report or finalize nightly freeze
         env:
-          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')) }}
+          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
             python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
@@ -166,7 +166,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OBSERVE_OUTCOME: ${{ steps.observe.outcome }}
           JOB_STATUS: ${{ job.status }}
-          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')) }}
+          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
         run: python -m forum_observer.runtime finished
       - name: Preserve complete monitor journal
         if: always()
