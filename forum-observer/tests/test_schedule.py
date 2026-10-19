@@ -88,5 +88,21 @@ class ScheduleTests(unittest.TestCase):
                 decide(self.at(19, 40), tmp)
 
 
+    def test_workflow_audit_never_activates_freeze(self):
+        """Regression: audit pushes must not finalize before 21:00."""
+        workflow = (Path(__file__).resolve().parents[2] / ".github" /
+                    "workflows" / "forum-observer.yml").read_text(encoding="utf-8")
+        finalize_lines = [line.strip() for line in workflow.splitlines()
+                          if line.strip().startswith("FINALIZE_CYCLE:")]
+        self.assertEqual(len(finalize_lines), 2)
+        for line in finalize_lines:
+            self.assertIn("github.event_name == 'schedule'", line)
+            self.assertIn("0,5,10 13 * * *", line)
+            self.assertNotIn("trigger(forum-audit):", line)
+        self.assertIn("trigger(forum-audit):", workflow)
+        self.assertIn("--ensure-report", workflow)
+        self.assertIn("--defer-freeze", workflow)
+        self.assertIn("--finalize", workflow)
+
 if __name__ == "__main__":
     unittest.main()
