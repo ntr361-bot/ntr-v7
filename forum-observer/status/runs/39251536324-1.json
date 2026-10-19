@@ -7,56 +7,61 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39251536324",
-  "updated_at": "2026-10-19T12:25:08.586987+00:00",
+  "updated_at": "2026-10-19T12:26:12.310497+00:00",
   "error": null,
-  "valid_materials": 7,
-  "valid_authors": 7,
-  "successful_post_opens": 39,
+  "valid_materials": 34,
+  "valid_authors": 34,
+  "successful_post_opens": 149,
   "article_details": {
     "featured": {
       "queued": 42,
-      "attempted": 40,
-      "opened": 39,
-      "extracted": 39,
-      "completed": 39
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
     },
     "ordinary": {
       "queued": 461,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 108,
+      "opened": 107,
+      "extracted": 106,
+      "completed": 107
     }
   },
-  "article_texts_extracted": 39,
-  "article_details_completed": 39,
+  "article_texts_extracted": 148,
+  "article_details_completed": 149,
   "last_verified_post": {
-    "author": "奇花异草",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114773&type=3",
-    "verified_at": "2026-10-19T12:25:08.323308+00:00",
-    "text_length": 50,
-    "text_sha256": "f7e25fc5e0f73265e932c3e8e2bd3cca411207ce98fde25d313d6c522896f4e0"
+    "author": "好多鱼",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11117635&type=3",
+    "verified_at": "2026-10-19T12:26:12.119776+00:00",
+    "text_length": 46,
+    "text_sha256": "08387d23f1ddce24fc0595e30a920e85ed76dd6aac884bfa769a13bd30626f0c"
   },
   "last_attempted_post": {
-    "author": "披荆斩棘",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114772&type=3",
-    "attempt_index": 40
+    "author": "阿三日记",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11115084&type=3",
+    "attempt_index": 150
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-19T12:25:09.951485+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 39,
-  "stage": "detail: 披荆斩棘 港澳金元宝【特码大小】",
-  "progress_updated_at": "2026-10-19T12:25:08.341798+00:00",
+  "raw_count": 148,
+  "stage": "detail: 阿三日记 统杀一肖一尾，杀尽位。配件杀一头一行放评论区里。",
+  "progress_updated_at": "2026-10-19T12:26:12.216414+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
