@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026292",
+  "state": "collecting_effectively",
+  "run_id": "39251536324",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39251536324",
+  "updated_at": "2026-10-19T12:28:20.509928+00:00",
+  "error": null,
+  "valid_materials": 60,
+  "valid_authors": 60,
+  "successful_post_opens": 338,
+  "article_details": {
+    "featured": {
+      "queued": 42,
+      "attempted": 42,
+      "opened": 42,
+      "extracted": 42,
+      "completed": 42
+    },
+    "ordinary": {
+      "queued": 461,
+      "attempted": 297,
+      "opened": 296,
+      "extracted": 294,
+      "completed": 296
+    }
+  },
+  "article_texts_extracted": 336,
+  "article_details_completed": 338,
+  "last_verified_post": {
+    "author": "闹剧结束",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114943&type=3",
+    "verified_at": "2026-10-19T12:28:19.681437+00:00",
+    "text_length": 17,
+    "text_sha256": "ea0546b1549eeb85c454d4ce8a883f6483aef9c69c7bb8fd286f1c53b9832ff8"
+  },
+  "last_attempted_post": {
+    "author": "路人为谁空舞",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11114942&type=3",
+    "attempt_index": 339
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-19T12:25:09.951485+00:00",
+      "featured_queued": 42,
+      "featured_attempted": 42,
+      "featured_completed": 42
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 336,
+  "stage": "detail: 路人为谁空舞 292期十一码中特",
+  "progress_updated_at": "2026-10-19T12:28:19.877568+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
