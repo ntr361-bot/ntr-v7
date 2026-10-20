@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 
 from forum_observer.schedule import (
     current_issue, decide, snapshot_exists, ensure_daily_report,
-    collection_window_allowed, freeze_window_allowed,
+    collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
 )
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -64,6 +64,41 @@ class ScheduleTests(unittest.TestCase):
             self.assertTrue(decide(self.at(1, 46, 13), tmp, manual=True,
                                    scheduled=True)[0])
 
+    def test_overnight_ready_draft_is_refreshed_instead_of_blocking_tonight(self):
+        with TemporaryDirectory() as tmp:
+            issue="2026285"
+            folder=Path(tmp)/"issues"/issue
+            folder.mkdir(parents=True)
+            early=self.at(1, 51).isoformat()
+            path=folder/"draft-status.json"
+            path.write_text(json.dumps({
+                "issue":issue,"status":"ready_observation","valid_materials":50,
+                "fetched_at":early
+            }),encoding="utf-8")
+            self.assertTrue(decide(self.at(19, 40),tmp,scheduled=True)[0])
+            evening=json.loads(path.read_text())
+            evening["fetched_at"]=self.at(19, 50).isoformat()
+            path.write_text(json.dumps(evening),encoding="utf-8")
+            self.assertEqual(decide(self.at(20, 0),tmp,scheduled=True)[3],
+                             "completed_draft_waiting_for_21_freeze")
+
+    def test_freeze_requires_a_current_evening_draft(self):
+        with TemporaryDirectory() as tmp:
+            now=self.at(21, 0)
+            issue=current_issue(now)
+            folder=Path(tmp)/"issues"/issue
+            folder.mkdir(parents=True)
+            path=folder/"draft-status.json"
+            path.write_text(json.dumps({
+                "issue":issue,"status":"ready_observation","valid_materials":50,
+                "fetched_at":self.at(1, 51).isoformat()
+            }),encoding="utf-8")
+            self.assertFalse(freeze_window_allowed(now,tmp))
+            fresh=json.loads(path.read_text())
+            fresh["fetched_at"]=self.at(20, 0).isoformat()
+            path.write_text(json.dumps(fresh),encoding="utf-8")
+            self.assertTrue(freeze_window_allowed(now,tmp))
+
     def test_freeze_window_rejects_delayed_next_day_events(self):
         self.assertFalse(freeze_window_allowed(self.at(20, 59)))
         self.assertTrue(freeze_window_allowed(self.at(21, 0)))
@@ -77,7 +112,8 @@ class ScheduleTests(unittest.TestCase):
             folder=Path(tmp)/'issues'/issue
             folder.mkdir(parents=True)
             (folder/'draft-status.json').write_text(json.dumps({
-                'issue':issue,'status':'ready_observation','valid_materials':27
+                'issue':issue,'status':'ready_observation','valid_materials':27,
+                'fetched_at':self.at(19, 50).isoformat()
             },ensure_ascii=False),encoding='utf-8')
             self.assertEqual(decide(self.at(20,10),tmp)[3],
                              "completed_draft_waiting_for_21_freeze")
