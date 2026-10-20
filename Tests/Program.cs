@@ -21,7 +21,7 @@ var tests = new (string Name, Action Run)[]
     ("拒绝失败 API 响应", RejectFailedResponse),
     ("号码统计正确", CountNumbers),
     ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
-    ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
+    ("综合评分不推荐号码", PredictionScoreDoesNotRecommendNumbers),
     ("V7使用GPT-5.6 Sol", V63UsesGpt56Sol),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
@@ -419,19 +419,17 @@ void CrawlerSaveBackfillsWaveColor()
             Date = "2026-01-01 21:30:00"
         }
     });
-    DatabaseHelper.HistoryRecord record = DatabaseHelper.GetHistory().Single(row => row.Period == "100");
+    DatabaseHelper.HistoryRecord record = DatabaseHelper.GetHistory().First(row => row.Period == "100");
     Assert(saved == 0, "backfilling an existing draw must not be reported as a new draw");
     Assert(record.SpecialWaveColor == "红" && record.WaveColorSource == "LocalReference",
         "missing wave color fields were not backfilled");
 }
 
-void PredictionScoreUsesTargetYearMap()
+void PredictionScoreDoesNotRecommendNumbers()
 {
     var result = PredictionScoreService.Predict(500, 2026);
-    Assert(result.Predictions.Single(item => item.Zodiac == "马").Number == "01,13,25,37,49",
-        "综合评分仍在使用旧年份静态映射");
-    Assert(result.Predictions.Single(item => item.Zodiac == "虎").Number == "05,17,29,41",
-        "综合评分虎肖号码未按2026马年轮转");
+    Assert(result.Predictions.All(item => string.IsNullOrWhiteSpace(item.Number)),
+        "综合评分不得推荐具体号码");
 }
 
 void V63UsesGpt56Sol()
@@ -844,6 +842,9 @@ void V65HistoryShowsOnlyDisplayedModels()
 
 void RefreshAllPeriodsGeneratesAllV65DailyModels()
 {
+    // Avoid immutable first-write snapshots from earlier tests in the isolated suite.
+    DatabaseHelper.ClearHistory();
+    DatabaseHelper.InsertHistory("999900", "010203040506", "07", "马", "2026-01-01 21:30:00", "2026-01-01");
     var results = AIEngine.RefreshAllPeriodPredictions();
     Assert(results.Keys.SequenceEqual(new[] { 50, 100, AISettings.AllHistoryModeValue }),
         "手动刷新必须同时生成50期、100期和全部历史三条基础预测");
@@ -1404,12 +1405,12 @@ void V7PredictionsAreSavedToHistory()
     var history = DatabaseHelper.GetLatestHistory(100);
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
-    var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
+    var records = DatabaseHelper.GetPredictionHistory(int.MaxValue).Where(x => x.Issue == "103").ToList();
     Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 2,
         "智能预测历史应保存两条独立模型记录（V7 + 自动学习）");
-    Assert(records.Any(x => x.ModelVersion == "V7" && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
-    Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
-    Assert(records.Where(x => x.ModelVersion is "V7" or "V7 AutoLearning")
+    Assert(records.Any(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) == ExperimentModels.V7 && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
+    Assert(records.Any(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) == ExperimentModels.V7Auto && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
+    Assert(records.Where(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) is ExperimentModels.V7 or ExperimentModels.V7Auto)
             .All(x => string.IsNullOrEmpty(x.PredictNumber)),
         "V7与自动学习停用号码推荐，新记录号码字段应为空");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
@@ -1425,16 +1426,16 @@ void V7PredictionsAreSavedToHistory()
         "智能预测历史混入了V6.5四模型记录");
     var orderedModels = V7PredictionHistoryService.GetHistory(100)
         .Where(x => x.Issue == "103")
-        .Select(x => x.ModelVersion)
+        .Select(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods))
         .ToArray();
-    Assert(orderedModels.SequenceEqual(new[] { "V7", "V7 AutoLearning" }),
+    Assert(orderedModels.SequenceEqual(new[] { ExperimentModels.V7, ExperimentModels.V7Auto }),
         "智能预测历史模型排序不正确");
 }
 
 void AutoLearningPredictionIsFormalHistoryRow()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     Assert(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 3,
         "automatic-learning TOP3 was not saved");
     Assert(record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 6,
@@ -1477,8 +1478,9 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "mobile-trigger polling must request a V7-scoped OIDC token");
     Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request", StringComparison.Ordinal),
         "mobile-trigger polling must read the isolated V7 run request");
-    Assert(workflow.Contains("$headers = @{ Authorization = \"Bearer $oidc\" }", StringComparison.Ordinal),
-        "mobile-trigger polling must use the standard Authorization header through the site gateway");
+    Assert(workflow.Contains("Authorization = \"Bearer $oidc\"", StringComparison.Ordinal) &&
+           workflow.Contains("OAI-Sites-Authorization", StringComparison.Ordinal),
+        "mobile-trigger polling must send both OIDC and Sites authorization headers");
     Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
         "V7 publisher must refresh the isolated smart-ledger V7 copy");
 }
@@ -1548,8 +1550,8 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
-    Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
-            .All(version => version is "V7" or "V7 AutoLearning"),
+    Assert(versions.Where(version => ExperimentModels.Canonicalize(version) is ExperimentModels.V7 or ExperimentModels.V7Auto)
+            .All(version => ExperimentModels.Canonicalize(version) is ExperimentModels.V7 or ExperimentModels.V7Auto),
         "AI prediction history should display only the integrated V7 rows");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
@@ -2374,7 +2376,7 @@ void ColorPredictionHistoryPersistsSnapshot()
     for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
     V7PredictionHistoryService.SaveAll("999202", rows);
     var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "999202" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
@@ -2603,7 +2605,7 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
 void V7HistoryStoresCompleteRanking()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     var ranking = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson);
     Assert(ranking is { Length: 12 } && ranking.Distinct().Count() == 12,
         "V7自动学习记录必须保存完整12生肖排序");
@@ -2612,7 +2614,7 @@ void V7HistoryStoresCompleteRanking()
 void V7LearningUsesIndependentMemory()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     string actual = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson)![0];
     string v65MemoryKey = new ModelMemory(ExperimentModels.AutoLearning).MemoryKey;
     string? v65Before = DatabaseHelper.LoadModelMemoryJson(v65MemoryKey);
