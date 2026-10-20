@@ -21,6 +21,7 @@ SECOND_COLLECTION_START = (20, 30)
 COLLECTION_END = (20, 58)
 ROUND_ONE_CRON = '0,5,10 12 * * *'
 ROUND_TWO_CRON = '30,35,40 12 * * *'
+ROUND_ONE_END = (20, 26) # leave time to publish before round two
 FREEZE_START = (21, 0)
 FREEZE_END = (21, 20)
 MAX_SECONDS = 1800
@@ -39,10 +40,11 @@ def collection_window_allowed(now):
     return COLLECTION_START <= minute <= COLLECTION_END
 
 
-def gpt_trigger_wait_seconds(now):
-    """Return delay to 20:00 for a near-on-time GPT trigger, or None if stale."""
+def gpt_trigger_wait_seconds(now, round_number=1):
+    """Wait up to five minutes for the requested 20:00 or 20:30 round."""
     local = now.astimezone(TZ)
-    start = local.replace(hour=COLLECTION_START[0], minute=COLLECTION_START[1],
+    target = SECOND_COLLECTION_START if round_number == 2 else COLLECTION_START
+    start = local.replace(hour=target[0], minute=target[1],
                           second=0, microsecond=0)
     delay = math.ceil((start - local).total_seconds())
     if delay <= 0:
@@ -112,12 +114,13 @@ def decide(now, archive, manual=False, scheduled=False, slot=None):
     minute = (local.hour, local.minute)
     if scheduled and not manual and not collection_window_allowed(local):
         return False, issue, 0, "scheduled_event_outside_collection_window"
-    if slot == ROUND_ONE_CRON and not (COLLECTION_START <= minute < SECOND_COLLECTION_START):
+    if slot == ROUND_ONE_CRON and not (COLLECTION_START <= minute < ROUND_ONE_END):
         return False, issue, 0, "scheduled_event_outside_collection_window"
     if slot == ROUND_TWO_CRON and not (SECOND_COLLECTION_START <= minute <= COLLECTION_END):
         return False, issue, 0, "scheduled_event_outside_collection_window"
     if snapshot_exists(archive, issue):
         return False, issue, 0, "immutable_snapshot_exists"
+    round_number = 1 if slot == ROUND_ONE_CRON else 2 if slot == ROUND_TWO_CRON else (2 if minute >= SECOND_COLLECTION_START else 1)
     draft = Path(archive) / 'issues' / issue / 'draft-status.json'
     if not manual and draft.exists():
         previous = json.loads(draft.read_text(encoding='utf-8'))
@@ -126,11 +129,13 @@ def decide(now, archive, manual=False, scheduled=False, slot=None):
                 and int(previous.get('valid_materials') or 0) > 0
                 and draft_is_current_evening(previous, issue, local)):
             capture = datetime.fromisoformat(previous['fetched_at']).astimezone(TZ)
-            round_start = SECOND_COLLECTION_START if minute >= SECOND_COLLECTION_START else COLLECTION_START
-            # A valid completed first-round report MUST NOT skip the second round.
-            if (capture.hour, capture.minute) >= round_start:
+            old_round = previous.get('collection_round')
+            if old_round is None: # compatible with drafts produced before this scheduler change
+                old_round = 2 if (capture.hour, capture.minute) >= SECOND_COLLECTION_START else 1
+            if old_round == round_number:
                 return False, issue, 0, "current_round_already_completed"
-    cutoff = local.replace(hour=CUTOFF_HOUR, minute=CUTOFF_MINUTE,
+    deadline = ROUND_ONE_END if round_number == 1 else (CUTOFF_HOUR, CUTOFF_MINUTE)
+    cutoff = local.replace(hour=deadline[0], minute=deadline[1],
                            second=0, microsecond=0)
     remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
     if remaining < 60:
@@ -191,15 +196,18 @@ def main():
     parser.add_argument("--align-gpt-trigger", action="store_true",
                         help="Wait for 20:00 only when a GPT trigger arrives up to five minutes early")
     parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
+    parser.add_argument("--gpt-second-round", action="store_true",help="Align the explicit 20:30 GPT trigger")
     a = parser.parse_args()
     now = datetime.now(TZ)
     if a.align_gpt_trigger:
-        delay = gpt_trigger_wait_seconds(now)
+        delay = gpt_trigger_wait_seconds(now,2 if a.gpt_second_round else 1)
         if delay is None:
-            raise SystemExit("ERROR: GPT collection trigger arrived more than five minutes before 20:00. "
+            target = '20:30' if a.gpt_second_round else '20:00'
+            raise SystemExit(f"ERROR: GPT collection trigger arrived more than five minutes before {target}. "
                              "No early collection was started.")
         if delay:
-            print(f"GPT collection trigger arrived early; waiting {delay}s for 20:00 Asia/Shanghai.",
+            target = '20:30' if a.gpt_second_round else '20:00'
+            print(f"GPT collection trigger arrived early; waiting {delay}s for {target} Asia/Shanghai.",
                   flush=True)
             time.sleep(delay)
         return 0
@@ -232,11 +240,15 @@ def main():
     scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
     manual=a.manual or (int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1 and not scheduled)
     collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled,\n                                             slot=os.environ.get('FORUM_SCHEDULE_CRON'))
+    local = now.astimezone(TZ)
+    collection_round = 2 if (local.hour,local.minute)>=SECOND_COLLECTION_START else 1
     print(json.dumps({"issue":issue, "collect":collect,
+                      "collection_round":collection_round,
                       "max_seconds":seconds, "reason":reason},
                      ensure_ascii=False), flush=True)
     if a.github_output:
         with open(a.github_output, "a", encoding="utf-8") as f:
+            f.write(f"collection_round={collection_round}\n")
             f.write(f"collect={str(collect).lower()}\n")
             f.write(f"issue={issue}\n")
             f.write(f"max_seconds={seconds}\n")
