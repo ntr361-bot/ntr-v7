@@ -285,6 +285,10 @@ void InitializationCreatesVerifiedPreSchemaBackup()
 
     DatabaseHelper.InitializeDatabase();
 
+    var migratedRows = DatabaseHelper.GetHistory();
+    Assert(migratedRows.Count == 1 && migratedRows[0].Period == "998001",
+        "partial legacy History schema was not migrated without losing its row");
+
     string backup = Directory.EnumerateFiles(Path.Combine(testData, "Backup"), "pre-init-*.db")
         .SingleOrDefault() ?? throw new InvalidOperationException("initialization did not create a pre-migration backup");
     using var verify = new System.Data.SQLite.SQLiteConnection($"Data Source={backup};Version=3;Read Only=True;");
@@ -2417,7 +2421,7 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
     PredictionTraceSnapshot trace = PredictionTraceService.GetLive(issue)
         ?? throw new InvalidOperationException("未捕获正式四模型 Trace");
     Assert(trace.BaseModels.Select(model => model.ModelKey).OrderBy(key => key).SequenceEqual(
-            new[] { "v65-50", "v65-100", "v65-all" }.OrderBy(key => key)),
+            new[] { "v65_50", "v65_100", "v65_all" }.OrderBy(key)),
         "Trace 没有使用正式三基础模型身份");
     Assert(trace.BaseModels.All(model => model.Ranking.Count == 12) &&
         trace.BaseModels[0].Ranking[0].Factors["F"].Contribution > 0,
