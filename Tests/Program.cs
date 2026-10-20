@@ -185,9 +185,9 @@ void TestDataDirectoryIsIsolated()
 int DesktopResourceSmoke()
 {
     string? isolatedData = Environment.GetEnvironmentVariable("LIUHE_DATA_DIR");
-    if (string.IsNullOrWhiteSpace(isolatedData) ||
-        !Path.GetFullPath(isolatedData).StartsWith(Path.GetFullPath(Path.GetTempPath()), StringComparison.OrdinalIgnoreCase))
-        throw new InvalidOperationException("Desktop resource smoke requires an isolated temporary LIUHE_DATA_DIR.");
+    if (string.IsNullOrWhiteSpace(isolatedData) || !Path.IsPathRooted(isolatedData) ||
+        !string.Equals(Path.GetFileName(Path.TrimEndingDirectorySeparator(isolatedData)), "desktop-resource-smoke", StringComparison.OrdinalIgnoreCase))
+        throw new InvalidOperationException("Desktop resource smoke requires its dedicated desktop-resource-smoke LIUHE_DATA_DIR.");
     DatabaseHelper.InitializeDatabase();
     ApplicationConfiguration.Initialize();
     using var form = new Form1();
