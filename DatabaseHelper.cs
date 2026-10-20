@@ -853,22 +853,29 @@ namespace 六合分析软件
                     }
                     string check = string.IsNullOrEmpty(r.SpecialZodiac) ? "无网站数据" :
                         r.SpecialZodiac == calcZodiac ? "正确" : "错误";
-                    using var cmd = new SQLiteCommand(@"
-                        INSERT OR IGNORE INTO History
-                        (Period, Numbers, SpecialNumber, SpecialZodiac, SpecialWaveColor, WaveColorSource, OpenTime, Date, ShengXiao,
-                         WebZodiac, CalcZodiac, ZodiacCheck)
-                        VALUES (@period, @numbers, @specialNum, @zodiac, @waveColor, @waveSource, @date, @date, @zodiac,
-                                @zodiac, @calcZodiac, @check)", conn, transaction);
-                    cmd.Parameters.AddWithValue("@period", r.Period);
-                    cmd.Parameters.AddWithValue("@numbers", r.Numbers);
-                    cmd.Parameters.AddWithValue("@specialNum", r.SpecialNumber);
-                    cmd.Parameters.AddWithValue("@zodiac", r.SpecialZodiac);
-                    cmd.Parameters.AddWithValue("@waveColor", r.SpecialWaveColor);
-                    cmd.Parameters.AddWithValue("@waveSource", r.WaveColorSource);
-                    cmd.Parameters.AddWithValue("@date", r.Date);
-                    cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
-                    cmd.Parameters.AddWithValue("@check", check);
-                    saved += cmd.ExecuteNonQuery();
+                    using var exists = new SQLiteCommand(
+                        "SELECT EXISTS(SELECT 1 FROM History WHERE Period=@period AND @period != '')", conn, transaction);
+                    exists.Parameters.AddWithValue("@period", r.Period);
+                    bool drawExists = Convert.ToInt32(exists.ExecuteScalar()) != 0;
+                    if (!drawExists)
+                    {
+                        using var cmd = new SQLiteCommand(@"
+                            INSERT OR IGNORE INTO History
+                            (Period, Numbers, SpecialNumber, SpecialZodiac, SpecialWaveColor, WaveColorSource, OpenTime, Date, ShengXiao,
+                             WebZodiac, CalcZodiac, ZodiacCheck)
+                            VALUES (@period, @numbers, @specialNum, @zodiac, @waveColor, @waveSource, @date, @date, @zodiac,
+                                    @zodiac, @calcZodiac, @check)", conn, transaction);
+                        cmd.Parameters.AddWithValue("@period", r.Period);
+                        cmd.Parameters.AddWithValue("@numbers", r.Numbers);
+                        cmd.Parameters.AddWithValue("@specialNum", r.SpecialNumber);
+                        cmd.Parameters.AddWithValue("@zodiac", r.SpecialZodiac);
+                        cmd.Parameters.AddWithValue("@waveColor", r.SpecialWaveColor);
+                        cmd.Parameters.AddWithValue("@waveSource", r.WaveColorSource);
+                        cmd.Parameters.AddWithValue("@date", r.Date);
+                        cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
+                        cmd.Parameters.AddWithValue("@check", check);
+                        saved += cmd.ExecuteNonQuery();
+                    }
 
                     using var waveUpdate = new SQLiteCommand(@"
                         UPDATE History
@@ -1799,16 +1806,17 @@ namespace 六合分析软件
                     finalRankingJson = reader.IsDBNull(1) ? "" : reader.GetString(1);
                     int periods = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
                     string modelVersion = reader.IsDBNull(3) ? "" : reader.GetString(3);
-                    bool isV65 = string.Equals(modelVersion, "V6.5", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase);
-                    bool isV7 = string.Equals(modelVersion, "V7 AutoLearning", StringComparison.OrdinalIgnoreCase);
+                    string modelKey = ExperimentModels.Canonicalize(modelVersion, periods);
+                    bool isV65 = modelKey is ExperimentModels.Period50 or ExperimentModels.Period100 or
+                        ExperimentModels.AllHistory or ExperimentModels.AutoLearning;
+                    bool isV7 = modelKey == ExperimentModels.V7Auto;
                     if (!isV65 && !isV7)
                     {
                         SetPredictionLearningState(predictionId, "SkippedExperiment", 0);
                         return new LearningOutcome(false, false, 0, ModelWeights.Default, "淘汰模型不参与四模型实验学习");
                     }
                     experimentKey = isV7 ? ExperimentModels.IntelligentHistory :
-                        string.Equals(modelVersion, "V6.5 AutoLearning", StringComparison.OrdinalIgnoreCase)
+                        modelKey == ExperimentModels.AutoLearning
                             ? ExperimentModels.AutoLearning : ExperimentModels.ForPeriods(periods);
                 }
 
