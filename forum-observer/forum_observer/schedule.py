@@ -153,8 +153,8 @@ def main():
             raise SystemExit(f"ERROR: {issue} has no immutable forum snapshot at daily audit")
         print(f"PASS: {issue} immutable forum snapshot exists")
         return 0
-    manual=a.manual or int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1
     scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
+    manual=a.manual or (int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1 and not scheduled)
     collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled)
     print(json.dumps({"issue":issue, "collect":collect,
                       "max_seconds":seconds, "reason":reason},
