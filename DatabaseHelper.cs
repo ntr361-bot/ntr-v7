@@ -277,6 +277,7 @@ namespace 六合分析软件
                     "SpecialWaveColor TEXT DEFAULT ''",
                     "WaveColorSource TEXT DEFAULT ''",
                     "OpenTime TEXT DEFAULT ''",
+                    "Date TEXT DEFAULT ''",
                     "WebZodiac TEXT DEFAULT ''",
                     "CalcZodiac TEXT DEFAULT ''",
                     "ZodiacCheck TEXT DEFAULT ''");
