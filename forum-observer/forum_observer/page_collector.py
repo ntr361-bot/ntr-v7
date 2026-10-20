@@ -147,7 +147,7 @@ def current_issue(listing,now=None):
     return max(candidates,key=lambda p:(max(x[0] for x in candidates[p]),int(p)))
 
 
-def _listing(page,category):
+def _listing(page,category,scrapling_storage=None,scrapling_report=None):
     # Take one synchronous DOM snapshot. Per-card locators can detach while
     # this virtualized feed rerenders, each causing a 30-second auto-wait.
     rows=page.locator('.forum-list > li').evaluate_all(r"""cards => {
@@ -192,11 +192,24 @@ def _listing(page,category):
         obj['issue']=_issue(obj['issue'])
         obj['key']=(obj['author'],obj['issue'],obj['published_at'],obj['title'])
         result.append(obj)
+    if scrapling_storage and scrapling_report:
+        # Scrapling is a read-only second parser for diagnostics. Its rows are
+        # deliberately never merged into the official listing or scoring input.
+        try:
+            from .scrapling_assist import compare_listing, write_comparison
+            comparison=compare_listing(page.content(),page.url,category or '',result,scrapling_storage)
+            comparison['captured_at']=datetime.now(timezone.utc).isoformat()
+            write_comparison(scrapling_report,comparison)
+        except Exception as exc:
+            # A diagnostic parser must never interrupt the primary collector.
+            print(json.dumps({'event':'scrapling_assist_error',
+                              'reason':str(exc)[:240]},ensure_ascii=False),flush=True)
     return result
 
 
-def _pages(page,category,max_pages=25,deadline=None,on_progress=None,stop_predicate=None):
-    return incremental_scan(page,lambda: _listing(page,category),
+def _pages(page,category,max_pages=25,deadline=None,on_progress=None,stop_predicate=None,
+           scrapling_storage=None,scrapling_report=None):
+    return incremental_scan(page,lambda: _listing(page,category,scrapling_storage,scrapling_report),
                             max_steps=max(15,max_pages*4),delay_ms=650,
                             deadline=deadline,on_progress=on_progress,stop_predicate=stop_predicate)
 
@@ -954,9 +967,12 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 temp.replace(out/'listing.json')
                 checkpoint('forum_scan: '+str(audit['steps']))
             checkpoint('forum_scan')
+            scrapling_dir=out.parent/'.scrapling'
             listing,feed_audit=_pages(page,target_category,max_pages,
                 deadline=deadline if policy.get('retrospective_exhaustive') else min(deadline,time.monotonic()+300),on_progress=scan_progress,
-                stop_predicate=(lambda items:current_feed_boundary(items,target_issue)) if feed_mode else None)
+                stop_predicate=(lambda items:current_feed_boundary(items,target_issue)) if feed_mode else None,
+                scrapling_storage=scrapling_dir/'selectors.sqlite3',
+                scrapling_report=out/'scrapling-assist.json')
             if not listing:raise ValueError('no forum posts or authors found')
             issue=target_issue or current_issue(listing)
             # Cache only completed verified threads from this same period/version.
