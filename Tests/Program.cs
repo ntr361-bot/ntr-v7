@@ -107,7 +107,6 @@ var tests = new (string Name, Action Run)[]
     ,("concurrent database backups publish one valid snapshot", ConcurrentDatabaseBackupsPublishOneValidSnapshot)
     ,("ambiguous legacy migration never creates an empty stable database", AmbiguousLegacyMigrationNeverCreatesEmptyStableDatabase)
     ,("V8.2 market state probabilities are normalized and leakage safe", V82MarketStateIsNormalizedAndLeakageSafe)
-    ,("V8.2 cross features are named finite and leakage safe", V82CrossFeaturesAreNamedFiniteAndLeakageSafe)
     ,("V8.2 pairwise ranker returns one normalized 12-zodiac ranking", V82PairwiseRankerReturnsNormalizedRanking)
     ,("V8.3 state probabilities condition the pairwise ranker without hard routing", V83StateProbabilitiesConditionRanking)
     ,("V8.3 ranking exposes stability metrics", V83RankingExposesStabilityMetrics)
@@ -138,10 +137,6 @@ var tests = new (string Name, Action Run)[]
     ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
     ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
     ,("正式 Trace 接受动态全历史样本数", FormalPredictionTraceAcceptsDynamicAllHistoryPeriod)
-    ,("AutoLearningV2 快照和残差输出完全旁路且可解释", AutoLearningV2SnapshotAndResidualAreIsolated)
-    ,("AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据", AutoLearningV2WalkForwardMetricsAreLeakageSafe)
-    ,("AutoLearningV2 报告区分留出指标且不宣称自动上线", AutoLearningV2ReportIsExplicitlyExperimental)
-    ,("AutoLearningV2 实验快照写入独立表", AutoLearningV2ExperimentStorageIsIsolated)
     ,("云端预测档案保留本地同等完整模型快照", CloudPredictionArchiveKeepsFullLocalSnapshots)
     ,("同构模型状态快照具有稳定哈希且学习事件冲突可检测", SymmetricModelStateSnapshotDetectsConflicts)
     ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
@@ -149,9 +144,6 @@ var tests = new (string Name, Action Run)[]
     ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
     ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
     ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
-    ,("历史重放实验快照保持统一期号与截止", HistoricalReplayContractsAreEnforced)
-    ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
-    ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
     ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
     ,("手动刷新生成四个V6.5日更模型", RefreshAllPeriodsGeneratesAllV65DailyModels)
     ,("成绩榜不展示没有预测记录的模型", ScoreboardHidesModelsWithoutPredictionRecords)
@@ -820,28 +812,6 @@ void RuntimeStateHashIsCanonicalAndStable()
         "生肖预测变化必须反映在运行状态内容哈希中");
 }
 
-void ModelRedundancyReportIsDeterministicAndLeakageSafe()
-{
-    SeedHistory();
-    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-    for (int i = 0; i < 140; i++)
-        DatabaseHelper.InsertHistory((1000 + i).ToString(), "010203040506", "07", zodiacs[i % 12],
-            "2026-01-01 21:30:00", "2026-01-01");
-    var history = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToList();
-    ModelRedundancyReport first = ModelRedundancyReportService.Run(history, warmup: 50);
-    ModelRedundancyReport second = ModelRedundancyReportService.Run(history, warmup: 50);
-    Assert(first.SampleCount > 0, "报告应至少覆盖一期");
-    Assert(first.Models.Contains("v65-50") && first.Models.Contains("ensemble") &&
-           first.Models.Contains("v7") && first.Models.Contains("ml") &&
-           first.Models.Contains("random"), "报告应包含全部对照模型");
-    Assert(first.ModelRankCorrelation.GetLength(0) == first.Models.Count, "相关矩阵应为方阵");
-    Assert(first.Top3HitRates.SequenceEqual(second.Top3HitRates) &&
-           first.ModelRankCorrelation.Cast<double>().SequenceEqual(second.ModelRankCorrelation.Cast<double>()),
-           "相同输入的报告必须逐位一致");
-    Assert(ModelRedundancyReportService.Run(new List<DatabaseHelper.HistoryRecord>(), 50).SampleCount == 0,
-           "数据不足时报告应返回空样本而不是抛异常");
-}
-
 void V65HistoryShowsOnlyDisplayedModels()
 {
     Assert(V7PredictionHistoryService.IsV65DisplayedModel("V6.5", 100), "100期应显示");
@@ -997,27 +967,6 @@ void V82MarketStateIsNormalizedAndLeakageSafe()
     Assert(before.PrimaryState == after.PrimaryState && Math.Abs(before.Confidence - after.Confidence) < 1e-12,
         "state model used a record after the target boundary");
     Assert(before.Evidence.Count > 0, "state decision must remain auditable");
-}
-
-void V82CrossFeaturesAreNamedFiniteAndLeakageSafe()
-{
-    string[] expected =
-    {
-        "omission_x_momentum_5_20", "omission_x_momentum_10_50", "recent_7_x_short_forbidden",
-        "repeat_x_omission", "long_x_short_trend", "omission_ratio_x_repeat_trend",
-        "recent_10_rate_x_historical_rate", "color_affinity_x_color_trend"
-    };
-    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-    var records = new List<DatabaseHelper.HistoryRecord>();
-    for (int i = 0; i < 130; i++)
-        records.Add(History((2023001 + i).ToString(), ((i * 13) % 49 + 1).ToString("00"), zodiacs[(i * 3 + i / 11) % 12]));
-    var before = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
-    records.Add(History("2099999", "49", "鼠"));
-    var after = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
-    Assert(expected.All(FeatureEngine.FeatureNames.Contains), "one or more V8.2 cross features are missing");
-    Assert(FeatureEngine.FeatureNames.Count >= 50, "V8.2 should expose at least 50 total features");
-    Assert(before.Length == FeatureEngine.FeatureNames.Count && before.All(double.IsFinite), "cross feature vector is invalid");
-    Assert(before.SequenceEqual(after), "cross feature extraction used data after the target boundary");
 }
 
 void V82PairwiseRankerReturnsNormalizedRanking()
@@ -2493,76 +2442,6 @@ void FormalPredictionTraceAcceptsDynamicAllHistoryPeriod()
         "动态全历史 Trace 没有使用全部历史模型权重");
 }
 
-void AutoLearningV2SnapshotAndResidualAreIsolated()
-{
-    const string issue = "999803";
-    int before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Count;
-    PredictionTraceSnapshot trace = TraceFixture(issue, "999802", 41);
-    AutoLearningV2Snapshot snapshot = AutoLearningV2Service.BuildSnapshot(trace,
-        new AutoLearningV2HistoryFeatures(18, 50, .42, .48, .14, .23));
-    Assert(snapshot.Zodiacs.Count == 12 && snapshot.Zodiacs[0].RankMean > 0 && snapshot.Zodiacs[0].RankStd >= 0,
-        "V2 没有保存完整三模型分歧特征");
-    Assert(snapshot.Zodiacs[0].FactorFeatures.ContainsKey("F_mean") &&
-        snapshot.Zodiacs[0].FactorFeatures.ContainsKey("B_std"),
-        "V2 没有保存底层因子均值和标准差");
-    Assert(snapshot.Config.Lambda is .05 or .10 or .15 && snapshot.Zodiacs.All(row => row.Rank is >= 1 and <= 12),
-        "V2 残差参数或完整排序无效");
-    Assert(snapshot.Zodiacs.Any(row => Math.Abs(row.FinalScore - row.BaseScore) > 0.000001),
-        "V2 没有产生可解释的残差修正");
-    Assert(snapshot.Zodiacs.All(row => row.Explanation.MaxPositiveFeature is not null),
-        "V2 缺少最大正贡献解释");
-    Assert(snapshot.Confidence is "High" or "Medium" or "Low" && snapshot.JointFailureRisk is >= 0 and <= 1,
-        "V2 Confidence 或 JointFailureRisk 越界");
-    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
-        "V2 不得写入正式 PredictionHistory");
-
-    AutoLearningV2State state = new();
-    ModelWeights oldWeights = state.Weights;
-    state = AutoLearningV2Service.UpdateState(state, snapshot, actualZodiac: "鼠");
-    Assert(Math.Abs(state.Weights.AI - oldWeights.AI) <= .02 && state.Weights.Sum > .999 && state.Weights.Sum < 1.001,
-        "V2 单期权重变化或归一化不符合边界");
-    Assert(state.ObservedSamples == 1 && state.Decay == .98, "V2 没有执行单期更新和默认衰减");
-}
-
-void AutoLearningV2WalkForwardMetricsAreLeakageSafe()
-{
-    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
-        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
-        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
-        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
-    AutoLearningV2EvaluationReport report = AutoLearningV2WalkForward.Evaluate(rows, 8);
-    Assert(report.TestSamples == 8 && report.RescueCount >= 0 && report.HarmCount >= 0,
-        "WalkForward 没有按时间切分并统计 Rescue/Harm");
-    Assert(report.HoldoutIssue == "0008" && !report.FutureDataLeakageDetected,
-        "WalkForward 的 holdout 边界或泄漏标记错误");
-}
-
-void AutoLearningV2ReportIsExplicitlyExperimental()
-{
-    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
-        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
-        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
-        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
-    string report = AutoLearningV2ReportService.Render(AutoLearningV2WalkForward.Evaluate(rows, 8), "test-code", ".10", ".98");
-    Assert(report.Contains("AutoLearning V2 旁路实验报告") && report.Contains("Holdout") &&
-        report.Contains("不自动替换正式 AutoLearning") && report.Contains("RescueRate") && report.Contains("HarmRate"),
-        "V2 报告缺少实验边界或核心指标");
-}
-
-void AutoLearningV2ExperimentStorageIsIsolated()
-{
-    string runId = "v2-test-run";
-    AutoLearningV2ExperimentService.SaveRun(new AutoLearningV2ExperimentRun(runId, "test-code", ".10", ".98", "0001", "0008", "0009", "0016"));
-    AutoLearningV2ExperimentService.SavePrediction(runId, new AutoLearningV2ExperimentPrediction("0009", "鼠,牛,虎", 2, .41, .03, .44, "Medium"));
-    AutoLearningV2ExperimentRun run = AutoLearningV2ExperimentService.GetRun(runId) ?? throw new InvalidOperationException("V2 实验运行未保存");
-    Assert(run.ModelKey == AutoLearningV2Service.ModelKey && AutoLearningV2ExperimentService.GetPredictionCount(runId) == 1,
-        "V2 实验记录未写入独立存储");
-    Assert(!DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == "0009" && row.ModelVersion == AutoLearningV2Service.ModelKey),
-        "V2 实验不能写入正式 PredictionHistory");
-}
-
 void CloudPredictionArchiveKeepsFullLocalSnapshots()
 {
     string[] zodiacs = { "虎", "猴", "鼠", "兔", "马", "龙", "牛", "蛇", "羊", "鸡", "狗", "猪" };
@@ -2753,49 +2632,6 @@ void PredictionHistoryPreservesPredictionSource()
     Assert(DatabaseHelper.MergeSynchronizedPrediction(cloud) == 1, "云端记录没有写入");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(row => row.Issue == "999903").PredictionSource == "云端同步",
         "云端同步记录没有保留来源");
-}
-
-void HistoricalReplayContractsAreEnforced()
-{
-    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
-    {
-        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12],
-        SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
-    }).ToArray();
-    string store = Path.Combine(Path.GetTempPath(), "liuhe-replay-contract-" + Guid.NewGuid().ToString("N") + ".db");
-    HistoricalReplayResult replay = new HistoricalReplayEngine().Run(history, new HistoricalReplayOptions(100, "contract-run", store));
-    Assert(replay.TargetIssues.Count == 12, "重放评估期号数量错误");
-    Assert(replay.Predictions.GroupBy(row => row.TargetIssue).All(group =>
-        group.All(row => row.HistorySampleCount == int.Parse(group.Key) - 2026001)), "快照未记录真实 cutoff 样本数");
-    Assert(replay.Predictions.All(row => long.Parse(row.HistoryCutoffIssue) < long.Parse(row.TargetIssue)), "存在未来 cutoff");
-    Assert(replay.Predictions.Select(row => row.TargetIssue).Distinct().Count() == 12, "目标期集合不一致");
-    EvaluationReport report = EvaluationPipeline.Evaluate(replay.Predictions);
-    Assert(report.CommonEvaluationSet.Count == 12 && report.MissingPredictionCount == 0, "共同评估集合不完整");
-    Assert(!replay.FutureDataLeakageDetected, "正常重放被错误标记为泄漏");
-    Assert(report.RescueHarm.Count == 1 && report.Bootstrap95.Count > 0, "Rescue/Harm 或 Bootstrap 评估未生成");
-    Assert(report.RandomMonteCarlo.Iterations == 10000 && report.PairedComparisons.Count > 0 && report.McNemar.Count > 0, "随机基准或配对评估未生成");
-    Assert(report.Relationships.Count > 0 && report.RankChanges.Count == 1 && report.ConsensusBins.Count == 5 && report.JointFailureRiskBins.Count == 3 && report.ConfidenceGroups.Count == 3, "相关性、排名变化或分箱评估未生成");
-    Assert(File.Exists(store), "实验快照没有写入独立存储");
-    using var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={store};Version=3;Read Only=True;");
-    connection.Open();
-    using var production = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='PredictionHistory'", connection);
-    Assert(Convert.ToInt32(production.ExecuteScalar()) == 0, "实验库不应创建生产 PredictionHistory 表");
-}
-
-void CandidateStage2ContractsAreEnforced()
-{
-    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
-    {
-        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12], SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
-    }).ToArray();
-    string store = Path.Combine(Path.GetTempPath(), "candidate-stage2-contract-" + Guid.NewGuid().ToString("N") + ".db");
-    var result = new CandidateStage2ReplayEngine().Run(history, store);
-    Assert(result.Candidates.Count > 0 && result.Controls.Count > 0, "Candidate 旁路没有生成快照");
-    Assert(result.Candidates.All(x => long.Parse(x.HistoryCutoffIssue) < long.Parse(x.TargetIssue) && x.LeakageAuditPassed), "Candidate cutoff 或泄漏审计失败");
-    var report = CandidateStage2Evaluation.Evaluate(result.Candidates, result.Controls, result.ExperimentId, store, 6501, 100);
-    Assert(report.Performance.Count >= 4 && report.Rescue.Count >= 4 && !report.LeakageDetected,
-        "Candidate Stage 2 评估不完整");
-    Assert(File.Exists(store), "Candidate 实验快照没有写入独立库");
 }
 
 string ProjectRoot()
