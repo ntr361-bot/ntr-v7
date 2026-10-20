@@ -2421,7 +2421,7 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
     PredictionTraceSnapshot trace = PredictionTraceService.GetLive(issue)
         ?? throw new InvalidOperationException("未捕获正式四模型 Trace");
     Assert(trace.BaseModels.Select(model => model.ModelKey).OrderBy(key => key).SequenceEqual(
-            new[] { "v65_50", "v65_100", "v65_all" }.OrderBy(key)),
+            new[] { "v65_50", "v65_100", "v65_all" }.OrderBy(key => key)),
         "Trace 没有使用正式三基础模型身份");
     Assert(trace.BaseModels.All(model => model.Ranking.Count == 12) &&
         trace.BaseModels[0].Ranking[0].Factors["F"].Contribution > 0,
