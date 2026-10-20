@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install unit-test dependencies
-        run: pip install playwright pillow
+        run: pip install playwright pillow "scrapling==0.5"
       - name: Compile forum Python only
         run: python -m compileall -q forum_observer tests
       - name: Run isolated unit tests (no live scraping)
