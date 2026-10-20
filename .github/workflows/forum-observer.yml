@@ -61,6 +61,7 @@ jobs:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
           SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
           FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
+          FORUM_REQUESTED_ROUND: ${{ startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') && '1' || (startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') && '2' || '') }}
         run: |
           if [ "$MANUAL_DISPATCH" = "true" ]; then
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --manual
@@ -68,9 +69,9 @@ jobs:
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --scheduled
           fi
       - name: Reject delayed scheduled collection
-        if: steps.collection-gate.outputs.reason == 'scheduled_event_outside_collection_window'
+        if: steps.collection-gate.outputs.reason == 'scheduled_event_outside_collection_window' || steps.collection-gate.outputs.reason == 'requested_round_outside_window' || steps.collection-gate.outputs.reason == 'retired_schedule_trigger'
         run: |
-          echo "::error::Scheduled forum collection arrived outside its assigned 20:00/20:30 Asia/Shanghai round; no collection or issue rollover was performed."
+          echo "::error::Retired or delayed forum trigger rejected; neither 20:00 nor 20:30 round was reused outside its own window."
           exit 1
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
@@ -96,6 +97,7 @@ jobs:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
           SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
           FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
+          FORUM_REQUESTED_ROUND: ${{ startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') && '1' || (startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') && '2' || '') }}
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
         run: python -u -m forum_observer.runtime supervise
       - uses: actions/cache/save@v4
