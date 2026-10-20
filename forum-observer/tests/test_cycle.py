@@ -195,7 +195,7 @@ class CycleTests(unittest.TestCase):
                     scoring_rule_version=SCORING_RULE_VERSION,
                     valid_materials=count,parsed_predictions=rows,
                     evidence=sources[:count],
-                    fetched_at='2026-10-18T20:14:00+08:00',
+                    fetched_at=('2026-10-18T20:14:01+08:00' if count==2 else '2026-10-18T20:14:00+08:00'),
                     draw_at='2026-10-18T21:32:00+08:00',
                     pre_draw_verified=True,
                     author_selection={'min_valid_materials':25,
