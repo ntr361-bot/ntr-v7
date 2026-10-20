@@ -32,7 +32,7 @@ jobs:
       - name: Record test startup
         env:
           GH_TOKEN: ${{ github.token }}
-          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026293' }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
         run: python -m forum_observer.runtime starting
       - name: Install automated collector
         run: |
@@ -44,19 +44,19 @@ jobs:
         id: observe
         env:
           GH_TOKEN: ${{ github.token }}
-          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026293' }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
         run: python -u -m forum_observer.runtime supervise
       - name: Record test completion
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026293' }}
+          FORUM_TEST_ISSUE: ${{ inputs.issue || '2026290' }}
           OBSERVE_OUTCOME: ${{ steps.observe.outcome }}
           JOB_STATUS: ${{ job.status }}
         run: python -m forum_observer.runtime finished
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: forum-historical-test-${{ inputs.issue || '2026293' }}
+          name: forum-historical-test-${{ inputs.issue || '2026290' }}
           path: forum-observer/out/
           if-no-files-found: error
