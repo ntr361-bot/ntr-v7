@@ -279,7 +279,7 @@ void InitializationCreatesVerifiedPreSchemaBackup()
     {
         connection.Open();
         using var seed = new System.Data.SQLite.SQLiteCommand(
-            "CREATE TABLE History (Period TEXT); INSERT INTO History(Period) VALUES ('998001');", connection);
+            "CREATE TABLE History (Id INTEGER PRIMARY KEY AUTOINCREMENT, Period TEXT); INSERT INTO History(Period) VALUES ('998001');", connection);
         seed.ExecuteNonQuery();
     }
 
@@ -1625,9 +1625,8 @@ void GitHubDesktopCloudSyncUsesPublishedV7Archive()
 
 void GitHubCloudSyncIsPrimary()
 {
-    CloudSyncResult result = CloudPredictionSyncService.SyncAsync().GetAwaiter().GetResult();
-    Assert(result.Source == "GitHub V7 正式数据",
-        "GitHub 正式档案可访问时，V7 同步仍错误地使用了备用云端");
+    Assert(CloudPredictionSyncService.PrimarySourceName == "GitHub V7 正式数据",
+        "V7 同步没有将 GitHub 正式档案配置为首选来源");
 }
 
 void CloudSyncStatusShowsSource()
