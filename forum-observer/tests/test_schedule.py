@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 from forum_observer.schedule import (
     current_issue, decide, snapshot_exists, ensure_daily_report,
     collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
-    gpt_trigger_wait_seconds,
+    gpt_trigger_wait_seconds, ROUND_ONE_CRON, ROUND_TWO_CRON,
 )
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -28,17 +28,30 @@ class ScheduleTests(unittest.TestCase):
         path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
         return path
 
-    def test_early_and_backup_only_when_missing(self):
+    def test_first_and_second_rounds_are_independently_schedulable(self):
         with TemporaryDirectory() as tmp:
-            self.assertEqual(current_issue(self.at(19, 10)), "2026285")
-            self.assertEqual(decide(self.at(19, 10), tmp)[:3],
-                             (True, "2026285", 1800))
-            self.assertEqual(decide(self.at(20, 0), tmp)[:3],
-                             (True, "2026285", 1800))
-            self.write_snapshot(tmp, "2026285")
-            self.assertEqual(decide(self.at(19, 40), tmp)[3],
+            issue="2026285"
+            self.assertEqual(current_issue(self.at(20,0)),issue)
+            self.assertTrue(decide(self.at(20,0),tmp,scheduled=True,slot=ROUND_ONE_CRON)[0])
+            folder=Path(tmp)/"issues"/issue
+            folder.mkdir(parents=True)
+            (folder/"draft-status.json").write_text(json.dumps({
+                "issue":issue,"status":"ready_observation","valid_materials":40,
+                "fetched_at":self.at(20,10).isoformat(),"collection_round":1
+            }),encoding="utf-8")
+            self.assertEqual(decide(self.at(20,15),tmp,scheduled=True,slot=ROUND_ONE_CRON)[3],
+                             "current_round_already_completed")
+            self.assertTrue(decide(self.at(20,30),tmp,scheduled=True,slot=ROUND_TWO_CRON)[0])
+            self.assertTrue(decide(self.at(20,35),tmp,scheduled=True,slot=ROUND_TWO_CRON)[0])
+            data=json.loads((folder/"draft-status.json").read_text())
+            data.update(fetched_at=self.at(20,37).isoformat(),collection_round=2)
+            (folder/"draft-status.json").write_text(json.dumps(data),encoding="utf-8")
+            self.assertEqual(decide(self.at(20,40),tmp,scheduled=True,slot=ROUND_TWO_CRON)[3],
+                             "current_round_already_completed")
+            self.assertTrue(decide(self.at(20,45),tmp,manual=True)[0])
+            self.write_snapshot(tmp,issue)
+            self.assertEqual(decide(self.at(20,50),tmp,manual=True)[3],
                              "immutable_snapshot_exists")
-            self.assertFalse(decide(self.at(20, 0), tmp)[0])
 
     def test_cutoff_and_next_day_never_backfill(self):
         with TemporaryDirectory() as tmp:
@@ -51,30 +64,30 @@ class ScheduleTests(unittest.TestCase):
             self.assertTrue(decide(self.at(19, 10, 13), tmp)[0])
             self.assertEqual(current_issue(self.at(19, 10, 13)), "2026286")
 
-    def test_scheduled_collection_rejects_early_and_stale_events(self):
+    def test_scheduled_collection_rejects_old_and_delayed_cron(self):
         with TemporaryDirectory() as tmp:
-            self.assertEqual(decide(self.at(19, 39), tmp, scheduled=True)[3],
+            self.assertEqual(decide(self.at(19,40),tmp,scheduled=True)[3],
                              "scheduled_event_outside_collection_window")
-            self.assertTrue(decide(self.at(19, 40), tmp, scheduled=True)[0])
-            self.assertTrue(decide(self.at(20, 25), tmp, scheduled=True)[0])
-            self.assertEqual(decide(self.at(20, 26), tmp, scheduled=True)[3],
+            self.assertEqual(decide(self.at(20,30),tmp,scheduled=True,slot=ROUND_ONE_CRON)[3],
                              "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(1, 46, 13), tmp, scheduled=True)[3],
+            self.assertEqual(decide(self.at(20,15),tmp,scheduled=True,slot=ROUND_TWO_CRON)[3],
                              "scheduled_event_outside_collection_window")
-            # A user-requested manual rerun still follows the existing 21:00 cutoff.
-            self.assertTrue(decide(self.at(1, 46, 13), tmp, manual=True,
-                                   scheduled=True)[0])
+            self.assertEqual(decide(self.at(20,59),tmp,scheduled=True)[3],
+                             "scheduled_event_outside_collection_window")
+            self.assertEqual(decide(self.at(1,46,13),tmp,scheduled=True)[3],
+                             "scheduled_event_outside_collection_window")
+            self.assertTrue(decide(self.at(20,0),tmp,scheduled=True,slot=ROUND_ONE_CRON)[0])
+            self.assertTrue(decide(self.at(20,30),tmp,scheduled=True,slot=ROUND_TWO_CRON)[0])
 
-    def test_gpt_trigger_waits_until_start_only_when_it_arrives_near_early(self):
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 35)), 300)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 38)), 120)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 39)), 60)
-        fractional = self.at(19, 39).replace(second=59, microsecond=500_000)
-        self.assertEqual(gpt_trigger_wait_seconds(fractional), 1)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 40)), 0)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 45)), 0)
-        self.assertIsNone(gpt_trigger_wait_seconds(self.at(19, 34)))
-        self.assertIsNone(gpt_trigger_wait_seconds(self.at(1, 51, 13)))
+    def test_gpt_triggers_align_to_2000_or_2030(self):
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19,55)),300)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19,59)),60)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,0)),0)
+        self.assertIsNone(gpt_trigger_wait_seconds(self.at(19,40)))
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,25),2),300)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,29),2),60)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,30),2),0)
+        self.assertIsNone(gpt_trigger_wait_seconds(self.at(20,20),2))
 
     def test_overnight_ready_draft_is_refreshed_instead_of_blocking_tonight(self):
         with TemporaryDirectory() as tmp:
@@ -87,12 +100,14 @@ class ScheduleTests(unittest.TestCase):
                 "issue":issue,"status":"ready_observation","valid_materials":50,
                 "fetched_at":early
             }),encoding="utf-8")
-            self.assertTrue(decide(self.at(19, 40),tmp,scheduled=True)[0])
+            self.assertTrue(decide(self.at(20,0),tmp,scheduled=True)[0])
             evening=json.loads(path.read_text())
-            evening["fetched_at"]=self.at(19, 50).isoformat()
+            evening["fetched_at"]=self.at(20,10).isoformat()
+            evening["collection_round"]=1
             path.write_text(json.dumps(evening),encoding="utf-8")
-            self.assertEqual(decide(self.at(20, 0),tmp,scheduled=True)[3],
-                             "completed_draft_waiting_for_21_freeze")
+            self.assertEqual(decide(self.at(20,15),tmp,scheduled=True)[3],
+                             "current_round_already_completed")
+            self.assertTrue(decide(self.at(20,30),tmp,scheduled=True)[0])
 
     def test_freeze_requires_a_current_evening_draft(self):
         with TemporaryDirectory() as tmp:
@@ -125,14 +140,15 @@ class ScheduleTests(unittest.TestCase):
             folder.mkdir(parents=True)
             (folder/'draft-status.json').write_text(json.dumps({
                 'issue':issue,'status':'ready_observation','valid_materials':27,
-                'fetched_at':self.at(19, 50).isoformat()
+                'fetched_at':self.at(20,10).isoformat(),'collection_round':1
             },ensure_ascii=False),encoding='utf-8')
-            self.assertEqual(decide(self.at(20,10),tmp)[3],
-                             "completed_draft_waiting_for_21_freeze")
-            self.assertFalse(decide(self.at(20,10),tmp)[0])
-            self.assertTrue(decide(self.at(20,10),tmp,manual=True)[0])
+            self.assertEqual(decide(self.at(20,15),tmp)[3],
+                             "current_round_already_completed")
+            self.assertFalse(decide(self.at(20,15),tmp)[0])
+            self.assertTrue(decide(self.at(20,30),tmp)[0])
+            self.assertTrue(decide(self.at(20,15),tmp,manual=True)[0])
             self.write_snapshot(tmp,issue)
-            self.assertEqual(decide(self.at(20,10),tmp,manual=True)[3],
+            self.assertEqual(decide(self.at(20,15),tmp,manual=True)[3],
                              "immutable_snapshot_exists")
 
     def test_nightly_report_is_saved_even_without_any_verified_material(self):
@@ -179,6 +195,11 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("--check-freeze-window", workflow)
         self.assertIn("scheduled_event_outside_collection_window", workflow)
         self.assertIn("--align-gpt-trigger", workflow)
+        self.assertIn("cron: '0,5,10 12 * * *'",workflow)
+        self.assertIn("cron: '30,35,40 12 * * *'",workflow)
+        self.assertNotIn("cron: '40,45,50 11 * * *'",workflow)
+        self.assertIn("trigger(forum-collect-1):",workflow)
+        self.assertIn("trigger(forum-collect-2):",workflow)
 
 if __name__ == "__main__":
     unittest.main()
