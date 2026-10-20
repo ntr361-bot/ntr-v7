@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026293",
+  "state": "collecting_effectively",
+  "run_id": "39423346520",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39423346520",
+  "updated_at": "2026-10-20T12:39:42.213009+00:00",
+  "error": null,
+  "valid_materials": 44,
+  "valid_authors": 44,
+  "successful_post_opens": 234,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 49,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 478,
+      "attempted": 185,
+      "opened": 184,
+      "extracted": 181,
+      "completed": 184
+    }
+  },
+  "article_texts_extracted": 230,
+  "article_details_completed": 234,
+  "last_verified_post": {
+    "author": "不夜天",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121289&type=3",
+    "verified_at": "2026-10-20T12:39:41.981945+00:00",
+    "text_length": 176,
+    "text_sha256": "8e73816f4cac15c79385ffd3de3f5b394d4e65f6359b34cb977eafded9d41dfb"
+  },
+  "last_attempted_post": {
+    "author": "鸣区带盐人",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121156&type=3",
+    "attempt_index": 235
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-20T12:37:48.340202+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 230,
+  "stage": "detail: 鸣区带盐人 293期：半单双，可以下注，大家一起来赚钱",
+  "progress_updated_at": "2026-10-20T12:39:42.124568+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
