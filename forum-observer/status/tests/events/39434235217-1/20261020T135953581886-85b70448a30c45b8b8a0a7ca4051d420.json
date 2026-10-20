@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026293",
+  "state": "collecting_effectively",
+  "run_id": "39434235217",
+  "attempt": 1,
+  "event": "push",
+  "test_only": true,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39434235217",
+  "updated_at": "2026-10-20T13:59:53.581886+00:00",
+  "error": null,
+  "valid_materials": 79,
+  "valid_authors": 79,
+  "successful_post_opens": 469,
+  "article_details": {
+    "featured": {
+      "queued": 62,
+      "attempted": 62,
+      "opened": 62,
+      "extracted": 61,
+      "completed": 62
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 408,
+      "opened": 407,
+      "extracted": 405,
+      "completed": 407
+    }
+  },
+  "article_texts_extracted": 466,
+  "article_details_completed": 469,
+  "last_verified_post": {
+    "author": "马赛克",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120853&type=3",
+    "verified_at": "2026-10-20T13:59:53.326128+00:00",
+    "text_length": 17,
+    "text_sha256": "91b434482b4515202c41ae919c9e8f2aa8bbd39fb6244d09216c5f3ad3471302"
+  },
+  "last_attempted_post": {
+    "author": "星星点灯",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120852&type=3",
+    "attempt_index": 470
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-20T13:55:45.206720+00:00",
+      "featured_queued": 62,
+      "featured_attempted": 62,
+      "featured_completed": 62
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 466,
+  "stage": "detail: 星星点灯 293期:高级六肖",
+  "progress_updated_at": "2026-10-20T13:59:53.476896+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
