@@ -103,7 +103,7 @@ def snapshot_exists(archive, issue):
     return True
 
 
-def decide(now, archive, manual=False, scheduled=False, slot=None):
+def decide(now, archive, manual=False, scheduled=False, slot=None, requested_round=None):
     """Gate the two independent daily rounds without duplicate backup scans.
 
     First round opens 20:00; a valid first draft never blocks round two.
@@ -112,15 +112,25 @@ def decide(now, archive, manual=False, scheduled=False, slot=None):
     local = now.astimezone(TZ)
     issue = current_issue(now)
     minute = (local.hour, local.minute)
+    # A retired 19:40 cron delivered late must never act as the new 20:00 round.
+    if scheduled and not manual and slot not in (None, ROUND_ONE_CRON, ROUND_TWO_CRON):
+        return False, issue, 0, "retired_schedule_trigger"
     if scheduled and not manual and not collection_window_allowed(local):
         return False, issue, 0, "scheduled_event_outside_collection_window"
     if slot == ROUND_ONE_CRON and not (COLLECTION_START <= minute < ROUND_ONE_END):
         return False, issue, 0, "scheduled_event_outside_collection_window"
     if slot == ROUND_TWO_CRON and not (SECOND_COLLECTION_START <= minute <= COLLECTION_END):
         return False, issue, 0, "scheduled_event_outside_collection_window"
+    if requested_round == '1' and not (COLLECTION_START <= minute < ROUND_ONE_END):
+        return False, issue, 0, "requested_round_outside_window"
+    if requested_round == '2' and not (SECOND_COLLECTION_START <= minute <= COLLECTION_END):
+        return False, issue, 0, "requested_round_outside_window"
     if snapshot_exists(archive, issue):
         return False, issue, 0, "immutable_snapshot_exists"
-    round_number = 1 if slot == ROUND_ONE_CRON else 2 if slot == ROUND_TWO_CRON else (2 if minute >= SECOND_COLLECTION_START else 1)
+    round_number = (int(requested_round) if requested_round in ('1', '2')
+                    else 1 if slot == ROUND_ONE_CRON
+                    else 2 if slot == ROUND_TWO_CRON
+                    else 2 if minute >= SECOND_COLLECTION_START else 1)
     draft = Path(archive) / 'issues' / issue / 'draft-status.json'
     if not manual and draft.exists():
         previous = json.loads(draft.read_text(encoding='utf-8'))
@@ -239,10 +249,13 @@ def main():
         return 0
     scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
     manual=a.manual or (int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1 and not scheduled)
+    requested_round = os.environ.get('FORUM_REQUESTED_ROUND')
     collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled,
-                                             slot=os.environ.get('FORUM_SCHEDULE_CRON'))
+                                             slot=os.environ.get('FORUM_SCHEDULE_CRON'),
+                                             requested_round=requested_round)
     local = now.astimezone(TZ)
-    collection_round = 2 if (local.hour,local.minute)>=SECOND_COLLECTION_START else 1
+    collection_round = (int(requested_round) if requested_round in ('1','2')
+                        else 2 if (local.hour,local.minute)>=SECOND_COLLECTION_START else 1)
     print(json.dumps({"issue":issue, "collect":collect,
                       "collection_round":collection_round,
                       "max_seconds":seconds, "reason":reason},
