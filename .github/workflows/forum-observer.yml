@@ -26,7 +26,7 @@ defaults:
     working-directory: forum-observer
 jobs:
   forum-cycle:
-    if: ${{ github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') }}
+    if: ${{ github.event_name != 'push' || (!startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') && !startsWith(github.event.head_commit.message, 'trigger(forum):') && !startsWith(github.event.head_commit.message, 'trigger(forum-collect):')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 80
     steps:
@@ -42,17 +42,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m forum_observer.runtime starting
-      - name: Align early GPT collection trigger to 20:00
-        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect):')
-        run: python -m forum_observer.schedule --align-gpt-trigger
+      - name: Align GPT collection trigger to its assigned round
+        if: github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))
+        env:
+          GPT_ROUND_TWO: ${{ startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') }}
+        run: |
+          if [ "$GPT_ROUND_TWO" = "true" ]; then
+            python -m forum_observer.schedule --align-gpt-trigger --gpt-second-round
+          else
+            python -m forum_observer.schedule --align-gpt-trigger
+          fi
       - name: Decide current-issue collection
         id: collection-gate
         # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
+        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
-          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
           FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
         run: |
           if [ "$MANUAL_DISPATCH" = "true" ]; then
@@ -87,8 +94,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
-          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
           FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
+          FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
         run: python -u -m forum_observer.runtime supervise
       - uses: actions/cache/save@v4
         if: always()
@@ -110,6 +118,7 @@ jobs:
           exit 1
       - name: Publish completed-run report or finalize nightly freeze
         env:
+          FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
           FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
