@@ -1,11 +1,13 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
-  # Cron values are UTC: 11:40/45/50 and 12:00 map to Beijing 19:40/45/50 and 20:00.
-  # GitHub delivery is best-effort; runtime gates reject events delivered outside today's windows.
+  # Old 19:40/19:45/19:50 dispatches are retired.
+  # UTC 12:00/12:05/12:10 = Beijing 20:00 first round + limited backups.
+  # UTC 12:30/12:35/12:40 = Beijing 20:30 second round + limited backups.
+  # Backup events are idempotent within their own round; rounds never skip one another.
   schedule:
-    - cron: '40,45,50 11 * * *'
-    - cron: '0 12 * * *'
+    - cron: '0,5,10 12 * * *'
+    - cron: '30,35,40 12 * * *'
     # Beijing 21:00 final freeze (and best-effort 21:05/21:10 backups).
     - cron: '0,5,10 13 * * *'
   # ChatGPT task writes a daily marker to an isolated trigger branch.
@@ -40,17 +42,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m forum_observer.runtime starting
-      - name: Align early GPT collection trigger to 19:40
+      - name: Align early GPT collection trigger to 20:00
         if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect):')
         run: python -m forum_observer.schedule --align-gpt-trigger
       - name: Decide current-issue collection
         id: collection-gate
         # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
+        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
-          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):'))) }}
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
+          FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
         run: |
           if [ "$MANUAL_DISPATCH" = "true" ]; then
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --manual
@@ -60,7 +63,7 @@ jobs:
       - name: Reject delayed scheduled collection
         if: steps.collection-gate.outputs.reason == 'scheduled_event_outside_collection_window'
         run: |
-          echo "::error::Scheduled forum collection arrived outside today's 19:40-20:25 Asia/Shanghai window; no collection or issue rollover was performed."
+          echo "::error::Scheduled forum collection arrived outside its assigned 20:00/20:30 Asia/Shanghai round; no collection or issue rollover was performed."
           exit 1
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
@@ -84,7 +87,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
-          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):'))) }}
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
+          FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
         run: python -u -m forum_observer.runtime supervise
       - uses: actions/cache/save@v4
         if: always()
