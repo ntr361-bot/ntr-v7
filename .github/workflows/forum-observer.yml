@@ -73,10 +73,18 @@ jobs:
         run: |
           echo "::error::Retired or delayed forum trigger rejected; neither 20:00 nor 20:30 round was reused outside its own window."
           exit 1
+      - name: Restore Scrapling adaptive selector history
+        if: steps.collection-gate.outputs.collect == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: forum-observer/.scrapling/
+          key: forum-scrapling-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            forum-scrapling-${{ runner.os }}-
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
         run: |
-          pip install playwright
+          pip install playwright "scrapling==0.5"
           python -m playwright install --with-deps chromium
       - name: Unit tests
         run: python -m unittest discover -s tests -v
@@ -106,6 +114,12 @@ jobs:
           path: |
             forum-observer/.image-cache/
           key: forum-images-${{ runner.os }}-${{ github.run_id }}
+      - name: Save Scrapling adaptive selector history
+        if: always() && steps.collection-gate.outputs.collect == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: forum-observer/.scrapling/
+          key: forum-scrapling-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Ensure nightly issue report even if collection produced no data
         if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
         run: python -m forum_observer.schedule --archive archive --ensure-report
@@ -215,6 +229,7 @@ jobs:
             forum-observer/out/runtime.json
             forum-observer/out/status.json
             forum-observer/out/collection-error.json
+            forum-observer/out/scrapling-assist.json
           if-no-files-found: warn
 
   forum-286-retrospective:
