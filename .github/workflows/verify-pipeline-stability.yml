@@ -4,9 +4,14 @@ on:
     branches: [fix/six-stage-stability-20261012]
   pull_request:
     paths:
+      - 'DatabaseBackupService.cs'
+      - 'DatabaseHelper.cs'
       - 'DailyPredictionAutomation.cs'
+      - 'Form1.cs'
       - 'StableSnapshotFile.cs'
+      - 'SymmetricRuntimeState.cs'
       - 'PredictionRunner/**'
+      - 'Tests/Program.cs'
       - 'Tests/PipelineSettlementSmoke*'
       - 'scripts/pipeline_guard.py'
       - 'scripts/test_pipeline_guard.py'
@@ -34,5 +39,11 @@ jobs:
         env:
           LIUHE_DATA_DIR: ${{ runner.temp }}/pipeline-stability-test
         run: dotnet run --project Tests/PipelineSettlementSmoke.csproj -c Release --no-build
+      - name: Measure desktop refresh resource growth
+        env:
+          LIUHE_DATA_DIR: ${{ runner.temp }}/desktop-resource-smoke
+        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj -c Release -- --desktop-resource-smoke
+      - name: Run the complete isolated regression suite
+        run: dotnet run --project Tests/六合分析软件.SmokeTests.csproj -c Release
       - name: Confirm committed predictions and model state were not changed
         run: git diff --exit-code -- site/data

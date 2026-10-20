@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 from forum_observer.schedule import (
     current_issue, decide, snapshot_exists, ensure_daily_report,
     collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
+    gpt_trigger_wait_seconds,
 )
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -63,6 +64,17 @@ class ScheduleTests(unittest.TestCase):
             # A user-requested manual rerun still follows the existing 21:00 cutoff.
             self.assertTrue(decide(self.at(1, 46, 13), tmp, manual=True,
                                    scheduled=True)[0])
+
+    def test_gpt_trigger_waits_until_start_only_when_it_arrives_near_early(self):
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 35)), 300)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 38)), 120)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 39)), 60)
+        fractional = self.at(19, 39).replace(second=59, microsecond=500_000)
+        self.assertEqual(gpt_trigger_wait_seconds(fractional), 1)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 40)), 0)
+        self.assertEqual(gpt_trigger_wait_seconds(self.at(19, 45)), 0)
+        self.assertIsNone(gpt_trigger_wait_seconds(self.at(19, 34)))
+        self.assertIsNone(gpt_trigger_wait_seconds(self.at(1, 51, 13)))
 
     def test_overnight_ready_draft_is_refreshed_instead_of_blocking_tonight(self):
         with TemporaryDirectory() as tmp:
@@ -166,6 +178,7 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("--scheduled", workflow)
         self.assertIn("--check-freeze-window", workflow)
         self.assertIn("scheduled_event_outside_collection_window", workflow)
+        self.assertIn("--align-gpt-trigger", workflow)
 
 if __name__ == "__main__":
     unittest.main()

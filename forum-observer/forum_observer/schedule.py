@@ -7,7 +7,9 @@ recreated or re-frozen by this gate.
 import argparse
 import hashlib
 import json
+import math
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -20,6 +22,7 @@ FREEZE_START = (21, 0)
 FREEZE_END = (21, 20)
 MAX_SECONDS = 1800
 PUBLISH_RESERVE_SECONDS = 90
+GPT_TRIGGER_EARLY_TOLERANCE_SECONDS = 5 * 60
 
 
 def current_issue(now):
@@ -31,6 +34,19 @@ def collection_window_allowed(now):
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
     return COLLECTION_START <= minute <= COLLECTION_END
+
+
+def gpt_trigger_wait_seconds(now):
+    """Return delay to 19:40 for a near-on-time GPT trigger, or None if stale."""
+    local = now.astimezone(TZ)
+    start = local.replace(hour=COLLECTION_START[0], minute=COLLECTION_START[1],
+                          second=0, microsecond=0)
+    delay = math.ceil((start - local).total_seconds())
+    if delay <= 0:
+        return 0
+    if delay <= GPT_TRIGGER_EARLY_TOLERANCE_SECONDS:
+        return delay
+    return None
 
 
 def draft_is_current_evening(data, issue, now):
@@ -160,9 +176,21 @@ def main():
     parser.add_argument("--ensure-report", action="store_true")
     parser.add_argument("--manual", action="store_true",help="Allow an explicit rerun before the freeze deadline")
     parser.add_argument("--scheduled", action="store_true",help="Require the scheduled collection window")
+    parser.add_argument("--align-gpt-trigger", action="store_true",
+                        help="Wait for 19:40 only when a GPT trigger arrives up to five minutes early")
     parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
     a = parser.parse_args()
     now = datetime.now(TZ)
+    if a.align_gpt_trigger:
+        delay = gpt_trigger_wait_seconds(now)
+        if delay is None:
+            raise SystemExit("ERROR: GPT collection trigger arrived more than five minutes before 19:40. "
+                             "No early collection was started.")
+        if delay:
+            print(f"GPT collection trigger arrived early; waiting {delay}s for 19:40 Asia/Shanghai.",
+                  flush=True)
+            time.sleep(delay)
+        return 0
     if a.check_freeze_window:
         allowed = freeze_window_allowed(now, a.archive)
         if allowed:

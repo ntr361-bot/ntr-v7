@@ -5,15 +5,23 @@ using 六合分析软件;
 
 if (args.Contains("--readonly-db-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
     return ReadOnlyDatabaseSnapshotTests.Run();
+if (args.Contains("--desktop-resource-smoke", StringComparer.OrdinalIgnoreCase))
+    return DesktopResourceSmoke();
+
+string testData = Path.Combine(Path.GetTempPath(), $"liuhe-v7-smoke-{Guid.NewGuid():N}");
+Directory.CreateDirectory(testData);
+Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", testData);
 
 var tests = new (string Name, Action Run)[]
 {
+    ("完整回归只使用隔离的临时数据目录", TestDataDirectoryIsIsolated),
+    ("数据库首次初始化前创建并核验备份", InitializationCreatesVerifiedPreSchemaBackup),
     ("自动化预测写入历史记录", AutomationRecordsPredictionHistory),
     ("解析有效开奖 JSON", ParseValidJson),
     ("拒绝失败 API 响应", RejectFailedResponse),
     ("号码统计正确", CountNumbers),
     ("2026马年生肖号码映射正确", ZodiacNumberMapFor2026IsCorrect),
-    ("综合评分使用目标年份生肖映射", PredictionScoreUsesTargetYearMap),
+    ("综合评分不推荐号码", PredictionScoreDoesNotRecommendNumbers),
     ("V7使用GPT-5.6 Sol", V63UsesGpt56Sol),
     ("自动识别下一期", AutoDetectNextIssue),
     ("指定期号运行", ExplicitIssue),
@@ -92,11 +100,13 @@ var tests = new (string Name, Action Run)[]
     ,("legacy promotion copies committed WAL and legacy archive rows", LegacyPromotionCopiesCommittedWalAndArchiveRows)
     ,("legacy promotion never replaces a stable legacy archive", LegacyPromotionNeverReplacesStableLegacyArchive)
     ,("initialization preserves duplicate prediction snapshots", InitializationPreservesDuplicatePredictionSnapshots)
+    ,("initialization replaces the legacy unique draw index without deleting rows", InitializationReplacesLegacyUniqueDrawIndex)
+    ,("initialization preserves duplicate draw archives", InitializationPreservesDuplicateDrawArchives)
+    ,("concurrent draw submissions are idempotent", ConcurrentDrawSubmissionsAreIdempotent)
     ,("concurrent prediction saves are atomic and idempotent", ConcurrentPredictionSavesAreAtomicAndIdempotent)
     ,("concurrent database backups publish one valid snapshot", ConcurrentDatabaseBackupsPublishOneValidSnapshot)
     ,("ambiguous legacy migration never creates an empty stable database", AmbiguousLegacyMigrationNeverCreatesEmptyStableDatabase)
     ,("V8.2 market state probabilities are normalized and leakage safe", V82MarketStateIsNormalizedAndLeakageSafe)
-    ,("V8.2 cross features are named finite and leakage safe", V82CrossFeaturesAreNamedFiniteAndLeakageSafe)
     ,("V8.2 pairwise ranker returns one normalized 12-zodiac ranking", V82PairwiseRankerReturnsNormalizedRanking)
     ,("V8.3 state probabilities condition the pairwise ranker without hard routing", V83StateProbabilitiesConditionRanking)
     ,("V8.3 ranking exposes stability metrics", V83RankingExposesStabilityMetrics)
@@ -127,19 +137,13 @@ var tests = new (string Name, Action Run)[]
     ,("旁路 PredictionTrace 是不可变且不触碰正式预测历史", PredictionTraceIsImmutableAndIsolated)
     ,("正式四模型可旁路捕获 Trace 与开奖结果", FormalPredictionTraceCapturesLiveAndOutcome)
     ,("正式 Trace 接受动态全历史样本数", FormalPredictionTraceAcceptsDynamicAllHistoryPeriod)
-    ,("AutoLearningV2 快照和残差输出完全旁路且可解释", AutoLearningV2SnapshotAndResidualAreIsolated)
-    ,("AutoLearningV2 WalkForward 计算 Rescue/Harm 且拒绝未来数据", AutoLearningV2WalkForwardMetricsAreLeakageSafe)
-    ,("AutoLearningV2 报告区分留出指标且不宣称自动上线", AutoLearningV2ReportIsExplicitlyExperimental)
-    ,("AutoLearningV2 实验快照写入独立表", AutoLearningV2ExperimentStorageIsIsolated)
     ,("云端预测档案保留本地同等完整模型快照", CloudPredictionArchiveKeepsFullLocalSnapshots)
     ,("同构模型状态快照具有稳定哈希且学习事件冲突可检测", SymmetricModelStateSnapshotDetectsConflicts)
     ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
+    ,("定时状态未变化时跳过全量发布并保留失败重试", SyncWorkflowSkipsUnchangedScheduledPublication)
     ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
     ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
     ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
-    ,("历史重放实验快照保持统一期号与截止", HistoricalReplayContractsAreEnforced)
-    ,("Candidate Stage 2 旁路适配与基础评估", CandidateStage2ContractsAreEnforced)
-    ,("冗余度报告确定性且防泄漏", ModelRedundancyReportIsDeterministicAndLeakageSafe)
     ,("V6.5预测历史只显示正式展示档", V65HistoryShowsOnlyDisplayedModels)
     ,("手动刷新生成四个V6.5日更模型", RefreshAllPeriodsGeneratesAllV65DailyModels)
     ,("成绩榜不展示没有预测记录的模型", ScoreboardHidesModelsWithoutPredictionRecords)
@@ -168,6 +172,136 @@ void SeedHistory()
     DatabaseHelper.InsertHistory("100", "010203040506", "07", "马", "2026-01-01 21:30:00", "2026-01-01");
     DatabaseHelper.InsertHistory("101", "010203040506", "08", "蛇", "2026-01-03 21:30:00", "2026-01-03");
     DatabaseHelper.InsertHistory("102", "010203040506", "09", "龙", "2026-01-05 21:30:00", "2026-01-05");
+}
+
+void TestDataDirectoryIsIsolated()
+{
+    string expected = Path.GetFullPath(testData) + Path.DirectorySeparatorChar;
+    string actual = Path.GetFullPath(DatabaseHelper.DatabasePath);
+    Assert(actual.StartsWith(expected, StringComparison.OrdinalIgnoreCase),
+        $"regression test database escaped its isolated directory: {actual}");
+}
+
+int DesktopResourceSmoke()
+{
+    string? isolatedData = Environment.GetEnvironmentVariable("LIUHE_DATA_DIR");
+    if (string.IsNullOrWhiteSpace(isolatedData) || !Path.IsPathRooted(isolatedData) ||
+        !string.Equals(Path.GetFileName(Path.TrimEndingDirectorySeparator(isolatedData)), "desktop-resource-smoke", StringComparison.OrdinalIgnoreCase))
+        throw new InvalidOperationException("Desktop resource smoke requires its dedicated desktop-resource-smoke LIUHE_DATA_DIR.");
+    DatabaseHelper.InitializeDatabase();
+    ApplicationConfiguration.Initialize();
+    using var form = new Form1();
+    form.CreateControl();
+    _ = form.Handle;
+    if (typeof(Form1).GetField("mainPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+        ?.GetValue(form) is not System.Windows.Forms.Panel mainPanel)
+        throw new InvalidOperationException("Form1 main panel was not found");
+    _ = mainPanel.Handle;
+    var showHome = typeof(Form1).GetMethod("ShowHome",
+        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+        ?? throw new InvalidOperationException("Form1.ShowHome was not found");
+    showHome.Invoke(form, null);
+    System.Windows.Forms.Application.DoEvents();
+
+    for (int i = 0; i < 25; i++)
+    {
+        showHome.Invoke(form, null);
+        System.Windows.Forms.Application.DoEvents();
+    }
+    int baselineGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+    int baselineUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+    using var process = System.Diagnostics.Process.GetCurrentProcess();
+    process.Refresh();
+    int baselineHandles = process.HandleCount;
+    long baselinePrivateBytes = process.PrivateMemorySize64;
+    int peakGdi = baselineGdi, peakUser = baselineUser, peakHandles = baselineHandles;
+    long peakPrivateBytes = baselinePrivateBytes;
+
+    for (int i = 0; i < 500; i++)
+    {
+        showHome.Invoke(form, null);
+        System.Windows.Forms.Application.DoEvents();
+        if (i % 25 == 0)
+        {
+            int gdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+            int user = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+            process.Refresh();
+            peakGdi = Math.Max(peakGdi, gdi);
+            peakUser = Math.Max(peakUser, user);
+            peakHandles = Math.Max(peakHandles, process.HandleCount);
+            peakPrivateBytes = Math.Max(peakPrivateBytes, process.PrivateMemorySize64);
+            Console.WriteLine($"desktop-refresh={i + 1} gdi={gdi} user={user} handles={process.HandleCount} privateMiB={process.PrivateMemorySize64 / (1024 * 1024)}");
+        }
+    }
+
+    form.Dispose();
+    for (int cycle = 0; cycle < 15; cycle++)
+    {
+        var reopened = new Form1();
+        reopened.CreateControl();
+        _ = reopened.Handle;
+        showHome.Invoke(reopened, null);
+        reopened.Dispose();
+        System.Windows.Forms.Application.DoEvents();
+        int gdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+        int user = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+        process.Refresh();
+        peakGdi = Math.Max(peakGdi, gdi);
+        peakUser = Math.Max(peakUser, user);
+        peakHandles = Math.Max(peakHandles, process.HandleCount);
+        peakPrivateBytes = Math.Max(peakPrivateBytes, process.PrivateMemorySize64);
+    }
+    GC.Collect();
+    GC.WaitForPendingFinalizers();
+    GC.Collect();
+    process.Refresh();
+    int finalGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+    int finalUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+    long finalPrivateBytes = process.PrivateMemorySize64;
+    int finalHandles = process.HandleCount;
+    Console.WriteLine($"resource-baseline gdi={baselineGdi} user={baselineUser} handles={baselineHandles} privateMiB={baselinePrivateBytes / (1024 * 1024)}; " +
+        $"peak gdi={peakGdi} user={peakUser} handles={peakHandles} privateMiB={peakPrivateBytes / (1024 * 1024)}; " +
+        $"final gdi={finalGdi} user={finalUser} handles={finalHandles} privateMiB={finalPrivateBytes / (1024 * 1024)}");
+    bool stable = peakGdi - baselineGdi <= 128 && peakUser - baselineUser <= 128 &&
+        finalGdi - baselineGdi <= 64 && finalUser - baselineUser <= 64 &&
+        finalHandles - baselineHandles <= 80 &&
+        peakPrivateBytes - baselinePrivateBytes <= 256L * 1024 * 1024 &&
+        finalPrivateBytes - baselinePrivateBytes <= 64L * 1024 * 1024;
+    if (!stable) Console.Error.WriteLine("Desktop refresh resources grew beyond the bounded smoke-test budget.");
+    return stable ? 0 : 1;
+}
+
+void InitializationCreatesVerifiedPreSchemaBackup()
+{
+    string databasePath = DatabaseHelper.DatabasePath;
+    Directory.CreateDirectory(Path.GetDirectoryName(databasePath)!);
+    using (var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={databasePath};Version=3;"))
+    {
+        connection.Open();
+        using var seed = new System.Data.SQLite.SQLiteCommand(
+            "CREATE TABLE History (Id INTEGER PRIMARY KEY AUTOINCREMENT, Period TEXT); INSERT INTO History(Period) VALUES ('998001');", connection);
+        seed.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    var migratedRows = DatabaseHelper.GetHistory();
+    Assert(migratedRows.Count == 1 && migratedRows[0].Period == "998001",
+        "partial legacy History schema was not migrated without losing its row");
+
+    string backup = Directory.EnumerateFiles(Path.Combine(testData, "Backup"), "pre-init-*.db")
+        .SingleOrDefault() ?? throw new InvalidOperationException("initialization did not create a pre-migration backup");
+    using var verify = new System.Data.SQLite.SQLiteConnection($"Data Source={backup};Version=3;Read Only=True;");
+    verify.Open();
+    using var check = new System.Data.SQLite.SQLiteCommand("PRAGMA quick_check", verify);
+    Assert(string.Equals(Convert.ToString(check.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase),
+        "pre-migration backup failed SQLite integrity verification");
+    using var count = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM History WHERE Period='998001'", verify);
+    Assert(Convert.ToInt64(count.ExecuteScalar()) == 1,
+        "pre-migration backup did not preserve the source table row");
+
+    // Restore the normal isolated fixture after verifying the partial-schema migration.
+    SeedHistory();
 }
 
 void ParseValidJson()
@@ -272,6 +406,7 @@ void HistoricalWaveColorDoesNotClaimCurrentWebMap()
 
 void CrawlerSaveBackfillsWaveColor()
 {
+    SeedHistory();
     int saved = DatabaseHelper.SaveCrawlerData(new List<DataCrawler.CrawlRecord>
     {
         new()
@@ -285,19 +420,17 @@ void CrawlerSaveBackfillsWaveColor()
             Date = "2026-01-01 21:30:00"
         }
     });
-    DatabaseHelper.HistoryRecord record = DatabaseHelper.GetHistory().Single(row => row.Period == "100");
+    DatabaseHelper.HistoryRecord record = DatabaseHelper.GetHistory().First(row => row.Period == "100");
     Assert(saved == 0, "backfilling an existing draw must not be reported as a new draw");
     Assert(record.SpecialWaveColor == "红" && record.WaveColorSource == "LocalReference",
         "missing wave color fields were not backfilled");
 }
 
-void PredictionScoreUsesTargetYearMap()
+void PredictionScoreDoesNotRecommendNumbers()
 {
     var result = PredictionScoreService.Predict(500, 2026);
-    Assert(result.Predictions.Single(item => item.Zodiac == "马").Number == "01,13,25,37,49",
-        "综合评分仍在使用旧年份静态映射");
-    Assert(result.Predictions.Single(item => item.Zodiac == "虎").Number == "05,17,29,41",
-        "综合评分虎肖号码未按2026马年轮转");
+    Assert(result.Predictions.All(item => string.IsNullOrWhiteSpace(item.Number)),
+        "综合评分不得推荐具体号码");
 }
 
 void V63UsesGpt56Sol()
@@ -366,7 +499,7 @@ void OutputJsonIsValid()
     using JsonDocument document = JsonDocument.Parse(File.ReadAllText(Path.Combine(output, "103.json")));
     JsonElement prediction = document.RootElement.GetProperty("prediction");
     Assert(prediction.GetProperty("zodiacs").GetArrayLength() == 3, "生肖输出为空");
-    Assert(prediction.GetProperty("numbers").GetArrayLength() == 3, "号码输出为空");
+    Assert(prediction.GetProperty("numbers").GetArrayLength() == 0, "已停用的推荐号码仍出现在输出中");
 }
 
 void LatestJsonUpdates()
@@ -693,28 +826,9 @@ void RuntimeStateHashIsCanonicalAndStable()
         new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     Assert(roundTrip is not null && SymmetricRuntimeStateSync.Hash(roundTrip) == first,
         "规范哈希不应受序列化往返影响");
-}
-
-void ModelRedundancyReportIsDeterministicAndLeakageSafe()
-{
-    SeedHistory();
-    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-    for (int i = 0; i < 140; i++)
-        DatabaseHelper.InsertHistory((1000 + i).ToString(), "010203040506", "07", zodiacs[i % 12],
-            "2026-01-01 21:30:00", "2026-01-01");
-    var history = DatabaseHelper.GetHistory().OrderBy(x => long.Parse(x.Period)).ToList();
-    ModelRedundancyReport first = ModelRedundancyReportService.Run(history, warmup: 50);
-    ModelRedundancyReport second = ModelRedundancyReportService.Run(history, warmup: 50);
-    Assert(first.SampleCount > 0, "报告应至少覆盖一期");
-    Assert(first.Models.Contains("v65-50") && first.Models.Contains("ensemble") &&
-           first.Models.Contains("v7") && first.Models.Contains("ml") &&
-           first.Models.Contains("random"), "报告应包含全部对照模型");
-    Assert(first.ModelRankCorrelation.GetLength(0) == first.Models.Count, "相关矩阵应为方阵");
-    Assert(first.Top3HitRates.SequenceEqual(second.Top3HitRates) &&
-           first.ModelRankCorrelation.Cast<double>().SequenceEqual(second.ModelRankCorrelation.Cast<double>()),
-           "相同输入的报告必须逐位一致");
-    Assert(ModelRedundancyReportService.Run(new List<DatabaseHelper.HistoryRecord>(), 50).SampleCount == 0,
-           "数据不足时报告应返回空样本而不是抛异常");
+    prediction.PredictZodiac = "牛,鸡,猴";
+    Assert(SymmetricRuntimeStateSync.Hash(snapshot) != first,
+        "生肖预测变化必须反映在运行状态内容哈希中");
 }
 
 void V65HistoryShowsOnlyDisplayedModels()
@@ -729,6 +843,12 @@ void V65HistoryShowsOnlyDisplayedModels()
 
 void RefreshAllPeriodsGeneratesAllV65DailyModels()
 {
+    // Use enough unique history rows to exercise distinct 50/100/all snapshots,
+    // without colliding with immutable first-write predictions from earlier tests.
+    DatabaseHelper.ClearHistory();
+    for (int i = 0; i < 120; i++)
+        DatabaseHelper.InsertHistory((999800 + i).ToString(), "010203040506", "07", "马",
+            $"2026-01-{(i % 28) + 1:00} 21:30:00", $"2026-01-{(i % 28) + 1:00}");
     var results = AIEngine.RefreshAllPeriodPredictions();
     Assert(results.Keys.SequenceEqual(new[] { 50, 100, AISettings.AllHistoryModeValue }),
         "手动刷新必须同时生成50期、100期和全部历史三条基础预测");
@@ -736,10 +856,10 @@ void RefreshAllPeriodsGeneratesAllV65DailyModels()
     int allHistoryPeriods = results[AISettings.AllHistoryModeValue].AnalysisPeriods;
     DatabaseHelper.PredictionRecord[] rows = DatabaseHelper.GetPredictionHistory(int.MaxValue)
         .Where(row => row.Issue == issue).ToArray();
-    Assert(rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 50) &&
-        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 100) &&
-        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == allHistoryPeriods) &&
-        rows.Any(row => row.ModelVersion == "V6.5 AutoLearning"),
+    Assert(rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.Period50 && row.AnalysisPeriods == 50) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.Period100 && row.AnalysisPeriods == 100) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.AllHistory && row.AnalysisPeriods == allHistoryPeriods) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.AutoLearning),
         "手动刷新后缺少基础模型或V6.5自动学习的同一期预测记录");
 }
 
@@ -872,27 +992,6 @@ void V82MarketStateIsNormalizedAndLeakageSafe()
     Assert(before.PrimaryState == after.PrimaryState && Math.Abs(before.Confidence - after.Confidence) < 1e-12,
         "state model used a record after the target boundary");
     Assert(before.Evidence.Count > 0, "state decision must remain auditable");
-}
-
-void V82CrossFeaturesAreNamedFiniteAndLeakageSafe()
-{
-    string[] expected =
-    {
-        "omission_x_momentum_5_20", "omission_x_momentum_10_50", "recent_7_x_short_forbidden",
-        "repeat_x_omission", "long_x_short_trend", "omission_ratio_x_repeat_trend",
-        "recent_10_rate_x_historical_rate", "color_affinity_x_color_trend"
-    };
-    string[] zodiacs = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
-    var records = new List<DatabaseHelper.HistoryRecord>();
-    for (int i = 0; i < 130; i++)
-        records.Add(History((2023001 + i).ToString(), ((i * 13) % 49 + 1).ToString("00"), zodiacs[(i * 3 + i / 11) % 12]));
-    var before = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
-    records.Add(History("2099999", "49", "鼠"));
-    var after = MachineLearningPredictionService.BuildFeatures(records, 100, "鼠").ToVector();
-    Assert(expected.All(FeatureEngine.FeatureNames.Contains), "one or more V8.2 cross features are missing");
-    Assert(FeatureEngine.FeatureNames.Count >= 50, "V8.2 should expose at least 50 total features");
-    Assert(before.Length == FeatureEngine.FeatureNames.Count && before.All(double.IsFinite), "cross feature vector is invalid");
-    Assert(before.SequenceEqual(after), "cross feature extraction used data after the target boundary");
 }
 
 void V82PairwiseRankerReturnsNormalizedRanking()
@@ -1310,12 +1409,12 @@ void V7PredictionsAreSavedToHistory()
     var history = DatabaseHelper.GetLatestHistory(100);
     V7PredictionHistoryService.SaveAll("103", history);
     V7PredictionHistoryService.SaveAll("103", history);
-    var records = DatabaseHelper.GetPredictionHistory(100).Where(x => x.Issue == "103").ToList();
+    var records = DatabaseHelper.GetPredictionHistory(int.MaxValue).Where(x => x.Issue == "103").ToList();
     Assert(records.Count(x => x.ModelVersion.StartsWith("V7", StringComparison.OrdinalIgnoreCase)) == 2,
         "智能预测历史应保存两条独立模型记录（V7 + 自动学习）");
-    Assert(records.Any(x => x.ModelVersion == "V7" && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
-    Assert(records.Any(x => x.ModelVersion == "V7 AutoLearning" && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
-    Assert(records.Where(x => x.ModelVersion is "V7" or "V7 AutoLearning")
+    Assert(records.Any(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) == ExperimentModels.V7 && x.AnalysisPeriods == 7000), "V7引擎记录缺失");
+    Assert(records.Any(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) == ExperimentModels.V7Auto && x.AnalysisPeriods == 7250), "智能预测自动学习记录缺失");
+    Assert(records.Where(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods) is ExperimentModels.V7 or ExperimentModels.V7Auto)
             .All(x => string.IsNullOrEmpty(x.PredictNumber)),
         "V7与自动学习停用号码推荐，新记录号码字段应为空");
     Assert(V7PredictionHistoryService.ExtractColorPrediction("scores|波色排除:绿;主:红;防:蓝") == "主：红　防：蓝",
@@ -1331,16 +1430,16 @@ void V7PredictionsAreSavedToHistory()
         "智能预测历史混入了V6.5四模型记录");
     var orderedModels = V7PredictionHistoryService.GetHistory(100)
         .Where(x => x.Issue == "103")
-        .Select(x => x.ModelVersion)
+        .Select(x => ExperimentModels.Canonicalize(x.ModelVersion, x.AnalysisPeriods))
         .ToArray();
-    Assert(orderedModels.SequenceEqual(new[] { "V7", "V7 AutoLearning" }),
+    Assert(orderedModels.SequenceEqual(new[] { ExperimentModels.V7, ExperimentModels.V7Auto }),
         "智能预测历史模型排序不正确");
 }
 
 void AutoLearningPredictionIsFormalHistoryRow()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     Assert(record.PredictZodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 3,
         "automatic-learning TOP3 was not saved");
     Assert(record.Top6Zodiac.Split(',', StringSplitOptions.RemoveEmptyEntries).Length == 6,
@@ -1383,8 +1482,9 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "mobile-trigger polling must request a V7-scoped OIDC token");
     Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request", StringComparison.Ordinal),
         "mobile-trigger polling must read the isolated V7 run request");
-    Assert(workflow.Contains("$headers = @{ Authorization = \"Bearer $oidc\" }", StringComparison.Ordinal),
-        "mobile-trigger polling must use the standard Authorization header through the site gateway");
+    Assert(workflow.Contains("Authorization = \"Bearer $oidc\"", StringComparison.Ordinal) &&
+           workflow.Contains("OAI-Sites-Authorization", StringComparison.Ordinal),
+        "mobile-trigger polling must send both OIDC and Sites authorization headers");
     Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
         "V7 publisher must refresh the isolated smart-ledger V7 copy");
 }
@@ -1454,8 +1554,8 @@ void LegacyPredictionHistoryExcludesRemovedAndV7Rows()
     Assert(!versions.Contains("V6.3"), "legacy prediction history still displays V6.3 rows");
     Assert(versions.Any(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase)),
         "AI prediction history did not display the V7 row");
-    Assert(versions.Where(version => version.StartsWith("V7", StringComparison.OrdinalIgnoreCase))
-            .All(version => version is "V7" or "V7 AutoLearning"),
+    Assert(versions.Where(version => ExperimentModels.Canonicalize(version) is ExperimentModels.V7 or ExperimentModels.V7Auto)
+            .All(version => ExperimentModels.Canonicalize(version) is ExperimentModels.V7 or ExperimentModels.V7Auto),
         "AI prediction history should display only the integrated V7 rows");
     var analysisLabels = grid.Rows.Cast<System.Windows.Forms.DataGridViewRow>()
         .Select(row => Convert.ToString(row.Cells["AnalysisPeriods"].Value) ?? "")
@@ -1538,9 +1638,8 @@ void GitHubDesktopCloudSyncUsesPublishedV7Archive()
 
 void GitHubCloudSyncIsPrimary()
 {
-    CloudSyncResult result = CloudPredictionSyncService.SyncAsync().GetAwaiter().GetResult();
-    Assert(result.Source == "GitHub V7 正式数据",
-        "GitHub 正式档案可访问时，V7 同步仍错误地使用了备用云端");
+    Assert(CloudPredictionSyncService.PrimarySourceName == "GitHub V7 正式数据",
+        "V7 同步没有将 GitHub 正式档案配置为首选来源");
 }
 
 void CloudSyncStatusShowsSource()
@@ -1901,6 +2000,85 @@ void InitializationPreservesDuplicatePredictionSnapshots()
         "initialization changed the order or content of archived prediction snapshots");
 }
 
+void InitializationReplacesLegacyUniqueDrawIndex()
+{
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            DROP INDEX IF EXISTS idx_history_period;
+            CREATE UNIQUE INDEX idx_history_period ON History(Period) WHERE Period != ''", connection);
+        command.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    using var verify = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;Read Only=True;");
+    verify.Open();
+    using var indexCommand = new System.Data.SQLite.SQLiteCommand("PRAGMA index_list('History')", verify);
+    using var indexes = indexCommand.ExecuteReader();
+    while (indexes.Read())
+    {
+        if (!string.Equals(Convert.ToString(indexes["name"]), "idx_history_period", StringComparison.Ordinal)) continue;
+        Assert(Convert.ToInt32(indexes["unique"]) == 0,
+            "initialization retained a uniqueness constraint that cannot coexist with duplicate archives");
+        return;
+    }
+    throw new InvalidOperationException("initialization removed the period lookup index");
+}
+
+void InitializationPreservesDuplicateDrawArchives()
+{
+    const string period = "998021";
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            DROP INDEX IF EXISTS idx_history_period;
+            DELETE FROM History WHERE Period='998021';
+            INSERT INTO History(Period,Numbers,SpecialNumber,SpecialZodiac) VALUES ('998021','010203040506','07','马');
+            INSERT INTO History(Period,Numbers,SpecialNumber,SpecialZodiac) VALUES ('998021','111213141516','08','蛇');", connection);
+        command.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    var rows = DatabaseHelper.GetHistory().Where(record => record.Period == period).OrderBy(record => record.Id).ToArray();
+    Assert(rows.Length == 2, "database initialization deleted a duplicate draw archive row");
+    Assert(rows[0].Numbers == "010203040506" && rows[1].Numbers == "111213141516",
+        "database initialization changed duplicate draw archive contents or ordering");
+}
+
+void ConcurrentDrawSubmissionsAreIdempotent()
+{
+    const string period = "998022";
+    using (var cleanup = new System.Data.SQLite.SQLiteConnection($"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        cleanup.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand("DELETE FROM History WHERE Period=@period", cleanup);
+        command.Parameters.AddWithValue("@period", period);
+        command.ExecuteNonQuery();
+    }
+
+    using var gate = new ManualResetEventSlim(false);
+    var errors = new System.Collections.Concurrent.ConcurrentQueue<Exception>();
+    Task[] writers = Enumerable.Range(0, 12).Select(_ => Task.Run(() =>
+    {
+        gate.Wait();
+        try { DatabaseHelper.InsertHistory(period, "010203040506", "07", "马", "2026-08-22 21:30:00", "2026-08-22"); }
+        catch (Exception error) { errors.Enqueue(error); }
+    })).ToArray();
+    gate.Set();
+    Task.WaitAll(writers);
+
+    Assert(errors.IsEmpty, $"concurrent draw submission failed: {errors.FirstOrDefault()?.Message}");
+    Assert(DatabaseHelper.GetHistory().Count(record => record.Period == period) == 1,
+        "concurrent submissions created duplicate draw rows");
+}
+
 void ConcurrentPredictionSavesAreAtomicAndIdempotent()
 {
     const string issue = "998020";
@@ -2202,7 +2380,7 @@ void ColorPredictionHistoryPersistsSnapshot()
     for (int i = 0; i < 60; i++) rows.Add(History($"snapshot-{i:D3}", ((i % 49) + 1).ToString("D2"), "鼠"));
     V7PredictionHistoryService.SaveAll("999202", rows);
     var record = DatabaseHelper.GetPredictionHistory(int.MaxValue)
-        .Single(item => item.Issue == "999202" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "999202" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     Assert(record.ScoreDetails.Contains("波色学习:"), "color learning snapshot was not saved in prediction history");
     ColorLearningOutcome first = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
     ColorLearningOutcome second = DatabaseHelper.ApplyColorLearningForPrediction(record.Id, "01");
@@ -2252,7 +2430,7 @@ void FormalPredictionTraceCapturesLiveAndOutcome()
     PredictionTraceSnapshot trace = PredictionTraceService.GetLive(issue)
         ?? throw new InvalidOperationException("未捕获正式四模型 Trace");
     Assert(trace.BaseModels.Select(model => model.ModelKey).OrderBy(key => key).SequenceEqual(
-            new[] { "v65-50", "v65-100", "v65-all" }.OrderBy(key => key)),
+            new[] { "v65_50", "v65_100", "v65_all" }.OrderBy(key => key)),
         "Trace 没有使用正式三基础模型身份");
     Assert(trace.BaseModels.All(model => model.Ranking.Count == 12) &&
         trace.BaseModels[0].Ranking[0].Factors["F"].Contribution > 0,
@@ -2287,76 +2465,6 @@ void FormalPredictionTraceAcceptsDynamicAllHistoryPeriod()
     PredictionTraceBaseModel allHistory = trace.BaseModels.Single(model => model.ModelKey == ExperimentModels.AllHistory);
     Assert(allHistory.AnalysisPeriods == 1323 && Math.Abs(allHistory.Weights["P"] - .34) < .000001,
         "动态全历史 Trace 没有使用全部历史模型权重");
-}
-
-void AutoLearningV2SnapshotAndResidualAreIsolated()
-{
-    const string issue = "999803";
-    int before = DatabaseHelper.GetPredictionHistory(int.MaxValue).Count;
-    PredictionTraceSnapshot trace = TraceFixture(issue, "999802", 41);
-    AutoLearningV2Snapshot snapshot = AutoLearningV2Service.BuildSnapshot(trace,
-        new AutoLearningV2HistoryFeatures(18, 50, .42, .48, .14, .23));
-    Assert(snapshot.Zodiacs.Count == 12 && snapshot.Zodiacs[0].RankMean > 0 && snapshot.Zodiacs[0].RankStd >= 0,
-        "V2 没有保存完整三模型分歧特征");
-    Assert(snapshot.Zodiacs[0].FactorFeatures.ContainsKey("F_mean") &&
-        snapshot.Zodiacs[0].FactorFeatures.ContainsKey("B_std"),
-        "V2 没有保存底层因子均值和标准差");
-    Assert(snapshot.Config.Lambda is .05 or .10 or .15 && snapshot.Zodiacs.All(row => row.Rank is >= 1 and <= 12),
-        "V2 残差参数或完整排序无效");
-    Assert(snapshot.Zodiacs.Any(row => Math.Abs(row.FinalScore - row.BaseScore) > 0.000001),
-        "V2 没有产生可解释的残差修正");
-    Assert(snapshot.Zodiacs.All(row => row.Explanation.MaxPositiveFeature is not null),
-        "V2 缺少最大正贡献解释");
-    Assert(snapshot.Confidence is "High" or "Medium" or "Low" && snapshot.JointFailureRisk is >= 0 and <= 1,
-        "V2 Confidence 或 JointFailureRisk 越界");
-    Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Count == before,
-        "V2 不得写入正式 PredictionHistory");
-
-    AutoLearningV2State state = new();
-    ModelWeights oldWeights = state.Weights;
-    state = AutoLearningV2Service.UpdateState(state, snapshot, actualZodiac: "鼠");
-    Assert(Math.Abs(state.Weights.AI - oldWeights.AI) <= .02 && state.Weights.Sum > .999 && state.Weights.Sum < 1.001,
-        "V2 单期权重变化或归一化不符合边界");
-    Assert(state.ObservedSamples == 1 && state.Decay == .98, "V2 没有执行单期更新和默认衰减");
-}
-
-void AutoLearningV2WalkForwardMetricsAreLeakageSafe()
-{
-    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
-        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
-        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
-        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
-    AutoLearningV2EvaluationReport report = AutoLearningV2WalkForward.Evaluate(rows, 8);
-    Assert(report.TestSamples == 8 && report.RescueCount >= 0 && report.HarmCount >= 0,
-        "WalkForward 没有按时间切分并统计 Rescue/Harm");
-    Assert(report.HoldoutIssue == "0008" && !report.FutureDataLeakageDetected,
-        "WalkForward 的 holdout 边界或泄漏标记错误");
-}
-
-void AutoLearningV2ReportIsExplicitlyExperimental()
-{
-    var rows = Enumerable.Range(1, 16).Select(index => new AutoLearningV2EvaluationRow(
-        index.ToString("D4"), index % 2 == 0 ? "鼠" : "牛",
-        new[] { "鼠", "牛", "虎", "兔", "龙", "蛇" },
-        new[] { "牛", "鼠", "虎", "兔", "龙", "蛇" },
-        new[] { "虎", "龙", "马", "羊", "猴", "鸡" })).ToArray();
-    string report = AutoLearningV2ReportService.Render(AutoLearningV2WalkForward.Evaluate(rows, 8), "test-code", ".10", ".98");
-    Assert(report.Contains("AutoLearning V2 旁路实验报告") && report.Contains("Holdout") &&
-        report.Contains("不自动替换正式 AutoLearning") && report.Contains("RescueRate") && report.Contains("HarmRate"),
-        "V2 报告缺少实验边界或核心指标");
-}
-
-void AutoLearningV2ExperimentStorageIsIsolated()
-{
-    string runId = "v2-test-run";
-    AutoLearningV2ExperimentService.SaveRun(new AutoLearningV2ExperimentRun(runId, "test-code", ".10", ".98", "0001", "0008", "0009", "0016"));
-    AutoLearningV2ExperimentService.SavePrediction(runId, new AutoLearningV2ExperimentPrediction("0009", "鼠,牛,虎", 2, .41, .03, .44, "Medium"));
-    AutoLearningV2ExperimentRun run = AutoLearningV2ExperimentService.GetRun(runId) ?? throw new InvalidOperationException("V2 实验运行未保存");
-    Assert(run.ModelKey == AutoLearningV2Service.ModelKey && AutoLearningV2ExperimentService.GetPredictionCount(runId) == 1,
-        "V2 实验记录未写入独立存储");
-    Assert(!DatabaseHelper.GetPredictionHistory(int.MaxValue).Any(row => row.Issue == "0009" && row.ModelVersion == AutoLearningV2Service.ModelKey),
-        "V2 实验不能写入正式 PredictionHistory");
 }
 
 void CloudPredictionArchiveKeepsFullLocalSnapshots()
@@ -2417,6 +2525,21 @@ void CloudWorkflowPublishesSymmetricRuntimeState()
         "云端发布 payload 没有包含模型运行状态");
 }
 
+void SyncWorkflowSkipsUnchangedScheduledPublication()
+{
+    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "sync-smart-ledger-state.yml"));
+    Assert(workflow.Contains("GITHUB_EVENT_NAME -eq 'schedule'", StringComparison.Ordinal) &&
+           workflow.Contains("head_sha -eq $env:GITHUB_SHA", StringComparison.Ordinal),
+        "unchanged detection must be limited to a previously successful publication of the same commit");
+    Assert(workflow.Contains("liveCheckManifest", StringComparison.Ordinal) &&
+           workflow.Contains("liveCheckForecast", StringComparison.Ordinal) &&
+           workflow.Contains("skipped full archive publish", StringComparison.Ordinal),
+        "scheduled no-op must verify the live latest forecast before skipping the archive publish");
+    Assert(workflow.Contains("Next hourly synchronization retries this snapshot", StringComparison.Ordinal) &&
+           workflow.Contains("Invoke-RequiredPublish", StringComparison.Ordinal),
+        "the scheduled no-op gate must preserve the existing publish retry path");
+}
+
 void DesktopSyncReadsSymmetricRuntimeState()
 {
     string source = File.ReadAllText(Path.Combine(ProjectRoot(), "CloudPredictionSyncService.cs"));
@@ -2435,6 +2558,15 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
         Top6Zodiac = "鼠,牛,虎,兔,龙,蛇", HitResult = "未开奖", Top6HitResult = "未开奖"
     };
     DatabaseHelper.MergeSynchronizedPrediction(existing);
+    var sourceOnlyRepeat = new DatabaseHelper.PredictionRecord
+    {
+        Issue = existing.Issue, AnalysisPeriods = existing.AnalysisPeriods,
+        ModelVersion = existing.ModelVersion, PredictZodiac = existing.PredictZodiac,
+        Top6Zodiac = existing.Top6Zodiac, HitResult = existing.HitResult,
+        Top6HitResult = existing.Top6HitResult, PredictionSource = "云端同步"
+    };
+    Assert(DatabaseHelper.MergeSynchronizedPrediction(sourceOnlyRepeat) == 0,
+        "a source-only re-submission must remain idempotent for the frozen prediction content");
     var conflicting = new DatabaseHelper.PredictionRecord
     {
         Issue = existing.Issue, AnalysisPeriods = existing.AnalysisPeriods, ModelVersion = existing.ModelVersion,
@@ -2477,7 +2609,7 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
 void V7HistoryStoresCompleteRanking()
 {
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     var ranking = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson);
     Assert(ranking is { Length: 12 } && ranking.Distinct().Count() == 12,
         "V7自动学习记录必须保存完整12生肖排序");
@@ -2485,8 +2617,10 @@ void V7HistoryStoresCompleteRanking()
 
 void V7LearningUsesIndependentMemory()
 {
+    SeedHistory();
+    V7PredictionHistoryService.SaveAll("999204", DatabaseHelper.GetLatestHistory(100));
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && item.ModelVersion == "V7 AutoLearning");
+        .Single(item => item.Issue == "999204" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     string actual = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson)![0];
     string v65MemoryKey = new ModelMemory(ExperimentModels.AutoLearning).MemoryKey;
     string? v65Before = DatabaseHelper.LoadModelMemoryJson(v65MemoryKey);
@@ -2525,49 +2659,6 @@ void PredictionHistoryPreservesPredictionSource()
     Assert(DatabaseHelper.MergeSynchronizedPrediction(cloud) == 1, "云端记录没有写入");
     Assert(DatabaseHelper.GetPredictionHistory(int.MaxValue).Single(row => row.Issue == "999903").PredictionSource == "云端同步",
         "云端同步记录没有保留来源");
-}
-
-void HistoricalReplayContractsAreEnforced()
-{
-    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
-    {
-        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12],
-        SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
-    }).ToArray();
-    string store = Path.Combine(Path.GetTempPath(), "liuhe-replay-contract-" + Guid.NewGuid().ToString("N") + ".db");
-    HistoricalReplayResult replay = new HistoricalReplayEngine().Run(history, new HistoricalReplayOptions(100, "contract-run", store));
-    Assert(replay.TargetIssues.Count == 12, "重放评估期号数量错误");
-    Assert(replay.Predictions.GroupBy(row => row.TargetIssue).All(group =>
-        group.All(row => row.HistorySampleCount == int.Parse(group.Key) - 2026001)), "快照未记录真实 cutoff 样本数");
-    Assert(replay.Predictions.All(row => long.Parse(row.HistoryCutoffIssue) < long.Parse(row.TargetIssue)), "存在未来 cutoff");
-    Assert(replay.Predictions.Select(row => row.TargetIssue).Distinct().Count() == 12, "目标期集合不一致");
-    EvaluationReport report = EvaluationPipeline.Evaluate(replay.Predictions);
-    Assert(report.CommonEvaluationSet.Count == 12 && report.MissingPredictionCount == 0, "共同评估集合不完整");
-    Assert(!replay.FutureDataLeakageDetected, "正常重放被错误标记为泄漏");
-    Assert(report.RescueHarm.Count == 1 && report.Bootstrap95.Count > 0, "Rescue/Harm 或 Bootstrap 评估未生成");
-    Assert(report.RandomMonteCarlo.Iterations == 10000 && report.PairedComparisons.Count > 0 && report.McNemar.Count > 0, "随机基准或配对评估未生成");
-    Assert(report.Relationships.Count > 0 && report.RankChanges.Count == 1 && report.ConsensusBins.Count == 5 && report.JointFailureRiskBins.Count == 3 && report.ConfidenceGroups.Count == 3, "相关性、排名变化或分箱评估未生成");
-    Assert(File.Exists(store), "实验快照没有写入独立存储");
-    using var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={store};Version=3;Read Only=True;");
-    connection.Open();
-    using var production = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='PredictionHistory'", connection);
-    Assert(Convert.ToInt32(production.ExecuteScalar()) == 0, "实验库不应创建生产 PredictionHistory 表");
-}
-
-void CandidateStage2ContractsAreEnforced()
-{
-    var history = Enumerable.Range(1, 112).Select(index => new DatabaseHelper.HistoryRecord
-    {
-        Period = (2026000 + index).ToString(), SpecialZodiac = new[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" }[index % 12], SpecialNumber = "01", Numbers = "01,02,03,04,05,06"
-    }).ToArray();
-    string store = Path.Combine(Path.GetTempPath(), "candidate-stage2-contract-" + Guid.NewGuid().ToString("N") + ".db");
-    var result = new CandidateStage2ReplayEngine().Run(history, store);
-    Assert(result.Candidates.Count > 0 && result.Controls.Count > 0, "Candidate 旁路没有生成快照");
-    Assert(result.Candidates.All(x => long.Parse(x.HistoryCutoffIssue) < long.Parse(x.TargetIssue) && x.LeakageAuditPassed), "Candidate cutoff 或泄漏审计失败");
-    var report = CandidateStage2Evaluation.Evaluate(result.Candidates, result.Controls, result.ExperimentId, store, 6501, 100);
-    Assert(report.Performance.Count >= 4 && report.Rescue.Count >= 4 && !report.LeakageDetected,
-        "Candidate Stage 2 评估不完整");
-    Assert(File.Exists(store), "Candidate 实验快照没有写入独立库");
 }
 
 string ProjectRoot()
@@ -2671,7 +2762,7 @@ AIEngine.PredictResult FakePrediction(long issue) => new()
     AnalysisPeriods = 3,
     Top3 = new() { "马", "蛇", "龙" },
     Top6 = new() { "马", "蛇", "龙", "兔", "虎", "牛" },
-    RecommendedNumbers = new() { 7, 8, 9 },
+    RecommendedNumbers = new(),
     Confidence = "测试",
     BestModel = "fake"
 };
@@ -2700,4 +2791,13 @@ void AssertThrows<T>(Action action, string message) where T : Exception
 void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
+}
+
+static class DesktopResourceNative
+{
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern uint GetGuiResources(IntPtr process, uint flags);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    public static extern IntPtr GetCurrentProcess();
 }

@@ -22,6 +22,8 @@ public static class CloudPredictionSyncService
         "GitHub V7 正式数据", CreateGitHubSyncRequest);
     private static readonly CloudSyncSource FallbackSource = new(
         "V7 备用云端", CreateMachineSyncRequest);
+    private static CloudSyncSource PrimarySource => GitHubSource;
+    public static string PrimarySourceName => PrimarySource.Name;
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true
@@ -33,7 +35,7 @@ public static class CloudPredictionSyncService
 
     public static async Task<CloudSyncResult> SyncAsync(CancellationToken cancellationToken = default)
     {
-        CloudSyncSource source = GitHubSource;
+        CloudSyncSource source = PrimarySource;
         CloudHistoryArchive history;
         try
         {

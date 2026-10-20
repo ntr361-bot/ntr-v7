@@ -227,6 +227,8 @@ namespace 六合分析软件
 
         private void ClearMain()
         {
+            foreach (Control control in mainPanel.Controls.Cast<Control>().ToArray())
+                control.Dispose();
             mainPanel.Controls.Clear();
         }
 

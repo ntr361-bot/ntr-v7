@@ -59,15 +59,40 @@ jobs:
       - name: Check primary run or failed-run retry
         id: decide
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if ('${{ inputs.force }}' -eq 'true') { throw 'Frozen production forecasts cannot be overwritten.' }
           $eventName = '${{ github.event_name }}'
           $schedule = '${{ github.event.schedule }}'
           $shouldRun = $eventName -eq 'workflow_dispatch' -or $schedule -eq '0 14 * * *' -or $schedule -eq '0 16,17,18,19 * * *'
           if ($schedule -eq '0 15 * * *') {
-            # A green mobile polling run may have skipped prediction. Check committed
-            # artifacts again at 23:00; planning skips every existing frozen forecast.
-            $shouldRun = $true
+            # Retry only if the 22:00 primary run did not complete successfully.
+            # If GitHub never started that run, let this scheduled retry recover it.
+            $now = [DateTimeOffset]::UtcNow
+            $primaryWindowStart = $now.Date.AddHours(14)
+            $uri = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/workflows/run-prediction.yml/runs?event=schedule&branch=$env:GITHUB_REF_NAME&per_page=100"
+            $runs = Invoke-RestMethod -Uri $uri -Headers @{
+              Authorization = "Bearer $env:GH_TOKEN"
+              Accept = 'application/vnd.github+json'
+              'X-GitHub-Api-Version' = '2022-11-28'
+            }
+            $primary = $runs.workflow_runs | Where-Object {
+              ([DateTimeOffset]::Parse($_.created_at) -ge $primaryWindowStart) -and
+              ([DateTimeOffset]::Parse($_.created_at) -lt $primaryWindowStart.AddMinutes(30)) -and
+              $_.event -eq 'schedule' -and
+              $_.head_branch -eq $env:GITHUB_REF_NAME -and $_.id -ne '${{ github.run_id }}'
+            } | Sort-Object created_at -Descending | Select-Object -First 1
+            if ($null -eq $primary) {
+              $shouldRun = $true
+              Write-Host '22:00 primary run was not found; enabling recovery run.'
+            } elseif ($primary.status -eq 'completed' -and $primary.conclusion -ne 'success') {
+              $shouldRun = $true
+              Write-Host "22:00 primary run ended with $($primary.conclusion); enabling retry."
+            } else {
+              $shouldRun = $false
+              Write-Host "22:00 primary run status is $($primary.status), conclusion $($primary.conclusion); skipping duplicate run."
+            }
           } elseif ($schedule -eq '7,22,37,52 * * * *') {
             try {
               $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"

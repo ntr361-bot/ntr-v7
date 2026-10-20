@@ -40,6 +40,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m forum_observer.runtime starting
+      - name: Align early GPT collection trigger to 19:40
+        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect):')
+        run: python -m forum_observer.schedule --align-gpt-trigger
       - name: Decide current-issue collection
         id: collection-gate
         # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.

@@ -24,6 +24,34 @@ namespace 六合分析软件
         }
 
         /// <summary>
+        /// Take a fresh, verified snapshot before the first database initialization of this process.
+        /// This is separate from the daily backup so an older same-day backup can never stand in for
+        /// the database that is about to be migrated.
+        /// </summary>
+        public static string BackupBeforeInitialization()
+        {
+            if (!File.Exists(DbPath)) return "数据库文件不存在，跳过初始化前备份";
+
+            Directory.CreateDirectory(BackupDir);
+            string backupPath = Path.Combine(BackupDir,
+                $"pre-init-{DateTime.UtcNow:yyyyMMddTHHmmssfffZ}-{Guid.NewGuid():N}.db");
+            try
+            {
+                VerifyDatabase(DbPath);
+                CreateConsistentBackup(DbPath, backupPath);
+                VerifyDatabase(backupPath);
+                if (!ReadTableRowCounts(DbPath).SequenceEqual(ReadTableRowCounts(backupPath)))
+                    throw new InvalidDataException("初始化前备份与源数据库的表记录数不一致");
+                return $"初始化前备份及核验成功：{Path.GetFileName(backupPath)}";
+            }
+            catch (Exception ex)
+            {
+                DeleteTemporaryDatabaseFiles(backupPath);
+                throw new InvalidOperationException($"初始化前数据库备份或核验失败：{ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
         /// 执行备份（如果今天还没有备份）
         /// </summary>
         public static string Backup()
@@ -104,6 +132,39 @@ namespace 六合分析软件
             using var command = new SQLiteCommand("PRAGMA quick_check", connection);
             if (!string.Equals(Convert.ToString(command.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException("备份数据库完整性校验失败");
+        }
+
+        private static void VerifyDatabase(string databasePath)
+        {
+            using var connection = new SQLiteConnection(
+                $"Data Source={databasePath};Version=3;Read Only=True;");
+            connection.Open();
+            using var command = new SQLiteCommand("PRAGMA quick_check", connection);
+            if (!string.Equals(Convert.ToString(command.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException($"数据库完整性校验失败：{Path.GetFileName(databasePath)}");
+        }
+
+        private static (string Name, long Count)[] ReadTableRowCounts(string databasePath)
+        {
+            using var connection = new SQLiteConnection(
+                $"Data Source={databasePath};Version=3;Read Only=True;");
+            connection.Open();
+            var tables = new System.Collections.Generic.List<(string Name, long Count)>();
+            using var list = new SQLiteCommand(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
+                connection);
+            var names = new System.Collections.Generic.List<string>();
+            using (var reader = list.ExecuteReader())
+            {
+                while (reader.Read()) names.Add(reader.GetString(0));
+            }
+            foreach (string name in names)
+            {
+                string quoted = "\"" + name.Replace("\"", "\"\"", StringComparison.Ordinal) + "\"";
+                using var count = new SQLiteCommand($"SELECT COUNT(*) FROM {quoted}", connection);
+                tables.Add((name, Convert.ToInt64(count.ExecuteScalar())));
+            }
+            return tables.ToArray();
         }
 
         private static void DeleteTemporaryDatabaseFiles(string temporaryPath)
