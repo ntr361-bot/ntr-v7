@@ -299,6 +299,9 @@ void InitializationCreatesVerifiedPreSchemaBackup()
     using var count = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM History WHERE Period='998001'", verify);
     Assert(Convert.ToInt64(count.ExecuteScalar()) == 1,
         "pre-migration backup did not preserve the source table row");
+
+    // Restore the normal isolated fixture after verifying the partial-schema migration.
+    SeedHistory();
 }
 
 void ParseValidJson()
