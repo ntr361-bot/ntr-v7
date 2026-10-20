@@ -79,6 +79,28 @@ class ScheduleTests(unittest.TestCase):
             self.assertTrue(decide(self.at(20,0),tmp,scheduled=True,slot=ROUND_ONE_CRON)[0])
             self.assertTrue(decide(self.at(20,30),tmp,scheduled=True,slot=ROUND_TWO_CRON)[0])
 
+    def test_round_specific_triggers_cannot_be_misassigned(self):
+        with TemporaryDirectory() as tmp:
+            self.assertTrue(decide(self.at(20, 3), tmp, scheduled=True,
+                                   requested_round='1')[0])
+            self.assertTrue(decide(self.at(20, 33), tmp, scheduled=True,
+                                   requested_round='2')[0])
+            self.assertEqual(decide(self.at(20, 30), tmp, scheduled=True,
+                                    requested_round='1')[3],
+                             "requested_round_outside_window")
+            self.assertEqual(decide(self.at(20, 20), tmp, scheduled=True,
+                                    requested_round='2')[3],
+                             "requested_round_outside_window")
+            self.assertEqual(decide(self.at(20, 58), tmp, scheduled=True,
+                                    requested_round='1')[3],
+                             "requested_round_outside_window")
+            self.assertEqual(decide(self.at(20, 15), tmp, scheduled=True,
+                                    slot='40,45,50 11 * * *')[3],
+                             "retired_schedule_trigger")
+            self.assertEqual(decide(self.at(20, 55), tmp, scheduled=True,
+                                    slot='0 12 * * *')[3],
+                             "retired_schedule_trigger")
+
     def test_gpt_triggers_align_to_2000_or_2030(self):
         self.assertEqual(gpt_trigger_wait_seconds(self.at(19,55)),300)
         self.assertEqual(gpt_trigger_wait_seconds(self.at(19,59)),60)

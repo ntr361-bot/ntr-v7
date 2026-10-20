@@ -201,7 +201,9 @@ def supervise():
         collect, issue, seconds, reason = decide(
             datetime.now(TZ), 'archive',
             manual=os.environ.get('MANUAL_DISPATCH') == 'true',
-            scheduled=os.environ.get('SCHEDULED_RUN') == 'true')
+            scheduled=os.environ.get('SCHEDULED_RUN') == 'true',
+            slot=os.environ.get('FORUM_SCHEDULE_CRON'),
+            requested_round=os.environ.get('FORUM_REQUESTED_ROUND'))
     if not collect:
         print(f'Collection not started: {issue} {reason}', flush=True)
         safe_publish('skipped', reason)
