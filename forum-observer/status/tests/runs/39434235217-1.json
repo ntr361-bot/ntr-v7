@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": true,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39434235217",
-  "updated_at": "2026-10-20T13:55:35.195034+00:00",
+  "updated_at": "2026-10-20T13:56:39.230668+00:00",
   "error": null,
-  "valid_materials": 11,
-  "valid_authors": 11,
-  "successful_post_opens": 43,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 158,
   "article_details": {
     "featured": {
       "queued": 62,
-      "attempted": 44,
-      "opened": 43,
-      "extracted": 42,
-      "completed": 43
+      "attempted": 62,
+      "opened": 62,
+      "extracted": 61,
+      "completed": 62
     },
     "ordinary": {
       "queued": 485,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 97,
+      "opened": 96,
+      "extracted": 96,
+      "completed": 96
     }
   },
-  "article_texts_extracted": 42,
-  "article_details_completed": 43,
+  "article_texts_extracted": 157,
+  "article_details_completed": 158,
   "last_verified_post": {
-    "author": "阳光风雪",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11120704&type=3",
-    "verified_at": "2026-10-20T13:55:35.052926+00:00",
-    "text_length": 275,
-    "text_sha256": "0034df2ac89fae6a70db2a57ee01239a31a8542dbe1c11f5fd569158b4223f84"
+    "author": "阁阁閤",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11124963&type=3",
+    "verified_at": "2026-10-20T13:56:38.850413+00:00",
+    "text_length": 924,
+    "text_sha256": "774d0b621a16cef369ea4c5d743bf201f52e64265472cce14ab605e887541c84"
   },
   "last_attempted_post": {
-    "author": "官桥恒美",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11123497&type=3",
-    "attempt_index": 44
+    "author": "上上签哦",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11124912&type=3",
+    "attempt_index": 159
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-20T13:55:45.206720+00:00",
+      "featured_queued": 62,
+      "featured_attempted": 62,
+      "featured_completed": 62
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 42,
-  "stage": "detail: 官桥恒美 293期澳彩",
-  "progress_updated_at": "2026-10-20T13:55:35.068847+00:00",
+  "raw_count": 157,
+  "stage": "detail: 上上签哦 杀一肖",
+  "progress_updated_at": "2026-10-20T13:56:38.913948+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
