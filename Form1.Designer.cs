@@ -8,9 +8,12 @@
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _cloudSyncTimer?.Stop();
+                _cloudSyncTimer?.Dispose();
+                _cloudSyncTimer = null;
+                components?.Dispose();
             }
 
             base.Dispose(disposing);
