@@ -34,9 +34,7 @@ public static class V7PredictionHistoryService
         var color = ColorEngine.Predict(history, memory.ColorLearning.Weights);
         var report = AIReportEngine.Generate(history, new[] { v7 }, color: color);
 
-        V7RecommendedNumberSelection v7Numbers = V7RecommendedNumberService.Select(targetPeriod,
-            v7.Probabilities.Select(item => (item.Key, item.Value)), history);
-        SaveEngine(targetPeriod, v7, LongTermHistoryKey, ExperimentModels.V7, report.Text, v7Numbers);
+        SaveEngine(targetPeriod, v7, LongTermHistoryKey, ExperimentModels.V7, report.Text);
 
         SaveIntelligentAutoLearning(targetPeriod, history, color, report.Text);
     }
@@ -91,15 +89,12 @@ public static class V7PredictionHistoryService
         MetaPredictionResult result = new MetaPredictionEngine().Predict(input, memory, baseline);
         var snapshot = new AutoLearningSnapshot(input, baseline, result, memory.Weights);
         string scores = string.Join(";", result.Ranking.Select(item => $"{item.Zodiac}:{item.Probability:F4}"));
-        V7RecommendedNumberSelection numbers = V7RecommendedNumberService.Select(targetPeriod,
-            result.Ranking.Select(item => (item.Zodiac, item.Probability)), history);
         DatabaseHelper.SavePrediction(targetPeriod,
             string.Join(",", result.Ranking.Take(3).Select(item => item.Zodiac)),
-            string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), numbers.Numbers,
+            string.Join(",", result.Ranking.Take(6).Select(item => item.Zodiac)), "",
             ExperimentModels.V7Auto, AutoLearningHistoryKey,
             $"{scores}|{colorDetails}|{colorSnapshot}", learningDetails,
-            snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson,
-            numbers.MappingSnapshotJson);
+            snapshot.FinalRankingJson, snapshot.BaseModelScoresJson, snapshot.FeatureSnapshotJson, snapshot.WeightSnapshotJson);
     }
 
     public static AutoLearningSnapshot BuildAutoLearningSnapshot(string targetPeriod,
@@ -175,13 +170,13 @@ public static class V7PredictionHistoryService
     }
 
     private static void SaveEngine(string targetPeriod, V7PredictionResult result, int historyKey, string modelVersion,
-        string report, V7RecommendedNumberSelection numbers)
+        string report)
     {
         string scores = string.Join(";", result.Probabilities.OrderByDescending(x => x.Value)
             .Select(x => $"{x.Key}:{x.Value:F4}"));
-        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), numbers.Numbers,
+        DatabaseHelper.SavePrediction(targetPeriod, string.Join(",", result.Top3), string.Join(",", result.Top6), "",
             modelVersion, historyKey, $"{scores}", report,
             System.Text.Json.JsonSerializer.Serialize(result.Probabilities.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).ToArray()),
-            "", System.Text.Json.JsonSerializer.Serialize(result.Features), "", numbers.MappingSnapshotJson);
+            "", System.Text.Json.JsonSerializer.Serialize(result.Features), "");
     }
 }
