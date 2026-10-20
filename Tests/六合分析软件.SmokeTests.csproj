@@ -6,9 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Superseded legacy-mutation acceptance draft; retained on disk, never executed. -->
+    <!-- These standalone entry points have their own projects and cannot be compiled into this top-level test runner. -->
     <Compile Remove="LearningPipelineTests.cs" />
-    <ProjectReference Include="..\六合分析软件.csproj" />
+    <Compile Remove="SettlementRepairSmoke.cs" />
+    <ProjectReference Include="..\\六合分析软件.csproj" />
   </ItemGroup>
   <Target Name="RemoveUnusedWebView2WpfReference" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
