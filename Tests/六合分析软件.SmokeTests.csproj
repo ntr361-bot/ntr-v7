@@ -4,12 +4,14 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
-    <!-- These standalone entry points have their own projects and cannot be compiled into this top-level test runner. -->
-    <Compile Remove="LearningPipelineTests.cs" />
-    <Compile Remove="SettlementRepairSmoke.cs" />
-    <ProjectReference Include="..\\六合分析软件.csproj" />
+    <!-- Keep this runner's source set explicit: the other smoke files have standalone entry points and separate projects. -->
+    <Compile Include="Program.cs" />
+    <Compile Include="P4AcceptanceTests.cs" />
+    <Compile Include="ReadOnlyDatabaseSnapshotTests.cs" />
+    <ProjectReference Include="../六合分析软件.csproj" />
   </ItemGroup>
   <Target Name="RemoveUnusedWebView2WpfReference" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
