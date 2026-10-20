@@ -406,6 +406,7 @@ void HistoricalWaveColorDoesNotClaimCurrentWebMap()
 
 void CrawlerSaveBackfillsWaveColor()
 {
+    SeedHistory();
     int saved = DatabaseHelper.SaveCrawlerData(new List<DataCrawler.CrawlRecord>
     {
         new()
@@ -842,9 +843,12 @@ void V65HistoryShowsOnlyDisplayedModels()
 
 void RefreshAllPeriodsGeneratesAllV65DailyModels()
 {
-    // Avoid immutable first-write snapshots from earlier tests in the isolated suite.
+    // Use enough unique history rows to exercise distinct 50/100/all snapshots,
+    // without colliding with immutable first-write predictions from earlier tests.
     DatabaseHelper.ClearHistory();
-    DatabaseHelper.InsertHistory("999900", "010203040506", "07", "马", "2026-01-01 21:30:00", "2026-01-01");
+    for (int i = 0; i < 120; i++)
+        DatabaseHelper.InsertHistory((999800 + i).ToString(), "010203040506", "07", "马",
+            $"2026-01-{(i % 28) + 1:00} 21:30:00", $"2026-01-{(i % 28) + 1:00}");
     var results = AIEngine.RefreshAllPeriodPredictions();
     Assert(results.Keys.SequenceEqual(new[] { 50, 100, AISettings.AllHistoryModeValue }),
         "手动刷新必须同时生成50期、100期和全部历史三条基础预测");
@@ -2613,8 +2617,10 @@ void V7HistoryStoresCompleteRanking()
 
 void V7LearningUsesIndependentMemory()
 {
+    SeedHistory();
+    V7PredictionHistoryService.SaveAll("999204", DatabaseHelper.GetLatestHistory(100));
     var record = V7PredictionHistoryService.GetHistory(100)
-        .Single(item => item.Issue == "103" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
+        .Single(item => item.Issue == "999204" && ExperimentModels.Canonicalize(item.ModelVersion, item.AnalysisPeriods) == ExperimentModels.V7Auto);
     string actual = JsonSerializer.Deserialize<string[]>(record.FinalRankingJson)![0];
     string v65MemoryKey = new ModelMemory(ExperimentModels.AutoLearning).MemoryKey;
     string? v65Before = DatabaseHelper.LoadModelMemoryJson(v65MemoryKey);
