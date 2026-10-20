@@ -14,6 +14,10 @@ from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
+COLLECTION_START = (19, 40)
+COLLECTION_END = (20, 25)
+FREEZE_START = (21, 0)
+FREEZE_END = (21, 20)
 MAX_SECONDS = 1800
 PUBLISH_RESERVE_SECONDS = 90
 
@@ -21,6 +25,18 @@ PUBLISH_RESERVE_SECONDS = 90
 def current_issue(now):
     local = now.astimezone(TZ)
     return f"{local.year}{local.timetuple().tm_yday:03d}"
+
+
+def collection_window_allowed(now):
+    local = now.astimezone(TZ)
+    minute = (local.hour, local.minute)
+    return COLLECTION_START <= minute <= COLLECTION_END
+
+
+def freeze_window_allowed(now):
+    local = now.astimezone(TZ)
+    minute = (local.hour, local.minute)
+    return FREEZE_START <= minute < FREEZE_END
 
 
 def snapshot_exists(archive, issue):
@@ -38,10 +54,12 @@ def snapshot_exists(archive, issue):
     return True
 
 
-def decide(now, archive, manual=False):
-    """Return (collect, issue, seconds, reason). Fail closed after cutoff."""
+def decide(now, archive, manual=False, scheduled=False):
+    """Return (collect, issue, seconds, reason); scheduled events fail closed outside the nightly window."""
     local = now.astimezone(TZ)
     issue = current_issue(now)
+    if scheduled and not manual and not collection_window_allowed(local):
+        return False, issue, 0, "scheduled_event_outside_collection_window"
     if snapshot_exists(archive, issue):
         return False, issue, 0, "immutable_snapshot_exists"
     draft=Path(archive)/'issues'/issue/'draft-status.json'
@@ -110,8 +128,19 @@ def main():
     parser.add_argument("--require-snapshot", action="store_true")
     parser.add_argument("--ensure-report", action="store_true")
     parser.add_argument("--manual", action="store_true",help="Allow an explicit rerun before the freeze deadline")
+    parser.add_argument("--scheduled", action="store_true",help="Require the scheduled collection window")
+    parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
     a = parser.parse_args()
     now = datetime.now(TZ)
+    if a.check_freeze_window:
+        allowed = freeze_window_allowed(now)
+        reason = "within_freeze_window" if allowed else "scheduled_freeze_window_missed"
+        print(json.dumps({"allowed": allowed, "reason": reason}, ensure_ascii=False), flush=True)
+        if a.github_output:
+            with open(a.github_output, "a", encoding="utf-8") as f:
+                f.write(f"allowed={str(allowed).lower()}\\n")
+                f.write(f"reason={reason}\\n")
+        return 0
     issue = current_issue(now)
     if a.ensure_report:
         ensure_daily_report(a.archive, now)
@@ -125,7 +154,8 @@ def main():
         print(f"PASS: {issue} immutable forum snapshot exists")
         return 0
     manual=a.manual or int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1
-    collect, issue, seconds, reason = decide(now, a.archive,manual=manual)
+    scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
+    collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled)
     print(json.dumps({"issue":issue, "collect":collect,
                       "max_seconds":seconds, "reason":reason},
                      ensure_ascii=False), flush=True)
