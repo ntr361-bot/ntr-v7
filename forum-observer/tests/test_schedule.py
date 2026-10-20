@@ -55,7 +55,7 @@ class ScheduleTests(unittest.TestCase):
 
     def test_cutoff_and_next_day_never_backfill(self):
         with TemporaryDirectory() as tmp:
-            self.assertTrue(decide(self.at(20, 24), tmp)[0])
+            self.assertTrue(decide(self.at(20, 15), tmp)[0])
             self.assertTrue(decide(self.at(20, 57), tmp)[0])
             self.assertEqual(decide(self.at(20, 59), tmp)[3],
                              "daily_collection_cutoff_passed")
