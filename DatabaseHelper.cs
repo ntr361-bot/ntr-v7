@@ -9,6 +9,8 @@ namespace 六合分析软件
     public class DatabaseHelper
     {
         private static readonly AsyncLocal<long?> HistoryIssueUpperBound = new();
+        private static readonly object InitializationBackupLock = new();
+        private static bool initializationBackupVerified;
 
         public static IDisposable UseHistoryThroughIssue(long issue)
         {
@@ -235,6 +237,15 @@ namespace 六合分析软件
         // 初始化数据库
         public static void InitializeDatabase()
         {
+            lock (InitializationBackupLock)
+            {
+                if (!initializationBackupVerified)
+                {
+                    DatabaseBackupService.BackupBeforeInitialization();
+                    initializationBackupVerified = true;
+                }
+            }
+
             using (SQLiteConnection conn = GetConnection())
             {
                 string sql = @"
@@ -270,11 +281,24 @@ namespace 六合分析软件
                     "CalcZodiac TEXT DEFAULT ''",
                     "ZodiacCheck TEXT DEFAULT ''");
 
-                // 旧版本可能产生重复期号；保留最新一条后再建立数据库级唯一约束。
-                new SQLiteCommand(@"DELETE FROM History
-                    WHERE Period != '' AND Id NOT IN
-                    (SELECT MAX(Id) FROM History WHERE Period != '' GROUP BY Period)", conn).ExecuteNonQuery();
-                new SQLiteCommand(@"CREATE UNIQUE INDEX IF NOT EXISTS idx_history_period
+                // 保留重复期号的全部既有记录供审计；新写入由 InsertHistory 在事务内幂等去重。
+                bool legacyUniquePeriodIndex = false;
+                using (var indexCommand = new SQLiteCommand("PRAGMA index_list('History')", conn))
+                using (var indexes = indexCommand.ExecuteReader())
+                {
+                    while (indexes.Read())
+                    {
+                        if (string.Equals(Convert.ToString(indexes["name"]), "idx_history_period", StringComparison.Ordinal) &&
+                            Convert.ToInt32(indexes["unique"]) != 0)
+                        {
+                            legacyUniquePeriodIndex = true;
+                            break;
+                        }
+                    }
+                }
+                if (legacyUniquePeriodIndex)
+                    new SQLiteCommand("DROP INDEX idx_history_period", conn).ExecuteNonQuery();
+                new SQLiteCommand(@"CREATE INDEX IF NOT EXISTS idx_history_period
                     ON History(Period) WHERE Period != ''", conn).ExecuteNonQuery();
 
                 // 创建新版预测历史表（每期唯一一条记录）
@@ -324,11 +348,6 @@ namespace 六合分析软件
                     "LearnedAt TEXT DEFAULT ''",
                     "PredictionSource TEXT DEFAULT '未知来源'");
                 EnsureAutoLearningSchema(conn);
-
-                // P25 网站资料模型已退役，旧数据库升级时清除其正式预测记录。
-                new SQLiteCommand("DELETE FROM PredictionHistory WHERE ModelVersion = 'P25-Web'", conn).ExecuteNonQuery();
-                new SQLiteCommand("DROP TABLE IF EXISTS WebsiteLearningSettlement", conn).ExecuteNonQuery();
-                new SQLiteCommand("DROP TABLE IF EXISTS WebsiteLearningCapture", conn).ExecuteNonQuery();
 
                 // 历史快照不得在初始化时物理去重；旧版本的重复行也要完整保留以便审计。
                 new SQLiteCommand("DROP INDEX IF EXISTS idx_prediction_issue", conn).ExecuteNonQuery();
@@ -479,7 +498,6 @@ namespace 六合分析软件
                                    "Top6HitResult,ReviewDetails,LearningDetails";
             using var read = new SQLiteCommand($@"SELECT {columns} FROM PredictionHistory
                 WHERE AnalysisPeriods NOT IN (0,200)
-                  AND ModelVersion <> 'P25-Web'
                   AND ModelVersion NOT LIKE 'V7%'
                   AND ModelVersion <> '云端 V6.3'
                 ORDER BY Id", source);
@@ -625,22 +643,35 @@ namespace 六合分析软件
 
             using (SQLiteConnection conn = GetConnection())
             {
-                string sql = @"
-                INSERT INTO History (Period, Numbers, SpecialNumber, SpecialZodiac, OpenTime, Date, ShengXiao, WebZodiac, CalcZodiac, ZodiacCheck)
-                VALUES (@period, @numbers, @specialNum, @specialZodiac, @openTime, @date, @shengxiao, @webZodiac, @calcZodiac, @zodiacCheck)";
+                using (var begin = new SQLiteCommand("BEGIN IMMEDIATE", conn)) begin.ExecuteNonQuery();
+                try
+                {
+                    string sql = @"
+                    INSERT INTO History (Period, Numbers, SpecialNumber, SpecialZodiac, OpenTime, Date, ShengXiao, WebZodiac, CalcZodiac, ZodiacCheck)
+                    SELECT @period, @numbers, @specialNum, @specialZodiac, @openTime, @date, @shengxiao, @webZodiac, @calcZodiac, @zodiacCheck
+                    WHERE NOT EXISTS (SELECT 1 FROM History WHERE Period=@period AND @period != '')";
 
-                SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@period", period);
-                cmd.Parameters.AddWithValue("@numbers", numbers);
-                cmd.Parameters.AddWithValue("@specialNum", specialNumber);
-                cmd.Parameters.AddWithValue("@specialZodiac", specialZodiac);
-                cmd.Parameters.AddWithValue("@openTime", openTime);
-                cmd.Parameters.AddWithValue("@date", date);
-                cmd.Parameters.AddWithValue("@shengxiao", specialZodiac); // ShengXiao 始终与网站数据一致
-                cmd.Parameters.AddWithValue("@webZodiac", webZodiac);
-                cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
-                cmd.Parameters.AddWithValue("@zodiacCheck", zodiacCheck);
-                cmd.ExecuteNonQuery();
+                    using var cmd = new SQLiteCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@period", period);
+                    cmd.Parameters.AddWithValue("@numbers", numbers);
+                    cmd.Parameters.AddWithValue("@specialNum", specialNumber);
+                    cmd.Parameters.AddWithValue("@specialZodiac", specialZodiac);
+                    cmd.Parameters.AddWithValue("@openTime", openTime);
+                    cmd.Parameters.AddWithValue("@date", date);
+                    cmd.Parameters.AddWithValue("@shengxiao", specialZodiac); // ShengXiao 始终与网站数据一致
+                    cmd.Parameters.AddWithValue("@webZodiac", webZodiac);
+                    cmd.Parameters.AddWithValue("@calcZodiac", calcZodiac);
+                    cmd.Parameters.AddWithValue("@zodiacCheck", zodiacCheck);
+                    cmd.ExecuteNonQuery();
+                    using var commit = new SQLiteCommand("COMMIT", conn);
+                    commit.ExecuteNonQuery();
+                }
+                catch
+                {
+                    using var rollback = new SQLiteCommand("ROLLBACK", conn);
+                    rollback.ExecuteNonQuery();
+                    throw;
+                }
             }
         }
 
@@ -1090,8 +1121,6 @@ namespace 六合分析软件
             string learningDetails = "", string finalRankingJson = "", string baseModelScoresJson = "",
             string featureSnapshotJson = "", string weightSnapshotJson = "", string mappingSnapshotJson = "")
         {
-            if (modelVersion == "P25-Web")
-                throw new InvalidOperationException("P25 网站资料模型已从软件中移除");
             mappingSnapshotJson = string.IsNullOrWhiteSpace(mappingSnapshotJson)
                 ? V65MappingService.CreateSnapshot(issue, ResolveMappingSnapshotDate(issue))
                 : mappingSnapshotJson;
@@ -1313,7 +1342,6 @@ namespace 六合分析软件
 
         public static int MergeSynchronizedPrediction(PredictionRecord record)
         {
-            if (record.ModelVersion == "P25-Web") return 0;
             using SQLiteConnection conn = GetConnection();
             ValidateSynchronizedPrediction(conn, record);
             return InsertSynchronizedPrediction(conn, record);

@@ -25,7 +25,7 @@ public static class SymmetricRuntimeStateSync
         }
         var draft = new SymmetricRuntimeStateSnapshot("v1", AIEngine.Version, codeVersion,
             DatabaseHelper.GetPredictionHistory(int.MaxValue)
-                .Where(row => row.ModelVersion != "P25-Web").ToArray(), memory, "", DateTimeOffset.UtcNow.ToString("O"));
+                .ToArray(), memory, "", DateTimeOffset.UtcNow.ToString("O"));
         return draft with { StateHash = Hash(draft) };
     }
 

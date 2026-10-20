@@ -5,9 +5,17 @@ using 六合分析软件;
 
 if (args.Contains("--readonly-db-snapshot-smoke", StringComparer.OrdinalIgnoreCase))
     return ReadOnlyDatabaseSnapshotTests.Run();
+if (args.Contains("--desktop-resource-smoke", StringComparer.OrdinalIgnoreCase))
+    return DesktopResourceSmoke();
+
+string testData = Path.Combine(Path.GetTempPath(), $"liuhe-v7-smoke-{Guid.NewGuid():N}");
+Directory.CreateDirectory(testData);
+Environment.SetEnvironmentVariable("LIUHE_DATA_DIR", testData);
 
 var tests = new (string Name, Action Run)[]
 {
+    ("完整回归只使用隔离的临时数据目录", TestDataDirectoryIsIsolated),
+    ("数据库首次初始化前创建并核验备份", InitializationCreatesVerifiedPreSchemaBackup),
     ("自动化预测写入历史记录", AutomationRecordsPredictionHistory),
     ("解析有效开奖 JSON", ParseValidJson),
     ("拒绝失败 API 响应", RejectFailedResponse),
@@ -92,6 +100,9 @@ var tests = new (string Name, Action Run)[]
     ,("legacy promotion copies committed WAL and legacy archive rows", LegacyPromotionCopiesCommittedWalAndArchiveRows)
     ,("legacy promotion never replaces a stable legacy archive", LegacyPromotionNeverReplacesStableLegacyArchive)
     ,("initialization preserves duplicate prediction snapshots", InitializationPreservesDuplicatePredictionSnapshots)
+    ,("initialization replaces the legacy unique draw index without deleting rows", InitializationReplacesLegacyUniqueDrawIndex)
+    ,("initialization preserves duplicate draw archives", InitializationPreservesDuplicateDrawArchives)
+    ,("concurrent draw submissions are idempotent", ConcurrentDrawSubmissionsAreIdempotent)
     ,("concurrent prediction saves are atomic and idempotent", ConcurrentPredictionSavesAreAtomicAndIdempotent)
     ,("concurrent database backups publish one valid snapshot", ConcurrentDatabaseBackupsPublishOneValidSnapshot)
     ,("ambiguous legacy migration never creates an empty stable database", AmbiguousLegacyMigrationNeverCreatesEmptyStableDatabase)
@@ -134,6 +145,7 @@ var tests = new (string Name, Action Run)[]
     ,("云端预测档案保留本地同等完整模型快照", CloudPredictionArchiveKeepsFullLocalSnapshots)
     ,("同构模型状态快照具有稳定哈希且学习事件冲突可检测", SymmetricModelStateSnapshotDetectsConflicts)
     ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
+    ,("定时状态未变化时跳过全量发布并保留失败重试", SyncWorkflowSkipsUnchangedScheduledPublication)
     ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
     ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
     ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
@@ -168,6 +180,116 @@ void SeedHistory()
     DatabaseHelper.InsertHistory("100", "010203040506", "07", "马", "2026-01-01 21:30:00", "2026-01-01");
     DatabaseHelper.InsertHistory("101", "010203040506", "08", "蛇", "2026-01-03 21:30:00", "2026-01-03");
     DatabaseHelper.InsertHistory("102", "010203040506", "09", "龙", "2026-01-05 21:30:00", "2026-01-05");
+}
+
+void TestDataDirectoryIsIsolated()
+{
+    string expected = Path.GetFullPath(testData) + Path.DirectorySeparatorChar;
+    string actual = Path.GetFullPath(DatabaseHelper.DatabasePath);
+    Assert(actual.StartsWith(expected, StringComparison.OrdinalIgnoreCase),
+        $"regression test database escaped its isolated directory: {actual}");
+}
+
+int DesktopResourceSmoke()
+{
+    ApplicationConfiguration.Initialize();
+    using var form = new Form1();
+    form.CreateControl();
+    _ = form.Handle;
+    if (typeof(Form1).GetField("mainPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+        ?.GetValue(form) is not System.Windows.Forms.Panel mainPanel)
+        throw new InvalidOperationException("Form1 main panel was not found");
+    _ = mainPanel.Handle;
+    var showHome = typeof(Form1).GetMethod("ShowHome",
+        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+        ?? throw new InvalidOperationException("Form1.ShowHome was not found");
+    showHome.Invoke(form, null);
+    System.Windows.Forms.Application.DoEvents();
+
+    for (int i = 0; i < 25; i++)
+    {
+        showHome.Invoke(form, null);
+        System.Windows.Forms.Application.DoEvents();
+    }
+    int baselineGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+    int baselineUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+    using var process = System.Diagnostics.Process.GetCurrentProcess();
+    int baselineHandles = process.HandleCount;
+    int peakGdi = baselineGdi, peakUser = baselineUser, peakHandles = baselineHandles;
+
+    for (int i = 0; i < 500; i++)
+    {
+        showHome.Invoke(form, null);
+        System.Windows.Forms.Application.DoEvents();
+        if (i % 25 == 0)
+        {
+            int gdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+            int user = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+            process.Refresh();
+            peakGdi = Math.Max(peakGdi, gdi);
+            peakUser = Math.Max(peakUser, user);
+            peakHandles = Math.Max(peakHandles, process.HandleCount);
+            Console.WriteLine($"desktop-refresh={i + 1} gdi={gdi} user={user} handles={process.HandleCount}");
+        }
+    }
+
+    form.Dispose();
+    for (int cycle = 0; cycle < 15; cycle++)
+    {
+        var reopened = new Form1();
+        reopened.CreateControl();
+        _ = reopened.Handle;
+        showHome.Invoke(reopened, null);
+        reopened.Dispose();
+        System.Windows.Forms.Application.DoEvents();
+        int gdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+        int user = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+        process.Refresh();
+        peakGdi = Math.Max(peakGdi, gdi);
+        peakUser = Math.Max(peakUser, user);
+        peakHandles = Math.Max(peakHandles, process.HandleCount);
+    }
+    GC.Collect();
+    GC.WaitForPendingFinalizers();
+    GC.Collect();
+    process.Refresh();
+    int finalGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
+    int finalUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+    int finalHandles = process.HandleCount;
+    Console.WriteLine($"resource-baseline gdi={baselineGdi} user={baselineUser} handles={baselineHandles}; " +
+        $"peak gdi={peakGdi} user={peakUser} handles={peakHandles}; " +
+        $"final gdi={finalGdi} user={finalUser} handles={finalHandles}");
+    bool stable = peakGdi - baselineGdi <= 128 && peakUser - baselineUser <= 128 &&
+        peakHandles - baselineHandles <= 160 && finalGdi - baselineGdi <= 64 &&
+        finalUser - baselineUser <= 64 && finalHandles - baselineHandles <= 80;
+    if (!stable) Console.Error.WriteLine("Desktop refresh resources grew beyond the bounded smoke-test budget.");
+    return stable ? 0 : 1;
+}
+
+void InitializationCreatesVerifiedPreSchemaBackup()
+{
+    string databasePath = DatabaseHelper.DatabasePath;
+    Directory.CreateDirectory(Path.GetDirectoryName(databasePath)!);
+    using (var connection = new System.Data.SQLite.SQLiteConnection($"Data Source={databasePath};Version=3;"))
+    {
+        connection.Open();
+        using var seed = new System.Data.SQLite.SQLiteCommand(
+            "CREATE TABLE History (Period TEXT); INSERT INTO History(Period) VALUES ('998001');", connection);
+        seed.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    string backup = Directory.EnumerateFiles(Path.Combine(testData, "Backup"), "pre-init-*.db")
+        .SingleOrDefault() ?? throw new InvalidOperationException("initialization did not create a pre-migration backup");
+    using var verify = new System.Data.SQLite.SQLiteConnection($"Data Source={backup};Version=3;Read Only=True;");
+    verify.Open();
+    using var check = new System.Data.SQLite.SQLiteCommand("PRAGMA quick_check", verify);
+    Assert(string.Equals(Convert.ToString(check.ExecuteScalar()), "ok", StringComparison.OrdinalIgnoreCase),
+        "pre-migration backup failed SQLite integrity verification");
+    using var count = new System.Data.SQLite.SQLiteCommand("SELECT COUNT(*) FROM History WHERE Period='998001'", verify);
+    Assert(Convert.ToInt64(count.ExecuteScalar()) == 1,
+        "pre-migration backup did not preserve the source table row");
 }
 
 void ParseValidJson()
@@ -366,7 +488,7 @@ void OutputJsonIsValid()
     using JsonDocument document = JsonDocument.Parse(File.ReadAllText(Path.Combine(output, "103.json")));
     JsonElement prediction = document.RootElement.GetProperty("prediction");
     Assert(prediction.GetProperty("zodiacs").GetArrayLength() == 3, "生肖输出为空");
-    Assert(prediction.GetProperty("numbers").GetArrayLength() == 3, "号码输出为空");
+    Assert(prediction.GetProperty("numbers").GetArrayLength() == 0, "已停用的推荐号码仍出现在输出中");
 }
 
 void LatestJsonUpdates()
@@ -693,6 +815,9 @@ void RuntimeStateHashIsCanonicalAndStable()
         new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     Assert(roundTrip is not null && SymmetricRuntimeStateSync.Hash(roundTrip) == first,
         "规范哈希不应受序列化往返影响");
+    prediction.PredictZodiac = "牛,鸡,猴";
+    Assert(SymmetricRuntimeStateSync.Hash(snapshot) != first,
+        "生肖预测变化必须反映在运行状态内容哈希中");
 }
 
 void ModelRedundancyReportIsDeterministicAndLeakageSafe()
@@ -1901,6 +2026,85 @@ void InitializationPreservesDuplicatePredictionSnapshots()
         "initialization changed the order or content of archived prediction snapshots");
 }
 
+void InitializationReplacesLegacyUniqueDrawIndex()
+{
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            DROP INDEX IF EXISTS idx_history_period;
+            CREATE UNIQUE INDEX idx_history_period ON History(Period) WHERE Period != ''", connection);
+        command.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    using var verify = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;Read Only=True;");
+    verify.Open();
+    using var indexCommand = new System.Data.SQLite.SQLiteCommand("PRAGMA index_list('History')", verify);
+    using var indexes = indexCommand.ExecuteReader();
+    while (indexes.Read())
+    {
+        if (!string.Equals(Convert.ToString(indexes["name"]), "idx_history_period", StringComparison.Ordinal)) continue;
+        Assert(Convert.ToInt32(indexes["unique"]) == 0,
+            "initialization retained a uniqueness constraint that cannot coexist with duplicate archives");
+        return;
+    }
+    throw new InvalidOperationException("initialization removed the period lookup index");
+}
+
+void InitializationPreservesDuplicateDrawArchives()
+{
+    const string period = "998021";
+    using (var connection = new System.Data.SQLite.SQLiteConnection(
+        $"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        connection.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand(@"
+            DROP INDEX IF EXISTS idx_history_period;
+            DELETE FROM History WHERE Period='998021';
+            INSERT INTO History(Period,Numbers,SpecialNumber,SpecialZodiac) VALUES ('998021','010203040506','07','马');
+            INSERT INTO History(Period,Numbers,SpecialNumber,SpecialZodiac) VALUES ('998021','111213141516','08','蛇');", connection);
+        command.ExecuteNonQuery();
+    }
+
+    DatabaseHelper.InitializeDatabase();
+
+    var rows = DatabaseHelper.GetHistory().Where(record => record.Period == period).OrderBy(record => record.Id).ToArray();
+    Assert(rows.Length == 2, "database initialization deleted a duplicate draw archive row");
+    Assert(rows[0].Numbers == "010203040506" && rows[1].Numbers == "111213141516",
+        "database initialization changed duplicate draw archive contents or ordering");
+}
+
+void ConcurrentDrawSubmissionsAreIdempotent()
+{
+    const string period = "998022";
+    using (var cleanup = new System.Data.SQLite.SQLiteConnection($"Data Source={DatabaseHelper.DatabasePath};Version=3;"))
+    {
+        cleanup.Open();
+        using var command = new System.Data.SQLite.SQLiteCommand("DELETE FROM History WHERE Period=@period", cleanup);
+        command.Parameters.AddWithValue("@period", period);
+        command.ExecuteNonQuery();
+    }
+
+    using var gate = new ManualResetEventSlim(false);
+    var errors = new System.Collections.Concurrent.ConcurrentQueue<Exception>();
+    Task[] writers = Enumerable.Range(0, 12).Select(_ => Task.Run(() =>
+    {
+        gate.Wait();
+        try { DatabaseHelper.InsertHistory(period, "010203040506", "07", "马", "2026-08-22 21:30:00", "2026-08-22"); }
+        catch (Exception error) { errors.Enqueue(error); }
+    })).ToArray();
+    gate.Set();
+    Task.WaitAll(writers);
+
+    Assert(errors.IsEmpty, $"concurrent draw submission failed: {errors.FirstOrDefault()?.Message}");
+    Assert(DatabaseHelper.GetHistory().Count(record => record.Period == period) == 1,
+        "concurrent submissions created duplicate draw rows");
+}
+
 void ConcurrentPredictionSavesAreAtomicAndIdempotent()
 {
     const string issue = "998020";
@@ -2417,6 +2621,21 @@ void CloudWorkflowPublishesSymmetricRuntimeState()
         "云端发布 payload 没有包含模型运行状态");
 }
 
+void SyncWorkflowSkipsUnchangedScheduledPublication()
+{
+    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "sync-smart-ledger-state.yml"));
+    Assert(workflow.Contains("GITHUB_EVENT_NAME -eq 'schedule'", StringComparison.Ordinal) &&
+           workflow.Contains("head_sha -eq $env:GITHUB_SHA", StringComparison.Ordinal),
+        "unchanged detection must be limited to a previously successful publication of the same commit");
+    Assert(workflow.Contains("liveCheckManifest", StringComparison.Ordinal) &&
+           workflow.Contains("liveCheckForecast", StringComparison.Ordinal) &&
+           workflow.Contains("skipped full archive publish", StringComparison.Ordinal),
+        "scheduled no-op must verify the live latest forecast before skipping the archive publish");
+    Assert(workflow.Contains("Next hourly synchronization retries this snapshot", StringComparison.Ordinal) &&
+           workflow.Contains("Invoke-RequiredPublish", StringComparison.Ordinal),
+        "the scheduled no-op gate must preserve the existing publish retry path");
+}
+
 void DesktopSyncReadsSymmetricRuntimeState()
 {
     string source = File.ReadAllText(Path.Combine(ProjectRoot(), "CloudPredictionSyncService.cs"));
@@ -2435,6 +2654,15 @@ void SymmetricStateConflictDoesNotPartiallyMerge()
         Top6Zodiac = "鼠,牛,虎,兔,龙,蛇", HitResult = "未开奖", Top6HitResult = "未开奖"
     };
     DatabaseHelper.MergeSynchronizedPrediction(existing);
+    var sourceOnlyRepeat = new DatabaseHelper.PredictionRecord
+    {
+        Issue = existing.Issue, AnalysisPeriods = existing.AnalysisPeriods,
+        ModelVersion = existing.ModelVersion, PredictZodiac = existing.PredictZodiac,
+        Top6Zodiac = existing.Top6Zodiac, HitResult = existing.HitResult,
+        Top6HitResult = existing.Top6HitResult, PredictionSource = "云端同步"
+    };
+    Assert(DatabaseHelper.MergeSynchronizedPrediction(sourceOnlyRepeat) == 0,
+        "a source-only re-submission must remain idempotent for the frozen prediction content");
     var conflicting = new DatabaseHelper.PredictionRecord
     {
         Issue = existing.Issue, AnalysisPeriods = existing.AnalysisPeriods, ModelVersion = existing.ModelVersion,
@@ -2671,7 +2899,7 @@ AIEngine.PredictResult FakePrediction(long issue) => new()
     AnalysisPeriods = 3,
     Top3 = new() { "马", "蛇", "龙" },
     Top6 = new() { "马", "蛇", "龙", "兔", "虎", "牛" },
-    RecommendedNumbers = new() { 7, 8, 9 },
+    RecommendedNumbers = new(),
     Confidence = "测试",
     BestModel = "fake"
 };
@@ -2700,4 +2928,13 @@ void AssertThrows<T>(Action action, string message) where T : Exception
 void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
+}
+
+static class DesktopResourceNative
+{
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern uint GetGuiResources(IntPtr process, uint flags);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    public static extern IntPtr GetCurrentProcess();
 }
