@@ -1,5 +1,5 @@
 """Independent append-only forum observation cycle. Never writes V7 files."""
-import argparse,hashlib,json,re,shutil
+import argparse,hashlib,json,re,shutil,os
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -113,8 +113,42 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         cutoff=now_local.replace(hour=21,minute=0,second=0,microsecond=0)
         if issue!=expected:
             raise ValueError('collector report is not for the current local-day issue')
-        if captured.tzinfo is None or captured.astimezone(TZ)>cutoff:
-            raise ValueError('collector completed after 21:00; preserved prior draft')
+        if captured.tzinfo is None or captured.astimezone(TZ)>=cutoff:
+            raise ValueError('collector completed at/after 21:00; preserved prior draft')
+        valid_count=int(status.get('valid_materials') or 0)
+        ranking=status.get('ranking') or []
+        full_ranking=(len(ranking)==12
+                      and len({r.get('zodiac') for r in ranking})==12
+                      and len(status.get('top3') or [])==3
+                      and len(status.get('top6') or [])==6)
+        valid_observation=(status.get('status')=='ready_observation'
+                           or (status.get('status')=='incomplete_observation'
+                               and 0<valid_count<25
+                               and status.get('pre_draw_verified') is True))
+        if not valid_observation or not full_ranking or valid_count<=0:
+            print('Non-qualifying collection was retained in workflow artifacts; '
+                  'last eligible pre-freeze draft remains unchanged.',flush=True)
+            status=None
+        else:
+            # Reject invalid score / missing source evidence before replacing a
+            # previously verified round. A failed late scan must not erase it.
+            verify_scored_result(status,min_materials=1 if valid_count<25 else 25)
+            captured_round=os.environ.get('FORUM_COLLECTION_ROUND')
+            if captured_round in ('1','2'):
+                status['collection_round']=int(captured_round)
+            else:
+                stamp=captured.astimezone(TZ)
+                status['collection_round']=2 if (stamp.hour,stamp.minute)>=(20,30) else 1
+            previous_path=archive/'issues'/issue/'draft-status.json'
+            if previous_path.exists():
+                previous=json.loads(previous_path.read_text(encoding='utf-8'))
+                try:
+                    previous_time=datetime.fromisoformat(previous['fetched_at'])
+                except (ValueError,TypeError,KeyError):
+                    previous_time=None
+                if previous_time is not None and previous_time.tzinfo is not None and captured<=previous_time:
+                    print('Older or duplicate collector result: preserved newest verified draft',flush=True)
+                    status=None
     if status is not None:
         atomic(archive/'latest.json',{
             'issue':issue,'status':status['status'],
@@ -128,8 +162,24 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             'notes':status.get('note','')})
         folder=archive/'issues'/issue
         if defer_freeze:
-            # Update only the mutable pre-freeze draft. A manual rerun replaces
-            # the previous draft; old immutable snapshots remain untouched.
+            # The latest eligible successful completion wins, regardless of
+            # how many automatic/manual runs happened before the 21:00 freeze.
+            # Keep an independently viewable report for each completed run.
+            run_id=re.sub(r'[^0-9a-zA-Z_-]','',os.environ.get('GITHUB_RUN_ID','local'))
+            stamp=datetime.fromisoformat(status['fetched_at']).astimezone(TZ)
+            report_name=f"round{status['collection_round']}-{stamp.strftime('%Y%m%dT%H%M%S%f')}-{run_id}"
+            round_folder=folder/'rounds'/report_name
+            round_folder.mkdir(parents=True,exist_ok=True)
+            atomic(round_folder/'summary.json',{
+                'issue':issue,'collection_round':status['collection_round'],
+                'run_id':run_id,'fetched_at':status['fetched_at'],
+                'valid_materials':status['valid_materials'],
+                'top3':status.get('top3',[]),'top6':status.get('top6',[]),
+                'status':status['status'],'frozen':False
+            })
+            round_report=out/issue/'report.md'
+            if round_report.exists():
+                shutil.copyfile(round_report,round_folder/'report.md')
             atomic(folder/'draft-status.json',status)
         persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
