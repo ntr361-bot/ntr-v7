@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026293",
+  "state": "collecting_effectively",
+  "run_id": "39434235217",
+  "attempt": 1,
+  "event": "push",
+  "test_only": true,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39434235217",
+  "updated_at": "2026-10-20T13:56:39.230668+00:00",
+  "error": null,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 158,
+  "article_details": {
+    "featured": {
+      "queued": 62,
+      "attempted": 62,
+      "opened": 62,
+      "extracted": 61,
+      "completed": 62
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 97,
+      "opened": 96,
+      "extracted": 96,
+      "completed": 96
+    }
+  },
+  "article_texts_extracted": 157,
+  "article_details_completed": 158,
+  "last_verified_post": {
+    "author": "阁阁閤",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11124963&type=3",
+    "verified_at": "2026-10-20T13:56:38.850413+00:00",
+    "text_length": 924,
+    "text_sha256": "774d0b621a16cef369ea4c5d743bf201f52e64265472cce14ab605e887541c84"
+  },
+  "last_attempted_post": {
+    "author": "上上签哦",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11124912&type=3",
+    "attempt_index": 159
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-20T13:55:45.206720+00:00",
+      "featured_queued": 62,
+      "featured_attempted": 62,
+      "featured_completed": 62
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 157,
+  "stage": "detail: 上上签哦 杀一肖",
+  "progress_updated_at": "2026-10-20T13:56:38.913948+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
