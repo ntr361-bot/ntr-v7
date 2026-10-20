@@ -146,7 +146,7 @@ def publish(state, error=None):
     if state == 'finished':
         if os.environ.get('JOB_STATUS') == 'failure':
             state = 'failed'
-            error = error or read_json('out/collection-error.json').get('reason') or quality_failure_reason(data) or 'Workflow step failed before a specific collector error was available; inspect Actions steps'
+            error = error or os.environ.get('SCHEDULE_GATE_REASON') or read_json('out/collection-error.json').get('reason') or quality_failure_reason(data) or 'Workflow step failed before a specific collector error was available; inspect Actions steps'
         elif test_mode:
             state = 'test_completed' if os.environ.get('OBSERVE_OUTCOME') == 'success' else 'test_incomplete'
         elif os.environ.get('FINALIZE_CYCLE') == 'true':
@@ -198,7 +198,10 @@ def supervise():
             return 2
         collect, issue, seconds, reason = True, test_issue, 1800, 'explicit_test_no_freeze'
     else:
-        collect, issue, seconds, reason = decide(datetime.now(TZ), 'archive', manual=os.environ.get('MANUAL_DISPATCH') == 'true')
+        collect, issue, seconds, reason = decide(
+            datetime.now(TZ), 'archive',
+            manual=os.environ.get('MANUAL_DISPATCH') == 'true',
+            scheduled=os.environ.get('SCHEDULED_RUN') == 'true')
     if not collect:
         print(f'Collection not started: {issue} {reason}', flush=True)
         safe_publish('skipped', reason)
