@@ -14,9 +14,9 @@ from urllib.parse import parse_qs, urljoin, urlsplit
 
 
 _IDENTIFIER = "forum-list-container-v1"
-_ZH_SPACE = re.compile(r"\\s+")
-_FULL_ISSUE = re.compile(r"20\\d{5}")
-_SHORT_ISSUE = re.compile(r"(?<!\\d)(\\d{3})(?!\\d)")
+_ZH_SPACE = re.compile(r"\s+")
+_FULL_ISSUE = re.compile(r"20\d{5}")
+_SHORT_ISSUE = re.compile(r"(?<!\d)(\d{3})(?!\d)")
 
 
 def _text(node, selector: str) -> str:
@@ -141,6 +141,6 @@ def write_comparison(report_file: str | Path, comparison: dict) -> None:
     path = Path(report_file)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(comparison, ensure_ascii=False, indent=2) + "\\n",
+    temporary.write_text(json.dumps(comparison, ensure_ascii=False, indent=2) + "\n",
                          encoding="utf-8")
     temporary.replace(path)
