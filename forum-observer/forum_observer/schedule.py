@@ -138,8 +138,8 @@ def main():
         print(json.dumps({"allowed": allowed, "reason": reason}, ensure_ascii=False), flush=True)
         if a.github_output:
             with open(a.github_output, "a", encoding="utf-8") as f:
-                f.write(f"allowed={str(allowed).lower()}\\n")
-                f.write(f"reason={reason}\\n")
+                f.write(f"allowed={str(allowed).lower()}\n")
+                f.write(f"reason={reason}\n")
         return 0
     issue = current_issue(now)
     if a.ensure_report:
