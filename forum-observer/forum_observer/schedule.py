@@ -33,10 +33,38 @@ def collection_window_allowed(now):
     return COLLECTION_START <= minute <= COLLECTION_END
 
 
-def freeze_window_allowed(now):
+def draft_is_current_evening(data, issue, now):
+    local = now.astimezone(TZ)
+    if data.get("issue") != issue or not data.get("fetched_at"):
+        return False
+    try:
+        captured = datetime.fromisoformat(data["fetched_at"])
+    except (TypeError, ValueError):
+        return False
+    if captured.tzinfo is None:
+        return False
+    captured_local = captured.astimezone(TZ)
+    return (
+        captured_local.date() == local.date()
+        and current_issue(captured_local) == issue
+        and (captured_local.hour, captured_local.minute) >= COLLECTION_START
+    )
+
+
+def freeze_window_allowed(now, archive=None):
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
-    return FREEZE_START <= minute < FREEZE_END
+    if not (FREEZE_START <= minute < FREEZE_END):
+        return False
+    if archive is None:
+        return True
+    issue = current_issue(local)
+    draft = Path(archive) / "issues" / issue / "draft-status.json"
+    try:
+        data = json.loads(draft.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    return draft_is_current_evening(data, issue, local)
 
 
 def snapshot_exists(archive, issue):
@@ -70,7 +98,10 @@ def decide(now, archive, manual=False, scheduled=False):
         if (previous.get('issue')==issue and
                 previous.get('status')=='ready_observation' and
                 int(previous.get('valid_materials') or 0)>=25):
-            return False, issue, 0, "completed_draft_waiting_for_21_freeze"
+            # An early/overnight draft is not tonight's collection. Let the
+            # first in-window scheduled run replace it before the freeze.
+            if not scheduled or draft_is_current_evening(previous, issue, local):
+                return False, issue, 0, "completed_draft_waiting_for_21_freeze"
     cutoff = local.replace(hour=CUTOFF_HOUR, minute=CUTOFF_MINUTE,
                            second=0, microsecond=0)
     remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
@@ -133,8 +164,13 @@ def main():
     a = parser.parse_args()
     now = datetime.now(TZ)
     if a.check_freeze_window:
-        allowed = freeze_window_allowed(now)
-        reason = "within_freeze_window" if allowed else "scheduled_freeze_window_missed"
+        allowed = freeze_window_allowed(now, a.archive)
+        if allowed:
+            reason = "within_freeze_window"
+        elif not freeze_window_allowed(now):
+            reason = "scheduled_freeze_window_missed"
+        else:
+            reason = "scheduled_freeze_missing_evening_collection"
         print(json.dumps({"allowed": allowed, "reason": reason}, ensure_ascii=False), flush=True)
         if a.github_output:
             with open(a.github_output, "a", encoding="utf-8") as f:
