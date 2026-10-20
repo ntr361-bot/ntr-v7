@@ -856,10 +856,10 @@ void RefreshAllPeriodsGeneratesAllV65DailyModels()
     int allHistoryPeriods = results[AISettings.AllHistoryModeValue].AnalysisPeriods;
     DatabaseHelper.PredictionRecord[] rows = DatabaseHelper.GetPredictionHistory(int.MaxValue)
         .Where(row => row.Issue == issue).ToArray();
-    Assert(rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 50) &&
-        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == 100) &&
-        rows.Any(row => row.ModelVersion == "V6.5" && row.AnalysisPeriods == allHistoryPeriods) &&
-        rows.Any(row => row.ModelVersion == "V6.5 AutoLearning"),
+    Assert(rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.Period50 && row.AnalysisPeriods == 50) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.Period100 && row.AnalysisPeriods == 100) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.AllHistory && row.AnalysisPeriods == allHistoryPeriods) &&
+        rows.Any(row => ExperimentModels.Canonicalize(row.ModelVersion, row.AnalysisPeriods) == ExperimentModels.AutoLearning),
         "手动刷新后缺少基础模型或V6.5自动学习的同一期预测记录");
 }
 
