@@ -211,8 +211,11 @@ int DesktopResourceSmoke()
     int baselineGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
     int baselineUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
     using var process = System.Diagnostics.Process.GetCurrentProcess();
+    process.Refresh();
     int baselineHandles = process.HandleCount;
+    long baselinePrivateBytes = process.PrivateMemorySize64;
     int peakGdi = baselineGdi, peakUser = baselineUser, peakHandles = baselineHandles;
+    long peakPrivateBytes = baselinePrivateBytes;
 
     for (int i = 0; i < 500; i++)
     {
@@ -226,7 +229,8 @@ int DesktopResourceSmoke()
             peakGdi = Math.Max(peakGdi, gdi);
             peakUser = Math.Max(peakUser, user);
             peakHandles = Math.Max(peakHandles, process.HandleCount);
-            Console.WriteLine($"desktop-refresh={i + 1} gdi={gdi} user={user} handles={process.HandleCount}");
+            peakPrivateBytes = Math.Max(peakPrivateBytes, process.PrivateMemorySize64);
+            Console.WriteLine($"desktop-refresh={i + 1} gdi={gdi} user={user} handles={process.HandleCount} privateMiB={process.PrivateMemorySize64 / (1024 * 1024)}");
         }
     }
 
@@ -245,6 +249,7 @@ int DesktopResourceSmoke()
         peakGdi = Math.Max(peakGdi, gdi);
         peakUser = Math.Max(peakUser, user);
         peakHandles = Math.Max(peakHandles, process.HandleCount);
+        peakPrivateBytes = Math.Max(peakPrivateBytes, process.PrivateMemorySize64);
     }
     GC.Collect();
     GC.WaitForPendingFinalizers();
@@ -252,13 +257,16 @@ int DesktopResourceSmoke()
     process.Refresh();
     int finalGdi = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 0);
     int finalUser = (int)DesktopResourceNative.GetGuiResources(DesktopResourceNative.GetCurrentProcess(), 1);
+    long finalPrivateBytes = process.PrivateMemorySize64;
     int finalHandles = process.HandleCount;
-    Console.WriteLine($"resource-baseline gdi={baselineGdi} user={baselineUser} handles={baselineHandles}; " +
-        $"peak gdi={peakGdi} user={peakUser} handles={peakHandles}; " +
-        $"final gdi={finalGdi} user={finalUser} handles={finalHandles}");
+    Console.WriteLine($"resource-baseline gdi={baselineGdi} user={baselineUser} handles={baselineHandles} privateMiB={baselinePrivateBytes / (1024 * 1024)}; " +
+        $"peak gdi={peakGdi} user={peakUser} handles={peakHandles} privateMiB={peakPrivateBytes / (1024 * 1024)}; " +
+        $"final gdi={finalGdi} user={finalUser} handles={finalHandles} privateMiB={finalPrivateBytes / (1024 * 1024)}");
     bool stable = peakGdi - baselineGdi <= 128 && peakUser - baselineUser <= 128 &&
-        peakHandles - baselineHandles <= 160 && finalGdi - baselineGdi <= 64 &&
-        finalUser - baselineUser <= 64 && finalHandles - baselineHandles <= 80;
+        finalGdi - baselineGdi <= 64 && finalUser - baselineUser <= 64 &&
+        finalHandles - baselineHandles <= 80 &&
+        peakPrivateBytes - baselinePrivateBytes <= 256L * 1024 * 1024 &&
+        finalPrivateBytes - baselinePrivateBytes <= 64L * 1024 * 1024;
     if (!stable) Console.Error.WriteLine("Desktop refresh resources grew beyond the bounded smoke-test budget.");
     return stable ? 0 : 1;
 }
