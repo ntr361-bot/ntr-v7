@@ -69,7 +69,7 @@ jobs:
           if ($schedule -eq '0 15 * * *') {
             # Retry only if the 22:00 primary run did not complete successfully.
             # If GitHub never started that run, let this scheduled retry recover it.
-            $now = [DateTimeOffset]::Parse('${{ github.run_started_at }}').ToUniversalTime()
+            $now = [DateTimeOffset]::UtcNow
             $primaryWindowStart = $now.Date.AddHours(14)
             $uri = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/workflows/run-prediction.yml/runs?event=schedule&branch=$env:GITHUB_REF_NAME&per_page=100"
             $runs = Invoke-RestMethod -Uri $uri -Headers @{
