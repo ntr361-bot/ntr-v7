@@ -193,17 +193,23 @@ def _listing(page,category,scrapling_storage=None,scrapling_report=None):
         obj['key']=(obj['author'],obj['issue'],obj['published_at'],obj['title'])
         result.append(obj)
     if scrapling_storage and scrapling_report:
-        # Scrapling is a read-only second parser for diagnostics. Its rows are
-        # deliberately never merged into the official listing or scoring input.
+        # Probe at most once per minute so the auxiliary parser stays bounded.
+        # Scrapling rows are never merged into official listing/scoring input.
+        report_path=Path(scrapling_report)
         try:
-            from .scrapling_assist import compare_listing, write_comparison
-            comparison=compare_listing(page.content(),page.url,category or '',result,scrapling_storage)
-            comparison['captured_at']=datetime.now(timezone.utc).isoformat()
-            write_comparison(scrapling_report,comparison)
-        except Exception as exc:
-            # A diagnostic parser must never interrupt the primary collector.
-            print(json.dumps({'event':'scrapling_assist_error',
-                              'reason':str(exc)[:240]},ensure_ascii=False),flush=True)
+            probe_due=(not report_path.exists() or time.time()-report_path.stat().st_mtime>=60)
+        except OSError:
+            probe_due=True
+        if probe_due:
+            try:
+                from .scrapling_assist import compare_listing, write_comparison
+                comparison=compare_listing(page.content(),page.url,category or '',result,scrapling_storage)
+                comparison['captured_at']=datetime.now(timezone.utc).isoformat()
+                write_comparison(report_path,comparison)
+            except Exception as exc:
+                # A diagnostic parser must never interrupt the primary collector.
+                print(json.dumps({'event':'scrapling_assist_error',
+                                  'reason':str(exc)[:240]},ensure_ascii=False),flush=True)
     return result
 
 
