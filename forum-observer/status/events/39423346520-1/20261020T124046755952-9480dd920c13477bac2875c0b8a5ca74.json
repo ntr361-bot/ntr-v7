@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026293",
+  "state": "collecting_effectively",
+  "run_id": "39423346520",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39423346520",
+  "updated_at": "2026-10-20T12:40:46.755952+00:00",
+  "error": null,
+  "valid_materials": 58,
+  "valid_authors": 58,
+  "successful_post_opens": 330,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 49,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 478,
+      "attempted": 281,
+      "opened": 280,
+      "extracted": 277,
+      "completed": 280
+    }
+  },
+  "article_texts_extracted": 326,
+  "article_details_completed": 330,
+  "last_verified_post": {
+    "author": "看到结果",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121088&type=3",
+    "verified_at": "2026-10-20T12:40:46.061730+00:00",
+    "text_length": 74,
+    "text_sha256": "6df995093b1ae9d665d180824576cab807af4076a830b8218311261056266cf4"
+  },
+  "last_attempted_post": {
+    "author": "肯德基暗",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11121087&type=3",
+    "attempt_index": 331
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-20T12:37:48.340202+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 326,
+  "stage": "detail: 肯德基暗 293期:TM大小，可以直接下注的",
+  "progress_updated_at": "2026-10-20T12:40:46.220279+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
