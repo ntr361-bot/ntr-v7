@@ -6,7 +6,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from zoneinfo import ZoneInfo
 
-from forum_observer.schedule import current_issue, decide, snapshot_exists, ensure_daily_report
+from forum_observer.schedule import (
+    current_issue, decide, snapshot_exists, ensure_daily_report,
+    collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
+)
 
 TZ = ZoneInfo("Asia/Shanghai")
 
@@ -47,13 +50,70 @@ class ScheduleTests(unittest.TestCase):
             self.assertTrue(decide(self.at(19, 10, 13), tmp)[0])
             self.assertEqual(current_issue(self.at(19, 10, 13)), "2026286")
 
+    def test_scheduled_collection_rejects_early_and_stale_events(self):
+        with TemporaryDirectory() as tmp:
+            self.assertEqual(decide(self.at(19, 39), tmp, scheduled=True)[3],
+                             "scheduled_event_outside_collection_window")
+            self.assertTrue(decide(self.at(19, 40), tmp, scheduled=True)[0])
+            self.assertTrue(decide(self.at(20, 25), tmp, scheduled=True)[0])
+            self.assertEqual(decide(self.at(20, 26), tmp, scheduled=True)[3],
+                             "scheduled_event_outside_collection_window")
+            self.assertEqual(decide(self.at(1, 46, 13), tmp, scheduled=True)[3],
+                             "scheduled_event_outside_collection_window")
+            # A user-requested manual rerun still follows the existing 21:00 cutoff.
+            self.assertTrue(decide(self.at(1, 46, 13), tmp, manual=True,
+                                   scheduled=True)[0])
+
+    def test_overnight_ready_draft_is_refreshed_instead_of_blocking_tonight(self):
+        with TemporaryDirectory() as tmp:
+            issue="2026285"
+            folder=Path(tmp)/"issues"/issue
+            folder.mkdir(parents=True)
+            early=self.at(1, 51).isoformat()
+            path=folder/"draft-status.json"
+            path.write_text(json.dumps({
+                "issue":issue,"status":"ready_observation","valid_materials":50,
+                "fetched_at":early
+            }),encoding="utf-8")
+            self.assertTrue(decide(self.at(19, 40),tmp,scheduled=True)[0])
+            evening=json.loads(path.read_text())
+            evening["fetched_at"]=self.at(19, 50).isoformat()
+            path.write_text(json.dumps(evening),encoding="utf-8")
+            self.assertEqual(decide(self.at(20, 0),tmp,scheduled=True)[3],
+                             "completed_draft_waiting_for_21_freeze")
+
+    def test_freeze_requires_a_current_evening_draft(self):
+        with TemporaryDirectory() as tmp:
+            now=self.at(21, 0)
+            issue=current_issue(now)
+            folder=Path(tmp)/"issues"/issue
+            folder.mkdir(parents=True)
+            path=folder/"draft-status.json"
+            path.write_text(json.dumps({
+                "issue":issue,"status":"ready_observation","valid_materials":50,
+                "fetched_at":self.at(1, 51).isoformat()
+            }),encoding="utf-8")
+            self.assertFalse(freeze_window_allowed(now,tmp))
+            fresh=json.loads(path.read_text())
+            fresh["fetched_at"]=self.at(20, 0).isoformat()
+            path.write_text(json.dumps(fresh),encoding="utf-8")
+            self.assertTrue(freeze_window_allowed(now,tmp))
+
+    def test_freeze_window_rejects_delayed_next_day_events(self):
+        self.assertFalse(freeze_window_allowed(self.at(20, 59)))
+        self.assertTrue(freeze_window_allowed(self.at(21, 0)))
+        self.assertTrue(freeze_window_allowed(self.at(21, 15)))
+        self.assertFalse(freeze_window_allowed(self.at(21, 20)))
+        self.assertFalse(freeze_window_allowed(self.at(1, 51, 13)))
+
     def test_completed_draft_skips_automatic_backups_but_manual_can_rerun(self):
         with TemporaryDirectory() as tmp:
             issue="2026285"
             folder=Path(tmp)/'issues'/issue
             folder.mkdir(parents=True)
             (folder/'draft-status.json').write_text(json.dumps({
-                'issue':issue,'status':'ready_observation','valid_materials':27
+                'issue':issue,'status':'ready_observation','valid_materials':27,
+                'fetched_at':self.at(19, 50).isoformat()
             },ensure_ascii=False),encoding='utf-8')
             self.assertEqual(decide(self.at(20,10),tmp)[3],
                              "completed_draft_waiting_for_21_freeze")
@@ -103,6 +163,9 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("--ensure-report", workflow)
         self.assertIn("--defer-freeze", workflow)
         self.assertIn("--finalize", workflow)
+        self.assertIn("--scheduled", workflow)
+        self.assertIn("--check-freeze-window", workflow)
+        self.assertIn("scheduled_event_outside_collection_window", workflow)
 
 if __name__ == "__main__":
     unittest.main()

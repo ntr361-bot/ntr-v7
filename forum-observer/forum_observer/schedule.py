@@ -14,6 +14,10 @@ from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
+COLLECTION_START = (19, 40)
+COLLECTION_END = (20, 25)
+FREEZE_START = (21, 0)
+FREEZE_END = (21, 20)
 MAX_SECONDS = 1800
 PUBLISH_RESERVE_SECONDS = 90
 
@@ -21,6 +25,46 @@ PUBLISH_RESERVE_SECONDS = 90
 def current_issue(now):
     local = now.astimezone(TZ)
     return f"{local.year}{local.timetuple().tm_yday:03d}"
+
+
+def collection_window_allowed(now):
+    local = now.astimezone(TZ)
+    minute = (local.hour, local.minute)
+    return COLLECTION_START <= minute <= COLLECTION_END
+
+
+def draft_is_current_evening(data, issue, now):
+    local = now.astimezone(TZ)
+    if data.get("issue") != issue or not data.get("fetched_at"):
+        return False
+    try:
+        captured = datetime.fromisoformat(data["fetched_at"])
+    except (TypeError, ValueError):
+        return False
+    if captured.tzinfo is None:
+        return False
+    captured_local = captured.astimezone(TZ)
+    return (
+        captured_local.date() == local.date()
+        and current_issue(captured_local) == issue
+        and (captured_local.hour, captured_local.minute) >= COLLECTION_START
+    )
+
+
+def freeze_window_allowed(now, archive=None):
+    local = now.astimezone(TZ)
+    minute = (local.hour, local.minute)
+    if not (FREEZE_START <= minute < FREEZE_END):
+        return False
+    if archive is None:
+        return True
+    issue = current_issue(local)
+    draft = Path(archive) / "issues" / issue / "draft-status.json"
+    try:
+        data = json.loads(draft.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    return draft_is_current_evening(data, issue, local)
 
 
 def snapshot_exists(archive, issue):
@@ -38,10 +82,12 @@ def snapshot_exists(archive, issue):
     return True
 
 
-def decide(now, archive, manual=False):
-    """Return (collect, issue, seconds, reason). Fail closed after cutoff."""
+def decide(now, archive, manual=False, scheduled=False):
+    """Return (collect, issue, seconds, reason); scheduled events fail closed outside the nightly window."""
     local = now.astimezone(TZ)
     issue = current_issue(now)
+    if scheduled and not manual and not collection_window_allowed(local):
+        return False, issue, 0, "scheduled_event_outside_collection_window"
     if snapshot_exists(archive, issue):
         return False, issue, 0, "immutable_snapshot_exists"
     draft=Path(archive)/'issues'/issue/'draft-status.json'
@@ -52,7 +98,10 @@ def decide(now, archive, manual=False):
         if (previous.get('issue')==issue and
                 previous.get('status')=='ready_observation' and
                 int(previous.get('valid_materials') or 0)>=25):
-            return False, issue, 0, "completed_draft_waiting_for_21_freeze"
+            # An early/overnight draft is not tonight's collection. Let the
+            # first in-window scheduled run replace it before the freeze.
+            if not scheduled or draft_is_current_evening(previous, issue, local):
+                return False, issue, 0, "completed_draft_waiting_for_21_freeze"
     cutoff = local.replace(hour=CUTOFF_HOUR, minute=CUTOFF_MINUTE,
                            second=0, microsecond=0)
     remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
@@ -110,8 +159,24 @@ def main():
     parser.add_argument("--require-snapshot", action="store_true")
     parser.add_argument("--ensure-report", action="store_true")
     parser.add_argument("--manual", action="store_true",help="Allow an explicit rerun before the freeze deadline")
+    parser.add_argument("--scheduled", action="store_true",help="Require the scheduled collection window")
+    parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
     a = parser.parse_args()
     now = datetime.now(TZ)
+    if a.check_freeze_window:
+        allowed = freeze_window_allowed(now, a.archive)
+        if allowed:
+            reason = "within_freeze_window"
+        elif not freeze_window_allowed(now):
+            reason = "scheduled_freeze_window_missed"
+        else:
+            reason = "scheduled_freeze_missing_evening_collection"
+        print(json.dumps({"allowed": allowed, "reason": reason}, ensure_ascii=False), flush=True)
+        if a.github_output:
+            with open(a.github_output, "a", encoding="utf-8") as f:
+                f.write(f"allowed={str(allowed).lower()}\n")
+                f.write(f"reason={reason}\n")
+        return 0
     issue = current_issue(now)
     if a.ensure_report:
         ensure_daily_report(a.archive, now)
@@ -124,8 +189,9 @@ def main():
             raise SystemExit(f"ERROR: {issue} has no immutable forum snapshot at daily audit")
         print(f"PASS: {issue} immutable forum snapshot exists")
         return 0
-    manual=a.manual or int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1
-    collect, issue, seconds, reason = decide(now, a.archive,manual=manual)
+    scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
+    manual=a.manual or (int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1 and not scheduled)
+    collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled)
     print(json.dumps({"issue":issue, "collect":collect,
                       "max_seconds":seconds, "reason":reason},
                      ensure_ascii=False), flush=True)
