@@ -239,7 +239,8 @@ def main():
         return 0
     scheduled=a.scheduled or os.environ.get("SCHEDULED_RUN") == "true"
     manual=a.manual or (int(os.environ.get("GITHUB_RUN_ATTEMPT","1"))>1 and not scheduled)
-    collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled,\n                                             slot=os.environ.get('FORUM_SCHEDULE_CRON'))
+    collect, issue, seconds, reason = decide(now, a.archive,manual=manual,scheduled=scheduled,
+                                             slot=os.environ.get('FORUM_SCHEDULE_CRON'))
     local = now.astimezone(TZ)
     collection_round = 2 if (local.hour,local.minute)>=SECOND_COLLECTION_START else 1
     print(json.dumps({"issue":issue, "collect":collect,
