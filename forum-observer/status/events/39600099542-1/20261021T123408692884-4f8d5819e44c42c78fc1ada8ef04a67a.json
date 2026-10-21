@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026294",
+  "state": "collecting_effectively",
+  "run_id": "39600099542",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39600099542",
+  "updated_at": "2026-10-21T12:34:08.692884+00:00",
+  "error": null,
+  "valid_materials": 27,
+  "valid_authors": 27,
+  "successful_post_opens": 128,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 48,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 479,
+      "attempted": 80,
+      "opened": 79,
+      "extracted": 75,
+      "completed": 79
+    }
+  },
+  "article_texts_extracted": 123,
+  "article_details_completed": 128,
+  "last_verified_post": {
+    "author": "财喜门生",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11132076&type=3",
+    "verified_at": "2026-10-21T12:34:08.527914+00:00",
+    "text_length": 31,
+    "text_sha256": "c4e8f7cdc7628df75f0ee2594e3a65057f00b1c4f9adf4ab4c1c2cb8411b72b8"
+  },
+  "last_attempted_post": {
+    "author": "元宝财",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11132075&type=3",
+    "attempt_index": 129
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-21T12:33:20.770914+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 123,
+  "stage": "detail: 元宝财 精准9肖",
+  "progress_updated_at": "2026-10-21T12:34:08.663601+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 5
+  },
+  "coverage_label": null
+}
