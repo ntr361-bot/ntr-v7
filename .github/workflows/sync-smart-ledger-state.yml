@@ -14,7 +14,7 @@ on:
 
 permissions:
   contents: read
-  actions: read
+  actions: write
   id-token: write
 
 concurrency:
@@ -22,6 +22,49 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  recover-formal-prediction:
+    # GitHub scheduled events can be delayed or omitted. The hourly sync job
+    # checks the two formal-prediction windows and dispatches one recovery run
+    # only when no successful or active run exists for today's cycle.
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recover missing formal prediction run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          now_beijing="$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          hour="${now_beijing:11:2}"
+          minute="${now_beijing:14:2}"
+          if [[ "$hour" != "22" && "$hour" != "23" ]]; then
+            echo "Outside formal-prediction recovery window: $now_beijing"
+            exit 0
+          fi
+
+          today_utc="$(TZ=UTC date '+%Y-%m-%d')"
+          runs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100&created=${today_utc}T00:00:00Z..$(TZ=UTC date -d '+1 day' '+%Y-%m-%d')T00:00:00Z" --jq '[.workflow_runs[] | select(.path == ".github/workflows/run-prediction.yml")]')"
+          active="$(jq '[.[] | select(.status != "completed")] | length' <<<"$runs")"
+          successful="$(jq '[.[] | select(.status == "completed" and .conclusion == "success")] | length' <<<"$runs")"
+
+          if (( active > 0 )); then
+            echo "A formal prediction run is already active; no recovery dispatch."
+            exit 0
+          fi
+          if (( successful > 0 )); then
+            echo "A formal prediction run already completed successfully today; no recovery dispatch."
+            exit 0
+          fi
+
+          echo "No active or successful formal prediction run found at $now_beijing; dispatching recovery."
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/run-prediction.yml/dispatches" \
+            -f ref=main \
+            -f 'inputs[retry_attempt]=hourly-recovery' \
+            -f 'inputs[refresh_data]=true' \
+            -f 'inputs[dry_run]=false'
+          echo "Formal prediction recovery dispatched."
+
   sync:
     if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main') }}
     runs-on: windows-latest
