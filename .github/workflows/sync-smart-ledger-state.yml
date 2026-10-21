@@ -44,7 +44,7 @@ jobs:
           fi
 
           today_utc="$(TZ=UTC date '+%Y-%m-%d')"
-          runs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100&created=${today_utc}T00:00:00Z..$(TZ=UTC date -d '+1 day' '+%Y-%m-%d')T00:00:00Z" --jq '[.workflow_runs[] | select(.path == ".github/workflows/run-prediction.yml")]')"
+          runs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100&created=${today_utc}T00:00:00Z..$(TZ=UTC date -d '+1 day' '+%Y-%m-%d')T00:00:00Z" --jq '[.workflow_runs[] | select(.path == ".github/workflows/run-prediction.yml" and (.event == "schedule" or .event == "workflow_dispatch") and .head_branch == "main")]')"
           active="$(jq '[.[] | select(.status != "completed")] | length' <<<"$runs")"
           successful="$(jq '[.[] | select(.status == "completed" and .conclusion == "success")] | length' <<<"$runs")"
 
