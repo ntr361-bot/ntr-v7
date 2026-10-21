@@ -10,7 +10,12 @@ on:
     - cron: '30,35,40 12 * * *'
     # Beijing 21:00 final freeze (and best-effort 21:05/21:10 backups).
     - cron: '0,5,10 13 * * *'
-  # ChatGPT task writes a daily marker to an isolated trigger branch.
+  # GitHub cron delivery has been observed hours late (2026-10-16..20), so an
+  # external scheduler pushes markers to the isolated trigger branch:
+  #   trigger(forum-collect-1): ~19:56, trigger(forum-collect-2): ~20:26,
+  #   trigger(forum-freeze): ~21:01 (same 21:00-21:20 window and write-once
+  #   snapshot guard as the 21:00 cron; never valid outside that window).
+  # Push events run THIS file from the trigger branch: keep both copies in sync.
   # Always check out main for collection; trigger files never enter main.
   push:
     branches: [forum-gpt-trigger]
@@ -109,19 +114,19 @@ jobs:
       - name: Ensure nightly issue report even if collection produced no data
         if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-audit):')
         run: python -m forum_observer.schedule --archive archive --ensure-report
-      - name: Check scheduled nightly freeze window
+      - name: Check nightly freeze window (21:00 cron or trigger(forum-freeze) marker)
         id: freeze-window
-        if: github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *'
+        if: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
         run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --check-freeze-window
       - name: Reject delayed scheduled freeze
         if: steps.freeze-window.outputs.allowed == 'false'
         run: |
-          echo "::error::Scheduled forum freeze arrived outside today's 21:00-21:20 Asia/Shanghai window; no late freeze was attempted."
+          echo "::error::Forum freeze (cron or trigger(forum-freeze) marker) arrived outside today's 21:00-21:20 Asia/Shanghai window; no late freeze was attempted."
           exit 1
       - name: Publish completed-run report or finalize nightly freeze
         env:
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
-          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
+          FINALIZE_CYCLE: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
             python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
@@ -202,7 +207,7 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           GATE_COLLECT: ${{ steps.collection-gate.outputs.collect }}
           SCHEDULE_GATE_REASON: ${{ steps.collection-gate.outputs.reason || steps.freeze-window.outputs.reason }}
-          FINALIZE_CYCLE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
+          FINALIZE_CYCLE: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
         run: python -m forum_observer.runtime finished
       - name: Preserve complete monitor journal
         if: always()
