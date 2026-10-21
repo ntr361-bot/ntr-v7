@@ -223,5 +223,26 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("trigger(forum-collect-1):",workflow)
         self.assertIn("trigger(forum-collect-2):",workflow)
 
+    def test_workflow_freeze_marker_uses_same_window_as_cron(self):
+        """Freeze marker may finalize only through the guarded 21:00-21:20 window."""
+        workflow = (Path(__file__).resolve().parents[2] / ".github" /
+                    "workflows" / "forum-observer.yml").read_text(encoding="utf-8")
+        finalize_lines = [line.strip() for line in workflow.splitlines()
+                          if line.strip().startswith("FINALIZE_CYCLE:")]
+        self.assertEqual(len(finalize_lines), 2)
+        for line in finalize_lines:
+            self.assertIn("trigger(forum-freeze):", line)
+            self.assertNotIn("trigger(forum-audit):", line)
+            self.assertNotIn("trigger(forum-collect", line)
+        window_if = [line.strip() for line in workflow.splitlines()
+                     if "trigger(forum-freeze):" in line and line.strip().startswith("if:")]
+        self.assertEqual(len(window_if), 1)
+        self.assertIn("0,5,10 13 * * *", window_if[0])
+        gate = [line for line in workflow.splitlines()
+                if line.strip().startswith("if:") and "trigger(forum-collect-1):" in line
+                and "workflow_dispatch" in line]
+        self.assertEqual(len(gate), 1)
+        self.assertNotIn("trigger(forum-freeze):", gate[0])
+
 if __name__ == "__main__":
     unittest.main()
