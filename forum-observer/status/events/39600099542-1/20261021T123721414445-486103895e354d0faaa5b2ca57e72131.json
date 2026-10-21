@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026294",
+  "state": "collecting_effectively",
+  "run_id": "39600099542",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39600099542",
+  "updated_at": "2026-10-21T12:37:21.414445+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 390,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 48,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 479,
+      "attempted": 342,
+      "opened": 341,
+      "extracted": 336,
+      "completed": 341
+    }
+  },
+  "article_texts_extracted": 384,
+  "article_details_completed": 390,
+  "last_verified_post": {
+    "author": "不再回头",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11126477&type=3",
+    "verified_at": "2026-10-21T12:37:20.619971+00:00",
+    "text_length": 54,
+    "text_sha256": "0fe6c8a78091255573c05981231804276b379687986e7fb3ba26d0d73c8f90d5"
+  },
+  "last_attempted_post": {
+    "author": "不在乎又如何",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11126476&type=3",
+    "attempt_index": 391
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-21T12:33:20.770914+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 384,
+  "stage": "detail: 不在乎又如何 294期:美丑肖",
+  "progress_updated_at": "2026-10-21T12:37:20.892676+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 6
+  },
+  "coverage_label": null
+}
