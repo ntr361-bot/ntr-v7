@@ -1,51 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026294",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "39600099542",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39600099542",
-  "updated_at": "2026-10-21T12:32:00.244744+00:00",
+  "updated_at": "2026-10-21T12:33:04.260694+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 3,
+  "valid_authors": 3,
+  "successful_post_opens": 19,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 49,
+      "attempted": 20,
+      "opened": 19,
+      "extracted": 18,
+      "completed": 19
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 479,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 18,
+  "article_details_completed": 19,
+  "last_verified_post": {
+    "author": "港澳会所",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11129949&type=3",
+    "verified_at": "2026-10-21T12:33:03.998416+00:00",
+    "text_length": 368,
+    "text_sha256": "133d2fd5b77da69c72c8254b09da41d30a1e24c6a20ee3201dc366b3292c96c5"
+  },
+  "last_attempted_post": {
+    "author": "天命人",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11126911&type=3",
+    "attempt_index": 20
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 70",
-  "progress_updated_at": "2026-10-21T12:31:59.993279+00:00",
+  "raw_count": 18,
+  "stage": "detail: 天命人 294",
+  "progress_updated_at": "2026-10-21T12:33:04.008826+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
