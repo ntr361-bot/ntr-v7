@@ -112,6 +112,9 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
     local = now.astimezone(TZ)
     issue = current_issue(now)
     minute = (local.hour, local.minute)
+    # Push markers expand ${{ github.event.schedule }} to an empty string, not
+    # an unset variable: "" means "no cron slot", never a retired cron.
+    slot = slot or None
     # A retired 19:40 cron delivered late must never act as the new 20:00 round.
     if scheduled and not manual and slot not in (None, ROUND_ONE_CRON, ROUND_TWO_CRON):
         return False, issue, 0, "retired_schedule_trigger"

@@ -101,6 +101,20 @@ class ScheduleTests(unittest.TestCase):
                                     slot='0 12 * * *')[3],
                              "retired_schedule_trigger")
 
+    def test_push_marker_empty_cron_slot_is_not_retired(self):
+        # Workflow push events set FORUM_SCHEDULE_CRON="" (2026-10-21 regression).
+        with TemporaryDirectory() as tmp:
+            self.assertTrue(decide(self.at(20, 0), tmp, scheduled=True, slot='',
+                                   requested_round='1')[0])
+            self.assertTrue(decide(self.at(20, 30), tmp, scheduled=True, slot='',
+                                   requested_round='2')[0])
+            self.assertEqual(decide(self.at(20, 30), tmp, scheduled=True, slot='',
+                                    requested_round='1')[3],
+                             "requested_round_outside_window")
+            self.assertEqual(decide(self.at(21, 5), tmp, scheduled=True, slot='',
+                                    requested_round='2')[3],
+                             "scheduled_event_outside_collection_window")
+
     def test_gpt_triggers_align_to_2000_or_2030(self):
         self.assertEqual(gpt_trigger_wait_seconds(self.at(19,55)),300)
         self.assertEqual(gpt_trigger_wait_seconds(self.at(19,59)),60)
