@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026295",
+  "state": "collecting_effectively",
+  "run_id": "39774616037",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39774616037",
+  "updated_at": "2026-10-22T12:14:15.405041+00:00",
+  "error": null,
+  "valid_materials": 43,
+  "valid_authors": 43,
+  "successful_post_opens": 222,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 466,
+      "attempted": 176,
+      "opened": 175,
+      "extracted": 172,
+      "completed": 175
+    }
+  },
+  "article_texts_extracted": 218,
+  "article_details_completed": 222,
+  "last_verified_post": {
+    "author": "无影中特",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133797&type=3",
+    "verified_at": "2026-10-22T12:14:14.865641+00:00",
+    "text_length": 3500,
+    "text_sha256": "a1a206d17a26e2fbba3043c8bc28bce798c92fd48a8d1708476c89e2219b46b5"
+  },
+  "last_attempted_post": {
+    "author": "无影中特",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133740&type=3",
+    "attempt_index": 223
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:12:24.893652+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 218,
+  "stage": "detail: 无影中特 295-5",
+  "progress_updated_at": "2026-10-22T12:14:15.071474+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
