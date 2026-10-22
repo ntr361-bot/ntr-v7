@@ -74,6 +74,8 @@ class Forum49CycleTest(unittest.TestCase):
                 self.assertEqual((folder / 'snapshot.json').read_bytes(), before)
                 hist = json.loads((public / 'history.json').read_text())
                 self.assertEqual((hist['model'], hist['settled_count']), ('forum49', 1))
+                self.assertEqual(hist['settlements'][0]['top6'], snap['top6'])
+                self.assertEqual(hist['settlements'][0]['frozen_at'], snap['frozen_at'])
                 self.assertTrue((public / 'issues' / f'{issue}.json').exists())
             # 118's feed directory was never written.
             self.assertFalse(other.exists())
