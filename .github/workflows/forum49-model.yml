@@ -15,6 +15,10 @@ on:
         description: Forum URL
         required: false
         default: https://49217.com/#/forum
+      scrapling_check:
+        description: Run Scrapling side-by-side check after collection
+        required: false
+        default: 'true'
 permissions:
   contents: write
 concurrency:
@@ -23,7 +27,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 95
     defaults:
       run:
         working-directory: forum-observer
@@ -37,7 +41,7 @@ jobs:
           pip install playwright
           python -m playwright install --with-deps chromium
       - name: Unit tests
-        run: python -m unittest tests.test_forum49 tests.test_source_probe -v
+        run: python -m unittest tests.test_forum49 tests.test_forum49_scrapling tests.test_source_probe -v
       - name: Collect (no limit on post count; stops at issue boundary)
         id: collect
         env:
@@ -45,6 +49,18 @@ jobs:
           F49_URL: ${{ inputs.url }}
         run: |
           python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive forum49
+      - name: Scrapling side-by-side check (isolated; never affects collection)
+        id: scrapling
+        if: always() && inputs.scrapling_check != 'false' && hashFiles('forum-observer/forum49-out/forum49-evidence.json') != ''
+        continue-on-error: true
+        timeout-minutes: 40
+        run: |
+          # Separate venv so Scrapling's dependencies cannot change the
+          # primary collector's Playwright installation.
+          python -m venv /tmp/scrapling-venv
+          /tmp/scrapling-venv/bin/pip install -q "scrapling[fetchers]==0.5"
+          /tmp/scrapling-venv/bin/python -m playwright install chromium
+          /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800
       - name: Report (annotations + summary)
         if: always()
         run: |
@@ -64,6 +80,22 @@ jobs:
           counted=[f"{m['author']}|{m['play']}|{''.join(m['picks'] or [])}" for m in s.get('materials',[]) if m['counted']]
           for i in range(0,len(counted),45):
               print(f'::notice title=49论坛模型 materials {i//45+1}::'+esc('\n'.join(counted[i:i+45])[:3800]))
+          sc=Path('forum49-out/scrapling-compare.json')
+          if sc.exists():
+              c=json.loads(sc.read_text())
+              m=c.get('materials') or {}
+              print('::notice title=49论坛模型 scrapling summary::'+esc(json.dumps({
+                  'ok':c.get('ok'),'error':c.get('error'),'primary_posts':c.get('primary_posts'),
+                  'checked_posts':c.get('checked_posts'),'identical_text_posts':c.get('identical_text_posts'),
+                  'fetch_status_counts':c.get('fetch_status_counts'),
+                  'material_tally':m.get('tally'),'primary_valid':m.get('primary_valid'),
+                  'scrapling_valid':m.get('scrapling_valid'),'agree':m.get('agree')},ensure_ascii=False)[:3800]))
+              diff=[f"{r['author']}|{r['status']}|主:{r['primary']}|S:{r['scrapling']}" for r in m.get('authors',[]) if r['status']!='same']
+              if diff:
+                  print('::notice title=49论坛模型 scrapling differences::'+esc('\n'.join(diff)[:3800]))
+              errs=sorted({str(r.get('error'))[:120] for r in c.get('posts',[]) if r.get('error')})[:8]
+              if errs:
+                  print('::notice title=49论坛模型 scrapling errors::'+esc('\n'.join(errs)))
           lines=['## 49论坛模型',f"- ok: {s.get('ok')} error: {s.get('error')}",
                  f"- issue: {s.get('issue')} (requested {s.get('requested_issue')})",
                  f"- posts: {s.get('detail_posts')} valid materials: {s.get('valid_materials')} authors: {s.get('distinct_valid_authors')}",

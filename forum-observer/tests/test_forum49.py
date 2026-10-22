@@ -47,6 +47,8 @@ class Forum49Test(unittest.TestCase):
                 target = d / 'arch/issues/2026295/run-42.json'
                 self.assertTrue(rec['ok'])
                 self.assertEqual(json.loads(target.read_text())['valid_materials'], 2)
+                ev = json.loads((d / 'out/forum49-evidence.json').read_text())
+                self.assertEqual((ev['issue'], len(ev['posts'])), ('2026295', 2))
                 with self.assertRaises(SystemExit):
                     forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
 
