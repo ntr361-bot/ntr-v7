@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026295",
+  "state": "collecting_effectively",
+  "run_id": "39774616037",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39774616037",
+  "updated_at": "2026-10-22T12:17:28.556551+00:00",
+  "error": null,
+  "valid_materials": 75,
+  "valid_authors": 75,
+  "successful_post_opens": 456,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 466,
+      "attempted": 410,
+      "opened": 409,
+      "extracted": 406,
+      "completed": 409
+    }
+  },
+  "article_texts_extracted": 452,
+  "article_details_completed": 456,
+  "last_verified_post": {
+    "author": "财神到",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133538&type=3",
+    "verified_at": "2026-10-22T12:17:27.851045+00:00",
+    "text_length": 133,
+    "text_sha256": "ebc80a86c6e591f3c7ddb518a44c4707d1694dcbf3f89684a0884908e0f7747c"
+  },
+  "last_attempted_post": {
+    "author": "殇有多疼",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133537&type=3",
+    "attempt_index": 457
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:12:24.893652+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 452,
+  "stage": "detail: 殇有多疼 家野两肖",
+  "progress_updated_at": "2026-10-22T12:17:28.183146+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
