@@ -1,51 +1,67 @@
 {
   "schema_version": 2,
   "issue": "2026295",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "39778482631",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39778482631",
-  "updated_at": "2026-10-22T12:33:58.503022+00:00",
+  "updated_at": "2026-10-22T12:35:02.901549+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 22,
+  "valid_authors": 22,
+  "successful_post_opens": 106,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 494,
+      "attempted": 60,
+      "opened": 59,
+      "extracted": 59,
+      "completed": 59
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 105,
+  "article_details_completed": 106,
+  "last_verified_post": {
+    "author": "香格里拉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138399&type=3",
+    "verified_at": "2026-10-22T12:35:02.674637+00:00",
+    "text_length": 12,
+    "text_sha256": "da94f91e3487e7e0b17e190a37033e845cea060308df4d1467723f8d8efc75fd"
+  },
+  "last_attempted_post": {
+    "author": "连山胡哥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138491&type=3",
+    "attempt_index": 107
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:34:29.124852+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 113",
-  "progress_updated_at": "2026-10-22T12:33:57.439921+00:00",
+  "raw_count": 105,
+  "stage": "detail: 连山胡哥 295期澳彩参赛贴",
+  "progress_updated_at": "2026-10-22T12:35:02.736359+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
