@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026295",
+  "state": "collecting_effectively",
+  "run_id": "39778482631",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39778482631",
+  "updated_at": "2026-10-22T12:39:17.940400+00:00",
+  "error": null,
+  "valid_materials": 73,
+  "valid_authors": 73,
+  "successful_post_opens": 442,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 396,
+      "opened": 395,
+      "extracted": 392,
+      "completed": 395
+    }
+  },
+  "article_texts_extracted": 438,
+  "article_details_completed": 442,
+  "last_verified_post": {
+    "author": "依依神爷",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133398&type=3",
+    "verified_at": "2026-10-22T12:39:17.488243+00:00",
+    "text_length": 5,
+    "text_sha256": "7230e5e3c49e8545ebf1dedd0055c56bd32648de7bcec81b8ee43785112a6338"
+  },
+  "last_attempted_post": {
+    "author": "天罡神算",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133589&type=3",
+    "attempt_index": 443
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:34:29.124852+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 438,
+  "stage": "detail: 天罡神算 295期:单双",
+  "progress_updated_at": "2026-10-22T12:39:17.822353+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
