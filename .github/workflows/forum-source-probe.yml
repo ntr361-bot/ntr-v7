@@ -123,6 +123,12 @@ jobs:
               detail['request_failures']=s.get('request_failures',[])[:8]
               detail['console_errors']=s.get('console_errors',[])[:5]
               print('::notice title=probe detail::'+esc(json.dumps(detail,ensure_ascii=False)[:30000]))
+          if c.exists():
+              cs=json.loads(c.read_text())
+              brief={'issue':cs.get('issue'),'error':cs.get('error'),
+                     'posts':[{'author':x['author'],'url':x['url'][-40:],'chars':x['body_chars'],'excerpt':x['excerpt'][:90]} for x in cs.get('posts',[])],
+                     'rejected':[json.dumps(r,ensure_ascii=False)[:160] for r in cs.get('rejected',[])[:8]]}
+              print('::notice title=probe stage2::'+esc(json.dumps(brief,ensure_ascii=False)[:3800]))
           PY
       - uses: actions/upload-artifact@v4
         if: always()
