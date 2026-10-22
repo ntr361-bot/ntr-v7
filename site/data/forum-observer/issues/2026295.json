@@ -82,5 +82,17 @@
   "quality_status": "meets_minimum_samples",
   "valid_materials": 84,
   "minimum_valid_materials": 25,
-  "settlement": null
+  "settlement": {
+    "issue": "2026295",
+    "actual": "马",
+    "actual_source": "smart-ledger:/api/results",
+    "drawn_at": "2026-10-22T21:35:30+08:00",
+    "snapshot_digest": "74e3ee7c285dec148abf77d42e36da4270f9ffa83f9a19fc19d0cac1197debea",
+    "snapshot_at": "2026-10-22T12:40:47.411898+00:00",
+    "rank": 2,
+    "top1_hit": false,
+    "top3_hit": true,
+    "top6_hit": true,
+    "classification": "experimental_unverified_leaderboard"
+  }
 }
