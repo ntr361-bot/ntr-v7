@@ -1,39 +1,39 @@
 # 论坛 2026295 采集成绩单
 
 状态：ready_observation
-**有效资料：125份**（经期号核对、去重且实际计分）
+**有效资料：132份**（经期号核对、去重且实际计分）
 计分规则：2026-10-15-one-author-9-8-7-6-priority-v8
-有效推荐：81份；有效杀肖：44份
-加精来源有效资料：0份；普通来源有效资料：125份
+有效推荐：85份；有效杀肖：47份
+加精来源有效资料：0份；普通来源有效资料：132份
 当期加精帖发现：0篇
 加精正文：入队：0篇；尝试：0篇；成功打开：0篇；提取正文：0篇；结束检查：0篇
-普通正文：入队：917篇；尝试：917篇；成功打开：917篇；提取正文：915篇；结束检查：917篇
+普通正文：入队：889篇；尝试：889篇；成功打开：889篇；提取正文：887篇；结束检查：889篇
 加精优先顺序核验：通过
-抓取资料记录：915条；解析候选：363份
+抓取资料记录：887条；解析候选：389份
 覆盖范围：部分覆盖：超时或未完成
-未计分候选：238份；无有效评分的帖子：790篇
-有效作者：125人；需要至少：25份有效资料
-优先作者名单内发现作者：1人；其他作者：848人
-抓取时间：2026-10-22T09:07:24.511681+00:00
+未计分候选：257份；无有效评分的帖子：755篇
+有效作者：132人；需要至少：25份有效资料
+优先作者名单内发现作者：1人；其他作者：810人
+抓取时间：2026-10-22T09:26:48.259684+00:00
 来源：https://49217.com/#/forum
 
 观察Top1：猴
 观察Top3：猴、蛇、马
-观察Top6：猴、蛇、马、猪、龙、鼠
+观察Top6：猴、蛇、马、猪、龙、羊
 
 ## 十二生肖观察排名
-1. 猴：12.613456
-2. 蛇：11.6329
-3. 马：11.388781
-4. 猪：10.828535
-5. 龙：10.539033
-6. 鼠：10.213023
-7. 牛：10.196392
-8. 鸡：10.191558
-9. 羊：9.884812
-10. 狗：9.870491
-11. 兔：9.093218
-12. 虎：8.547799
+1. 猴：13.604437
+2. 蛇：12.308405
+3. 马：12.213095
+4. 猪：11.361183
+5. 龙：10.939105
+6. 羊：10.726984
+7. 鸡：10.724206
+8. 鼠：10.537338
+9. 牛：10.437374
+10. 狗：10.434885
+11. 兔：9.858369
+12. 虎：8.854618
 
 **来自下一期帖子的本期历史记录：0条**
 涉及作者：0人
@@ -44,12 +44,34 @@
 
 ## 排除资料
 - 阳光下的真实：295期:家畜野兽【野兽+羊猪】開？00准 | ；排除原因：missing or conflicting named-group definitions；https://49217.com/#/corpusdetail?id=42414740&type=3
+- 千年蓝：295期：平特一肖  龙  [开：？]；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42419637&type=3
+- 系咁嘅啦：295期:平特一肖【猴猴猴】→开:？00；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42419630&type=3
+- 清风伏月：杀二肖（羊虎）开？；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42418564&type=3
+- 千年蓝：原创八肖-六肖-四肖 | 六肖：马鸡猴羊鼠兔    ；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42419622&type=3
+- 千年蓝：四肖：马鸡猴羊     ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42419622&type=3
+- 中码去泡妞：第 | 特肖-七肖:鼠,牛,蛇,马,羊,猴,猪；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42419334&type=3
 - 妙解传真：取四肖：狗鼠龙兔；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42419456&type=3
 - 妙解传真：博一肖：狗；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42419456&type=3
 - 荔城小李：精选四肖：鼠猪蛇虎；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42419430&type=3
 - 冷魂墨子：295期：绝杀1肖             蛇 ？；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42418617&type=3
-- 清风伏月：杀二肖（羊虎）开？；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42418564&type=3
 - 沉木解：——事8预10则6立5（凡事预则立，意思是提前谋划、早做准备）解说：鼠生性机警，懂得提前囤粮、预先找好藏身洞，未雨绸缪，契合“事前准备方能成事”。解特码肖：鼠虎猴猪鸡牛！主08.05.35.34.18，平特肖鼠猪！；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42418665&type=3
+- 沐湘源：295期:平特一肖【牛牛牛】连肖牛羊；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42418519&type=3
+- 每日来财：295：杀一肖（马）？；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42413910&type=3
+- 小嘎啦米：295 期6肖开始记录 | 281 虎蛇马羊狗鼠=10x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 282 虎龙蛇鸡猪鼠=23x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 283 牛兔马狗猪鼠=18√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 284 牛虎马羊猴鸡=32x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 285 牛龙马猴猪鼠=19√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 286 鼠牛兔蛇马狗=24x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 287 牛虎龙猴鸡鼠=08x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 288 猪兔牛龙鼠马=25√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 289 兔龙蛇马狗猪=38√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 290 虎龙蛇鸡狗鼠=40×；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 291 牛龙马羊狗猪=17x；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 292 牛虎兔蛇鸡狗=36×；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 293  鼠虎羊猴狗猪=05√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295 期6肖开始记录 | 295  鼠虎兔蛇羊鸡=；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：295杀羊🐑鸡🐔；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42418454&type=3
 - 六合界巴菲特：杀肖.波.特.平.头.尾暴富料！ 穷人如果不乱来，一辈子都是穷人。 | 295期7肖:虎马鸡鼠蛇猪兔；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42415695&type=3
 - 六合界巴菲特：杀肖.波.特.平.头.尾暴富料！ 穷人如果不乱来，一辈子都是穷人。 | 295期:九肖中特→羊蛇猴牛马龙鼠鸡虎；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415695&type=3
 - 六合界巴菲特：杀肖.波.特.平.头.尾暴富料！ 穷人如果不乱来，一辈子都是穷人。 | 295期:七肖中特→羊蛇猴牛马龙鼠；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42415695&type=3
@@ -147,7 +169,8 @@
 - 河清海晏：295期8肖 羊牛鼠马龙兔虎猪                  开 ？？ ✓；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42417608&type=3
 - 旺火小福星：红肖：马、兔、鼠、鸡；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414200&type=3
 - 旺火小福星：蓝肖：蛇、虎、猪、猴；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414200&type=3
-- 我是你老宫：295:平特一肖（猴）二连猴兔；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417012&type=3
+- 全仓梭哈只赢不输：红肖：马、兔、鼠、鸡；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414154&type=3
+- 全仓梭哈只赢不输：蓝肖：蛇、虎、猪、猴；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414154&type=3
 - 一个痞子：295期【绝杀生肖】杀龙鼠狗猴 开：？？✅️；排除原因：audit: truncated bare kill zodiac list；https://49217.com/#/corpusdetail?id=42417023&type=3
 - 极致六合：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸 | 286   羊龙兔虎马鼠  开羊准；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414122&type=3
 - 极致六合：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸 | 287   马羊龙鸡狗猪 开猪准；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414122&type=3
@@ -156,8 +179,7 @@
 - 极致六合：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸 | 291 羊猴龙蛇鸡鼠   开虎错；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414122&type=3
 - 极致六合：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸 | 292 猪猴马蛇羊狗 防鸡 开羊准；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414122&type=3
 - 极致六合：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸 | 294 狗猴蛇羊龙马 防兔    开兔 防中；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414122&type=3
-- 全仓梭哈只赢不输：红肖：马、兔、鼠、鸡；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414154&type=3
-- 全仓梭哈只赢不输：蓝肖：蛇、虎、猪、猴；排除原因：unknown or unverified mode；https://49217.com/#/corpusdetail?id=42414154&type=3
+- 我是你老宫：295:平特一肖（猴）二连猴兔；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417012&type=3
 - 花谢忽如雪：295期：4肖中特【鼠猴牛鸡】开：？00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417477&type=3
 - 幻莫成烟：295期开2肖: 狗猪  开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417326&type=3
 - 北葵向南：295期三肖：蛇猪猴 开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417310&type=3
@@ -173,7 +195,6 @@
 - 凌末语：295期╋来料╋4肖【猴兔鸡羊】开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417249&type=3
 - 兰花恋：295期:四肖【马虎狗鼠】开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417211&type=3
 - 君可见：295期:四肖【兔羊龙牛】开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417209&type=3
-- 网恋冠军：295期五肖猴蛇虎马龙开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417206&type=3
 - 红薇染露：295期平特一肖【羊】-开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417182&type=3
 - 等天亮：295期四肖: 鸡蛇羊猴 开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417166&type=3
 - 若水微香：295期致富二肖 鸡羊 开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417152&type=3
@@ -189,16 +210,14 @@
 - 红遍全球：295期三肖 羊马狗  开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417082&type=3
 - 一梦醉千城：295期赢钱二肖 兔羊 开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417073&type=3
 - 重命名：295期:四肖【龙牛狗猴】开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42417060&type=3
+- 潮汕小浪鸟：杀肖剩：马狗鼠羊虎龙。（包马5粒。下特肖鼠狗+19+45）；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415702&type=3
+- 潮汕小浪鸟：个人主3肖：马狗鼠。主一码13。次19-45。协防03-24。；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415702&type=3
 - 夜猫子捡码：295自用九肖 | 293-蛇羊牛猴虎龙狗鸡鼠-虎05√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 夜猫子捡码：295自用九肖 | 294-蛇羊鸡马狗猪龙牛兔-兔28√；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 夜猫子捡码：四肖-鼠牛鸡马；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415703&type=3
-- 潮汕小浪鸟：杀肖剩：马狗鼠羊虎龙。（包马5粒。下特肖鼠狗+19+45）；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415702&type=3
-- 潮汕小浪鸟：个人主3肖：马狗鼠。主一码13。次19-45。协防03-24。；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415702&type=3
-- 潮州表：295期杀:马 杀肖类 [L序] 特行+落1波+落3波+落5波+落1合+落1码+落6码+0 连准:4期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
-- 潮州表：295期杀:猴 杀肖类 [L序] 落1头+落4头+落5位+落6码+期尾+4 连准:17期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
-- 潮州表：295期杀:蛇 杀肖类 [D序] 平1头+平5合尾+平3尾+平6尾+平2段+平2合尾+6 连准:1期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
-- 潮州表：295期杀:鼠 杀肖类 [L序] 落4头+落5头+总分合+落1合尾+4 连准:7期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
-- 潮州表：295期杀:羊 杀肖类 [D序] 平6头+平2波+平2位+平3位+平4位+总分+总分合+9 连准:3期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
+- 广西大掌柜：295期：绝杀特二肖【龙兔】开：；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415736&type=3
+- 南寕四肖大王：四肖:蛇鼠龙猪；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42416257&type=3
+- 南寕四肖大王：主攻:主攻一肖蛇14防猪44；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42416257&type=3
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 276-277--龙马鸡猴牛鼠✅猴；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 278-279--狗马鼠猴羊蛇✅蛇；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 281-282--猪兔猴龙狗鸡✅鸡；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
@@ -210,10 +229,26 @@
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 292-293--鼠龙羊猴蛇狗✅羊；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 293-294--蛇猪龙羊鼠狗；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
 - 冰淇淋不冷：4肖.6肖中特-杀肖-平特(有连中版) | 295-296--鼠蛇羊狗猪马；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 潮州表：295期杀:马 杀肖类 [L序] 特行+落1波+落3波+落5波+落1合+落1码+落6码+0 连准:4期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
+- 潮州表：295期杀:猴 杀肖类 [L序] 落1头+落4头+落5位+落6码+期尾+4 连准:17期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
+- 潮州表：295期杀:蛇 杀肖类 [D序] 平1头+平5合尾+平3尾+平6尾+平2段+平2合尾+6 连准:1期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
+- 潮州表：295期杀:鼠 杀肖类 [L序] 落4头+落5头+总分合+落1合尾+4 连准:7期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
+- 潮州表：295期杀:羊 杀肖类 [D序] 平6头+平2波+平2位+平3位+平4位+总分+总分合+9 连准:3期 ；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415708&type=3
 - 奥彩常中：295杀8尾，杀牛猪狗虎蛇龙鼠。红兰。；排除原因：audit: truncated bare kill zodiac list；https://49217.com/#/corpusdetail?id=42415714&type=3
-- 南寕四肖大王：四肖:蛇鼠龙猪；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42416257&type=3
-- 南寕四肖大王：主攻:主攻一肖蛇14防猪44；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42416257&type=3
-- 广西大掌柜：295期：绝杀特二肖【龙兔】开：；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415736&type=3
+- 林猫爷：八肖 | 281-猴狗兔猪牛鼠马羊-10鸡-错；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 282-牛蛇猪虎兔猴马羊-23猴-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 283-猪牛虎兔蛇狗马羊-18牛-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 284-狗猪虎兔蛇猴马羊-32猪-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 285-猴狗虎兔鸡蛇马羊-19鼠-错；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 286-鼠龙蛇马羊兔狗虎-24羊-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 287-猪猴鸡龙蛇虎狗兔-08猪-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 288-猪羊牛猴鸡虎狗兔-25马-错；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 289-狗兔马猴牛蛇龙虎-38蛇-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 290-狗兔马猴鸡牛龙虎-40兔-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 291-兔狗马猴鸡牛龙虎-17虎-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 293-牛猪虎马兔猴狗鼠-17虎-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 294-猪蛇兔猴鼠马龙牛-28兔-🀄️；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：八肖 | 295-牛猴鼠蛇鸡猪马狗；排除原因：duplicate author/equal priority earlier source；https://49217.com/#/corpusdetail?id=42415696&type=3
 - 丹贝贝丹：澳门彩 | 精选六肖   蛇,虎,猪,牛,兔,马,；排除原因：superseded_by_same_author_higher_priority；https://49217.com/#/corpusdetail?id=42415360&type=3
 - 丹贝贝丹：特选四肖   蛇,虎,猪,牛,；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415360&type=3
 - 丹贝贝丹：笃选二肖   蛇,虎,；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42415360&type=3
@@ -265,22 +300,6 @@
 - 布莱恩特科比：295期:（平特一肖）【猪猪猪】开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414727&type=3
 - 云淡风清：295期：平特一肖【马马马】00准  ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414705&type=3
 - 浴皇大帝：295期  顶级4肖【鼠鸡猪牛】 开00中；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414691&type=3
-- 朝二哥：295期 必中四肖 (狗猪马猴) 開:0000中                                                                               ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414665&type=3
-- 道具女方家：295期:极限五肖【鸡兔猴虎鼠】開：0000赢              ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414663&type=3
-- 万般皆是命半点不由人：295期：平特一肖【马】开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414662&type=3
-- 轻抚你的脸：295期:中特四肖【猴虎鸡狗】开:0000准                                                                                                                                                                                                                                                            ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414653&type=3
-- 天总会晴：295期:平特一肖【狗狗狗】开:00准                           ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414649&type=3
-- 澳彩一片天：295期:五肖中【兔猪马鼠蛇】开:00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414643&type=3
-- 糖扯淡：295期:巅峰３肖【狗羊猴】开？00准                                                                ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414640&type=3
-- 范思哲：295期:五肖中特【猪牛蛇鸡猴】开：0000准                                                                                                                                                                                                                                         ；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414639&type=3
-- 酒意入桃枝：295期:王牌四肖【虎马牛猪】开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414636&type=3
-- 悲伤玉米排骨汤：295期:３肖中特【鼠羊猴】开 ？00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414625&type=3
-- 想都别想：295期：四肖中特  【兔狗鸡牛】 开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414624&type=3
-- 发财数：295期:【四肖中特】【虎猪狗鼠】开00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414616&type=3
-- 水样年华：295期:精品４肖(马猴蛇鸡)开0000中；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414603&type=3
-- 粤北马神：295期:三肖中特 猪狗羊 开？00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414601&type=3
-- 晚来天欲雪：295期:高级精选五肖 鼠鸡虎猪猴 开0000准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414592&type=3
-- 比天还高：295期:4肖中特【猴虎猪兔】開00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://49217.com/#/corpusdetail?id=42414565&type=3
 - 阳光下的真实：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414740&type=3
 - 新潮澎拜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414083&type=3
 - 新潮澎拜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414083&type=3
@@ -299,6 +318,120 @@
 - 今晚杀起吃肉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413904&type=3
 - 今晚杀起吃肉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413904&type=3
 - 闽南第一帅：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418265&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 九五金：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419636&type=3
+- 清风伏月：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418564&type=3
+- 四十二度的酒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419114&type=3
+- 半糖奶茶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419429&type=3
+- 上岸就靠你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419510&type=3
+- 上岸就靠你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419510&type=3
+- 上岸就靠你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419510&type=3
+- 叼虫小鸡：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419284&type=3
+- 叶清风：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419319&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 初心未眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419335&type=3
+- 赌王周润发叔叔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419593&type=3
+- 神牛啊牛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419288&type=3
+- 神牛啊牛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419288&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 张冠王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419493&type=3
+- 哦哦拍：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419625&type=3
+- 千年蓝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419622&type=3
+- 千年蓝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419622&type=3
+- 来财平安：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419524&type=3
+- 闯天涯的人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419592&type=3
+- 狂龙之战：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419286&type=3
+- 闯天涯的人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419559&type=3
+- 红烧小奥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419176&type=3
+- 养狗人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419376&type=3
+- 每个人都可以上岸：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414191&type=3
+- 鲸鱼晶晶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419362&type=3
+- 鲸鱼晶晶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419362&type=3
+- 鲸鱼晶晶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419362&type=3
+- 鲸鱼晶晶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419362&type=3
+- 鲸鱼晶晶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419362&type=3
+- 我也有可能在：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419538&type=3
+- 我也有可能在：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419538&type=3
+- 我也有可能在：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419538&type=3
+- 很好看哦：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413799&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 张哥儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417487&type=3
+- 六合小蔡：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418596&type=3
+- 三只老虎：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419161&type=3
+- 来财平安：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419474&type=3
+- 财路战神赢未来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414421&type=3
+- 来财平安：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419391&type=3
+- 梦如花落：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419309&type=3
+- 萤火晚枫：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419609&type=3
+- 雪梨姐姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414249&type=3
+- 北北跳：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414404&type=3
+- 五十八度半：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414794&type=3
+- 天天出彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419045&type=3
+- 小甜橙：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419392&type=3
+- 厚德载舞：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419573&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 阿珍的哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414298&type=3
+- 五十八度半：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414822&type=3
+- 反复研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419046&type=3
+- 晚睡晚起：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419473&type=3
+- 中码去泡妞：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419320&type=3
+- 中码去泡妞：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419334&type=3
 - 小仙女解正版挂牌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419472&type=3
 - 小仙女解正版挂牌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419472&type=3
 - 小仙女解正版挂牌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419472&type=3
@@ -311,7 +444,6 @@
 - 民间大神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419455&type=3
 - 荔城小李：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419430&type=3
 - 马老师：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42419361&type=3
-- 幸福就是回报社会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418490&type=3
 - 风来雨去：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418462&type=3
 - 枝摆给我中：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414124&type=3
 - 枝摆给我中：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414124&type=3
@@ -321,26 +453,48 @@
 - 枝摆给我中：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414124&type=3
 - 枝摆给我中：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414124&type=3
 - 枝摆给我中：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414124&type=3
+- 幸福就是回报社会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418490&type=3
 - 姚哥中大奖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418522&type=3
 - 姚哥中大奖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418522&type=3
 - 姚哥中大奖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418522&type=3
 - 大神爆码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418410&type=3
-- 嘿嘿马：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418682&type=3
-- 江小南：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418750&type=3
-- 无名小妖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418606&type=3
 - 星爷行大运：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418581&type=3
+- 无名小妖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418606&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
 - 赣在澳门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418871&type=3
+- 嘿嘿马：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418682&type=3
 - 马佬哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418872&type=3
-- 入墨迹大军：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414117&type=3
 - 猫北南：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418484&type=3
-- 狂热赌手：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418838&type=3
 - 昊昊呀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418777&type=3
-- 快拿来吧你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418532&type=3
+- 一心两意：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418409&type=3
+- 狂热赌手：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418838&type=3
+- 入墨迹大军：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414117&type=3
+- 春风十三里：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418590&type=3
+- 专业沙六晓：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417916&type=3
+- 糖人六肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417927&type=3
+- 韦燕子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418428&type=3
+- 肖奥马市：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417997&type=3
+- 梁帅帅：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418506&type=3
+- 阳光枫雪：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413881&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
+- 小嘎啦米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418454&type=3
 - 遮天荒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418469&type=3
 - 遮天荒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418469&type=3
 - 遮天荒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418469&type=3
@@ -361,64 +515,12 @@
 - 遮天荒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418469&type=3
 - 遮天荒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418469&type=3
 - 马佬哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418839&type=3
-- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418523&type=3
 - 码上寻特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414531&type=3
 - 谭毛毛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418680&type=3
 - 梦里自有黄金屋：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418768&type=3
 - 随波触流新号：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418645&type=3
-- 清风伏月：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418564&type=3
-- 春风十三里：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418590&type=3
-- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
-- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
-- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
-- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
-- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
-- 刘哥博彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418584&type=3
-- 马佬哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418801&type=3
-- 门皇门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418699&type=3
-- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418512&type=3
-- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418512&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 山沟沟一枝花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417755&type=3
-- 农夫山泉有点淡：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413750&type=3
-- 专业沙六晓：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417916&type=3
-- 肖奥马市：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417997&type=3
-- 糖人六肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417927&type=3
-- 韦燕子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418428&type=3
-- 缘姑娘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418751&type=3
+- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418523&type=3
+- 快拿来吧你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418532&type=3
 - 六合界巴菲特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415695&type=3
 - 六合界巴菲特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415695&type=3
 - 六合界巴菲特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415695&type=3
@@ -444,25 +546,36 @@
 - 盈运启川：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413862&type=3
 - 盈运启川：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413862&type=3
 - 小旺魚：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418731&type=3
+- 缘姑娘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418751&type=3
+- 刘哥博彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418584&type=3
+- 马佬哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418801&type=3
+- 门皇门：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418699&type=3
+- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
+- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
+- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
+- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
+- 藏红花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418563&type=3
+- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418512&type=3
+- 沐湘源：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418512&type=3
+- 不容小觑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418700&type=3
 - 特邀一嘉宾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418672&type=3
 - 特邀一嘉宾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418672&type=3
 - 马佬哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418752&type=3
-- 不容小觑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418700&type=3
 - 内幕弔戼：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418524&type=3
 - 发财顺利吧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418529&type=3
 - 沉木解：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418673&type=3
 - 险鱼翻身：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418402&type=3
 - 你个年度宝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418380&type=3
 - 爱算码的路遥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414058&type=3
-- 坐月亮上等日出：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418363&type=3
 - 搞的进：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418356&type=3
-- 泰荷技术总监：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418340&type=3
+- 坐月亮上等日出：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418363&type=3
 - 爱拼才会赢呀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418341&type=3
+- 泰荷技术总监：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418340&type=3
 - 无敌小妹：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413900&type=3
 - 无敌小妹：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413900&type=3
-- 飞出太阳系：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418311&type=3
 - 奥利给天天吃肉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418320&type=3
 - 我男神是毛爷爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418286&type=3
+- 飞出太阳系：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418311&type=3
 - 一直在路上走：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418266&type=3
 - 乐园的神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418259&type=3
 - 乐园的神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418259&type=3
@@ -515,8 +628,8 @@
 - 那黄宝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415164&type=3
 - 祖师爺：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417850&type=3
 - 祖师爺：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418150&type=3
-- 大雄绵：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418136&type=3
 - 伍捌玖玖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418142&type=3
+- 大雄绵：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418136&type=3
 - 绝无神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418144&type=3
 - 浅月流歌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418024&type=3
 - 浅月流歌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418024&type=3
@@ -532,14 +645,14 @@
 - 财神爷的心头爱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418120&type=3
 - 迪丽热巴：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418128&type=3
 - 叉叉好：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418113&type=3
-- 龙少爷在忙：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418080&type=3
 - 长征将：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418081&type=3
-- 六叔收割机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418087&type=3
+- 龙少爷在忙：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418080&type=3
 - 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418088&type=3
-- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
-- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
-- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
+- 六叔收割机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418087&type=3
 - 高高高兴兴兴：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418068&type=3
+- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
+- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
+- 幽兰拿铁你真坑：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418064&type=3
 - 带财小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418041&type=3
 - 三肖参赛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418031&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42418059&type=3
@@ -575,9 +688,9 @@
 - 澳彩给我发财机会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417982&type=3
 - 昊昊呀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417980&type=3
 - 仲是情：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417995&type=3
+- 人间不晚：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417988&type=3
 - 南海观世音：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417983&type=3
 - 那湾表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417986&type=3
-- 人间不晚：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417988&type=3
 - 期待你的名字：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417993&type=3
 - 风起长林：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417994&type=3
 - 赌神通天：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417992&type=3
@@ -622,8 +735,8 @@
 - 口里裤头女：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417940&type=3
 - 广西楞棕：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417958&type=3
 - 广西楞棕：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417958&type=3
-- 自知之明：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417955&type=3
 - 招财小福蝶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417942&type=3
+- 自知之明：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417955&type=3
 - 清一色七对中中马多：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417948&type=3
 - 浙去浙远：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417954&type=3
 - 天生马仙小：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414761&type=3
@@ -673,18 +786,18 @@
 - 秦凝雪月：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413865&type=3
 - 秦凝雪月：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413865&type=3
 - 沐子眠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417921&type=3
+- 杨十二：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417918&type=3
+- 永远芳香：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417922&type=3
+- 氧宜多硅藻泥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417913&type=3
 - 一路相钱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417911&type=3
 - 清一色七对中中马多：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417919&type=3
 - 岛上客：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417912&type=3
 - 神灵啊：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417914&type=3
 - 上官秀儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417923&type=3
 - 上官秀儿：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417923&type=3
-- 杨十二：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417918&type=3
-- 永远芳香：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417922&type=3
-- 氧宜多硅藻泥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417913&type=3
 - 云里行舟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417910&type=3
-- 眼光独特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417909&type=3
 - 劲宝精选：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413793&type=3
+- 眼光独特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417909&type=3
 - 来三碗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417905&type=3
 - 山水竹林：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417904&type=3
 - 老闫说码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417907&type=3
@@ -694,75 +807,75 @@
 - 神级吴某某：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417871&type=3
 - 刘哥博彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417866&type=3
 - 金穗盈仓：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417854&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
+- 神域武士：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417846&type=3
 - 预叛者：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417868&type=3
 - 耶耶别别：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417844&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
-- 妖魔佛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417867&type=3
 - 澳门霸道总裁：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417857&type=3
-- 神域武士：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417846&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
-- 美美数理研究：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417845&type=3
 - 不努力如何给你未来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417864&type=3
 - 不努力如何给你未来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417864&type=3
 - 不努力如何给你未来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417864&type=3
@@ -807,9 +920,9 @@
 - 阿一森：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417785&type=3
 - 阿一森：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417785&type=3
 - 无敌鷄佬：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417812&type=3
+- 港澳杨哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413876&type=3
+- 港澳杨哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413876&type=3
 - 长长长长长长长长长：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417787&type=3
-- 港澳杨哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413876&type=3
-- 港澳杨哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413876&type=3
 - 大顺了吧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417768&type=3
 - 大顺了吧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417768&type=3
 - 大顺了吧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417768&type=3
@@ -821,28 +934,28 @@
 - 陈家陈四爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417754&type=3
 - 陈家陈四爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417754&type=3
 - 陈家陈四爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417754&type=3
-- 能在水上飘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417753&type=3
 - 先仙女：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417752&type=3
+- 能在水上飘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417753&type=3
 - 天天中中中啊：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417708&type=3
-- 情场浪子鬼见愁：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417711&type=3
 - 钩针福：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417748&type=3
+- 情场浪子鬼见愁：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417711&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413733&type=3
 - 小菈椒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417723&type=3
 - 叫我哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414037&type=3
 - 轩哥想当亿元户：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417749&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413733&type=3
 - 男神计划投资：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417744&type=3
 - 好名字都让猪取了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417751&type=3
 - 风至喜来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413886&type=3
 - 梁宽在线：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417701&type=3
-- 旺火小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417644&type=3
-- 旺火小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414200&type=3
-- 鬼头刀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417614&type=3
 - 人生中第一场：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414193&type=3
 - 人生中第一场：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414193&type=3
 - 人生中第一场：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414193&type=3
 - 福神到：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414308&type=3
 - 马未空：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417669&type=3
 - 马未空：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417669&type=3
+- 旺火小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417644&type=3
+- 旺火小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414200&type=3
+- 鬼头刀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417614&type=3
 - 旺火小福星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417670&type=3
 - 爱的管道：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417666&type=3
 - 全普宁市想无：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416917&type=3
@@ -855,10 +968,13 @@
 - 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417543&type=3
 - 卖面包的小哥哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417531&type=3
 - 走过路过的人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417525&type=3
-- 跑不快的我：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417542&type=3
-- 走过路过的人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417516&type=3
 - 标签权哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417344&type=3
-- 因为梦想所以折腾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416873&type=3
+- 走过路过的人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417516&type=3
+- 跑不快的我：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417542&type=3
+- 常驻会所刘大哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417096&type=3
+- 怜情惜雪分享：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416895&type=3
+- 厦大厦大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417300&type=3
+- 何大海新中彩票：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417248&type=3
 - 悠悠峥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417210&type=3
 - 悠悠峥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417210&type=3
 - 悠悠峥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417210&type=3
@@ -866,12 +982,7 @@
 - 悠悠峥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417210&type=3
 - 悠悠峥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417210&type=3
 - 我们都是好孩子哦哈哈：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417501&type=3
-- 厦大厦大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417300&type=3
-- 何大海新中彩票：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417248&type=3
-- 常驻会所刘大哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417096&type=3
-- 怜情惜雪分享：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416895&type=3
-- 长红将军：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417179&type=3
-- 小菈椒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417439&type=3
+- 因为梦想所以折腾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416873&type=3
 - 大号小号的：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417057&type=3
 - 天天出彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417184&type=3
 - 青禾鸣晓辰光熹微：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417462&type=3
@@ -881,9 +992,12 @@
 - 争取稳赢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414192&type=3
 - 争取稳赢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414192&type=3
 - 争取稳赢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414192&type=3
-- 书海沧生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417165&type=3
-- 金麦世家来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416998&type=3
-- 金麦世家来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416998&type=3
+- 极致六合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417269&type=3
+- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417498&type=3
+- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414154&type=3
+- 保佑翻个身：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417368&type=3
+- 流光秋思半华：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417262&type=3
+- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414169&type=3
 - 大家發財：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416896&type=3
 - 叶儿点：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417272&type=3
 - 极致六合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414122&type=3
@@ -901,12 +1015,11 @@
 - 金主任：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417181&type=3
 - 金主任：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417181&type=3
 - 金主任：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417181&type=3
-- 极致六合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417269&type=3
-- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417498&type=3
-- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414154&type=3
-- 保佑翻个身：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417368&type=3
-- 流光秋思半华：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417262&type=3
-- 全仓梭哈只赢不输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414169&type=3
+- 书海沧生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417165&type=3
+- 金麦世家来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416998&type=3
+- 金麦世家来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416998&type=3
+- 长红将军：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417179&type=3
+- 小菈椒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417439&type=3
 - 丰顺特肖蔡：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413764&type=3
 - 肯定中的：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415876&type=3
 - 一场春暖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417496&type=3
@@ -1195,19 +1308,26 @@
 - 雪中的梅花：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417044&type=3
 - 敷衍录：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417043&type=3
 - 竹花夜如玉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42417042&type=3
-- 不冰不可乐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416799&type=3
 - 又欠欢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416817&type=3
+- 不冰不可乐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416799&type=3
 - 天赐哈哈哈：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416608&type=3
-- 敬意人生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416529&type=3
 - 烂废人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416549&type=3
 - 烂废人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416549&type=3
 - 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416439&type=3
+- 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416467&type=3
+- 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416475&type=3
 - 一一三三两两：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416571&type=3
 - 我的未来可期：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416626&type=3
 - 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416449&type=3
-- 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416467&type=3
-- 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416475&type=3
+- 敬意人生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416529&type=3
 - 欧阳修手机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416422&type=3
+- 农奴翻身把歌唱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416386&type=3
+- 張添財：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415760&type=3
+- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
+- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
+- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
+- 志哥解盘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416387&type=3
+- 大财主来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415701&type=3
 - 夜猫子捡码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 夜猫子捡码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 夜猫子捡码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415703&type=3
@@ -1219,15 +1339,72 @@
 - 夜猫子捡码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 夜猫子捡码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415703&type=3
 - 明月夜深深：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416383&type=3
-- 志哥解盘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416387&type=3
-- 大财主来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415701&type=3
-- 农奴翻身把歌唱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416386&type=3
-- 張添財：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415760&type=3
-- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
-- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
-- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415702&type=3
+- 诗诗与欣欣：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415711&type=3
+- 青不年小号：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416381&type=3
+- 雨中的梦：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416340&type=3
 - 一码疯子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415925&type=3
 - 微心情：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415735&type=3
+- 难眠梦夜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415715&type=3
+- 六肖迷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415737&type=3
+- 小钓怡情：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415706&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
+- 淡淡的生活：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415738&type=3
+- 靓仔今晚吃烧烤吗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415713&type=3
+- 改写人生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414355&type=3
+- 胜之不武白：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415700&type=3
+- 南寕四肖大王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416257&type=3
+- 南寕四肖大王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416257&type=3
+- 海王码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413752&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
+- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
@@ -1240,7 +1417,6 @@
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415708&type=3
-- 重新过：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415704&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415710&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415710&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415710&type=3
@@ -1251,72 +1427,23 @@
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415710&type=3
 - 潮州表：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415710&type=3
 - 自己把握：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416196&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 冰淇淋不冷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414063&type=3
-- 难眠梦夜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415715&type=3
-- 六肖迷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415737&type=3
-- 小钓怡情：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415706&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 南宁小弟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415712&type=3
-- 诗诗与欣欣：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415711&type=3
-- 青不年小号：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416381&type=3
-- 雨中的梦：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416340&type=3
-- 靓仔今晚吃烧烤吗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415713&type=3
-- 南寕四肖大王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416257&type=3
-- 南寕四肖大王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42416257&type=3
-- 改写人生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414355&type=3
-- 海王码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413752&type=3
-- 胜之不武白：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415700&type=3
-- 淡淡的生活：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415738&type=3
 - 贵龙顺成：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415698&type=3
 - 壹号港湾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415697&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
+- 林猫爷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415696&type=3
 - 专业研究各种彩票计划：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415694&type=3
 - 坚哥今晚吃肉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414371&type=3
 - 坚哥今晚吃肉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414371&type=3
@@ -1338,9 +1465,9 @@
 - 发哥二肖加三码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415684&type=3
 - 发哥二肖加三码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415684&type=3
 - 发哥二肖加三码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415684&type=3
-- 广西真龙天子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415688&type=3
 - 汀岸寻秋：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415683&type=3
 - 稳中九肖王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415685&type=3
+- 广西真龙天子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415688&type=3
 - 难中一码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415681&type=3
 - 重新再来过：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415662&type=3
 - 海南边：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415640&type=3
@@ -1358,8 +1485,8 @@
 - 开龙啊：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415635&type=3
 - 开龙啊：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415635&type=3
 - 木棉树丫丫：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415637&type=3
-- 行軍蟻：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415603&type=3
 - 我是雷锋：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415340&type=3
+- 行軍蟻：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415603&type=3
 - 初心方得：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415588&type=3
 - 偷码王来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415573&type=3
 - 二娃吃饭了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415198&type=3
@@ -1368,134 +1495,137 @@
 - 二娃吃饭了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415198&type=3
 - 二娃吃饭了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415198&type=3
 - 二娃吃饭了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415198&type=3
-- 狂风猛雨：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413742&type=3
-- 乱买都中了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415556&type=3
-- 臻義打输出：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415127&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
+- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
 - 永旺值钱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413740&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
-- 无敌六肖哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415548&type=3
 - 福建虎姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415067&type=3
 - 福建虎姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415067&type=3
 - 福建虎姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415067&type=3
-- 绝杀时刻：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414184&type=3
-- 赵云云：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415455&type=3
-- 吸金俠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414151&type=3
-- 澳彩给我发财机会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415462&type=3
-- 无声的芦笙：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415463&type=3
-- 来财平安：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415077&type=3
+- 臻義打输出：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415127&type=3
+- 乱买都中了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415556&type=3
+- 狂风猛雨：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413742&type=3
 - 糖人六肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415254&type=3
 - 叉车神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415527&type=3
 - 铸剑山庄：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415528&type=3
+- 丹贝贝丹：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415328&type=3
+- 绝杀时刻：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414184&type=3
+- 赵云云：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415455&type=3
+- 吸金俠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414151&type=3
+- 希望中特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415292&type=3
+- 搜码天下：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415379&type=3
+- 期期期期好运来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415448&type=3
+- 六合伟哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415108&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
+- 澳彩给我发财机会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415462&type=3
+- 无声的芦笙：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415463&type=3
+- 来财平安：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415077&type=3
 - 翻盘局：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415294&type=3
 - 惠州王阿姨：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415500&type=3
 - 陈龙稳小号：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415427&type=3
 - 遵义彭于晏：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415549&type=3
-- 搜码天下：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415379&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 马魔王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415499&type=3
-- 期期期期好运来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415448&type=3
-- 六合伟哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415108&type=3
-- 希望中特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415292&type=3
-- 丹贝贝丹：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415328&type=3
 - 大力土：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415046&type=3
-- 玲珑湾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415039&type=3
 - 神来一笔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414927&type=3
 - 队长来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415060&type=3
 - 浮石四肖王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414773&type=3
 - 大总统：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414935&type=3
 - 财自东来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415032&type=3
+- 玲珑湾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42415039&type=3
 - 车不雪：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414918&type=3
-- 大总统：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414915&type=3
 - 溧浮的雪：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414894&type=3
 - 又是难搞哦：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414880&type=3
-- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414917&type=3
 - 小野君：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414718&type=3
+- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414917&type=3
+- 大总统：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414915&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
+- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
 - 梓烨姐姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414453&type=3
 - 梓烨姐姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414453&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
-- 西山庐峰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414879&type=3
 - 稳大中必胜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414837&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
+- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
 - 稳大中必胜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414845&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
-- 朱家老大：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414846&type=3
 - 我是雷锋：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414814&type=3
 - 解除贫穷：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414799&type=3
-- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414796&type=3
-- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414796&type=3
-- 杰尼尼龟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414797&type=3
 - 老闫说码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414795&type=3
+- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414796&type=3
+- 澳之星：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414796&type=3
 - 老闫说码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414792&type=3
 - 老闫说码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414792&type=3
+- 杰尼尼龟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414797&type=3
 - 爆金羊：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414778&type=3
-- 三点水高手：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414767&type=3
 - 六叔生肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414786&type=3
 - 老闫说码：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414791&type=3
-- 大波叔叔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414763&type=3
-- 鸣壹楠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414775&type=3
-- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414766&type=3
-- 本人搞钱要紧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414762&type=3
-- 幸运百合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414784&type=3
-- 老黄杀四肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414777&type=3
+- 三点水高手：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414767&type=3
 - 俺是惟楚有材：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414770&type=3
+- 老黄杀四肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414777&type=3
+- 大波叔叔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414763&type=3
 - 经济适用男：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414776&type=3
 - 一码中特不是期期有：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414257&type=3
 - 洋葱王子：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414772&type=3
+- 南言波多：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414780&type=3
+- 快乐奥力给：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414765&type=3
+- 江南村码神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414785&type=3
+- 陈平安丶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414771&type=3
 - 卧龙凤求凰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414160&type=3
 - 卧龙凤求凰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414160&type=3
 - 卧龙凤求凰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414160&type=3
 - 亿万个达步溜：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414764&type=3
 - 天天加班：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414774&type=3
-- 南言波多：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414780&type=3
-- 江南村码神：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414785&type=3
-- 快乐奥力给：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414765&type=3
-- 陈平安丶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414771&type=3
+- 鸣壹楠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414775&type=3
+- 潮汕小浪鸟：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414766&type=3
+- 本人搞钱要紧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414762&type=3
+- 幸运百合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414784&type=3
 - 浪爷零零九：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414627&type=3
 - 随时候命：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414757&type=3
 - 潮汕绝杀：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414745&type=3
+- 天天我姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414756&type=3
+- 佛山大雪无痕：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414741&type=3
+- 蓝蓝猫：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414754&type=3
 - 本人搞钱要紧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414760&type=3
 - 期期期期好运来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414746&type=3
 - 小四叶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414752&type=3
@@ -1528,22 +1658,24 @@
 - 小四叶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414752&type=3
 - 小四叶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414752&type=3
 - 微笑美眉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414730&type=3
-- 牛哥周无敌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414637&type=3
-- 小哥天天玩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414706&type=3
-- 专攻平特肖尾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414716&type=3
-- 品味人生百态吖吖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414750&type=3
 - 赚钱是赚不完的：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414751&type=3
 - 吃肉吃到饱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414747&type=3
-- 发财平特一肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414690&type=3
+- 牛哥周无敌：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414637&type=3
+- 小哥天天玩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414706&type=3
+- 品味人生百态吖吖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414750&type=3
+- 专攻平特肖尾：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414716&type=3
+- 新手不服输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414149&type=3
+- 姗姗来了：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414734&type=3
+- 澳通行证：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414088&type=3
 - 澳彩给我发财机会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414742&type=3
 - 戏说春风：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414759&type=3
 - 鸿运当头横财就手：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414748&type=3
 - 期期期期好运来：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414739&type=3
 - 澳门西格玛：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414096&type=3
-- 新手不服输：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414149&type=3
-- 天天我姐：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414756&type=3
-- 佛山大雪无痕：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414741&type=3
-- 蓝蓝猫：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414754&type=3
+- 发财平特一肖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414690&type=3
+- 神鹰传奇：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42413778&type=3
+- 澳彩给我发财机会：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414749&type=3
+- 熊幺幺二二：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414753&type=3
 - 哇林北：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414744&type=3
 - 周星驰：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414743&type=3
 - 梅尼耶：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414737&type=3
@@ -1551,6 +1683,7 @@
 - 雾都小黄人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414733&type=3
 - 夏已季末：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414731&type=3
 - 往逅余生：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414729&type=3
+- 飞颜尘雪：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414719&type=3
 - 我心依旧：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414717&type=3
 - 曹操平特：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414715&type=3
 - 炊烟醉清风：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414708&type=3
@@ -1566,84 +1699,8 @@
 - 孤海未蓝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414680&type=3
 - 东莞仔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414679&type=3
 - 稳叔叔：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414678&type=3
-- 生财有道：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414677&type=3
-- 生财有道：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414677&type=3
-- 铁山靠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414676&type=3
-- 江左梅郎：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414675&type=3
-- 霸气傲中原：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414674&type=3
-- 常山赵子龍：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414664&type=3
-- 过往年少：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414661&type=3
-- 十一哥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414660&type=3
-- 中国码王：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414659&type=3
-- 一往无前：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414652&type=3
-- 一往无前：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414652&type=3
-- 落英缤芬：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414651&type=3
-- 落英缤芬：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414651&type=3
-- 专业睡管：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414650&type=3
-- 专业睡管：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414650&type=3
-- 武媚娘：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414648&type=3
-- 心若静沉：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414645&type=3
-- 逐梦之音：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414644&type=3
-- 倾世繁华：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414641&type=3
-- 诗人诗意：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414638&type=3
-- 诗人诗意：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414638&type=3
-- 谁人勿折桃柳：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414635&type=3
-- 浪荡先森：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414634&type=3
-- 蝶为花舞：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414633&type=3
-- 宇宙猛男：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414630&type=3
-- 风雨哈佛路：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414629&type=3
-- 梦影逍遥：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414628&type=3
-- 迷糊画家：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414626&type=3
-- 悠然岁月：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414623&type=3
-- 别再想我：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414619&type=3
-- 百里挑一：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414617&type=3
-- 任我发：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414615&type=3
-- 终究一样：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414614&type=3
-- 某月某日：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414613&type=3
-- 某月某日：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414613&type=3
-- 某月某日：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414613&type=3
-- 某月某日：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414613&type=3
-- 究极爆马：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414612&type=3
-- 敢赌敢博：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414563&type=3
-- 澳彩鼠：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414607&type=3
-- 平凡可贵：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414606&type=3
-- 雪飘漫天：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414605&type=3
-- 雪飘漫天：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414605&type=3
-- 港澳封才：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414604&type=3
-- 国际爆富：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414568&type=3
-- 来去皆江湖：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414600&type=3
-- 马上就赚大钱：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414594&type=3
-- 爱与正义：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414593&type=3
-- 英雄無名：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414591&type=3
-- 往复春秋：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414589&type=3
-- 已是曾经：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414588&type=3
-- 我的专业的：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414587&type=3
-- 听闻远方有妳：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414585&type=3
-- 转职六合：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414584&type=3
-- 想想也好：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414580&type=3
-- 浪出天际：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414579&type=3
-- 盼望好彩：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414578&type=3
-- 面积按附件：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414577&type=3
-- 执笔写下情：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414576&type=3
-- 陌生电话日：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414575&type=3
-- 小白一玫：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414574&type=3
-- 不是神经：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414573&type=3
-- 亲哎的你：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414572&type=3
-- 六合有故事：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414571&type=3
-- 美丽心雨：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414570&type=3
-- 地狱狂欢：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414569&type=3
-- 都市丽人：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414547&type=3
-- 喜贝贝：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414516&type=3
-- 小小白白米：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414499&type=3
-- 飘零的心：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414566&type=3
-- 水中仴：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414564&type=3
-- 掐断手指算天机：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414562&type=3
-- 浅唱蝶舞：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414561&type=3
-- 就菜吃酒：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414560&type=3
-- 记忆之城：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414559&type=3
-- 精彩飞蝗：无法明确解析当期玩法，排除；https://49217.com/#/corpusdetail?id=42414553&type=3
 
-## 待确认玩法（207篇）
+## 待确认玩法（211篇）
 以下待确认内容不参与排名、不计入有效资料份数。请回复条目编号及玩法解释，可将该条交给 Codex 增加解析规则和测试；规则确认前保持排除。
 
 ### 1. 阳光下的真实 / 2026295
@@ -1721,7 +1778,377 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 5. 小仙女解正版挂牌 / 2026295
+### 5. 九五金 / 2026295
+标题：杀肖统计：
+来源：https://49217.com/#/corpusdetail?id=42419636&type=3
+发布时间：2026-10-22 17:01
+
+原文：
+> 鸡羊牛，牛兔鸡，猪猴狗，马兔虎，蛇鸡猴，龙猴马，牛虎蛇，牛蛇鸡，鸡狗龙，龙鸡鼠，羊蛇虎，羊蛇鸡，猪蛇狗
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 3. 牛4      0次：
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 4. 羊3      1次：鼠
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 5. 虎3      2次：马猪兔
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 6. 猴3      3次：羊虎猴龙狗
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 7. 兔2      4次：牛
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 8. 鸡7      6次：蛇✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 9. 龙3      7次：鸡✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 鼠兔，羊蛇，羊鸡，羊马，鼠猪，羊鼠，牛鸡，马狗，鼠马，马羊，马羊，牛兔，鸡猴，马鸡，猪鸡，鼠虎
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> • 鼠5          0次：龙✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> • 马6          1次：虎猴狗蛇
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> • 牛2          2次：牛兔猪
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> • 羊6          5次：鼠鸡
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> • 虎1          6次：马羊✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 虎，羊，龙，牛，马，猪，狗，牛，羊，龙，猴，羊，龙，羊，羊，兔
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 3. 牛2         0次：鼠鸡蛇
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 4. 羊5         1次：马猴兔虎狗猪
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 5. 虎1         2次：牛
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 6. 猴1         3次：龙✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 7. 兔1         5次：羊✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 6. 清风伏月 / 2026295
+标题：（伏月剧场）杂料，祝大家天天中奖！
+来源：https://49217.com/#/corpusdetail?id=42418564&type=3
+发布时间：2026-10-22 16:58
+
+原文：
+> 295期六肖（鼠兔蛇马猴猪）开？
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 杀二肖（羊虎）开？
+未解析原因：superseded_by_same_author_higher_priority
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 7. 四十二度的酒 / 2026295
+标题：295期：精准六肖、杀波，杀行，杀头尾
+来源：https://49217.com/#/corpusdetail?id=42419114&type=3
+发布时间：2026-10-22 16:58
+
+原文：
+> 295期：主：猴虎猪  防：蛇龙狗（主：23防 29 20）
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 8. 半糖奶茶 / 2026295
+标题：杀肖，结合肖统计……自用记录 标❌只是建议，自行参考记录取舍
+来源：https://49217.com/#/corpusdetail?id=42419429&type=3
+发布时间：2026-10-22 16:58
+
+原文：
+> 295期，虎猴龙鸡 鼠猪马……
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 9. 赌王周润发叔叔 / 2026295
+标题：295期6肖中特
+来源：https://49217.com/#/corpusdetail?id=42419593&type=3
+发布时间：2026-10-22 16:58
+
+原文：
+> 295期六肖中特狗猴牛马兔蛇
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 10. 千年蓝 / 2026295
+标题：原创八肖-六肖-四肖
+来源：https://49217.com/#/corpusdetail?id=42419622&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 八肖：马鸡猴羊鼠兔虎龙
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 六肖：马鸡猴羊鼠兔
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 原创八肖-六肖-四肖 | 六肖：马鸡猴羊鼠兔
+未解析原因：superseded_by_same_author_higher_priority
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 11. 来财平安 / 2026295
+标题：295:九肖中特
+来源：https://49217.com/#/corpusdetail?id=42419524&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 295期:【鸡猪兔牛羊马蛇龙猴】开？⓿⓿✔
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 12. 鲸鱼晶晶 / 2026295
+标题：澳295期【杀肖统计】
+来源：https://49217.com/#/corpusdetail?id=42419362&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 〖1次〗:兔,鸡,（共2个）
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 〖2次〗:牛,蛇,马,（共3个）
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 〖3次〗:鼠,虎,龙,狗,猪,（共5个）
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 〖5次〗:猴,（共1个）✘✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 〖6次〗:羊,（共1个）✘✘
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 13. 我也有可能在 / 2026295
+标题：平特
+来源：https://49217.com/#/corpusdetail?id=42419538&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 三连羊狗虎  羊牛龙  羊牛鼠
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 14. 张哥儿 / 2026295
+标题：自用
+来源：https://49217.com/#/corpusdetail?id=42417487&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 鼠牛龙马羊猴猪  开猪08
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠虎蛇马狗鸡   开马25
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 牛猪兔蛇龙马  开蛇38
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠兔龙牛羊狗猪  开兔40
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠龙猴兔马羊猪  开虎17  嘎
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠牛虎马羊猴狗  开羊36
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠牛虎蛇猴狗猪  开虎05
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 虎兔龙蛇猴马狗  开兔28
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 鼠虎蛇马羊猴猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 15. 来财平安 / 2026295
+标题：295:家野中特
+来源：https://49217.com/#/corpusdetail?id=42419474&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 295期:家野【野兽十狗羊】开？⓿⓿准
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 16. 北北跳 / 2026295
+标题：【两期七肖】 【二期平特一肖】
+来源：https://49217.com/#/corpusdetail?id=42414404&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 295：虎狗牛鸡龙猴-羊】
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 17. 天天出彩 / 2026295
+标题：淼哥
+来源：https://49217.com/#/corpusdetail?id=42419045&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 猴龙兔蛇羊狗
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 18. 阿珍的哥 / 2026295
+标题：9肖+7尾+双波各20组统计。
+来源：https://49217.com/#/corpusdetail?id=42414298&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 17次：鼠、羊、马
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 16次：狗、猴、龙
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 15次：鸡、蛇
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 14次：虎、猪
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 12次：牛
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 11次：兔
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 19. 反复研究 / 2026295
+标题：澳门：期期六肖。
+来源：https://49217.com/#/corpusdetail?id=42419046&type=3
+发布时间：2026-10-22 16:57
+
+原文：
+> 295期：鸡兔蛇羊猪猴。
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 20. 中码去泡妞 / 2026295
+标题：第2026295期跑马图竞猜
+来源：https://49217.com/#/corpusdetail?id=42419320&type=3
+发布时间：2026-10-22 16:51
+
+原文：
+> 特肖-九肖:鼠,牛,龙,蛇,马,羊,猴,鸡,猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 21. 中码去泡妞 / 2026295
+标题：第2026295期澳门跑狗图竞猜
+来源：https://49217.com/#/corpusdetail?id=42419334&type=3
+发布时间：2026-10-22 16:51
+
+原文：
+> 特肖-七肖:鼠,牛,蛇,马,羊,猴,猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 第 | 特肖-七肖:鼠,牛,蛇,马,羊,猴,猪
+未解析原因：superseded_by_same_author_higher_priority
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 22. 小仙女解正版挂牌 / 2026295
 标题：第2026295期挂牌图图解
 来源：https://49217.com/#/corpusdetail?id=42419472&type=3
 发布时间：2026-10-22 16:46
@@ -1736,7 +2163,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 6. 妙解传真 / 2026295
+### 23. 妙解传真 / 2026295
 标题：第2026295期澳门传真图解
 来源：https://49217.com/#/corpusdetail?id=42419456&type=3
 发布时间：2026-10-22 16:45
@@ -1751,7 +2178,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 7. 民间大神 / 2026295
+### 24. 民间大神 / 2026295
 标题：第2026295期跑马图图解
 来源：https://49217.com/#/corpusdetail?id=42419455&type=3
 发布时间：2026-10-22 16:45
@@ -1761,7 +2188,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 8. 荔城小李 / 2026295
+### 25. 荔城小李 / 2026295
 标题：第2026295期澳门看图抓码图解
 来源：https://49217.com/#/corpusdetail?id=42419430&type=3
 发布时间：2026-10-22 16:44
@@ -1771,7 +2198,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 9. 马老师 / 2026295
+### 26. 马老师 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42419361&type=3
 发布时间：2026-10-22 16:40
@@ -1781,17 +2208,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 10. 幸福就是回报社会 / 2026295
-标题：幸福7肖
-来源：https://49217.com/#/corpusdetail?id=42418490&type=3
-发布时间：2026-10-22 16:15
-
-原文：
-> 295期:【猪鼠蛇猴马牛虎】
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 11. 枝摆给我中 / 2026295
+### 27. 枝摆给我中 / 2026295
 标题：瞎整
 来源：https://49217.com/#/corpusdetail?id=42414124&type=3
 发布时间：2026-10-22 16:15
@@ -1831,7 +2248,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 12. 星爷行大运 / 2026295
+### 28. 幸福就是回报社会 / 2026295
+标题：幸福7肖
+来源：https://49217.com/#/corpusdetail?id=42418490&type=3
+发布时间：2026-10-22 16:15
+
+原文：
+> 295期:【猪鼠蛇猴马牛虎】
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 29. 星爷行大运 / 2026295
 标题：自用八肖
 来源：https://49217.com/#/corpusdetail?id=42418581&type=3
 发布时间：2026-10-22 16:14
@@ -1841,7 +2268,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 13. 入墨迹大军 / 2026295
+### 30. 入墨迹大军 / 2026295
 标题：【大军规律杀一肖】
 来源：https://49217.com/#/corpusdetail?id=42414117&type=3
 发布时间：2026-10-22 16:14
@@ -1851,7 +2278,157 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 14. 码上寻特 / 2026295
+### 31. 小嘎啦米 / 2026295
+标题：295 期6肖开始记录
+来源：https://49217.com/#/corpusdetail?id=42418454&type=3
+发布时间：2026-10-22 16:14
+
+原文：
+> 281 虎蛇马羊狗鼠=10x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 282 虎龙蛇鸡猪鼠=23x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 283 牛兔马狗猪鼠=18√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 284 牛虎马羊猴鸡=32x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 285 牛龙马猴猪鼠=19√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 286 鼠牛兔蛇马狗=24x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 287 牛虎龙猴鸡鼠=08x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 288 猪兔牛龙鼠马=25√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 289 兔龙蛇马狗猪=38√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 290 虎龙蛇鸡狗鼠=40×
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 291 牛龙马羊狗猪=17x
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 292 牛虎兔蛇鸡狗=36×
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 293  鼠虎羊猴狗猪=05√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 294  兔马羊猴鸡狗=28√
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295  鼠虎兔蛇羊鸡=
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 281 虎蛇马羊狗鼠=10x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 282 虎龙蛇鸡猪鼠=23x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 283 牛兔马狗猪鼠=18√
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 284 牛虎马羊猴鸡=32x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 285 牛龙马猴猪鼠=19√
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 286 鼠牛兔蛇马狗=24x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 287 牛虎龙猴鸡鼠=08x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 288 猪兔牛龙鼠马=25√
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 289 兔龙蛇马狗猪=38√
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 290 虎龙蛇鸡狗鼠=40×
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 291 牛龙马羊狗猪=17x
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 292 牛虎兔蛇鸡狗=36×
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 293  鼠虎羊猴狗猪=05√
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295 期6肖开始记录 | 295  鼠虎兔蛇羊鸡=
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 32. 码上寻特 / 2026295
 标题：295期特肖特码
 来源：https://49217.com/#/corpusdetail?id=42414531&type=3
 发布时间：2026-10-22 16:14
@@ -1861,7 +2438,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 15. 梦里自有黄金屋 / 2026295
+### 33. 梦里自有黄金屋 / 2026295
 标题：长跟九肖，参考
 来源：https://49217.com/#/corpusdetail?id=42418768&type=3
 发布时间：2026-10-22 16:14
@@ -1871,67 +2448,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 16. 清风伏月 / 2026295
-标题：（伏月剧场）杂料，祝大家天天中奖！
-来源：https://49217.com/#/corpusdetail?id=42418564&type=3
-发布时间：2026-10-22 16:14
-
-原文：
-> 295期六肖（鼠兔蛇马猴猪）开？
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 杀二肖（羊虎）开？
-未解析原因：superseded_by_same_author_higher_priority
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 17. 藏红花 / 2026295
-标题：自用杀肖统计（纯记录，勿参考）
-来源：https://49217.com/#/corpusdetail?id=42418563&type=3
-发布时间：2026-10-22 16:14
-
-原文：
-> （1次）猴鼠蛇牛
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> （2次）龙羊
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> （3次）兔马猪
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> （4次）虎狗
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> （5次）鸡
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-### 18. 沐湘源 / 2026295
-标题：295期六肖中特
-来源：https://49217.com/#/corpusdetail?id=42418512&type=3
-发布时间：2026-10-22 16:14
-
-原文：
-> 295期【牛羊马龙蛇鸡】
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 主三肖🧧牛羊马🧧
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 19. 六合界巴菲特 / 2026295
+### 34. 六合界巴菲特 / 2026295
 标题：杀肖.波.特.平.头.尾暴富料！ 穷人如果不乱来，一辈子都是穷人。
 来源：https://49217.com/#/corpusdetail?id=42415695&type=3
 发布时间：2026-10-22 16:14
@@ -2021,7 +2538,7 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 20. 盈运启川 / 2026295
+### 35. 盈运启川 / 2026295
 标题：295六肖中特实战自下注
 来源：https://49217.com/#/corpusdetail?id=42413862&type=3
 发布时间：2026-10-22 16:14
@@ -2101,7 +2618,52 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 21. 特邀一嘉宾 / 2026295
+### 36. 藏红花 / 2026295
+标题：自用杀肖统计（纯记录，勿参考）
+来源：https://49217.com/#/corpusdetail?id=42418563&type=3
+发布时间：2026-10-22 16:14
+
+原文：
+> （1次）猴鼠蛇牛
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> （2次）龙羊
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> （3次）兔马猪
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> （4次）虎狗
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> （5次）鸡
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 37. 沐湘源 / 2026295
+标题：295期六肖中特
+来源：https://49217.com/#/corpusdetail?id=42418512&type=3
+发布时间：2026-10-22 16:14
+
+原文：
+> 295期【牛羊马龙蛇鸡】
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 主三肖🧧牛羊马🧧
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 38. 特邀一嘉宾 / 2026295
 标题：自用规律杀一肖（已验证100—1）谨慎参考
 来源：https://49217.com/#/corpusdetail?id=42418672&type=3
 发布时间：2026-10-22 16:14
@@ -2111,7 +2673,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 22. 发财顺利吧 / 2026295
+### 39. 发财顺利吧 / 2026295
 标题：第2026295期澳门跑狗图竞猜
 来源：https://49217.com/#/corpusdetail?id=42418529&type=3
 发布时间：2026-10-22 16:10
@@ -2121,7 +2683,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 23. 沉木解 / 2026295
+### 40. 沉木解 / 2026295
 标题：第2026295期澳门跑狗图竞猜
 来源：https://49217.com/#/corpusdetail?id=42418673&type=3
 发布时间：2026-10-22 16:10
@@ -2131,7 +2693,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 24. 你个年度宝 / 2026295
+### 41. 你个年度宝 / 2026295
 标题：#
 来源：https://49217.com/#/corpusdetail?id=42418380&type=3
 发布时间：2026-10-22 15:00
@@ -2141,7 +2703,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 25. 一直在路上走 / 2026295
+### 42. 一直在路上走 / 2026295
 标题：295六肖
 来源：https://49217.com/#/corpusdetail?id=42418266&type=3
 发布时间：2026-10-22 14:45
@@ -2151,7 +2713,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 26. 乐园的神 / 2026295
+### 43. 乐园的神 / 2026295
 标题：一码上岸
 来源：https://49217.com/#/corpusdetail?id=42418259&type=3
 发布时间：2026-10-22 14:45
@@ -2256,7 +2818,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 27. 东方神起 / 2026295
+### 44. 东方神起 / 2026295
 标题：成就梦想◆[平特一肖]
 来源：https://49217.com/#/corpusdetail?id=42417978&type=3
 发布时间：2026-10-22 14:40
@@ -2266,7 +2828,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 28. 我的任性你不懂 / 2026295
+### 45. 我的任性你不懂 / 2026295
 标题：狗急跳墙 【④肖②码】
 来源：https://49217.com/#/corpusdetail?id=42418222&type=3
 发布时间：2026-10-22 14:39
@@ -2276,7 +2838,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 29. 树大招风 / 2026295
+### 46. 树大招风 / 2026295
 标题：{平特１肖}单双中特★创造永恒！
 来源：https://49217.com/#/corpusdetail?id=42418040&type=3
 发布时间：2026-10-22 14:32
@@ -2286,7 +2848,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 30. 依然雄风 / 2026295
+### 47. 依然雄风 / 2026295
 标题：295期心水6肖大家参考！
 来源：https://49217.com/#/corpusdetail?id=42418153&type=3
 发布时间：2026-10-22 14:29
@@ -2296,7 +2858,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 31. 浅月流歌 / 2026295
+### 48. 浅月流歌 / 2026295
 标题：一肖中特↘ 独家火爆↙
 来源：https://49217.com/#/corpusdetail?id=42418024&type=3
 发布时间：2026-10-22 14:26
@@ -2311,7 +2873,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 32. 幽兰拿铁你真坑 / 2026295
+### 49. 幽兰拿铁你真坑 / 2026295
 标题：胡咧咧
 来源：https://49217.com/#/corpusdetail?id=42418064&type=3
 发布时间：2026-10-22 14:12
@@ -2321,7 +2883,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 33. 墨羽尘曦 / 2026295
+### 50. 墨羽尘曦 / 2026295
 标题：澳门王哥 【六肖中特】
 来源：https://49217.com/#/corpusdetail?id=42418060&type=3
 发布时间：2026-10-22 14:09
@@ -2331,7 +2893,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 34. 玛丽莲梦兔 / 2026295
+### 51. 玛丽莲梦兔 / 2026295
 标题：自鸣得意 【三肖中特】
 来源：https://49217.com/#/corpusdetail?id=42418058&type=3
 发布时间：2026-10-22 14:08
@@ -2341,7 +2903,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 35. 天盛长歌 / 2026295
+### 52. 天盛长歌 / 2026295
 标题：☆无限财富《澳门平特①肖》
 来源：https://49217.com/#/corpusdetail?id=42418032&type=3
 发布时间：2026-10-22 14:05
@@ -2351,7 +2913,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 36. 好运一点通 / 2026295
+### 53. 好运一点通 / 2026295
 标题：一肖一码 致富猛料
 来源：https://49217.com/#/corpusdetail?id=42418016&type=3
 发布时间：2026-10-22 14:00
@@ -2366,7 +2928,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 37. 炽羽金尊 / 2026295
+### 54. 炽羽金尊 / 2026295
 标题：超准公式〖单双二肖〗日进斗金
 来源：https://49217.com/#/corpusdetail?id=42418013&type=3
 发布时间：2026-10-22 13:59
@@ -2381,7 +2943,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 38. 谁是谁的主角 / 2026295
+### 55. 谁是谁的主角 / 2026295
 标题：正版绝杀两肖 独一无二
 来源：https://49217.com/#/corpusdetail?id=42418009&type=3
 发布时间：2026-10-22 13:58
@@ -2391,7 +2953,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 39. 奥巴码 / 2026295
+### 56. 奥巴码 / 2026295
 标题：《四字平特》↔绝杀２肖.震撼六合.
 来源：https://49217.com/#/corpusdetail?id=42418004&type=3
 发布时间：2026-10-22 13:57
@@ -2401,7 +2963,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 40. 乱舞春秋 / 2026295
+### 57. 乱舞春秋 / 2026295
 标题：精心研究【必中六肖】
 来源：https://49217.com/#/corpusdetail?id=42418001&type=3
 发布时间：2026-10-22 13:54
@@ -2411,7 +2973,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 41. 南海观世音 / 2026295
+### 58. 南海观世音 / 2026295
 标题：金牌五肖
 来源：https://49217.com/#/corpusdetail?id=42417983&type=3
 发布时间：2026-10-22 13:53
@@ -2421,7 +2983,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 42. 期待你的名字 / 2026295
+### 59. 期待你的名字 / 2026295
 标题：8肖中特
 来源：https://49217.com/#/corpusdetail?id=42417993&type=3
 发布时间：2026-10-22 13:53
@@ -2431,7 +2993,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 43. 淡述昔日情 / 2026295
+### 60. 淡述昔日情 / 2026295
 标题：【四肖中特】★独家发布
 来源：https://49217.com/#/corpusdetail?id=42417991&type=3
 发布时间：2026-10-22 13:51
@@ -2441,7 +3003,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 44. 剑九皇 / 2026295
+### 61. 剑九皇 / 2026295
 标题：【平特一肖】全新打造
 来源：https://49217.com/#/corpusdetail?id=42417981&type=3
 发布时间：2026-10-22 13:47
@@ -2451,7 +3013,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 45. 醉插美人荫 / 2026295
+### 62. 醉插美人荫 / 2026295
 标题：【平特一肖】六肖稳中+成就黄金梦
 来源：https://49217.com/#/corpusdetail?id=42417969&type=3
 发布时间：2026-10-22 13:44
@@ -2466,7 +3028,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 46. 如意特码 / 2026295
+### 63. 如意特码 / 2026295
 标题：必中六肖 发财好料
 来源：https://49217.com/#/corpusdetail?id=42417967&type=3
 发布时间：2026-10-22 13:43
@@ -2476,7 +3038,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 47. 小六搞特 / 2026295
+### 64. 小六搞特 / 2026295
 标题：追梦九肖
 来源：https://49217.com/#/corpusdetail?id=42415709&type=3
 发布时间：2026-10-22 13:33
@@ -2616,7 +3178,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 48. 口里裤头女 / 2026295
+### 65. 口里裤头女 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417940&type=3
 发布时间：2026-10-22 13:31
@@ -2626,7 +3188,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 49. 浙去浙远 / 2026295
+### 66. 浙去浙远 / 2026295
 标题：295期六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417954&type=3
 发布时间：2026-10-22 13:31
@@ -2636,7 +3198,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 50. 沉睡的小鱼儿 / 2026295
+### 67. 沉睡的小鱼儿 / 2026295
 标题：绝杀三肖！
 来源：https://49217.com/#/corpusdetail?id=42417920&type=3
 发布时间：2026-10-22 13:09
@@ -2646,7 +3208,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 51. 万利聚归 / 2026295
+### 68. 万利聚归 / 2026295
 标题：〔特肖〕
 来源：https://49217.com/#/corpusdetail?id=42413794&type=3
 发布时间：2026-10-22 13:06
@@ -2656,7 +3218,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 52. 艺可在线分享 / 2026295
+### 69. 艺可在线分享 / 2026295
 标题：一肖中特 码神大公布
 来源：https://49217.com/#/corpusdetail?id=42417926&type=3
 发布时间：2026-10-22 12:58
@@ -2666,7 +3228,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 53. 码农港澳 / 2026295
+### 70. 码农港澳 / 2026295
 标题：295期一肖一码
 来源：https://49217.com/#/corpusdetail?id=42414782&type=3
 发布时间：2026-10-22 12:58
@@ -2686,7 +3248,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 54. 静水长流 / 2026295
+### 71. 静水长流 / 2026295
 标题：295期两期六肖
 来源：https://49217.com/#/corpusdetail?id=42417929&type=3
 发布时间：2026-10-22 12:57
@@ -2696,7 +3258,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 55. 秦凝雪月 / 2026295
+### 72. 秦凝雪月 / 2026295
 标题：精品6肖
 来源：https://49217.com/#/corpusdetail?id=42413865&type=3
 发布时间：2026-10-22 12:52
@@ -2931,7 +3493,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 56. 一路相钱 / 2026295
+### 73. 一路相钱 / 2026295
 标题：70人杀一肖——杀多次
 来源：https://49217.com/#/corpusdetail?id=42417911&type=3
 发布时间：2026-10-22 12:49
@@ -2941,7 +3503,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 57. 上官秀儿 / 2026295
+### 74. 上官秀儿 / 2026295
 标题：上官禁肖 特肖
 来源：https://49217.com/#/corpusdetail?id=42417923&type=3
 发布时间：2026-10-22 12:49
@@ -2951,7 +3513,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 58. 云里行舟 / 2026295
+### 75. 云里行舟 / 2026295
 标题：杀肖 半波 九肖 双波
 来源：https://49217.com/#/corpusdetail?id=42417910&type=3
 发布时间：2026-10-22 12:24
@@ -2961,7 +3523,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 59. 山水竹林 / 2026295
+### 76. 山水竹林 / 2026295
 标题：九肖（资料仅供参考）。
 来源：https://49217.com/#/corpusdetail?id=42417904&type=3
 发布时间：2026-10-22 12:16
@@ -2971,7 +3533,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 60. 老闫说码 / 2026295
+### 77. 老闫说码 / 2026295
 标题：澳门十肖八尾
 来源：https://49217.com/#/corpusdetail?id=42417907&type=3
 发布时间：2026-10-22 12:15
@@ -2981,7 +3543,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 61. 金穗盈仓 / 2026295
+### 78. 金穗盈仓 / 2026295
 标题：九点半《精杀一肖》
 来源：https://49217.com/#/corpusdetail?id=42417854&type=3
 发布时间：2026-10-22 11:58
@@ -2991,17 +3553,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 62. 耶耶别别 / 2026295
-标题：九肖，对错勿怪
-来源：https://49217.com/#/corpusdetail?id=42417844&type=3
-发布时间：2026-10-22 11:58
-
-原文：
-> 295期，龙虎牛狗兔猴羊鼠鸡，开
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 63. 妖魔佛 / 2026295
+### 79. 妖魔佛 / 2026295
 标题：295期
 来源：https://49217.com/#/corpusdetail?id=42417867&type=3
 发布时间：2026-10-22 11:58
@@ -3046,7 +3598,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 64. 美美数理研究 / 2026295
+### 80. 美美数理研究 / 2026295
 标题：295期澳彩软件数理预测一码中特07.02.40
 来源：https://49217.com/#/corpusdetail?id=42417845&type=3
 发布时间：2026-10-22 11:58
@@ -3166,7 +3718,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 65. 不努力如何给你未来 / 2026295
+### 81. 耶耶别别 / 2026295
+标题：九肖，对错勿怪
+来源：https://49217.com/#/corpusdetail?id=42417844&type=3
+发布时间：2026-10-22 11:58
+
+原文：
+> 295期，龙虎牛狗兔猴羊鼠鸡，开
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 82. 不努力如何给你未来 / 2026295
 标题：295期：宇宙最强杀一肖
 来源：https://49217.com/#/corpusdetail?id=42417864&type=3
 发布时间：2026-10-22 11:45
@@ -3301,7 +3863,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 66. 无敌鷄佬 / 2026295
+### 83. 无敌鷄佬 / 2026295
 标题：精选六肖中
 来源：https://49217.com/#/corpusdetail?id=42417812&type=3
 发布时间：2026-10-22 11:28
@@ -3311,7 +3873,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 67. 港澳杨哥 / 2026295
+### 84. 港澳杨哥 / 2026295
 标题：内幕消息，
 来源：https://49217.com/#/corpusdetail?id=42413876&type=3
 发布时间：2026-10-22 11:28
@@ -3321,7 +3883,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 68. 叫我哥 / 2026295
+### 85. 叫我哥 / 2026295
 标题：295期六肖六码，运气没有一直好的！
 来源：https://49217.com/#/corpusdetail?id=42414037&type=3
 发布时间：2026-10-22 10:57
@@ -3331,7 +3893,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 69. 爱的管道 / 2026295
+### 86. 爱的管道 / 2026295
 标题：👑经典6肖👑，💰做好资金规划💰
 来源：https://49217.com/#/corpusdetail?id=42417666&type=3
 发布时间：2026-10-22 10:25
@@ -3341,7 +3903,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 70. 卖面包的小哥哥 / 2026295
+### 87. 卖面包的小哥哥 / 2026295
 标题：六肖心水
 来源：https://49217.com/#/corpusdetail?id=42417531&type=3
 发布时间：2026-10-22 10:00
@@ -3351,7 +3913,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 71. 悠悠峥 / 2026295
+### 88. 何大海新中彩票 / 2026295
+标题：295期 特码肖 纯属娱乐
+来源：https://49217.com/#/corpusdetail?id=42417248&type=3
+发布时间：2026-10-22 09:47
+
+原文：
+> 主猴蛇羊龙鼠 次虎  防兔猪      开？
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 89. 悠悠峥 / 2026295
 标题：295#自用料
 来源：https://49217.com/#/corpusdetail?id=42417210&type=3
 发布时间：2026-10-22 09:47
@@ -3381,27 +3953,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 72. 何大海新中彩票 / 2026295
-标题：295期 特码肖 纯属娱乐
-来源：https://49217.com/#/corpusdetail?id=42417248&type=3
-发布时间：2026-10-22 09:47
-
-原文：
-> 主猴蛇羊龙鼠 次虎  防兔猪      开？
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-### 73. 小菈椒 / 2026295
-标题：精选6肖-13码
-来源：https://49217.com/#/corpusdetail?id=42417439&type=3
-发布时间：2026-10-22 09:46
-
-原文：
-> 295期：6肖-13码【狗蛇兔马猴虎】
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 74. 争取稳赢 / 2026295
+### 90. 争取稳赢 / 2026295
 标题：公式杀肖，长跟稳赢
 来源：https://49217.com/#/corpusdetail?id=42414192&type=3
 发布时间：2026-10-22 09:46
@@ -3431,17 +3983,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 75. 金麦世家来了 / 2026295
-标题：295期九肖➕单双
-来源：https://49217.com/#/corpusdetail?id=42416998&type=3
-发布时间：2026-10-22 09:46
-
-原文：
-> 猴鼠狗马蛇牛猪鸡龙
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 76. 极致六合 / 2026295
+### 91. 极致六合 / 2026295
 标题：295原创六肖，目前九中七 还算可以九中七，那怕十中七，在全网也算比较好的了，怎么就没关注呢。喜欢的点点关注，助力上岸
 来源：https://49217.com/#/corpusdetail?id=42414122&type=3
 发布时间：2026-10-22 09:46
@@ -3526,7 +4068,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 77. 金主任 / 2026295
+### 92. 金主任 / 2026295
 标题：生肖统计
 来源：https://49217.com/#/corpusdetail?id=42417181&type=3
 发布时间：2026-10-22 09:46
@@ -3556,7 +4098,27 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 78. 丰顺特肖蔡 / 2026295
+### 93. 金麦世家来了 / 2026295
+标题：295期九肖➕单双
+来源：https://49217.com/#/corpusdetail?id=42416998&type=3
+发布时间：2026-10-22 09:46
+
+原文：
+> 猴鼠狗马蛇牛猪鸡龙
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 94. 小菈椒 / 2026295
+标题：精选6肖-13码
+来源：https://49217.com/#/corpusdetail?id=42417439&type=3
+发布时间：2026-10-22 09:46
+
+原文：
+> 295期：6肖-13码【狗蛇兔马猴虎】
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 95. 丰顺特肖蔡 / 2026295
 标题：〔精杀三肖〕
 来源：https://49217.com/#/corpusdetail?id=42413764&type=3
 发布时间：2026-10-22 09:46
@@ -3566,7 +4128,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 79. 肯定中的 / 2026295
+### 96. 肯定中的 / 2026295
 标题：分享规律六肖两期必中❤️准半个月了
 来源：https://49217.com/#/corpusdetail?id=42415876&type=3
 发布时间：2026-10-22 09:46
@@ -3576,7 +4138,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 80. 风浒涟漪 / 2026295
+### 97. 风浒涟漪 / 2026295
 标题：四季发财
 来源：https://49217.com/#/corpusdetail?id=42417486&type=3
 发布时间：2026-10-22 09:37
@@ -3601,7 +4163,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 81. 手指上旳煙味 / 2026295
+### 98. 手指上旳煙味 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417448&type=3
 发布时间：2026-10-22 09:34
@@ -3611,7 +4173,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 82. 山高云阔 / 2026295
+### 99. 山高云阔 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417440&type=3
 发布时间：2026-10-22 09:32
@@ -3621,7 +4183,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 83. 江畔南风起 / 2026295
+### 100. 江畔南风起 / 2026295
 标题：四肖爆特
 来源：https://49217.com/#/corpusdetail?id=42417437&type=3
 发布时间：2026-10-22 09:32
@@ -3631,7 +4193,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 84. 风灵的角笛 / 2026295
+### 101. 风灵的角笛 / 2026295
 标题：前后中特
 来源：https://49217.com/#/corpusdetail?id=42417430&type=3
 发布时间：2026-10-22 09:31
@@ -3646,7 +4208,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
 
-### 85. 寂寞悟空 / 2026295
+### 102. 寂寞悟空 / 2026295
 标题：左右中特
 来源：https://49217.com/#/corpusdetail?id=42417404&type=3
 发布时间：2026-10-22 09:26
@@ -3661,7 +4223,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 86. 全球焦點 / 2026295
+### 103. 全球焦點 / 2026295
 标题：天地中特
 来源：https://49217.com/#/corpusdetail?id=42417401&type=3
 发布时间：2026-10-22 09:26
@@ -3676,7 +4238,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 87. 掌权者 / 2026295
+### 104. 掌权者 / 2026295
 标题：左右中特
 来源：https://49217.com/#/corpusdetail?id=42417398&type=3
 发布时间：2026-10-22 09:25
@@ -3691,7 +4253,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 88. 十拿九吻 / 2026295
+### 105. 十拿九吻 / 2026295
 标题：左右肖中特
 来源：https://49217.com/#/corpusdetail?id=42417395&type=3
 发布时间：2026-10-22 09:25
@@ -3706,7 +4268,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 89. 烟火色 / 2026295
+### 106. 烟火色 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417393&type=3
 发布时间：2026-10-22 09:25
@@ -3716,7 +4278,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 90. 海未深 / 2026295
+### 107. 海未深 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417388&type=3
 发布时间：2026-10-22 09:24
@@ -3726,7 +4288,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 91. 孤独比酒暖 / 2026295
+### 108. 孤独比酒暖 / 2026295
 标题：平特⒈肖
 来源：https://49217.com/#/corpusdetail?id=42417385&type=3
 发布时间：2026-10-22 09:23
@@ -3736,7 +4298,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 92. 忆当年看今朝 / 2026295
+### 109. 忆当年看今朝 / 2026295
 标题：四肖中特
 来源：https://49217.com/#/corpusdetail?id=42417382&type=3
 发布时间：2026-10-22 09:22
@@ -3746,7 +4308,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 93. 温柔风撩人 / 2026295
+### 110. 温柔风撩人 / 2026295
 标题：日夜中特
 来源：https://49217.com/#/corpusdetail?id=42417381&type=3
 发布时间：2026-10-22 09:22
@@ -3761,7 +4323,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 94. 爱不释手 / 2026295
+### 111. 爱不释手 / 2026295
 标题：左右中特
 来源：https://49217.com/#/corpusdetail?id=42417375&type=3
 发布时间：2026-10-22 09:21
@@ -3776,7 +4338,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 95. 伯人心贤 / 2026295
+### 112. 伯人心贤 / 2026295
 标题：前后中特
 来源：https://49217.com/#/corpusdetail?id=42417373&type=3
 发布时间：2026-10-22 09:21
@@ -3791,7 +4353,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
 
-### 96. 立场简单 / 2026295
+### 113. 立场简单 / 2026295
 标题：《六肖中特》
 来源：https://49217.com/#/corpusdetail?id=42417372&type=3
 发布时间：2026-10-22 09:21
@@ -3801,7 +4363,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 97. 野的像风 / 2026295
+### 114. 野的像风 / 2026295
 标题：阳肖阴肖
 来源：https://49217.com/#/corpusdetail?id=42417371&type=3
 发布时间：2026-10-22 09:21
@@ -3816,7 +4378,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 98. 冷月长空 / 2026295
+### 115. 冷月长空 / 2026295
 标题：男女中特
 来源：https://49217.com/#/corpusdetail?id=42417359&type=3
 发布时间：2026-10-22 09:19
@@ -3826,7 +4388,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 99. 南同学 / 2026295
+### 116. 南同学 / 2026295
 标题：天地中特
 来源：https://49217.com/#/corpusdetail?id=42417354&type=3
 发布时间：2026-10-22 09:18
@@ -3841,7 +4403,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 100. 孤者傲凡 / 2026295
+### 117. 孤者傲凡 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417351&type=3
 发布时间：2026-10-22 09:18
@@ -3851,7 +4413,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 101. 手心的海 / 2026295
+### 118. 手心的海 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42417348&type=3
 发布时间：2026-10-22 09:17
@@ -3861,7 +4423,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 102. 梦太阳 / 2026295
+### 119. 梦太阳 / 2026295
 标题：家野中特
 来源：https://49217.com/#/corpusdetail?id=42417345&type=3
 发布时间：2026-10-22 09:17
@@ -3876,7 +4438,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 103. 鬓惊秋 / 2026295
+### 120. 鬓惊秋 / 2026295
 标题：《六肖》 见贴更新 免顶料，姐妹们，快去下注
 来源：https://49217.com/#/corpusdetail?id=42417309&type=3
 发布时间：2026-10-22 09:11
@@ -3886,7 +4448,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 104. 凌霜傲穴 / 2026295
+### 121. 凌霜傲穴 / 2026295
 标题：五肖，范围不算很大，姐妹们，好下注
 来源：https://49217.com/#/corpusdetail?id=42417303&type=3
 发布时间：2026-10-22 09:09
@@ -3896,7 +4458,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 105. 旅清风 / 2026295
+### 122. 旅清风 / 2026295
 标题：5肖，看好跟点
 来源：https://49217.com/#/corpusdetail?id=42417295&type=3
 发布时间：2026-10-22 09:08
@@ -3906,7 +4468,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 106. 灵韵飞五 / 2026295
+### 123. 灵韵飞五 / 2026295
 标题：六肖已公开
 来源：https://49217.com/#/corpusdetail?id=42417286&type=3
 发布时间：2026-10-22 09:07
@@ -3916,7 +4478,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 107. 年華已逝 / 2026295
+### 124. 年華已逝 / 2026295
 标题：◆精准六肖
 来源：https://49217.com/#/corpusdetail?id=42417278&type=3
 发布时间：2026-10-22 09:05
@@ -3926,7 +4488,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 108. 崽崽酱 / 2026295
+### 125. 崽崽酱 / 2026295
 标题：六肖
 来源：https://49217.com/#/corpusdetail?id=42417270&type=3
 发布时间：2026-10-22 09:04
@@ -3936,7 +4498,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 109. 顾南一 / 2026295
+### 126. 顾南一 / 2026295
 标题：精选平特一肖思考人生
 来源：https://49217.com/#/corpusdetail?id=42417268&type=3
 发布时间：2026-10-22 09:04
@@ -3946,7 +4508,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 110. 越淡呢 / 2026295
+### 127. 越淡呢 / 2026295
 标题：六肖，可以下注，大家一起来赚钱
 来源：https://49217.com/#/corpusdetail?id=42417267&type=3
 发布时间：2026-10-22 09:03
@@ -3956,7 +4518,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 111. 零度萤火 / 2026295
+### 128. 零度萤火 / 2026295
 标题：7肖中特
 来源：https://49217.com/#/corpusdetail?id=42417263&type=3
 发布时间：2026-10-22 09:03
@@ -3966,7 +4528,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 112. 云倾城 / 2026295
+### 129. 云倾城 / 2026295
 标题：家野，家野家野
 来源：https://49217.com/#/corpusdetail?id=42417251&type=3
 发布时间：2026-10-22 09:01
@@ -3981,7 +4543,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 113. 挽歌半夏 / 2026295
+### 130. 挽歌半夏 / 2026295
 标题：六肖
 来源：https://49217.com/#/corpusdetail?id=42417247&type=3
 发布时间：2026-10-22 09:00
@@ -3991,7 +4553,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 114. 烟波流传 / 2026295
+### 131. 烟波流传 / 2026295
 标题：一肖中特➥提前爆料
 来源：https://49217.com/#/corpusdetail?id=42417237&type=3
 发布时间：2026-10-22 08:58
@@ -4001,7 +4563,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 115. 旧梦如风 / 2026295
+### 132. 旧梦如风 / 2026295
 标题：〖五肖〗推荐五肖,实力见证准
 来源：https://49217.com/#/corpusdetail?id=42417220&type=3
 发布时间：2026-10-22 08:57
@@ -4011,7 +4573,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 116. 淩望夜空 / 2026295
+### 133. 淩望夜空 / 2026295
 标题：8肖
 来源：https://49217.com/#/corpusdetail?id=42417198&type=3
 发布时间：2026-10-22 08:55
@@ -4021,7 +4583,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 117. 且笑天下 / 2026295
+### 134. 且笑天下 / 2026295
 标题：总裁透密四肖
 来源：https://49217.com/#/corpusdetail?id=42417187&type=3
 发布时间：2026-10-22 08:55
@@ -4031,7 +4593,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 118. 清风温柔 / 2026295
+### 135. 清风温柔 / 2026295
 标题：高级六肖
 来源：https://49217.com/#/corpusdetail?id=42417167&type=3
 发布时间：2026-10-22 08:53
@@ -4041,7 +4603,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 119. 欢乐场 / 2026295
+### 136. 欢乐场 / 2026295
 标题：四肖爆特 必准
 来源：https://49217.com/#/corpusdetail?id=42417155&type=3
 发布时间：2026-10-22 08:53
@@ -4051,7 +4613,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 120. 岁梦半尺见 / 2026295
+### 137. 岁梦半尺见 / 2026295
 标题：六肖中特➥提前爆料
 来源：https://49217.com/#/corpusdetail?id=42417130&type=3
 发布时间：2026-10-22 08:50
@@ -4061,7 +4623,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 121. 酷出界限 / 2026295
+### 138. 酷出界限 / 2026295
 标题：●六肖中特●‖★★你敢跟,我敢开!★★
 来源：https://49217.com/#/corpusdetail?id=42417122&type=3
 发布时间：2026-10-22 08:49
@@ -4071,7 +4633,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 122. 北山妖帝 / 2026295
+### 139. 北山妖帝 / 2026295
 标题：四肖，下注准确率高还是可以下注的
 来源：https://49217.com/#/corpusdetail?id=42417070&type=3
 发布时间：2026-10-22 08:45
@@ -4081,7 +4643,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 123. 兲使笑 / 2026295
+### 140. 兲使笑 / 2026295
 标题：七肖
 来源：https://49217.com/#/corpusdetail?id=42417055&type=3
 发布时间：2026-10-22 08:44
@@ -4091,17 +4653,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 124. 敬意人生 / 2026295
-标题：295期六肖
-来源：https://49217.com/#/corpusdetail?id=42416529&type=3
-发布时间：2026-10-22 08:04
-
-原文：
-> 马龙牛猴狗猪
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 125. 烂废人 / 2026295
+### 141. 烂废人 / 2026295
 标题：295
 来源：https://49217.com/#/corpusdetail?id=42416549&type=3
 发布时间：2026-10-22 08:04
@@ -4111,7 +4663,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 126. 欧阳修手机 / 2026295
+### 142. 欧阳修手机 / 2026295
 标题：六肖
 来源：https://49217.com/#/corpusdetail?id=42416467&type=3
 发布时间：2026-10-22 08:04
@@ -4121,7 +4673,27 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 127. 夜猫子捡码 / 2026295
+### 143. 敬意人生 / 2026295
+标题：295期六肖
+来源：https://49217.com/#/corpusdetail?id=42416529&type=3
+发布时间：2026-10-22 08:04
+
+原文：
+> 马龙牛猴狗猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 144. 潮汕小浪鸟 / 2026295
+标题：核心杀肖-295。
+来源：https://49217.com/#/corpusdetail?id=42415702&type=3
+发布时间：2026-10-22 07:30
+
+原文：
+> 6肖冷码：13-45-41-29-03。越前越冷。冷肖狗20期没来
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 145. 夜猫子捡码 / 2026295
 标题：295自用九肖
 来源：https://49217.com/#/corpusdetail?id=42415703&type=3
 发布时间：2026-10-22 07:30
@@ -4181,107 +4753,102 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 128. 潮汕小浪鸟 / 2026295
-标题：核心杀肖-295。
-来源：https://49217.com/#/corpusdetail?id=42415702&type=3
+### 146. 诗诗与欣欣 / 2026295
+标题：九肖
+来源：https://49217.com/#/corpusdetail?id=42415711&type=3
 发布时间：2026-10-22 07:30
 
 原文：
-> 6肖冷码：13-45-41-29-03。越前越冷。冷肖狗20期没来
+> 295期:龙蛇猪马猴鼠牛羊狗
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 129. 潮州表 / 2026295
-标题：295期：150期错2期 一万公式选10条看看运气公式杀肖
-来源：https://49217.com/#/corpusdetail?id=42415708&type=3
+### 147. 青不年小号 / 2026295
+标题：六肖🀄特，
+来源：https://49217.com/#/corpusdetail?id=42416381&type=3
 发布时间：2026-10-22 07:30
 
 原文：
-> 〖共０次〗牛 虎 蛇 马 羊
+> 295期【虎马猪猴蛇羊】准
 未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-原文：
-> 〖共１次〗鼠 兔 龙 猴
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共２次〗鸡 猪xx
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共３次〗狗xx
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共０次〗牛 虎 兔 龙 鸡 猪 博这里
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共１次〗蛇 马 羊
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共２次〗鼠 狗xx
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-原文：
-> 〖共３次〗猴xx
-未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
-
-### 130. 潮州表 / 2026295
-标题：295期：公式综合资料
-来源：https://49217.com/#/corpusdetail?id=42415710&type=3
+### 148. 六肖迷 / 2026295
+标题：295 主前生肖
+来源：https://49217.com/#/corpusdetail?id=42415737&type=3
 发布时间：2026-10-22 07:30
 
 原文：
-> 共06次: 猴,
+> 295 猪牛龙蛇猴鼠兔羊
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 149. 小钓怡情 / 2026295
+标题：紧跟8肖
+来源：https://49217.com/#/corpusdetail?id=42415706&type=3
+发布时间：2026-10-22 07:30
+
+原文：
+> 295期：牛虎龙蛇羊猴狗猪（开）
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 150. 南宁小弟 / 2026295
+标题：祖龙小鑫自用资料杀少次 看多次自行取💰💰
+来源：https://49217.com/#/corpusdetail?id=42415712&type=3
+发布时间：2026-10-22 07:30
+
+原文：
+> 〖4次〗:虎,兔,（共2个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 共07次: 蛇,鸡,
+> 〖6次〗:马,（共1个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 共08次: 虎,
+> 〖7次〗:牛,猴,猪,（共3个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 共09次: 兔,
+> 〖8次〗:狗,（共1个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 共11次: 龙,鼠,猪,狗,
+> 〖9次〗:龙,羊,鸡,（共3个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 共12次: 牛,
+> 〖10次〗:鼠,蛇,（共2个）
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 151. 南寕四肖大王 / 2026295
+标题：295期
+来源：https://49217.com/#/corpusdetail?id=42416257&type=3
+发布时间：2026-10-22 07:30
 
 原文：
-> 共13次: 马,
+> 六肖:龙蛇鼠猴狗猪
 未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 152. 海王码 / 2026295
+标题：大围三十码（平特一肖）
+来源：https://49217.com/#/corpusdetail?id=42413752&type=3
+发布时间：2026-10-22 07:30
 
 原文：
-> 共14次: 羊,
+> 295期：平特一肖♦猪          二连猪龙
 未解析原因：unsupported or ambiguous play
-请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 131. 冰淇淋不冷 / 2026295
+### 153. 冰淇淋不冷 / 2026295
 标题：4肖.6肖中特-杀肖-平特(有连中版)
 来源：https://49217.com/#/corpusdetail?id=42414063&type=3
 发布时间：2026-10-22 07:30
@@ -4461,102 +5028,247 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 132. 六肖迷 / 2026295
-标题：295 主前生肖
-来源：https://49217.com/#/corpusdetail?id=42415737&type=3
+### 154. 潮州表 / 2026295
+标题：295期：150期错2期 一万公式选10条看看运气公式杀肖
+来源：https://49217.com/#/corpusdetail?id=42415708&type=3
 发布时间：2026-10-22 07:30
 
 原文：
-> 295 猪牛龙蛇猴鼠兔羊
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 133. 小钓怡情 / 2026295
-标题：紧跟8肖
-来源：https://49217.com/#/corpusdetail?id=42415706&type=3
-发布时间：2026-10-22 07:30
-
-原文：
-> 295期：牛虎龙蛇羊猴狗猪（开）
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 134. 南宁小弟 / 2026295
-标题：祖龙小鑫自用资料杀少次 看多次自行取💰💰
-来源：https://49217.com/#/corpusdetail?id=42415712&type=3
-发布时间：2026-10-22 07:30
-
-原文：
-> 〖4次〗:虎,兔,（共2个）
+> 〖共０次〗牛 虎 蛇 马 羊
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 〖6次〗:马,（共1个）
+> 〖共１次〗鼠 兔 龙 猴
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 〖7次〗:牛,猴,猪,（共3个）
+> 〖共２次〗鸡 猪xx
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 〖8次〗:狗,（共1个）
+> 〖共３次〗狗xx
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 〖9次〗:龙,羊,鸡,（共3个）
+> 〖共０次〗牛 虎 兔 龙 鸡 猪 博这里
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 〖10次〗:鼠,蛇,（共2个）
+> 〖共１次〗蛇 马 羊
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 135. 诗诗与欣欣 / 2026295
-标题：九肖
-来源：https://49217.com/#/corpusdetail?id=42415711&type=3
+原文：
+> 〖共２次〗鼠 狗xx
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 〖共３次〗猴xx
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 155. 潮州表 / 2026295
+标题：295期：公式综合资料
+来源：https://49217.com/#/corpusdetail?id=42415710&type=3
 发布时间：2026-10-22 07:30
 
 原文：
-> 295期:龙蛇猪马猴鼠牛羊狗
+> 共06次: 猴,
 未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 136. 青不年小号 / 2026295
-标题：六肖🀄特，
-来源：https://49217.com/#/corpusdetail?id=42416381&type=3
-发布时间：2026-10-22 07:30
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 295期【虎马猪猴蛇羊】准
+> 共07次: 蛇,鸡,
 未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 137. 南寕四肖大王 / 2026295
-标题：295期
-来源：https://49217.com/#/corpusdetail?id=42416257&type=3
-发布时间：2026-10-22 07:30
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 六肖:龙蛇鼠猴狗猪
+> 共08次: 虎,
 未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 138. 海王码 / 2026295
-标题：大围三十码（平特一肖）
-来源：https://49217.com/#/corpusdetail?id=42413752&type=3
-发布时间：2026-10-22 07:30
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
 原文：
-> 295期：平特一肖♦猪          二连猪龙
+> 共09次: 兔,
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 共11次: 龙,鼠,猪,狗,
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 共12次: 牛,
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 共13次: 马,
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+原文：
+> 共14次: 羊,
+未解析原因：unsupported or ambiguous play
+请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
+
+### 156. 林猫爷 / 2026295
+标题：八肖
+来源：https://49217.com/#/corpusdetail?id=42415696&type=3
+发布时间：2026-10-22 02:58
+
+原文：
+> 281-猴狗兔猪牛鼠马羊-10鸡-错
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 139. 专业研究各种彩票计划 / 2026295
+原文：
+> 282-牛蛇猪虎兔猴马羊-23猴-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 283-猪牛虎兔蛇狗马羊-18牛-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 284-狗猪虎兔蛇猴马羊-32猪-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 285-猴狗虎兔鸡蛇马羊-19鼠-错
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 286-鼠龙蛇马羊兔狗虎-24羊-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 287-猪猴鸡龙蛇虎狗兔-08猪-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 288-猪羊牛猴鸡虎狗兔-25马-错
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 289-狗兔马猴牛蛇龙虎-38蛇-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 290-狗兔马猴鸡牛龙虎-40兔-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 291-兔狗马猴鸡牛龙虎-17虎-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 292-兔狗猴鼠蛇猪马龙-36羊-错
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 293-牛猪虎马兔猴狗鼠-17虎-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 294-猪蛇兔猴鼠马龙牛-28兔-🀄️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 295-牛猴鼠蛇鸡猪马狗
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 281-猴狗兔猪牛鼠马羊-10鸡-错
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 282-牛蛇猪虎兔猴马羊-23猴-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 283-猪牛虎兔蛇狗马羊-18牛-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 284-狗猪虎兔蛇猴马羊-32猪-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 285-猴狗虎兔鸡蛇马羊-19鼠-错
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 286-鼠龙蛇马羊兔狗虎-24羊-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 287-猪猴鸡龙蛇虎狗兔-08猪-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 288-猪羊牛猴鸡虎狗兔-25马-错
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 289-狗兔马猴牛蛇龙虎-38蛇-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 290-狗兔马猴鸡牛龙虎-40兔-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 291-兔狗马猴鸡牛龙虎-17虎-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 293-牛猪虎马兔猴狗鼠-17虎-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 294-猪蛇兔猴鼠马龙牛-28兔-🀄️
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 八肖 | 295-牛猴鼠蛇鸡猪马狗
+未解析原因：duplicate author/equal priority earlier source
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 157. 专业研究各种彩票计划 / 2026295
 标题：澳彩精选特九肖（错对勿怪，资料仅提供参考，请大家认真参考）
 来源：https://49217.com/#/corpusdetail?id=42415694&type=3
 发布时间：2026-10-22 02:58
@@ -4566,7 +5278,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 140. 坚哥今晚吃肉 / 2026295
+### 158. 坚哥今晚吃肉 / 2026295
 标题：公式杀肖 自用资料，只做参考
 来源：https://49217.com/#/corpusdetail?id=42414371&type=3
 发布时间：2026-10-22 02:58
@@ -4591,7 +5303,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 141. 丹贝贝丹 / 2026295
+### 159. 丹贝贝丹 / 2026295
 标题：澳门彩295期：¥贝贝丹¥特肖¥
 来源：https://49217.com/#/corpusdetail?id=42415360&type=3
 发布时间：2026-10-22 02:40
@@ -4631,7 +5343,7 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 142. 发哥二肖加三码 / 2026295
+### 160. 发哥二肖加三码 / 2026295
 标题：【澳彩适用】
 来源：https://49217.com/#/corpusdetail?id=42415684&type=3
 发布时间：2026-10-22 02:34
@@ -4656,7 +5368,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 143. 海南边 / 2026295
+### 161. 海南边 / 2026295
 标题：295期 三肖中特（个人心水，只供参考）
 来源：https://49217.com/#/corpusdetail?id=42415640&type=3
 发布时间：2026-10-22 02:04
@@ -4681,7 +5393,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 144. 福建虎姐 / 2026295
+### 162. 福建虎姐 / 2026295
 标题：虎姐杀肖=仅供参考
 来源：https://49217.com/#/corpusdetail?id=42415067&type=3
 发布时间：2026-10-22 01:28
@@ -4696,17 +5408,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 145. 玲珑湾 / 2026295
-标题：八肖中特
-来源：https://49217.com/#/corpusdetail?id=42415039&type=3
-发布时间：2026-10-22 00:47
-
-原文：
-> 295:鼠牛虎龙羊鸡狗猪 开
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 146. 神来一笔 / 2026295
+### 163. 神来一笔 / 2026295
 标题：人工选号，稳定九肖
 来源：https://49217.com/#/corpusdetail?id=42414927&type=3
 发布时间：2026-10-22 00:47
@@ -4716,7 +5418,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 147. 大总统 / 2026295
+### 164. 玲珑湾 / 2026295
+标题：八肖中特
+来源：https://49217.com/#/corpusdetail?id=42415039&type=3
+发布时间：2026-10-22 00:47
+
+原文：
+> 295:鼠牛虎龙羊鸡狗猪 开
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 165. 大总统 / 2026295
 标题：295期:精准九肖中特
 来源：https://49217.com/#/corpusdetail?id=42414915&type=3
 发布时间：2026-10-22 00:27
@@ -4726,7 +5438,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 148. 梓烨姐姐 / 2026295
+### 166. 梓烨姐姐 / 2026295
 标题：自用9肖（勿参）
 来源：https://49217.com/#/corpusdetail?id=42414453&type=3
 发布时间：2026-10-22 00:26
@@ -4746,7 +5458,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 149. 朱家老大 / 2026295
+### 167. 朱家老大 / 2026295
 标题：295期绝杀1肖！！！
 来源：https://49217.com/#/corpusdetail?id=42414846&type=3
 发布时间：2026-10-22 00:17
@@ -4921,7 +5633,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 150. 我是雷锋 / 2026295
+### 168. 我是雷锋 / 2026295
 标题：雷锋精准杀3肖
 来源：https://49217.com/#/corpusdetail?id=42414814&type=3
 发布时间：2026-10-22 00:13
@@ -4931,7 +5643,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 151. 澳之星 / 2026295
+### 169. 老闫说码 / 2026295
+标题：澳门原创八肖
+来源：https://49217.com/#/corpusdetail?id=42414795&type=3
+发布时间：2026-10-22 00:09
+
+原文：
+> 295期:8.肖【猴猪龙羊牛兔蛇狗】开:？00准
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 170. 澳之星 / 2026295
 标题：四季发财
 来源：https://49217.com/#/corpusdetail?id=42414796&type=3
 发布时间：2026-10-22 00:09
@@ -4946,17 +5668,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 152. 老闫说码 / 2026295
-标题：澳门原创八肖
-来源：https://49217.com/#/corpusdetail?id=42414795&type=3
-发布时间：2026-10-22 00:09
-
-原文：
-> 295期:8.肖【猴猪龙羊牛兔蛇狗】开:？00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 153. 老闫说码 / 2026295
+### 171. 老闫说码 / 2026295
 标题：澳门单双十肖八尾
 来源：https://49217.com/#/corpusdetail?id=42414792&type=3
 发布时间：2026-10-22 00:09
@@ -4971,17 +5683,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 154. 三点水高手 / 2026295
-标题：三肖 喜欢赞赞动起来每天一百赞更新 下载49图库APP填写我的邀请码 2635173
-来源：https://49217.com/#/corpusdetail?id=42414767&type=3
-发布时间：2026-10-22 00:06
-
-原文：
-> 295期马龙猴蛇兔鸡羊开
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 155. 老闫说码 / 2026295
+### 172. 老闫说码 / 2026295
 标题：澳门十八码
 来源：https://49217.com/#/corpusdetail?id=42414791&type=3
 发布时间：2026-10-22 00:06
@@ -4996,7 +5698,17 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 156. 一码中特不是期期有 / 2026295
+### 173. 三点水高手 / 2026295
+标题：三肖 喜欢赞赞动起来每天一百赞更新 下载49图库APP填写我的邀请码 2635173
+来源：https://49217.com/#/corpusdetail?id=42414767&type=3
+发布时间：2026-10-22 00:06
+
+原文：
+> 295期马龙猴蛇兔鸡羊开
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 174. 一码中特不是期期有 / 2026295
 标题：【295期】【精准九肖】100期错9
 来源：https://49217.com/#/corpusdetail?id=42414257&type=3
 发布时间：2026-10-22 00:05
@@ -5006,7 +5718,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 157. 洋葱王子 / 2026295
+### 175. 洋葱王子 / 2026295
 标题：单双中特
 来源：https://49217.com/#/corpusdetail?id=42414772&type=3
 发布时间：2026-10-22 00:05
@@ -5016,7 +5728,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 158. 卧龙凤求凰 / 2026295
+### 176. 卧龙凤求凰 / 2026295
 标题：295期主五肖防三肖
 来源：https://49217.com/#/corpusdetail?id=42414160&type=3
 发布时间：2026-10-22 00:05
@@ -5036,7 +5748,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 159. 随时候命 / 2026295
+### 177. 随时候命 / 2026295
 标题：295 期【澳门 六合彩七肖】
 来源：https://49217.com/#/corpusdetail?id=42414757&type=3
 发布时间：2026-10-21 23:31
@@ -5046,7 +5758,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 160. 潮汕绝杀 / 2026295
+### 178. 潮汕绝杀 / 2026295
 标题：七肖七码中特
 来源：https://49217.com/#/corpusdetail?id=42414745&type=3
 发布时间：2026-10-21 23:31
@@ -5056,7 +5768,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 161. 本人搞钱要紧 / 2026295
+### 179. 蓝蓝猫 / 2026295
+标题：六肖
+来源：https://49217.com/#/corpusdetail?id=42414754&type=3
+发布时间：2026-10-21 23:31
+
+原文：
+> 虎龙马狗猴猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 180. 本人搞钱要紧 / 2026295
 标题：295期杀四肖已更新
 来源：https://49217.com/#/corpusdetail?id=42414760&type=3
 发布时间：2026-10-21 23:31
@@ -5066,7 +5788,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 162. 期期期期好运来 / 2026295
+### 181. 期期期期好运来 / 2026295
 标题：期期好运来🍅⑥肖🀄特
 来源：https://49217.com/#/corpusdetail?id=42414746&type=3
 发布时间：2026-10-21 23:31
@@ -5076,7 +5798,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 163. 小四叶 / 2026295
+### 182. 小四叶 / 2026295
 标题：【两期平特一肖】仅供参考❗️❗️❗️
 来源：https://49217.com/#/corpusdetail?id=42414752&type=3
 发布时间：2026-10-21 23:31
@@ -5226,7 +5948,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 164. 小哥天天玩 / 2026295
+### 183. 小哥天天玩 / 2026295
 标题：六肖中特
 来源：https://49217.com/#/corpusdetail?id=42414706&type=3
 发布时间：2026-10-21 23:31
@@ -5236,7 +5958,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 165. 戏说春风 / 2026295
+### 184. 戏说春风 / 2026295
 标题：295期澳特：
 来源：https://49217.com/#/corpusdetail?id=42414759&type=3
 发布时间：2026-10-21 23:31
@@ -5246,17 +5968,37 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 166. 蓝蓝猫 / 2026295
-标题：六肖
-来源：https://49217.com/#/corpusdetail?id=42414754&type=3
+### 185. 神鹰传奇 / 2026295
+标题：心水仅供参考，小赌怡情
+来源：https://49217.com/#/corpusdetail?id=42413778&type=3
 发布时间：2026-10-21 23:31
 
 原文：
-> 虎龙马狗猴猪
+> 295期，牛马猴鼠羊鸡
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 167. 哇林北 / 2026295
+### 186. 澳彩给我发财机会 / 2026295
+标题：发财机会🍅⑥肖🀄特
+来源：https://49217.com/#/corpusdetail?id=42414749&type=3
+发布时间：2026-10-21 23:31
+
+原文：
+> 蛇鼠牛羊龙鸡
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 187. 熊幺幺二二 / 2026295
+标题：八肖走天下 若没更新按上期/准确率80%
+来源：https://49217.com/#/corpusdetail?id=42414753&type=3
+发布时间：2026-10-21 23:31
+
+原文：
+> 狗龙鸡羊牛蛇猪鼠
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 188. 哇林北 / 2026295
 标题：295期:林北六肖
 来源：https://49217.com/#/corpusdetail?id=42414744&type=3
 发布时间：2026-10-21 23:16
@@ -5266,7 +6008,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 168. 周星驰 / 2026295
+### 189. 周星驰 / 2026295
 标题：295期：星爷『单双四肖』
 来源：https://49217.com/#/corpusdetail?id=42414743&type=3
 发布时间：2026-10-21 23:16
@@ -5276,7 +6018,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 169. 若是凉夜已成梦 / 2026295
+### 190. 若是凉夜已成梦 / 2026295
 标题：295期：【3肖必出】→高手推荐
 来源：https://49217.com/#/corpusdetail?id=42414704&type=3
 发布时间：2026-10-21 23:07
@@ -5286,7 +6028,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 170. 夜袭女儿国 / 2026295
+### 191. 夜袭女儿国 / 2026295
 标题：【夜袭女儿国】梦想的地方【四肖中特】.
 来源：https://49217.com/#/corpusdetail?id=42414696&type=3
 发布时间：2026-10-21 23:07
@@ -5296,7 +6038,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 171. 孤海未蓝 / 2026295
+### 192. 孤海未蓝 / 2026295
 标题：295期:【五肖中特】创造神话！
 来源：https://49217.com/#/corpusdetail?id=42414680&type=3
 发布时间：2026-10-21 23:06
@@ -5306,237 +6048,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 172. 生财有道 / 2026295
-标题：295期:【生财有道】前后中特
-来源：https://49217.com/#/corpusdetail?id=42414677&type=3
-发布时间：2026-10-21 23:05
+### 193. 千年蓝 / 2026295
+标题：原创平特一肖
+来源：https://49217.com/#/corpusdetail?id=42419637&type=3
+发布时间：2026-10-22 17:01
 
 原文：
-> 前肖：鼠牛虎兔龙蛇
-未解析原因：unsupported or ambiguous play
-请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
-
-原文：
-> 后肖：马羊猴鸡狗猪
-未解析原因：unsupported or ambiguous play
-请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
-
-### 173. 江左梅郎 / 2026295
-标题：295期:【江左梅郎】实力推荐-财富五肖
-来源：https://49217.com/#/corpusdetail?id=42414675&type=3
-发布时间：2026-10-21 23:05
-
-原文：
-> 295期:☛五肖☚【蛇羊鼠狗兔】开:0000准
-未解析原因：unsupported or ambiguous play
+> 295期：平特一肖  龙  [开：？]
+未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 174. 中国码王 / 2026295
-标题：295期：7肖中特 再创辉煌
-来源：https://49217.com/#/corpusdetail?id=42414659&type=3
-发布时间：2026-10-21 23:04
-
-原文：
-> 295期中特七肖【猪马鸡鼠龙猴牛】开:？00中
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 175. 一往无前 / 2026295
-标题：前后中特- 造福彩民
-来源：https://49217.com/#/corpusdetail?id=42414652&type=3
-发布时间：2026-10-21 23:03
-
-原文：
-> 前肖：鼠牛虎兔龙蛇
-未解析原因：unsupported or ambiguous play
-请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
-
-原文：
-> 后肖：马羊猴鸡狗猪
-未解析原因：unsupported or ambiguous play
-请确认：请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？
-
-### 176. 落英缤芬 / 2026295
-标题：【落英缤芬】《男女中特》
-来源：https://49217.com/#/corpusdetail?id=42414651&type=3
-发布时间：2026-10-21 23:03
-
-原文：
-> 男肖：鼠牛虎龙马猴狗
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 177. 专业睡管 / 2026295
-标题：吉美凶丑
-来源：https://49217.com/#/corpusdetail?id=42414650&type=3
-发布时间：2026-10-21 23:03
-
-原文：
-> 吉美：龙马鸡羊兔蛇
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 凶丑：猪猴虎鼠牛狗
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 178. 诗人诗意 / 2026295
-标题：家畜野兽
-来源：https://49217.com/#/corpusdetail?id=42414638&type=3
-发布时间：2026-10-21 23:02
-
-原文：
-> 家禽：【猪牛狗鸡羊马】
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 野兽：【鼠蛇兔猴虎龙】
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 179. 风雨哈佛路 / 2026295
-标题：【风雨哈佛路】赢钱特码【４肖中特】
-来源：https://49217.com/#/corpusdetail?id=42414629&type=3
-发布时间：2026-10-21 23:02
-
-原文：
-> 295期:４肖中特〖牛虎鸡兔〗开:0000准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 180. 梦影逍遥 / 2026295
-标题：【梦影逍遥】强料降临『平特二肖』
-来源：https://49217.com/#/corpusdetail?id=42414628&type=3
-发布时间：2026-10-21 23:02
-
-原文：
-> 295期:『公式平特二肖』羊猪开？00对
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 181. 迷糊画家 / 2026295
-标题：【迷糊画家】＞@专业打造『平特一肖』
-来源：https://49217.com/#/corpusdetail?id=42414626&type=3
-发布时间：2026-10-21 23:01
-
-原文：
-> 295期:平特一肖〖马马马〗开00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 182. 百里挑一 / 2026295
-标题：四肖精选１肖
-来源：https://49217.com/#/corpusdetail?id=42414617&type=3
-发布时间：2026-10-21 23:01
-
-原文：
-> 295期:◇至尊四肖◇[鸡蛇兔马]开：0000中
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 183. 某月某日 / 2026295
-标题：295期：《四肖至一码》 发财之道！
-来源：https://49217.com/#/corpusdetail?id=42414613&type=3
-发布时间：2026-10-21 23:00
-
-原文：
-> 295期〖四肖〗猴虎蛇马
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 295期〖三肖〗猴虎蛇
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 295期〖二肖〗猴虎
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 295期〖一肖〗猴
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 184. 究极爆马 / 2026295
-标题：5肖中特
-来源：https://49217.com/#/corpusdetail?id=42414612&type=3
-发布时间：2026-10-21 23:00
-
-原文：
-> 295期❄五肖中特❄〖猪牛鼠猴蛇〗开00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 185. 敢赌敢博 / 2026295
-标题：敢赌敢博极限六肖2期——长期必胜客🧧🧧🧧
-来源：https://49217.com/#/corpusdetail?id=42414563&type=3
-发布时间：2026-10-21 23:00
-
-原文：
-> 295期【蛇牛鸡鼠兔狗】开准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 186. 澳彩鼠 / 2026295
-标题：中特4肖
-来源：https://49217.com/#/corpusdetail?id=42414607&type=3
-发布时间：2026-10-21 22:59
-
-原文：
-> 295期☆四肖中特☆《蛇虎猴羊》开00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 187. 雪飘漫天 / 2026295
-标题：295期：【雪飘漫天】阴阳特肖
-来源：https://49217.com/#/corpusdetail?id=42414605&type=3
-发布时间：2026-10-21 22:59
-
-原文：
-> 阳肖：兔猴虎牛鸡羊
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 阴肖：鼠马猪蛇狗龙
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 188. 英雄無名 / 2026295
-标题：295期:【五肖中特】风云再起
-来源：https://49217.com/#/corpusdetail?id=42414591&type=3
-发布时间：2026-10-21 22:58
-
-原文：
-> 295期:︽無名5肖︽(龙蛇狗鼠虎)︽开:0000准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 189. 盼望好彩 / 2026295
-标题：4肖中特
-来源：https://49217.com/#/corpusdetail?id=42414578&type=3
-发布时间：2026-10-21 22:57
-
-原文：
-> 295期:必中四肖〖兔鸡蛇猪〗开00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 190. 记忆之城 / 2026295
-标题：295期:一肖平特━最牛资料！
-来源：https://49217.com/#/corpusdetail?id=42414559&type=3
-发布时间：2026-10-21 22:55
-
-原文：
-> 295期:一肖平特【蛇蛇蛇】开:00准
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 191. 冷魂墨子 / 2026295
+### 194. 冷魂墨子 / 2026295
 标题：精准绝杀 一肖
 来源：https://49217.com/#/corpusdetail?id=42418617&type=3
 发布时间：2026-10-22 16:14
@@ -5546,7 +6068,17 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 192. 江月清风 / 2026295
+### 195. 每日来财 / 2026295
+标题：公式：杀肖杀尾杀合
+来源：https://49217.com/#/corpusdetail?id=42413910&type=3
+发布时间：2026-10-22 16:14
+
+原文：
+> 295：杀一肖（马）？
+未解析原因：unknown or unverified mode
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 196. 江月清风 / 2026295
 标题：《江月清风》原创精杀一肖
 来源：https://49217.com/#/corpusdetail?id=42418130&type=3
 发布时间：2026-10-22 14:25
@@ -5556,7 +6088,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 193. 迪丽热巴 / 2026295
+### 197. 迪丽热巴 / 2026295
 标题：{迪丽热巴}精彩不断【双波中特】
 来源：https://49217.com/#/corpusdetail?id=42417990&type=3
 发布时间：2026-10-22 14:23
@@ -5566,7 +6098,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 194. 冰封大地 / 2026295
+### 198. 冰封大地 / 2026295
 标题：295期：【冰封大地】共同致富【红蓝绿肖】
 来源：https://49217.com/#/corpusdetail?id=42417853&type=3
 发布时间：2026-10-22 11:43
@@ -5581,7 +6113,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 195. 无敌鷄佬 / 2026295
+### 199. 无敌鷄佬 / 2026295
 标题：特杀一肖
 来源：https://49217.com/#/corpusdetail?id=42417810&type=3
 发布时间：2026-10-22 11:28
@@ -5591,7 +6123,7 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 196. 手写笔记 / 2026295
+### 200. 手写笔记 / 2026295
 标题：尾巴狂魔
 来源：https://49217.com/#/corpusdetail?id=42417750&type=3
 发布时间：2026-10-22 10:57
@@ -5616,7 +6148,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 197. 河清海晏 / 2026295
+### 201. 河清海晏 / 2026295
 标题：自用杀肖，只为记录，谨慎参考
 来源：https://49217.com/#/corpusdetail?id=42417608&type=3
 发布时间：2026-10-22 10:25
@@ -5631,7 +6163,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 198. 旺火小福星 / 2026295
+### 202. 旺火小福星 / 2026295
 标题：三色生肖【连胜18期】
 来源：https://49217.com/#/corpusdetail?id=42414200&type=3
 发布时间：2026-10-22 10:25
@@ -5646,17 +6178,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 199. 一个痞子 / 2026295
-标题：【绝杀生肖】一个痞子
-来源：https://49217.com/#/corpusdetail?id=42417023&type=3
-发布时间：2026-10-22 09:46
-
-原文：
-> 295期【绝杀生肖】杀龙鼠狗猴 开：？？✅️
-未解析原因：audit: truncated bare kill zodiac list
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 200. 全仓梭哈只赢不输 / 2026295
+### 203. 全仓梭哈只赢不输 / 2026295
 标题：三色生肖《连中18期》
 来源：https://49217.com/#/corpusdetail?id=42414154&type=3
 发布时间：2026-10-22 09:46
@@ -5671,7 +6193,17 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 201. 奥彩常中 / 2026295
+### 204. 一个痞子 / 2026295
+标题：【绝杀生肖】一个痞子
+来源：https://49217.com/#/corpusdetail?id=42417023&type=3
+发布时间：2026-10-22 09:46
+
+原文：
+> 295期【绝杀生肖】杀龙鼠狗猴 开：？？✅️
+未解析原因：audit: truncated bare kill zodiac list
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 205. 奥彩常中 / 2026295
 标题：295铁粉参考(无视一切喷狗
 来源：https://49217.com/#/corpusdetail?id=42415714&type=3
 发布时间：2026-10-22 07:30
@@ -5681,7 +6213,7 @@
 未解析原因：audit: truncated bare kill zodiac list
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 202. 丹贝贝丹 / 2026295
+### 206. 丹贝贝丹 / 2026295
 标题：澳门彩295期：¥大数据¥杀肖¥
 来源：https://49217.com/#/corpusdetail?id=42415253&type=3
 发布时间：2026-10-22 01:27
@@ -5706,7 +6238,7 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 203. 笑笑又一天 / 2026295
+### 207. 笑笑又一天 / 2026295
 标题：杀4肖
 来源：https://49217.com/#/corpusdetail?id=42415498&type=3
 发布时间：2026-10-22 01:27
@@ -5716,7 +6248,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 204. 吸金大法 / 2026295
+### 208. 吸金大法 / 2026295
 标题：禁一肖
 来源：https://49217.com/#/corpusdetail?id=42414844&type=3
 发布时间：2026-10-22 00:17
@@ -5726,7 +6258,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 205. 老闫说码 / 2026295
+### 209. 老闫说码 / 2026295
 标题：澳门四头七肖
 来源：https://49217.com/#/corpusdetail?id=42414793&type=3
 发布时间：2026-10-22 00:09
@@ -5736,7 +6268,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 206. 雷一特 / 2026295
+### 210. 雷一特 / 2026295
 标题：自用记录
 来源：https://49217.com/#/corpusdetail?id=42414380&type=3
 发布时间：2026-10-22 00:05
@@ -5746,7 +6278,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 207. 长跟长有 / 2026295
+### 211. 长跟长有 / 2026295
 标题：实力杀二肖
 来源：https://49217.com/#/corpusdetail?id=42414781&type=3
 发布时间：2026-10-22 00:05
