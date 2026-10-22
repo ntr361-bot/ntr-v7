@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026295",
+  "state": "collected",
+  "run_id": "39774616037",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39774616037",
+  "updated_at": "2026-10-22T12:18:19.657210+00:00",
+  "error": null,
+  "valid_materials": 81,
+  "valid_authors": 81,
+  "successful_post_opens": 513,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 466,
+      "attempted": 466,
+      "opened": 466,
+      "extracted": 463,
+      "completed": 466
+    }
+  },
+  "article_texts_extracted": 509,
+  "article_details_completed": 513,
+  "last_verified_post": {
+    "author": "南星北月",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133274&type=3",
+    "verified_at": "2026-10-22T12:18:18.065880+00:00",
+    "text_length": 126,
+    "text_sha256": "3d504a2cccbf5114d89e205bfcc778c7db460ef6a2b0b98a6ae77da3eee2af1e"
+  },
+  "last_attempted_post": {
+    "author": "南星北月",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133274&type=3",
+    "attempt_index": 513
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:12:24.893652+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 509,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-22T12:18:18.780667+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 4,
+    "truncated": false,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
