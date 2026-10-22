@@ -111,6 +111,18 @@ jobs:
                       f"parser-valid: {s.get('parser_valid_materials')} error: {s.get('error')}"]
           lines.append('- scored / frozen / published: none (probe only)')
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines)+'\n')
+          # Also emit as annotations so the verdict is readable via the checks API
+          # without downloading logs or artifacts.
+          def esc(x): return x.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
+          print('::notice title=probe verdict::'+esc('\n'.join(lines)))
+          if p.exists():
+              s=json.loads(p.read_text())
+              detail={k:s.get(k) for k in ('final_url','http_status','title','navigation_error','listing_error')}
+              detail['body_preview']=(s.get('body_preview') or '')[:1500]
+              detail['cards']=s.get('cards',[])[:6]
+              detail['request_failures']=s.get('request_failures',[])[:8]
+              detail['console_errors']=s.get('console_errors',[])[:5]
+              print('::notice title=probe detail::'+esc(json.dumps(detail,ensure_ascii=False)[:30000]))
           PY
       - uses: actions/upload-artifact@v4
         if: always()
