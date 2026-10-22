@@ -73,6 +73,11 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     try:
         result = page_collector.collect_page(url, out, issue, category, cfg)
         record.update(ok=True, **summarize(result, issue))
+        # Full post evidence for the Scrapling side-by-side comparison step.
+        # Workflow-local only (artifact), not committed.
+        (out / 'forum49-evidence.json').write_text(json.dumps(
+            {'issue': result.get('issue'), 'posts': result.get('evidence') or []},
+            ensure_ascii=False) + '\n', encoding='utf-8')
     except Exception as exc:  # recorded, never hidden
         record.update(ok=False, error=f'{type(exc).__name__}: {exc}'[:1000],
                       requested_issue=issue)
