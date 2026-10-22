@@ -309,7 +309,12 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 'top6_hit':zodiac in snap['top6'],
                 'classification':'experimental_unverified_leaderboard'})
         settlement=folder/'settlement.json'
-        if settlement.exists():summary.append(json.loads(settlement.read_text(encoding='utf-8')))
+        if settlement.exists():
+            # Additive public fields so readers need not fetch every snapshot;
+            # values come from the digest-verified immutable snapshot above.
+            summary.append({**json.loads(settlement.read_text(encoding='utf-8')),
+                            'top3':snap.get('top3',[]),'top6':snap.get('top6',[]),
+                            'frozen_at':snap.get('frozen_at') or snap.get('fetched_at')})
     atomic(archive/'summary.json',{
         'settled_count':len(summary),
         'top3_hits':sum(bool(s['top3_hit']) for s in summary),
