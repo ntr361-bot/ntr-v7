@@ -92,8 +92,11 @@ jobs:
           # Separate venv so Scrapling's dependencies cannot change the
           # primary collector's Playwright installation.
           python -m venv /tmp/scrapling-venv
-          /tmp/scrapling-venv/bin/pip install -q "scrapling[fetchers]==0.5"
+          # Current release (0.5 had no plain browser fetcher); the version
+          # and fetcher actually used are recorded in the comparison file.
+          /tmp/scrapling-venv/bin/pip install -q "scrapling[fetchers]"
           /tmp/scrapling-venv/bin/python -m playwright install chromium
+          /tmp/scrapling-venv/bin/scrapling install || echo "scrapling install step unavailable; continuing"
           /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800
       - name: Report (annotations + summary)
         if: always()

@@ -95,11 +95,15 @@ def _open_fetcher():
     import scrapling
     import scrapling.fetchers as f
     version = getattr(scrapling, '__version__', 'unknown')
-    if hasattr(f, 'DynamicSession'):
-        session = f.DynamicSession(headless=True)
+    session_cls = getattr(f, 'DynamicSession', None)
+    if session_cls is not None:
+        session = session_cls(headless=True)
         session.__enter__()
         return f'DynamicSession@{version}', session.fetch, lambda: session.__exit__(None, None, None)
-    for name in ('DynamicFetcher', 'PlayWrightFetcher'):
+    # Plain browser fetchers first. The stealth browser is only a fallback for
+    # releases that ship nothing else; it is used solely on sites that permit
+    # automated access (49217.com does) and never to get around a refusal.
+    for name in ('DynamicFetcher', 'PlayWrightFetcher', 'StealthyFetcher'):
         cls = getattr(f, name, None)
         if cls is None:
             continue

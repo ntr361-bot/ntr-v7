@@ -72,6 +72,20 @@ class AdapterTest(unittest.TestCase):
             name, fetch, _ = fs._open_fetcher()
             self.assertEqual((name, fetch('u')), ('DynamicFetcher@9.9', ('dyn', 'u')))
 
+    def test_stealth_browser_is_last_resort(self):
+        class Stealth:
+            @classmethod
+            def fetch(cls, url, **kw):
+                return 'stealth'
+        class Dyn:
+            @classmethod
+            def fetch(cls, url, **kw):
+                return 'dyn'
+        with mock.patch.dict(sys.modules, self.fake_module(StealthyFetcher=Stealth, Fetcher=object)):
+            self.assertEqual(fs._open_fetcher()[0], 'StealthyFetcher@9.9')
+        with mock.patch.dict(sys.modules, self.fake_module(StealthyFetcher=Stealth, DynamicFetcher=Dyn)):
+            self.assertEqual(fs._open_fetcher()[0], 'DynamicFetcher@9.9')
+
     def test_reports_available_names_when_no_browser_fetcher(self):
         with mock.patch.dict(sys.modules, self.fake_module(Fetcher=object)):
             with self.assertRaisesRegex(ImportError, 'available: Fetcher'):
