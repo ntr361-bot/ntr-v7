@@ -1,0 +1,107 @@
+"""49论坛模型 — collection run for the 49图库 高手论坛 (49217.com).
+
+Reuses the existing page collector and parser unchanged (same >=6 zodiac and
+kill-zodiac rules, one material per author). This module only collects and
+records an observation: it never freezes, settles, publishes to the ledger or
+touches the formal forum model's archive, D1 or V7.
+
+Output: forum-observer/forum49/issues/<issue>/run-<run_id>.json (one file per
+run, never overwritten) plus a compact summary for workflow annotations.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import time
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.parse import urlparse
+
+from .core import material_counts
+
+MODEL_NAME = '49论坛模型'
+DEFAULT_URL = 'https://49217.com/#/forum'
+MAX_POSTS = 2000  # collector's own ceiling; feed scan stops at the issue boundary
+
+
+def summarize(result: dict, requested_issue: str | None) -> dict:
+    """Build the recorded summary from a collect_page result (pure, unit-tested)."""
+    posts = result.get('evidence') or []
+    mats = result.get('parsed_predictions') or []
+    counted = [m for m in mats if m.get('counted_for_ranking')]
+    issue = str(result.get('issue') or '')
+    return {
+        'model': MODEL_NAME,
+        'requested_issue': requested_issue,
+        'issue': issue,
+        'issue_matches_request': (not requested_issue) or issue == str(requested_issue),
+        'detail_posts': len(posts),
+        'nonempty_article_posts': sum(bool(str(p.get('body', '')).strip()) for p in posts),
+        'valid_materials': len(counted),
+        'distinct_valid_authors': len({m.get('author') for m in counted}),
+        'material_counts': material_counts(mats),
+        'ranking_observation': [
+            {'zodiac': r['zodiac'], 'score': r.get('score')} for r in (result.get('ranking') or [])],
+        'materials': [{
+            'author': m.get('author'), 'play': m.get('play'), 'mode': m.get('mode'),
+            'picks': m.get('picks'), 'counted': bool(m.get('counted_for_ranking')),
+            'reason': m.get('exclusion_reason'), 'source_url': m.get('source_url'),
+            'published_at': m.get('published_at')} for m in mats],
+        'excluded_reasons': Counter(
+            str(m.get('exclusion_reason'))[:60] for m in mats
+            if not m.get('counted_for_ranking')).most_common(15),
+        'collector_rejected': (result.get('rejected') or [])[:50],
+        'frozen': False, 'settled': False, 'published_to_ledger': False,
+    }
+
+
+def run(url: str, issue: str | None, category: str | None, out: Path, archive: Path,
+        config_path: Path = Path('collector-config.json')) -> dict:
+    from . import page_collector
+    page_collector.HOSTS.add(urlparse(url).hostname)  # this process only
+    out.mkdir(parents=True, exist_ok=True)
+    cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
+    cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
+               daily_profile_authors=0, collection_mode='current_feed')
+    started = datetime.now(timezone.utc)
+    t0 = time.monotonic()
+    record = {'model': MODEL_NAME, 'url': url, 'category': category,
+              'run_id': os.environ.get('GITHUB_RUN_ID'),
+              'started_at': started.isoformat()}
+    try:
+        result = page_collector.collect_page(url, out, issue, category, cfg)
+        record.update(ok=True, **summarize(result, issue))
+    except Exception as exc:  # recorded, never hidden
+        record.update(ok=False, error=f'{type(exc).__name__}: {exc}'[:1000],
+                      requested_issue=issue)
+    record['elapsed_seconds'] = round(time.monotonic() - t0, 1)
+    record['finished_at'] = datetime.now(timezone.utc).isoformat()
+    folder = archive / 'issues' / str(record.get('issue') or issue or 'unknown')
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / f"run-{record['run_id'] or started.strftime('%Y%m%dT%H%M%S')}.json"
+    if target.exists():
+        raise SystemExit(f'refusing to overwrite {target}')
+    target.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    (out / 'forum49-summary.json').write_text(
+        json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print('FORUM49_RECORD ' + str(target), flush=True)
+    return record
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--url', default=DEFAULT_URL)
+    ap.add_argument('--issue', default=None, help='YYYYNNN; omit to use latest')
+    ap.add_argument('--category', default='澳门')
+    ap.add_argument('--out', type=Path, default=Path('forum49-out'))
+    ap.add_argument('--archive', type=Path, default=Path('forum49'))
+    a = ap.parse_args(argv)
+    record = run(a.url, a.issue or None, a.category or None, a.out, a.archive)
+    if not record.get('ok'):
+        raise SystemExit(1)
+
+
+if __name__ == '__main__':
+    main()
