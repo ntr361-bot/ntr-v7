@@ -46,6 +46,42 @@ class CompareTest(unittest.TestCase):
         self.assertNotIn('评论内容', body)
 
 
+class AdapterTest(unittest.TestCase):
+    def fake_module(self, **attrs):
+        pkg = types.ModuleType('scrapling'); pkg.__version__ = '9.9'
+        sub = types.ModuleType('scrapling.fetchers')
+        for k, v in attrs.items():
+            setattr(sub, k, v)
+        pkg.fetchers = sub
+        return {'scrapling': pkg, 'scrapling.fetchers': sub}
+
+    def test_prefers_session_then_falls_back_to_older_fetchers(self):
+        class Old:
+            def fetch(self, url, **kw):
+                return ('old', url, kw)
+        with mock.patch.dict(sys.modules, self.fake_module(PlayWrightFetcher=Old)):
+            name, fetch, close = fs._open_fetcher()
+            self.assertEqual(name, 'PlayWrightFetcher@9.9')
+            self.assertEqual(fetch('u', timeout=1)[0:2], ('old', 'u'))
+
+        class Dyn:
+            @classmethod
+            def fetch(cls, url, **kw):
+                return ('dyn', url)
+        with mock.patch.dict(sys.modules, self.fake_module(DynamicFetcher=Dyn, PlayWrightFetcher=Old)):
+            name, fetch, _ = fs._open_fetcher()
+            self.assertEqual((name, fetch('u')), ('DynamicFetcher@9.9', ('dyn', 'u')))
+
+    def test_reports_available_names_when_no_browser_fetcher(self):
+        with mock.patch.dict(sys.modules, self.fake_module(Fetcher=object)):
+            with self.assertRaisesRegex(ImportError, 'available: Fetcher'):
+                fs._open_fetcher()
+
+    def test_posts_with_material_are_checked_first(self):
+        posts = [post('甲', '广告'), post('乙', '295期杀二肖：虎狗', title='聊天'), post('丙', '无')]
+        self.assertEqual(fs.priority_order(posts)[0], 1)
+
+
 class RunTest(unittest.TestCase):
     def _evidence(self, d, posts):
         f = d / 'ev.json'
@@ -58,7 +94,7 @@ class RunTest(unittest.TestCase):
                    {'status': 'no_detail_shell', 'seconds': 2.0}]
         with TemporaryDirectory() as d, \
                 mock.patch.dict(sys.modules, {'scrapling': types.ModuleType('scrapling')}), \
-                mock.patch.object(fs, 'fetch_bodies', return_value=fetched), \
+                mock.patch.object(fs, 'fetch_bodies', return_value=('TestFetcher@0', fetched)), \
                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '9'}):
             d = Path(d)
             rec = fs.run(self._evidence(d, ps), d / 'out.json', d / 'arch')
@@ -67,6 +103,7 @@ class RunTest(unittest.TestCase):
             self.assertEqual(rec['checked_posts'], 1)
             self.assertEqual(rec['fetch_status_counts'], {'ok': 1, 'no_detail_shell': 1})
             self.assertTrue(rec['materials']['agree'])
+            self.assertEqual(rec['fetcher'], 'TestFetcher@0')
             self.assertTrue((d / 'arch/issues/2026295/scrapling-9.json').exists())
             with self.assertRaises(SystemExit):
                 fs.run(self._evidence(d, ps), d / 'out.json', d / 'arch')
