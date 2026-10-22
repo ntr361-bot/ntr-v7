@@ -1,0 +1,12 @@
+{
+  "model": "49论坛模型",
+  "check": "scrapling_side_by_side",
+  "issue": "2026295",
+  "run_id": "39746859818",
+  "started_at": "2026-10-22T08:38:02.636786+00:00",
+  "primary_posts": 919,
+  "feeds_scoring": false,
+  "ok": false,
+  "error": "ImportError: cannot import name 'DynamicSession' from 'scrapling.fetchers' (/tmp/scrapling-venv/lib/python3.12/site-packages/scrapling/fetchers/__init__.py)",
+  "finished_at": "2026-10-22T08:38:02.662784+00:00"
+}
