@@ -65,7 +65,7 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False):
+def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer'):
     """Publish each collector report immediately; freeze only via the nightly finalizer.
 
     Existing callers retain the original immediate-freeze behavior. Production
@@ -329,7 +329,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         snap=json.loads(snap_path.read_text(encoding='utf-8')) if snap_path.exists() else None
         settled=json.loads(settlement_path.read_text(encoding='utf-8')) if settlement_path.exists() else None
         result={
-            'schema_version':1,'model':'forum-observer',
+            'schema_version':1,'model':model_id,
             'classification':'experimental_unverified_leaderboard',
             'issue':current_issue or None,
             'collection_status':latest.get('status','not_collected'),
@@ -354,7 +354,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         }
         atomic(public_dir/'latest.json',result)
         atomic(public_dir/'history.json',{
-            'schema_version':1,'model':'forum-observer',
+            'schema_version':1,'model':model_id,
             'classification':'experimental_unverified_leaderboard',
             'settled_count':len(summary),
             'top3_hits':sum(bool(s['top3_hit']) for s in summary),
@@ -392,6 +392,8 @@ if __name__=='__main__':
     p.add_argument('--public',default=None)
     p.add_argument('--defer-freeze',action='store_true',help='Publish a replaceable report immediately; defer immutable freeze')
     p.add_argument('--finalize',action='store_true',help='At 21:00 freeze last verified current-day draft')
+    p.add_argument('--model-id',default='forum-observer',
+                   help='Public feed model id (49论坛模型 uses forum49); default unchanged for 118')
     p.add_argument('--ledger-live-results',default=None,
                    help='Read the existing smart ledger live results API, never its fallback data')
     a=p.parse_args()
@@ -406,5 +408,5 @@ if __name__=='__main__':
     # Older GitHub rerun attempts may retain their original workflow YAML.
     # Never freeze early from the CLI when --finalize was not explicitly passed.
     defer=a.defer_freeze or not a.finalize
-    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize))
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,model_id=a.model_id))
 

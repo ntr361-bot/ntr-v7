@@ -42,10 +42,15 @@ class Forum49Test(unittest.TestCase):
             d = Path(d)
             (d / 'collector-config.json').write_text('{}')
             with mock.patch('forum_observer.page_collector.collect_page', return_value=RESULT), \
+                 mock.patch('forum_observer.report.render') as render, \
+                 mock.patch.object(forum49, 'collection_budget', return_value=600), \
                  mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '42'}):
                 rec = forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
                 target = d / 'arch/issues/2026295/run-42.json'
                 self.assertTrue(rec['ok'])
+                self.assertEqual(rec['max_collection_seconds'], 600)
+                render.assert_called_once()
+                self.assertEqual(render.call_args[0][1], d / 'out/2026295/report.md')
                 self.assertEqual(json.loads(target.read_text())['valid_materials'], 2)
                 ev = json.loads((d / 'out/forum49-evidence.json').read_text())
                 self.assertEqual((ev['issue'], len(ev['posts'])), ('2026295', 2))
@@ -57,11 +62,31 @@ class Forum49Test(unittest.TestCase):
             d = Path(d)
             (d / 'collector-config.json').write_text('{}')
             with mock.patch('forum_observer.page_collector.collect_page', side_effect=ValueError('no forum posts')), \
+                 mock.patch.object(forum49, 'collection_budget', return_value=600), \
                  mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '7'}):
                 rec = forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
                 self.assertFalse(rec['ok'])
                 self.assertIn('no forum posts', rec['error'])
                 self.assertTrue((d / 'arch/issues/2026295/run-7.json').exists())
+
+
+class BudgetTest(unittest.TestCase):
+    def at(self, h, m):
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        return datetime(2026, 10, 22, h, m, tzinfo=ZoneInfo('Asia/Shanghai'))
+
+    def test_evening_scan_ends_before_freeze(self):
+        # 20:30 -> 30 min to cutoff minus 90 s reserve
+        self.assertEqual(forum49.collection_budget(self.at(20, 30), 1800), 1710)
+        self.assertEqual(forum49.collection_budget(self.at(20, 0), 1800), 1800)
+
+    def test_too_close_to_freeze_is_refused(self):
+        with self.assertRaises(ValueError):
+            forum49.collection_budget(self.at(20, 58), 1800)
+
+    def test_after_freeze_is_observation_only_budget(self):
+        self.assertEqual(forum49.collection_budget(self.at(21, 30), 1800), 1800)
 
 
 if __name__ == '__main__':

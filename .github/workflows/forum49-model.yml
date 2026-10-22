@@ -1,12 +1,22 @@
 name: 49论坛模型 collection
-# Manual / externally triggered collection of 49图库 高手论坛 (Macau only).
-# Reuses the existing collector and parser unchanged (>=6 zodiac, kill-zodiac
-# rules, one material per author). Records an observation per run under
-# forum-observer/forum49/; never freezes, settles, publishes to the ledger,
-# or touches the formal forum archive, D1 or V7.
+# 49图库 高手论坛 (Macau only), triggered externally (scheduled tasks).
+# Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
+# (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
+# own archive forum-observer/forum49/ and feed site/data/forum49/.
+#   mode=collect : 20:00 / 20:30 rounds -> replaceable draft (never a freeze)
+#   mode=freeze  : 21:00-21:20 only -> immutable snapshot of last pre-21:00 draft
+#   mode=settle  : settle snapshots from verified draw history; never collects
+# Never touches 118's archive/feed, D1 or formal V7.
 on:
+  # Hourly settlement only (never collects or freezes); delays are harmless.
+  schedule:
+    - cron: '50 * * * *'
   workflow_dispatch:
     inputs:
+      mode:
+        description: collect | freeze | settle
+        required: false
+        default: collect
       issue:
         description: Target issue YYYYNNN (blank = latest)
         required: false
@@ -22,10 +32,11 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: forum49-model
+  group: forum49-${{ github.event_name == 'schedule' && 'settle' || inputs.mode || 'collect' }}
   cancel-in-progress: false
 jobs:
   collect:
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect' }}
     runs-on: ubuntu-latest
     timeout-minutes: 95
     defaults:
@@ -41,7 +52,7 @@ jobs:
           pip install playwright
           python -m playwright install --with-deps chromium
       - name: Unit tests
-        run: python -m unittest tests.test_forum49 tests.test_forum49_scrapling tests.test_source_probe -v
+        run: python -m unittest tests.test_forum49 tests.test_forum49_scrapling tests.test_forum49_cycle tests.test_source_probe -v
       - name: Collect (no limit on post count; stops at issue boundary)
         id: collect
         env:
@@ -49,6 +60,29 @@ jobs:
           F49_URL: ${{ inputs.url }}
         run: |
           python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive forum49
+      - name: Publish pre-freeze draft (no freeze; refused at/after 21:00)
+        id: draft
+        if: steps.collect.outcome == 'success'
+        continue-on-error: true
+        run: |
+          python -m forum_observer.cycle --out forum49-out --archive forum49 \
+            --history ../site/data/history.json --public ../site/data/forum49 \
+            --defer-freeze --model-id forum49
+      - name: Commit draft and run record before the side check
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -d forum49 ] && git add forum49/
+          [ -d ../site/data/forum49 ] && git add ../site/data/forum49/
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "chore(forum49): 49论坛模型 collection draft ${GITHUB_RUN_ID}"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
       - name: Scrapling side-by-side check (isolated; never affects collection)
         id: scrapling
         if: always() && inputs.scrapling_check != 'false' && hashFiles('forum-observer/forum49-out/forum49-evidence.json') != ''
@@ -96,14 +130,16 @@ jobs:
               errs=sorted({str(r.get('error'))[:120] for r in c.get('posts',[]) if r.get('error')})[:8]
               if errs:
                   print('::notice title=49论坛模型 scrapling errors::'+esc('\n'.join(errs)))
+          print('::notice title=49论坛模型 draft::draft step outcome: ${{ steps.draft.outcome }}')
           lines=['## 49论坛模型',f"- ok: {s.get('ok')} error: {s.get('error')}",
+                 "- draft publication: ${{ steps.draft.outcome }}",
                  f"- issue: {s.get('issue')} (requested {s.get('requested_issue')})",
                  f"- posts: {s.get('detail_posts')} valid materials: {s.get('valid_materials')} authors: {s.get('distinct_valid_authors')}",
                  f"- material counts: {s.get('material_counts')}",
-                 '- frozen / settled / ledger: none (observation only)']
+                 '- freeze happens only in mode=freeze at 21:00-21:20']
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines)+'\n')
           PY
-      - name: Commit run record (forum49/ only)
+      - name: Commit Scrapling record (forum49/ only)
         if: always()
         shell: bash
         run: |
@@ -112,7 +148,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add forum49/
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "chore(forum49): record 49论坛模型 collection run ${GITHUB_RUN_ID}"
+          git commit -m "chore(forum49): record 49论坛模型 side check ${GITHUB_RUN_ID}"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             git pull --rebase origin main
@@ -123,3 +159,84 @@ jobs:
         with:
           name: forum49-model
           path: forum-observer/forum49-out/
+
+  freeze:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check 21:00-21:20 Asia/Shanghai window and evening draft
+        id: window
+        run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
+      - name: Reject freeze outside window
+        if: steps.window.outputs.allowed != 'true'
+        run: |
+          echo "::error title=49论坛模型 freeze::refused (${{ steps.window.outputs.reason }}); no late or early freeze attempted"
+          exit 1
+      - name: Freeze last pre-21:00 draft (write-once snapshot)
+        run: |
+          python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
+            --history ../site/data/history.json --public ../site/data/forum49 \
+            --finalize --model-id forum49
+      - name: Report snapshot
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, glob
+          from pathlib import Path
+          p=Path('../site/data/forum49/latest.json')
+          s=json.loads(p.read_text()) if p.exists() else {}
+          print('::notice title=49论坛模型 freeze::'+json.dumps({k:s.get(k) for k in (
+              'issue','frozen','prediction_top3','prediction_top6','valid_materials',
+              'freeze_quality_status','snapshot_digest')},ensure_ascii=False))
+          PY
+      - name: Commit snapshot
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add forum49/ ../site/data/forum49/
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "chore(forum49): 49论坛模型 21:00 freeze ${GITHUB_RUN_ID}"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
+
+  settle:
+    if: ${{ github.event_name == 'schedule' || inputs.mode == 'settle' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Settle from verified draw history (never collects or freezes)
+        run: |
+          python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
+            --history ../site/data/history.json --public ../site/data/forum49 --model-id forum49
+      - name: Commit settlement
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add forum49/ ../site/data/forum49/
+          if git diff --cached --quiet; then echo "no new settlement"; exit 0; fi
+          git commit -m "chore(forum49): settle 49论坛模型 from verified draw history"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
