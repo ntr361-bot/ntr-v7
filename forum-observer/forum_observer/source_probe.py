@@ -54,7 +54,7 @@ def _short(card: dict) -> dict:
     return row
 
 
-def probe(url: str, out: Path, wait_seconds: int = 20) -> dict:
+def probe(url: str, out: Path, wait_seconds: int = 45) -> dict:
     from playwright.sync_api import sync_playwright
     from .page_collector import _listing
 
@@ -91,7 +91,10 @@ def probe(url: str, out: Path, wait_seconds: int = 20) -> dict:
             if summary['page_loaded']:
                 deadline = time.monotonic() + wait_seconds
                 while time.monotonic() < deadline:
-                    if page.locator(f'{CARD_SELECTOR}, [role=tab]').count():
+                    # Tabs render incrementally; wait for the platform tab and
+                    # at least one feed card, not merely the first tab.
+                    if (page.get_by_role('tab', name=PLATFORM_TAB, exact=True).count()
+                            and page.locator(CARD_SELECTOR).count()):
                         break
                     page.wait_for_timeout(500)
                 summary['final_url'] = page.url
