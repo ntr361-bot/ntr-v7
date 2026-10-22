@@ -86,29 +86,81 @@ def text_agreement(primary: str, other: str) -> dict:
     return {'identical': a == b, 'ratio': round(ratio, 4)}
 
 
-def fetch_bodies(posts: list[dict], budget_seconds: int, max_posts: int) -> list[dict]:
-    from scrapling.fetchers import DynamicSession
+def _open_fetcher():
+    """Pick whichever dynamic (browser) fetcher this Scrapling version ships.
 
+    Returns (name, fetch_callable, closer). Newer releases expose
+    DynamicSession / DynamicFetcher; older ones PlayWrightFetcher.
+    """
+    import scrapling
+    import scrapling.fetchers as f
+    version = getattr(scrapling, '__version__', 'unknown')
+    if hasattr(f, 'DynamicSession'):
+        session = f.DynamicSession(headless=True)
+        session.__enter__()
+        return f'DynamicSession@{version}', session.fetch, lambda: session.__exit__(None, None, None)
+    for name in ('DynamicFetcher', 'PlayWrightFetcher'):
+        cls = getattr(f, name, None)
+        if cls is None:
+            continue
+
+        def call(url, _cls=cls, **kw):
+            try:
+                return _cls.fetch(url, **kw)
+            except TypeError as exc:
+                if 'self' not in str(exc) and 'positional' not in str(exc):
+                    raise
+                return _cls().fetch(url, **kw)
+        return f'{name}@{version}', call, lambda: None
+    available = ','.join(n for n in dir(f) if not n.startswith('_'))
+    raise ImportError(f'no browser fetcher in scrapling {version}; available: {available}')
+
+
+def _page_text(page) -> str:
+    for getter in (lambda: page.find('body'), lambda: page.css_first('body'), lambda: page.css('body')[0]):
+        try:
+            node = getter()
+        except Exception:
+            continue
+        if node is not None:
+            return node.get_all_text(separator='\n', strip=True)
+    return ''
+
+
+def priority_order(posts: list[dict]) -> list[int]:
+    """Indices with posts that yield parsed material on the primary side first."""
+    from .page_collector import extract_picks
+    with_material, rest = [], []
+    for i, post in enumerate(posts):
+        text = f"{post.get('title', '')}\n{post.get('body', '')}"
+        (with_material if extract_picks(text) else rest).append(i)
+    return with_material + rest
+
+
+def fetch_bodies(posts: list[dict], budget_seconds: int, max_posts: int) -> tuple[str, list[dict]]:
     def wait_detail(page):
         try:
             page.wait_for_function(DETAIL_READY_JS, timeout=15000)
         except Exception:
             pass  # recorded below as a detail-shell miss
+        return page
 
-    out, deadline = [], time.monotonic() + budget_seconds
-    with DynamicSession(headless=True, network_idle=False, disable_resources=False,
-                        google_search=False, retries=1) as session:
-        for post in posts[:max_posts]:
+    fetcher_name, fetch, close = _open_fetcher()
+    results: list[dict | None] = [None] * len(posts)
+    order = priority_order(posts)[:max_posts]
+    deadline = time.monotonic() + budget_seconds
+    try:
+        for i in order:
+            post = posts[i]
             entry = {'detail_url': post.get('detail_url'), 'author': post.get('author')}
             if time.monotonic() > deadline:
                 entry.update(status='not_checked_time_budget')
-                out.append(entry)
+                results[i] = entry
                 continue
             t0 = time.monotonic()
             try:
-                page = session.fetch(post['detail_url'], page_action=wait_detail,
-                                     timeout=30000, wait=300)
-                text = page.find('body').get_all_text(separator='\n', strip=True) if page.find('body') else ''
+                page = fetch(post['detail_url'], page_action=wait_detail, timeout=30000)
+                text = _page_text(page)
                 shell = '阅读数' in text and '最新评论' in text
                 body = article_from_text(text, post) if shell else ''
                 entry.update(status='ok' if body else ('no_detail_shell' if not shell else 'title_not_found'),
@@ -116,11 +168,14 @@ def fetch_bodies(posts: list[dict], budget_seconds: int, max_posts: int) -> list
             except Exception as exc:
                 entry.update(status='fetch_error', error=f'{type(exc).__name__}: {exc}'[:300])
             entry['seconds'] = round(time.monotonic() - t0, 2)
-            out.append(entry)
-    for post in posts[max_posts:]:
-        out.append({'detail_url': post.get('detail_url'), 'author': post.get('author'),
-                    'status': 'not_checked_post_limit'})
-    return out
+            results[i] = entry
+    finally:
+        close()
+    for i, post in enumerate(posts):
+        if results[i] is None:
+            results[i] = {'detail_url': post.get('detail_url'), 'author': post.get('author'),
+                          'status': 'not_checked_post_limit'}
+    return fetcher_name, results
 
 
 def run(evidence_file: Path, out_file: Path, archive: Path,
@@ -133,7 +188,8 @@ def run(evidence_file: Path, out_file: Path, archive: Path,
               'primary_posts': len(posts), 'feeds_scoring': False}
     try:
         import scrapling  # noqa: F401
-        fetched = fetch_bodies(posts, budget_seconds, max_posts)
+        fetcher_name, fetched = fetch_bodies(posts, budget_seconds, max_posts)
+        record['fetcher'] = fetcher_name
         statuses = {}
         for f in fetched:
             statuses[f['status']] = statuses.get(f['status'], 0) + 1
@@ -166,7 +222,7 @@ def run(evidence_file: Path, out_file: Path, archive: Path,
         raise SystemExit(f'refusing to overwrite {target}')
     target.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print('SCRAPLING_COMPARE ' + json.dumps({k: record.get(k) for k in (
-        'ok', 'error', 'primary_posts', 'checked_posts', 'identical_text_posts', 'fetch_status_counts')},
+        'ok', 'error', 'fetcher', 'primary_posts', 'checked_posts', 'identical_text_posts', 'fetch_status_counts')},
         ensure_ascii=False), flush=True)
     return record
 
