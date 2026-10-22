@@ -93,9 +93,10 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
         cfg['max_collection_seconds'] = collection_budget(now_local, int(cfg.get('max_collection_seconds', 1800)))
         record['max_collection_seconds'] = cfg['max_collection_seconds']
         result = page_collector.collect_page(url, out, issue, category, cfg)
-        # Same human-readable report renderer as 118论坛模型 (archived by cycle).
+        # Same human-readable report renderer as 118论坛模型 (archived by cycle),
+        # compact: no long excluded/pending listings (user, 2026-10-22).
         from .report import render
-        render(result, out / str(result['issue']) / 'report.md')
+        render(result, out / str(result['issue']) / 'report.md', compact=True)
         record.update(ok=True, **summarize(result, issue))
         # Full post evidence for the Scrapling side-by-side comparison step.
         # Workflow-local only (artifact), not committed.

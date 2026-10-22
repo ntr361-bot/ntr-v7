@@ -71,3 +71,32 @@ class PendingQuestionsTests(unittest.TestCase):
             self.assertEqual(json.loads((folder/'pending-rule-questions.json').read_text())['questions'],r['pending_rule_questions'])
             self.assertIn('待确认玩法',(folder/'report.md').read_text())
             self.assertFalse((folder/'snapshot.json').exists())
+
+class CompactReportTests(unittest.TestCase):
+    """49论坛模型 writes a compact report (user, 2026-10-22); 118 keeps the full one."""
+    def result(self):
+        r=PendingQuestionsTests().result()
+        r['parsed_predictions']=[
+            {'author':'乙','excerpt':'六肖:鼠牛虎兔龙蛇','counted_for_ranking':True,'source_url':'https://example.org/b'},
+            {'author':'丙','excerpt':'推荐三肖:鼠牛虎','counted_for_ranking':False,
+             'exclusion_reason':'recommendation requires at least 6 distinct zodiacs','source_url':'https://example.org/c'}]
+        r['ranking']=[{'rank':1,'zodiac':'鼠','score':1.0}]
+        return r
+    def test_compact_report_keeps_counts_and_drops_listings(self):
+        with TemporaryDirectory() as d:
+            p=Path(d)/'report.md';render(self.result(),p,compact=True);text=p.read_text()
+            self.assertTrue(text.startswith('# 论坛 2026284 采集成绩单\n'))
+            for expected in ('**有效资料：1份**','## 十二生肖观察排名','1. 鼠：1.0',
+                             '排除资料：1份；无法明确解析：1条；历史回顾：0条；待确认玩法：1篇','## 资料校验与错误'):
+                self.assertIn(expected,text)
+            for absent in ('## 排除资料','## 待确认玩法','推荐三肖:鼠牛虎','0次:牛羊猴兔鸡','article/a.png'):
+                self.assertNotIn(absent,text)
+    def test_full_report_is_unchanged_by_default(self):
+        with TemporaryDirectory() as d:
+            p=Path(d)/'report.md';render(self.result(),p);text=p.read_text()
+            for expected in ('## 排除资料','推荐三肖:鼠牛虎','## 待确认玩法（1篇）','0次:牛羊猴兔鸡'):
+                self.assertIn(expected,text)
+            self.assertNotIn('未计分资料（精简）',text)
+    def test_forum49_uses_the_compact_report(self):
+        source=(Path(__file__).parents[1]/'forum_observer'/'forum49.py').read_text(encoding='utf-8')
+        self.assertIn("render(result, out / str(result['issue']) / 'report.md', compact=True)",source)
