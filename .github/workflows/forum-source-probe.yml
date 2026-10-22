@@ -1,0 +1,119 @@
+name: Forum source probe (read-only)
+# Manual only. Checks whether a candidate site runs the same forum platform as
+# the current source. Never scores, freezes, archives, publishes or pushes:
+# permissions are read-only and all output goes to an uploaded artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Candidate forum URL (https)
+        required: true
+        default: https://49217.com/#/forum
+      category:
+        description: Category filter for the 5-post trial (same as collector-config)
+        required: false
+        default: 澳门
+permissions:
+  contents: read
+concurrency:
+  group: forum-source-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Probe unit tests
+        run: python -m unittest tests.test_source_probe -v
+      - name: Stage 1 - render page and compare platform structure
+        id: stage1
+        env:
+          PROBE_URL: ${{ inputs.url }}
+        run: |
+          python -u -m forum_observer.source_probe --url "$PROBE_URL" --out probe-out
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          v=json.load(open('probe-out/probe-summary.json'))['verdict']
+          print('match=' + ('true' if v['platform_match'] else 'false'))
+          PY
+      - name: Stage 2 - existing collector on 5 posts (isolated, no freeze)
+        if: steps.stage1.outputs.match == 'true'
+        env:
+          PROBE_URL: ${{ inputs.url }}
+          PROBE_CATEGORY: ${{ inputs.category }}
+        run: |
+          python -u - <<'PY'
+          import json, os, time
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from forum_observer import page_collector
+          url=os.environ['PROBE_URL']
+          # Widen the host allowlist for this process only; the repo file is unchanged.
+          page_collector.HOSTS.add(urlparse(url).hostname)
+          cfg=json.loads(Path('collector-config.json').read_text())
+          cfg.update(max_posts=5,max_pages=5,max_collection_seconds=600,
+                     daily_profile_authors=0,freeze_enabled=False)
+          out=Path('probe-out/collect')
+          start=time.monotonic()
+          summary={'url':url,'scored_for_ranking':False,'frozen':False,'published':False}
+          try:
+              result=page_collector.collect_page(url,out,None,os.environ.get('PROBE_CATEGORY') or None,cfg)
+              posts=result['evidence']
+              summary.update(ok=True,issue=result['issue'],
+                  elapsed_seconds=round(time.monotonic()-start,1),
+                  detail_posts=len(posts),
+                  nonempty_article_posts=sum(bool(p['body'].strip()) for p in posts),
+                  parser_valid_materials=result['valid_materials'],
+                  distinct_valid_authors=result['distinct_valid_authors'],
+                  rejected=result['rejected'][:20],
+                  posts=[{'author':p['author'],'title':p['title'],'url':p['detail_url'],
+                          'body_chars':len(p['body']),'excerpt':p['body'][:180]} for p in posts])
+          except Exception as exc:
+              summary.update(ok=False,error=f'{type(exc).__name__}: {exc}'[:800],
+                             elapsed_seconds=round(time.monotonic()-start,1))
+          assert not list(out.rglob('snapshot.json')), 'probe must never create a snapshot'
+          Path('probe-out/collect-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
+          print('COLLECT_SUMMARY '+json.dumps(summary,ensure_ascii=False))
+          PY
+      - name: Report verdict
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          lines=['## Forum source probe']
+          p=Path('probe-out/probe-summary.json')
+          if p.exists():
+              s=json.loads(p.read_text())
+              v=s['verdict']
+              lines+=[f"- URL: {s['url']}", f"- final URL: {s.get('final_url')}",
+                      f"- HTTP: {s.get('http_status')} title: {s.get('title')}",
+                      f"- tabs: {s.get('tabs')[:12]}", f"- cards: {s.get('card_count')}",
+                      f"- platform match: **{v['platform_match']}** reasons: {v['reasons']}",
+                      f"- authors seen: {v['distinct_authors']} issues: {v['issues_seen']}"]
+          else:
+              lines.append('- stage 1 produced no summary (see log)')
+          c=Path('probe-out/collect-summary.json')
+          if c.exists():
+              s=json.loads(c.read_text())
+              lines+=[f"- stage 2 ok: {s.get('ok')} issue: {s.get('issue')} posts: {s.get('detail_posts')} "
+                      f"parser-valid: {s.get('parser_valid_materials')} error: {s.get('error')}"]
+          lines.append('- scored / frozen / published: none (probe only)')
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forum-source-probe
+          path: forum-observer/probe-out/
