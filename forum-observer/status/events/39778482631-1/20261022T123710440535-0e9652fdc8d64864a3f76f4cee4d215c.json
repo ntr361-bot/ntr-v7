@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026295",
+  "state": "collecting_effectively",
+  "run_id": "39778482631",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39778482631",
+  "updated_at": "2026-10-22T12:37:10.440535+00:00",
+  "error": null,
+  "valid_materials": 51,
+  "valid_authors": 51,
+  "successful_post_opens": 290,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 46,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 244,
+      "opened": 243,
+      "extracted": 240,
+      "completed": 243
+    }
+  },
+  "article_texts_extracted": 286,
+  "article_details_completed": 290,
+  "last_verified_post": {
+    "author": "糖小焉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133818&type=3",
+    "verified_at": "2026-10-22T12:37:09.706419+00:00",
+    "text_length": 219,
+    "text_sha256": "44590c0dac6db9fa42f60d04177077bc0b1e4078adfee7f00256eb17facb78b4"
+  },
+  "last_attempted_post": {
+    "author": "流湿湿",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133817&type=3",
+    "attempt_index": 291
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-22T12:34:29.124852+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 286,
+  "stage": "detail: 流湿湿 295期： 平特两肖中",
+  "progress_updated_at": "2026-10-22T12:37:10.006108+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
