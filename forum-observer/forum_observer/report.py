@@ -14,7 +14,10 @@ def article_lines(result):
     lines.append('加精优先顺序核验：'+labels.get(audit.get('state'),'未记录，不能确认'))
     return lines
 
-def render(result:dict,path:Path)->None:
+def render(result:dict,path:Path,compact:bool=False)->None:
+    """compact=True (49论坛模型, user 2026-10-22): leave out the long excluded-material
+    and pending-play listings; their counts stay, and the details remain in
+    observation.json / pending-rule-questions.json. Scoring is unaffected."""
     a=result.get('author_selection',{})
     details=result.get('audit',{}).get('detail_errors',[])
     lines=[
@@ -43,7 +46,24 @@ def render(result:dict,path:Path)->None:
               f"涉及作者：{result.get('historical_reference_authors',0)}人",
               "历史回顾不计入有效预测资料；页面顶部的官方开奖记录不参与统计。"]
     lines += ["", "采集顺序：先检查加精帖正文，再检查普通帖正文。正文打开、提取、结束检查与采用有效资料分别统计。有效资料等权，不设3:2配额。",
-              "优先作者名单的身份不代表已核实当日实时榜单。", "", "## 排除资料"]
+              "优先作者名单的身份不代表已核实当日实时榜单。"]
+    from .questions import pending_questions
+    questions=result.get('pending_rule_questions')
+    if questions is None:questions=pending_questions(result)
+    if compact:
+        excluded=sum(1 for row in result.get('parsed_predictions',[]) if not row.get('counted_for_ranking'))
+        lines += ["", "## 未计分资料（精简）",
+                  f"排除资料：{excluded}份；无法明确解析：{len(result.get('unparsed_evidence',[]))}条；"
+                  f"历史回顾：{len(result.get('historical_references',[]))}条；待确认玩法：{len(questions)}篇",
+                  "明细不在本报告列出，仍保存在本期 observation.json 和 pending-rule-questions.json，均不参与排名。"]
+    else:
+        lines += _excluded_and_pending(result,questions)
+    lines += _validation(result,details)
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+
+def _excluded_and_pending(result,questions):
+    lines=["", "## 排除资料"]
     for row in result.get('parsed_predictions',[]):
         if not row.get('counted_for_ranking'):
             lines.append(f"- {row['author']}：{row.get('excerpt','')}；排除原因：{row.get('exclusion_reason','')}；{row['source_url']}")
@@ -51,9 +71,6 @@ def render(result:dict,path:Path)->None:
         lines.append(f"- {row['author']}：无法明确解析当期玩法，排除；{row['source_url']}")
     for row in result.get('historical_references',[])[:60]:
         lines.append(f"- {row['author']}：{row['content']}（来源：{row['source_post_issue']}期，{row['source_url']}）")
-    from .questions import pending_questions
-    questions=result.get('pending_rule_questions')
-    if questions is None:questions=pending_questions(result)
     lines += ["", f"## 待确认玩法（{len(questions)}篇）",
               "以下待确认内容不参与排名、不计入有效资料份数。请回复条目编号及玩法解释，可将该条交给 Codex 增加解析规则和测试；规则确认前保持排除。"]
     if not questions:lines.append("本期没有待确认玩法。")
@@ -65,11 +82,12 @@ def render(result:dict,path:Path)->None:
             lines += ["", "原文：", *['> '+line for line in item['text'].splitlines()],
                       f"未解析原因：{item['reason']}", f"请确认：{item['question']}"]
         for url in row.get('image_urls',[]):lines.append(f"原图：{url}")
-    lines += ["", "## 资料校验与错误",
+    return lines
+
+def _validation(result,details):
+    return ["", "## 资料校验与错误",
               f"期号严格匹配：{result.get('audit',{}).get('issue_filter_strict',False)}",
               f"详情失败：{len(details)}项",
               *[f"- {i.get('author','?')} / {i.get('title','?')}: {i.get('reason','')}" for i in details],
               f"抓取是否截断：{result.get('audit',{}).get('truncated',False)}",
               "", "说明：未经冻结的观察排名不能用于正式兑奖；历史补抓不能倒填开奖前预测。"]
-    path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
