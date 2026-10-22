@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026295",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "39774616037",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39774616037",
-  "updated_at": "2026-10-22T12:17:28.556551+00:00",
+  "updated_at": "2026-10-22T12:18:19.657210+00:00",
   "error": null,
-  "valid_materials": 75,
-  "valid_authors": 75,
-  "successful_post_opens": 456,
+  "valid_materials": 81,
+  "valid_authors": 81,
+  "successful_post_opens": 513,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 466,
-      "attempted": 410,
-      "opened": 409,
-      "extracted": 406,
-      "completed": 409
+      "attempted": 466,
+      "opened": 466,
+      "extracted": 463,
+      "completed": 466
     }
   },
-  "article_texts_extracted": 452,
-  "article_details_completed": 456,
+  "article_texts_extracted": 509,
+  "article_details_completed": 513,
   "last_verified_post": {
-    "author": "财神到",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133538&type=3",
-    "verified_at": "2026-10-22T12:17:27.851045+00:00",
-    "text_length": 133,
-    "text_sha256": "ebc80a86c6e591f3c7ddb518a44c4707d1694dcbf3f89684a0884908e0f7747c"
+    "author": "南星北月",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133274&type=3",
+    "verified_at": "2026-10-22T12:18:18.065880+00:00",
+    "text_length": 126,
+    "text_sha256": "3d504a2cccbf5114d89e205bfcc778c7db460ef6a2b0b98a6ae77da3eee2af1e"
   },
   "last_attempted_post": {
-    "author": "殇有多疼",
+    "author": "南星北月",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133537&type=3",
-    "attempt_index": 457
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11133274&type=3",
+    "attempt_index": 513
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 452,
-  "stage": "detail: 殇有多疼 家野两肖",
-  "progress_updated_at": "2026-10-22T12:17:28.183146+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 509,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-22T12:18:18.780667+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 4,
+    "truncated": false,
     "unextracted_current_posts": 4
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
