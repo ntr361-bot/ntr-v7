@@ -54,6 +54,16 @@ def _key(row: dict) -> tuple[str, str, str, str]:
                  ("author", "issue", "published_at", "title"))
 
 
+def snapshot_selector(html: str, url: str, storage_file: str | Path):
+    """Shared Scrapling snapshot parser for isolated site diagnostics."""
+    from scrapling.parser import Selector
+
+    storage_path = Path(storage_file)
+    storage_path.parent.mkdir(parents=True, exist_ok=True)
+    return Selector(html, url=url, adaptive=True,
+                    storage_args={"storage_file": str(storage_path)})
+
+
 def inspect_listing(html: str, url: str, category: str, storage_file: str | Path) -> dict:
     """Parse a rendered feed snapshot with Scrapling and report comparison data."""
     try:
@@ -61,14 +71,7 @@ def inspect_listing(html: str, url: str, category: str, storage_file: str | Path
     except ImportError:
         return {"status": "scrapling_unavailable", "parser": "scrapling"}
 
-    storage_path = Path(storage_file)
-    storage_path.parent.mkdir(parents=True, exist_ok=True)
-    document = Selector(
-        html,
-        url=url,
-        adaptive=True,
-        storage_args={"storage_file": str(storage_path)},
-    )
+    document = snapshot_selector(html, url, storage_file)
     selector_method = "css"
     container = document.css(".forum-list", identifier=_IDENTIFIER, auto_save=True)
     if not container:
