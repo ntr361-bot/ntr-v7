@@ -13,6 +13,10 @@ on:
         description: Category filter for the 5-post trial (same as collector-config)
         required: false
         default: 澳门
+      max_posts:
+        description: Stage 2 trial size (1-100 posts)
+        required: false
+        default: '5'
 permissions:
   contents: read
 concurrency:
@@ -47,11 +51,12 @@ jobs:
           v=json.load(open('probe-out/probe-summary.json'))['verdict']
           print('match=' + ('true' if v['platform_match'] else 'false'))
           PY
-      - name: Stage 2 - existing collector on 5 posts (isolated, no freeze)
+      - name: Stage 2 - existing collector trial (isolated, no freeze)
         if: steps.stage1.outputs.match == 'true'
         env:
           PROBE_URL: ${{ inputs.url }}
           PROBE_CATEGORY: ${{ inputs.category }}
+          PROBE_MAX_POSTS: ${{ inputs.max_posts }}
         run: |
           python -u - <<'PY'
           import json, os, time
@@ -62,7 +67,8 @@ jobs:
           # Widen the host allowlist for this process only; the repo file is unchanged.
           page_collector.HOSTS.add(urlparse(url).hostname)
           cfg=json.loads(Path('collector-config.json').read_text())
-          cfg.update(max_posts=5,max_pages=5,max_collection_seconds=600,
+          n=max(1,min(int(os.environ.get('PROBE_MAX_POSTS') or 5),100))
+          cfg.update(max_posts=n,max_pages=max(5,n//4),max_collection_seconds=1200,
                      daily_profile_authors=0,freeze_enabled=False)
           out=Path('probe-out/collect')
           start=time.monotonic()
@@ -77,6 +83,12 @@ jobs:
                   parser_valid_materials=result['valid_materials'],
                   distinct_valid_authors=result['distinct_valid_authors'],
                   rejected=result['rejected'][:20],
+                  requested_posts=n,
+                  material_counts=result.get('material_counts'),
+                  ranking_preview_test_only=[[r['zodiac'],round(r.get('score',0),3)] for r in (result.get('ranking') or [])[:12]],
+                  materials=[{'author':m['author'],'play':m.get('play'),'mode':m.get('mode'),
+                              'picks':m.get('picks'),'counted':m['counted_for_ranking'],
+                              'reason':m.get('exclusion_reason')} for m in result.get('parsed_predictions') or []],
                   posts=[{'author':p['author'],'title':p['title'],'url':p['detail_url'],
                           'body_chars':len(p['body']),'excerpt':p['body'][:180]} for p in posts])
           except Exception as exc:
@@ -125,6 +137,16 @@ jobs:
               print('::notice title=probe detail::'+esc(json.dumps(detail,ensure_ascii=False)[:30000]))
           if c.exists():
               cs=json.loads(c.read_text())
+              from collections import Counter
+              mats=cs.get('materials',[])
+              print('::notice title=probe materials::'+esc(json.dumps({
+                  'requested':cs.get('requested_posts'),'detail_posts':cs.get('detail_posts'),
+                  'nonempty':cs.get('nonempty_article_posts'),
+                  'valid':cs.get('parser_valid_materials'),'valid_authors':cs.get('distinct_valid_authors'),
+                  'material_counts':cs.get('material_counts'),
+                  'counted':[f"{m['author']}|{m['play']}|{''.join(m['picks'] or [])}" for m in mats if m['counted']][:40],
+                  'excluded_reasons':Counter(str(m['reason'])[:40] for m in mats if not m['counted']).most_common(10),
+                  'ranking_preview_test_only':cs.get('ranking_preview_test_only')},ensure_ascii=False)[:3800]))
               brief={'issue':cs.get('issue'),'error':cs.get('error'),
                      'posts':[{'author':x['author'],'url':x['url'][-40:],'chars':x['body_chars'],'excerpt':x['excerpt'][:90]} for x in cs.get('posts',[])],
                      'rejected':[json.dumps(r,ensure_ascii=False)[:160] for r in cs.get('rejected',[])[:8]]}
