@@ -24,6 +24,23 @@ from .core import material_counts
 MODEL_NAME = '49论坛模型'
 DEFAULT_URL = 'https://49217.com/#/forum'
 MAX_POSTS = 2000  # collector's own ceiling; feed scan stops at the issue boundary
+FREEZE_CUTOFF = (21, 0)
+PUBLISH_RESERVE_SECONDS = 90
+
+
+def collection_budget(now_local, default_seconds: int) -> int:
+    """Bound a same-evening scan so it completes before the 21:00 freeze.
+
+    After 21:00 the scan may still run as a pure observation; the cycle step
+    then refuses to use it as a pre-freeze draft.
+    """
+    cutoff = now_local.replace(hour=FREEZE_CUTOFF[0], minute=FREEZE_CUTOFF[1], second=0, microsecond=0)
+    remaining = (cutoff - now_local).total_seconds() - PUBLISH_RESERVE_SECONDS
+    if now_local >= cutoff:
+        return default_seconds
+    if remaining < 60:
+        raise ValueError('too close to the 21:00 freeze to complete a collection')
+    return int(min(default_seconds, remaining))
 
 
 def summarize(result: dict, requested_issue: str | None) -> dict:
@@ -65,13 +82,20 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
                daily_profile_authors=0, collection_mode='current_feed')
+    from zoneinfo import ZoneInfo
+    now_local = datetime.now(ZoneInfo('Asia/Shanghai'))
     started = datetime.now(timezone.utc)
     t0 = time.monotonic()
     record = {'model': MODEL_NAME, 'url': url, 'category': category,
               'run_id': os.environ.get('GITHUB_RUN_ID'),
               'started_at': started.isoformat()}
     try:
+        cfg['max_collection_seconds'] = collection_budget(now_local, int(cfg.get('max_collection_seconds', 1800)))
+        record['max_collection_seconds'] = cfg['max_collection_seconds']
         result = page_collector.collect_page(url, out, issue, category, cfg)
+        # Same human-readable report renderer as 118论坛模型 (archived by cycle).
+        from .report import render
+        render(result, out / str(result['issue']) / 'report.md')
         record.update(ok=True, **summarize(result, issue))
         # Full post evidence for the Scrapling side-by-side comparison step.
         # Workflow-local only (artifact), not committed.
