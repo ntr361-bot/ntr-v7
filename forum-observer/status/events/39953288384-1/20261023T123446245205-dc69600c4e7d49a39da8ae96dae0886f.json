@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026296",
+  "state": "collecting_effectively",
+  "run_id": "39953288384",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39953288384",
+  "updated_at": "2026-10-23T12:34:46.245205+00:00",
+  "error": null,
+  "valid_materials": 41,
+  "valid_authors": 41,
+  "successful_post_opens": 223,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 51,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 475,
+      "attempted": 171,
+      "opened": 171,
+      "extracted": 168,
+      "completed": 171
+    }
+  },
+  "article_texts_extracted": 219,
+  "article_details_completed": 223,
+  "last_verified_post": {
+    "author": "好料再现",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139716&type=3",
+    "verified_at": "2026-10-23T12:34:46.075446+00:00",
+    "text_length": 106,
+    "text_sha256": "7ab4698a1248599c3694f3eec2016817bbacc6da276586965fe949b19beadc08"
+  },
+  "last_attempted_post": {
+    "author": "好料再现",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139716&type=3",
+    "attempt_index": 223
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-23T12:32:58.515124+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 219,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-23T12:34:46.168932+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
