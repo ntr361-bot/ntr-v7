@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026296",
+  "state": "collecting_effectively",
+  "run_id": "39953288384",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39953288384",
+  "updated_at": "2026-10-23T12:35:50.305993+00:00",
+  "error": null,
+  "valid_materials": 52,
+  "valid_authors": 52,
+  "successful_post_opens": 311,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 51,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 475,
+      "attempted": 259,
+      "opened": 259,
+      "extracted": 256,
+      "completed": 259
+    }
+  },
+  "article_texts_extracted": 307,
+  "article_details_completed": 311,
+  "last_verified_post": {
+    "author": "大汉美男",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139429&type=3",
+    "verified_at": "2026-10-23T12:35:50.091098+00:00",
+    "text_length": 7,
+    "text_sha256": "d2282183c9bddc1a2a4fca8b1fdef4653181721a94fbb5b18729d89a157fbcf5"
+  },
+  "last_attempted_post": {
+    "author": "大汉美男",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139429&type=3",
+    "attempt_index": 311
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-23T12:32:58.515124+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 307,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-23T12:35:50.194279+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
