@@ -1,5 +1,5 @@
 {
-  "settled_count": 1,
+  "settled_count": 2,
   "top3_hits": 1,
   "top6_hits": 1,
   "settlements": [
@@ -9,6 +9,13 @@
       "actual": "马",
       "top3_hit": true,
       "top6_hit": true
+    },
+    {
+      "issue": "2026296",
+      "rank": 8,
+      "actual": "猴",
+      "top3_hit": false,
+      "top6_hit": false
     }
   ]
 }
