@@ -7,11 +7,11 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39949643388",
-  "updated_at": "2026-10-23T12:07:04.352449+00:00",
+  "updated_at": "2026-10-23T12:08:09.627182+00:00",
   "error": null,
-  "valid_materials": 68,
-  "valid_authors": 68,
-  "successful_post_opens": 443,
+  "valid_materials": 82,
+  "valid_authors": 82,
+  "successful_post_opens": 531,
   "article_details": {
     "featured": {
       "queued": 52,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 479,
-      "attempted": 392,
-      "opened": 391,
-      "extracted": 388,
-      "completed": 391
+      "attempted": 479,
+      "opened": 479,
+      "extracted": 476,
+      "completed": 479
     }
   },
-  "article_texts_extracted": 439,
-  "article_details_completed": 443,
+  "article_texts_extracted": 527,
+  "article_details_completed": 531,
   "last_verified_post": {
-    "author": "羊小宓",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139177&type=3",
-    "verified_at": "2026-10-23T12:07:03.591891+00:00",
-    "text_length": 368,
-    "text_sha256": "2c768ffd8646e410903077b1956c90e3ef37fe10ac307b867058abdb47f10639"
+    "author": "都是逆风",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138823&type=3",
+    "verified_at": "2026-10-23T12:08:07.389521+00:00",
+    "text_length": 384,
+    "text_sha256": "e609e32f2bcad80a056974546e2bbcb7ee3928ed1084c4d59f8f7b8d7d441572"
   },
   "last_attempted_post": {
-    "author": "白眼小公主",
+    "author": "都是逆风",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139176&type=3",
-    "attempt_index": 444
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138823&type=3",
+    "attempt_index": 531
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 439,
-  "stage": "detail: 白眼小公主 296期：小公主实力杀三肖值得期待",
-  "progress_updated_at": "2026-10-23T12:07:03.766524+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 527,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-23T12:08:07.939051+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 4,
+    "truncated": false,
     "unextracted_current_posts": 4
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
