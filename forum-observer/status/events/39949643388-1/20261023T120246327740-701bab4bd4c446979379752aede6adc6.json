@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026296",
+  "state": "collecting_effectively",
+  "run_id": "39949643388",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39949643388",
+  "updated_at": "2026-10-23T12:02:46.327740+00:00",
+  "error": null,
+  "valid_materials": 9,
+  "valid_authors": 9,
+  "successful_post_opens": 35,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 36,
+      "opened": 35,
+      "extracted": 34,
+      "completed": 35
+    },
+    "ordinary": {
+      "queued": 479,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 34,
+  "article_details_completed": 35,
+  "last_verified_post": {
+    "author": "新人稳稳杀肖",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138751&type=3",
+    "verified_at": "2026-10-23T12:02:46.070453+00:00",
+    "text_length": 888,
+    "text_sha256": "e0a321f3abf09b938d99f0e03d65eb0eb25b21e4dc75f1a8465228a82a363408"
+  },
+  "last_attempted_post": {
+    "author": "青哥哥",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138858&type=3",
+    "attempt_index": 36
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 34,
+  "stage": "detail: 青哥哥 青哥哥独创四头，长期必赚",
+  "progress_updated_at": "2026-10-23T12:02:46.086252+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
