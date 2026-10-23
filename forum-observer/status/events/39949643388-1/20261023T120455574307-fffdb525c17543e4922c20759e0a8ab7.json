@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026296",
+  "state": "collecting_effectively",
+  "run_id": "39949643388",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39949643388",
+  "updated_at": "2026-10-23T12:04:55.574307+00:00",
+  "error": null,
+  "valid_materials": 44,
+  "valid_authors": 44,
+  "successful_post_opens": 253,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 51,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 479,
+      "attempted": 202,
+      "opened": 201,
+      "extracted": 198,
+      "completed": 201
+    }
+  },
+  "article_texts_extracted": 249,
+  "article_details_completed": 253,
+  "last_verified_post": {
+    "author": "枯木逢春",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139670&type=3",
+    "verified_at": "2026-10-23T12:04:54.848373+00:00",
+    "text_length": 21,
+    "text_sha256": "b0fbe5269d122e8b2d2b03b9e6e4c05ae503f799416c48d59e17139274daaf2b"
+  },
+  "last_attempted_post": {
+    "author": "滚瓜烂熟",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139669&type=3",
+    "attempt_index": 254
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-23T12:02:55.013686+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 249,
+  "stage": "detail: 滚瓜烂熟 296期：大小中特",
+  "progress_updated_at": "2026-10-23T12:04:54.989349+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
