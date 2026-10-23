@@ -1,0 +1,2204 @@
+{
+  "issue": "2026296",
+  "fetched_at": "2026-10-23T12:38:40.491039+00:00",
+  "ranking": [
+    {
+      "rank": 1,
+      "zodiac": "狗",
+      "score": 7.512302
+    },
+    {
+      "rank": 2,
+      "zodiac": "羊",
+      "score": 7.422655
+    },
+    {
+      "rank": 3,
+      "zodiac": "猴",
+      "score": 7.262302
+    },
+    {
+      "rank": 4,
+      "zodiac": "虎",
+      "score": 6.919444
+    },
+    {
+      "rank": 5,
+      "zodiac": "马",
+      "score": 6.869444
+    },
+    {
+      "rank": 6,
+      "zodiac": "鼠",
+      "score": 6.75202
+    },
+    {
+      "rank": 7,
+      "zodiac": "鸡",
+      "score": 6.639322
+    },
+    {
+      "rank": 8,
+      "zodiac": "蛇",
+      "score": 6.608261
+    },
+    {
+      "rank": 9,
+      "zodiac": "兔",
+      "score": 6.448737
+    },
+    {
+      "rank": 10,
+      "zodiac": "牛",
+      "score": 6.390909
+    },
+    {
+      "rank": 11,
+      "zodiac": "猪",
+      "score": 6.225433
+    },
+    {
+      "rank": 12,
+      "zodiac": "龙",
+      "score": 5.94917
+    }
+  ],
+  "top1": [
+    "狗"
+  ],
+  "top3": [
+    "狗",
+    "羊",
+    "猴"
+  ],
+  "top6": [
+    "狗",
+    "羊",
+    "猴",
+    "虎",
+    "马",
+    "鼠"
+  ],
+  "valid_materials": 81,
+  "scoring_rule_version": "2026-10-15-one-author-9-8-7-6-priority-v8",
+  "scoring_rules": {
+    "minimum_recommendation_zodiacs": 6,
+    "kill_zodiac_vote": "remaining_zodiacs",
+    "kill_numbers_as_zodiacs": false,
+    "numbers_as_whole_zodiacs": false,
+    "explicit_zodiac_evidence": true,
+    "weight_per_material": 1,
+    "max_materials_per_author_per_issue": 1,
+    "independent_text_audit": true,
+    "named_group_plus_two": "same_article_verified_six_plus_two",
+    "kill_zodiac_max_count": 6,
+    "one_author_play_priority": "nine_eight_seven_six_other_recommendation_then_valid_kill",
+    "same_priority_tiebreak": "earliest_source_published_at_then_stable_source_identity",
+    "uncertain_materials": "excluded",
+    "author_ratio": null
+  },
+  "material_counts": {
+    "recommend": 58,
+    "kill_zodiac": 23
+  },
+  "classification": "experimental_unverified_leaderboard",
+  "minimum_valid_materials": 25,
+  "quality_status": "meets_minimum_samples",
+  "collection_status": "ready_observation",
+  "evidence_refs": [
+    {
+      "author": "石更走己",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141839&type=3"
+    },
+    {
+      "author": "顺藤摸瓜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138811&type=3"
+    },
+    {
+      "author": "蛋蛋有伤",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138722&type=3"
+    },
+    {
+      "author": "贝贝丹丹",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3"
+    },
+    {
+      "author": "贝贝丹丹",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139154&type=3"
+    },
+    {
+      "author": "贝贝丹丹",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139161&type=3"
+    },
+    {
+      "author": "贝贝丹丹",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139160&type=3"
+    },
+    {
+      "author": "节外生枝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138850&type=3"
+    },
+    {
+      "author": "春兰秋菊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138847&type=3"
+    },
+    {
+      "author": "心灰意冷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138844&type=3"
+    },
+    {
+      "author": "叶落归根",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138842&type=3"
+    },
+    {
+      "author": "斩草除根",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138809&type=3"
+    },
+    {
+      "author": "中是情",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138795&type=3"
+    },
+    {
+      "author": "潮汕大鸟哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139726&type=3"
+    },
+    {
+      "author": "昭昭兒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139639&type=3"
+    },
+    {
+      "author": "寂寞一支烟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138737&type=3"
+    },
+    {
+      "author": "六杀码统计",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139261&type=3"
+    },
+    {
+      "author": "嗷嗷恐龙",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138754&type=3"
+    },
+    {
+      "author": "勤奋的毛毛姐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138732&type=3"
+    },
+    {
+      "author": "阳光风雪",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138775&type=3"
+    },
+    {
+      "author": "追忆流年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138744&type=3"
+    },
+    {
+      "author": "大顺发富豪榜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3"
+    },
+    {
+      "author": "优优码皇",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138734&type=3"
+    },
+    {
+      "author": "敢赌敢博",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3"
+    },
+    {
+      "author": "韩财神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138748&type=3"
+    },
+    {
+      "author": "闲鱼要翻升",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144207&type=3"
+    },
+    {
+      "author": "赵小刀",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138749&type=3"
+    },
+    {
+      "author": "半场开香槟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138716&type=3"
+    },
+    {
+      "author": "青不年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141856&type=3"
+    },
+    {
+      "author": "青不年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141842&type=3"
+    },
+    {
+      "author": "区政富",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141841&type=3"
+    },
+    {
+      "author": "时来运赚",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138715&type=3"
+    },
+    {
+      "author": "新人稳稳杀肖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138746&type=3"
+    },
+    {
+      "author": "新人稳稳杀肖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138751&type=3"
+    },
+    {
+      "author": "青哥哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138858&type=3"
+    },
+    {
+      "author": "娱乐码皇",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138723&type=3"
+    },
+    {
+      "author": "大家都中",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139075&type=3"
+    },
+    {
+      "author": "大家都中",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139043&type=3"
+    },
+    {
+      "author": "楼兰一九八六",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138956&type=3"
+    },
+    {
+      "author": "大家都中",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139029&type=3"
+    },
+    {
+      "author": "深圳好日子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138718&type=3"
+    },
+    {
+      "author": "云飞诸葛",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138735&type=3"
+    },
+    {
+      "author": "粗枝大叶",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138841&type=3"
+    },
+    {
+      "author": "灰飞烟灭",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138838&type=3"
+    },
+    {
+      "author": "灰头土脸",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138837&type=3"
+    },
+    {
+      "author": "灰心丧气",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138836&type=3"
+    },
+    {
+      "author": "橙黄橘绿",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138834&type=3"
+    },
+    {
+      "author": "奇花异草",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138814&type=3"
+    },
+    {
+      "author": "披荆斩棘",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138812&type=3"
+    },
+    {
+      "author": "投桃报李",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138807&type=3"
+    },
+    {
+      "author": "开花结果",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138806&type=3"
+    },
+    {
+      "author": "凉人暖颜凉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141823&type=3"
+    },
+    {
+      "author": "平云以后",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139720&type=3"
+    },
+    {
+      "author": "长青牛牛",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139718&type=3"
+    },
+    {
+      "author": "小美不美",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139166&type=3"
+    },
+    {
+      "author": "阳光下的真实",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139033&type=3"
+    },
+    {
+      "author": "以实温故",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138730&type=3"
+    },
+    {
+      "author": "彩坛剑客",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11140855&type=3"
+    },
+    {
+      "author": "早起的鸟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145575&type=3"
+    },
+    {
+      "author": "三合月",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138725&type=3"
+    },
+    {
+      "author": "墨鱼丸子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138724&type=3"
+    },
+    {
+      "author": "金牛向前冲",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138767&type=3"
+    },
+    {
+      "author": "精准肖王",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145557&type=3"
+    },
+    {
+      "author": "十二妹数鸭子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145556&type=3"
+    },
+    {
+      "author": "赢六千万",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145555&type=3"
+    },
+    {
+      "author": "香格里拉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145491&type=3"
+    },
+    {
+      "author": "铁海无崖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145499&type=3"
+    },
+    {
+      "author": "在哪啊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3"
+    },
+    {
+      "author": "烟花烂漫",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145531&type=3"
+    },
+    {
+      "author": "覃先生发财",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145532&type=3"
+    },
+    {
+      "author": "眯眯笑",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145500&type=3"
+    },
+    {
+      "author": "夺率率",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145490&type=3"
+    },
+    {
+      "author": "湘西密藏",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138884&type=3"
+    },
+    {
+      "author": "半杯奶茶一花花",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138733&type=3"
+    },
+    {
+      "author": "伟大复兴",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145338&type=3"
+    },
+    {
+      "author": "刚好干活",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145442&type=3"
+    },
+    {
+      "author": "无言独上西楼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145357&type=3"
+    },
+    {
+      "author": "六公子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145356&type=3"
+    },
+    {
+      "author": "六合拉拉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3"
+    },
+    {
+      "author": "旺旺沐兒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145438&type=3"
+    },
+    {
+      "author": "明月夜深深",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145358&type=3"
+    },
+    {
+      "author": "魔王子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3"
+    },
+    {
+      "author": "广西小卢",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145441&type=3"
+    },
+    {
+      "author": "期待你的眼神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3"
+    },
+    {
+      "author": "迷茫哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143390&type=3"
+    },
+    {
+      "author": "六合至尊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145439&type=3"
+    },
+    {
+      "author": "稳中稳长跟必赚",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3"
+    },
+    {
+      "author": "夺率率",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3"
+    },
+    {
+      "author": "烦恼豆沙包",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3"
+    },
+    {
+      "author": "远方有美酒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3"
+    },
+    {
+      "author": "壹指点迷津",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145355&type=3"
+    },
+    {
+      "author": "陪你去流浪",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145337&type=3"
+    },
+    {
+      "author": "我想发",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145308&type=3"
+    },
+    {
+      "author": "追综走势",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145278&type=3"
+    },
+    {
+      "author": "汤达人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145307&type=3"
+    },
+    {
+      "author": "阿菜来了",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3"
+    },
+    {
+      "author": "棍棍到肉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139228&type=3"
+    },
+    {
+      "author": "幸运之鑫",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145215&type=3"
+    },
+    {
+      "author": "邵少爷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145224&type=3"
+    },
+    {
+      "author": "湘西密藏",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138777&type=3"
+    },
+    {
+      "author": "纯属娱乐丨",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145196&type=3"
+    },
+    {
+      "author": "草乙人之",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145197&type=3"
+    },
+    {
+      "author": "十四码围特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145162&type=3"
+    },
+    {
+      "author": "浪女在此",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145174&type=3"
+    },
+    {
+      "author": "澳数码",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3"
+    },
+    {
+      "author": "顺财神来我家门",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3"
+    },
+    {
+      "author": "不可较真",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145143&type=3"
+    },
+    {
+      "author": "我们的美好时光",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3"
+    },
+    {
+      "author": "统统统计",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145142&type=3"
+    },
+    {
+      "author": "抗日英雄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145144&type=3"
+    },
+    {
+      "author": "卓楚赢",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141860&type=3"
+    },
+    {
+      "author": "麦永念",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145141&type=3"
+    },
+    {
+      "author": "发财倪七",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145134&type=3"
+    },
+    {
+      "author": "不赌不服不富",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145117&type=3"
+    },
+    {
+      "author": "致富哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145118&type=3"
+    },
+    {
+      "author": "澳预言家",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145112&type=3"
+    },
+    {
+      "author": "沐湘源",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145111&type=3"
+    },
+    {
+      "author": "小昌锅锅",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145102&type=3"
+    },
+    {
+      "author": "朱佬二",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145060&type=3"
+    },
+    {
+      "author": "澳门神算子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145028&type=3"
+    },
+    {
+      "author": "求智得智",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141833&type=3"
+    },
+    {
+      "author": "求智得智",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145038&type=3"
+    },
+    {
+      "author": "牛哄哄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139152&type=3"
+    },
+    {
+      "author": "暗号好",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3"
+    },
+    {
+      "author": "港澳会所",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145011&type=3"
+    },
+    {
+      "author": "晚晚晚晚风",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145007&type=3"
+    },
+    {
+      "author": "阁阁閤",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144939&type=3"
+    },
+    {
+      "author": "主打九肖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144834&type=3"
+    },
+    {
+      "author": "小白围统",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144835&type=3"
+    },
+    {
+      "author": "羊无敌神医",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144606&type=3"
+    },
+    {
+      "author": "嘟嘟嘴",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144730&type=3"
+    },
+    {
+      "author": "星际黑洞",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144607&type=3"
+    },
+    {
+      "author": "颠不颠",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3"
+    },
+    {
+      "author": "奥特只王",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144794&type=3"
+    },
+    {
+      "author": "饭王归来",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138729&type=3"
+    },
+    {
+      "author": "很好很好",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138727&type=3"
+    },
+    {
+      "author": "天命人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138820&type=3"
+    },
+    {
+      "author": "北海九水天灵大元帅",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143155&type=3"
+    },
+    {
+      "author": "鸿兴学府",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3"
+    },
+    {
+      "author": "德爱威",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143019&type=3"
+    },
+    {
+      "author": "加油您最胖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144049&type=3"
+    },
+    {
+      "author": "程蝶衣",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3"
+    },
+    {
+      "author": "澳门研究生院长",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142819&type=3"
+    },
+    {
+      "author": "港彩六叔公",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3"
+    },
+    {
+      "author": "上上签哦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144104&type=3"
+    },
+    {
+      "author": "小六子小兔兔",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143154&type=3"
+    },
+    {
+      "author": "盈百万",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142758&type=3"
+    },
+    {
+      "author": "澳门研究生院长",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142210&type=3"
+    },
+    {
+      "author": "刘爸爸",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142242&type=3"
+    },
+    {
+      "author": "不吃香菜的猫",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142170&type=3"
+    },
+    {
+      "author": "粳米的蛋白",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142162&type=3"
+    },
+    {
+      "author": "稳定特围",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142151&type=3"
+    },
+    {
+      "author": "求求其其",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142085&type=3"
+    },
+    {
+      "author": "稳定特围",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142072&type=3"
+    },
+    {
+      "author": "稳定特围",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142062&type=3"
+    },
+    {
+      "author": "是五主",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142047&type=3"
+    },
+    {
+      "author": "桂字头",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141915&type=3"
+    },
+    {
+      "author": "小谢总",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141909&type=3"
+    },
+    {
+      "author": "赖赖赖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141908&type=3"
+    },
+    {
+      "author": "好多鱼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141880&type=3"
+    },
+    {
+      "author": "湘之印",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141881&type=3"
+    },
+    {
+      "author": "平特一肖买什么来什么",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141879&type=3"
+    },
+    {
+      "author": "阿一森",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141877&type=3"
+    },
+    {
+      "author": "氧宜多硅藻泥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141866&type=3"
+    },
+    {
+      "author": "氧宜多硅藻泥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141863&type=3"
+    },
+    {
+      "author": "打工仔干就完了",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141862&type=3"
+    },
+    {
+      "author": "刘哥博彩",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141859&type=3"
+    },
+    {
+      "author": "刘哥博彩",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141857&type=3"
+    },
+    {
+      "author": "复仇者",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141858&type=3"
+    },
+    {
+      "author": "又中了八万块",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139559&type=3"
+    },
+    {
+      "author": "大神六肖中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141844&type=3"
+    },
+    {
+      "author": "小小白狐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141840&type=3"
+    },
+    {
+      "author": "哼哼哈兮",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141838&type=3"
+    },
+    {
+      "author": "这吊毛很靓仔",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141837&type=3"
+    },
+    {
+      "author": "岭南特码兴",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141832&type=3"
+    },
+    {
+      "author": "朝阳冬泳怪鸽",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141835&type=3"
+    },
+    {
+      "author": "微笑美眉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141834&type=3"
+    },
+    {
+      "author": "财喜门生",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141829&type=3"
+    },
+    {
+      "author": "小六爷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141830&type=3"
+    },
+    {
+      "author": "潮州表",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139734&type=3"
+    },
+    {
+      "author": "潮州表",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139732&type=3"
+    },
+    {
+      "author": "萌你一身血",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141828&type=3"
+    },
+    {
+      "author": "我帅我随意",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141827&type=3"
+    },
+    {
+      "author": "幻月洞府",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141826&type=3"
+    },
+    {
+      "author": "静待花逝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141825&type=3"
+    },
+    {
+      "author": "呆头呆脑的猪",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141824&type=3"
+    },
+    {
+      "author": "不要问我是谁",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141685&type=3"
+    },
+    {
+      "author": "乌鸦看码",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141146&type=3"
+    },
+    {
+      "author": "依依神爷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141145&type=3"
+    },
+    {
+      "author": "繁华落尽",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141144&type=3"
+    },
+    {
+      "author": "稳中稳长跟必赚",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141142&type=3"
+    },
+    {
+      "author": "三婉婉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3"
+    },
+    {
+      "author": "风中的神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141279&type=3"
+    },
+    {
+      "author": "小小负婆",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3"
+    },
+    {
+      "author": "推到六叔公",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141425&type=3"
+    },
+    {
+      "author": "心宽财自来",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141147&type=3"
+    },
+    {
+      "author": "学会放弃等待机会",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141143&type=3"
+    },
+    {
+      "author": "一颗夜明珠",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3"
+    },
+    {
+      "author": "刘哥博彩",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139731&type=3"
+    },
+    {
+      "author": "咁都得",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139895&type=3"
+    },
+    {
+      "author": "咖啡里的茶",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3"
+    },
+    {
+      "author": "归海一刀",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139733&type=3"
+    },
+    {
+      "author": "不夜天",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139706&type=3"
+    },
+    {
+      "author": "鸣区带盐人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139516&type=3"
+    },
+    {
+      "author": "菜半仙",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139729&type=3"
+    },
+    {
+      "author": "天命人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138825&type=3"
+    },
+    {
+      "author": "想要天天天中",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139730&type=3"
+    },
+    {
+      "author": "嗯斛咔嘛劜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139727&type=3"
+    },
+    {
+      "author": "六合八荒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138845&type=3"
+    },
+    {
+      "author": "风火狼烟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139626&type=3"
+    },
+    {
+      "author": "币安人生",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3"
+    },
+    {
+      "author": "肌瘦的肖人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139725&type=3"
+    },
+    {
+      "author": "人黄的老狗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139724&type=3"
+    },
+    {
+      "author": "信口易",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139723&type=3"
+    },
+    {
+      "author": "黄腾达",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139722&type=3"
+    },
+    {
+      "author": "黄袍加身法律",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139721&type=3"
+    },
+    {
+      "author": "筚路蓝缕",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139719&type=3"
+    },
+    {
+      "author": "炉火鸡精",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139717&type=3"
+    },
+    {
+      "author": "好料再现",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139716&type=3"
+    },
+    {
+      "author": "啊懒啊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139715&type=3"
+    },
+    {
+      "author": "青面獠牙",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139714&type=3"
+    },
+    {
+      "author": "中奖很高",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139713&type=3"
+    },
+    {
+      "author": "竹马起飞",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139712&type=3"
+    },
+    {
+      "author": "苍天赚钱",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139711&type=3"
+    },
+    {
+      "author": "绿草如茵",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139710&type=3"
+    },
+    {
+      "author": "面红耳是",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139709&type=3"
+    },
+    {
+      "author": "隔壁王哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139708&type=3"
+    },
+    {
+      "author": "朱唇一尝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139707&type=3"
+    },
+    {
+      "author": "无情哈拉少",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139705&type=3"
+    },
+    {
+      "author": "姹紫嫣",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139704&type=3"
+    },
+    {
+      "author": "大湿鸽",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139703&type=3"
+    },
+    {
+      "author": "张扶摇",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139702&type=3"
+    },
+    {
+      "author": "欧拉欧拉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139701&type=3"
+    },
+    {
+      "author": "纯洁的坦克",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139700&type=3"
+    },
+    {
+      "author": "白发苍苍",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139699&type=3"
+    },
+    {
+      "author": "奶白色的雪子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139698&type=3"
+    },
+    {
+      "author": "幕后神秘人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139697&type=3"
+    },
+    {
+      "author": "古月哥欠",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139696&type=3"
+    },
+    {
+      "author": "糖小焉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139695&type=3"
+    },
+    {
+      "author": "流湿湿",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139694&type=3"
+    },
+    {
+      "author": "花团锦簇",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139689&type=3"
+    },
+    {
+      "author": "藕断丝连",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139688&type=3"
+    },
+    {
+      "author": "叶落知秋",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139687&type=3"
+    },
+    {
+      "author": "花容月貌",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139680&type=3"
+    },
+    {
+      "author": "拔苗助长",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139679&type=3"
+    },
+    {
+      "author": "望梅止渴",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139671&type=3"
+    },
+    {
+      "author": "枯木逢春",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139670&type=3"
+    },
+    {
+      "author": "滚瓜烂熟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139669&type=3"
+    },
+    {
+      "author": "借花献佛",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139663&type=3"
+    },
+    {
+      "author": "风吹草动",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139662&type=3"
+    },
+    {
+      "author": "世外桃源",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139661&type=3"
+    },
+    {
+      "author": "胸有成竹",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139652&type=3"
+    },
+    {
+      "author": "沧海一粟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139651&type=3"
+    },
+    {
+      "author": "火中取栗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139650&type=3"
+    },
+    {
+      "author": "囫囵吞枣",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139648&type=3"
+    },
+    {
+      "author": "名列前茅",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139641&type=3"
+    },
+    {
+      "author": "如火如荼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139640&type=3"
+    },
+    {
+      "author": "豆蔻年华",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139638&type=3"
+    },
+    {
+      "author": "花枝招展",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139629&type=3"
+    },
+    {
+      "author": "荆棘丛生",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139628&type=3"
+    },
+    {
+      "author": "黄粱美梦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139627&type=3"
+    },
+    {
+      "author": "桑榆暮景",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139619&type=3"
+    },
+    {
+      "author": "草木皆兵",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139618&type=3"
+    },
+    {
+      "author": "草菅人命",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139617&type=3"
+    },
+    {
+      "author": "横生枝节",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139602&type=3"
+    },
+    {
+      "author": "昙花一现",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139601&type=3"
+    },
+    {
+      "author": "明日黄花",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139600&type=3"
+    },
+    {
+      "author": "雨后春笋",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139599&type=3"
+    },
+    {
+      "author": "视如草芥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139576&type=3"
+    },
+    {
+      "author": "出水芙蓉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139575&type=3"
+    },
+    {
+      "author": "布帛蔬栗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139574&type=3"
+    },
+    {
+      "author": "赖赖赖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139528&type=3"
+    },
+    {
+      "author": "瓜田李下",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139558&type=3"
+    },
+    {
+      "author": "桃红柳绿",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139557&type=3"
+    },
+    {
+      "author": "柳暗花明",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139556&type=3"
+    },
+    {
+      "author": "根深蒂固",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139543&type=3"
+    },
+    {
+      "author": "树大根深",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139542&type=3"
+    },
+    {
+      "author": "李代桃僵",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139531&type=3"
+    },
+    {
+      "author": "專司赢",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139530&type=3"
+    },
+    {
+      "author": "雄霸六合",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139529&type=3"
+    },
+    {
+      "author": "共创辉輝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139515&type=3"
+    },
+    {
+      "author": "柴火呼吸机",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139514&type=3"
+    },
+    {
+      "author": "我是你老子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139504&type=3"
+    },
+    {
+      "author": "必發發發",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139503&type=3"
+    },
+    {
+      "author": "叶一南江",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139502&type=3"
+    },
+    {
+      "author": "财经人生之路",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139501&type=3"
+    },
+    {
+      "author": "财财财来来来",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139491&type=3"
+    },
+    {
+      "author": "赢两千万",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139490&type=3"
+    },
+    {
+      "author": "兔子大大",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139489&type=3"
+    },
+    {
+      "author": "稳如哈马比",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139483&type=3"
+    },
+    {
+      "author": "澳门不倒靠养老",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139482&type=3"
+    },
+    {
+      "author": "潜水中月",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139481&type=3"
+    },
+    {
+      "author": "一個好人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139480&type=3"
+    },
+    {
+      "author": "黄曙琅",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139479&type=3"
+    },
+    {
+      "author": "太酷啦啦啦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139478&type=3"
+    },
+    {
+      "author": "比天还高",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139477&type=3"
+    },
+    {
+      "author": "咿呀呦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139476&type=3"
+    },
+    {
+      "author": "大老爺",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139475&type=3"
+    },
+    {
+      "author": "混世码王",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139474&type=3"
+    },
+    {
+      "author": "黑庄克星啊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139464&type=3"
+    },
+    {
+      "author": "周星驰",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139448&type=3"
+    },
+    {
+      "author": "电压表",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139447&type=3"
+    },
+    {
+      "author": "阅读拟定",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139446&type=3"
+    },
+    {
+      "author": "结婚多年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139432&type=3"
+    },
+    {
+      "author": "看到结果",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139431&type=3"
+    },
+    {
+      "author": "肯德基暗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139430&type=3"
+    },
+    {
+      "author": "大汉美男",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139429&type=3"
+    },
+    {
+      "author": "黄大仙",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139422&type=3"
+    },
+    {
+      "author": "天下第一合",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139421&type=3"
+    },
+    {
+      "author": "司法部",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139420&type=3"
+    },
+    {
+      "author": "谢谢你给我的爱",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139406&type=3"
+    },
+    {
+      "author": "大海的方向",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139405&type=3"
+    },
+    {
+      "author": "小白鼠",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139404&type=3"
+    },
+    {
+      "author": "内塞那些",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139399&type=3"
+    },
+    {
+      "author": "吸纳的技能",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139398&type=3"
+    },
+    {
+      "author": "顶峰相见",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139397&type=3"
+    },
+    {
+      "author": "入梦乡",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139387&type=3"
+    },
+    {
+      "author": "阿斯利康",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139386&type=3"
+    },
+    {
+      "author": "明朝年间",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139385&type=3"
+    },
+    {
+      "author": "南昌麻将",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139384&type=3"
+    },
+    {
+      "author": "密封罐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139375&type=3"
+    },
+    {
+      "author": "拟定蒂娜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139374&type=3"
+    },
+    {
+      "author": "莫老哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139373&type=3"
+    },
+    {
+      "author": "顺米来",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139360&type=3"
+    },
+    {
+      "author": "滑稽的球",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139359&type=3"
+    },
+    {
+      "author": "一花一树开",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139358&type=3"
+    },
+    {
+      "author": "恋恋风景",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139346&type=3"
+    },
+    {
+      "author": "卿愿与君书",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139345&type=3"
+    },
+    {
+      "author": "闻人钰",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139344&type=3"
+    },
+    {
+      "author": "慕井云染",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139343&type=3"
+    },
+    {
+      "author": "长青诗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139336&type=3"
+    },
+    {
+      "author": "闹剧结束",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139335&type=3"
+    },
+    {
+      "author": "路人为谁空舞",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139334&type=3"
+    },
+    {
+      "author": "情深不寿",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139318&type=3"
+    },
+    {
+      "author": "孤独和酒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139317&type=3"
+    },
+    {
+      "author": "迷路的信",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139316&type=3"
+    },
+    {
+      "author": "旧巷里的旧少年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139302&type=3"
+    },
+    {
+      "author": "风月斟酒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139301&type=3"
+    },
+    {
+      "author": "月中仙女",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139300&type=3"
+    },
+    {
+      "author": "孤芳又自赏",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139289&type=3"
+    },
+    {
+      "author": "格林家的公主",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139288&type=3"
+    },
+    {
+      "author": "月儿弯弯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139287&type=3"
+    },
+    {
+      "author": "心软成患",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139286&type=3"
+    },
+    {
+      "author": "孤岛爱人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139276&type=3"
+    },
+    {
+      "author": "年华祭",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139275&type=3"
+    },
+    {
+      "author": "泅渡至彼岸",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139274&type=3"
+    },
+    {
+      "author": "薄荷少年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139267&type=3"
+    },
+    {
+      "author": "眉眼一袭温良",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139266&type=3"
+    },
+    {
+      "author": "凉风有信",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139265&type=3"
+    },
+    {
+      "author": "雁南飞",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139264&type=3"
+    },
+    {
+      "author": "我该如何存在",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139263&type=3"
+    },
+    {
+      "author": "鹤归孤山",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139262&type=3"
+    },
+    {
+      "author": "红颜情断肠",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139260&type=3"
+    },
+    {
+      "author": "背着棺材跳舞",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139259&type=3"
+    },
+    {
+      "author": "觅青森",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139258&type=3"
+    },
+    {
+      "author": "中发大大大大",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139256&type=3"
+    },
+    {
+      "author": "水东枭雄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3"
+    },
+    {
+      "author": "赖赖赖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3"
+    },
+    {
+      "author": "心头的小情儿",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139257&type=3"
+    },
+    {
+      "author": "暮雨而桐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139255&type=3"
+    },
+    {
+      "author": "几番春秋",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139254&type=3"
+    },
+    {
+      "author": "星星打烊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139253&type=3"
+    },
+    {
+      "author": "和云相伴",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139252&type=3"
+    },
+    {
+      "author": "相思入骨",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139251&type=3"
+    },
+    {
+      "author": "该怎样生活",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139250&type=3"
+    },
+    {
+      "author": "一缕墨香",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139249&type=3"
+    },
+    {
+      "author": "凉兮清婉丽",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139248&type=3"
+    },
+    {
+      "author": "定格我的天空",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139247&type=3"
+    },
+    {
+      "author": "长欢久安",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139246&type=3"
+    },
+    {
+      "author": "不再回头",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139245&type=3"
+    },
+    {
+      "author": "不在乎又如何",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139244&type=3"
+    },
+    {
+      "author": "夏末的清风",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139243&type=3"
+    },
+    {
+      "author": "玉砌似画染",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139242&type=3"
+    },
+    {
+      "author": "江心雾",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139241&type=3"
+    },
+    {
+      "author": "梦蝶语",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139240&type=3"
+    },
+    {
+      "author": "山楂味的诗",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139239&type=3"
+    },
+    {
+      "author": "清风入梦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139238&type=3"
+    },
+    {
+      "author": "浪迹天涯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139237&type=3"
+    },
+    {
+      "author": "绝无涯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139236&type=3"
+    },
+    {
+      "author": "圆桌会议",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139235&type=3"
+    },
+    {
+      "author": "六合诡码",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139234&type=3"
+    },
+    {
+      "author": "朝暮思雪",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139233&type=3"
+    },
+    {
+      "author": "秋风霜月",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139232&type=3"
+    },
+    {
+      "author": "故事主角",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139231&type=3"
+    },
+    {
+      "author": "无边无际",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139229&type=3"
+    },
+    {
+      "author": "天下我有",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139227&type=3"
+    },
+    {
+      "author": "通行天下",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139226&type=3"
+    },
+    {
+      "author": "小财迷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139225&type=3"
+    },
+    {
+      "author": "迷之自信",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139224&type=3"
+    },
+    {
+      "author": "天罡神算",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139223&type=3"
+    },
+    {
+      "author": "风萧萧易水寒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139222&type=3"
+    },
+    {
+      "author": "又一年",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139221&type=3"
+    },
+    {
+      "author": "赛马会",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139220&type=3"
+    },
+    {
+      "author": "马赛克",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139219&type=3"
+    },
+    {
+      "author": "星星点灯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139218&type=3"
+    },
+    {
+      "author": "边缘人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139217&type=3"
+    },
+    {
+      "author": "之乎者也",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139216&type=3"
+    },
+    {
+      "author": "明月半深秋",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139215&type=3"
+    },
+    {
+      "author": "杀神白起",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139213&type=3"
+    },
+    {
+      "author": "风起缘落",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139212&type=3"
+    },
+    {
+      "author": "水东枭雄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139209&type=3"
+    },
+    {
+      "author": "东北二人转",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139211&type=3"
+    },
+    {
+      "author": "风行天下",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139210&type=3"
+    },
+    {
+      "author": "澳彩九点半",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139208&type=3"
+    },
+    {
+      "author": "花钱月下",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139207&type=3"
+    },
+    {
+      "author": "明月飘霜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139206&type=3"
+    },
+    {
+      "author": "天涯明月刀",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139205&type=3"
+    },
+    {
+      "author": "步步高",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139204&type=3"
+    },
+    {
+      "author": "算特码",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139203&type=3"
+    },
+    {
+      "author": "澳彩解迷",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139202&type=3"
+    },
+    {
+      "author": "机密文件",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139201&type=3"
+    },
+    {
+      "author": "算个球",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139200&type=3"
+    },
+    {
+      "author": "蛋哥哥",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139181&type=3"
+    },
+    {
+      "author": "百万富翁中",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139168&type=3"
+    },
+    {
+      "author": "神机妙算",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139199&type=3"
+    },
+    {
+      "author": "每天吃香肉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139194&type=3"
+    },
+    {
+      "author": "今晚三头",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139163&type=3"
+    },
+    {
+      "author": "财神到",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139198&type=3"
+    },
+    {
+      "author": "天下霸唱",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139197&type=3"
+    },
+    {
+      "author": "澳彩千灯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139196&type=3"
+    },
+    {
+      "author": "港澳神算",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139195&type=3"
+    },
+    {
+      "author": "一码当先",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139193&type=3"
+    },
+    {
+      "author": "天下无庄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139192&type=3"
+    },
+    {
+      "author": "赢赢天下",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139191&type=3"
+    },
+    {
+      "author": "阿姨挣钱花",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139190&type=3"
+    },
+    {
+      "author": "萝卜刀",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139189&type=3"
+    },
+    {
+      "author": "天道酬勤",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139188&type=3"
+    },
+    {
+      "author": "风花雪月",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139187&type=3"
+    },
+    {
+      "author": "一个小目标",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139186&type=3"
+    },
+    {
+      "author": "老六神算",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139185&type=3"
+    },
+    {
+      "author": "手指上旳煙味",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139184&type=3"
+    },
+    {
+      "author": "苍天赚钱",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139183&type=3"
+    },
+    {
+      "author": "朱唇一尝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139182&type=3"
+    },
+    {
+      "author": "期期红",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139180&type=3"
+    },
+    {
+      "author": "王道人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139179&type=3"
+    },
+    {
+      "author": "刘天仙",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139178&type=3"
+    },
+    {
+      "author": "羊小宓",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139177&type=3"
+    },
+    {
+      "author": "白眼小公主",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139176&type=3"
+    },
+    {
+      "author": "瓜熟蒂落",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139175&type=3"
+    },
+    {
+      "author": "绝无情",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139174&type=3"
+    },
+    {
+      "author": "一码当先",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139173&type=3"
+    },
+    {
+      "author": "天下无庄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139172&type=3"
+    },
+    {
+      "author": "天下我有",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139171&type=3"
+    },
+    {
+      "author": "六叔他叔",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139170&type=3"
+    },
+    {
+      "author": "六合奇谈",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139169&type=3"
+    },
+    {
+      "author": "酸菜炒牛肉",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3"
+    },
+    {
+      "author": "金诗如梦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139155&type=3"
+    },
+    {
+      "author": "木木木的",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139151&type=3"
+    },
+    {
+      "author": "西南二尾王",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139156&type=3"
+    },
+    {
+      "author": "發財沙发",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139159&type=3"
+    },
+    {
+      "author": "金诗如梦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139153&type=3"
+    },
+    {
+      "author": "小场面",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139158&type=3"
+    },
+    {
+      "author": "木木木的",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139113&type=3"
+    },
+    {
+      "author": "澳门研究所",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139007&type=3"
+    },
+    {
+      "author": "小娃娃",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139044&type=3"
+    },
+    {
+      "author": "周瑜伽砖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139059&type=3"
+    },
+    {
+      "author": "君君崽",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138936&type=3"
+    },
+    {
+      "author": "时空思念",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139023&type=3"
+    },
+    {
+      "author": "相得一彰",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139014&type=3"
+    },
+    {
+      "author": "天衍四十九",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3"
+    },
+    {
+      "author": "周星驰啊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139031&type=3"
+    },
+    {
+      "author": "藍海雲天",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138965&type=3"
+    },
+    {
+      "author": "星缀墨宇",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138963&type=3"
+    },
+    {
+      "author": "華燈初上",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138962&type=3"
+    },
+    {
+      "author": "酒温浪人",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138957&type=3"
+    },
+    {
+      "author": "书无诗章",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138955&type=3"
+    },
+    {
+      "author": "老黄历",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138954&type=3"
+    },
+    {
+      "author": "殇有多疼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138939&type=3"
+    },
+    {
+      "author": "无意恋红尘",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138938&type=3"
+    },
+    {
+      "author": "踏着灵魂漫步",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138937&type=3"
+    },
+    {
+      "author": "冰蓝水蜜桃",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138935&type=3"
+    },
+    {
+      "author": "来生注定",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138898&type=3"
+    },
+    {
+      "author": "醉酒惜红颜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138928&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3"
+    },
+    {
+      "author": "刀枪棍斧",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138927&type=3"
+    },
+    {
+      "author": "國足之魂",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138926&type=3"
+    },
+    {
+      "author": "单身托儿所",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138906&type=3"
+    },
+    {
+      "author": "单方的守候",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138901&type=3"
+    },
+    {
+      "author": "释看群枭雄",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138900&type=3"
+    },
+    {
+      "author": "男神大神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138897&type=3"
+    },
+    {
+      "author": "竹报彡多",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138896&type=3"
+    },
+    {
+      "author": "澳门蓝月亮",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138891&type=3"
+    },
+    {
+      "author": "窝里马",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138885&type=3"
+    },
+    {
+      "author": "赌神之神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3"
+    },
+    {
+      "author": "青田徐伯",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138714&type=3"
+    },
+    {
+      "author": "湘西密藏",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138747&type=3"
+    },
+    {
+      "author": "护你周全哦",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138721&type=3"
+    },
+    {
+      "author": "唐用户等级",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138728&type=3"
+    },
+    {
+      "author": "人在家中坐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3"
+    },
+    {
+      "author": "广西谋财酒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138753&type=3"
+    },
+    {
+      "author": "发东南西北旋风财",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138750&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138792&type=3"
+    },
+    {
+      "author": "无错九肖长期跟",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138763&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138799&type=3"
+    },
+    {
+      "author": "大唐天子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138830&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138810&type=3"
+    },
+    {
+      "author": "左路左路",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138819&type=3"
+    },
+    {
+      "author": "无影中特",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138801&type=3"
+    },
+    {
+      "author": "咯啊啊",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3"
+    },
+    {
+      "author": "命运六合",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138717&type=3"
+    },
+    {
+      "author": "八闽郡王",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138832&type=3"
+    },
+    {
+      "author": "赖赖赖",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138752&type=3"
+    },
+    {
+      "author": "赌神不是神",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3"
+    },
+    {
+      "author": "叔公斯诺克",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138772&type=3"
+    },
+    {
+      "author": "河南漯河市澳门研究生",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138757&type=3"
+    },
+    {
+      "author": "出门见山",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138769&type=3"
+    },
+    {
+      "author": "鱼鱼鱼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138736&type=3"
+    },
+    {
+      "author": "清秀如初",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138871&type=3"
+    },
+    {
+      "author": "回眸醉倾城",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138869&type=3"
+    },
+    {
+      "author": "物都是你",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138868&type=3"
+    },
+    {
+      "author": "干一杯烈酒",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138867&type=3"
+    },
+    {
+      "author": "盛世唐朝",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138862&type=3"
+    },
+    {
+      "author": "踩着高跷看矮子",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138854&type=3"
+    },
+    {
+      "author": "苍穹剑泣",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138852&type=3"
+    },
+    {
+      "author": "排行老六",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138849&type=3"
+    },
+    {
+      "author": "二哥独秀",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138848&type=3"
+    },
+    {
+      "author": "白日沉沦夜",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138846&type=3"
+    },
+    {
+      "author": "香山论坛",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138840&type=3"
+    },
+    {
+      "author": "筑梦小丑",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138827&type=3"
+    },
+    {
+      "author": "南笙兮墨汐",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138826&type=3"
+    },
+    {
+      "author": "帕加尼",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138824&type=3"
+    },
+    {
+      "author": "都是逆风",
+      "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138823&type=3"
+    }
+  ],
+  "frozen_at": "2026-10-23T13:01:25.541841+00:00",
+  "digest": "ee6dd9dd9d541527e704710894694b9b5390bf2d244c223db2a78b95d7978a28"
+}
