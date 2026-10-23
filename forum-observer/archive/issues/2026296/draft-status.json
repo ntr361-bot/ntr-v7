@@ -12,10 +12,10 @@
   "article_image_audit": {},
   "comment_records": 0,
   "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭",
-  "fetched_at": "2026-10-23T12:08:07.939051+00:00",
-  "raw_count": 527,
+  "fetched_at": "2026-10-23T12:38:40.491039+00:00",
+  "raw_count": 523,
   "valid_leaderboard": 0,
-  "valid_outside": 527,
+  "valid_outside": 523,
   "author_profiles_checked": 0,
   "author_profile_budget_exhausted": false,
   "comment_candidate_threads": 0,
@@ -33,7 +33,7 @@
   "featured_attempted_threads": 52,
   "featured_completed_threads": 52,
   "featured_valid_materials": 11,
-  "ordinary_valid_materials": 71,
+  "ordinary_valid_materials": 70,
   "comment_unchecked_threads": 0,
   "history_scope": "not_requested",
   "all_author_history_scraped": false,
@@ -41,10 +41,10 @@
   "author_profile_history_posts": 0,
   "author_profile_errors": [],
   "forum_scroll_audit": {
-    "steps": 109,
-    "moves": 108,
+    "steps": 110,
+    "moves": 109,
     "end_confirmed": false,
-    "items_seen": 540,
+    "items_seen": 541,
     "truncated": false,
     "stop_reason": "current_issue_boundary_reached",
     "scope": "target_issue_window"
@@ -53,8 +53,8 @@
   "historical_reference_count": 0,
   "historical_reference_authors": 0,
   "next_period_posts_checked": 0,
-  "selected_count": 82,
-  "valid_materials": 82,
+  "selected_count": 81,
+  "valid_materials": 81,
   "scoring_rule_version": "2026-10-15-one-author-9-8-7-6-priority-v8",
   "scoring_rules": {
     "minimum_recommendation_zodiacs": 6,
@@ -74,12 +74,12 @@
   },
   "material_counts": {
     "recommend": 58,
-    "kill_zodiac": 24
+    "kill_zodiac": 23
   },
-  "candidate_materials": 181,
+  "candidate_materials": 180,
   "excluded_materials": 99,
-  "unscored_posts": 445,
-  "distinct_valid_authors": 82,
+  "unscored_posts": 442,
+  "distinct_valid_authors": 81,
   "article_details": {
     "featured": {
       "queued": 52,
@@ -89,20 +89,20 @@
       "completed": 52
     },
     "ordinary": {
-      "queued": 479,
-      "attempted": 479,
-      "opened": 479,
-      "extracted": 476,
-      "completed": 479
+      "queued": 475,
+      "attempted": 475,
+      "opened": 475,
+      "extracted": 472,
+      "completed": 475
     }
   },
-  "successful_post_opens": 531,
-  "article_texts_extracted": 527,
-  "article_details_completed": 531,
+  "successful_post_opens": 527,
+  "article_texts_extracted": 523,
+  "article_details_completed": 527,
   "last_verified_post": {
     "author": "都是逆风",
     "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138823&type=3",
-    "verified_at": "2026-10-23T12:08:07.389521+00:00",
+    "verified_at": "2026-10-23T12:38:39.766464+00:00",
     "text_length": 384,
     "text_sha256": "e609e32f2bcad80a056974546e2bbcb7ee3928ed1084c4d59f8f7b8d7d441572"
   },
@@ -110,12 +110,12 @@
     "author": "都是逆风",
     "is_featured": false,
     "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138823&type=3",
-    "attempt_index": 531
+    "attempt_index": 527
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": {
-      "at": "2026-10-23T12:02:55.013686+00:00",
+      "at": "2026-10-23T12:32:58.515124+00:00",
       "featured_queued": 52,
       "featured_attempted": 52,
       "featured_completed": 52
@@ -129,12 +129,12 @@
     {
       "rank": 1,
       "zodiac": "狗",
-      "score": 7.637302
+      "score": 7.512302
     },
     {
       "rank": 2,
       "zodiac": "羊",
-      "score": 7.547655
+      "score": 7.422655
     },
     {
       "rank": 3,
@@ -143,28 +143,28 @@
     },
     {
       "rank": 4,
-      "zodiac": "马",
-      "score": 6.994444
-    },
-    {
-      "rank": 5,
       "zodiac": "虎",
       "score": 6.919444
     },
     {
+      "rank": 5,
+      "zodiac": "马",
+      "score": 6.869444
+    },
+    {
       "rank": 6,
       "zodiac": "鼠",
-      "score": 6.87702
+      "score": 6.75202
     },
     {
       "rank": 7,
       "zodiac": "鸡",
-      "score": 6.764322
+      "score": 6.639322
     },
     {
       "rank": 8,
       "zodiac": "蛇",
-      "score": 6.733261
+      "score": 6.608261
     },
     {
       "rank": 9,
@@ -179,12 +179,12 @@
     {
       "rank": 11,
       "zodiac": "猪",
-      "score": 6.350433
+      "score": 6.225433
     },
     {
       "rank": 12,
       "zodiac": "龙",
-      "score": 6.07417
+      "score": 5.94917
     }
   ],
   "top1": [
@@ -199,8 +199,8 @@
     "狗",
     "羊",
     "猴",
-    "马",
     "虎",
+    "马",
     "鼠"
   ],
   "evidence": [
@@ -260,23 +260,6 @@
       "issue": "2026296",
       "is_featured": true,
       "published_at": "2026-10-23 06:13",
-      "title": "澳门彩296期：¥大数据¥杀肖¥",
-      "body": "杀四肖   马,猴,鸡,猪,\n杀三肖   猴,鸡,猪,\n杀二肖   鸡,猪,\n杀一肖   猪,\n\n\n关注我！淘料专家贝贝贝丹:   发财心水\n点赞我！共同致富填邀请码:   2876457",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139154,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139154&type=3"
-    },
-    {
-      "author": "贝贝丹丹",
-      "issue": "2026296",
-      "is_featured": true,
-      "published_at": "2026-10-23 06:13",
       "title": "澳门彩296期：¥大数据¥平肖¥",
       "body": "平三肖   蛇,马,猴,\n\n\n平一肖   蛇,\n\n\n关注我！淘料专家贝贝贝丹:   发财心水\n点赞我！共同致富填邀请码:   2876457",
       "category": "澳门",
@@ -288,6 +271,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3"
+    },
+    {
+      "author": "贝贝丹丹",
+      "issue": "2026296",
+      "is_featured": true,
+      "published_at": "2026-10-23 06:13",
+      "title": "澳门彩296期：¥大数据¥杀肖¥",
+      "body": "杀四肖   马,猴,鸡,猪,\n杀三肖   猴,鸡,猪,\n杀二肖   鸡,猪,\n杀一肖   猪,\n\n\n关注我！淘料专家贝贝贝丹:   发财心水\n点赞我！共同致富填邀请码:   2876457",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139154,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139154&type=3"
     },
     {
       "author": "贝贝丹丹",
@@ -550,7 +550,7 @@
       "is_featured": true,
       "published_at": "2026-10-23 18:40",
       "title": "296期；六肖中特【精彩不断】八中八",
-      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价25彩金，已有3人购买！！！",
+      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价25彩金，已有5人购买！！！",
       "category": "澳门",
       "image_urls": [],
       "article_id": 11138744,
@@ -562,21 +562,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138744&type=3"
     },
     {
-      "author": "敢赌敢博",
+      "author": "大顺发富豪榜",
       "issue": "2026296",
       "is_featured": true,
       "published_at": "2026-10-23 17:03",
-      "title": "敢赌敢博九肖中特",
-      "body": "294期九肖中【蛇龙狗兔鸡猴牛鼠马】开兔中\n295期九肖中【鼠牛龙蛇马羊猴狗猪】开马中\n296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹\n【好好研究一下✊✊✊】\n【大吉大利铁们一路长虹🌹🌹🌹】\n【开帖大吉大利🌹🌹🌹】",
+      "title": "大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️",
+      "body": "292期九肖【虎猴蛇鼠马狗鸡羊牛】开羊🀄️🌹\n293期九肖【你该中了继续让铁粉每天收米💰💰💰】\n294期九肖【虎蛇兔猴鼠马狗鸡牛】开兔🀄️🌹\n295期九肖【龙鼠猴兔牛猪狗羊马】开马🀄️🌹\n296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹\n【恭喜铁粉稳稳中奖💰💰\n【铁粉稳稳中奖💰💰💰】\n\n\n\n\n【恭喜铁粉中奖支持点赞十关注】",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138742,
+      "article_id": 11138740,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3"
     },
     {
       "author": "优优码皇",
@@ -596,21 +596,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138734&type=3"
     },
     {
-      "author": "大顺发富豪榜",
+      "author": "敢赌敢博",
       "issue": "2026296",
       "is_featured": true,
       "published_at": "2026-10-23 17:03",
-      "title": "大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️",
-      "body": "292期九肖【虎猴蛇鼠马狗鸡羊牛】开羊🀄️🌹\n293期九肖【你该中了继续让铁粉每天收米💰💰💰】\n294期九肖【虎蛇兔猴鼠马狗鸡牛】开兔🀄️🌹\n295期九肖【龙鼠猴兔牛猪狗羊马】开马🀄️🌹\n296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹\n【恭喜铁粉稳稳中奖💰💰\n【铁粉稳稳中奖💰💰💰】\n\n\n\n\n【恭喜铁粉中奖支持点赞十关注】",
+      "title": "敢赌敢博九肖中特",
+      "body": "294期九肖中【蛇龙狗兔鸡猴牛鼠马】开兔中\n295期九肖中【鼠牛龙蛇马羊猴狗猪】开马中\n296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹\n【好好研究一下✊✊✊】\n【大吉大利铁们一路长虹🌹🌹🌹】\n【开帖大吉大利🌹🌹🌹】",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138740,
+      "article_id": 11138742,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3"
     },
     {
       "author": "韩财神",
@@ -635,7 +635,7 @@
       "is_featured": true,
       "published_at": "2026-10-23 16:36",
       "title": "数据统计",
-      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价2彩金，已有27人购买！！！",
+      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价2彩金，已有33人购买！！！",
       "category": "澳门",
       "image_urls": [],
       "article_id": 11144207,
@@ -839,7 +839,7 @@
       "is_featured": true,
       "published_at": "2026-10-22 23:19",
       "title": "澳门杀一肖：296期",
-      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价5彩金，已有1人购买！！！",
+      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价5彩金，已有2人购买！！！",
       "category": "澳门",
       "image_urls": [],
       "article_id": 11139043,
@@ -1310,23 +1310,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145555&type=3"
     },
     {
-      "author": "在哪啊",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:59",
-      "title": "296",
-      "body": "期特肖\n三肖中特：\n-牛\n-狗\n-猪\n二肖中特：\n-狗\n-猪\n一肖中特：\n-狗\n一码中特：\n-33\n等待开奖",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145502,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3"
-    },
-    {
       "author": "香格里拉",
       "issue": "2026296",
       "is_featured": false,
@@ -1361,12 +1344,29 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145499&type=3"
     },
     {
+      "author": "在哪啊",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 19:59",
+      "title": "296",
+      "body": "期特肖\n三肖中特：\n-牛\n-狗\n-猪\n二肖中特：\n-狗\n-猪\n一肖中特：\n-狗\n一码中特：\n-33\n等待开奖",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145502,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3"
+    },
+    {
       "author": "烟花烂漫",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 19:58",
       "title": "3肖连中 7肖36错4 特肖主前面",
-      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价28彩金，已有1人购买！！！",
+      "body": "该帖子已加密，请\n付费\n后查看\n此帖售价28彩金，已有5人购买！！！",
       "category": "澳门",
       "image_urls": [],
       "article_id": 11145531,
@@ -1427,74 +1427,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145490&type=3"
-    },
-    {
-      "author": "数字投资研究院",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:58",
-      "title": "6️⃣--9️⃣肖博特",
-      "body": "六肖至九肖博特【越靠前越重要】\n\n296期▶︎鸡猪羊龙蛇鼠马兔📣开❓\n\n295期▶︎龙猴马牛羊狗猪📣开马26✅\n294期▶︎龙蛇猴猪鼠兔鸡📣开兔28✅\n293期▶︎牛虎马猴猪狗羊📣开虎05✅\n\n换个数据不然就不好折腾了",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145501,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145501&type=3"
-    },
-    {
-      "author": "福运到",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:58",
-      "title": "296期：每期包杀几个生肖",
-      "body": "杀 虎 兔 牛 猴",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145503,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145503&type=3"
-    },
-    {
-      "author": "六合拉拉",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:32",
-      "title": "(づ ●─● )づ必杀两肖(づ ●─● )づ",
-      "body": "必杀两肖为原创心水，喜欢的朋友还请点赞加关注，以示鼓励！谢谢！\n\n296期必杀两肖：兔羊 开：猫？\n295期必杀两肖：兔羊 开：马 准\n294期必杀两肖：兔羊 开：兔 错\n293期必杀两肖：龙蛇 开：虎 准\n292期必杀两肖：狗猪 开：羊 准\n291期必杀两肖：马羊 开：虎 准\n290期必杀两肖：虎龙 开：兔 准\n289期必杀两肖：虎兔 开：蛇 准\n288期必杀两肖：鼠牛 开：马 准\n287期必杀两肖：牛龙 开：猪 准\n286期必杀两肖：鼠鸡 开：羊 准\n285期必杀两肖：牛虎 开：鼠 准\n284期必杀两肖：牛虎 开：猪 准\n283期必杀两肖：虎兔 开：牛 准\n282期必杀两肖：虎兔 开：猴 准\n281期必杀两肖：狗猪 开：鸡 准\n280期必杀两肖：马羊 开：龙 准\n\n感谢码友厚爱，最近心水不好，慎参！",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145489,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3"
-    },
-    {
-      "author": "魔王子",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:32",
-      "title": "296🇲🇴",
-      "body": "平特一尾（7）",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145383,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3"
     },
     {
       "author": "湘西密藏",
@@ -1599,6 +1531,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145356&type=3"
     },
     {
+      "author": "六合拉拉",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 19:32",
+      "title": "(づ ●─● )づ必杀两肖(づ ●─● )づ",
+      "body": "必杀两肖为原创心水，喜欢的朋友还请点赞加关注，以示鼓励！谢谢！\n\n296期必杀两肖：兔羊 开：猫？\n295期必杀两肖：兔羊 开：马 准\n294期必杀两肖：兔羊 开：兔 错\n293期必杀两肖：龙蛇 开：虎 准\n292期必杀两肖：狗猪 开：羊 准\n291期必杀两肖：马羊 开：虎 准\n290期必杀两肖：虎龙 开：兔 准\n289期必杀两肖：虎兔 开：蛇 准\n288期必杀两肖：鼠牛 开：马 准\n287期必杀两肖：牛龙 开：猪 准\n286期必杀两肖：鼠鸡 开：羊 准\n285期必杀两肖：牛虎 开：鼠 准\n284期必杀两肖：牛虎 开：猪 准\n283期必杀两肖：虎兔 开：牛 准\n282期必杀两肖：虎兔 开：猴 准\n281期必杀两肖：狗猪 开：鸡 准\n280期必杀两肖：马羊 开：龙 准\n\n感谢码友厚爱，最近心水不好，慎参！",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145489,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3"
+    },
+    {
       "author": "旺旺沐兒",
       "issue": "2026296",
       "is_featured": false,
@@ -1633,38 +1582,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145358&type=3"
     },
     {
-      "author": "期待你的眼神",
+      "author": "魔王子",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 19:32",
-      "title": "特马296期",
-      "body": "02.03.04.06.09.10.11.12.14.16.17.19.20.22.23.24.28.29.30.34.35.36.38.39.41.42.44.45.49",
+      "title": "296🇲🇴",
+      "body": "平特一尾（7）",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11145415,
+      "article_id": 11145383,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3"
-    },
-    {
-      "author": "稳中稳长跟必赚",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 19:32",
-      "title": "296期特码",
-      "body": "282期：03,04,05,07,08,10,11,12,16,17,\n             18,19,20,22,23,28,29,34,35,40,\n             42,43,46,47,48 开23准\n283期：01,02,07,12,15,16,17,18,19,20,\n              21,27,28,32,35,36,38,39,41,42,\n              44,45,48,49 开18准\n284期：01,02,03,05,06,08,09,12,14,15,\n             17,18,21,22,25,26,32,33,34,37,\n             39,42,44,45,48 开32准\n285期：01,04,05,06,07,08,09,14,15,\n             16,17,18,19,20,21,25,26,27,28,\n             29,40,41,42,44,45,49 开19准\n286期：01,02,03,04,05,06,08,09,20,24,\n             25,26,27,28,29,33,36,37,38,39,\n             40,41,44,45,48,49 开24准\n287期：01,04,05,06,07,08,09,10,11,16,\n             17,18,19,30,31,32,34,37,40,41,\n             42,44,45,46,47,49 开08准\n288期：01,02,06,07,09,10,14,15,16,17,\n             19,21,24,26,27,29,30,33,34,36,\n             37,39,40,41,45,49 开25错\n289期：02,03,04,06,09,12,14,15,19,23,\n             24,26,27,30,31,36,37,38,39,40,\n             42,45,47,48,49 开38准\n290期：01,03,04,05,07,09,10,11,12,13,\n             15,19,21,24,29,31,34,37,39,40,\n             41,43,45,46,48 开40准\n291期：02,03,04,05,08,09,10,12,13,14,\n             15,16,17,18,22,24,26,28,30,33,\n             34,39,44,46,48 开17准\n292期：01,02,05,07,08,11,12,17,19,20,\n             23,24,25,27,29,31,33,35,36,37,\n             39,43,44,45,48 开？准\n293期：错\n294期：01,03,04,06,07,08,09,20,23,28,\n             30,31,32,33,34,35,37,40,42,43,\n             44,46,47,49 开28准\n295期：02,03,04,08,09,14,15,18,21,22,\n             25,27,28,30,31,32,33,34,35,37,\n             38,39,40,42,45 开25准\n296期：02,05,08,11,12,14,18,19,20,23,\n             24,26,27,29,30,31,32,34,36,38,\n             39,41,43,44,46,47 开？准",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145416,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3"
     },
     {
       "author": "广西小卢",
@@ -1682,6 +1614,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145441&type=3"
+    },
+    {
+      "author": "期待你的眼神",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 19:32",
+      "title": "特马296期",
+      "body": "02.03.04.06.09.10.11.12.14.16.17.19.20.22.23.24.28.29.30.34.35.36.38.39.41.42.44.45.49",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145415,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3"
     },
     {
       "author": "迷茫哥",
@@ -1718,6 +1667,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145439&type=3"
     },
     {
+      "author": "稳中稳长跟必赚",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 19:32",
+      "title": "296期特码",
+      "body": "282期：03,04,05,07,08,10,11,12,16,17,\n             18,19,20,22,23,28,29,34,35,40,\n             42,43,46,47,48 开23准\n283期：01,02,07,12,15,16,17,18,19,20,\n              21,27,28,32,35,36,38,39,41,42,\n              44,45,48,49 开18准\n284期：01,02,03,05,06,08,09,12,14,15,\n             17,18,21,22,25,26,32,33,34,37,\n             39,42,44,45,48 开32准\n285期：01,04,05,06,07,08,09,14,15,\n             16,17,18,19,20,21,25,26,27,28,\n             29,40,41,42,44,45,49 开19准\n286期：01,02,03,04,05,06,08,09,20,24,\n             25,26,27,28,29,33,36,37,38,39,\n             40,41,44,45,48,49 开24准\n287期：01,04,05,06,07,08,09,10,11,16,\n             17,18,19,30,31,32,34,37,40,41,\n             42,44,45,46,47,49 开08准\n288期：01,02,06,07,09,10,14,15,16,17,\n             19,21,24,26,27,29,30,33,34,36,\n             37,39,40,41,45,49 开25错\n289期：02,03,04,06,09,12,14,15,19,23,\n             24,26,27,30,31,36,37,38,39,40,\n             42,45,47,48,49 开38准\n290期：01,03,04,05,07,09,10,11,12,13,\n             15,19,21,24,29,31,34,37,39,40,\n             41,43,45,46,48 开40准\n291期：02,03,04,05,08,09,10,12,13,14,\n             15,16,17,18,22,24,26,28,30,33,\n             34,39,44,46,48 开17准\n292期：01,02,05,07,08,11,12,17,19,20,\n             23,24,25,27,29,31,33,35,36,37,\n             39,43,44,45,48 开？准\n293期：错\n294期：01,03,04,06,07,08,09,20,23,28,\n             30,31,32,33,34,35,37,40,42,43,\n             44,46,47,49 开28准\n295期：02,03,04,08,09,14,15,18,21,22,\n             25,27,28,30,31,32,33,34,35,37,\n             38,39,40,42,45 开25准\n296期：02,05,08,11,12,14,18,19,20,23,\n             24,26,27,29,30,31,32,34,36,38,\n             39,41,43,44,46,47 开？准",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145416,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3"
+    },
+    {
       "author": "夺率率",
       "issue": "2026296",
       "is_featured": false,
@@ -1735,21 +1701,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3"
     },
     {
-      "author": "壹指点迷津",
+      "author": "烦恼豆沙包",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 19:32",
-      "title": "杀特肖➕审批太慢了",
-      "body": "275期杀马！开17✔️276期杀兔！开14✔️\n277期杀狗！开11✔️278期杀鼠！开02✔️\n279期杀牛！开10✔️280期杀蛇！开15✔️\n281期杀猴！开10✔️282期杀猪！开23✔️\n283期杀龙！开18✔️284期杀狗！开32✔️\n285期杀蛇！开19✔️286期杀龙！开24✔️\n287期杀鼠！开08✔️288期杀狗！开25✔️\n289期杀狗！开38✔️290期杀兔！开40✖️\n291期杀鸡！开17✔️292期杀鸡！开36✔️\n293期杀猴！开05✔️294期杀猪！开28✔️\n295期杀虎！开25✔️296期杀蛇！开",
+      "title": "1️⃣肖",
+      "body": "一肖鸡\n二连鸡蛇\n三连鸡蛇猴＋虎",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11145355,
+      "article_id": 11145473,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145355&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3"
     },
     {
       "author": "远方有美酒",
@@ -1769,21 +1735,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3"
     },
     {
-      "author": "烦恼豆沙包",
+      "author": "壹指点迷津",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 19:32",
-      "title": "1️⃣肖",
-      "body": "一肖鸡\n二连鸡蛇\n三连鸡蛇猴＋虎",
+      "title": "杀特肖➕审批太慢了",
+      "body": "275期杀马！开17✔️276期杀兔！开14✔️\n277期杀狗！开11✔️278期杀鼠！开02✔️\n279期杀牛！开10✔️280期杀蛇！开15✔️\n281期杀猴！开10✔️282期杀猪！开23✔️\n283期杀龙！开18✔️284期杀狗！开32✔️\n285期杀蛇！开19✔️286期杀龙！开24✔️\n287期杀鼠！开08✔️288期杀狗！开25✔️\n289期杀狗！开38✔️290期杀兔！开40✖️\n291期杀鸡！开17✔️292期杀鸡！开36✔️\n293期杀猴！开05✔️294期杀猪！开28✔️\n295期杀虎！开25✔️296期杀蛇！开",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11145473,
+      "article_id": 11145355,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145355&type=3"
     },
     {
       "author": "陪你去流浪",
@@ -1837,23 +1803,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145278&type=3"
     },
     {
-      "author": "阿菜来了",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 18:56",
-      "title": "小白杀肖",
-      "body": "293期……杀猪兔     🀄\n294期……杀牛羊      🀄\n295期……杀猪蛇      🀄\n296期……杀猪虎\n\n\n\n\n\n\n\n\n\n       六肖\n\n295期牛羊鼠鸡猪蛇    错\n296期鸡马鼠猪猴羊",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145270,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3"
-    },
-    {
       "author": "汤达人",
       "issue": "2026296",
       "is_featured": false,
@@ -1869,6 +1818,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145307&type=3"
+    },
+    {
+      "author": "阿菜来了",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 18:56",
+      "title": "小白杀肖",
+      "body": "293期……杀猪兔     🀄\n294期……杀牛羊      🀄\n295期……杀猪蛇      🀄\n296期……杀猪虎\n\n\n\n\n\n\n\n\n\n       六肖\n\n295期牛羊鼠鸡猪蛇    错\n296期鸡马鼠猪猴羊",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145270,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3"
     },
     {
       "author": "棍棍到肉",
@@ -1973,23 +1939,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145197&type=3"
     },
     {
-      "author": "澳数码",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 18:26",
-      "title": "绝杀二肖",
-      "body": "《兔马》√",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11145163,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3"
-    },
-    {
       "author": "十四码围特",
       "issue": "2026296",
       "is_featured": false,
@@ -2024,6 +1973,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145174&type=3"
     },
     {
+      "author": "澳数码",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 18:26",
+      "title": "绝杀二肖",
+      "body": "《兔马》√",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11145163,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3"
+    },
+    {
       "author": "顺财神来我家门",
       "issue": "2026296",
       "is_featured": false,
@@ -2041,23 +2007,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3"
     },
     {
-      "author": "我们的美好时光",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 18:18",
-      "title": "296期绝杀二肖",
-      "body": "兔鼠【0尾】\n\n\n     \n\n\n\n\n\n 个人记录，别喷   路过点点赞，",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139167,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3"
-    },
-    {
       "author": "不可较真",
       "issue": "2026296",
       "is_featured": false,
@@ -2073,6 +2022,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145143&type=3"
+    },
+    {
+      "author": "我们的美好时光",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 18:18",
+      "title": "296期绝杀二肖",
+      "body": "兔鼠【0尾】\n\n\n     \n\n\n\n\n\n 个人记录，别喷   路过点点赞，",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139167,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3"
     },
     {
       "author": "统统统计",
@@ -2296,21 +2262,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141833&type=3"
     },
     {
-      "author": "暗号好",
+      "author": "求智得智",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 17:37",
-      "title": "特在此中有长期见证跟必赚👇",
-      "body": "296🇲🇴\n特🀄️🀄️🀄️                \n钱到，财气到，比什么都重要，\n欢迎大家点赞关注支持，谢谢大家！！！\n心怀善念能利人\n心怀感恩能利己\n换位才有和谐\n感恩岁月才有温暖\n帮忙填一下我的邀请码或者补填下邀请码2836300非常感谢🙏🏻\n                   薪水研究不易\n       手里还有补填邀请码小伙伴帮忙填一下↓↓↓\n👇🏽按照下面这个方式👇🏽\n邀请码2836300填写或者补填邀请码步骤 →个人中心→活动中心→日常活动 →补填邀请码→领取大额红包\n㊗️君好运连连，日日麻皮袋收米！！\n喜欢关注❤点赞评论666➡️\n想发财就要搏 中的是概率 错的是几率\n不定数函数🀄️🀄️門 定\n不买“↓”“↓”“↓”这些输精光，包你输惨输光光，包你输精光！卖婆！包输惨！你懂的！\n不包肿不包生儿子包中风！看见我的研究不买，倒霉一生！\n长期见证久跟必赚👉买码靠思路，思路找对了，那就看运气了！ \n稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证\n(可以来下注 范围不大 大家一.起来赚钱)\n激进型小围06-33-24-41-10越前越靓 越前越主 可以截屏保存开完奖后在验证\n\n中中中.... \n 姨妈定天【(19)31 】暴富🌹\n         🔗中 🔗\n☞☞☞低调一点中中中☜☜☜\n经过团队的努力下得到的规律\n活动中心—新手任务—填我的或者补填我邀请码【2836300】领取大额红包 重要的事情说三遍\n你们要知道 好饭不怕晚！越晚越稳 不是你财 不入你袋 落袋为安 买卖自由 自己判断 敢拼才是硬道理 早晚会暴富\n\n注意⚠️注意⚠️注意⚠️【久准易错，晚一点下！切记不要网络投！切记！切记！切记！小心亏钱】\n( 2026年 ) 💎 ( 恭喜发财 )🇲🇴有没有看出记录概率？把握机会！各取所需",
+      "title": "296期:杀一肖",
+      "body": "今期杀兔\n\n之前发了几次，审核之后一直都只显示295期，不知道什么情况，但愿明天不会再出现这个问题！",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11145051,
+      "article_id": 11145038,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145038&type=3"
     },
     {
       "author": "牛哄哄",
@@ -2330,38 +2296,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139152&type=3"
     },
     {
-      "author": "求智得智",
+      "author": "暗号好",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 17:37",
-      "title": "296期:杀一肖",
-      "body": "今期杀兔\n\n之前发了几次，审核之后一直都只显示295期，不知道什么情况，但愿明天不会再出现这个问题！",
+      "title": "特在此中有长期见证跟必赚👇",
+      "body": "296🇲🇴\n特🀄️🀄️🀄️                \n钱到，财气到，比什么都重要，\n欢迎大家点赞关注支持，谢谢大家！！！\n心怀善念能利人\n心怀感恩能利己\n换位才有和谐\n感恩岁月才有温暖\n帮忙填一下我的邀请码或者补填下邀请码2836300非常感谢🙏🏻\n                   薪水研究不易\n       手里还有补填邀请码小伙伴帮忙填一下↓↓↓\n👇🏽按照下面这个方式👇🏽\n邀请码2836300填写或者补填邀请码步骤 →个人中心→活动中心→日常活动 →补填邀请码→领取大额红包\n㊗️君好运连连，日日麻皮袋收米！！\n喜欢关注❤点赞评论666➡️\n想发财就要搏 中的是概率 错的是几率\n不定数函数🀄️🀄️門 定\n不买“↓”“↓”“↓”这些输精光，包你输惨输光光，包你输精光！卖婆！包输惨！你懂的！\n不包肿不包生儿子包中风！看见我的研究不买，倒霉一生！\n长期见证久跟必赚👉买码靠思路，思路找对了，那就看运气了！ \n稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证\n(可以来下注 范围不大 大家一.起来赚钱)\n激进型小围06-33-24-41-10越前越靓 越前越主 可以截屏保存开完奖后在验证\n\n中中中.... \n 姨妈定天【(19)31 】暴富🌹\n         🔗中 🔗\n☞☞☞低调一点中中中☜☜☜\n经过团队的努力下得到的规律\n活动中心—新手任务—填我的或者补填我邀请码【2836300】领取大额红包 重要的事情说三遍\n你们要知道 好饭不怕晚！越晚越稳 不是你财 不入你袋 落袋为安 买卖自由 自己判断 敢拼才是硬道理 早晚会暴富\n\n注意⚠️注意⚠️注意⚠️【久准易错，晚一点下！切记不要网络投！切记！切记！切记！小心亏钱】\n( 2026年 ) 💎 ( 恭喜发财 )🇲🇴有没有看出记录概率？把握机会！各取所需",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11145038,
+      "article_id": 11145051,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145038&type=3"
-    },
-    {
-      "author": "帝尊神话",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 17:28",
-      "title": "心水仅供参考，小赌怡情",
-      "body": "291期，猪狗虎鼠马兔                🀄️17\n294期，猪兔马虎龙鸡                🀄️28\n295期，猴蛇马鸡兔牛                🀄️25\n296期，龙牛马鼠羊鸡\n平特肖\n295期【虎猪】\n296期【猴猪】",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11138738,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3"
     },
     {
       "author": "港澳会所",
@@ -2483,21 +2432,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144730&type=3"
     },
     {
-      "author": "饭王归来",
+      "author": "星际黑洞",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 17:03",
-      "title": "自用杀肖，慎参 110-199（90错4）200-252（52错3）",
-      "body": "270杀龙\n\n271杀猪\n\n272杀鸡\n\n273杀蛇 ➕龙\n\n274杀鼠 送猪\n\n275杀猴\n\n276杀狗\n\n277杀牛\n\n278杀羊\n\n279杀猴\n\n280杀虎\n\n281杀兔\n\n282杀龙\n\n283杀羊\n\n284杀虎\n\n285杀马\n\n286杀狗\n\n287杀马\n\n288杀鸡\n\n289杀牛\n\n290杀龙\n\n291杀牛\n\n292杀鼠\n\n293杀蛇\n\n294杀马\n\n295杀鼠\n\n296杀龙",
+      "title": "296期：特码个人心水 自娱自乐！！！",
+      "body": "012头\n金水行\n蓝绿波\n22,14,04,15,26,05,27\n\n\n猴兔龙鸡猪\n22,04,15,27",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138729,
+      "article_id": 11144607,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138729&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144607&type=3"
     },
     {
       "author": "颠不颠",
@@ -2517,23 +2466,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3"
     },
     {
-      "author": "星际黑洞",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 17:03",
-      "title": "296期：特码个人心水 自娱自乐！！！",
-      "body": "012头\n金水行\n蓝绿波\n22,14,04,15,26,05,27\n\n\n猴兔龙鸡猪\n22,04,15,27",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11144607,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144607&type=3"
-    },
-    {
       "author": "奥特只王",
       "issue": "2026296",
       "is_featured": false,
@@ -2551,6 +2483,40 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144794&type=3"
     },
     {
+      "author": "饭王归来",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 17:03",
+      "title": "自用杀肖，慎参 110-199（90错4）200-252（52错3）",
+      "body": "270杀龙\n\n271杀猪\n\n272杀鸡\n\n273杀蛇 ➕龙\n\n274杀鼠 送猪\n\n275杀猴\n\n276杀狗\n\n277杀牛\n\n278杀羊\n\n279杀猴\n\n280杀虎\n\n281杀兔\n\n282杀龙\n\n283杀羊\n\n284杀虎\n\n285杀马\n\n286杀狗\n\n287杀马\n\n288杀鸡\n\n289杀牛\n\n290杀龙\n\n291杀牛\n\n292杀鼠\n\n293杀蛇\n\n294杀马\n\n295杀鼠\n\n296杀龙",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138729,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138729&type=3"
+    },
+    {
+      "author": "很好很好",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 17:03",
+      "title": "296",
+      "body": "170开始\n\n\n88586967678567665657\n88668795675876584667\n67885896564678677658\n58699576655785855586\n56658656485667887558\n84664755747777184576\n48785\n\n\n\n\n34433354533336323553\n32343632453253452546\n55545265145534355464\n55432464554324442644\n53445455535555544636\n34633355634626264444\n64554\n\n\n合统11.12.9.11.9.12.11.11.11.10.11.8.9.13.9.\n8.8.11.10.10.11.10.9.10.11.13.12.7.10.12.\n8.10.12.9.9.13.6.11.10.13.11.12.13.12.10.\n10.15.11.6.9.10.11.10.12.9.12.12.10.11.12.\n10.13.10.12.11.9.13.10.11.10.9.10.10.9.12.\n9.7.11.12.10.10.9.10.9.13.10.10.11.9.11.\n10.11.11.12.13.12.11.11.8.14.11.8.12.9.11.\n10.10.10.13.7.11.13.9.13.3.14.8.9.11.10.\n10.12.12.13.9\n\n\n\n\n\n\n\n\n【号码统计】(总次数:304次)\n〖02次〗02 (共1码)\n〖03次〗21 (共1码)\n〖04次〗09 11 14 17 19 25 (共6码)\n〖05次〗05 18 20 28 35 37 48 (共7码)\n〖06次〗01 03 15 23 27 29 34 43 46 47 49 (共11码)\n〖07次〗04 08 10 12 22 31 33 36 38 40 41 44 45 (共13码)\n〖08次〗06 13 16 26 30 39 42 (共7码)\n〖09次〗07 24 32 (共3码)\n\n\n\n\n\n\n\n\n【号码统计】(总次数:200次)\n〖01次〗48 (共1码)\n〖02次〗07 (共1码)\n〖03次〗08 09 10 22 25 28 35 40 45 49 (共10码)\n〖04次〗02 04 05 11 12 15 17 19 20 23 24 27 33 37 38 39 41 42 43 44 (共20码)\n〖05次〗01 03 06 14 16 18 21 29 30 31 32 34 36 46 47 (共15码)\n〖06次〗13 26 (共2码)\n\n\n\n\n\n\n\n\n【号码统计】(总次数:504次)\n〖06次〗02 48 (共2码)\n〖07次〗09 25 (共2码)\n〖08次〗11 17 19 21 28 35 (共6码)\n〖09次〗05 14 20 37 49 (共5码)\n〖10次〗08 10 15 18 22 23 27 40 43 45 (共10码)\n〖11次〗01 03 04 07 12 29 33 34 38 41 44 46 47 (共13码)\n〖12次〗31 36 39 42 (共4码)\n〖13次〗06 16 24 30 (共4码)\n〖14次〗13 26 32 (共3码)",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138727,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138727&type=3"
+    },
+    {
       "author": "天命人",
       "issue": "2026296",
       "is_featured": false,
@@ -2566,57 +2532,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138820&type=3"
-    },
-    {
-      "author": "德爱威",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 16:36",
-      "title": "八点评论区更新六肖",
-      "body": "杀 虎马兔 上错\n\n\n\n\n\n8点左右评论区分享6肖(有时候审核久你们看到估计到9点了），目前 \n76 中 55\n\n错了别倍投，正常玩就行",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11143019,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143019&type=3"
-    },
-    {
-      "author": "澳门研究生院长",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 16:36",
-      "title": "1",
-      "body": "3\n  展开2条回复",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11142819,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142819&type=3"
-    },
-    {
-      "author": "上上签哦",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 16:36",
-      "title": "杀一肖",
-      "body": "279     龙        开鸡10\n280     狗        开龙15\n281      牛        开鸡10\n282     兔        开猴23\n283     鸡        开牛18\n284     鼠        开猪32\n285     龙        开鼠19\n286     虎        开羊24\n287     牛        开猪08\n288     羊        开马25\n289     猪        开蛇38\n290     蛇        开兔40\n291      鼠        开虎17\n292     龙        开羊36\n293     虎        开虎05×\n294     鸡        开兔28\n295     猪        开马25\n296     羊        开？00\n\n九肖\n287   猴蛇鼠龙马鸡猪羊狗   开猪08\n288   猴猪狗鸡蛇牛虎马兔   开马25\n289   虎蛇鼠兔龙牛马鸡狗   开蛇38\n290   虎鼠龙牛鸡狗猪羊猴   开兔40×\n291    猴蛇兔虎鸡狗羊马猪   开虎17\n292   猴鼠虎马猪鸡牛狗羊   开羊36\n293   猴鼠蛇马猪鸡牛狗羊   开虎05×\n294   猴蛇虎兔龙鼠牛猪马   开兔28\n295   猴蛇兔龙鸡狗牛羊马   开马25\n296   蛇龙虎鼠鸡狗牛猪马   开？00\n\n看好拉回，六合无绝对",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11144104,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144104&type=3"
     },
     {
       "author": "北海九水天灵大元帅",
@@ -2653,6 +2568,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3"
     },
     {
+      "author": "德爱威",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 16:36",
+      "title": "八点评论区更新六肖",
+      "body": "杀 虎马兔 上错\n\n\n\n\n\n8点左右评论区分享6肖(有时候审核久你们看到估计到9点了），目前 \n76 中 55\n\n错了别倍投，正常玩就行",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11143019,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143019&type=3"
+    },
+    {
       "author": "加油您最胖",
       "issue": "2026296",
       "is_featured": false,
@@ -2687,6 +2619,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3"
     },
     {
+      "author": "澳门研究生院长",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 16:36",
+      "title": "1",
+      "body": "3\n  展开2条回复",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11142819,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142819&type=3"
+    },
+    {
       "author": "港彩六叔公",
       "issue": "2026296",
       "is_featured": false,
@@ -2704,21 +2653,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3"
     },
     {
-      "author": "盈百万",
+      "author": "上上签哦",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 16:36",
-      "title": "14码",
-      "body": "296期03.15.27.39.05.17.29.41.25.35.45.14.23.32.",
+      "title": "杀一肖",
+      "body": "279     龙        开鸡10\n280     狗        开龙15\n281      牛        开鸡10\n282     兔        开猴23\n283     鸡        开牛18\n284     鼠        开猪32\n285     龙        开鼠19\n286     虎        开羊24\n287     牛        开猪08\n288     羊        开马25\n289     猪        开蛇38\n290     蛇        开兔40\n291      鼠        开虎17\n292     龙        开羊36\n293     虎        开虎05×\n294     鸡        开兔28\n295     猪        开马25\n296     羊        开？00\n\n九肖\n287   猴蛇鼠龙马鸡猪羊狗   开猪08\n288   猴猪狗鸡蛇牛虎马兔   开马25\n289   虎蛇鼠兔龙牛马鸡狗   开蛇38\n290   虎鼠龙牛鸡狗猪羊猴   开兔40×\n291    猴蛇兔虎鸡狗羊马猪   开虎17\n292   猴鼠虎马猪鸡牛狗羊   开羊36\n293   猴鼠蛇马猪鸡牛狗羊   开虎05×\n294   猴蛇虎兔龙鼠牛猪马   开兔28\n295   猴蛇兔龙鸡狗牛羊马   开马25\n296   蛇龙虎鼠鸡狗牛猪马   开？00\n\n看好拉回，六合无绝对",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11142758,
+      "article_id": 11144104,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142758&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144104&type=3"
     },
     {
       "author": "小六子小兔兔",
@@ -2736,6 +2685,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143154&type=3"
+    },
+    {
+      "author": "盈百万",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 16:36",
+      "title": "14码",
+      "body": "296期03.15.27.39.05.17.29.41.25.35.45.14.23.32.",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11142758,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142758&type=3"
     },
     {
       "author": "澳门研究生院长",
@@ -3418,40 +3384,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141685&type=3"
     },
     {
-      "author": "依依神爷",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 08:19",
-      "title": "绝杀一肖",
-      "body": "【猴】开✅",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11141145,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141145&type=3"
-    },
-    {
-      "author": "三婉婉",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 08:19",
-      "title": "296",
-      "body": "杀码",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11141095,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3"
-    },
-    {
       "author": "乌鸦看码",
       "issue": "2026296",
       "is_featured": false,
@@ -3467,6 +3399,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141146&type=3"
+    },
+    {
+      "author": "依依神爷",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 08:19",
+      "title": "绝杀一肖",
+      "body": "【猴】开✅",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11141145,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141145&type=3"
     },
     {
       "author": "繁华落尽",
@@ -3503,38 +3452,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141142&type=3"
     },
     {
-      "author": "小小负婆",
+      "author": "三婉婉",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-23 08:19",
-      "title": "296期个人心水",
-      "body": "296期01.21.24.25.26.27.32.39.41.45.48.49",
+      "title": "296",
+      "body": "杀码",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11141073,
+      "article_id": 11141095,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3"
-    },
-    {
-      "author": "一颗夜明珠",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 08:19",
-      "title": "杀肖统计",
-      "body": "我是赢家——————————上期❎",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11141148,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3"
     },
     {
       "author": "风中的神",
@@ -3552,6 +3484,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141279&type=3"
+    },
+    {
+      "author": "小小负婆",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 08:19",
+      "title": "296期个人心水",
+      "body": "296期01.21.24.25.26.27.32.39.41.45.48.49",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11141073,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3"
     },
     {
       "author": "推到六叔公",
@@ -3605,21 +3554,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141143&type=3"
     },
     {
-      "author": "咖啡里的茶",
+      "author": "一颗夜明珠",
       "issue": "2026296",
       "is_featured": false,
-      "published_at": "2026-10-23 06:13",
-      "title": "《九肖中特》",
-      "body": "292期：⑨肖 牛龙蛇马羊猴狗鼠鸡  开：羊 准\n293期：⑨肖 马鼠牛龙狗猪猴鸡虎  开：虎 准\n294期：⑨肖 龙鼠羊兔猴鸡狗虎马  开：兔 准\n295期：⑨肖 牛羊兔龙马狗鸡猪鼠  开：马 准\n\n296期：⑨肖 龙蛇马鸡狗猪鼠虎牛  开：？准\n\n\n\n\n谨慎参考\n长跟稳赚\n待加密……",
+      "published_at": "2026-10-23 08:19",
+      "title": "杀肖统计",
+      "body": "我是赢家——————————上期❎",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138794,
+      "article_id": 11141148,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3"
     },
     {
       "author": "刘哥博彩",
@@ -3654,6 +3603,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139895&type=3"
+    },
+    {
+      "author": "咖啡里的茶",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 06:13",
+      "title": "《九肖中特》",
+      "body": "292期：⑨肖 牛龙蛇马羊猴狗鼠鸡  开：羊 准\n293期：⑨肖 马鼠牛龙狗猪猴鸡虎  开：虎 准\n294期：⑨肖 龙鼠羊兔猴鸡狗虎马  开：兔 准\n295期：⑨肖 牛羊兔龙马狗鸡猪鼠  开：马 准\n\n296期：⑨肖 龙蛇马鸡狗猪鼠虎牛  开：？准\n\n\n\n\n谨慎参考\n长跟稳赚\n待加密……",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138794,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3"
     },
     {
       "author": "归海一刀",
@@ -3792,23 +3758,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138845&type=3"
     },
     {
-      "author": "币安人生",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 01:45",
-      "title": "参赛！澳门🇲🇴12码中特加1000倍",
-      "body": "参赛！12码中特：\n18-19-20-21-22-23-24-25-26-27-28-29\n\n填写邀请码：3032356\n领取最高100彩金🧧",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139630,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3"
-    },
-    {
       "author": "风火狼烟",
       "issue": "2026296",
       "is_featured": false,
@@ -3824,6 +3773,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139626&type=3"
+    },
+    {
+      "author": "币安人生",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 01:45",
+      "title": "参赛！澳门🇲🇴12码中特加1000倍",
+      "body": "参赛！12码中特：\n18-19-20-21-22-23-24-25-26-27-28-29\n\n填写邀请码：3032356\n领取最高100彩金🧧",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139630,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3"
     },
     {
       "author": "肌瘦的肖人",
@@ -6291,23 +6257,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139256&type=3"
     },
     {
-      "author": "赖赖赖",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 00:57",
-      "title": "马冲鼠，9肖",
-      "body": "281期龙羊牛猴虎鼠马兔鸡开鸡✔\n282期牛狗龙猪蛇鼠马兔鸡开猴✘\n283期龙羊牛猴虎鼠马兔鸡开牛✔\n284期牛狗龙兔鸡虎猴蛇猪开猪✔\n285期虎猪蛇鼠马牛羊龙狗开鼠✔\n286期蛇猴虎鸡兔牛羊龙狗开羊✔\n287期虎猪蛇马鼠牛羊龙狗开猪✔\n288期蛇猴虎牛羊鼠马兔鸡开马✔\n289期鼠兔鸡龙狗虎猴蛇猪开蛇✔\n290期兔鼠马猪蛇牛羊龙狗开兔✔\n291期龙羊牛鼠马虎猴蛇猪开虎✔\n292期蛇虎猴兔鸡牛羊龙狗开羊✔\n293期虎牛羊龙狗鼠马兔鸡开虎✔\n294期牛狗龙兔鸡虎猴蛇猪开兔✔\n295期虎猪蛇狗龙鼠马兔鸡开马✔\n296期鸡鼠马蛇猪牛羊龙狗开\n\n\n鸡鼠马蛇猪牛羊龙狗\n马蛇猪牛羊狗\n蛇猪牛羊\n34.31.01.13.25.02.14.38.08.32.44.18.42.12.48.03.15.45",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139230,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3"
-    },
-    {
       "author": "水东枭雄",
       "issue": "2026296",
       "is_featured": false,
@@ -6323,6 +6272,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3"
+    },
+    {
+      "author": "赖赖赖",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 00:57",
+      "title": "马冲鼠，9肖",
+      "body": "281期龙羊牛猴虎鼠马兔鸡开鸡✔\n282期牛狗龙猪蛇鼠马兔鸡开猴✘\n283期龙羊牛猴虎鼠马兔鸡开牛✔\n284期牛狗龙兔鸡虎猴蛇猪开猪✔\n285期虎猪蛇鼠马牛羊龙狗开鼠✔\n286期蛇猴虎鸡兔牛羊龙狗开羊✔\n287期虎猪蛇马鼠牛羊龙狗开猪✔\n288期蛇猴虎牛羊鼠马兔鸡开马✔\n289期鼠兔鸡龙狗虎猴蛇猪开蛇✔\n290期兔鼠马猪蛇牛羊龙狗开兔✔\n291期龙羊牛鼠马虎猴蛇猪开虎✔\n292期蛇虎猴兔鸡牛羊龙狗开羊✔\n293期虎牛羊龙狗鼠马兔鸡开虎✔\n294期牛狗龙兔鸡虎猴蛇猪开兔✔\n295期虎猪蛇狗龙鼠马兔鸡开马✔\n296期鸡鼠马蛇猪牛羊龙狗开\n\n\n鸡鼠马蛇猪牛羊龙狗\n马蛇猪牛羊狗\n蛇猪牛羊\n34.31.01.13.25.02.14.38.08.32.44.18.42.12.48.03.15.45",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139230,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3"
     },
     {
       "author": "心头的小情儿",
@@ -7804,6 +7770,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139169&type=3"
     },
     {
+      "author": "酸菜炒牛肉",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-23 00:13",
+      "title": "296",
+      "body": ": 杀鸡兔",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139162,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3"
+    },
+    {
       "author": "金诗如梦",
       "issue": "2026296",
       "is_featured": false,
@@ -7836,23 +7819,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139151&type=3"
-    },
-    {
-      "author": "酸菜炒牛肉",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-23 00:13",
-      "title": "296",
-      "body": ": 杀鸡兔",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139162,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3"
     },
     {
       "author": "西南二尾王",
@@ -7923,23 +7889,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139158&type=3"
     },
     {
-      "author": "六合八荒",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 23:35",
-      "title": "精准五肖中特",
-      "body": "293期 马鼠牛蛇虎             开虎 🀄\n294期 龙猪牛马兔             开兔 🀄\n295期 蛇猴猪牛鸡（马）  开马 🀄（评论区有提示鸡换成马）\n296期  研究中",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139081,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139081&type=3"
-    },
-    {
       "author": "木木木的",
       "issue": "2026296",
       "is_featured": false,
@@ -7991,23 +7940,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139044&type=3"
     },
     {
-      "author": "朱砂澳狗",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 23:19",
-      "title": "精选🈲肖，主你自己",
-      "body": "49收集来统计的，大家小心参考\n\n296期 统计结果：\n〖1次〗:牛,龙,蛇,羊,猪,（共5个）\n〖3次〗:马,狗,（共2个）\n〖4次〗:虎,鸡,（共2个）\n〖5次〗:鼠,猴,（共2个）\n〖6次〗:兔,（共1个）\n上错6人杀 羊蛇龙猴猴兔\n\n\n相互探讨、活动中心、新手任务填邀请码   3004600一起领红包",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139005,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3"
-    },
-    {
       "author": "周瑜伽砖",
       "issue": "2026296",
       "is_featured": false,
@@ -8023,23 +7955,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139059&type=3"
-    },
-    {
-      "author": "天衍四十九",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 23:19",
-      "title": "真的随机发",
-      "body": "以后都是随便发，不要跟，不准，特",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11139021,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3"
     },
     {
       "author": "君君崽",
@@ -8091,6 +8006,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139014&type=3"
+    },
+    {
+      "author": "天衍四十九",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-22 23:19",
+      "title": "真的随机发",
+      "body": "以后都是随便发，不要跟，不准，特",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11139021,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3"
     },
     {
       "author": "周星驰啊",
@@ -8318,23 +8250,6 @@
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-22 22:58",
-      "title": "296杀码统计区",
-      "body": "07,10,17,22,25,26,29,31,38,43,\n      48,(11码)",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11138924,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3"
-    },
-    {
-      "author": "无影中特",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 22:58",
       "title": "296C",
       "body": "第1组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共17次：15,16,20,21, =４码'\n共18次：13,17, =２码\n共19次：02,14,32,34,38,39,41, =７码\n共20次：06,12,23,28,29,33,40,43,44,48, =１０码\n共21次：01,03,04,10,19,24,26,31,36,37,42,45,47,49, =１４码\n共22次：07,09,11,22,25,27,30,46, =８码\n共23次：05,08,35, =３码\n共24次：18, =１码.\n\n\n第2组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：30, =１码'\n共17次：01, =１码\n共18次：05, =１码\n共19次：02,09,11,16,17,19,21,23,24,34,37,43,47, =１３码\n共20次：06,10,12,28,38,44,45,46,49, =９码\n共21次：04,07,08,13,14,15,18,22,25,27,31,33,35,42, =１４码\n共22次：20,40,41,48, =４码\n共23次：03,29,36,39, =４码\n共24次：26,32, =２码.\n\n\n第3组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：34, =１码'\n共17次：05,25,48, =３码\n共18次：03,06,07,18,30, =５码\n共19次：12,13,17,23,28,39, =６码\n共20次：04,21,22,27,33,38,43,45,47, =９码\n共21次：09,15,16,19,24,29,32,35,37,40,41, =１１码\n共22次：01,02,08,14,26,36,42,44,46, =９码\n共23次：11, =１码\n共24次：10,20,49, =３码\n共25次：31, =１码.\n\n\n第4组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：40, =１码'\n共17次：06,30,38,41, =４码\n共18次：09,13,21,22,25, =５码\n共19次：01,02,36,44,47, =５码\n共20次：16,20,29,35,42,45, =６码\n共21次：08,14,15,17,23,24,26,27,28,33,43,46,48,49, =１４码\n共22次：05,07,11,12,18,19,32,34,37, =９码\n共23次：03, =１码\n共24次：04,10,31,39, =４码.\n\n\n第5组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：15, =１码'\n共17次：20,45, =２码\n共18次：07,08,12,18,23,27, =６码\n共19次：04,06,09,21,33,34,38,43,46, =９码\n共20次：01,24,35,40,42,47, =６码\n共21次：05,17,19,28,30,31, =６码\n共22次：03,10,13,14,16,22,29,32,39,41,44,48,49, =１３码\n共23次：02,11,25,36,37, =５码\n共24次：26, =１码.\n\n\n第6组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：29, =１码'\n共17次：14,41, =２码\n共18次：06,09,20,40,43, =５码\n共19次：01,02,17,31,45, =５码\n共20次：10,15,21,23,25,27,28,32,36,38,39,42, =１２码\n共21次：03,04,08,16,18,26,33,35,44, =９码\n共22次：05,07,11,12,13,19,22,30,49, =９码\n共23次：24,34,37,46,47,48, =６码.\n\n\n第7组〓〓〓〓〓〓〓〓【25行数据 总1000码 平均20.4次】〓〓〓〓〓〓〓〓\n共16次：42, =１码'\n共18次：08,14,21,38,46, =５码\n共19次：16,17,19,20,22,30,41,43, =８码\n共20次：05,07,11,26,27,28,31,33,34,45,47,49, =１２码\n共21次：04,09,12,15,18,23,25,35,36,39,44, =１１码\n共22次：01,02,03,06,10,13,24,29, =８码\n共23次：32,40, =２码\n共24次：37, =１码\n共25次：48, =１码.\n\n\n第8组〓〓〓〓〓〓〓〓【25行数据 总970码 平均19.79次】〓〓〓〓〓〓〓〓\n共14次：31, =１码'\n共15次：11, =１码\n共17次：32, =１码\n共18次：02,06,07,17,27,28,30,35,40,48, =１０码\n共19次：10,14,20,22,29,38,41,46,47,49, =１０码\n共20次：01,23,25,26,37,39,43, =７码\n共21次：04,05,09,15,33,34,44,45, =８码\n共22次：03,08,12,18,21,24,36,42, =８码\n共23次：16,19, =２码\n共24次：13, =１码.\n\n\n第9组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共15次：10,11, =２码'\n共16次：38,46, =２码\n共17次：02,30,34,49, =４码\n共18次：03,08,18,22,25,28,32,35,36,37,39,42,43, =１３码\n共19次：05,07,15,17,19,21,27,31,33,45, =１０码\n共20次：01,04,06,14,23,24,26,29,41,44,48, =１１码\n共21次：09,12,13,40,47, =５码\n共22次：20, =１码\n共24次：16, =１码.\n\n\n第10组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共15次：07,39, =２码'\n共16次：06,11,28,43, =４码\n共17次：09,10,13,14,27,30,44, =７码\n共18次：03,08,15,17,33,34,46, =７码\n共19次：02,05,16,18,20,21,24,25,26,29,38,48, =１２码\n共20次：01,04,35,37,42,47,49, =７码\n共21次：19,23,31,41,45, =５码\n共22次：12,22, =２码\n共23次：32,36,40, =３码.\n\n\n第11组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共15次：08,11, =２码'\n共16次：03,17, =２码\n共17次：01,27,38, =３码\n共18次：07,09,13,14,15,19,20,23,31,33,36,40,43,45,47, =１５码\n共19次：04,10,12,22,30,32,39,41,42,44,48, =１１码\n共20次：02,05,06,18,24,25,35,37, =８码\n共21次：16,21,26,34,49, =５码\n共22次：28, =１码\n共23次：29,46, =２码.\n\n\n第12组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共15次：37, =１码'\n共16次：03,07,10,16, =４码\n共17次：09,14,17,26,35,36,39,44, =８码\n共18次：13,19,21,24,28,33,38,40,41,43,48,49, =１２码\n共19次：01,05,18,20,22,30,32,42, =８码\n共20次：02,04,08,15,34,45, =６码\n共21次：11,46,47, =３码\n共22次：12,23,25,29,31, =５码\n共24次：06, =１码\n共25次：27, =１码.\n\n\n第13组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共14次：02,32, =２码'\n共15次：04,17, =２码\n共16次：33,36, =２码\n共17次：09,15,29,37,49, =５码\n共18次：06,07,08,10,11,13,16,19,39,46, =１０码\n共19次：03,26,30,34,35,38,43,47, =８码\n共20次：12,18,21,24,25,40,42,44, =８码\n共21次：14,20,22,28,45,48, =６码\n共22次：01,05,23,27,31,41, =６码.\n\n\n第14组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共14次：22, =１码'\n共15次：30, =１码\n共16次：09,12,13,17,29,41,48, =７码\n共17次：05,36,47, =３码\n共18次：03,04,06,07,10,16,21,27,32,37,44,45, =１２码\n共19次：11,14,20,26,33,42,46, =７码\n共20次：02,19,28,43, =４码\n共21次：08,18,24,25,34,39, =６码\n共22次：01,31,35,38,40,49, =６码\n共23次：15,23, =２码.\n\n\n第15组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共15次：27,33,38, =３码'\n共16次：14,23,31, =３码\n共17次：10,18,29,32,41,44,45, =７码\n共18次：08,11,13,17,21,25,39,47, =８码\n共19次：04,20,30,34,35,37,43, =７码\n共20次：01,02,06,07,09,16,19,22,24,28,36,49, =１２码\n共21次：03,05,42, =３码\n共22次：12,15,26,40,48, =５码\n共23次：46, =１码.\n\n\n第16组〓〓〓〓〓〓〓〓【25行数据 总925码 平均18.87次】〓〓〓〓〓〓〓〓\n共13次：31, =１码'\n共16次：19,35,41,46, =４码\n共17次：07,08,09,14,16,20,34,37, =８码\n共18次：17,21,27,29,30,38,48, =７码\n共19次：01,03,04,05,06,15,33,36,43, =９码\n共20次：02,10,12,13,18,23,25,40,47,49, =１０码\n共21次：11,24,32,39,42,44,45, =７码\n共22次：26, =１码\n共23次：22,28, =２码.",
       "category": "澳门",
@@ -8346,6 +8261,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3"
+    },
+    {
+      "author": "无影中特",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-22 22:58",
+      "title": "296杀码统计区",
+      "body": "07,10,17,22,25,26,29,31,38,43,\n      48,(11码)",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138924,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3"
     },
     {
       "author": "刀枪棍斧",
@@ -8501,6 +8433,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138885&type=3"
     },
     {
+      "author": "赌神之神",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-22 22:52",
+      "title": "只提供参考？杀一尾",
+      "body": "263期杀3尾开狗09\n264期杀0尾开狗21\n265期杀3尾开马49\n266期杀3尾开猪08\n267期杀0尾开兔40\n268期杀4尾开兔40\n269期杀4尾开鸡22\n270期杀4尾开鼠19\n271期杀0尾开猴35\n272期杀8尾开蛇02\n273期杀0尾开虎05\n274期杀0尾开狗33\n275期杀6尾开虎17\n276期杀8尾开蛇14\n277期杀5尾开猴11\n278期杀2尾开蛇02\n279期杀0尾开鸡10\n280期杀1尾开龙15\n281期杀6尾开鸡10\n282期杀1尾开猴23\n283期杀5尾开牛18\n284期杀9尾开猪32\n285期杀5尾开鼠19\n286期杀1尾开羊24\n287期杀6尾开猪08\n288期杀0尾开马25\n289期杀7尾开蛇38\n290期杀1尾开兔40\n291期杀4尾开虎17\n292期杀8尾开羊36\n293期杀9尾开虎05\n294期杀0尾开兔28\n295期杀0尾开马25\n296期杀7尾",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138719,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3"
+    },
+    {
       "author": "青田徐伯",
       "issue": "2026296",
       "is_featured": false,
@@ -8535,21 +8484,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138747&type=3"
     },
     {
-      "author": "赌神之神",
+      "author": "护你周全哦",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-22 22:52",
-      "title": "只提供参考？杀一尾",
-      "body": "263期杀3尾开狗09\n264期杀0尾开狗21\n265期杀3尾开马49\n266期杀3尾开猪08\n267期杀0尾开兔40\n268期杀4尾开兔40\n269期杀4尾开鸡22\n270期杀4尾开鼠19\n271期杀0尾开猴35\n272期杀8尾开蛇02\n273期杀0尾开虎05\n274期杀0尾开狗33\n275期杀6尾开虎17\n276期杀8尾开蛇14\n277期杀5尾开猴11\n278期杀2尾开蛇02\n279期杀0尾开鸡10\n280期杀1尾开龙15\n281期杀6尾开鸡10\n282期杀1尾开猴23\n283期杀5尾开牛18\n284期杀9尾开猪32\n285期杀5尾开鼠19\n286期杀1尾开羊24\n287期杀6尾开猪08\n288期杀0尾开马25\n289期杀7尾开蛇38\n290期杀1尾开兔40\n291期杀4尾开虎17\n292期杀8尾开羊36\n293期杀9尾开虎05\n294期杀0尾开兔28\n295期杀0尾开马25\n296期杀7尾",
+      "title": "296期杀二肖",
+      "body": "：马鸡开？",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138719,
+      "article_id": 11138721,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138721&type=3"
     },
     {
       "author": "唐用户等级",
@@ -8569,21 +8518,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138728&type=3"
     },
     {
-      "author": "护你周全哦",
+      "author": "人在家中坐",
       "issue": "2026296",
       "is_featured": false,
-      "published_at": "2026-10-22 22:52",
-      "title": "296期杀二肖",
-      "body": "：马鸡开？",
+      "published_at": "2026-10-22 22:51",
+      "title": "吉利单双",
+      "body": "286期-双-✓\n287期-双-✓\n288期-双-✘\n289期-双-✓\n290期-单-✘\n291期-双-✘-羊龙猪鸡虎马✓\n292期-单 ✘鼠牛兔马羊鸡狗✔\n293期-双✘-牛虎兔马鸡猪✔\n294期-双✓-牛虎兔蛇马鸡猪✓\n295期-单✓-虎猴龙蛇狗猪✘\n296期-单-鼠虎兔龙马鸡狗",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138721,
+      "article_id": 11138743,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138721&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3"
     },
     {
       "author": "广西谋财酒",
@@ -8620,23 +8569,6 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138750&type=3"
     },
     {
-      "author": "人在家中坐",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 22:51",
-      "title": "吉利单双",
-      "body": "286期-双-✓\n287期-双-✓\n288期-双-✘\n289期-双-✓\n290期-单-✘\n291期-双-✘-羊龙猪鸡虎马✓\n292期-单 ✘鼠牛兔马羊鸡狗✔\n293期-双✘-牛虎兔马鸡猪✔\n294期-双✓-牛虎兔蛇马鸡猪✓\n295期-单✓-虎猴龙蛇狗猪✘\n296期-单-鼠虎兔龙马鸡狗",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11138743,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3"
-    },
-    {
       "author": "无影中特",
       "issue": "2026296",
       "is_featured": false,
@@ -8652,23 +8584,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138792&type=3"
-    },
-    {
-      "author": "无影中特",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 22:50",
-      "title": "296-10",
-      "body": "第1组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：21, =１码'\n共6次：03,13,16,34,36, =５码\n共7次：20,32,40,41,48, =５码\n共8次：02,09,11,14,15,19,23,25,26,27,28,31,37,39,43,44,49, =１７码\n共9次：04,07,08,10,17,18,22,24,29,30,33,38,42,45,46,47, =１６码\n共10次：01,05,06,12,35, =５码.\n\n\n第2组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：02,06,15,17,20,38, =６码'\n共7次：01,12,13,23,33,42, =６码\n共8次：10,16,19,21,22,26,28,29,31,32,39,40,41,44,45,47,48, =１７码\n共9次：04,05,07,11,14,24,25,27,30,34,35,37,43,46, =１４码\n共10次：03,08,09,18,36,49, =６码.\n\n\n第3组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：17,37, =２码'\n共7次：06,07,09,12,14,15,16,24,29,30,33,34,43,44, =１４码\n共8次：01,04,05,10,11,13,21,28,35,39,41,45,46,49, =１４码\n共9次：02,08,19,20,23,25,27,32,36,38,42,47, =１２码\n共10次：03,18,22,26,31,40,48, =７码.\n\n\n第4组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：23,28,38, =３码'\n共7次：01,04,10,15,16,18,24,25,34,43,47, =１１码\n共8次：02,05,06,08,14,17,20,30,35,39,44,45,48,49, =１４码\n共9次：03,09,11,12,13,19,21,22,27,29,31,36,37,40,41,42,46, =１７码\n共10次：07,26,32,33, =４码.\n\n\n第5组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：30, =１码'\n共6次：01,05,19,21, =４码\n共7次：02,09,11,12,22,31,46,47,49, =９码\n共8次：07,08,14,16,17,24,27,33,37,40,42,43,45, =１３码\n共9次：03,04,06,10,13,18,20,23,26,32,34,35,38,41,44,48, =１６码\n共10次：15,25,28,29,36,39, =６码.\n\n\n第6组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：12,25, =２码'\n共7次：03,05,08,17,22,23,28,30,34,39,45,48, =１２码\n共8次：01,06,11,15,16,18,19,29,32,33,37,38,40,43,47, =１５码\n共9次：02,04,09,13,14,20,21,24,26,27,35,36,41,42,44,46, =１６码\n共10次：07,10,31,49, =４码.\n\n\n第7组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：07,48, =２码'\n共6次：06,34, =２码\n共7次：13,18,21,27,33,39,47, =７码\n共8次：02,04,05,09,12,16,23,25,26,28,29,30,32,35,37,38,40,43,44,46, =２０码\n共9次：01,03,14,15,17,24,36,41,42,45,49, =１１码\n共10次：08,10,11,19,20,22,31, =７码.\n\n\n第8组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：19,30,42, =３码'\n共7次：03,05,09,13,15,18,22,28,34,38,40,41,45, =１３码\n共8次：04,06,07,17,21,24,25,26,27,35,36,43,44, =１３码\n共9次：01,08,10,12,14,16,20,23,32,37,46,47,48, =１３码\n共10次：02,11,29,31,33,39,49, =７码.\n\n\n第9组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：41,47, =２码'\n共6次：22,25,29, =３码\n共7次：01,02,09,13,16,24,36,40,44, =９码\n共8次：03,06,11,14,21,23,27,30,33,35,38,43,45,48,49, =１５码\n共9次：07,10,12,15,18,26,31,34,37,39,46, =１１码\n共10次：04,05,08,17,19,20,28,32,42, =９码.\n\n\n第10组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：06, =１码'\n共6次：17,20,21,30,38, =５码\n共7次：02,05,08,13,25,40, =６码\n共8次：01,07,09,14,22,23,28,32,33,35,36,41,42,46,49, =１５码\n共9次：04,11,12,15,16,18,19,24,26,27,29,34,37,43,44,45,48, =１７码\n共10次：03,10,31,39,47, =５码.\n\n\n第11组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：15, =１码'\n共6次：07,09,27,40,42,45, =６码\n共7次：04,12,20,21,24,28,43, =７码\n共8次：01,02,05,08,10,17,18,23,31,33,35,37,46, =１３码\n共9次：03,06,14,16,19,22,30,32,38,39,44,47,48,49, =１４码\n共10次：11,13,25,26,29,34,36,41, =８码.\n\n\n第12组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：18,23, =２码'\n共7次：06,07,12,20,27,30,33,34,41,46,47, =１１码\n共8次：01,03,04,08,11,14,15,16,17,19,32,35,38,39,43,45, =１６码\n共9次：05,09,10,13,21,22,24,25,26,28,29,31,36,40,44,48,49, =１７码\n共10次：02,37,42, =３码.\n\n\n第13组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：29, =１码'\n共6次：08,20,25, =３码\n共7次：01,06,09,13,18,23,34,38,41,45, =１０码\n共8次：02,05,15,21,22,27,31,33,35,36,40,42,44,46,49, =１５码\n共9次：03,04,12,14,16,19,24,26,28,32,43,47,48, =１３码\n共10次：07,10,11,17,30,37,39, =７码.\n\n\n第14组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：14, =１码'\n共6次：45, =１码\n共7次：06,19,21,26,36,39,40,43, =８码\n共8次：01,03,04,09,11,13,15,17,18,20,23,24,27,28,29,30,31,33,35,38,41,42,49, =２３码\n共9次：02,05,07,08,10,12,25,32,44,47,48, =１１码\n共10次：16,22,34,37,46, =５码.\n\n\n第15组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：10,17,29,43, =４码'\n共7次：02,06,09,15,16,20,31,32,38,41, =１０码\n共8次：01,04,07,08,12,14,21,22,28,34,37,39,40,42,44, =１５码\n共9次：03,05,11,23,25,27,30,33,35,36,45,46,47,48, =１４码\n共10次：13,18,19,24,26,49, =６码.\n\n\n第16组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共4次：21, =１码'\n共5次：17, =１码\n共6次：12,42, =２码\n共7次：01,05,09,11,14,19,30,46, =８码\n共8次：03,07,08,13,18,20,22,23,25,33,34,36,39,40,41,43, =１６码\n共9次：04,06,15,16,24,26,27,28,31,35,38,44,45,47,49, =１５码\n共10次：02,10,29,32,37,48, =６码.\n\n\n第17组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：08, =１码'\n共6次：26,38,42,49, =４码\n共7次：04,10,14,16,20,22,31,34,41,45, =１０码\n共8次：02,11,19,25,27,30,32,33,35,39,44,46,47, =１３码\n共9次：03,05,06,13,15,17,18,21,28,29,36,37,43, =１３码\n共10次：01,07,09,12,23,24,40,48, =８码.\n\n\n第18组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：07,47, =２码'\n共6次：28,31, =２码\n共7次：06,09,11,20,27,35,38,43,46, =９码\n共8次：01,04,08,15,16,18,21,23,24,29,33,41,45,48, =１４码\n共9次：02,03,05,10,14,17,19,22,30,32,34,36,37,40,42,44,49, =１７码\n共10次：12,13,25,26,39, =５码.\n\n\n第19组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：29, =１码'\n共6次：06,11,22,25,30,31,43, =７码\n共7次：02,14,35,42,46,49, =６码\n共8次：01,05,07,12,15,17,23,26,27,37,40, =１１码\n共9次：03,04,10,13,16,18,19,21,24,28,32,33,36,38,41,44,47, =１７码\n共10次：08,09,20,34,39,45,48, =７码.\n\n\n第20组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：32, =１码'\n共5次：28,39,48, =３码\n共6次：02,10,17,20,27,31,38,40,41, =９码\n共7次：07,11,14,23,26,30,34,44,45, =９码\n共8次：05,09,15,22,24,33,35,36,37,46,47,49, =１２码\n共9次：01,03,04,06,08,12,16,18,19,25,29,43, =１２码\n共10次：13,21,42, =３码.\n\n\n第21组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：11, =１码'\n共5次：10,18, =２码\n共6次：17,22,30,34,38,42,48,49, =８码\n共7次：02,05,29,31,32,33,35, =７码\n共8次：01,03,06,07,08,14,15,19,21,24,25,26,27,28,37,39,40,41,43,44, =２０码\n共9次：04,09,12,13,16,20,23,36,45,46,47, =１１码.\n\n\n第22组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：46, =１码'\n共5次：28, =１码\n共6次：02,03,11,36,37,45, =６码\n共7次：07,08,10,15,23,25,31,32,33,34,35,39,43,49, =１４码\n共8次：01,04,06,13,14,17,18,21,22,24,29,30,38,40,41,44,47, =１７码\n共9次：05,09,12,19,20,26,27,42, =８码\n共10次：16,48, =２码.\n\n\n第23组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：10, =１码'\n共6次：01,09,19,26,27,30,39,48, =８码\n共7次：04,05,06,07,08,13,14,15,21,24,34,36,37,38,45, =１５码\n共8次：02,03,12,18,20,25,28,35,40,42,43,44,46,49, =１４码\n共9次：11,16,17,22,23,31,32,41,47, =９码\n共10次：29,33, =２码.\n\n\n第24组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：28, =１码'\n共6次：11,13,16,17,27,29,33,39,44, =９码\n共7次：03,05,06,08,09,10,21,24,26,30,35,38,42,46,47, =１５码\n共8次：04,07,12,14,15,25,34,37,41,43,45,48,49, =１３码\n共9次：01,18,19,20,22,23,31,32, =８码\n共10次：02,36,40, =３码.\n\n\n第25组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：43, =１码'\n共4次：07, =１码\n共5次：02, =１码\n共6次：06,11,14,20,25,39, =６码\n共7次：03,08,09,15,18,23,27,30,33,34,38,44,46, =１３码\n共8次：04,05,13,17,19,21,22,28,29,31,41,42,47,49, =１４码\n共9次：01,10,12,16,24,26,32,35,36,37,48, =１１码\n共10次：40,45, =２码.\n\n\n第26组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：19, =１码'\n共5次：04, =１码\n共6次：03,08,11,27,31,38,44, =７码\n共7次：01,09,10,12,13,17,18,20,23,25,33,36,43,48, =１４码\n共8次：05,07,15,16,22,26,30,34,35,37,39,40,41,42,45,47,49, =１７码\n共9次：06,14,24,29,32, =５码\n共10次：02,21,28,46, =４码.\n\n\n第27组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：32, =１码'\n共6次：03,08,14,17,22,24,30,33,40,45,47, =１１码\n共7次：02,05,07,09,11,13,15,20,21,31,41,42, =１２码\n共8次：01,06,12,23,26,34,36,37,38,39,43,49, =１２码\n共9次：04,10,16,18,19,25,27,28,35,46,48, =１１码\n共10次：29,44, =２码.\n\n\n第28组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：44, =１码'\n共6次：01,02,07,10,11,14,17,36,37,39,48, =１１码\n共7次：08,09,13,20,23,27,28,38,43,45,49, =１１码\n共8次：03,04,05,06,15,16,18,19,21,25,29,32,35,42,47, =１５码\n共9次：12,22,24,33,34,40,41,46, =８码\n共10次：26,30,31, =３码.\n\n\n第29组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：41, =１码'\n共5次：10,35, =２码\n共6次：03,07,09,24,40, =５码\n共7次：01,05,13,16,18,19,21,22,26,37,39,43,47,48, =１４码\n共8次：02,08,14,15,17,20,25,28,31,32,33,38,42,44,45,46,49, =１７码\n共9次：04,11,12,23,29,30,34,36, =８码\n共10次：06,27, =２码.\n\n\n第30组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：16,26,30,36, =４码'\n共6次：03,14,17,28,33,37,38, =７码\n共7次：07,15,21,34,35,39,40,42,43,44, =１０码\n共8次：01,04,08,09,10,11,12,13,18,19,20,22,24,32,46,48,49, =１７码\n共9次：02,05,06,23,29,31,41,45, =８码\n共10次：25,27,47, =３码.\n\n\n第31组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：49, =１码'\n共5次：02,15,29, =３码\n共6次：04,09,11,17,19,32,33,37, =８码\n共7次：10,12,13,25,34,36,39,42, =８码\n共8次：01,03,18,20,22,24,28,31,35,38,43,45,46,47,48, =１５码\n共9次：05,06,07,08,16,21,23,26,27,30,41,44, =１２码\n共10次：14,40, =２码.\n\n\n第32组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：32, =１码'\n共5次：40, =１码\n共6次：02,06,07,08,16,17,26,36,46, =９码\n共7次：03,04,09,10,14,24,30,33,37,38,43,47, =１２码\n共8次：11,12,13,15,20,21,22,29,34,35,39,42,45, =１３码\n共9次：01,05,18,19,23,25,27,31,41,44, =１０码\n共10次：28,48,49, =３码.\n\n\n第33组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：04,22,28,30, =４码'\n共6次：13,33,36,41,44, =５码\n共7次：02,03,05,06,08,10,12,14,16,17,21,35,43,48, =１４码\n共8次：07,09,18,19,27,29,32,34,37,38,39,45,46,49, =１４码\n共9次：11,15,20,23,24,25,26,40,42,47, =１０码\n共10次：01,31, =２码.\n\n\n第34组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：09, =１码'\n共5次：47, =１码\n共6次：11,27,30,41,48, =５码\n共7次：05,06,08,12,14,17,18,20,22,26,29,32,37,42,45, =１５码\n共8次：01,02,03,07,10,13,16,19,21,25,31,33,34,36,44,46, =１６码\n共9次：04,15,23,24,28,35,38,39,40,43,49, =１１码.\n\n\n第35组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：07,13,17,29, =４码'\n共6次：04,16,21,36,44,48, =６码\n共7次：03,05,06,10,12,19,22,26,30,37,39,46,47, =１３码\n共8次：02,11,20,24,25,27,32,33,41,42,43,45, =１２码\n共9次：01,09,14,15,18,23,28,31,34,35,38,40,49, =１３码\n共10次：08, =１码.\n\n\n第36组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：23,27,29,33,38, =５码'\n共6次：06,07,13,31,34,44,45, =７码\n共7次：01,08,10,11,18,22,24,25,35,36,37,39, =１２码\n共8次：04,05,14,15,19,20,21,30,41,47,49, =１１码\n共9次：03,09,16,26,32,40,43,46,48, =９码\n共10次：02,12,17,28,42, =５码.\n\n\n第37组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：17, =１码'\n共5次：10,14,31,32,33, =５码\n共6次：02,09,28,38,39,41, =６码\n共7次：08,12,20,21,23,27,35,44, =８码\n共8次：04,05,11,13,16,18,22,24,25,29,30,42,43,45,47,49, =１６码\n共9次：03,07,19,26,34,36,37,40,48, =９码\n共10次：01,06,15,46, =４码.\n\n\n第38组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：43, =１码'\n共5次：16,19, =２码\n共6次：14,20,25,30,31,32,37,41,47, =９码\n共7次：03,04,06,13,15,18,21,27,38,45,46,48, =１２码\n共8次：01,08,11,17,23,24,34,35,42,44, =１０码\n共9次：02,05,07,09,10,26,28,29,36,39,40,49, =１２码\n共10次：12,22,33, =３码.\n\n\n第39组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：09, =１码'\n共6次：05,16,21,27,34,35,38,49, =８码\n共7次：04,06,07,08,10,11,14,17,20,26,29,31,33,41,42,46,47,48, =１８码\n共8次：01,02,03,12,18,23,24,30,36,40,44,45, =１２码\n共9次：19,25,32,37,39, =５码\n共10次：13,15,22,28,43, =５码.\n\n\n第40组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：19,31,37, =３码'\n共6次：01,07,08,15,29,36,41,46, =８码\n共7次：02,03,12,13,14,17,18,30,33,34,35,40,43, =１３码\n共8次：04,09,20,21,22,23,25,27,28,39,48, =１１码\n共9次：05,06,10,11,16,32,38,42,44,45,47,49, =１２码\n共10次：24,26, =２码.",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11138799,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138799&type=3"
     },
     {
       "author": "无错九肖长期跟",
@@ -8688,21 +8603,21 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138763&type=3"
     },
     {
-      "author": "咯啊啊",
+      "author": "无影中特",
       "issue": "2026296",
       "is_featured": false,
       "published_at": "2026-10-22 22:50",
-      "title": "296",
-      "body": "包杀(0)头",
+      "title": "296-10",
+      "body": "第1组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：21, =１码'\n共6次：03,13,16,34,36, =５码\n共7次：20,32,40,41,48, =５码\n共8次：02,09,11,14,15,19,23,25,26,27,28,31,37,39,43,44,49, =１７码\n共9次：04,07,08,10,17,18,22,24,29,30,33,38,42,45,46,47, =１６码\n共10次：01,05,06,12,35, =５码.\n\n\n第2组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：02,06,15,17,20,38, =６码'\n共7次：01,12,13,23,33,42, =６码\n共8次：10,16,19,21,22,26,28,29,31,32,39,40,41,44,45,47,48, =１７码\n共9次：04,05,07,11,14,24,25,27,30,34,35,37,43,46, =１４码\n共10次：03,08,09,18,36,49, =６码.\n\n\n第3组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：17,37, =２码'\n共7次：06,07,09,12,14,15,16,24,29,30,33,34,43,44, =１４码\n共8次：01,04,05,10,11,13,21,28,35,39,41,45,46,49, =１４码\n共9次：02,08,19,20,23,25,27,32,36,38,42,47, =１２码\n共10次：03,18,22,26,31,40,48, =７码.\n\n\n第4组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：23,28,38, =３码'\n共7次：01,04,10,15,16,18,24,25,34,43,47, =１１码\n共8次：02,05,06,08,14,17,20,30,35,39,44,45,48,49, =１４码\n共9次：03,09,11,12,13,19,21,22,27,29,31,36,37,40,41,42,46, =１７码\n共10次：07,26,32,33, =４码.\n\n\n第5组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：30, =１码'\n共6次：01,05,19,21, =４码\n共7次：02,09,11,12,22,31,46,47,49, =９码\n共8次：07,08,14,16,17,24,27,33,37,40,42,43,45, =１３码\n共9次：03,04,06,10,13,18,20,23,26,32,34,35,38,41,44,48, =１６码\n共10次：15,25,28,29,36,39, =６码.\n\n\n第6组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：12,25, =２码'\n共7次：03,05,08,17,22,23,28,30,34,39,45,48, =１２码\n共8次：01,06,11,15,16,18,19,29,32,33,37,38,40,43,47, =１５码\n共9次：02,04,09,13,14,20,21,24,26,27,35,36,41,42,44,46, =１６码\n共10次：07,10,31,49, =４码.\n\n\n第7组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：07,48, =２码'\n共6次：06,34, =２码\n共7次：13,18,21,27,33,39,47, =７码\n共8次：02,04,05,09,12,16,23,25,26,28,29,30,32,35,37,38,40,43,44,46, =２０码\n共9次：01,03,14,15,17,24,36,41,42,45,49, =１１码\n共10次：08,10,11,19,20,22,31, =７码.\n\n\n第8组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：19,30,42, =３码'\n共7次：03,05,09,13,15,18,22,28,34,38,40,41,45, =１３码\n共8次：04,06,07,17,21,24,25,26,27,35,36,43,44, =１３码\n共9次：01,08,10,12,14,16,20,23,32,37,46,47,48, =１３码\n共10次：02,11,29,31,33,39,49, =７码.\n\n\n第9组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：41,47, =２码'\n共6次：22,25,29, =３码\n共7次：01,02,09,13,16,24,36,40,44, =９码\n共8次：03,06,11,14,21,23,27,30,33,35,38,43,45,48,49, =１５码\n共9次：07,10,12,15,18,26,31,34,37,39,46, =１１码\n共10次：04,05,08,17,19,20,28,32,42, =９码.\n\n\n第10组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：06, =１码'\n共6次：17,20,21,30,38, =５码\n共7次：02,05,08,13,25,40, =６码\n共8次：01,07,09,14,22,23,28,32,33,35,36,41,42,46,49, =１５码\n共9次：04,11,12,15,16,18,19,24,26,27,29,34,37,43,44,45,48, =１７码\n共10次：03,10,31,39,47, =５码.\n\n\n第11组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：15, =１码'\n共6次：07,09,27,40,42,45, =６码\n共7次：04,12,20,21,24,28,43, =７码\n共8次：01,02,05,08,10,17,18,23,31,33,35,37,46, =１３码\n共9次：03,06,14,16,19,22,30,32,38,39,44,47,48,49, =１４码\n共10次：11,13,25,26,29,34,36,41, =８码.\n\n\n第12组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：18,23, =２码'\n共7次：06,07,12,20,27,30,33,34,41,46,47, =１１码\n共8次：01,03,04,08,11,14,15,16,17,19,32,35,38,39,43,45, =１６码\n共9次：05,09,10,13,21,22,24,25,26,28,29,31,36,40,44,48,49, =１７码\n共10次：02,37,42, =３码.\n\n\n第13组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：29, =１码'\n共6次：08,20,25, =３码\n共7次：01,06,09,13,18,23,34,38,41,45, =１０码\n共8次：02,05,15,21,22,27,31,33,35,36,40,42,44,46,49, =１５码\n共9次：03,04,12,14,16,19,24,26,28,32,43,47,48, =１３码\n共10次：07,10,11,17,30,37,39, =７码.\n\n\n第14组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：14, =１码'\n共6次：45, =１码\n共7次：06,19,21,26,36,39,40,43, =８码\n共8次：01,03,04,09,11,13,15,17,18,20,23,24,27,28,29,30,31,33,35,38,41,42,49, =２３码\n共9次：02,05,07,08,10,12,25,32,44,47,48, =１１码\n共10次：16,22,34,37,46, =５码.\n\n\n第15组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共6次：10,17,29,43, =４码'\n共7次：02,06,09,15,16,20,31,32,38,41, =１０码\n共8次：01,04,07,08,12,14,21,22,28,34,37,39,40,42,44, =１５码\n共9次：03,05,11,23,25,27,30,33,35,36,45,46,47,48, =１４码\n共10次：13,18,19,24,26,49, =６码.\n\n\n第16组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共4次：21, =１码'\n共5次：17, =１码\n共6次：12,42, =２码\n共7次：01,05,09,11,14,19,30,46, =８码\n共8次：03,07,08,13,18,20,22,23,25,33,34,36,39,40,41,43, =１６码\n共9次：04,06,15,16,24,26,27,28,31,35,38,44,45,47,49, =１５码\n共10次：02,10,29,32,37,48, =６码.\n\n\n第17组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：08, =１码'\n共6次：26,38,42,49, =４码\n共7次：04,10,14,16,20,22,31,34,41,45, =１０码\n共8次：02,11,19,25,27,30,32,33,35,39,44,46,47, =１３码\n共9次：03,05,06,13,15,17,18,21,28,29,36,37,43, =１３码\n共10次：01,07,09,12,23,24,40,48, =８码.\n\n\n第18组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：07,47, =２码'\n共6次：28,31, =２码\n共7次：06,09,11,20,27,35,38,43,46, =９码\n共8次：01,04,08,15,16,18,21,23,24,29,33,41,45,48, =１４码\n共9次：02,03,05,10,14,17,19,22,30,32,34,36,37,40,42,44,49, =１７码\n共10次：12,13,25,26,39, =５码.\n\n\n第19组〓〓〓〓〓〓〓〓【10行数据 总400码 平均8.16次】〓〓〓〓〓〓〓〓\n共5次：29, =１码'\n共6次：06,11,22,25,30,31,43, =７码\n共7次：02,14,35,42,46,49, =６码\n共8次：01,05,07,12,15,17,23,26,27,37,40, =１１码\n共9次：03,04,10,13,16,18,19,21,24,28,32,33,36,38,41,44,47, =１７码\n共10次：08,09,20,34,39,45,48, =７码.\n\n\n第20组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：32, =１码'\n共5次：28,39,48, =３码\n共6次：02,10,17,20,27,31,38,40,41, =９码\n共7次：07,11,14,23,26,30,34,44,45, =９码\n共8次：05,09,15,22,24,33,35,36,37,46,47,49, =１２码\n共9次：01,03,04,06,08,12,16,18,19,25,29,43, =１２码\n共10次：13,21,42, =３码.\n\n\n第21组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：11, =１码'\n共5次：10,18, =２码\n共6次：17,22,30,34,38,42,48,49, =８码\n共7次：02,05,29,31,32,33,35, =７码\n共8次：01,03,06,07,08,14,15,19,21,24,25,26,27,28,37,39,40,41,43,44, =２０码\n共9次：04,09,12,13,16,20,23,36,45,46,47, =１１码.\n\n\n第22组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：46, =１码'\n共5次：28, =１码\n共6次：02,03,11,36,37,45, =６码\n共7次：07,08,10,15,23,25,31,32,33,34,35,39,43,49, =１４码\n共8次：01,04,06,13,14,17,18,21,22,24,29,30,38,40,41,44,47, =１７码\n共9次：05,09,12,19,20,26,27,42, =８码\n共10次：16,48, =２码.\n\n\n第23组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：10, =１码'\n共6次：01,09,19,26,27,30,39,48, =８码\n共7次：04,05,06,07,08,13,14,15,21,24,34,36,37,38,45, =１５码\n共8次：02,03,12,18,20,25,28,35,40,42,43,44,46,49, =１４码\n共9次：11,16,17,22,23,31,32,41,47, =９码\n共10次：29,33, =２码.\n\n\n第24组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：28, =１码'\n共6次：11,13,16,17,27,29,33,39,44, =９码\n共7次：03,05,06,08,09,10,21,24,26,30,35,38,42,46,47, =１５码\n共8次：04,07,12,14,15,25,34,37,41,43,45,48,49, =１３码\n共9次：01,18,19,20,22,23,31,32, =８码\n共10次：02,36,40, =３码.\n\n\n第25组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：43, =１码'\n共4次：07, =１码\n共5次：02, =１码\n共6次：06,11,14,20,25,39, =６码\n共7次：03,08,09,15,18,23,27,30,33,34,38,44,46, =１３码\n共8次：04,05,13,17,19,21,22,28,29,31,41,42,47,49, =１４码\n共9次：01,10,12,16,24,26,32,35,36,37,48, =１１码\n共10次：40,45, =２码.\n\n\n第26组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：19, =１码'\n共5次：04, =１码\n共6次：03,08,11,27,31,38,44, =７码\n共7次：01,09,10,12,13,17,18,20,23,25,33,36,43,48, =１４码\n共8次：05,07,15,16,22,26,30,34,35,37,39,40,41,42,45,47,49, =１７码\n共9次：06,14,24,29,32, =５码\n共10次：02,21,28,46, =４码.\n\n\n第27组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：32, =１码'\n共6次：03,08,14,17,22,24,30,33,40,45,47, =１１码\n共7次：02,05,07,09,11,13,15,20,21,31,41,42, =１２码\n共8次：01,06,12,23,26,34,36,37,38,39,43,49, =１２码\n共9次：04,10,16,18,19,25,27,28,35,46,48, =１１码\n共10次：29,44, =２码.\n\n\n第28组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：44, =１码'\n共6次：01,02,07,10,11,14,17,36,37,39,48, =１１码\n共7次：08,09,13,20,23,27,28,38,43,45,49, =１１码\n共8次：03,04,05,06,15,16,18,19,21,25,29,32,35,42,47, =１５码\n共9次：12,22,24,33,34,40,41,46, =８码\n共10次：26,30,31, =３码.\n\n\n第29组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：41, =１码'\n共5次：10,35, =２码\n共6次：03,07,09,24,40, =５码\n共7次：01,05,13,16,18,19,21,22,26,37,39,43,47,48, =１４码\n共8次：02,08,14,15,17,20,25,28,31,32,33,38,42,44,45,46,49, =１７码\n共9次：04,11,12,23,29,30,34,36, =８码\n共10次：06,27, =２码.\n\n\n第30组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：16,26,30,36, =４码'\n共6次：03,14,17,28,33,37,38, =７码\n共7次：07,15,21,34,35,39,40,42,43,44, =１０码\n共8次：01,04,08,09,10,11,12,13,18,19,20,22,24,32,46,48,49, =１７码\n共9次：02,05,06,23,29,31,41,45, =８码\n共10次：25,27,47, =３码.\n\n\n第31组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：49, =１码'\n共5次：02,15,29, =３码\n共6次：04,09,11,17,19,32,33,37, =８码\n共7次：10,12,13,25,34,36,39,42, =８码\n共8次：01,03,18,20,22,24,28,31,35,38,43,45,46,47,48, =１５码\n共9次：05,06,07,08,16,21,23,26,27,30,41,44, =１２码\n共10次：14,40, =２码.\n\n\n第32组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：32, =１码'\n共5次：40, =１码\n共6次：02,06,07,08,16,17,26,36,46, =９码\n共7次：03,04,09,10,14,24,30,33,37,38,43,47, =１２码\n共8次：11,12,13,15,20,21,22,29,34,35,39,42,45, =１３码\n共9次：01,05,18,19,23,25,27,31,41,44, =１０码\n共10次：28,48,49, =３码.\n\n\n第33组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：04,22,28,30, =４码'\n共6次：13,33,36,41,44, =５码\n共7次：02,03,05,06,08,10,12,14,16,17,21,35,43,48, =１４码\n共8次：07,09,18,19,27,29,32,34,37,38,39,45,46,49, =１４码\n共9次：11,15,20,23,24,25,26,40,42,47, =１０码\n共10次：01,31, =２码.\n\n\n第34组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共3次：09, =１码'\n共5次：47, =１码\n共6次：11,27,30,41,48, =５码\n共7次：05,06,08,12,14,17,18,20,22,26,29,32,37,42,45, =１５码\n共8次：01,02,03,07,10,13,16,19,21,25,31,33,34,36,44,46, =１６码\n共9次：04,15,23,24,28,35,38,39,40,43,49, =１１码.\n\n\n第35组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：07,13,17,29, =４码'\n共6次：04,16,21,36,44,48, =６码\n共7次：03,05,06,10,12,19,22,26,30,37,39,46,47, =１３码\n共8次：02,11,20,24,25,27,32,33,41,42,43,45, =１２码\n共9次：01,09,14,15,18,23,28,31,34,35,38,40,49, =１３码\n共10次：08, =１码.\n\n\n第36组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：23,27,29,33,38, =５码'\n共6次：06,07,13,31,34,44,45, =７码\n共7次：01,08,10,11,18,22,24,25,35,36,37,39, =１２码\n共8次：04,05,14,15,19,20,21,30,41,47,49, =１１码\n共9次：03,09,16,26,32,40,43,46,48, =９码\n共10次：02,12,17,28,42, =５码.\n\n\n第37组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：17, =１码'\n共5次：10,14,31,32,33, =５码\n共6次：02,09,28,38,39,41, =６码\n共7次：08,12,20,21,23,27,35,44, =８码\n共8次：04,05,11,13,16,18,22,24,25,29,30,42,43,45,47,49, =１６码\n共9次：03,07,19,26,34,36,37,40,48, =９码\n共10次：01,06,15,46, =４码.\n\n\n第38组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共4次：43, =１码'\n共5次：16,19, =２码\n共6次：14,20,25,30,31,32,37,41,47, =９码\n共7次：03,04,06,13,15,18,21,27,38,45,46,48, =１２码\n共8次：01,08,11,17,23,24,34,35,42,44, =１０码\n共9次：02,05,07,09,10,26,28,29,36,39,40,49, =１２码\n共10次：12,22,33, =３码.\n\n\n第39组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：09, =１码'\n共6次：05,16,21,27,34,35,38,49, =８码\n共7次：04,06,07,08,10,11,14,17,20,26,29,31,33,41,42,46,47,48, =１８码\n共8次：01,02,03,12,18,23,24,30,36,40,44,45, =１２码\n共9次：19,25,32,37,39, =５码\n共10次：13,15,22,28,43, =５码.\n\n\n第40组〓〓〓〓〓〓〓〓【10行数据 总370码 平均7.55次】〓〓〓〓〓〓〓〓\n共5次：19,31,37, =３码'\n共6次：01,07,08,15,29,36,41,46, =８码\n共7次：02,03,12,13,14,17,18,30,33,34,35,40,43, =１３码\n共8次：04,09,20,21,22,23,25,27,28,39,48, =１１码\n共9次：05,06,10,11,16,32,38,42,44,45,47,49, =１２码\n共10次：24,26, =２码.",
       "category": "澳门",
       "image_urls": [],
-      "article_id": 11138853,
+      "article_id": 11138799,
       "comments": "",
       "evidence_scope": "post_article",
       "detail_coverage": "verified_article_text",
       "comments_coverage": "disabled",
       "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3"
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138799&type=3"
     },
     {
       "author": "大唐天子",
@@ -8773,6 +8688,23 @@
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138801&type=3"
     },
     {
+      "author": "咯啊啊",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-22 22:50",
+      "title": "296",
+      "body": "包杀(0)头",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138853,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3"
+    },
+    {
       "author": "命运六合",
       "issue": "2026296",
       "is_featured": false,
@@ -8788,23 +8720,6 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138717&type=3"
-    },
-    {
-      "author": "赌神不是神",
-      "issue": "2026296",
-      "is_featured": false,
-      "published_at": "2026-10-22 22:49",
-      "title": "澳门",
-      "body": "欢迎使用邀请码  2869048",
-      "category": "澳门",
-      "image_urls": [],
-      "article_id": 11138756,
-      "comments": "",
-      "evidence_scope": "post_article",
-      "detail_coverage": "verified_article_text",
-      "comments_coverage": "disabled",
-      "images": [],
-      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3"
     },
     {
       "author": "八闽郡王",
@@ -8839,6 +8754,23 @@
       "comments_coverage": "disabled",
       "images": [],
       "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138752&type=3"
+    },
+    {
+      "author": "赌神不是神",
+      "issue": "2026296",
+      "is_featured": false,
+      "published_at": "2026-10-22 22:49",
+      "title": "澳门",
+      "body": "欢迎使用邀请码  2869048",
+      "category": "澳门",
+      "image_urls": [],
+      "article_id": 11138756,
+      "comments": "",
+      "evidence_scope": "post_article",
+      "detail_coverage": "verified_article_text",
+      "comments_coverage": "disabled",
+      "images": [],
+      "detail_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3"
     },
     {
       "author": "叔公斯诺克",
@@ -9195,6 +9127,42 @@
       "weight_per_zodiac": 0.1111111111111111
     },
     {
+      "play": "三肖",
+      "picks": [
+        "蛇",
+        "马",
+        "猴"
+      ],
+      "mode": "include",
+      "excerpt": "平三肖   蛇,马,猴,",
+      "author": "贝贝丹丹",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
+      "published_at": "2026-10-23 06:13",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "一肖",
+      "picks": [
+        "蛇"
+      ],
+      "mode": "include",
+      "excerpt": "平一肖   蛇,",
+      "author": "贝贝丹丹",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
+      "published_at": "2026-10-23 06:13",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
       "play": "杀四肖",
       "picks": [
         "马",
@@ -9265,42 +9233,6 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139154&type=3",
       "counted_for_ranking": false,
       "exclusion_reason": "superseded_by_same_author_higher_priority",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "三肖",
-      "picks": [
-        "蛇",
-        "马",
-        "猴"
-      ],
-      "mode": "include",
-      "excerpt": "平三肖   蛇,马,猴,",
-      "author": "贝贝丹丹",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
-      "published_at": "2026-10-23 06:13",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "一肖",
-      "picks": [
-        "蛇"
-      ],
-      "mode": "include",
-      "excerpt": "平一肖   蛇,",
-      "author": "贝贝丹丹",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
-      "published_at": "2026-10-23 06:13",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139157&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -9583,42 +9515,6 @@
     {
       "play": "九肖",
       "picks": [
-        "牛",
-        "虎",
-        "羊",
-        "猴",
-        "鸡",
-        "狗",
-        "龙",
-        "蛇",
-        "猪"
-      ],
-      "mode": "include",
-      "excerpt": "敢赌敢博九肖中特 | 296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
-      "raw_expression": "牛虎羊猴鸡狗龙蛇猪",
-      "author": "敢赌敢博",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "published_at": "2026-10-23 17:03",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "牛",
-        "虎",
-        "羊",
-        "猴",
-        "鸡",
-        "狗",
-        "龙",
-        "蛇",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.1111111111111111
-    },
-    {
-      "play": "九肖",
-      "picks": [
         "虎",
         "猴",
         "鼠",
@@ -9649,6 +9545,42 @@
         "猪",
         "狗",
         "羊"
+      ],
+      "weight_per_zodiac": 0.1111111111111111
+    },
+    {
+      "play": "九肖",
+      "picks": [
+        "牛",
+        "虎",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "龙",
+        "蛇",
+        "猪"
+      ],
+      "mode": "include",
+      "excerpt": "敢赌敢博九肖中特 | 296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
+      "raw_expression": "牛虎羊猴鸡狗龙蛇猪",
+      "author": "敢赌敢博",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "published_at": "2026-10-23 17:03",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "牛",
+        "虎",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "龙",
+        "蛇",
+        "猪"
       ],
       "weight_per_zodiac": 0.1111111111111111
     },
@@ -10363,35 +10295,6 @@
       "weight_per_zodiac": 0.16666666666666666
     },
     {
-      "play": "杀",
-      "picks": [
-        "虎",
-        "兔",
-        "牛",
-        "猴"
-      ],
-      "mode": "exclude",
-      "excerpt": "杀 虎 兔 牛 猴",
-      "author": "福运到",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145503&type=3",
-      "published_at": "2026-10-23 19:58",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145503&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "鼠",
-        "龙",
-        "蛇",
-        "马",
-        "羊",
-        "鸡",
-        "狗",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.125
-    },
-    {
       "play": "杀肖",
       "picks": [
         "狗",
@@ -10443,6 +10346,23 @@
       "weight_per_zodiac": 0.16666666666666666
     },
     {
+      "play": "一肖",
+      "picks": [
+        "鸡"
+      ],
+      "mode": "include",
+      "excerpt": "一肖鸡",
+      "author": "烦恼豆沙包",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3",
+      "published_at": "2026-10-23 19:32",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
       "play": "杀",
       "picks": [
         "蛇"
@@ -10470,23 +10390,6 @@
         "猪"
       ],
       "weight_per_zodiac": 0.09090909090909091
-    },
-    {
-      "play": "一肖",
-      "picks": [
-        "鸡"
-      ],
-      "mode": "include",
-      "excerpt": "一肖鸡",
-      "author": "烦恼豆沙包",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3",
-      "published_at": "2026-10-23 19:32",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
     },
     {
       "play": "杀",
@@ -12998,6 +12901,35 @@
       "weight_per_zodiac": 0.0
     },
     {
+      "play": "杀",
+      "picks": [
+        "鸡",
+        "兔"
+      ],
+      "mode": "exclude",
+      "excerpt": ": 杀鸡兔",
+      "author": "酸菜炒牛肉",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3",
+      "published_at": "2026-10-23 00:13",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.1
+    },
+    {
       "play": "六肖",
       "picks": [
         "鼠",
@@ -13026,35 +12958,6 @@
         "猪"
       ],
       "weight_per_zodiac": 0.16666666666666666
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "鸡",
-        "兔"
-      ],
-      "mode": "exclude",
-      "excerpt": ": 杀鸡兔",
-      "author": "酸菜炒牛肉",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3",
-      "published_at": "2026-10-23 00:13",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139162&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "鼠",
-        "牛",
-        "虎",
-        "龙",
-        "蛇",
-        "马",
-        "羊",
-        "猴",
-        "狗",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.1
     },
     {
       "play": "杀一肖",
@@ -14014,10 +13917,10 @@
       "counted_for_ranking": false
     },
     {
-      "author": "敢赌敢博",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "excerpt": "296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
+      "author": "大顺发富豪榜",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
+      "excerpt": "296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -14030,10 +13933,10 @@
       "counted_for_ranking": false
     },
     {
-      "author": "大顺发富豪榜",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
-      "excerpt": "296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹",
+      "author": "敢赌敢博",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "excerpt": "296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -14462,54 +14365,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-牛",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-狗",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-猪",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-狗",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-猪",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "在哪啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
-      "excerpt": "-狗",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "香格里拉",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145491&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145491&type=3",
@@ -14562,6 +14417,54 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145499&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145499&type=3",
       "excerpt": "-猪",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-牛",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-狗",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-猪",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-狗",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-猪",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "在哪啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145502&type=3",
+      "excerpt": "-狗",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -14627,30 +14530,6 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145490&type=3",
       "excerpt": "〖6次〗:兔,（共1个）❌",
       "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "数字投资研究院",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145501&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145501&type=3",
-      "excerpt": "296期▶︎鸡猪羊龙蛇鼠马兔📣开❓",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "六合拉拉",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3",
-      "excerpt": "296期必杀两肖：兔羊 开：猫？",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "魔王子",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3",
-      "excerpt": "296🇲🇴",
-      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -14870,6 +14749,14 @@
       "counted_for_ranking": false
     },
     {
+      "author": "六合拉拉",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145489&type=3",
+      "excerpt": "296期必杀两肖：兔羊 开：猫？",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "旺旺沐兒",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145438&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145438&type=3",
@@ -14886,18 +14773,10 @@
       "counted_for_ranking": false
     },
     {
-      "author": "期待你的眼神",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3",
-      "excerpt": "特马296期",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "稳中稳长跟必赚",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3",
-      "excerpt": "296期特码",
+      "author": "魔王子",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145383&type=3",
+      "excerpt": "296🇲🇴",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -14906,6 +14785,14 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145441&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145441&type=3",
       "excerpt": "发着玩，自己记录一下",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "期待你的眼神",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145415&type=3",
+      "excerpt": "特马296期",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -14926,18 +14813,18 @@
       "counted_for_ranking": false
     },
     {
-      "author": "夺率率",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3",
-      "excerpt": "杀半波",
+      "author": "稳中稳长跟必赚",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145416&type=3",
+      "excerpt": "296期特码",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
-      "author": "远方有美酒",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3",
-      "excerpt": "六合无绝对 296",
+      "author": "夺率率",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145472&type=3",
+      "excerpt": "杀半波",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -14955,6 +14842,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145473&type=3",
       "excerpt": "三连鸡蛇猴＋虎",
       "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "远方有美酒",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145440&type=3",
+      "excerpt": "六合无绝对 296",
+      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -14979,14 +14874,6 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145278&type=3",
       "excerpt": "1",
       "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "阿菜来了",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3",
-      "excerpt": "296期鸡马鼠猪猴羊",
-      "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
     {
@@ -15118,6 +15005,14 @@
       "counted_for_ranking": false
     },
     {
+      "author": "阿菜来了",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145270&type=3",
+      "excerpt": "296期鸡马鼠猪猴羊",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "棍棍到肉",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139228&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139228&type=3",
@@ -15166,14 +15061,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "澳数码",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3",
-      "excerpt": "《兔马》√",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "十四码围特",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145162&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145162&type=3",
@@ -15198,18 +15085,18 @@
       "counted_for_ranking": false
     },
     {
-      "author": "顺财神来我家门",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3",
-      "excerpt": "蛇狗羊鸡",
+      "author": "澳数码",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145163&type=3",
+      "excerpt": "《兔马》√",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
     {
-      "author": "我们的美好时光",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3",
-      "excerpt": "兔鼠【0尾】",
+      "author": "顺财神来我家门",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145151&type=3",
+      "excerpt": "蛇狗羊鸡",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -15219,6 +15106,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145143&type=3",
       "excerpt": "任务帖",
       "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "我们的美好时光",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139167&type=3",
+      "excerpt": "兔鼠【0尾】",
+      "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
     {
@@ -15470,14 +15365,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "暗号好",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
-      "excerpt": "稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "牛哄哄",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139152&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139152&type=3",
@@ -15494,18 +15381,10 @@
       "counted_for_ranking": false
     },
     {
-      "author": "帝尊神话",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "excerpt": "296期，龙牛马鼠羊鸡",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "帝尊神话",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "excerpt": "296期【猴猪】",
+      "author": "暗号好",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
+      "excerpt": "稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -15702,14 +15581,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "颠不颠",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3",
-      "excerpt": "大围32码",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "星际黑洞",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144607&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144607&type=3",
@@ -15718,10 +15589,26 @@
       "counted_for_ranking": false
     },
     {
+      "author": "颠不颠",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144605&type=3",
+      "excerpt": "大围32码",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "奥特只王",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144794&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144794&type=3",
       "excerpt": "个人记录",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "很好很好",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138727&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138727&type=3",
+      "excerpt": "296",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -15734,10 +15621,58 @@
       "counted_for_ranking": false
     },
     {
+      "author": "北海九水天灵大元帅",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143155&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143155&type=3",
+      "excerpt": "296",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "鸿兴学府",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
+      "excerpt": "296期：蛇鸡龙十鼠牛",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "鸿兴学府",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
+      "excerpt": "296期：  羊",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "加油您最胖",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144049&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144049&type=3",
+      "excerpt": "【蛇蛇蛇】",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "程蝶衣",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3",
+      "excerpt": "296期 乱戳杀《龙》",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "澳门研究生院长",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142819&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142819&type=3",
       "excerpt": "1",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "港彩六叔公",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3",
+      "excerpt": "稳杀一肖",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -15963,54 +15898,6 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144104&type=3",
       "excerpt": "296   蛇龙虎鼠鸡狗牛猪马   开？00",
       "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "北海九水天灵大元帅",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143155&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143155&type=3",
-      "excerpt": "296",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "鸿兴学府",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
-      "excerpt": "296期：蛇鸡龙十鼠牛",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "鸿兴学府",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142908&type=3",
-      "excerpt": "296期：  羊",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "加油您最胖",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144049&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144049&type=3",
-      "excerpt": "【蛇蛇蛇】",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "程蝶衣",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143025&type=3",
-      "excerpt": "296期 乱戳杀《龙》",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "港彩六叔公",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11144065&type=3",
-      "excerpt": "稳杀一肖",
-      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -16926,14 +16813,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "三婉婉",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3",
-      "excerpt": "296",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "稳中稳长跟必赚",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141142&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141142&type=3",
@@ -16942,18 +16821,10 @@
       "counted_for_ranking": false
     },
     {
-      "author": "小小负婆",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3",
-      "excerpt": "296期个人心水",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "一颗夜明珠",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3",
-      "excerpt": "杀肖统计",
+      "author": "三婉婉",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141095&type=3",
+      "excerpt": "296",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -16962,6 +16833,14 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141279&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141279&type=3",
       "excerpt": "杀特肖",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "小小负婆",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141073&type=3",
+      "excerpt": "296期个人心水",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -17030,11 +16909,11 @@
       "counted_for_ranking": false
     },
     {
-      "author": "咖啡里的茶",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3",
-      "excerpt": "296期：⑨肖 龙蛇马鸡狗猪鼠虎牛  开：？准",
-      "reason": "unsupported or ambiguous play",
+      "author": "一颗夜明珠",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11141148&type=3",
+      "excerpt": "杀肖统计",
+      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -17051,6 +16930,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139895&type=3",
       "excerpt": "296 期",
       "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "咖啡里的茶",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138794&type=3",
+      "excerpt": "296期：⑨肖 龙蛇马鸡狗猪鼠虎牛  开：？准",
+      "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
     {
@@ -17158,14 +17045,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "币安人生",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3",
-      "excerpt": "参赛！澳门🇲🇴12码中特加1000倍",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "风火狼烟",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139626&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139626&type=3",
@@ -17195,6 +17074,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139626&type=3",
       "excerpt": "【蛇羊虎】",
       "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "币安人生",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139630&type=3",
+      "excerpt": "参赛！澳门🇲🇴12码中特加1000倍",
+      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -18374,6 +18261,14 @@
       "counted_for_ranking": false
     },
     {
+      "author": "水东枭雄",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3",
+      "excerpt": "296期：特码波色",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "赖赖赖",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3",
@@ -18403,14 +18298,6 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139230&type=3",
       "excerpt": "蛇猪牛羊",
       "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "水东枭雄",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139214&type=3",
-      "excerpt": "296期：特码波色",
-      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -19334,14 +19221,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "六合八荒",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139081&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139081&type=3",
-      "excerpt": "精准五肖中特",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "木木木的",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139113&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139113&type=3",
@@ -19358,67 +19237,11 @@
       "counted_for_ranking": false
     },
     {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "〖1次〗:牛,龙,蛇,羊,猪,（共5个）",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "〖3次〗:马,狗,（共2个）",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "〖4次〗:虎,鸡,（共2个）",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "〖5次〗:鼠,猴,（共2个）",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "〖6次〗:兔,（共1个）",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "朱砂澳狗",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "excerpt": "上错6人杀 羊蛇龙猴猴兔",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "周瑜伽砖",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139059&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139059&type=3",
       "excerpt": "鼠狗",
       "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "天衍四十九",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3",
-      "excerpt": "真的随机发",
-      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -19443,6 +19266,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139014&type=3",
       "excerpt": "羊狗",
       "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "天衍四十九",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139021&type=3",
+      "excerpt": "真的随机发",
+      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -19535,17 +19366,17 @@
     },
     {
       "author": "无影中特",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3",
-      "excerpt": "296杀码统计区",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3",
+      "excerpt": "296C",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
       "author": "无影中特",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138914&type=3",
-      "excerpt": "296C",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138924&type=3",
+      "excerpt": "296杀码统计区",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -19726,6 +19557,14 @@
       "counted_for_ranking": false
     },
     {
+      "author": "赌神之神",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3",
+      "excerpt": "只提供参考？杀一尾",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "青田徐伯",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138714&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138714&type=3",
@@ -19742,18 +19581,18 @@
       "counted_for_ranking": false
     },
     {
-      "author": "赌神之神",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138719&type=3",
-      "excerpt": "只提供参考？杀一尾",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "护你周全哦",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138721&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138721&type=3",
       "excerpt": "：马鸡开？",
+      "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "人在家中坐",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
+      "excerpt": "296期-单-鼠虎兔龙马鸡狗",
       "reason": "unsupported or ambiguous play",
       "counted_for_ranking": false
     },
@@ -19846,14 +19685,6 @@
       "counted_for_ranking": false
     },
     {
-      "author": "人在家中坐",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
-      "excerpt": "296期-单-鼠虎兔龙马鸡狗",
-      "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
       "author": "无影中特",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138792&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138792&type=3",
@@ -19866,14 +19697,6 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138799&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138799&type=3",
       "excerpt": "296-10",
-      "reason": "no supported current-issue play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "咯啊啊",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3",
-      "excerpt": "296",
       "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
@@ -19910,19 +19733,19 @@
       "counted_for_ranking": false
     },
     {
+      "author": "咯啊啊",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138853&type=3",
+      "excerpt": "296",
+      "reason": "no supported current-issue play",
+      "counted_for_ranking": false
+    },
+    {
       "author": "命运六合",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138717&type=3",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138717&type=3",
       "excerpt": "296期，六肖，鸡牛猪龙蛇猴",
       "reason": "unsupported or ambiguous play",
-      "counted_for_ranking": false
-    },
-    {
-      "author": "赌神不是神",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3",
-      "excerpt": "澳门",
-      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -19939,6 +19762,14 @@
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138752&type=3",
       "excerpt": "296期虎兔平肖开",
       "reason": "unsupported or ambiguous play",
+      "counted_for_ranking": false
+    },
+    {
+      "author": "赌神不是神",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138756&type=3",
+      "excerpt": "澳门",
+      "reason": "no supported current-issue play",
       "counted_for_ranking": false
     },
     {
@@ -20151,13 +19982,13 @@
     }
   ],
   "audit": {
-    "listing_count": 540,
-    "issue_listing_count": 531,
+    "listing_count": 541,
+    "issue_listing_count": 527,
     "forum_scroll": {
-      "steps": 109,
-      "moves": 108,
+      "steps": 110,
+      "moves": 109,
       "end_confirmed": false,
-      "items_seen": 540,
+      "items_seen": 541,
       "truncated": false,
       "stop_reason": "current_issue_boundary_reached",
       "scope": "target_issue_window"
@@ -20185,17 +20016,17 @@
         "completed": 52
       },
       "ordinary": {
-        "queued": 479,
-        "attempted": 479,
-        "opened": 479,
-        "extracted": 476,
-        "completed": 479
+        "queued": 475,
+        "attempted": 475,
+        "opened": 475,
+        "extracted": 472,
+        "completed": 475
       }
     },
     "priority_audit": {
       "policy": "featured_article_before_ordinary",
       "first_ordinary_attempt": {
-        "at": "2026-10-23T12:02:55.013686+00:00",
+        "at": "2026-10-23T12:32:58.515124+00:00",
         "featured_queued": 52,
         "featured_attempted": 52,
         "featured_completed": 52
@@ -20286,7 +20117,7 @@
     "leaderboard_source": "historic_candidates_unverified",
     "leaderboard_checked": 0,
     "leaderboard_total": 0,
-    "outside_checked": 527,
+    "outside_checked": 523,
     "blocked": [
       {
         "author": "泉州打工人",
@@ -20536,7 +20367,6 @@
       "币安人生",
       "布帛蔬栗",
       "帕加尼",
-      "帝尊神话",
       "幕后神秘人",
       "干一杯烈酒",
       "平特一肖买什么来什么",
@@ -20549,6 +20379,7 @@
       "张扶摇",
       "归海一刀",
       "彩坛剑客",
+      "很好很好",
       "微笑美眉",
       "德爱威",
       "心头的小情儿",
@@ -20576,7 +20407,6 @@
       "推到六叔公",
       "故事主角",
       "敢赌敢博",
-      "数字投资研究院",
       "新人稳稳杀肖",
       "无影中特",
       "无情哈拉少",
@@ -20614,7 +20444,6 @@
       "木木木的",
       "朱佬二",
       "朱唇一尝",
-      "朱砂澳狗",
       "机密文件",
       "杀神白起",
       "李代桃僵",
@@ -20703,7 +20532,6 @@
       "看到结果",
       "眯眯笑",
       "神机妙算",
-      "福运到",
       "秋风霜月",
       "程蝶衣",
       "稳中稳长跟必赚",
@@ -20850,8 +20678,8 @@
       "黄袍加身法律",
       "黑庄克星啊"
     ],
-    "valid_prediction_authors": 82,
-    "valid_materials": 82,
+    "valid_prediction_authors": 81,
+    "valid_materials": 81,
     "min_valid_materials": 25,
     "min_valid_authors": 5,
     "comments_collected": 0,
@@ -21020,16 +20848,16 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "敢赌敢博",
+      "author": "大顺发富豪榜",
       "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
-      "title": "敢赌敢博九肖中特",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
+      "title": "大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️",
       "published_at": "2026-10-23 17:03",
       "image_urls": [],
       "excerpts": [
         {
-          "text": "296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
+          "text": "296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -21056,16 +20884,16 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "大顺发富豪榜",
+      "author": "敢赌敢博",
       "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138740&type=3",
-      "title": "大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138742&type=3",
+      "title": "敢赌敢博九肖中特",
       "published_at": "2026-10-23 17:03",
       "image_urls": [],
       "excerpts": [
         {
-          "text": "296期九肖【虎猴鼠蛇牛鸡猪狗羊】开🀄️🌹",
+          "text": "296期九肖中【牛虎羊猴鸡狗龙蛇猪】开🌹",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -21454,24 +21282,6 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "数字投资研究院",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145501&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145501&type=3",
-      "title": "6️⃣--9️⃣肖博特",
-      "published_at": "2026-10-23 19:58",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "296期▶︎鸡猪羊龙蛇鼠马兔📣开❓",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
       "author": "六合至尊",
       "issue": "2026296",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145439&type=3",
@@ -21680,24 +21490,6 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "暗号好",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
-      "title": "特在此中有长期见证跟必赚👇",
-      "published_at": "2026-10-23 17:37",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
       "author": "牛哄哄",
       "issue": "2026296",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139152&type=3",
@@ -21716,16 +21508,16 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "帝尊神话",
+      "author": "暗号好",
       "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138738&type=3",
-      "title": "心水仅供参考，小赌怡情",
-      "published_at": "2026-10-23 17:28",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11145051&type=3",
+      "title": "特在此中有长期见证跟必赚👇",
+      "published_at": "2026-10-23 17:37",
       "image_urls": [],
       "excerpts": [
         {
-          "text": "296期，龙牛马鼠羊鸡",
+          "text": "稳健型大围牛狗羊虎鸡，主盘鼠，特🀄️🀄️🀄️越前越靓 越前越主 可以截图截屏保存 开完奖夫后再见证",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -23838,44 +23630,6 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "朱砂澳狗",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139005&type=3",
-      "title": "精选🈲肖，主你自己",
-      "published_at": "2026-10-22 23:19",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "〖1次〗:牛,龙,蛇,羊,猪,（共5个）",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖3次〗:马,狗,（共2个）",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖4次〗:虎,鸡,（共2个）",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖5次〗:鼠,猴,（共2个）",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖6次〗:兔,（共1个）",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
       "author": "周星驰啊",
       "issue": "2026296",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139031&type=3",
@@ -24016,6 +23770,24 @@
       "status": "pending_user_rule_confirmation"
     },
     {
+      "author": "人在家中坐",
+      "issue": "2026296",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
+      "title": "吉利单双",
+      "published_at": "2026-10-22 22:51",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "296期-单-鼠虎兔龙马鸡狗",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
       "author": "广西谋财酒",
       "issue": "2026296",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138753&type=3",
@@ -24049,24 +23821,6 @@
       "excerpts": [
         {
           "text": "296期马兔虎羊蛇猪鼠牛猴",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "人在家中坐",
-      "issue": "2026296",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138743&type=3",
-      "title": "吉利单双",
-      "published_at": "2026-10-22 22:51",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "296期-单-鼠虎兔龙马鸡狗",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -24388,6 +24142,6 @@
       "status": "pending_user_rule_confirmation"
     }
   ],
-  "pending_rule_question_count": 156,
-  "collection_round": 1
+  "pending_rule_question_count": 153,
+  "collection_round": 2
 }
