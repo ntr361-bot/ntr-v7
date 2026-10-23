@@ -7,56 +7,61 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39949643388",
-  "updated_at": "2026-10-23T12:02:46.327740+00:00",
+  "updated_at": "2026-10-23T12:03:50.584541+00:00",
   "error": null,
-  "valid_materials": 9,
-  "valid_authors": 9,
-  "successful_post_opens": 35,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 151,
   "article_details": {
     "featured": {
       "queued": 52,
-      "attempted": 36,
-      "opened": 35,
-      "extracted": 34,
-      "completed": 35
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 51,
+      "completed": 52
     },
     "ordinary": {
       "queued": 479,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 100,
+      "opened": 99,
+      "extracted": 98,
+      "completed": 99
     }
   },
-  "article_texts_extracted": 34,
-  "article_details_completed": 35,
+  "article_texts_extracted": 149,
+  "article_details_completed": 151,
   "last_verified_post": {
-    "author": "新人稳稳杀肖",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138751&type=3",
-    "verified_at": "2026-10-23T12:02:46.070453+00:00",
-    "text_length": 888,
-    "text_sha256": "e0a321f3abf09b938d99f0e03d65eb0eb25b21e4dc75f1a8465228a82a363408"
+    "author": "小六子小兔兔",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11143154&type=3",
+    "verified_at": "2026-10-23T12:03:49.836670+00:00",
+    "text_length": 763,
+    "text_sha256": "24ec7cb7f3eb4219e239a959ec638f0508318d8a1b864a1617dd9a92dbbb0146"
   },
   "last_attempted_post": {
-    "author": "青哥哥",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11138858&type=3",
-    "attempt_index": 36
+    "author": "澳门研究生院长",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11142210&type=3",
+    "attempt_index": 152
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-23T12:02:55.013686+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 34,
-  "stage": "detail: 青哥哥 青哥哥独创四头，长期必赚",
-  "progress_updated_at": "2026-10-23T12:02:46.086252+00:00",
+  "raw_count": 149,
+  "stage": "detail: 澳门研究生院长 296",
+  "progress_updated_at": "2026-10-23T12:03:50.534632+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 1
+    "unextracted_current_posts": 2
   },
   "coverage_label": null
 }
