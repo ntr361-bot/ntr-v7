@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026296",
+  "state": "collecting_effectively",
+  "run_id": "39953288384",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39953288384",
+  "updated_at": "2026-10-23T12:36:54.630405+00:00",
+  "error": null,
+  "valid_materials": 63,
+  "valid_authors": 63,
+  "successful_post_opens": 395,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 51,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 475,
+      "attempted": 344,
+      "opened": 343,
+      "extracted": 340,
+      "completed": 343
+    }
+  },
+  "article_texts_extracted": 391,
+  "article_details_completed": 395,
+  "last_verified_post": {
+    "author": "风萧萧易水寒",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139222&type=3",
+    "verified_at": "2026-10-23T12:36:53.741161+00:00",
+    "text_length": 24,
+    "text_sha256": "fdb19d08e3bcd9ef3711afb5a9db02f51403e577c95368a9143b1b6c5e044ae6"
+  },
+  "last_attempted_post": {
+    "author": "又一年",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139221&type=3",
+    "attempt_index": 396
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-23T12:32:58.515124+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 391,
+  "stage": "detail: 又一年 296期两个半波已更新",
+  "progress_updated_at": "2026-10-23T12:36:53.981102+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
