@@ -1474,19 +1474,12 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "cloud workflow is missing the 23:00 failed-run retry");
     Assert(workflow.Contains("$primary.conclusion -ne 'success'", StringComparison.Ordinal),
         "23:00 retry is not conditioned on the 22:00 result");
-    Assert(cronLines.Contains("- cron: \"7,22,37,52 * * * *\""),
-        "cloud workflow is missing the mobile-trigger polling schedule");
-    Assert(workflow.Contains("run_requested", StringComparison.Ordinal),
-        "mobile-trigger polling does not consume the cloud run request");
-    Assert(workflow.Contains("audience=smart-ledger-v7", StringComparison.Ordinal),
-        "mobile-trigger polling must request a V7-scoped OIDC token");
-    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request", StringComparison.Ordinal),
-        "mobile-trigger polling must read the isolated V7 run request");
-    Assert(workflow.Contains("Authorization = \"Bearer $oidc\"", StringComparison.Ordinal) &&
-           workflow.Contains("OAI-Sites-Authorization", StringComparison.Ordinal),
-        "mobile-trigger polling must send both OIDC and Sites authorization headers");
-    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
-        "V7 publisher must refresh the isolated smart-ledger V7 copy");
+    // The old ChatGPT Sites ledger is read-only since 2026-10-23 (user request):
+    // the workflow neither polls its run request nor publishes to it.
+    Assert(!cronLines.Contains("- cron: \"7,22,37,52 * * * *\""),
+        "cloud workflow must not poll the read-only old ledger");
+    Assert(!workflow.Contains("smart-ledger-2026.ntr133.chatgpt.site", StringComparison.Ordinal),
+        "cloud workflow must not call the read-only old ledger");
 }
 
 void V6CloudEndpointsAreConsistent()
@@ -1497,7 +1490,7 @@ void V6CloudEndpointsAreConsistent()
     string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
     string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
     Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V7 desktop sync is not using the isolated V7 endpoint");
-    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V7 workflow is not publishing through the V7 OIDC endpoint");
+    Assert(!workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V7 workflow must not publish to the read-only old ledger");
     Assert(!desktop.Contains("smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync", StringComparison.Ordinal),
         "V7 desktop sync still uses the V6 API");
     Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),

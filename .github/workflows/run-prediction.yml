@@ -37,8 +37,9 @@ on:
     - cron: "0 15 * * *"
     # Guarded catch-up when the draw source becomes available after 23:00 CST.
     - cron: "0 16,17,18,19 * * *"
-    # Mobile ledger checks for an explicit V7 run request every 15 minutes.
-    - cron: "7,22,37,52 * * * *"
+    # The old ChatGPT Sites ledger is read-only since 2026-10-23 (user request):
+    # its "run V7" request is no longer polled and nothing is published to it.
+    # The self-hosted ledger reads site/data from this repository directly.
 
 permissions:
   actions: write
@@ -68,21 +69,6 @@ jobs:
             # A green mobile polling run may have skipped prediction. Check committed
             # artifacts again at 23:00; planning skips every existing frozen forecast.
             $shouldRun = $true
-          } elseif ($schedule -eq '7,22,37,52 * * * *') {
-            try {
-              $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
-              $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }).value
-              if (!$env:SITES_SIWC_BYPASS_TOKEN) { throw 'Missing SITES_SIWC_BYPASS_TOKEN Actions secret.' }
-              $headers = @{
-                Authorization = "Bearer $oidc"
-                'OAI-Sites-Authorization' = "Bearer $env:SITES_SIWC_BYPASS_TOKEN"
-              }
-              $response = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/request' -Headers $headers
-              $shouldRun = [bool]$response.run_requested
-            } catch {
-              Write-Warning "Mobile trigger check failed: $($_.Exception.Message)"
-              $shouldRun = $false
-            }
           }
           "should_run=$($shouldRun.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
           $retryAllowed = ![string]::IsNullOrWhiteSpace($env:SITES_SIWC_BYPASS_TOKEN)
@@ -233,75 +219,6 @@ jobs:
           path: data/history.db
           if-no-files-found: error
           retention-days: 30
-
-      - name: Publish V7 data to smart ledger
-        if: ${{ inputs.dry_run != true }}
-        shell: pwsh
-        run: |
-          function Invoke-RequiredPublish {
-            param([string]$Url, [hashtable]$Headers, [string]$Body)
-            $lastError = $null
-            for ($attempt = 1; $attempt -le 3; $attempt++) {
-              try {
-                $response = Invoke-RestMethod -Method Post -Uri $Url -Headers $Headers -ContentType 'application/json' -Body $Body -ErrorAction Stop
-                if ($null -ne $response.status -and $response.status -ne 'success') {
-                  throw "发布接口返回异常状态：$($response.status)"
-                }
-                return $response
-              } catch {
-                $lastError = $_
-                if ($attempt -lt 3) { Start-Sleep -Seconds (3 * $attempt) }
-              }
-            }
-            throw "发布失败：$($lastError.Exception.Message)"
-          }
-
-          $manifest = Get-Content 'site/data/daily-records/manifest.json' -Raw | ConvertFrom-Json
-          $predictions = @{}
-          foreach ($file in $manifest.records) {
-            $predictions[$file] = Get-Content "site/data/daily-records/$file" -Raw | ConvertFrom-Json
-          }
-          $modelState = Get-Content 'site/data/runtime-state.json' -Raw | ConvertFrom-Json
-          # Temporary wire compatibility for the old deployed ledger guard.
-          # Its stored frozen 285 rows say "本地生成"; the repository now says
-          # "云端同步". Preserve the original provenance ONLY in the outgoing
-          # transport payload. Committed forecasts and settlement stay unchanged.
-          $legacy285 = @($modelState.predictions | Where-Object {
-            [string]$_.issue -eq '2026285' -and [string]$_.predictionSource -eq '云端同步'
-          })
-          if ($legacy285.Count -gt 0) {
-            if ($legacy285.Count -ne 6) { throw 'Unexpected partial 285 provenance migration; refusing to publish.' }
-            foreach ($row in $legacy285) { $row.predictionSource = '本地生成' }
-            Write-Host 'Applied legacy 285 provenance compatibility in memory (six rows; no forecast changes).'
-          }
-          $payload = @{
-            history = Get-Content 'site/data/history.json' -Raw | ConvertFrom-Json
-            dailyHistory = Get-Content 'site/data/daily-records/history.json' -Raw | ConvertFrom-Json
-            manifest = $manifest
-            modelState = $modelState
-            predictions = $predictions
-          } | ConvertTo-Json -Depth 100 -Compress
-          $tokenUrl = "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=smart-ledger-v7"
-          $oidc = (Invoke-RestMethod -Uri $tokenUrl -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -ErrorAction Stop).value
-          if (!$env:SITES_SIWC_BYPASS_TOKEN) { throw 'Missing SITES_SIWC_BYPASS_TOKEN Actions secret.' }
-          $headers = @{
-            Authorization = "Bearer $oidc"
-            'OAI-Sites-Authorization' = "Bearer $env:SITES_SIWC_BYPASS_TOKEN"
-          }
-          Invoke-RequiredPublish -Url 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish' -Headers $headers -Body $payload | Out-Host
-
-          $publishedManifest = Invoke-RestMethod -Uri 'https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/manifest' -Headers $headers -ErrorAction Stop
-          $expected = @($manifest.records | ForEach-Object { [string]$_ } | Sort-Object { [int]($_ -replace '\.json$', '') } -Descending)
-          $actual = @($publishedManifest.records | ForEach-Object { [string]$_ })
-          foreach ($file in $expected) {
-            if ($actual -notcontains $file) { throw "发布校验失败：缺少 $file" }
-          }
-          $latestFile = $expected | Select-Object -First 1
-          if ($latestFile) {
-            Invoke-RestMethod -Uri "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/prediction?file=$latestFile" -Headers $headers -ErrorAction Stop | Out-Null
-          }
-        env:
-          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
 
       - name: Report pipeline failure
         if: ${{ failure() }}
