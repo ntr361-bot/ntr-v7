@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026296",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "39953288384",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/39953288384",
-  "updated_at": "2026-10-23T12:31:34.457271+00:00",
+  "updated_at": "2026-10-23T12:32:38.434441+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 3,
+  "valid_authors": 3,
+  "successful_post_opens": 14,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 52,
+      "attempted": 15,
+      "opened": 14,
+      "extracted": 14,
+      "completed": 14
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 475,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 14,
+  "article_details_completed": 14,
+  "last_verified_post": {
+    "author": "潮汕大鸟哥",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139726&type=3",
+    "verified_at": "2026-10-23T12:32:37.949480+00:00",
+    "text_length": 54,
+    "text_sha256": "bfc55c8356ccb4f410d7b9777d7f478f98d2169893309f032c771fefebfae5d5"
+  },
+  "last_attempted_post": {
+    "author": "昭昭兒",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11139639&type=3",
+    "attempt_index": 15
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 70",
-  "progress_updated_at": "2026-10-23T12:31:34.397329+00:00",
+  "raw_count": 14,
+  "stage": "detail: 昭昭兒 昭昭元年，天官赐福，尘霾尽散，喜乐长安🎋",
+  "progress_updated_at": "2026-10-23T12:32:37.959558+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
