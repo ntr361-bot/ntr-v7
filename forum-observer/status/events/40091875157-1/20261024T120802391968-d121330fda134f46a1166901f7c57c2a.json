@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026297",
+  "state": "collecting_effectively",
+  "run_id": "40091875157",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40091875157",
+  "updated_at": "2026-10-24T12:08:02.391968+00:00",
+  "error": null,
+  "valid_materials": 74,
+  "valid_authors": 74,
+  "successful_post_opens": 482,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 48,
+      "extracted": 46,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 435,
+      "opened": 434,
+      "extracted": 432,
+      "completed": 434
+    }
+  },
+  "article_texts_extracted": 478,
+  "article_details_completed": 482,
+  "last_verified_post": {
+    "author": "天衍四十九",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146149&type=3",
+    "verified_at": "2026-10-24T12:08:01.756386+00:00",
+    "text_length": 16,
+    "text_sha256": "0f93aa914f99a82864569061577d104d7ffb4899c5e31e48e5698b15d5b380a8"
+  },
+  "last_attempted_post": {
+    "author": "周瑜伽砖",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146202&type=3",
+    "attempt_index": 483
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-24T12:02:54.859759+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 478,
+  "stage": "detail: 周瑜伽砖 平特",
+  "progress_updated_at": "2026-10-24T12:08:02.028282+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
