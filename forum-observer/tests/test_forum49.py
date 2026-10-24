@@ -292,3 +292,27 @@ class TwoIssuePlanTest(unittest.TestCase):
     def test_single_issue_post_without_plan_phrase_stays_valid(self):
         _, mats = strict(post('297期 ❤️（牛兔龙羊猴鸡）中🔥', title='六肖'))
         self.assertEqual(len(counted(mats)), 1)
+
+
+class WithinPeriodsPlanTest(unittest.TestCase):
+    """User rule: a recommendation promised to hit within several issues is invalid."""
+
+    def test_within_periods_phrases_are_excluded(self):
+        cases = [('297期 10期内必中【牛兔龙羊猴鸡】', '六肖'),
+                 ('297期六肖【牛兔龙羊猴鸡】 几期内必中', '六肖'),
+                 ('297期 3期内必中 六肖【牛兔龙羊猴鸡】', '六肖'),
+                 ('297期 十期内必中【牛兔龙羊猴鸡】', '六肖'),
+                 ('297期六肖【牛兔龙羊猴鸡】', '三期之内必出'),
+                 ('297期六肖【牛兔龙羊猴鸡】', '12期必出')]
+        for body, title in cases:
+            with self.subTest(body=body, title=title):
+                _, mats = strict(post(body, title=title))
+                self.assertTrue(mats)
+                self.assertEqual(counted(mats), [])
+                self.assertEqual(mats[0]['exclusion_reason'], issue_lines.REASON_MULTI)
+
+    def test_track_record_counts_stay_valid(self):
+        for body in ('297期六肖【牛兔龙羊猴鸡】 连准:7期', '297期六肖【牛兔龙羊猴鸡】 近10期中8期'):
+            with self.subTest(body=body):
+                _, mats = strict(post(body, title='六肖'))
+                self.assertEqual(len(counted(mats)), 1)

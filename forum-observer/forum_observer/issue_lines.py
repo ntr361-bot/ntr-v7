@@ -39,6 +39,11 @@ POST_PLAN = re.compile(r'(?<![第连准中错对近前:：])[二两三四五六�
 # Not track-record stats such as "连准:7期", "错2期", "近5期", "第7期".
 MULTI_PERIOD = re.compile(
     r'(?<![\d第连准中错对近前:：])(?:[2-9]|[二两三四五六七八九十])\s*期')
+# "N期内必中", "10期内", "几期内", "三期之内", "12期必出": a hit promised
+# within several issues is a multi-issue recommendation (user rule 2026-10-24).
+WITHIN_PERIODS = re.compile(
+    r'(?<![\d第连准中错对近前共:：])(?:[1-9]\d|[2-9]|[几数多两二三四五六七八九十]+)\s*期\s*'
+    r'(?:之?内|必中|必出|必开|计划)')
 FULL_ISSUE = re.compile(r'(?<!\d)(20\d{2})(\d{3})(?!\d)')
 # "297期", "第297期"; not a count such as "150期错2期" or "100期准95期".
 SHORT_WITH_QI = re.compile(r'(?<![\d连准中错对近前共])(\d{3})\s*期(?!\s*(?:错|内|准\d|中\d|对\d))')
@@ -70,7 +75,7 @@ def line_markers(line: str, issue: str):
     """Return ('multi'|'issue'|'previous'|None, issue_or_None) for one line."""
     line = str(line)
     year = str(issue)[:4]
-    if RANGE.search(line) or MULTI_PERIOD.search(line):
+    if RANGE.search(line) or MULTI_PERIOD.search(line) or WITHIN_PERIODS.search(line):
         return 'multi', None
     found = []
     for m in FULL_ISSUE.finditer(line):
@@ -125,7 +130,7 @@ def classify_segment(text: str, issue: str, inherited=(None, None)):
 
 
 def post_is_plan(*texts) -> bool:
-    return any(POST_PLAN.search(str(t or '')) for t in texts)
+    return any(POST_PLAN.search(str(t or '')) or WITHIN_PERIODS.search(str(t or '')) for t in texts)
 
 
 def title_context(title: str, issue: str):
