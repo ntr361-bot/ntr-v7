@@ -135,6 +135,15 @@ jobs:
               detail['request_failures']=s.get('request_failures',[])[:8]
               detail['console_errors']=s.get('console_errors',[])[:5]
               print('::notice title=probe detail::'+esc(json.dumps(detail,ensure_ascii=False)[:30000]))
+              fm=s.get('featured_markup')
+              if fm or s.get('featured_markup_error'):
+                  head={'error':s.get('featured_markup_error'),
+                        'cards_seen':(fm or {}).get('cards_seen'),
+                        'article_keys':(fm or {}).get('article_keys')}
+                  print('::notice title=probe featured keys::'+esc(json.dumps(head,ensure_ascii=False)[:3800]))
+                  for kind in ('featured','ordinary'):
+                      for i,row in enumerate((fm or {}).get(kind) or []):
+                          print(f'::notice title=probe {kind} {i+1}::'+esc(json.dumps(row,ensure_ascii=False)[:3800]))
           if c.exists():
               cs=json.loads(c.read_text())
               from collections import Counter
