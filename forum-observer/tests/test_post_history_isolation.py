@@ -72,5 +72,42 @@ class ForumPeriodBoundariesTests(unittest.TestCase):
         self.assertEqual(_issue('2026282'),'2026282')
 
 
+class ArticleStartsAfterStatsTests(unittest.TestCase):
+    SHELL=('澳门第297期\n青不年\n关注\nLV.6\n2026-10-23 23:34\n历史帖子\n'
+           '2637\n获赞\n815\n粉丝\n3\n关注\n6713\n成长值\n635\n阅读数\n')
+
+    def body(self,content,title):
+        page=Mock()
+        page.locator.return_value.inner_text.return_value=(
+            self.SHELL+content+'\n最新评论\n想说点什么...')
+        return _article_body(page,{'title':title})
+
+    def test_title_repeated_inside_article_keeps_current_issue_label(self):
+        content=('289期六肖中特【鸡蛇猪牛马鼠】蛇38中\n'
+                 '296期六肖中特【鸡虎兔狗羊马】猴23\n'
+                 '297期六肖中特【羊马兔蛇龙鼠】    中\n点点赞谢谢大哥大姐们')
+        text=self.body(content,'六肖中特')
+        self.assertTrue(text.startswith('289期六肖中特'))
+        self.assertIn('297期六肖中特【羊马兔蛇龙鼠】',text)
+
+    def test_short_title_is_not_cut_out_of_issue_number(self):
+        self.assertEqual(self.body('297期（六肖）牛猪蛇兔虎羊','297'),'297期（六肖）牛猪蛇兔虎羊')
+        self.assertEqual(self.body('第297期 特肖-九肖:鼠,牛,虎','第'),'第297期 特肖-九肖:鼠,牛,虎')
+
+    def test_title_line_heading_is_dropped(self):
+        self.assertEqual(self.body('赚钱六肖\n297期【马龙牛鼠狗鸡】开00','赚钱六肖'),
+                         '297期【马龙牛鼠狗鸡】开00')
+
+    def test_scoring_sees_current_issue_line(self):
+        content='296期六肖中特【鸡虎兔狗羊马】猴23\n297期六肖中特【羊马兔蛇龙鼠】 中'
+        post={'author':'青不年','issue':'2026297','title':'六肖中特',
+              'body':self.body(content,'六肖中特'),'images':[],
+              'detail_url':'https://example.org/297'}
+        _,works=score_posts([post])
+        counted=[w for w in works if w['counted_for_ranking']]
+        self.assertEqual(len(counted),1)
+        self.assertEqual(sorted(counted[0]['picks']),sorted('羊马兔蛇龙鼠'))
+
+
 if __name__=='__main__':
     unittest.main()

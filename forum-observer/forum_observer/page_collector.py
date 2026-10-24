@@ -787,6 +787,28 @@ def _wait_detail(page,item,timeout_seconds=7,diagnostic=None):
     return False
 
 
+def _article_after_stats(text,title):
+    """Article text starts right after the verified detail shell's stats block.
+
+    The detail page renders author, 历史帖子 and the stats (… 成长值 / 阅读数)
+    above the article. Cutting at the *last* occurrence of the feed title is
+    wrong whenever the title also appears inside the article: a title such as
+    "六肖中特", "297" or "第" then dropped every line before its last repeat,
+    including the "297期" label of the current-issue line. Returns None when
+    no detail shell is present (callers fall back to the title boundary).
+    """
+    shell=text.find('历史帖子')
+    if shell<0:return None
+    stats=re.search(r'(?m)^[^\S\n]*阅读数[^\S\n]*$',text[shell:])
+    if not stats:return None
+    article=text[shell+stats.end():][:50000].strip()
+    # A title rendered as its own first line is a heading, not content.
+    first,_,rest=article.partition('\n')
+    if title and re.sub(r'\s+','',first)==re.sub(r'\s+','',str(title)):
+        article=rest.strip()
+    return article
+
+
 def _article_body(page,item):
     """Bound article text by its *own title* and the comment boundary.
 
@@ -796,7 +818,9 @@ def _article_body(page,item):
     before_comments=all_text.split('最新评论',1)[0]
     span=_title_span(before_comments,item.get('title',''))
     if not span:return ''
-    article=before_comments[span[1]:][:50000].strip()
+    article=_article_after_stats(before_comments,item.get('title',''))
+    if article is None:
+        article=before_comments[span[1]:][:50000].strip()
     # Below these headings the SPA embeds unrelated site-wide contest,
     # navigation and recommendation widgets. They are not author evidence.
     footer=re.search(
