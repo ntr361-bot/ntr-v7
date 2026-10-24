@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026297",
+  "state": "collecting_effectively",
+  "run_id": "40091875157",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40091875157",
+  "updated_at": "2026-10-24T12:05:54.403710+00:00",
+  "error": null,
+  "valid_materials": 54,
+  "valid_authors": 54,
+  "successful_post_opens": 318,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 48,
+      "extracted": 46,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 271,
+      "opened": 270,
+      "extracted": 268,
+      "completed": 270
+    }
+  },
+  "article_texts_extracted": 314,
+  "article_details_completed": 318,
+  "last_verified_post": {
+    "author": "太酷啦啦啦",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146517&type=3",
+    "verified_at": "2026-10-24T12:05:53.743682+00:00",
+    "text_length": 273,
+    "text_sha256": "1b0e396dfb9051e3e3e1fd5b4a9c4a11e74dd37a0770d2770dcac91bc9d4cce2"
+  },
+  "last_attempted_post": {
+    "author": "比天还高",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146516&type=3",
+    "attempt_index": 319
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-24T12:02:54.859759+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 314,
+  "stage": "detail: 比天还高 297期:单双，有缘千里来相会,无缘对面不相逢！",
+  "progress_updated_at": "2026-10-24T12:05:53.989789+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
