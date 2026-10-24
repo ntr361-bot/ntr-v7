@@ -69,7 +69,7 @@ jobs:
           from zoneinfo import ZoneInfo
           def esc(x): return x.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
           # Read-only test: output stays in the runner (contents: read), nothing is committed.
-          rec=forum49.run(forum49.DEFAULT_URL, os.environ['TEST_ISSUE'], '澳门',
+          rec=forum49.run(forum49.DEFAULT_URL, None if os.environ['TEST_ISSUE']=='latest' else os.environ['TEST_ISSUE'], '澳门',
                           Path('test-out'), Path('test-archive'))
           assert not list(Path('test-archive').rglob('snapshot.json'))
           head={k:rec.get(k) for k in ('ok','error','issue','issue_matches_request','detail_posts',
