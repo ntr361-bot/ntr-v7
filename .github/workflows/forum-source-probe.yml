@@ -66,6 +66,9 @@ jobs:
           url=os.environ['PROBE_URL']
           # Widen the host allowlist for this process only; the repo file is unchanged.
           page_collector.HOSTS.add(urlparse(url).hostname)
+          # TEST BRANCH ONLY: use 49论坛模型's featured ('精') detector, as forum49.run does.
+          from forum_observer.forum49 import FEATURED_ICON_SELECTOR
+          page_collector.FEATURED_ICON_SELECTORS.append(FEATURED_ICON_SELECTOR)
           cfg=json.loads(Path('collector-config.json').read_text())
           n=max(1,min(int(os.environ.get('PROBE_MAX_POSTS') or 5),100))
           cfg.update(max_posts=n,max_pages=max(5,n//4),max_collection_seconds=1200,
@@ -85,6 +88,11 @@ jobs:
                   rejected=result['rejected'][:20],
                   requested_posts=n,
                   material_counts=result.get('material_counts'),
+                  featured={k:result.get(k) for k in ('featured_found_threads','featured_selected_threads',
+                      'featured_attempted_threads','featured_completed_threads','featured_valid_materials',
+                      'ordinary_valid_materials')},
+                  featured_posts=[f"{p['author']}|{p['title'][:20]}|{len(p['body'])}字" for p in posts if p.get('is_featured') is True][:40],
+                  priority_audit=(result.get('audit') or {}).get('priority_audit'),
                   ranking_preview_test_only=[[r['zodiac'],round(r.get('score',0),3)] for r in (result.get('ranking') or [])[:12]],
                   materials=[{'author':m['author'],'play':m.get('play'),'mode':m.get('mode'),
                               'picks':m.get('picks'),'counted':m['counted_for_ranking'],
@@ -160,6 +168,8 @@ jobs:
               brief={'issue':cs.get('issue'),'error':cs.get('error'),
                      'posts':[{'author':x['author'],'url':x['url'][-40:],'chars':x['body_chars'],'excerpt':x['excerpt'][:90]} for x in cs.get('posts',[])],
                      'rejected':[json.dumps(r,ensure_ascii=False)[:160] for r in cs.get('rejected',[])[:8]]}
+              print('::notice title=probe featured collect::'+esc(json.dumps({'featured':cs.get('featured'),
+                  'featured_posts':cs.get('featured_posts'),'priority_audit':cs.get('priority_audit')},ensure_ascii=False)[:3800]))
               print('::notice title=probe stage2::'+esc(json.dumps(brief,ensure_ascii=False)[:3800]))
           PY
       - uses: actions/upload-artifact@v4
