@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026297",
+  "state": "collecting_effectively",
+  "run_id": "40093912505",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40093912505",
+  "updated_at": "2026-10-24T12:37:55.870553+00:00",
+  "error": null,
+  "valid_materials": 72,
+  "valid_authors": 72,
+  "successful_post_opens": 446,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 47,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 486,
+      "attempted": 398,
+      "opened": 397,
+      "extracted": 395,
+      "completed": 397
+    }
+  },
+  "article_texts_extracted": 442,
+  "article_details_completed": 446,
+  "last_verified_post": {
+    "author": "苍穹剑泣",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146389&type=3",
+    "verified_at": "2026-10-24T12:37:55.160809+00:00",
+    "text_length": 12,
+    "text_sha256": "04e9a2ac365e17348da1da3570e4092315ffa0533d10400dc007e9b1b48dc6c9"
+  },
+  "last_attempted_post": {
+    "author": "杀神白起",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146388&type=3",
+    "attempt_index": 447
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-24T12:33:03.185258+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 442,
+  "stage": "detail: 杀神白起 297期:TM大小，半数下注准确率高还是可以下注的",
+  "progress_updated_at": "2026-10-24T12:37:55.498419+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": null
+}
