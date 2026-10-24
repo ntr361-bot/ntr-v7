@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026297",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "40093912505",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40093912505",
-  "updated_at": "2026-10-24T12:31:34.920337+00:00",
+  "updated_at": "2026-10-24T12:32:38.641769+00:00",
   "error": null,
   "valid_materials": 0,
   "valid_authors": 0,
-  "successful_post_opens": 0,
+  "successful_post_opens": 2,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 49,
+      "attempted": 3,
+      "opened": 2,
+      "extracted": 2,
+      "completed": 2
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 486,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 2,
+  "article_details_completed": 2,
+  "last_verified_post": {
+    "author": "蛋蛋有伤",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146153&type=3",
+    "verified_at": "2026-10-24T12:32:38.176806+00:00",
+    "text_length": 1,
+    "text_sha256": "cecd675a4c3cb00d1fee2e46eb53f902c9c5d09fa0636f7ea83e10e3214ba656"
+  },
+  "last_attempted_post": {
+    "author": "节外生枝",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146278&type=3",
+    "attempt_index": 3
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 69",
-  "progress_updated_at": "2026-10-24T12:31:34.512591+00:00",
+  "raw_count": 2,
+  "stage": "detail: 节外生枝 港澳百家网【无错二波中特】",
+  "progress_updated_at": "2026-10-24T12:32:38.178324+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
