@@ -77,18 +77,30 @@ FEATURED_MARKUP_JS = r"""cards => {
         const icon = !!li.querySelector('.title .van19 > span.up > img.icon');
         const art = articles.find(a => norm(a.username) === author && norm(a.title) === title) || null;
         const head = li.querySelector('.title') || li.querySelector('.formtitle')?.parentElement || li;
-        return {author, title, current_detector: icon,
+        const imgs = [...head.querySelectorAll('img')].map(img => ({
+            path: path(img), style: img.getAttribute('style') || '',
+            src: (img.getAttribute('src') || '').replace(/^data:image\/\w+;base64,/, 'b64:').slice(0, 24) +
+                 '#' + (img.getAttribute('src') || '').length}));
+        return {author, title, current_detector: icon, title_imgs: imgs,
+                high_quality: art ? art.highQuality : null, top: art ? art.top : null,
                 badge_paths: badges.map(path).slice(0, 3),
                 badge_html: badges.map(b => b.outerHTML.slice(0, 300)).slice(0, 3),
-                title_html: head.outerHTML.slice(0, 1500),
+                title_html: head.outerHTML.replace(/src="data:[^"]*"/g, 'src="data:…"').slice(0, 1500),
                 article: art ? Object.fromEntries(Object.entries(art).filter(([k, v]) =>
                     v === null || ['string', 'number', 'boolean'].includes(typeof v))
                     .map(([k, v]) => [k, typeof v === 'string' ? v.slice(0, 60) : v])) : null};
     });
     return {article_keys: articles[0] ? Object.keys(articles[0]) : [],
             cards_seen: rows.length,
-            featured: rows.filter(r => r.current_detector || r.badge_paths.length).slice(0, 4),
-            ordinary: rows.filter(r => !r.current_detector && !r.badge_paths.length).slice(0, 2)};
+            stats: {cards: rows.length,
+                    high_quality: rows.filter(r => r.high_quality === 1).length,
+                    top: rows.filter(r => r.top === 1).length,
+                    current_detector: rows.filter(r => r.current_detector).length,
+                    text_badge: rows.filter(r => r.badge_paths.length).length,
+                    img_signatures: Object.entries(rows.flatMap(r => r.title_imgs.map(i => i.path + ' ' + i.src))
+                        .reduce((m, k) => (m[k] = (m[k] || 0) + 1, m), {}))},
+            featured: rows.filter(r => r.top !== 1 && (r.current_detector || r.badge_paths.length || r.high_quality === 1)).slice(0, 4),
+            ordinary: rows.filter(r => r.top !== 1 && !r.current_detector && !r.badge_paths.length && r.high_quality !== 1).slice(0, 2)};
 }"""
 
 
@@ -100,6 +112,7 @@ def capture_featured_markup(page, scroll_steps: int = 8) -> dict:
         snap = page.locator(CARD_SELECTOR).evaluate_all(FEATURED_MARKUP_JS)
         found['article_keys'] = found['article_keys'] or snap.get('article_keys') or []
         found['cards_seen'] = max(found['cards_seen'], snap.get('cards_seen') or 0)
+        found['stats'] = snap.get('stats')
         for kind in ('featured', 'ordinary'):
             for row in snap.get(kind) or []:
                 key = (kind, row.get('author'), row.get('title'))

@@ -139,7 +139,8 @@ jobs:
               if fm or s.get('featured_markup_error'):
                   head={'error':s.get('featured_markup_error'),
                         'cards_seen':(fm or {}).get('cards_seen'),
-                        'article_keys':(fm or {}).get('article_keys')}
+                        'article_keys':(fm or {}).get('article_keys'),
+                        'stats':(fm or {}).get('stats')}
                   print('::notice title=probe featured keys::'+esc(json.dumps(head,ensure_ascii=False)[:3800]))
                   for kind in ('featured','ordinary'):
                       for i,row in enumerate((fm or {}).get(kind) or []):
