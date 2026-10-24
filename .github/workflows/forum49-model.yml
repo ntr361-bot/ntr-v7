@@ -191,6 +191,12 @@ jobs:
           python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
             --history ../site/data/history.json --public ../site/data/forum49 \
             --finalize --model-id forum49
+      - name: Record 49 author history from verified frozen evidence only
+        # Same append-only author memory as 118论坛模型, separate archive
+        # (forum49/author-profiles/). No scraping, rescoring or frozen edits;
+        # never feeds predictions. A failure here never blocks the commit.
+        continue-on-error: true
+        run: python -m forum_observer.author_profiles --archive forum49
       - name: Report snapshot
         if: always()
         run: |
@@ -233,6 +239,12 @@ jobs:
         run: |
           python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
             --history ../site/data/history.json --public ../site/data/forum49 --model-id forum49
+      - name: Record 49 author history from verified frozen evidence only
+        # Same append-only author memory as 118论坛模型, separate archive
+        # (forum49/author-profiles/). No scraping, rescoring or frozen edits;
+        # never feeds predictions. A failure here never blocks the commit.
+        continue-on-error: true
+        run: python -m forum_observer.author_profiles --archive forum49
       - name: Commit settlement
         shell: bash
         run: |

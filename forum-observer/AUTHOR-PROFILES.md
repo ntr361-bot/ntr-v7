@@ -20,6 +20,9 @@
 
 每期记录实际采用生肖数以及随机命中基准 `入选生肖数/12`，避免未来把9肖、10肖、杀一肖的自然覆盖概率当作独立能力。**暂时不计算作者实力排名、不调整权重。**
 
+## 49论坛模型
+49论坛模型使用同一套作者档案逻辑，单独存放在 `forum49/author-profiles/`（records 每期一份、不覆盖；index 每次重新派生），与118论坛模型的 `archive/author-profiles/` 互不混合。49 冻结作业和结算作业结束后各运行一次 `python -m forum_observer.author_profiles --archive forum49`；结算后补上实际生肖与命中/未中。同样不参与评分、权重或采集决策。
+
 ## 独立启动
 `python -m forum_observer.author_profiles --archive archive`
 
