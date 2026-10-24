@@ -178,10 +178,12 @@ def _listing(page,category):
             const exact=matches.length>1 ?
                 matches.filter(a=>norm(a.createTime)===norm(published)) : matches;
             const id=exact.length===1 ? Number(exact[0].articleId) : null;
+            const count=k=>exact.length===1 && Number.isFinite(Number(exact[0][k])) ? Number(exact[0][k]) : null;
             const link=[...li.querySelectorAll('a[href]')].map(a=>a.href)
                 .find(h=>h.includes('corpusdetail')) || '';
             const isFeatured=!!li.querySelector(__FEATURED_SELECTOR__);
             return {author, issue, is_featured:isFeatured,
+                click_count:count('clickCount'), like_count:count('thumbUpCount'),
                 published_at:published, title, body:value('.text'),
                 category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
                 image_urls:[...li.querySelectorAll('.text img')]
@@ -655,6 +657,45 @@ def consistent_comment_ocr(first,second,issue):
     return first if a and a==b else ''
 
 
+def apply_collection_scope(items, policy):
+    """Optional per-model limit on which current-issue posts are opened.
+
+    Used only when the policy sets it (49论坛模型, user-authorized 2026-10-24).
+    Featured (加精) posts are always kept. Ordinary posts are kept only when the
+    feed card shows clicks >= ordinary_min_clicks OR likes >= ordinary_min_likes;
+    posts whose counts are unknown are left out. Kept posts are ordered featured
+    first, then by popularity, and capped at scoped_post_cap. The filter looks at
+    the card only (never at draw results); scoring rules are unchanged.
+    Returns (kept_items, audit) and leaves items unchanged without the policy.
+    """
+    min_clicks=policy.get('ordinary_min_clicks')
+    min_likes=policy.get('ordinary_min_likes')
+    cap=policy.get('scoped_post_cap')
+    if min_clicks is None and min_likes is None and cap is None:
+        return list(items),None
+    featured=[x for x in items if x.get('is_featured') is True]
+    ordinary=[x for x in items if x.get('is_featured') is not True]
+    def passes(x):
+        clicks,likes=x.get('click_count'),x.get('like_count')
+        ok_clicks=min_clicks is not None and clicks is not None and clicks>=min_clicks
+        ok_likes=min_likes is not None and likes is not None and likes>=min_likes
+        return ok_clicks or ok_likes or (min_clicks is None and min_likes is None)
+    unknown=sum(1 for x in ordinary if x.get('click_count') is None and x.get('like_count') is None)
+    kept_ordinary=sorted([x for x in ordinary if passes(x)],
+                         key=lambda x:(-(x.get('click_count') or 0),-(x.get('like_count') or 0)))
+    kept=featured+kept_ordinary
+    capped=kept[:int(cap)] if cap is not None else kept
+    return capped,{'rule':'featured_all_then_ordinary_by_popularity',
+                   'ordinary_min_clicks':min_clicks,'ordinary_min_likes':min_likes,
+                   'scoped_post_cap':cap,'issue_posts_found':len(items),
+                   'featured_found':len(featured),'ordinary_found':len(ordinary),
+                   'ordinary_unknown_counts':unknown,
+                   'ordinary_below_threshold':len(ordinary)-len(kept_ordinary),
+                   'dropped_by_cap':len(kept)-len(capped),
+                   'selected_posts':len(capped),
+                   'selected_featured':sum(1 for x in capped if x.get('is_featured') is True)}
+
+
 def prioritize_posts(items, favored):
     """Featured first; every accepted evidence row still has the same vote weight."""
     return sorted(items,key=lambda item:(
@@ -1035,7 +1076,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             next_period=[item for item in listing if retrospective
                          and item['issue']==next_issue
                          and item['author'] not in ('论坛管理','管理员')]
-            targets=prioritize_posts(scoped,favored)+[x for x in prioritize_posts(next_period,favored) if x['key'] not in {p['key'] for p in scoped}]
+            selected,collection_scope=apply_collection_scope(scoped,policy)
+            targets=prioritize_posts(selected,favored)+[x for x in prioritize_posts(next_period,favored) if x['key'] not in {p['key'] for p in scoped}]
             if not targets:raise ValueError('no current or next-period posts for '+issue)
             truncated=(len(targets)>max_posts or feed_audit.get('truncated',False)
                        or (bool(target_issue) and not feed_mode and len(author_samples)>author_limit)
@@ -1279,6 +1321,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
             'comment_thread_state_counts':dict(Counter(x['status'] for x in thread_states.values())),
             'comment_retry_attempts':comment_retry_attempts,
             'completed_thread_cache':completed_thread_cache,
+            'collection_scope':collection_scope,
             'featured_found_threads':sum(p.get('is_featured') is True for p in scoped),
             'featured_selected_threads':featured_body['queued'],
             'featured_checked_threads':featured_body['completed'],
