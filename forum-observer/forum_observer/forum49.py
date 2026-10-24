@@ -26,6 +26,10 @@ DEFAULT_URL = 'https://49217.com/#/forum'
 MAX_POSTS = 2000  # collector's own ceiling; feed scan stops at the issue boundary
 FREEZE_CUTOFF = (21, 0)
 PUBLISH_RESERVE_SECONDS = 90
+# 49图库 marks featured (加精) cards with a '精' icon here; its `span.up > img`
+# (no .icon class) is the pinned/置顶 marker. Verified by source probe run
+# 40058947187: 11 of 20 cards had this icon and all 11 had highQuality=1.
+FEATURED_ICON_SELECTOR = '.title .van19 > span.van19 > img.icon'
 
 
 def collection_budget(now_local, default_seconds: int) -> int:
@@ -78,6 +82,8 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
         config_path: Path = Path('collector-config.json')) -> dict:
     from . import page_collector
     page_collector.HOSTS.add(urlparse(url).hostname)  # this process only
+    if FEATURED_ICON_SELECTOR not in page_collector.FEATURED_ICON_SELECTORS:
+        page_collector.FEATURED_ICON_SELECTORS.append(FEATURED_ICON_SELECTOR)  # this process only
     out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,

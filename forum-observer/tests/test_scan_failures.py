@@ -28,6 +28,26 @@ class ScanFailureTests(unittest.TestCase):
         page.locator.return_value.evaluate_all.assert_called_once()
         page.locator.return_value.all.assert_not_called()
 
+    def test_extra_featured_selector_is_used_only_when_registered(self):
+        from unittest import mock
+        from forum_observer import page_collector
+        from forum_observer.forum49 import FEATURED_ICON_SELECTOR
+        page = Mock()
+        page.locator.return_value.evaluate_all.return_value = []
+        # Patch the list in both cases: other tests may run forum49.run, which
+        # registers its selector for the rest of that process.
+        with mock.patch.object(page_collector, 'FEATURED_ICON_SELECTORS',
+                               ['.title .van19 > span.up > img.icon']):
+            _listing(page, None)
+        default_script = page.locator.return_value.evaluate_all.call_args.args[0]
+        self.assertNotIn(FEATURED_ICON_SELECTOR, default_script)
+        with mock.patch.object(page_collector, 'FEATURED_ICON_SELECTORS',
+                               ['.title .van19 > span.up > img.icon', FEATURED_ICON_SELECTOR]):
+            _listing(page, None)
+        script = page.locator.return_value.evaluate_all.call_args.args[0]
+        self.assertIn('.title .van19 > span.up > img.icon, ' + FEATURED_ICON_SELECTOR, script)
+        self.assertNotIn('__FEATURED_SELECTOR__', script)
+
     def test_expired_scan_returns_incomplete_without_browser_work(self):
         page = Mock()
         rows, audit = incremental_scan(page, Mock(), deadline=0)

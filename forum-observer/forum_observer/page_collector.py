@@ -104,6 +104,10 @@ BARE_KILL_PATTERN=re.compile(r'(?:(?<![\u4e00-\u9fff])|(?<=期))(?P<play>杀)\s*
 BIG_SMALL_GROUP=re.compile(r'胆(?P<group>大|小)(?:生肖|肖)\s*[:：=]\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])')
 BIG_SMALL_CHOICE=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆(?P<group>大|小)生肖(?=\s*开|[\s，。,])')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
+# Featured (加精) badge icons on feed cards. The default is the current
+# source's markup; another site may add its own selector for its process only
+# (49论坛模型 adds its '精' icon in forum49.run), like HOSTS above.
+FEATURED_ICON_SELECTORS=['.title .van19 > span.up > img.icon']
 
 
 def _issue(label):
@@ -150,7 +154,7 @@ def current_issue(listing,now=None):
 def _listing(page,category):
     # Take one synchronous DOM snapshot. Per-card locators can detach while
     # this virtualized feed rerenders, each causing a 30-second auto-wait.
-    rows=page.locator('.forum-list > li').evaluate_all(r"""cards => {
+    rows=page.locator('.forum-list > li').evaluate_all((r"""cards => {
         // Live Vue feed cards have no href. Capture exact article IDs now,
         // before scrolling removes their associated loaded list entries.
         let parent=cards[0];
@@ -176,7 +180,7 @@ def _listing(page,category):
             const id=exact.length===1 ? Number(exact[0].articleId) : null;
             const link=[...li.querySelectorAll('a[href]')].map(a=>a.href)
                 .find(h=>h.includes('corpusdetail')) || '';
-            const isFeatured=!!li.querySelector('.title .van19 > span.up > img.icon');
+            const isFeatured=!!li.querySelector(__FEATURED_SELECTOR__);
             return {author, issue, is_featured:isFeatured,
                 published_at:published, title, body:value('.text'),
                 category:kinds.length ? kinds[kinds.length-1].innerText.trim() : '',
@@ -184,7 +188,7 @@ def _listing(page,category):
                     .map(img=>img.getAttribute('data-src')||img.src).filter(Boolean),
                 article_id:id, href:link || (id ? origin+'#/corpusdetail?id='+id+'&type=3' : '')};
         });
-    }""")
+    }""").replace('__FEATURED_SELECTOR__',json.dumps(', '.join(FEATURED_ICON_SELECTORS))))
     result=[]
     for obj in rows:
         if not obj['author'] or not obj['issue']:continue
