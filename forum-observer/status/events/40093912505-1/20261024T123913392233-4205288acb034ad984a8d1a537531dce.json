@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026297",
+  "state": "collected",
+  "run_id": "40093912505",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40093912505",
+  "updated_at": "2026-10-24T12:39:13.392233+00:00",
+  "error": null,
+  "valid_materials": 83,
+  "valid_authors": 83,
+  "successful_post_opens": 535,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 47,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 486,
+      "attempted": 486,
+      "opened": 486,
+      "extracted": 484,
+      "completed": 486
+    }
+  },
+  "article_texts_extracted": 531,
+  "article_details_completed": 535,
+  "last_verified_post": {
+    "author": "左路左路",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146060&type=3",
+    "verified_at": "2026-10-24T12:39:12.321080+00:00",
+    "text_length": 121,
+    "text_sha256": "473cfb81a77fb7c71e752807aef89498468a2c7708619516657657835c7898d7"
+  },
+  "last_attempted_post": {
+    "author": "左路左路",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146060&type=3",
+    "attempt_index": 535
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-24T12:33:03.185258+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 531,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-24T12:39:13.049900+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 4,
+    "truncated": false,
+    "unextracted_current_posts": 4
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
