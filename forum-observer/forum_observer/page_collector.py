@@ -862,20 +862,44 @@ def previous_period_records(text,requested_issue,post):
     return records
 
 
-def score_posts(posts):
+def score_posts(posts,strict_issue_lines=False):
+    """strict_issue_lines (49论坛模型 only; 118 keeps the default False):
+    every candidate's own line or section heading must name exactly the
+    current issue; see issue_lines."""
     picks=[]
     for post in posts:
         # Reply text is saved as evidence, but must not be attributed to OP.
-        body=current_period_text(post['body'],post['issue'])
-        replies=current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
+        raw_body=post['body']
+        raw_replies=_author_comments(post.get('comments',''),post['author'])
+        ocr_texts=[]
+        if strict_issue_lines:
+            from .issue_lines import split_issue_units
+            raw_body=split_issue_units(raw_body)
+            raw_replies=split_issue_units(raw_replies)
+        body=current_period_text(raw_body,post['issue'])
+        replies=current_period_text(raw_replies,post['issue'])
         text=current_period_text(post['title'],post['issue'])+'\n'+body+'\n'+replies
         for pic in post.get('images',[]):
             if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
                     or eligible_comment_image(pic,post)):
-                text+='\n'+current_period_text(pic['ocr'],post['issue'])
+                ocr=split_issue_units(pic['ocr']) if strict_issue_lines else pic['ocr']
+                ocr_texts.append(ocr)
+                text+='\n'+current_period_text(ocr,post['issue'])
         parsed=extract_picks(text)
+        if strict_issue_lines:
+            from .issue_lines import classify_segment, title_context, candidate_reason, REASON_MULTI
+            heading=title_context(post['title'],post['issue'])
+            rows=classify_segment(post['title'],post['issue'])
+            for section in [raw_body,*ocr_texts]:
+                rows+=classify_segment(section,post['issue'],heading)
+            rows+=classify_segment(raw_replies,post['issue'])
+            title_multi=heading[0]=='multi'
         for p in parsed:
             reason=p.get('parse_error')
+            if strict_issue_lines:
+                strict_reason=candidate_reason(p,rows,title_multi)
+                p['issue_line_check']=strict_reason or 'explicit current issue'
+                if strict_reason:reason=strict_reason
             if UNCERTAIN_PATTERN.search(post['title']):
                 p['mode']='unverified'
             try:
@@ -931,6 +955,8 @@ def unparsed_evidence(posts):
 def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     from playwright.sync_api import sync_playwright
     policy=dict(policy or {})
+    # 49论坛模型 only (forum49.run sets it); 118 never sets this key.
+    strict_issue_lines=bool(policy.get('strict_issue_lines'))
     # Production collection is restricted to verified article detail text.
     policy['collect_comments']=False
     policy['collect_comment_images']=False
@@ -952,7 +978,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     issue=target_issue
     listing_candidates=[]
     def checkpoint(stage):
-        ranking,predictions=score_posts(posts)
+        ranking,predictions=score_posts(posts,strict_issue_lines)
         progress={'scoring_rule_version':SCORING_RULE_VERSION,'scoring_rules':SCORING_RULES,
                   'material_counts':material_counts(predictions),'issue':issue,'status':'incomplete_observation',
                   'stage':stage,'fetched_at':datetime.now(timezone.utc).isoformat(),
@@ -1227,7 +1253,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                                      is_featured=parent.get('is_featured') is True)
                         # No valid current-period play means the author may still
                         # publish later; do not mark that thread completed.
-                        _,votes_in_thread=score_posts([parent,*children])
+                        _,votes_in_thread=score_posts([parent,*children],strict_issue_lines)
                         playable=any(v['counted_for_ranking'] for v in votes_in_thread)
                         state=('timeout' if check.get('truncated') else
                                'checked' if playable else 'pending_publish')
@@ -1266,7 +1292,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
         if key not in history_seen:
             history_seen.add(key);deduped.append(record)
     historical_references=deduped
-    ranking,predictions=score_posts(posts)
+    ranking,predictions=score_posts(posts,strict_issue_lines)
     candidates=set(policy.get('top_authors',[]))
     top_found=sorted({p['author'] for p in posts if p['author'] in candidates})
     other_found=sorted({p['author'] for p in posts if p['author'] not in candidates})
@@ -1401,6 +1427,9 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                     'page top draw results are excluded from scoring. '
                     'Experimental evidence only; no verified live leaderboard.')}
     from .questions import pending_questions
+    if strict_issue_lines:
+        result['issue_line_rule']=('strict: only lines explicitly naming the single current issue; '
+                                   'historical lines, multi-issue plans and lines without an explicit issue are excluded')
     result['pending_rule_questions']=pending_questions(result)
     result['pending_rule_question_count']=len(result['pending_rule_questions'])
     out.mkdir(parents=True,exist_ok=True)
