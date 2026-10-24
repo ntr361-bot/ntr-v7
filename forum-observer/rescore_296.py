@@ -79,20 +79,70 @@ def harvest_cards(url, stop_issue, minutes):
     return cards, audit
 
 
+DETAIL_JS = r"""(id) => {
+    const seen = new Set();
+    const find = (o, d) => {
+        if (!o || typeof o !== 'object' || d > 4 || seen.has(o)) return null;
+        seen.add(o);
+        if ('highQuality' in o && 'clickCount' in o && (!o.articleId || Number(o.articleId) === id)) return o;
+        for (const v of Object.values(o)) { const r = find(v, d + 1); if (r) return r; }
+        return null;
+    };
+    for (const el of document.querySelectorAll('*')) {
+        const vm = el.__vue__;
+        if (!vm) continue;
+        const r = find(vm.$data, 0);
+        if (r) return {click_count: Number(r.clickCount), like_count: Number(r.thumbUpCount),
+                       is_featured: Number(r.highQuality) === 1, issue: String(r.periodStr || r.period || ''),
+                       author: r.username || null};
+    }
+    return null;
+}"""
+
+
+def harvest_details(ids, minutes):
+    """Open each detail page (read-only) and read its article counts."""
+    import time
+    from playwright.sync_api import sync_playwright
+    cards, errors = {}, []
+    deadline = time.monotonic() + minutes * 60
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True, args=['--no-sandbox'])
+        try:
+            page = browser.new_page(viewport={'width': 1280, 'height': 1800})
+            for i in sorted(ids):
+                if time.monotonic() > deadline:
+                    errors.append('time budget'); break
+                try:
+                    page.goto(f'https://49217.com/#/corpusdetail?id={i}&type=3', wait_until='domcontentloaded', timeout=20000)
+                    got = None
+                    for _ in range(16):
+                        page.wait_for_timeout(500)
+                        got = page.evaluate(DETAIL_JS, i)
+                        if got: break
+                    if got: cards[i] = got
+                    else: errors.append(f'{i}: no article data')
+                except Exception as exc:
+                    errors.append(f'{i}: {type(exc).__name__}')
+        finally:
+            browser.close()
+    return cards, {'opened': len(ids), 'read': len(cards), 'errors': errors[:20], 'error_count': len(errors)}
+
+
 if __name__ == '__main__':
     import os
     from pathlib import Path
     from forum_observer.forum49 import COLLECTION_SCOPE
     def esc(x): return x.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
     run = json.loads(Path(sys.argv[1]).read_text())
-    cards, audit = harvest_cards('https://49217.com/#/forum', sys.argv[2], int(sys.argv[3]))
-    ids = {post_id(m['source_url']) for m in run['materials']}
+    ids = {post_id(m['source_url']) for m in run['materials']} - {None}
+    cards, audit = harvest_details(ids, int(sys.argv[3]))
     found = {i: cards[i] for i in ids if i in cards}
     full_rank, full_used = score(eligible_rows(run))
     rows, scope = scoped(run, cards, COLLECTION_SCOPE)
     new_rank, new_used = score(rows)
     old = {r['author'] for r in full_used}; new = {r['author'] for r in new_used}
-    out = {'scan': {k: audit.get(k) for k in ('steps', 'items_seen', 'stop_reason', 'truncated')},
+    out = {'scan': audit,
            'cards_harvested': len(cards), 'material_posts': len(ids), 'material_posts_with_counts': len(found),
            'featured_material_posts': sum(1 for c in found.values() if c.get('is_featured')),
            'scope_on_material_posts': scope,
