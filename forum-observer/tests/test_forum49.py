@@ -57,7 +57,7 @@ class Forum49Test(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
 
-    def test_run_passes_collection_scope_to_collector(self):
+    def test_formal_collection_is_unscoped_and_shadow_is_recorded(self):
         with TemporaryDirectory() as d:
             d = Path(d)
             (d / 'collector-config.json').write_text('{}')
@@ -65,10 +65,29 @@ class Forum49Test(unittest.TestCase):
                  mock.patch('forum_observer.report.render'), \
                  mock.patch.object(forum49, 'collection_budget', return_value=600), \
                  mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '43'}):
-                forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
+                rec = forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
             cfg = collect.call_args[0][4]
-            self.assertEqual((cfg['ordinary_min_clicks'], cfg['ordinary_min_likes'], cfg['scoped_post_cap']),
-                             (300, 10, 300))
+            for key in ('ordinary_min_clicks', 'ordinary_min_likes', 'scoped_post_cap'):
+                self.assertNotIn(key, cfg)
+            self.assertEqual(rec['valid_materials'], 2)  # formal record unchanged
+            self.assertIn('shadow_scope', rec)
+            self.assertFalse(rec['shadow_scope'].get('used_for_freeze', True))
+
+    def test_shadow_scores_only_featured_and_popular_posts(self):
+        def post(author, body, **card):
+            return {'author': author, 'issue': '2026295', 'title': '295期', 'body': body, 'comments': '',
+                    'images': [], 'detail_url': 'https://49217.com/#/corpusdetail?id=' + author,
+                    'published_at': '2026-10-22T10:00:00+08:00', **card}
+        result = {'evidence': [
+            post('精', '295期六肖：鼠牛虎兔龙蛇', is_featured=True, click_count=5, like_count=0),
+            post('热', '295期六肖：鼠牛虎兔龙马', is_featured=False, click_count=300, like_count=0),
+            post('冷', '295期六肖：猪狗鸡猴羊马', is_featured=False, click_count=299, like_count=9)]}
+        sh = forum49.shadow_observation(result)
+        self.assertEqual((sh['opened_posts'], sh['kept_posts']), (3, 2))
+        self.assertEqual(sh['valid_materials'], 2)
+        self.assertIsNone(sh['audit']['scoped_post_cap'])
+        self.assertEqual(sh['audit']['ordinary_below_threshold'], 1)
+        self.assertNotIn('猪', sh['top6'][:1])
 
     def test_collector_failure_is_recorded_not_hidden(self):
         with TemporaryDirectory() as d:

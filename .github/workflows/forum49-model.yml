@@ -111,8 +111,11 @@ jobs:
           s=json.loads(p.read_text())
           head={k:s.get(k) for k in ('model','ok','error','requested_issue','issue','issue_matches_request',
                 'detail_posts','nonempty_article_posts','valid_materials','distinct_valid_authors',
-                'material_counts','elapsed_seconds','excluded_reasons','collection_scope')}
+                'material_counts','elapsed_seconds','excluded_reasons')}
           head['top12_observation']=[[r['zodiac'],r['score']] for r in s.get('ranking_observation',[])]
+          sh=s.get('shadow_scope') or {}
+          head['shadow_scope']={k:sh.get(k) for k in ('error','scope','opened_posts','kept_posts','valid_materials',
+                                'distinct_valid_authors','material_counts','top6')}
           print('::notice title=49论坛模型 summary::'+esc(json.dumps(head,ensure_ascii=False)[:3800]))
           counted=[f"{m['author']}|{m['play']}|{''.join(m['picks'] or [])}" for m in s.get('materials',[]) if m['counted']]
           for i in range(0,len(counted),45):

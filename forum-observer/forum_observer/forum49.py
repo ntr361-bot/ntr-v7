@@ -30,10 +30,29 @@ PUBLISH_RESERVE_SECONDS = 90
 # (no .icon class) is the pinned/置顶 marker. Verified by source probe run
 # 40058947187: 11 of 20 cards had this icon and all 11 had highQuality=1.
 FEATURED_ICON_SELECTOR = '.title .van19 > span.van19 > img.icon'
-# Collection scope (user-authorized 2026-10-24, provisional): all featured
-# posts, then ordinary posts with clicks >= 300 or likes >= 10, most popular
-# first, at most 300 posts per round. Tune here; 118论坛模型 is unaffected.
-COLLECTION_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10, 'scoped_post_cap': 300}
+# Shadow scope (user decision 2026-10-24): record only. Formal collection stays
+# full (all posts, no cap). Each run also scores the subset this scope would
+# keep - all featured posts plus ordinary posts with clicks >= 300 or likes >= 10,
+# no cap - so the two can be compared before any switch. Never used for freeze.
+SHADOW_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10}
+
+
+def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
+    """Score the posts a popularity scope would keep (observation only)."""
+    from .page_collector import apply_collection_scope, score_posts
+    posts = [dict(p) for p in (result.get('evidence') or [])]
+    kept, audit = apply_collection_scope(posts, scope)
+    ranking, mats = score_posts([dict(p) for p in kept])
+    counted = [m for m in mats if m.get('counted_for_ranking')]
+    return {
+        'scope': dict(scope), 'used_for_freeze': False,
+        'opened_posts': len(posts), 'kept_posts': len(kept), 'audit': audit,
+        'valid_materials': len(counted),
+        'distinct_valid_authors': len({m.get('author') for m in counted}),
+        'material_counts': material_counts(mats),
+        'top6': [r['zodiac'] for r in ranking[:6]],
+        'ranking': [[r['zodiac'], r.get('score')] for r in ranking],
+    }
 
 
 def collection_budget(now_local, default_seconds: int) -> int:
@@ -78,7 +97,6 @@ def summarize(result: dict, requested_issue: str | None) -> dict:
             str(m.get('exclusion_reason'))[:60] for m in mats
             if not m.get('counted_for_ranking')).most_common(15),
         'collector_rejected': (result.get('rejected') or [])[:50],
-        'collection_scope': result.get('collection_scope'),
         'frozen': False, 'settled': False, 'published_to_ledger': False,
     }
 
@@ -92,7 +110,7 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
-               daily_profile_authors=0, collection_mode='current_feed', **COLLECTION_SCOPE)
+               daily_profile_authors=0, collection_mode='current_feed')
     from zoneinfo import ZoneInfo
     now_local = datetime.now(ZoneInfo('Asia/Shanghai'))
     started = datetime.now(timezone.utc)
@@ -109,6 +127,10 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
         from .report import render
         render(result, out / str(result['issue']) / 'report.md', compact=True)
         record.update(ok=True, **summarize(result, issue))
+        try:  # observation only; a failure here never affects the formal record
+            record['shadow_scope'] = shadow_observation(result)
+        except Exception as exc:
+            record['shadow_scope'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
         # Full post evidence for the Scrapling side-by-side comparison step.
         # Workflow-local only (artifact), not committed.
         (out / 'forum49-evidence.json').write_text(json.dumps(
