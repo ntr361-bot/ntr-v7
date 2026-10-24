@@ -17,6 +17,10 @@ on:
         description: Stage 2 trial size (1-100 posts)
         required: false
         default: '5'
+      rescore_run:
+        description: TEST BRANCH ONLY - archived 49 run json to re-score under the collection scope
+        required: false
+        default: ''
       test_issue:
         description: TEST BRANCH ONLY - run 49论坛模型 scoped collection for this issue (no commit, no freeze)
         required: false
@@ -55,6 +59,12 @@ jobs:
           v=json.load(open('probe-out/probe-summary.json'))['verdict']
           print('match=' + ('true' if v['platform_match'] else 'false'))
           PY
+      - name: TEST - re-score archived 49 run under collection scope (read-only)
+        if: inputs.rescore_run != ''
+        timeout-minutes: 35
+        env:
+          RESCORE_RUN: ${{ inputs.rescore_run }}
+        run: python -u rescore_296.py "$RESCORE_RUN" 2026295 25
       - name: TEST - 49论坛模型 scoped collection (no commit, no freeze)
         if: inputs.test_issue != ''
         timeout-minutes: 40
