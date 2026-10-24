@@ -135,6 +135,11 @@ jobs:
           # without downloading logs or artifacts.
           def esc(x): return x.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
           print('::notice title=probe verdict::'+esc('\n'.join(lines)))
+          c0=Path('probe-out/collect-summary.json')
+          if c0.exists():
+              cs=json.loads(c0.read_text())
+              print('::notice title=probe featured collect::'+esc(json.dumps({'featured':cs.get('featured'),
+                  'featured_posts':cs.get('featured_posts'),'priority_audit':cs.get('priority_audit')},ensure_ascii=False)[:3800]))
           if p.exists():
               s=json.loads(p.read_text())
               detail={k:s.get(k) for k in ('final_url','http_status','title','navigation_error','listing_error')}
@@ -168,8 +173,6 @@ jobs:
               brief={'issue':cs.get('issue'),'error':cs.get('error'),
                      'posts':[{'author':x['author'],'url':x['url'][-40:],'chars':x['body_chars'],'excerpt':x['excerpt'][:90]} for x in cs.get('posts',[])],
                      'rejected':[json.dumps(r,ensure_ascii=False)[:160] for r in cs.get('rejected',[])[:8]]}
-              print('::notice title=probe featured collect::'+esc(json.dumps({'featured':cs.get('featured'),
-                  'featured_posts':cs.get('featured_posts'),'priority_audit':cs.get('priority_audit')},ensure_ascii=False)[:3800]))
               print('::notice title=probe stage2::'+esc(json.dumps(brief,ensure_ascii=False)[:3800]))
           PY
       - uses: actions/upload-artifact@v4
