@@ -57,6 +57,19 @@ class Forum49Test(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
 
+    def test_run_passes_collection_scope_to_collector(self):
+        with TemporaryDirectory() as d:
+            d = Path(d)
+            (d / 'collector-config.json').write_text('{}')
+            with mock.patch('forum_observer.page_collector.collect_page', return_value=RESULT) as collect, \
+                 mock.patch('forum_observer.report.render'), \
+                 mock.patch.object(forum49, 'collection_budget', return_value=600), \
+                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '43'}):
+                forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
+            cfg = collect.call_args[0][4]
+            self.assertEqual((cfg['ordinary_min_clicks'], cfg['ordinary_min_likes'], cfg['scoped_post_cap']),
+                             (500, 10, 300))
+
     def test_collector_failure_is_recorded_not_hidden(self):
         with TemporaryDirectory() as d:
             d = Path(d)
