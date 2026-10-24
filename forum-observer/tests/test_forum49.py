@@ -68,7 +68,7 @@ class Forum49Test(unittest.TestCase):
                 forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
             cfg = collect.call_args[0][4]
             self.assertEqual((cfg['ordinary_min_clicks'], cfg['ordinary_min_likes'], cfg['scoped_post_cap']),
-                             (500, 10, 300))
+                             (300, 10, 300))
 
     def test_collector_failure_is_recorded_not_hidden(self):
         with TemporaryDirectory() as d:

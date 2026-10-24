@@ -31,9 +31,9 @@ PUBLISH_RESERVE_SECONDS = 90
 # 40058947187: 11 of 20 cards had this icon and all 11 had highQuality=1.
 FEATURED_ICON_SELECTOR = '.title .van19 > span.van19 > img.icon'
 # Collection scope (user-authorized 2026-10-24, provisional): all featured
-# posts, then ordinary posts with clicks >= 500 or likes >= 10, most popular
+# posts, then ordinary posts with clicks >= 300 or likes >= 10, most popular
 # first, at most 300 posts per round. Tune here; 118论坛模型 is unaffected.
-COLLECTION_SCOPE = {'ordinary_min_clicks': 500, 'ordinary_min_likes': 10, 'scoped_post_cap': 300}
+COLLECTION_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10, 'scoped_post_cap': 300}
 
 
 def collection_budget(now_local, default_seconds: int) -> int:
