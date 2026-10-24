@@ -86,6 +86,84 @@ class AdapterTest(unittest.TestCase):
         with mock.patch.dict(sys.modules, self.fake_module(StealthyFetcher=Stealth, DynamicFetcher=Dyn)):
             self.assertEqual(fs._open_fetcher()[0], 'DynamicFetcher@9.9')
 
+    def test_stealth_session_reuses_one_browser_before_per_call_fetcher(self):
+        events = []
+
+        class StealthSession:
+            def __init__(self, headless=True, disable_resources=False):
+                events.append(('init', headless, disable_resources))
+            def __enter__(self):
+                events.append('enter'); return self
+            def __exit__(self, *a):
+                events.append('exit')
+            def fetch(self, url, **kw):
+                return ('session', url)
+        class Stealth:
+            @classmethod
+            def fetch(cls, url, **kw):
+                return 'stealth'
+        mods = self.fake_module(StealthySession=StealthSession, StealthyFetcher=Stealth, Fetcher=object)
+        with mock.patch.dict(sys.modules, mods):
+            name, fetch, close = fs._open_fetcher()
+            self.assertEqual(name, 'StealthySession@9.9')
+            self.assertEqual(fetch('a'), ('session', 'a'))
+            self.assertEqual(fetch('b'), ('session', 'b'))
+            close()
+        # one launch for both posts; unsupported options (network_idle) dropped
+        self.assertEqual(events, [('init', True, True), 'enter', 'exit'])
+
+    def test_plain_fetcher_still_preferred_over_stealth_session(self):
+        class StealthSession:
+            def __init__(self, **kw): pass
+        class Dyn:
+            @classmethod
+            def fetch(cls, url, **kw):
+                return 'dyn'
+        with mock.patch.dict(sys.modules, self.fake_module(StealthySession=StealthSession, DynamicFetcher=Dyn)):
+            self.assertEqual(fs._open_fetcher()[0], 'DynamicFetcher@9.9')
+
+    def test_session_restarts_after_failure_and_records_only_that_post(self):
+        opened = []
+
+        class Flaky:
+            def __init__(self, **kw):
+                opened.append(kw)
+                self.n = len(opened)
+            def __enter__(self): return self
+            def __exit__(self, *a): pass
+            def fetch(self, url, **kw):
+                if self.n == 1 and url == 'bad':
+                    raise RuntimeError('browser crashed')
+                return url
+        with mock.patch.dict(sys.modules, self.fake_module(StealthySession=Flaky)):
+            _, fetch, close = fs._open_fetcher()
+            with self.assertRaises(RuntimeError):
+                fetch('bad')
+            self.assertEqual(fetch('good'), 'good')
+            close()
+        self.assertEqual(len(opened), 2)
+
+    def test_no_post_limit_by_default(self):
+        posts = [post(str(i), '295期杀二肖：虎狗') for i in range(5)]
+        seen = []
+
+        class Page:
+            status = 200
+            def find(self, _):
+                return self
+            def get_all_text(self, **kw):
+                return '295期六肖\n正文\n阅读数\n最新评论'
+        def fetch(url, **kw):
+            seen.append(url); return Page()
+        with mock.patch.object(fs, '_open_fetcher', return_value=('T', fetch, lambda: None)):
+            _, results = fs.fetch_bodies(posts, 60, 0)
+            self.assertEqual(len(seen), 5)
+            self.assertNotIn('not_checked_post_limit', {r['status'] for r in results})
+            seen.clear()
+            _, results = fs.fetch_bodies(posts, 60, 2)
+            self.assertEqual(len(seen), 2)
+            self.assertEqual(sum(r['status'] == 'not_checked_post_limit' for r in results), 3)
+
     def test_reports_available_names_when_no_browser_fetcher(self):
         with mock.patch.dict(sys.modules, self.fake_module(Fetcher=object)):
             with self.assertRaisesRegex(ImportError, 'available: Fetcher'):
