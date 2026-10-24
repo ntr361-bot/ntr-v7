@@ -17,6 +17,10 @@ on:
         description: Stage 2 trial size (1-100 posts)
         required: false
         default: '5'
+      test_issue:
+        description: TEST BRANCH ONLY - run 49论坛模型 scoped collection for this issue (no commit, no freeze)
+        required: false
+        default: ''
 permissions:
   contents: read
 concurrency:
@@ -50,6 +54,42 @@ jobs:
           import json
           v=json.load(open('probe-out/probe-summary.json'))['verdict']
           print('match=' + ('true' if v['platform_match'] else 'false'))
+          PY
+      - name: TEST - 49论坛模型 scoped collection (no commit, no freeze)
+        if: inputs.test_issue != ''
+        timeout-minutes: 40
+        env:
+          TEST_ISSUE: ${{ inputs.test_issue }}
+        run: |
+          python -u - <<'PY'
+          import json, os
+          from pathlib import Path
+          from forum_observer import forum49
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          def esc(x): return x.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
+          # Read-only test: output stays in the runner (contents: read), nothing is committed.
+          rec=forum49.run(forum49.DEFAULT_URL, os.environ['TEST_ISSUE'], '澳门',
+                          Path('test-out'), Path('test-archive'))
+          assert not list(Path('test-archive').rglob('snapshot.json'))
+          head={k:rec.get(k) for k in ('ok','error','issue','issue_matches_request','detail_posts',
+                'nonempty_article_posts','valid_materials','distinct_valid_authors','material_counts',
+                'elapsed_seconds','collection_scope')}
+          head['top12']=[[r['zodiac'],r['score']] for r in rec.get('ranking_observation') or []]
+          print('::notice title=TEST scoped summary::'+esc(json.dumps(head,ensure_ascii=False)[:3800]))
+          obs=json.loads((Path('test-out')/str(rec.get('issue'))/'observation.json').read_text()) if (Path('test-out')/str(rec.get('issue'))/'observation.json').exists() else {}
+          au=obs.get('audit') or {}
+          print('::notice title=TEST scoped featured::'+esc(json.dumps({k:au.get(k) for k in (
+                'featured_found_threads','featured_selected_threads','featured_completed_threads',
+                'featured_valid_materials','ordinary_valid_materials','priority_audit')},ensure_ascii=False)[:3800]))
+          counted=[f"{m['author']}|{m['play']}|{''.join(m['picks'] or [])}" for m in rec.get('materials',[]) if m['counted']]
+          for i in range(0,min(len(counted),180),60):
+              print(f'::notice title=TEST scoped materials {i//60+1}::'+esc('\n'.join(counted[i:i+60])[:3800]))
+          rp=Path('test-out')/str(rec.get('issue'))/'report.md'
+          if rp.exists():
+              lines=[l for l in rp.read_text().splitlines() if any(w in l for w in ('加精','普通','有效','覆盖'))]
+              print('::notice title=TEST report lines::'+esc('\n'.join(lines)[:3800]))
+          print('::notice title=TEST excluded::'+esc(json.dumps(rec.get('excluded_reasons'),ensure_ascii=False)[:3800]))
           PY
       - name: Stage 2 - existing collector trial (isolated, no freeze)
         if: steps.stage1.outputs.match == 'true'
