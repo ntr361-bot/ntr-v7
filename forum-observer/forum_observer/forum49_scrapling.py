@@ -59,8 +59,9 @@ def counted_by_author(materials: list[dict]) -> dict:
 def compare(primary_posts: list[dict], scrapling_posts: list[dict]) -> dict:
     """Pure comparison of two post lists (same posts, possibly different bodies)."""
     from .page_collector import score_posts
-    _, p_mats = score_posts([dict(p) for p in primary_posts])
-    _, s_mats = score_posts([dict(p) for p in scrapling_posts])
+    from .forum49 import STRICT_ISSUE_LINES
+    _, p_mats = score_posts([dict(p) for p in primary_posts], STRICT_ISSUE_LINES)
+    _, s_mats = score_posts([dict(p) for p in scrapling_posts], STRICT_ISSUE_LINES)
     p_by, s_by = counted_by_author(p_mats), counted_by_author(s_mats)
     authors = sorted(set(p_by) | set(s_by))
     rows, tally = [], {'same': 0, 'different': 0, 'primary_only': 0, 'scrapling_only': 0}

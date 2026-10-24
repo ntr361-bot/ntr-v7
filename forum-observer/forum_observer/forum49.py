@@ -35,6 +35,10 @@ FEATURED_ICON_SELECTOR = '.title .van19 > span.van19 > img.icon'
 # keep - all featured posts plus ordinary posts with clicks >= 300 or likes >= 10,
 # no cap - so the two can be compared before any switch. Never used for freeze.
 SHADOW_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10}
+# User rule 2026-10-24 (49 only): a material counts only when its own line or
+# section heading explicitly names exactly the current issue; historical lines
+# and multi-issue plans are excluded with recorded reasons (issue_lines.py).
+STRICT_ISSUE_LINES = True
 
 
 def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
@@ -42,7 +46,7 @@ def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
     from .page_collector import apply_collection_scope, score_posts
     posts = [dict(p) for p in (result.get('evidence') or [])]
     kept, audit = apply_collection_scope(posts, scope)
-    ranking, mats = score_posts([dict(p) for p in kept])
+    ranking, mats = score_posts([dict(p) for p in kept], STRICT_ISSUE_LINES)
     counted = [m for m in mats if m.get('counted_for_ranking')]
     return {
         'scope': dict(scope), 'used_for_freeze': False,
@@ -110,7 +114,8 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
-               daily_profile_authors=0, collection_mode='current_feed')
+               daily_profile_authors=0, collection_mode='current_feed',
+               strict_issue_lines=STRICT_ISSUE_LINES)
     from zoneinfo import ZoneInfo
     now_local = datetime.now(ZoneInfo('Asia/Shanghai'))
     started = datetime.now(timezone.utc)
