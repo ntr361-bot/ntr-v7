@@ -1472,8 +1472,12 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
         "cloud workflow is missing the 22:00 primary run");
     Assert(cronLines.Contains("- cron: \"0 15 * * *\""),
         "cloud workflow is missing the 23:00 failed-run retry");
-    Assert(workflow.Contains("$primary.conclusion -ne 'success'", StringComparison.Ordinal),
-        "23:00 retry is not conditioned on the 22:00 result");
+    // Since 07b6a53 the 23:00 run no longer queries the 22:00 result; it always
+    // re-checks committed artifacts and planning skips every frozen forecast.
+    Assert(workflow.Contains("$schedule -eq '0 15 * * *'", StringComparison.Ordinal) &&
+           workflow.Contains("planning skips every existing frozen forecast", StringComparison.Ordinal) &&
+           workflow.Contains("Frozen production forecasts cannot be overwritten.", StringComparison.Ordinal),
+        "23:00 retry must re-check committed artifacts without overwriting frozen forecasts");
     Assert(cronLines.Contains("- cron: \"7,22,37,52 * * * *\""),
         "cloud workflow is missing the mobile-trigger polling schedule");
     Assert(workflow.Contains("run_requested", StringComparison.Ordinal),
