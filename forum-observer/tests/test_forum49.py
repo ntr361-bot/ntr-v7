@@ -252,3 +252,43 @@ class StrictIssueLineTest(unittest.TestCase):
 
     def test_forum49_enables_strict_gate(self):
         self.assertTrue(forum49.STRICT_ISSUE_LINES)
+
+
+SURE_BLOCK = """283期-284期 ❤️（兔龙羊鸡狗猪）中🔥
+296期-297期 ❤️（牛兔龙羊猴鸡）中🔥
+❤️第一轮十中九
+297期-298期 ❤️（淘料市场观看）放心跟
+两期六肖下注法,"""
+
+
+class TwoIssuePlanTest(unittest.TestCase):
+    """User rule: a recommendation covering two issues is never a valid material."""
+
+    def test_two_issue_post_has_no_valid_material(self):
+        _, mats = strict(post(SURE_BLOCK, title='六肖', author='肯定中的'))
+        self.assertEqual(counted(mats), [])
+        self.assertTrue(mats)
+        self.assertEqual({m['exclusion_reason'] for m in mats}, {issue_lines.REASON_MULTI})
+
+    def test_issue_suffix_dash_and_space_variants_are_ranges(self):
+        for line in ('296期-297期 ❤️（牛兔龙羊猴鸡）中🔥', '297期-298期 ❤️（牛兔龙羊猴鸡）',
+                     '296期－297期（牛兔龙羊猴鸡）', '296期 - 297期（牛兔龙羊猴鸡）',
+                     '296 期 — 297 期（牛兔龙羊猴鸡）', '296期～297期（牛兔龙羊猴鸡）',
+                     '296-297（牛兔龙羊猴鸡）', '297期-第298期（牛兔龙羊猴鸡）'):
+            with self.subTest(line=line):
+                self.assertEqual(issue_lines.line_markers(line, '2026297'), ('multi', None))
+                # never split into a separate "297期 ..." line
+                self.assertNotIn('\n', issue_lines.split_issue_units(line))
+                _, mats = strict(post(line, title='六肖'))
+                # Recorded as a multi-issue plan, or never a candidate at all.
+                self.assertEqual(counted(mats), [], line)
+                self.assertTrue(all(m['exclusion_reason'] == issue_lines.REASON_MULTI for m in mats))
+
+    def test_two_issue_six_zodiac_phrase_marks_whole_post(self):
+        _, mats = strict(post('297期 ❤️（牛兔龙羊猴鸡）中🔥\n两期六肖下注法,', title='六肖'))
+        self.assertEqual(counted(mats), [])
+        self.assertEqual(mats[0]['exclusion_reason'], issue_lines.REASON_MULTI)
+
+    def test_single_issue_post_without_plan_phrase_stays_valid(self):
+        _, mats = strict(post('297期 ❤️（牛兔龙羊猴鸡）中🔥', title='六肖'))
+        self.assertEqual(len(counted(mats)), 1)

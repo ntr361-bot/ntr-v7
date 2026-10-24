@@ -893,7 +893,8 @@ def score_posts(posts,strict_issue_lines=False):
             for section in [raw_body,*ocr_texts]:
                 rows+=classify_segment(section,post['issue'],heading)
             rows+=classify_segment(raw_replies,post['issue'])
-            title_multi=heading[0]=='multi'
+            from .issue_lines import post_is_plan
+            title_multi=heading[0]=='multi' or post_is_plan(post['title'],raw_body,*ocr_texts)
         for p in parsed:
             reason=p.get('parse_error')
             if strict_issue_lines:

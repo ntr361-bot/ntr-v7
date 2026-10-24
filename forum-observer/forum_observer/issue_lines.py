@@ -27,7 +27,14 @@ REASON_NOT_LOCATED = 'issue number not explicit (source line not located)'
 
 _NOT_UNIT = r'(?!\d|\s*(?:尾|码|号|元|块|%|倍|注|头|波|段|行|合|位|肖|个|次|天))'
 # "280-282", "295-297--", "296/297", "297至298"
-RANGE = re.compile(r'(?<!\d)(\d{3})\s*(?:[-—–~～至到/]+)\s*(\d{2,3})(?!\d)')
+_DASH = r'[-－—–―~～〜至到/／]+'
+RANGE = re.compile(r'(?<!\d)(\d{3})\s*期?\s*' + _DASH + r'\s*(?:第\s*)?(\d{2,3})(?!\d)')
+# A whole post presented as a multi-issue plan: "两期六肖下注法", "二期六肖",
+# "3期计划", "两期必中". Any such phrase in the title or body excludes the post.
+# Chinese numerals only: digit forms such as "(规律-2期六肖)" are section
+# headings and are handled line by line.
+POST_PLAN = re.compile(r'(?<![第连准中错对近前:：])[二两三四五六七八九十]\s*期\s*'
+                       r'(?:[一二三四五六七八九十\d]\s*肖|计划|必中|必出|中特)')
 # "3期计划", "(规律4肖A*3期)", "(规律-2期六肖)", "二期六肖", "两期必中".
 # Not track-record stats such as "连准:7期", "错2期", "近5期", "第7期".
 MULTI_PERIOD = re.compile(
@@ -41,7 +48,8 @@ LEADING_ISSUE = re.compile(r'^[^\d一-鿿]*(?:第\s*)?(\d{3})' + _NOT_UNIT)
 PREVIOUS_WORDS = re.compile(r'上\s*(?:一\s*)?期|上一回|上回|往期')
 SEPARATOR = re.compile(r'^\s*[-—_=…·.*~～─━]{5,}\s*$')
 # Positions where a new issue-scoped unit starts inside a collapsed line.
-_SPLIT = re.compile(r'(?<!\d)(?:20\d{5}|\d{3}\s*(?:[-—–~～至到/]+\s*\d{2,3}(?!\d)|\s*期))'
+# The range alternative comes first so "296期-297期" is never split in two.
+_SPLIT = re.compile(r'(?<!\d)(?:20\d{5}|\d{3}\s*期?\s*' + _DASH + r'\s*(?:第\s*)?\d{2,3}(?!\d)|\d{3}\s*期)'
                     r'|(?<=\s\s)\d{3}(?!\d)')
 
 
@@ -116,6 +124,10 @@ def classify_segment(text: str, issue: str, inherited=(None, None)):
     return rows
 
 
+def post_is_plan(*texts) -> bool:
+    return any(POST_PLAN.search(str(t or '')) for t in texts)
+
+
 def title_context(title: str, issue: str):
     kind, value = line_markers(title, issue)
     return (kind, value) if kind else (None, None)
@@ -150,6 +162,13 @@ def candidate_reason(candidate: dict, rows, title_multi: bool = False):
             continue
         if any(n.startswith(p) for p in pieces) or (len(lead) >= 4 and lead in n):
             matched.append(reason)
+    if not matched:
+        # The legacy period splitter may cut a line at an inner issue marker
+        # ("296期-297期 ..." -> "297期 ..."); locate such a tail inside its line.
+        for line, reason in rows:
+            n = _norm(line)
+            if (not raw or raw in n) and any(len(p) >= 6 and p in n for p in pieces):
+                matched.append(reason)
     if not matched:
         return REASON_NOT_LOCATED
     if None in matched:
