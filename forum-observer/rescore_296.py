@@ -143,9 +143,11 @@ def harvest_details(ids, minutes):
                 responses.clear()
                 t0 = time.monotonic()
                 try:
+                    # Full page load each time: a hash-only change does not re-fetch article/detail.
+                    page.goto('about:blank')
                     page.goto(f'https://49217.com/#/corpusdetail?id={i}&type=3', wait_until='domcontentloaded', timeout=20000)
                     got, how = None, None
-                    for _ in range(24):
+                    for _ in range(40):
                         page.wait_for_timeout(250)
                         for url, body in list(responses):
                             a = _find_article(body, i)
