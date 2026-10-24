@@ -100,34 +100,79 @@ DETAIL_JS = r"""(id) => {
 }"""
 
 
+def _find_article(obj, aid, depth=0):
+    if depth > 6:
+        return None
+    if isinstance(obj, dict):
+        if 'clickCount' in obj and 'highQuality' in obj and str(obj.get('articleId', aid)) == str(aid):
+            return obj
+        for v in obj.values():
+            r = _find_article(v, aid, depth + 1)
+            if r:
+                return r
+    elif isinstance(obj, list):
+        for v in obj[:200]:
+            r = _find_article(v, aid, depth + 1)
+            if r:
+                return r
+    return None
+
+
 def harvest_details(ids, minutes):
-    """Open each detail page (read-only) and read its article counts."""
+    """Open each detail page (read-only) and read its article counts from the
+    page's own JSON responses (fallback: Vue data)."""
     import time
     from playwright.sync_api import sync_playwright
-    cards, errors = {}, []
+    cards, errors, diag = {}, [], []
+    responses = []
     deadline = time.monotonic() + minutes * 60
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, args=['--no-sandbox'])
         try:
             page = browser.new_page(viewport={'width': 1280, 'height': 1800})
-            for i in sorted(ids):
+            def on_response(r):
+                try:
+                    if 'json' in (r.headers.get('content-type') or ''):
+                        responses.append((r.url, r.json()))
+                except Exception:
+                    pass
+            page.on('response', on_response)
+            for n, i in enumerate(sorted(ids)):
                 if time.monotonic() > deadline:
                     errors.append('time budget'); break
+                responses.clear()
+                t0 = time.monotonic()
                 try:
                     page.goto(f'https://49217.com/#/corpusdetail?id={i}&type=3', wait_until='domcontentloaded', timeout=20000)
-                    got = None
-                    for _ in range(16):
-                        page.wait_for_timeout(500)
-                        got = page.evaluate(DETAIL_JS, i)
+                    got, how = None, None
+                    for _ in range(24):
+                        page.wait_for_timeout(250)
+                        for url, body in list(responses):
+                            a = _find_article(body, i)
+                            if a:
+                                got, how = a, url.split('?')[0][-60:]; break
                         if got: break
-                    if got: cards[i] = got
-                    else: errors.append(f'{i}: no article data')
+                        v = page.evaluate(DETAIL_JS, i)
+                        if v:
+                            cards[i] = v; how = 'vue'; break
+                    if got:
+                        cards[i] = {'click_count': int(got.get('clickCount') or 0),
+                                    'like_count': int(got.get('thumbUpCount') or 0),
+                                    'is_featured': int(got.get('highQuality') or 0) == 1,
+                                    'issue': str(got.get('periodStr') or got.get('period') or ''),
+                                    'author': got.get('username')}
+                    if i not in cards:
+                        errors.append(f'{i}: no article data')
+                    if n < 3:
+                        diag.append({'id': i, 'how': how, 'seconds': round(time.monotonic() - t0, 1),
+                                     'json_urls': [u.split('?')[0][-60:] for u, _ in responses][:8],
+                                     'card': cards.get(i)})
                 except Exception as exc:
                     errors.append(f'{i}: {type(exc).__name__}')
         finally:
             browser.close()
-    return cards, {'opened': len(ids), 'read': len(cards), 'errors': errors[:20], 'error_count': len(errors)}
-
+    return cards, {'opened': len(ids), 'read': len(cards), 'errors': errors[:10],
+                   'error_count': len(errors), 'diag': diag}
 
 if __name__ == '__main__':
     import os
