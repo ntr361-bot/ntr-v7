@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026297",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "40091875157",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40091875157",
-  "updated_at": "2026-10-24T12:08:02.391968+00:00",
+  "updated_at": "2026-10-24T12:08:36.382359+00:00",
   "error": null,
-  "valid_materials": 74,
-  "valid_authors": 74,
-  "successful_post_opens": 482,
+  "valid_materials": 78,
+  "valid_authors": 78,
+  "successful_post_opens": 522,
   "article_details": {
     "featured": {
       "queued": 48,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 474,
-      "attempted": 435,
-      "opened": 434,
-      "extracted": 432,
-      "completed": 434
+      "attempted": 474,
+      "opened": 474,
+      "extracted": 472,
+      "completed": 474
     }
   },
-  "article_texts_extracted": 478,
-  "article_details_completed": 482,
+  "article_texts_extracted": 518,
+  "article_details_completed": 522,
   "last_verified_post": {
-    "author": "天衍四十九",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146149&type=3",
-    "verified_at": "2026-10-24T12:08:01.756386+00:00",
-    "text_length": 16,
-    "text_sha256": "0f93aa914f99a82864569061577d104d7ffb4899c5e31e48e5698b15d5b380a8"
+    "author": "左路左路",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146060&type=3",
+    "verified_at": "2026-10-24T12:08:33.969581+00:00",
+    "text_length": 121,
+    "text_sha256": "473cfb81a77fb7c71e752807aef89498468a2c7708619516657657835c7898d7"
   },
   "last_attempted_post": {
-    "author": "周瑜伽砖",
+    "author": "左路左路",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146202&type=3",
-    "attempt_index": 483
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11146060&type=3",
+    "attempt_index": 522
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 478,
-  "stage": "detail: 周瑜伽砖 平特",
-  "progress_updated_at": "2026-10-24T12:08:02.028282+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 518,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-24T12:08:34.528249+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 4,
+    "truncated": false,
     "unextracted_current_posts": 4
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
