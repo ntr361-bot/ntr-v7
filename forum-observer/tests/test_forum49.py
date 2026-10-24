@@ -250,8 +250,22 @@ class StrictIssueLineTest(unittest.TestCase):
         self.assertEqual(len(counted(mats)), 1)
         self.assertNotIn('issue_line_check', mats[0])
 
-    def test_forum49_enables_strict_gate(self):
-        self.assertTrue(forum49.STRICT_ISSUE_LINES)
+    def test_forum49_strict_gate_is_test_mode_only(self):
+        # User decision 2026-10-25: formal scoring keeps the old rule for now;
+        # strict scoring is recorded as a shadow observation only.
+        self.assertFalse(forum49.STRICT_ISSUE_LINES)
+        self.assertTrue(forum49.STRICT_SHADOW)
+
+    def test_strict_shadow_reports_differences_without_touching_formal(self):
+        p1 = post(ICE_BLOCK, title='4肖.6肖中特-杀肖-平特(有连中版)', author='冰淇淋不冷')
+        p2 = post('297期:六肖【猴虎羊鸡兔牛】开 ？准', author='乙')
+        _, formal = score_posts([dict(p1), dict(p2)])
+        result = {'evidence': [p1, p2], 'parsed_predictions': formal}
+        shadow = forum49.strict_shadow_observation(result)
+        self.assertFalse(shadow['used_for_freeze'])
+        self.assertEqual(shadow['valid_materials'], 1)
+        self.assertEqual(shadow['dropped_authors'], ['冰淇淋不冷'])
+        self.assertEqual(sum(m['counted_for_ranking'] for m in formal), 2)
 
 
 SURE_BLOCK = """283期-284期 ❤️（兔龙羊鸡狗猪）中🔥

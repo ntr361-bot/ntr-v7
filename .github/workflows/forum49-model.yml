@@ -117,6 +117,14 @@ jobs:
           head['shadow_scope']={k:sh.get(k) for k in ('error','scope','opened_posts','kept_posts','valid_materials',
                                 'distinct_valid_authors','material_counts','top6')}
           print('::notice title=49论坛模型 summary::'+esc(json.dumps(head,ensure_ascii=False)[:3800]))
+          st=s.get('strict_shadow') or {}
+          if st:
+              sh2={k:st.get(k) for k in ('error','used_for_freeze','valid_materials','distinct_valid_authors',
+                   'material_counts','top6','excluded_reasons')}
+              sh2['dropped']=len(st.get('dropped_authors') or [])
+              sh2['changed']=len(st.get('changed_material_authors') or [])
+              sh2['added']=len(st.get('added_authors') or [])
+              print('::notice title=49论坛模型 strict shadow (test only)::'+esc(json.dumps(sh2,ensure_ascii=False)[:3800]))
           counted=[f"{m['author']}|{m['play']}|{''.join(m['picks'] or [])}" for m in s.get('materials',[]) if m['counted']]
           for i in range(0,len(counted),45):
               print(f'::notice title=49论坛模型 materials {i//45+1}::'+esc('\n'.join(counted[i:i+45])[:3800]))

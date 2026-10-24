@@ -38,7 +38,11 @@ SHADOW_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10}
 # User rule 2026-10-24 (49 only): a material counts only when its own line or
 # section heading explicitly names exactly the current issue; historical lines
 # and multi-issue plans are excluded with recorded reasons (issue_lines.py).
-STRICT_ISSUE_LINES = True
+# User decision 2026-10-25: run it in TEST mode first. Formal collection,
+# draft and freeze keep the previous rule (False); every run also records a
+# strict-rule shadow score (strict_shadow) for comparison. Never used for freeze.
+STRICT_ISSUE_LINES = False
+STRICT_SHADOW = True
 
 
 def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
@@ -56,6 +60,37 @@ def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
         'material_counts': material_counts(mats),
         'top6': [r['zodiac'] for r in ranking[:6]],
         'ranking': [[r['zodiac'], r.get('score')] for r in ranking],
+    }
+
+
+def strict_shadow_observation(result: dict) -> dict:
+    """Re-score the same posts under the strict issue-line rule (test mode only)."""
+    from .page_collector import score_posts
+    posts = [dict(p) for p in (result.get('evidence') or [])]
+    ranking, mats = score_posts(posts, True)
+    counted = [m for m in mats if m.get('counted_for_ranking')]
+    formal = {m.get('author'): m for m in (result.get('parsed_predictions') or [])
+              if m.get('counted_for_ranking')}
+    strict_by = {m.get('author'): m for m in counted}
+    return {
+        'rule': 'strict_issue_lines', 'used_for_freeze': False,
+        'valid_materials': len(counted),
+        'distinct_valid_authors': len(strict_by),
+        'material_counts': material_counts(mats),
+        'top6': [r['zodiac'] for r in ranking[:6]],
+        'ranking': [[r['zodiac'], r.get('score')] for r in ranking],
+        'dropped_authors': sorted(a for a in formal if a not in strict_by),
+        'changed_material_authors': sorted(
+            a for a in strict_by if a in formal
+            and strict_by[a].get('excerpt') != formal[a].get('excerpt')),
+        'added_authors': sorted(a for a in strict_by if a not in formal),
+        'excluded_reasons': Counter(
+            str(m.get('exclusion_reason'))[:60] for m in mats
+            if not m.get('counted_for_ranking')).most_common(15),
+        'materials': [{
+            'author': m.get('author'), 'play': m.get('play'), 'mode': m.get('mode'),
+            'picks': m.get('picks'), 'source_url': m.get('source_url'),
+            'issue_line_check': m.get('issue_line_check')} for m in counted],
     }
 
 
@@ -136,6 +171,11 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
             record['shadow_scope'] = shadow_observation(result)
         except Exception as exc:
             record['shadow_scope'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
+        if STRICT_SHADOW:
+            try:  # test mode; a failure here never affects the formal record
+                record['strict_shadow'] = strict_shadow_observation(result)
+            except Exception as exc:
+                record['strict_shadow'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
         # Full post evidence for the Scrapling side-by-side comparison step.
         # Workflow-local only (artifact), not committed.
         (out / 'forum49-evidence.json').write_text(json.dumps(
