@@ -636,7 +636,31 @@ def extract_picks(text):
             continue
         seen_votes.add(key)
         unique.append(row)
-    return unique
+    return _reject_partition_legends(unique)
+
+
+PARTITION_LEGEND_REASON='complementary zodiac groups are a classification legend, not a selection'
+
+
+def _reject_partition_legends(rows):
+    """Rule 4: a post listing two disjoint groups that together cover all
+    twelve zodiacs (独字/合字, 有边/无边, ...) is a classification table with
+    no selected direction. Neither half may become a recommendation.
+    Only unnumbered "X生肖:" labels qualify: a numbered 六肖 pick that happens
+    to complement another issue's line is not a legend."""
+    include=[r for r in rows if r['mode']=='include' and not r.get('parse_error')
+             and r.get('play')=='生肖']
+    legend=set()
+    for i,a in enumerate(include):
+        for b in include[i+1:]:
+            first,second=set(a['picks']),set(b['picks'])
+            if not first&second and first|second==set(ZODIACS):
+                legend.update((id(a),id(b)))
+    for row in rows:
+        if id(row) in legend:
+            row['mode']='unverified'
+            row['parse_error']=PARTITION_LEGEND_REASON
+    return rows
 
 
 def consistent_comment_ocr(first,second,issue):

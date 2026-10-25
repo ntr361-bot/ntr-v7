@@ -64,7 +64,8 @@ def extract_confirmed(text):
         normalized = re.sub(r"开\s*[:：]?\s*[《【(（]?\s*[?？]+\s*(?:00)?\s*[》】)）]?\s*(?:准|中|对)?\s*$","",line)
         if re.search(r"不确定|不是|取消|可能|待核实|待确认|疑似|或许|不推荐|不杀|[?？]",normalized):
             continue
-        if re.search(r"家禽|家畜|野兽|野獸|前肖|后肖|前六肖|后六肖|单肖|双肖|胆大|胆小|灭庄|杀码|杀肖|🔪",line):
+        # Any kill/exclusion line (杀六肖, 杀二肖, 排除...) is never a title-scoped recommendation.
+        if re.search(r"家禽|家畜|野兽|野獸|前肖|后肖|前六肖|后六肖|单肖|双肖|胆大|胆小|灭庄|杀|排除|🔪",line):
             continue
         local=TITLE.search(line)
         expected=NUMBER.get(local.group(1) or local.group(2)) if local else target
