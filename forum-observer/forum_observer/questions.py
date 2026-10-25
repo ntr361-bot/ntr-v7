@@ -8,8 +8,8 @@ def _question(excerpt, reason):
         return '请确认前肖、后肖的完整定义，以及加号后生肖如何合并；是否应展开为八肖？'
     if re.search(r'次|尽中尽|固定杀肖|混合杀肖',excerpt):
         return '这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？'
-    if 'classification legend' in reason:
-        return '两组生肖合起来正好是全部12肖，这是分类对照表，还是本期选定了其中一组？若选定，请说明是哪一组。'
+    if 'without a current-issue selection' in reason:
+        return '两组生肖合起来正好是全部12肖，但本期没有找到明确选择哪一组（如"无肖""【独肖】"），请确认本期选的是哪一组。'
     if 'count' in reason:
         return '玩法标注的生肖数量与正文不一致，请确认实际入选生肖及数量。'
     return '这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。'

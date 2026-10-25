@@ -1,8 +1,9 @@
-"""2026298 regression: complementary zodiac tables (独字/合字, 有边/无边) are
-classification legends with no selected direction, so neither half is a vote
-(AGENTS.md rule 4)."""
+"""Complementary zodiac groups (独字/合字, 有边/无边): only the group the post
+explicitly selects for the current issue counts (user confirmed 2026-10-26,
+same principle as 胆大小); without a selection neither half is a vote (rule 4)."""
 import unittest
-from forum_observer.page_collector import extract_picks, score_posts, PARTITION_LEGEND_REASON
+from forum_observer.page_collector import (extract_picks, score_posts, PARTITION_LEGEND_REASON,
+                                           PARTITION_UNSELECTED_REASON)
 from forum_observer.questions import _question
 
 
@@ -12,7 +13,7 @@ def post(body, author='觅青森', title='298期实力打造独合肖'):
 
 
 class PartitionLegendTests(unittest.TestCase):
-    def test_real_298_tables_never_count(self):
+    def test_tables_without_a_selection_never_count(self):
         for author, line in (('觅青森', '独字生肖:鼠牛虎兔马羊 合字生肖:龙蛇猴鸡狗猪'),
                              ('心头的小情儿', '有边生肖:龙蛇猴鸡狗猪 无边生肖:鼠牛虎兔马羊')):
             ranking, rows = score_posts([post(line, author)])
@@ -49,11 +50,41 @@ class PartitionLegendTests(unittest.TestCase):
         self.assertEqual(sorted(r['mode'] for r in rows), ['exclude', 'include'])
 
     def test_legend_gets_a_specific_review_question(self):
-        self.assertIn('分类对照表', _question('独字生肖:鼠牛虎兔马羊', PARTITION_LEGEND_REASON))
+        self.assertIn('明确选择', _question('独字生肖:鼠牛虎兔马羊', PARTITION_LEGEND_REASON))
 
     def test_kill_line_is_never_a_title_scoped_recommendation(self):
         ranking, rows = score_posts([post('杀六肖:龙蛇猴鸡狗猪', '杀手', title='298期六肖')])
         self.assertFalse(any(r['mode'] == 'include' and r['counted_for_ranking'] for r in rows), rows)
+
+    def test_real_298_posts_count_only_the_selected_group(self):
+        # Exact 2026298 article texts (history rows 294-297 are dropped by period).
+        cases = (('心头的小情儿', '298期:有无生肖',
+                  '294期有无生肖：  无肖 开兔28准\n297期有无生肖：  有肖 开马13准\n'
+                  '298期有无生肖：  无肖 开00准\n有边生肖:龙蛇猴鸡狗猪 无边生肖:鼠牛虎兔马羊',
+                  '六肖·无边组'),
+                 ('觅青森', '298期实力打造独合肖',
+                  '295期(独合肖)【合肖】开马25错\n297期(独合肖)【独肖】开马13准\n'
+                  '298期(独合肖)【独肖】开00准\n独字生肖:鼠牛虎兔马羊 合字生肖:龙蛇猴鸡狗猪',
+                  '六肖·独字组'))
+        for author, title, body, play in cases:
+            ranking, rows = score_posts([post(body, author, title)])
+            counted = [r for r in rows if r['counted_for_ranking']]
+            self.assertEqual(len(counted), 1, rows)
+            self.assertEqual(counted[0]['play'], play)
+            self.assertEqual(counted[0]['picks'], list('鼠牛虎兔马羊'))
+            other = [r for r in rows if not r['counted_for_ranking']]
+            self.assertEqual([r['exclusion_reason'] for r in other], [PARTITION_UNSELECTED_REASON])
+
+    def test_selection_of_the_other_side_and_history_only_selection(self):
+        rows = extract_picks('298期(独合肖)【合肖】开00准\n独字生肖:鼠牛虎兔马羊 合字生肖:龙蛇猴鸡狗猪')
+        self.assertEqual([''.join(r['picks']) for r in rows if r['mode'] == 'include'], ['龙蛇猴鸡狗猪'])
+        # Only an older issue names a side: current_period_text drops it, so no vote.
+        ranking, rows = score_posts([post('297期(独合肖)【合肖】开马13准\n298期(独合肖)开00准\n'
+                                          '独字生肖:鼠牛虎兔马羊 合字生肖:龙蛇猴鸡狗猪', '甲', '298期独合肖')])
+        self.assertEqual(ranking, [], rows)
+        # Both sides named for the current issue is ambiguous.
+        rows = extract_picks('298期有无生肖： 有肖 无肖\n有边生肖:龙蛇猴鸡狗猪 无边生肖:鼠牛虎兔马羊')
+        self.assertEqual({r['mode'] for r in rows}, {'unverified'})
 
 
 if __name__ == '__main__':

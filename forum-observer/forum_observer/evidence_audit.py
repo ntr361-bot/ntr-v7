@@ -107,6 +107,25 @@ def audit_material(row, evidence_text):
             return "audit: category definitions do not partition all zodiacs"
         if picks!=found[wanted][0]:
             return "audit: selected category does not match picks"
+    elif re.fullmatch(r"六肖·(.{1,2})组", play):
+        # Two complementary "X生肖:" groups + an explicit current-issue choice
+        # ("无肖", "【独肖】"). Re-derived independently from the excerpt.
+        label = re.fullmatch(r"六肖·(.{1,2})组", play).group(1)
+        groups = re.findall(r"([^\s:：|,，、。（）()【】\[\]]{1,2})生肖\s*[:：=]\s*"
+                            r"((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][\s、，,]*){6})", excerpt)
+        defs = {k: [z for z in v if z in ZODIACS] for k, v in groups}
+        if len(defs) != 2 or label not in defs:
+            return "audit: missing complementary group definitions"
+        a, b = list(defs.values())
+        if len(set(a)) != 6 or len(set(b)) != 6 or len(set(a + b)) != 12:
+            return "audit: groups do not partition all zodiacs"
+        tokens = {k[0] for k in defs}
+        chosen = set(re.findall(r"(?:^|[\s:：【\[(（|])([" + "".join(tokens) + r"])肖"
+                                r"(?=\s*[】\])）]|\s|开|$)", excerpt.split(" | ")[0]))
+        if chosen != {label[0]}:
+            return "audit: unclear complementary group selection"
+        if picks != defs[label]:
+            return "audit: selected group does not match picks"
     elif play == "🔪杀肖":
         m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
         if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:

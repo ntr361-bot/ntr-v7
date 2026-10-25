@@ -22,7 +22,7 @@ def table_entries(draft, decided_at='2026-10-25T20:45:00+08:00'):
     for row in draft['parsed_predictions']:
         if (row['author'], ''.join(row['picks'])) in TABLES:
             out.append({'evidence_id': row['evidence_id'], 'mode': row['mode'], 'picks': row['picks'],
-                        'reason': 'complementary zodiac table, not a selection', 'rule': 4,
+                        'reason': 'test: reviewer exclusion', 'rule': 4,
                         'decided_at': decided_at})
     return out
 
