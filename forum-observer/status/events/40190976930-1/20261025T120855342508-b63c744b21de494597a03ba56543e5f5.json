@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026298",
+  "state": "collected",
+  "run_id": "40190976930",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40190976930",
+  "updated_at": "2026-10-25T12:08:55.342508+00:00",
+  "error": null,
+  "valid_materials": 82,
+  "valid_authors": 82,
+  "successful_post_opens": 498,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 451,
+      "attempted": 451,
+      "opened": 451,
+      "extracted": 451,
+      "completed": 451
+    }
+  },
+  "article_texts_extracted": 498,
+  "article_details_completed": 498,
+  "last_verified_post": {
+    "author": "青田徐伯",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151732&type=3",
+    "verified_at": "2026-10-25T12:08:53.415441+00:00",
+    "text_length": 389,
+    "text_sha256": "707320f5b65036b2c6d5f417ae49269820c055b0ce0378f3c7ba35d20249f536"
+  },
+  "last_attempted_post": {
+    "author": "青田徐伯",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151732&type=3",
+    "attempt_index": 498
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-25T12:02:47.173390+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 498,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-25T12:08:54.246502+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": false,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
