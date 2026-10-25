@@ -1,36 +1,36 @@
 # 论坛 2026298 采集成绩单
 
 状态：ready_observation
-**有效资料：82份**（经期号核对、去重且实际计分）
+**有效资料：83份**（经期号核对、去重且实际计分）
 计分规则：2026-10-15-one-author-9-8-7-6-priority-v8
-有效推荐：54份；有效杀肖：28份
-加精来源有效资料：11份；普通来源有效资料：71份
+有效推荐：55份；有效杀肖：28份
+加精来源有效资料：11份；普通来源有效资料：72份
 当期加精帖发现：47篇
 加精正文：入队：47篇；尝试：47篇；成功打开：47篇；提取正文：47篇；结束检查：47篇
-普通正文：入队：451篇；尝试：451篇；成功打开：451篇；提取正文：451篇；结束检查：451篇
+普通正文：入队：450篇；尝试：450篇；成功打开：450篇；提取正文：450篇；结束检查：450篇
 加精优先顺序核验：通过
-抓取资料记录：498条；解析候选：179份
+抓取资料记录：497条；解析候选：182份
 覆盖范围：当期帖子正文详情：抽样检查，评论采集已关闭
-未计分候选：97份；无有效评分的帖子：416篇
-有效作者：82人；需要至少：25份有效资料
-优先作者名单内发现作者：14人；其他作者：453人
-抓取时间：2026-10-25T12:08:54.246502+00:00
+未计分候选：99份；无有效评分的帖子：414篇
+有效作者：83人；需要至少：25份有效资料
+优先作者名单内发现作者：14人；其他作者：454人
+抓取时间：2026-10-25T12:38:57.189807+00:00
 来源：https://x5k1pok.11852.com:8443/#/forum
 
-观察Top1：狗
-观察Top3：狗、鼠、鸡
-观察Top6：狗、鼠、鸡、羊、猴、蛇
+观察Top1：鼠
+观察Top3：鼠、狗、鸡
+观察Top6：鼠、狗、鸡、猴、蛇、羊
 
 ## 十二生肖观察排名
-1. 狗：7.610786
-2. 鼠：7.492172
-3. 鸡：7.412807
-4. 羊：7.165152
-5. 猴：7.087049
-6. 蛇：7.072727
-7. 猪：6.77197
-8. 马：6.573918
-9. 牛：6.502453
+1. 鼠：7.658838
+2. 狗：7.610786
+3. 鸡：7.579473
+4. 猴：7.253716
+5. 蛇：7.239394
+6. 羊：7.165152
+7. 猪：6.938636
+8. 牛：6.66912
+9. 马：6.573918
 10. 兔：6.494877
 11. 虎：6.298918
 12. 龙：5.517172
@@ -44,8 +44,8 @@
 
 ## 排除资料
 - 蛋蛋有伤：298期绝禁一肖  猪；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151736&type=3
-- 勤奋的毛毛姐：298期杀一肖【鼠】开？；排除原因：superseded_by_same_author_higher_priority；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
 - 潮汕大鸟哥：（包鼠4粒。下特肖狗虎）（29-45全是冷码）；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152374&type=3
+- 勤奋的毛毛姐：298期杀一肖【鼠】开？；排除原因：superseded_by_same_author_higher_priority；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
 - 时来运赚：298期九肖【牛龙鼠鸡猴羊蛇马虎】？；排除原因：unknown or unverified mode；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151730&type=3
 - 阳光风雪：三肖狗龙牛；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151796&type=3
 - 阳光风雪：一肖狗；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151796&type=3
@@ -55,9 +55,9 @@
 - 投桃报李：298期三肖:虎羊鸡	五码:17.29.12.24.22；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151868&type=3
 - 投桃报李：298期二肖:虎羊	四码:17.29.12.24；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151868&type=3
 - 阳光下的真实：298期:家畜野兽【家畜+蛇猴】開？00准 | ；排除原因：missing or conflicting named-group definitions；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152126&type=3
-- 十二妹数鸭子：298期：绿红波    平特一肖【羊】；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
 - 香格里拉：298期：六肖【鼠兔猴虎蛇发】开《？》；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158114&type=3
 - 墨鱼丸子：主三肖 牛兔羊；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151803&type=3
+- 十二妹数鸭子：298期：绿红波    平特一肖【羊】；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
 - 老黄历：298期五肖:蛇.龙.狗.鸡.兔；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152057&type=3
 - 老黄历：298期四肖:蛇.龙.狗.鸡；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152057&type=3
 - 老黄历：298期三肖:蛇.龙.狗；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152057&type=3
@@ -130,6 +130,8 @@
 - 醉酒惜红颜：298期:〔平特一肖〕【鸡】开？00；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152051&type=3
 - 单身托儿所：298期:平特一肖【鼠】开:？00准；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152017&type=3
 - 港澳牛总：298期平特一肖[牛]；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151808&type=3
+- 港澳牛总：298期三肖中特蛇猪鸡；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151812&type=3
+- 港澳牛总：298期一肖中特鸡22；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151812&type=3
 - 清秀如初：298期：平特一肖【牛】开：？00 准；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151979&type=3
 - 撑伞伞伞：297 平特一肖 虎 错；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151824&type=3
 - 撑伞伞伞：298 平特一肖 猪；排除原因：recommendation requires at least 6 distinct zodiacs；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151824&type=3
@@ -148,8 +150,6 @@
 - 叶落归根：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151919&type=3
 - 叶落归根：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151919&type=3
 - 斩草除根：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151870&type=3
-- 勤奋的毛毛姐：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
-- 勤奋的毛毛姐：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
 - 中是情：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151734&type=3
 - 潮汕大鸟哥：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152374&type=3
 - 潮汕大鸟哥：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152374&type=3
@@ -159,14 +159,16 @@
 - 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155586&type=3
 - 六杀码统计：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151851&type=3
 - 半杯奶茶一花花：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151737&type=3
+- 勤奋的毛毛姐：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
+- 勤奋的毛毛姐：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151822&type=3
 - 追忆流年：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152154&type=3
 - 嗷嗷恐龙：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151782&type=3
 - 闲鱼要翻升：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157304&type=3
 - 赵小刀：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151801&type=3
 - 赵小刀：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151801&type=3
+- 大顺发富豪榜：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151818&type=3
 - 优优码皇：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151815&type=3
 - 敢赌敢博：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151819&type=3
-- 大顺发富豪榜：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151818&type=3
 - 加油您最胖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156051&type=3
 - 青不年：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151738&type=3
 - 青不年：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151729&type=3
@@ -197,35 +199,35 @@
 - 长青牛牛：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152847&type=3
 - 阳光下的真实：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152126&type=3
 - 以实温故：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151799&type=3
-- 十二妹数鸭子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
-- 闷声捞金：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158232&type=3
-- 是五主：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158209&type=3
-- 六合拉拉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158186&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
-- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
-- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
-- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
 - 刚好干活：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158034&type=3
+- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
+- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
+- 心明目录：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
+- 六合拉拉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158186&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
 - 六公子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157984&type=3
-- 浪女在此：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151841&type=3
 - 墨鱼丸子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151803&type=3
+- 浪女在此：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151841&type=3
 - 金牛向前冲：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153073&type=3
-- 梦幻加工厂：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158084&type=3
-- 汤达人：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158035&type=3
-- 幸运之鑫：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157992&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
+- 朱砂澳狗：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
 - 邵少爷：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158057&type=3
 - 林家大少：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158058&type=3
+- 梦幻加工厂：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158084&type=3
+- 汤达人：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158035&type=3
+- 闷声捞金：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158232&type=3
+- 十二妹数鸭子：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
+- 幸运之鑫：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157992&type=3
+- 是五主：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158209&type=3
 - 刚好干活：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157981&type=3
 - 上上签哦：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157980&type=3
 - 上上签哦：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157980&type=3
@@ -290,21 +292,22 @@
 - 穿衣显瘦脱衣有肉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157273&type=3
 - 穿衣显瘦脱衣有肉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157273&type=3
 - 十四码围特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157399&type=3
+- 颠不颠：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157398&type=3
 - 眯眯笑：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157382&type=3
 - 法海你不懂爱嘛：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157377&type=3
 - 致富哥：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157372&type=3
 - 澳门研究生院长：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157371&type=3
 - 澳门研究生院长：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157371&type=3
 - 伟大复兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157350&type=3
+- 鸿兴学府：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151817&type=3
+- 鸿兴学府：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151817&type=3
+- 阁阁閤：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157318&type=3
+- 阁阁閤：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157318&type=3
 - 六合至尊：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157317&type=3
-- 鸿兴学府：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151817&type=3
-- 鸿兴学府：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151817&type=3
-- 阁阁閤：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157318&type=3
-- 阁阁閤：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157318&type=3
 - 帝尊神话：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155587&type=3
 - 帝尊神话：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155587&type=3
-- 刘爸爸：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157282&type=3
 - 六合八荒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151958&type=3
+- 刘爸爸：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157282&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
@@ -323,14 +326,16 @@
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
 - 卓楚赢：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157243&type=3
-- 沐湘源：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157181&type=3
 - 程蝶衣：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157134&type=3
+- 沐湘源：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157181&type=3
 - 羊无敌神医：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157099&type=3
 - 天命人：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153838&type=3
 - 主打九肖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156932&type=3
 - 弗莱迪：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155745&type=3
+- 稳中稳长跟必赚：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156675&type=3
 - 小白围统：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156528&type=3
 - 一路顺顺发财：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155858&type=3
+- 微笑美眉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156432&type=3
 - 百万富翁中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156529&type=3
 - 百万富翁中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156529&type=3
 - 百万富翁中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156529&type=3
@@ -372,10 +377,8 @@
 - 百万富翁中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156529&type=3
 - 百万富翁中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156529&type=3
 - 明天会更美好：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156083&type=3
-- 微笑美眉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156432&type=3
-- 稳中稳长跟必赚：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11156675&type=3
-- 盈百万：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155741&type=3
 - 稳了的：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155751&type=3
+- 盈百万：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155741&type=3
 - 求智得智：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155740&type=3
 - 稳定特围：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151814&type=3
 - 稳定特围：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151814&type=3
@@ -395,8 +398,8 @@
 - 风火狼烟：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155712&type=3
 - 风火狼烟：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155712&type=3
 - 娱乐码皇：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151783&type=3
-- 很好很好：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151790&type=3
 - 早起的鸟：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155711&type=3
+- 很好很好：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151790&type=3
 - 棍棍到肉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155710&type=3
 - 朝阳冬泳怪鸽：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155708&type=3
 - 湘之印：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155707&type=3
@@ -415,35 +418,35 @@
 - 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155585&type=3
 - 天命人：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153837&type=3
 - 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155582&type=3
+- 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155581&type=3
 - 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155580&type=3
 - 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155583&type=3
-- 无影中特：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155581&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
+- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
 - 奥特只王：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155327&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
-- 广西谋财酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151792&type=3
 - 一八二尾王：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153923&type=3
 - 一颗夜明珠：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151956&type=3
 - 三婉婉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153925&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
-- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
 - 数字投资研究院：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153587&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
+- 岭南特码兴：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
 - 未来预言家：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154591&type=3
 - 风中的神：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153922&type=3
 - 不可较真：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153924&type=3
@@ -458,7 +461,6 @@
 - 鸣区带盐人：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152782&type=3
 - 六肖聚宝：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152725&type=3
 - 来生注定：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153446&type=3
-- 窝里马：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153001&type=3
 - 夜夜都爆中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152855&type=3
 - 咖啡里的茶：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151809&type=3
 - 小场面：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153065&type=3
@@ -529,14 +531,14 @@
 - 青哥哥：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152690&type=3
 - 小娃娃：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152692&type=3
 - 水东枭雄：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152784&type=3
-- 水东枭雄：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152766&type=3
 - 发东南西北旋风财：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152641&type=3
 - 刀口架脖子问庄要钱：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152510&type=3
 - 刘哥博彩：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152377&type=3
+- 水东枭雄：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152766&type=3
 - 刘哥博彩：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152379&type=3
-- 每天吃香肉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152376&type=3
 - 归海一刀：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152600&type=3
 - 平特一肖买什么来什么：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152649&type=3
+- 每天吃香肉：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152376&type=3
 - 君君崽：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152761&type=3
 - 根深蒂固：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152788&type=3
 - 树大根深：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152787&type=3
@@ -677,15 +679,15 @@
 - 中发大大大大：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152162&type=3
 - 琦琦玉兰：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152135&type=3
 - 命运六合：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152159&type=3
-- 推到六叔公：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152107&type=3
-- 想要天天天中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152121&type=3
-- 时空思念：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152158&type=3
-- 相得一彰：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152157&type=3
 - 陈长青：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152104&type=3
 - 琦琦玉兰：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152139&type=3
 - 金诗如梦：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152173&type=3
+- 推到六叔公：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152107&type=3
+- 想要天天天中：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152121&type=3
+- 相得一彰：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152157&type=3
 - 鱼鱼鱼：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152161&type=3
 - 周瑜伽砖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152160&type=3
+- 时空思念：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152158&type=3
 - 手指上旳煙味：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152156&type=3
 - 苍天赚钱：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152155&type=3
 - 朱唇一尝：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152153&type=3
@@ -745,15 +747,15 @@
 - 澳门蓝月亮：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151997&type=3
 - 澳门蓝月亮：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151997&type=3
 - 澳门蓝月亮：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151997&type=3
-- 六合八荒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151795&type=3
 - 湘西密藏：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151788&type=3
 - 湘西密藏：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151786&type=3
-- 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151802&type=3
 - 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151806&type=3
 - 赖赖赖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151798&type=3
 - 赖赖赖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151798&type=3
+- 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151802&type=3
 - 左路左路：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151807&type=3
 - 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151808&type=3
+- 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151812&type=3
 - 港澳牛总：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151812&type=3
 - 赌神之神：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151816&type=3
 - 人在家中坐：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151821&type=3
@@ -768,14 +770,14 @@
 - 赖赖赖：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151826&type=3
 - 求求其其：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151949&type=3
 - 赌神不是神：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151791&type=3
-- 天衍四十九：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151823&type=3
 - 河南漯河市澳门研究生：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151825&type=3
+- 天衍四十九：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151823&type=3
 - 物都是你：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151976&type=3
 - 干一杯烈酒：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151975&type=3
 - 盛世唐朝：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151974&type=3
 - 青田徐伯：无法明确解析当期玩法，排除；https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151732&type=3
 
-## 待确认玩法（146篇）
+## 待确认玩法（147篇）
 以下待确认内容不参与排名、不计入有效资料份数。请回复条目编号及玩法解释，可将该条交给 Codex 增加解析规则和测试；规则确认前保持排除。
 
 ### 1. 叶落归根 / 2026298
@@ -933,37 +935,37 @@
 未解析原因：missing or conflicting named-group definitions
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 13. 十二妹数鸭子 / 2026298
-标题：八肖中特：
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
+### 13. 心明目录 / 2026298
+标题：对错勿扰，六合无绝对
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
 发布时间：2026-10-25 19:46
 
 原文：
-> 【龙-兔-牛-虎-猪-蛇-鼠-羊】开：
+> 296 牛龙蛇猴鸡羊开23
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 14. 闷声捞金 / 2026298
-标题：💤
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158232&type=3
+原文：
+> 297 马狗猪蛇鼠牛开13
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+原文：
+> 298 鸡蛇牛猴虎猪开？
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 14. 墨鱼丸子 / 2026298
+标题：天天3-6肖🀄️
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151803&type=3
 发布时间：2026-10-25 19:46
 
 原文：
-> 298：蛇猴虎羊☛马兔龙❶🉐
+> 六肖 牛兔羊蛇猴狗
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 15. 是五主 / 2026298
-标题：298期
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158209&type=3
-发布时间：2026-10-25 19:46
-
-原文：
-> 298期:主龙鼠鸡防猴虎猪
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 16. 朱砂澳狗 / 2026298
+### 15. 朱砂澳狗 / 2026298
 标题：精选🈲肖，主你自己
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151793&type=3
 发布时间：2026-10-25 19:46
@@ -1003,33 +1005,33 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 17. 心明目录 / 2026298
-标题：对错勿扰，六合无绝对
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158115&type=3
+### 16. 闷声捞金 / 2026298
+标题：💤
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158232&type=3
 发布时间：2026-10-25 19:46
 
 原文：
-> 296 牛龙蛇猴鸡羊开23
+> 298：蛇猴虎羊☛马兔龙❶🉐
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-原文：
-> 297 马狗猪蛇鼠牛开13
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-原文：
-> 298 鸡蛇牛猴虎猪开？
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 18. 墨鱼丸子 / 2026298
-标题：天天3-6肖🀄️
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151803&type=3
+### 17. 十二妹数鸭子 / 2026298
+标题：八肖中特：
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158234&type=3
 发布时间：2026-10-25 19:46
 
 原文：
-> 六肖 牛兔羊蛇猴狗
+> 【龙-兔-牛-虎-猪-蛇-鼠-羊】开：
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 18. 是五主 / 2026298
+标题：298期
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158209&type=3
+发布时间：2026-10-25 19:46
+
+原文：
+> 298期:主龙鼠鸡防猴虎猪
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
@@ -1238,17 +1240,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 28. 六合至尊 / 2026298
-标题：6肖中特
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157317&type=3
-发布时间：2026-10-25 17:45
-
-原文：
-> 猴狗虎马鼠猪
-未解析原因：unsupported or ambiguous play
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 29. 阁阁閤 / 2026298
+### 28. 阁阁閤 / 2026298
 标题：298期 澳彩公式九肖中特
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157318&type=3
 发布时间：2026-10-25 17:45
@@ -1260,6 +1252,16 @@
 
 原文：
 > 298期          六肖-兔羊猴鸡狗猪-⁉️
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 29. 六合至尊 / 2026298
+标题：6肖中特
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11157317&type=3
+发布时间：2026-10-25 17:45
+
+原文：
+> 猴狗虎马鼠猪
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
@@ -1458,7 +1460,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？
 
-### 37. 岭南特码兴 / 2026298
+### 37. 数字投资研究院 / 2026298
+标题：6️⃣--9️⃣肖博特
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153587&type=3
+发布时间：2026-10-25 09:34
+
+原文：
+> 298期▶︎龙猴羊虎鼠兔蛇鸡📣开❓❓
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 38. 岭南特码兴 / 2026298
 标题：精选九肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11154583&type=3
 发布时间：2026-10-25 09:34
@@ -1516,16 +1528,6 @@
 原文：
 > 精选九肖 | 296虎龙兔鼠狗鸡蛇牛猪   开猴错
 未解析原因：duplicate author/equal priority earlier source
-请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
-
-### 38. 数字投资研究院 / 2026298
-标题：6️⃣--9️⃣肖博特
-来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11153587&type=3
-发布时间：2026-10-25 09:34
-
-原文：
-> 298期▶︎龙猴羊虎鼠兔蛇鸡📣开❓❓
-未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
 ### 39. 呆头呆脑的猪 / 2026298
@@ -2618,7 +2620,17 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 134. 赖赖赖 / 2026298
+### 134. 港澳牛总 / 2026298
+标题：六肖中特[港澳牛总]
+来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151812&type=3
+发布时间：2026-10-24 22:54
+
+原文：
+> 298期六肖中特蛇牛鼠猴鸡猪
+未解析原因：unsupported or ambiguous play
+请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
+
+### 135. 赖赖赖 / 2026298
 标题：猴冲虎，9肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151826&type=3
 发布时间：2026-10-24 22:54
@@ -2643,7 +2655,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 135. 求求其其 / 2026298
+### 136. 求求其其 / 2026298
 标题：七肖中特
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151949&type=3
 发布时间：2026-10-24 22:54
@@ -2653,7 +2665,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 136. 物都是你 / 2026298
+### 137. 物都是你 / 2026298
 标题：单双二肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151976&type=3
 发布时间：2026-10-24 22:53
@@ -2663,7 +2675,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 137. 盛世唐朝 / 2026298
+### 138. 盛世唐朝 / 2026298
 标题：盛世唐朝【六肖⑥码】
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151974&type=3
 发布时间：2026-10-24 22:53
@@ -2673,7 +2685,7 @@
 未解析原因：unsupported or ambiguous play
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 138. 时来运赚 / 2026298
+### 139. 时来运赚 / 2026298
 标题：原创公式九肖中特
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151730&type=3
 发布时间：2026-10-25 10:21
@@ -2683,7 +2695,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 139. 无情哈拉少 / 2026298
+### 140. 无情哈拉少 / 2026298
 标题：298期：红蓝绿肖中特
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152836&type=3
 发布时间：2026-10-25 02:00
@@ -2698,7 +2710,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 140. 司法部 / 2026298
+### 141. 司法部 / 2026298
 标题：298期:五肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152750&type=3
 发布时间：2026-10-25 01:33
@@ -2708,7 +2720,7 @@
 未解析原因：declared zodiac count does not match picks
 请确认：玩法标注的生肖数量与正文不一致，请确认实际入选生肖及数量。
 
-### 141. 长青诗 / 2026298
+### 142. 长青诗 / 2026298
 标题：298期六肖，期期中这么简单就好
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152691&type=3
 发布时间：2026-10-25 01:27
@@ -2718,7 +2730,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 142. 红颜情断肠 / 2026298
+### 143. 红颜情断肠 / 2026298
 标题：298期红蓝绿肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152619&type=3
 发布时间：2026-10-25 01:20
@@ -2728,7 +2740,7 @@
 未解析原因：unknown or unverified mode
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 143. 觅青森 / 2026298
+### 144. 觅青森 / 2026298
 标题：298期实力打造独合肖，兄弟姐妹致富的好帮手
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152610&type=3
 发布时间：2026-10-25 01:20
@@ -2738,7 +2750,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 144. 心头的小情儿 / 2026298
+### 145. 心头的小情儿 / 2026298
 标题：298期:有无生肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152609&type=3
 发布时间：2026-10-25 01:19
@@ -2748,7 +2760,7 @@
 未解析原因：duplicate author/equal priority earlier source
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 145. 王道人 / 2026298
+### 146. 王道人 / 2026298
 标题：298期：一份九肖选三肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152151&type=3
 发布时间：2026-10-24 23:48
@@ -2758,7 +2770,7 @@
 未解析原因：superseded_by_same_author_higher_priority
 请确认：这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。
 
-### 146. 叔公斯诺克 / 2026298
+### 147. 叔公斯诺克 / 2026298
 标题：298期：规杀一肖
 来源：https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151820&type=3
 发布时间：2026-10-24 22:54
