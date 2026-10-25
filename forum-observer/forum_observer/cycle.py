@@ -92,6 +92,10 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             cutoff=now_local.replace(hour=21,minute=0,second=0,microsecond=0)
             if fetched.tzinfo is None or fetched.astimezone(TZ)>cutoff:
                 raise ValueError('post-cutoff draft cannot be frozen')
+            # Pre-freeze review: remove materials recorded before 21:00 as rule
+            # violations, re-rank with the unchanged rules, no re-collection.
+            from .pre_freeze import apply as apply_pre_freeze, load as load_pre_freeze
+            status,pre_freeze_record=apply_pre_freeze(status,load_pre_freeze(folder))
     else:
         status_path=out/'status.json'
         status=json.loads(status_path.read_text(encoding='utf-8')) if status_path.exists() else None
@@ -218,6 +222,8 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             core['collection_status']=status['status']
             core['evidence_refs']=[{'author':p['author'],'url':p['detail_url']}
                                     for p in status.get('evidence',[]) if p.get('detail_url')]
+            if status.get('pre_freeze_exclusions'):
+                core['pre_freeze_exclusions']=status['pre_freeze_exclusions']
             # Refuse to create a new snapshot after either the announced cutoff
             # or a verified draw; existing snapshots remain untouched.
             now=datetime.now(timezone.utc)
@@ -259,6 +265,9 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                     source=source.replace('\n\n','\n\n'+annotation+'\n',1)
                 else:
                     source+=annotation
+                if saved.get('pre_freeze_exclusions'):
+                    from .pre_freeze import report_section
+                    source+=report_section(saved['pre_freeze_exclusions'])
                 frozen_report.write_text(source,encoding='utf-8')
     if finalize and not (folder/'report.md').exists():
         # A completely failed run still gets an honest zero-evidence report;
