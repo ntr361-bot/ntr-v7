@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026298",
+  "state": "collecting_effectively",
+  "run_id": "40193090695",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40193090695",
+  "updated_at": "2026-10-25T12:35:52.635939+00:00",
+  "error": null,
+  "valid_materials": 51,
+  "valid_authors": 51,
+  "successful_post_opens": 292,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 450,
+      "attempted": 246,
+      "opened": 245,
+      "extracted": 245,
+      "completed": 245
+    }
+  },
+  "article_texts_extracted": 292,
+  "article_details_completed": 292,
+  "last_verified_post": {
+    "author": "黄大仙",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152752&type=3",
+    "verified_at": "2026-10-25T12:35:51.969961+00:00",
+    "text_length": 64,
+    "text_sha256": "8f3c5a62ce614195dea1c6c28ae3a48c73dca22a0ff3c5009f4a86b2d0b8236f"
+  },
+  "last_attempted_post": {
+    "author": "天下第一合",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11152751&type=3",
+    "attempt_index": 293
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-25T12:32:50.333090+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 292,
+  "stage": "detail: 天下第一合 298期:每期15码",
+  "progress_updated_at": "2026-10-25T12:35:52.308557+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
