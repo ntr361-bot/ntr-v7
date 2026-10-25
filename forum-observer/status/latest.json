@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40193090695",
-  "updated_at": "2026-10-25T12:32:40.535337+00:00",
+  "updated_at": "2026-10-25T12:33:44.509407+00:00",
   "error": null,
-  "valid_materials": 7,
-  "valid_authors": 7,
-  "successful_post_opens": 30,
+  "valid_materials": 30,
+  "valid_authors": 30,
+  "successful_post_opens": 135,
   "article_details": {
     "featured": {
       "queued": 47,
-      "attempted": 31,
-      "opened": 30,
-      "extracted": 30,
-      "completed": 30
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
     },
     "ordinary": {
       "queued": 450,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 89,
+      "opened": 88,
+      "extracted": 88,
+      "completed": 88
     }
   },
-  "article_texts_extracted": 30,
-  "article_details_completed": 30,
+  "article_texts_extracted": 135,
+  "article_details_completed": 135,
   "last_verified_post": {
-    "author": "新人稳稳杀肖",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151787&type=3",
-    "verified_at": "2026-10-25T12:32:40.112012+00:00",
-    "text_length": 994,
-    "text_sha256": "d4eee4bfa281ddc74e3bf9dcd6a23b4f87c7c5df6e2f26566e4f73f7d714e57a"
+    "author": "棍棍到肉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155710&type=3",
+    "verified_at": "2026-10-25T12:33:44.258873+00:00",
+    "text_length": 979,
+    "text_sha256": "e5341d3165160515f01f0d69a76043f74a158a672072e8e749c791d2039b68cb"
   },
   "last_attempted_post": {
-    "author": "时来运赚",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11151730&type=3",
-    "attempt_index": 31
+    "author": "朝阳冬泳怪鸽",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11155708&type=3",
+    "attempt_index": 136
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-25T12:32:50.333090+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 30,
-  "stage": "detail: 时来运赚 原创公式九肖中特",
-  "progress_updated_at": "2026-10-25T12:32:40.134936+00:00",
+  "raw_count": 135,
+  "stage": "detail: 朝阳冬泳怪鸽 298",
+  "progress_updated_at": "2026-10-25T12:33:44.431806+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
