@@ -3,7 +3,7 @@ name: 49论坛模型 collection
 # Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
 # (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
 # own archive forum-observer/forum49/ and feed site/data/forum49/.
-#   mode=collect : 20:00 / 20:30 rounds -> replaceable draft (never a freeze)
+#   mode=collect : single 20:20 collection (since 2026-10-26) -> replaceable draft (never a freeze)
 #   mode=freeze  : 21:00-21:20 only -> immutable snapshot of last pre-21:00 draft
 #   mode=settle  : settle snapshots from verified draw history; never collects
 # Never touches 118's archive/feed, D1 or formal V7.

@@ -1,18 +1,16 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
-  # Old 19:40/19:45/19:50 dispatches are retired.
-  # UTC 12:00/12:05/12:10 = Beijing 20:00 first round + limited backups.
-  # UTC 12:30/12:35/12:40 = Beijing 20:30 second round + limited backups.
-  # Backup events are idempotent within their own round; rounds never skip one another.
+  # User decision 2026-10-26: ONE nightly collection at 20:20 Beijing. The
+  # 20:00 first-round and 20:30 second-round cron slots are removed (and
+  # rejected by forum_observer.schedule if ever delivered).
   schedule:
-    - cron: '0,5,10 12 * * *'
-    - cron: '30,35,40 12 * * *'
     # Beijing 21:00 final freeze (and best-effort 21:05/21:10 backups).
     - cron: '0,5,10 13 * * *'
   # GitHub cron delivery has been observed hours late (2026-10-16..20), so an
   # external scheduler pushes markers to the isolated trigger branch:
-  #   trigger(forum-collect-1): ~19:56, trigger(forum-collect-2): ~20:26,
+  #   trigger(forum-collect-1): ~20:16-20:20 (the single 20:20 collection;
+  #   trigger(forum-collect-2) is retired and rejected),
   #   trigger(forum-freeze): ~21:01 (same 21:00-21:20 window and write-once
   #   snapshot guard as the 21:00 cron; never valid outside that window).
   # Push events run THIS file from the trigger branch: keep both copies in sync.
@@ -76,7 +74,7 @@ jobs:
       - name: Reject delayed scheduled collection
         if: steps.collection-gate.outputs.reason == 'scheduled_event_outside_collection_window' || steps.collection-gate.outputs.reason == 'requested_round_outside_window' || steps.collection-gate.outputs.reason == 'retired_schedule_trigger'
         run: |
-          echo "::error::Retired or delayed forum trigger rejected; neither 20:00 nor 20:30 round was reused outside its own window."
+          echo "::error::Retired or delayed forum trigger rejected; only the single 20:20 collection (trigger(forum-collect-1)) may collect, inside 20:20-20:58."
           exit 1
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
