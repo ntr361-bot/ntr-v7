@@ -636,30 +636,60 @@ def extract_picks(text):
             continue
         seen_votes.add(key)
         unique.append(row)
-    return _reject_partition_legends(unique)
+    return _resolve_partition_groups(unique, str(text))
 
 
-PARTITION_LEGEND_REASON='complementary zodiac groups are a classification legend, not a selection'
+PARTITION_LEGEND_REASON='complementary zodiac groups without a current-issue selection'
+PARTITION_UNSELECTED_REASON='complementary zodiac group not selected for this issue'
+_GROUP_LABEL=re.compile(r'([^\s:：|,，、。（）()【】\[\]]{1,2})生肖\s*[:：=]\s*((?:['+ZODIAC_CLASS+r'][\s、，,]*){6})')
 
 
-def _reject_partition_legends(rows):
-    """Rule 4: a post listing two disjoint groups that together cover all
-    twelve zodiacs (独字/合字, 有边/无边, ...) is a classification table with
-    no selected direction. Neither half may become a recommendation.
-    Only unnumbered "X生肖:" labels qualify: a numbered 六肖 pick that happens
-    to complement another issue's line is not a legend."""
+def _group_label(row):
+    picks=''.join(row['picks'])
+    for m in _GROUP_LABEL.finditer(row.get('excerpt','')):
+        if ''.join(c for c in m.group(2) if c in ZODIACS)==picks:
+            return m.group(1)
+    return None
+
+
+def _resolve_partition_groups(rows, text):
+    """Two unnumbered "X生肖:" groups that are disjoint and together cover all
+    twelve zodiacs (有边/无边, 独字/合字, ...) define a two-way choice.
+
+    Like 胆大小 (AGENTS.md 2026-10-14), only the group the post explicitly
+    selects for the current issue counts, e.g. "298期有无生肖： 无肖 开00准" or
+    "298期(独合肖)【独肖】开00准" (user confirmed 2026-10-26). The text given to
+    extract_picks is already limited to the current issue, so older issue rows
+    such as "297期...【独肖】开马13准" are not seen here. With no selection, or
+    with both sides named, neither group may count (rule 4)."""
     include=[r for r in rows if r['mode']=='include' and not r.get('parse_error')
              and r.get('play')=='生肖']
-    legend=set()
     for i,a in enumerate(include):
         for b in include[i+1:]:
             first,second=set(a['picks']),set(b['picks'])
-            if not first&second and first|second==set(ZODIACS):
-                legend.update((id(a),id(b)))
-    for row in rows:
-        if id(row) in legend:
-            row['mode']='unverified'
-            row['parse_error']=PARTITION_LEGEND_REASON
+            if first&second or first|second!=set(ZODIACS):
+                continue
+            labels={id(a):_group_label(a),id(b):_group_label(b)}
+            chosen=set();selection=''
+            for row in (a,b):
+                label=labels[id(row)]
+                if not label:
+                    continue
+                token=re.compile(r'(?:^|[\s:：【\[(（|])('+re.escape(label[0])+r'肖)(?=\s*[】\])）]|\s|开|$)',re.M)
+                m=token.search(text)
+                if m:
+                    chosen.add(id(row))
+                    line_start=text.rfind('\n',0,m.start())+1
+                    line_end=text.find('\n',m.end())
+                    selection=text[line_start:line_end if line_end>=0 else None].strip()
+            for row in (a,b):
+                if len(chosen)==1 and id(row) in chosen:
+                    row['play']='六肖·'+labels[id(row)]+'组'
+                    row['excerpt']=(selection+' | '+row.get('excerpt',''))[:450]
+                else:
+                    row['mode']='unverified'
+                    row['parse_error']=(PARTITION_UNSELECTED_REASON if len(chosen)==1
+                                        else PARTITION_LEGEND_REASON)
     return rows
 
 
