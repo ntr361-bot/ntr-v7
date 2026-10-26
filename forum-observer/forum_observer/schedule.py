@@ -20,6 +20,13 @@ TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
 COLLECTION_START = (20, 20)  # the single nightly collection (2026-10-26)
 COLLECTION_END = (20, 58)
+# A manual collection started from 20:00 also counts as tonight's draft
+# (it can be frozen, and automatic collections then skip).
+EVENING_START = (20, 0)
+# Independent GitHub cron backup for the 20:20 collection; it skips when
+# tonight's draft already exists (user decision 2026-10-26).
+BACKUP_COLLECT_CRON = '20,25 12 * * *'
+FORUM49_AUTO_COLLECT_END = (20, 50)
 # Retired cron slots (20:00 first round, 20:30 second round): never collect.
 ROUND_ONE_CRON = '0,5,10 12 * * *'
 ROUND_TWO_CRON = '30,35,40 12 * * *'
@@ -72,7 +79,7 @@ def draft_is_current_evening(data, issue, now):
     return (
         captured_local.date() == local.date()
         and current_issue(captured_local) == issue
-        and (captured_local.hour, captured_local.minute) >= COLLECTION_START
+        and (captured_local.hour, captured_local.minute) >= EVENING_START
     )
 
 
@@ -119,9 +126,9 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
     # Push markers expand ${{ github.event.schedule }} to an empty string, not
     # an unset variable: "" means "no cron slot", never a retired cron.
     slot = slot or None
-    # Every cron collection slot is retired since 2026-10-26 (single 20:20
-    # marker-triggered collection), as is the second-round marker.
-    if slot is not None or requested_round == '2':
+    # Since 2026-10-26 only the 20:20 backup cron may collect on a schedule;
+    # the 20:00/20:30 slots and the second-round marker are retired.
+    if (slot is not None and slot != BACKUP_COLLECT_CRON) or requested_round == '2':
         return False, issue, 0, "retired_schedule_trigger"
     if scheduled and not manual and not collection_window_allowed(local):
         return False, issue, 0, "scheduled_event_outside_collection_window"
@@ -137,12 +144,9 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
                 and previous.get('status') == 'ready_observation'
                 and int(previous.get('valid_materials') or 0) > 0
                 and draft_is_current_evening(previous, issue, local)):
-            capture = datetime.fromisoformat(previous['fetched_at']).astimezone(TZ)
-            old_round = previous.get('collection_round')
-            # Any valid draft captured in tonight's 20:20 window is the single
-            # collection; an older two-round draft from before 20:20 is not.
-            if (capture.hour, capture.minute) >= COLLECTION_START:
-                return False, issue, 0, "current_round_already_completed"
+            # Tonight's collection (automatic or a manual run from 20:00)
+            # already produced a draft: automatic triggers never repeat it.
+            return False, issue, 0, "current_round_already_completed"
     deadline = (CUTOFF_HOUR, CUTOFF_MINUTE)
     cutoff = local.replace(hour=deadline[0], minute=deadline[1],
                            second=0, microsecond=0)
@@ -150,6 +154,29 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
     if remaining < 60:
         return False, issue, 0, "daily_collection_cutoff_passed"
     return True, issue, min(MAX_SECONDS, remaining), ("manual_rerun" if manual else "round_collection_or_retry")
+
+
+def forum49_collect_gate(archive, now, skip_if_collected):
+    """49论坛模型: automatic collections (backup cron, scheduled task) run once
+    per night inside 20:20-20:50 and skip when tonight's draft exists.
+    A manual dispatch (skip_if_collected=False) always collects."""
+    if not skip_if_collected:
+        return True, "manual_collection"
+    local = now.astimezone(TZ)
+    minute = (local.hour, local.minute)
+    if not (COLLECTION_START <= minute < FORUM49_AUTO_COLLECT_END):
+        return False, "automatic_collection_outside_window"
+    issue = current_issue(local)
+    if snapshot_exists(archive, issue):
+        return False, "immutable_snapshot_exists"
+    draft = Path(archive) / "issues" / issue / "draft-status.json"
+    try:
+        data = json.loads(draft.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        data = None
+    if data and data.get("status") == "ready_observation" and draft_is_current_evening(data, issue, local):
+        return False, "already_collected_tonight"
+    return True, "automatic_collection"
 
 
 def ensure_daily_report(archive, now):
@@ -206,6 +233,8 @@ def main():
                         help="Wait for 20:20 only when a GPT trigger arrives up to five minutes early")
     parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
     parser.add_argument("--gpt-second-round", action="store_true",help="Retired 20:30 second round: always rejected")
+    parser.add_argument("--forum49-collect-gate", action="store_true",
+                        help="Decide whether a 49论坛模型 collect run should collect (env F49_SKIP_IF_COLLECTED)")
     a = parser.parse_args()
     now = datetime.now(TZ)
     if a.align_gpt_trigger:
@@ -220,6 +249,14 @@ def main():
             print(f"GPT collection trigger arrived early; waiting {delay}s for 20:20 Asia/Shanghai.",
                   flush=True)
             time.sleep(delay)
+        return 0
+    if a.forum49_collect_gate:
+        skip = os.environ.get("F49_SKIP_IF_COLLECTED", "false").lower() == "true"
+        collect, reason = forum49_collect_gate(a.archive, now, skip)
+        print(json.dumps({"collect": collect, "reason": reason}, ensure_ascii=False), flush=True)
+        if a.github_output:
+            with open(a.github_output, "a", encoding="utf-8") as f:
+                f.write(f"collect={str(collect).lower()}\nreason={reason}\n")
         return 0
     if a.check_freeze_window:
         allowed = freeze_window_allowed(now, a.archive)
