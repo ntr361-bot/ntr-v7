@@ -4,7 +4,9 @@ on:
   # User decision 2026-10-26: ONE nightly collection at 20:20 Beijing. The
   # 20:00 first-round and 20:30 second-round cron slots are removed (and
   # rejected by forum_observer.schedule if ever delivered). Manual collection
-  # (workflow_dispatch or trigger(forum-collect-manual)) stays available.
+  # (workflow_dispatch or trigger(forum-collect-manual)) has no time or count
+  # limit before 21:00 and replaces the draft; from 21:00 it is a test run
+  # (artifact only, never a draft/freeze; waits until tonight's freeze exists).
   schedule:
     # Independent backup for the 20:20 collection (UTC 12:20/12:25); skips
     # when tonight's draft already exists, rejected outside 20:20-20:58.
@@ -106,6 +108,7 @@ jobs:
           FORUM_SCHEDULE_CRON: ${{ github.event.schedule }}
           FORUM_REQUESTED_ROUND: ${{ startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') && '1' || (startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') && '2' || '') }}
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
+          SCHEDULE_GATE_REASON: ${{ steps.collection-gate.outputs.reason }}
         run: python -u -m forum_observer.runtime supervise
       - uses: actions/cache/save@v4
         if: always()
@@ -126,6 +129,9 @@ jobs:
           echo "::error::Forum freeze (cron or trigger(forum-freeze) marker) arrived outside today's 21:00-21:20 Asia/Shanghai window; no late freeze was attempted."
           exit 1
       - name: Publish completed-run report or finalize nightly freeze
+        # A manual run after the freeze time is a test: results stay in the
+        # workflow artifact; no draft, report or archive change.
+        if: steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         env:
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
           FINALIZE_CYCLE: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
@@ -192,7 +198,7 @@ jobs:
           if-no-files-found: ignore
       - name: Enforce collection quality
         # A completed collection must publish its draft report, not freeze early.
-        if: always() && steps.observe.outcome != 'skipped'
+        if: always() && steps.observe.outcome != 'skipped' && steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         shell: bash
         run: |
           if [ -f out/status.json ]; then

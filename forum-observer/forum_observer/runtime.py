@@ -129,6 +129,9 @@ def publish(state, error=None):
         if not re.fullmatch(r'20\d{5}', test_mode):
             raise ValueError('test issue must use YYYYNNN')
         issue = test_mode
+    elif os.environ.get('SCHEDULE_GATE_REASON') == 'manual_test_after_freeze':
+        # Manual test collection after the freeze time: report under tests/.
+        test_mode = issue
     data = read_json('out/status.json')
     if state == 'starting':
         data = {}
