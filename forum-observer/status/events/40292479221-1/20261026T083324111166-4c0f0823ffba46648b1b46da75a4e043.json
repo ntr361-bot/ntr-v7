@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "collecting_effectively",
+  "run_id": "40292479221",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40292479221",
+  "updated_at": "2026-10-26T08:33:24.111166+00:00",
+  "error": null,
+  "valid_materials": 46,
+  "valid_authors": 46,
+  "successful_post_opens": 258,
+  "article_details": {
+    "featured": {
+      "queued": 38,
+      "attempted": 38,
+      "opened": 38,
+      "extracted": 38,
+      "completed": 38
+    },
+    "ordinary": {
+      "queued": 407,
+      "attempted": 221,
+      "opened": 220,
+      "extracted": 219,
+      "completed": 220
+    }
+  },
+  "article_texts_extracted": 257,
+  "article_details_completed": 258,
+  "last_verified_post": {
+    "author": "莫老哥",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159275&type=3",
+    "verified_at": "2026-10-26T08:33:23.490434+00:00",
+    "text_length": 178,
+    "text_sha256": "8e57eb43760076e9f5e2684b48e02e784b381b559115475c768a4ca139a44b27"
+  },
+  "last_attempted_post": {
+    "author": "顺米来",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159274&type=3",
+    "attempt_index": 259
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T08:31:01.965552+00:00",
+      "featured_queued": 38,
+      "featured_attempted": 38,
+      "featured_completed": 38
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 257,
+  "stage": "detail: 顺米来 299期吉美凶丑",
+  "progress_updated_at": "2026-10-26T08:33:23.666463+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
