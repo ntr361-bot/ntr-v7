@@ -1,15 +1,15 @@
 {
   "issue": "2026299",
-  "fetched_at": "2026-10-26T04:08:15.688857+00:00",
+  "fetched_at": "2026-10-26T08:35:49.499953+00:00",
   "status": "ready_observation",
   "audit": {
-    "listing_count": 431,
-    "issue_listing_count": 422,
+    "listing_count": 459,
+    "issue_listing_count": 445,
     "forum_scroll": {
-      "steps": 85,
-      "moves": 84,
+      "steps": 92,
+      "moves": 91,
       "end_confirmed": false,
-      "items_seen": 431,
+      "items_seen": 459,
       "truncated": false,
       "stop_reason": "current_issue_boundary_reached",
       "scope": "target_issue_window"
@@ -23,41 +23,41 @@
     "comment_thread_state_counts": {},
     "comment_retry_attempts": 0,
     "comment_completed_threads": 0,
-    "featured_found_threads": 35,
-    "featured_selected_threads": 35,
-    "featured_checked_threads": 35,
-    "featured_attempted_threads": 35,
-    "featured_completed_threads": 35,
+    "featured_found_threads": 38,
+    "featured_selected_threads": 38,
+    "featured_checked_threads": 38,
+    "featured_attempted_threads": 38,
+    "featured_completed_threads": 38,
     "article_details": {
       "featured": {
-        "queued": 35,
-        "attempted": 35,
-        "opened": 35,
-        "extracted": 35,
-        "completed": 35
+        "queued": 38,
+        "attempted": 38,
+        "opened": 38,
+        "extracted": 38,
+        "completed": 38
       },
       "ordinary": {
-        "queued": 387,
-        "attempted": 387,
-        "opened": 387,
-        "extracted": 387,
-        "completed": 387
+        "queued": 407,
+        "attempted": 407,
+        "opened": 407,
+        "extracted": 406,
+        "completed": 407
       }
     },
     "priority_audit": {
       "policy": "featured_article_before_ordinary",
       "first_ordinary_attempt": {
-        "at": "2026-10-26T04:04:12.662308+00:00",
-        "featured_queued": 35,
-        "featured_attempted": 35,
-        "featured_completed": 35
+        "at": "2026-10-26T08:31:01.965552+00:00",
+        "featured_queued": 38,
+        "featured_attempted": 38,
+        "featured_completed": 38
       },
       "violation_count": 0,
       "state": "verified"
     },
     "profile_budget_exhausted": false,
     "profile_errors": [],
-    "author_profiles_discovered": 400,
+    "author_profiles_discovered": 424,
     "author_profiles_checked": 0,
     "author_history_posts_found": 0,
     "next_period_posts_checked": 0,
@@ -66,82 +66,99 @@
     "post_article_only": true,
     "card_owned_text_only": false,
     "truncated": false,
-    "detail_errors": [],
+    "detail_errors": [
+      {
+        "author": "中国人民银行",
+        "title": "299",
+        "reason": "verified detail has no extractable article text",
+        "detail_diagnostic": {
+          "expected_article_id": 11161766,
+          "navigation": "in_app_article_id_primary",
+          "detail_url_seen": true,
+          "title_seen": true,
+          "author_seen": true,
+          "last_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161766&type=3",
+          "detail_shell_seen": true,
+          "detail_preview": "详情\n关注\nLV.\n历史帖子\n0\n获赞\n0\n粉丝\n0\n关注\n0\n成长值\n0\n阅读数\n网址大全\n澳彩\n港彩\n收起\n礼物榜\n查看更多 >\n最新评论\n只看楼主\n加载中...\n想说点什么...\n0\n分享\n发表\n六合图库\n幽默猜测\n聊天室\n挑码助手\n加载中...",
+          "verification": "verified"
+        }
+      }
+    ],
     "issue_filter_strict": true
   },
   "top3": [
-    "狗",
     "蛇",
+    "狗",
     "鼠"
   ],
   "top6": [
-    "狗",
     "蛇",
+    "狗",
     "鼠",
+    "兔",
     "鸡",
-    "猪",
-    "兔"
+    "牛"
   ],
   "ranking": [
     {
       "rank": 1,
-      "zodiac": "狗",
-      "score": 6.182828
+      "zodiac": "蛇",
+      "score": 7.12031
     },
     {
       "rank": 2,
-      "zodiac": "蛇",
-      "score": 6.111472
+      "zodiac": "狗",
+      "score": 6.600758
     },
     {
       "rank": 3,
       "zodiac": "鼠",
-      "score": 5.901515
+      "score": 6.57702
     },
     {
       "rank": 4,
-      "zodiac": "鸡",
-      "score": 5.708261
+      "zodiac": "兔",
+      "score": 6.50119
     },
     {
       "rank": 5,
-      "zodiac": "猪",
-      "score": 5.701118
+      "zodiac": "鸡",
+      "score": 6.459524
     },
     {
       "rank": 6,
-      "zodiac": "兔",
-      "score": 5.659019
+      "zodiac": "牛",
+      "score": 6.238564
     },
     {
       "rank": 7,
-      "zodiac": "牛",
-      "score": 5.507504
+      "zodiac": "猪",
+      "score": 6.140512
     },
     {
       "rank": 8,
-      "zodiac": "羊",
-      "score": 5.317027
+      "zodiac": "龙",
+      "score": 6.005231
     },
     {
       "rank": 9,
-      "zodiac": "龙",
-      "score": 5.288059
+      "zodiac": "羊",
+      "score": 5.867532
     },
     {
       "rank": 10,
       "zodiac": "猴",
-      "score": 5.084452
+      "score": 5.648846
     },
     {
       "rank": 11,
       "zodiac": "马",
-      "score": 4.921392
+      "score": 5.505988
     },
     {
       "rank": 12,
       "zodiac": "虎",
-      "score": 4.617352
+      "score": 5.334524
     }
   ],
   "author_selection": {
@@ -171,6 +188,7 @@
       "一花一树开",
       "一颗夜明珠",
       "不再回头",
+      "不吃香菜的猫",
       "不在乎又如何",
       "不夜天",
       "不赌不服不富",
@@ -182,7 +200,6 @@
       "之乎者也",
       "书无诗章",
       "二哥独秀",
-      "云飞诸葛",
       "人黄的老狗",
       "今晚三头",
       "优优码皇",
@@ -190,12 +207,14 @@
       "信口易",
       "借花献佛",
       "傲游于",
+      "先仙女",
       "兔子大大",
       "入梦乡",
       "八闽郡王",
       "六叔他叔",
       "六合八荒",
       "六合奇谈",
+      "六合至尊",
       "六合诡码",
       "六杀码统计",
       "六肖聚宝",
@@ -253,6 +272,7 @@
       "大汉美男",
       "大海的方向",
       "大湿鸽",
+      "大神六肖中特",
       "大老爺",
       "大顺发富豪榜",
       "天下我有",
@@ -270,7 +290,6 @@
       "好料再现",
       "如火如荼",
       "姹紫嫣",
-      "娱乐码皇",
       "孤岛爱人",
       "孤独和酒",
       "孤芳又自赏",
@@ -278,8 +297,8 @@
       "寂寞一支烟",
       "密封罐",
       "專司赢",
+      "小六子小兔兔",
       "小场面",
-      "小娃娃",
       "小白鼠",
       "小财迷",
       "山楂味的诗",
@@ -334,6 +353,7 @@
       "早起的鸟",
       "时来运赚",
       "时空思念",
+      "明天会更美好",
       "明日黄花",
       "明月半深秋",
       "明月飘霜",
@@ -347,8 +367,10 @@
       "暮雨而桐",
       "月中仙女",
       "月儿弯弯",
+      "有你更好",
       "望梅止渴",
       "朝暮思雪",
+      "朝阳冬泳怪鸽",
       "期期红",
       "未来预言家",
       "朱佬二",
@@ -377,7 +399,7 @@
       "比天还高",
       "氧宜多硅藻泥",
       "水东枭雄",
-      "求求其其",
+      "求智得智",
       "江心雾",
       "沧海一粟",
       "河南漯河市澳门研究生",
@@ -390,8 +412,10 @@
       "混世码王",
       "清秀如初",
       "清风入梦",
+      "港澳会所",
       "港澳牛总",
       "港澳神算",
+      "湘之印",
       "湘西密藏",
       "滑稽的球",
       "滚瓜烂熟",
@@ -403,6 +427,8 @@
       "澳彩解迷",
       "澳门不倒靠养老",
       "澳门研究所",
+      "澳门研究生院长",
+      "澳门神算子",
       "澳门蓝月亮",
       "火中取栗",
       "灰头土脸",
@@ -422,6 +448,7 @@
       "白日沉沦夜",
       "白明智",
       "白眼小公主",
+      "皮蛋瘦肉",
       "盛世唐朝",
       "相得一彰",
       "相思入骨",
@@ -429,7 +456,11 @@
       "看到结果",
       "神机妙算",
       "秋风霜月",
+      "程蝶衣",
+      "稳中稳长跟必赚",
+      "稳了的",
       "稳如哈马比",
+      "稳定特围",
       "窝里马",
       "竹报彡多",
       "竹马起飞",
@@ -438,6 +469,8 @@
       "算个球",
       "算特码",
       "粗枝大叶",
+      "粳米的蛋白",
+      "精准肖王",
       "糖小焉",
       "繁华落尽",
       "红颜情断肠",
@@ -452,6 +485,7 @@
       "肌瘦的肖人",
       "肯德基暗",
       "背着棺材跳舞",
+      "胖子先生",
       "胸有成竹",
       "花团锦簇",
       "花容月貌",
@@ -505,6 +539,7 @@
       "锦上添花",
       "长欢久安",
       "长青诗",
+      "闷声捞金",
       "闹剧结束",
       "闻人钰",
       "阁阁閤",
@@ -523,6 +558,7 @@
       "青田徐伯",
       "青面獠牙",
       "静待花逝",
+      "静静的概率",
       "面红耳是",
       "韩财神",
       "顶峰相见",
@@ -530,6 +566,7 @@
       "风中的神",
       "风吹草动",
       "风月斟酒",
+      "风火狼烟",
       "风花雪月",
       "风萧萧易水寒",
       "风行天下",
@@ -537,6 +574,7 @@
       "饭王归来",
       "香山论坛",
       "马赛克",
+      "魔王子",
       "鱼鱼鱼",
       "鸣区带盐人",
       "鹤归孤山",
@@ -547,8 +585,8 @@
       "黄袍加身法律",
       "黑庄克星啊"
     ],
-    "valid_prediction_authors": 66,
-    "valid_materials": 66,
+    "valid_prediction_authors": 74,
+    "valid_materials": 74,
     "min_valid_materials": 25,
     "min_valid_authors": 5,
     "comments_collected": 0,
@@ -674,6 +712,80 @@
         "马"
       ],
       "weight_per_zodiac": 0.125
+    },
+    {
+      "play": "六肖",
+      "picks": [
+        "猴",
+        "羊",
+        "龙",
+        "蛇",
+        "虎",
+        "鸡"
+      ],
+      "mode": "include",
+      "excerpt": "六肖中特[港澳牛总] | 299期六肖中特猴羊龙蛇虎鸡",
+      "raw_expression": "猴羊龙蛇虎鸡",
+      "author": "港澳牛总",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "published_at": "2026-10-26 14:04",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "猴",
+        "羊",
+        "龙",
+        "蛇",
+        "虎",
+        "鸡"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
+    },
+    {
+      "play": "三肖中特",
+      "picks": [
+        "猴",
+        "龙",
+        "蛇"
+      ],
+      "mode": "include",
+      "excerpt": "299期三肖中特猴龙蛇",
+      "author": "港澳牛总",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "published_at": "2026-10-26 14:04",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "九肖",
+      "picks": [
+        "兔",
+        "鸡",
+        "鼠",
+        "牛",
+        "猪",
+        "虎",
+        "狗",
+        "马",
+        "龙"
+      ],
+      "mode": "unverified",
+      "excerpt": "299期九肖【兔鸡鼠牛猪虎狗马龙】？",
+      "author": "时来运赚",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158692&type=3",
+      "published_at": "2026-10-26 12:20",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158692&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "unknown or unverified mode",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "杀",
@@ -1051,6 +1163,560 @@
       "weight_per_zodiac": 0.09090909090909091
     },
     {
+      "play": "杀",
+      "picks": [
+        "鸡"
+      ],
+      "mode": "exclude",
+      "excerpt": "299。杀鸡。开？",
+      "author": "稳定特围",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11162099&type=3",
+      "published_at": "2026-10-26 15:00",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11162099&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.09090909090909091
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "鸡"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:鸡 杀肖类 [L序] 特行+落1波+落3波+落5波+落1合+落1码+落6码+0  连准:3期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "鼠"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:鼠 杀肖类 [D序] 特头+平2波+平4尾+平5尾+平6尾+平1码+总分合尾+11  连准:9期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "猪"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:猪 杀肖类 [L序] 落1头+落4头+落5位+落6码+期尾+4  连准:21期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "龙"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:龙 杀肖类 [L序] 落4头+落5头+总分合+落1合尾+4  连准:11期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "兔"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:兔 杀肖类 [D序] 平6头+平2波+平2位+平3位+平4位+总分+总分合+9  连准:7期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.09090909090909091
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "蛇"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:蛇 杀肖类 [D序] 平2行+平4尾+平6尾+平6位+2  连准:6期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "马"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期杀:马 杀肖类 [D序] 平6行+平2波+平5波+平6波+平3位+2  连准:21期",
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "published_at": "2026-10-26 14:23",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "九肖",
+      "picks": [
+        "狗",
+        "虎",
+        "鼠",
+        "龙",
+        "鸡",
+        "蛇",
+        "兔",
+        "马",
+        "羊"
+      ],
+      "mode": "include",
+      "excerpt": "澳门🇲🇴 | 九肖狗虎鼠龙鸡蛇～兔马羊",
+      "raw_expression": "狗虎鼠龙鸡蛇～兔马羊",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "狗",
+        "虎",
+        "鼠",
+        "龙",
+        "鸡",
+        "蛇",
+        "兔",
+        "马",
+        "羊"
+      ],
+      "weight_per_zodiac": 0.1111111111111111
+    },
+    {
+      "play": "六肖",
+      "picks": [
+        "狗",
+        "虎",
+        "鼠",
+        "龙",
+        "鸡",
+        "蛇"
+      ],
+      "mode": "include",
+      "excerpt": "澳门🇲🇴 | 六肖狗虎鼠龙鸡蛇04-28",
+      "raw_expression": "狗虎鼠龙鸡蛇",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "superseded_by_same_author_higher_priority",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "五肖",
+      "picks": [
+        "狗",
+        "虎",
+        "鼠",
+        "龙",
+        "鸡"
+      ],
+      "mode": "include",
+      "excerpt": "五肖狗虎鼠龙鸡34-46",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "四肖",
+      "picks": [
+        "狗",
+        "虎",
+        "鼠",
+        "龙"
+      ],
+      "mode": "include",
+      "excerpt": "四肖狗虎鼠龙03-27",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "三肖",
+      "picks": [
+        "狗",
+        "虎",
+        "鼠"
+      ],
+      "mode": "include",
+      "excerpt": "三肖狗虎鼠31-07",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "二肖",
+      "picks": [
+        "狗",
+        "虎"
+      ],
+      "mode": "include",
+      "excerpt": "二肖狗虎41-29",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "一肖",
+      "picks": [
+        "狗"
+      ],
+      "mode": "include",
+      "excerpt": "一肖狗09-33",
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "一肖",
+      "picks": [
+        "牛"
+      ],
+      "mode": "include",
+      "excerpt": "平特一肖（牛）",
+      "author": "魔王子",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161777&type=3",
+      "published_at": "2026-10-26 14:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161777&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "八肖",
+      "picks": [
+        "猴",
+        "蛇",
+        "马",
+        "兔",
+        "牛",
+        "鼠",
+        "鸡",
+        "狗"
+      ],
+      "mode": "include",
+      "excerpt": "299期：（八肖中特）爆庄资料 | 【猴蛇马兔牛鼠鸡狗】",
+      "raw_expression": "猴蛇马兔牛鼠鸡狗",
+      "author": "风火狼烟",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161755&type=3",
+      "published_at": "2026-10-26 13:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161755&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "猴",
+        "蛇",
+        "马",
+        "兔",
+        "牛",
+        "鼠",
+        "鸡",
+        "狗"
+      ],
+      "weight_per_zodiac": 0.125
+    },
+    {
+      "play": "六肖",
+      "picks": [
+        "牛",
+        "蛇",
+        "兔",
+        "鼠",
+        "虎",
+        "猪"
+      ],
+      "mode": "include",
+      "excerpt": "6肖中特 | 6肖牛蛇兔鼠虎猪",
+      "raw_expression": "牛蛇兔鼠虎猪",
+      "author": "六合至尊",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "published_at": "2026-10-26 13:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "牛",
+        "蛇",
+        "兔",
+        "鼠",
+        "虎",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
+    },
+    {
+      "play": "3肖",
+      "picks": [
+        "牛",
+        "蛇",
+        "兔"
+      ],
+      "mode": "include",
+      "excerpt": "3肖牛蛇兔",
+      "author": "六合至尊",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "published_at": "2026-10-26 13:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "1肖",
+      "picks": [
+        "牛"
+      ],
+      "mode": "include",
+      "excerpt": "1肖牛",
+      "author": "六合至尊",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "published_at": "2026-10-26 13:01",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "鼠",
+        "马"
+      ],
+      "mode": "unverified",
+      "excerpt": "299杀鼠马准？",
+      "author": "小六子小兔兔",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161754&type=3",
+      "published_at": "2026-10-26 12:40",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161754&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "unknown or unverified mode",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "马"
+      ],
+      "mode": "exclude",
+      "excerpt": "299期:杀马，开？",
+      "author": "求智得智",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161751&type=3",
+      "published_at": "2026-10-26 12:27",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161751&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.09090909090909091
+    },
+    {
+      "play": "杀",
+      "picks": [
+        "狗"
+      ],
+      "mode": "exclude",
+      "excerpt": "299杀狗",
+      "author": "饭王归来",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158808&type=3",
+      "published_at": "2026-10-26 12:25",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158808&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.09090909090909091
+    },
+    {
+      "play": "六肖",
+      "picks": [
+        "兔",
+        "龙",
+        "蛇",
+        "鸡",
+        "马",
+        "牛"
+      ],
+      "mode": "include",
+      "excerpt": "六肖中特： | 299期六肖中特：兔龙蛇鸡马牛，防：羊鼠，平特肖：兔，给大家参考。",
+      "raw_expression": "兔龙蛇鸡马牛，",
+      "author": "有你更好",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161750&type=3",
+      "published_at": "2026-10-26 12:25",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161750&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "兔",
+        "龙",
+        "蛇",
+        "鸡",
+        "马",
+        "牛"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
+    },
+    {
+      "play": "特肖",
+      "picks": [
+        "兔"
+      ],
+      "mode": "include",
+      "excerpt": "299期六肖中特：兔龙蛇鸡马牛，防：羊鼠，平特肖：兔，给大家参考。",
+      "author": "有你更好",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161750&type=3",
+      "published_at": "2026-10-26 12:25",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161750&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
       "play": "一肖",
       "picks": [
         "虎"
@@ -1102,6 +1768,28 @@
       "weight_per_zodiac": 0.0
     },
     {
+      "play": "六肖中特",
+      "picks": [
+        "马",
+        "鼠",
+        "虎",
+        "猴",
+        "龙",
+        "狗"
+      ],
+      "mode": "unverified",
+      "excerpt": "299期六肖中特【马鼠虎猴龙狗】 ？🀄",
+      "author": "青不年",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161468&type=3",
+      "published_at": "2026-10-26 10:29",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161468&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "unknown or unverified mode",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
+    },
+    {
       "play": "杀肖",
       "picks": [
         "猴",
@@ -1129,28 +1817,6 @@
         "猪"
       ],
       "weight_per_zodiac": 0.1
-    },
-    {
-      "play": "六肖中特",
-      "picks": [
-        "马",
-        "鼠",
-        "虎",
-        "猴",
-        "龙",
-        "狗"
-      ],
-      "mode": "unverified",
-      "excerpt": "299期六肖中特【马鼠虎猴龙狗】 ？🀄",
-      "author": "青不年",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161468&type=3",
-      "published_at": "2026-10-26 10:29",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161468&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "unknown or unverified mode",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
     },
     {
       "play": "六肖",
@@ -1322,137 +1988,6 @@
         "猪"
       ],
       "weight_per_zodiac": 0.1
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "鸡"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:鸡 杀肖类 [L序] 特行+落1波+落3波+落5波+落1合+落1码+落6码+0 连准:3期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "鼠"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:鼠 杀肖类 [D序] 特头+平2波+平4尾+平5尾+平6尾+平1码+总分合尾+11 连准:9期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "猪"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:猪 杀肖类 [L序] 落1头+落4头+落5位+落6码+期尾+4 连准:21期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "龙"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:龙 杀肖类 [L序] 落4头+落5头+总分合+落1合尾+4 连准:11期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "兔"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:兔 杀肖类 [D序] 平6头+平2波+平2位+平3位+平4位+总分+总分合+9 连准:7期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "鼠",
-        "牛",
-        "虎",
-        "龙",
-        "蛇",
-        "马",
-        "羊",
-        "猴",
-        "鸡",
-        "狗",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.09090909090909091
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "蛇"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:蛇 杀肖类 [D序] 平2行+平4尾+平6尾+平6位+2 连准:6期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
-      "play": "杀",
-      "picks": [
-        "马"
-      ],
-      "mode": "exclude",
-      "excerpt": "299期杀:马 杀肖类 [D序] 平6行+平2波+平5波+平6波+平3位+2 连准:21期 ",
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "published_at": "2026-10-26 06:44",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
     },
     {
       "play": "九肖",
@@ -1875,25 +2410,6 @@
       "weight_per_zodiac": 0.0
     },
     {
-      "play": "三肖",
-      "picks": [
-        "虎",
-        "龙",
-        "猴"
-      ],
-      "mode": "include",
-      "excerpt": "299期双数 三肖虎龙猴",
-      "author": "广西玉林码神",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159502&type=3",
-      "published_at": "2026-10-25 23:53",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159502&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
       "play": "特肖",
       "picks": [
         "猪"
@@ -1938,6 +2454,25 @@
         "猪"
       ],
       "weight_per_zodiac": 0.1
+    },
+    {
+      "play": "三肖",
+      "picks": [
+        "虎",
+        "龙",
+        "猴"
+      ],
+      "mode": "include",
+      "excerpt": "299期双数 三肖虎龙猴",
+      "author": "广西玉林码神",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159502&type=3",
+      "published_at": "2026-10-25 23:53",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159502&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "recommendation requires at least 6 distinct zodiacs",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "六肖",
@@ -3455,36 +3990,6 @@
     {
       "play": "六肖",
       "picks": [
-        "猴",
-        "鸡",
-        "狗",
-        "猪",
-        "鼠",
-        "牛"
-      ],
-      "mode": "include",
-      "excerpt": "299期 澳彩公式九肖中特 | 299期          六肖-猴鸡狗猪鼠牛-⁉️",
-      "raw_expression": "猴鸡狗猪鼠牛",
-      "author": "阁阁閤",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
-      "published_at": "2026-10-25 23:00",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "猴",
-        "鸡",
-        "狗",
-        "猪",
-        "鼠",
-        "牛"
-      ],
-      "weight_per_zodiac": 0.16666666666666666
-    },
-    {
-      "play": "六肖",
-      "picks": [
         "鼠",
         "龙",
         "蛇",
@@ -3509,6 +4014,36 @@
         "羊",
         "鸡",
         "猪"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
+    },
+    {
+      "play": "六肖",
+      "picks": [
+        "猴",
+        "鸡",
+        "狗",
+        "猪",
+        "鼠",
+        "牛"
+      ],
+      "mode": "include",
+      "excerpt": "299期 澳彩公式九肖中特 | 299期          六肖-猴鸡狗猪鼠牛-⁉️",
+      "raw_expression": "猴鸡狗猪鼠牛",
+      "author": "阁阁閤",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
+      "published_at": "2026-10-25 23:00",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "猴",
+        "鸡",
+        "狗",
+        "猪",
+        "鼠",
+        "牛"
       ],
       "weight_per_zodiac": 0.16666666666666666
     },
@@ -4036,23 +4571,6 @@
       "weight_per_zodiac": 0.09090909090909091
     },
     {
-      "play": "杀一肖",
-      "picks": [
-        "马"
-      ],
-      "mode": "unverified",
-      "excerpt": "299期  绝杀一肖:【马】开:【00】准？",
-      "author": "叔公斯诺克",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158835&type=3",
-      "published_at": "2026-10-25 22:34",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158835&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "unknown or unverified mode",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
-    },
-    {
       "play": "🔪杀肖",
       "picks": [
         "虎",
@@ -4081,6 +4599,23 @@
         "猪"
       ],
       "weight_per_zodiac": 0.125
+    },
+    {
+      "play": "杀一肖",
+      "picks": [
+        "马"
+      ],
+      "mode": "unverified",
+      "excerpt": "299期  绝杀一肖:【马】开:【00】准？",
+      "author": "叔公斯诺克",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158835&type=3",
+      "published_at": "2026-10-25 22:34",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158835&type=3",
+      "counted_for_ranking": false,
+      "exclusion_reason": "unknown or unverified mode",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "四肖",
@@ -4179,6 +4714,29 @@
       "excerpts": [
         {
           "text": "299期┋４肖中特┋【鸡牛羊猴】开？00准",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "港澳牛总",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159463&type=3",
+      "title": "六肖中特[港澳牛总]",
+      "published_at": "2026-10-26 14:04",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "299期六肖中特猴羊龙蛇虎鸡",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "299期一肖一码蛇26",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -4307,6 +4865,265 @@
       "status": "pending_user_rule_confirmation"
     },
     {
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
+      "title": "299期：150期错2期 一万公式选10条看看运气公式杀肖",
+      "published_at": "2026-10-26 14:23",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "〖共０次〗鼠 虎 狗",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "〖共１次〗牛 龙 蛇 马 羊 猴",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "〖共２次〗兔 鸡 猪xx",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "〖共０次〗牛 虎 羊 猴 狗",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "〖共１次〗鼠 龙 蛇 马",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "〖共２次〗兔 鸡 猪 xx",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "潮州表",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160439&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160439&type=3",
+      "title": "299期：公式综合资料",
+      "published_at": "2026-10-26 14:23",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "共03次: 龙,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共07次: 蛇,羊,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共08次: 牛,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共10次: 鼠,狗,猴,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共11次: 兔,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共12次: 猪,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共13次: 马,鸡,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "共16次: 虎,",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "精准肖王",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161776&type=3",
+      "title": "澳门🇲🇴",
+      "published_at": "2026-10-26 14:01",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "九肖狗虎鼠龙鸡蛇～兔马羊",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "六肖狗虎鼠龙鸡蛇04-28",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "澳门🇲🇴 | 六肖狗虎鼠龙鸡蛇04-28",
+          "reason": "superseded_by_same_author_higher_priority",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "港澳会所",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161768&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161768&type=3",
+      "title": "来自49高手之家连准，13组9肖，杀三肖统计，",
+      "published_at": "2026-10-26 14:01",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "0次鸡",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "1次龙虎",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "2次兔蛇猴",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "3次马",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "4次牛狗",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "5次羊",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "7次猪",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "8次鼠✘",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "皮蛋瘦肉",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161762&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161762&type=3",
+      "title": "仅供参考，禁止赌博！",
+      "published_at": "2026-10-26 13:16",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "羊鼠虎兔龙猴➕马",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "风火狼烟",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161755&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161755&type=3",
+      "title": "299期：（八肖中特）爆庄资料",
+      "published_at": "2026-10-26 13:01",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "【猴蛇马兔牛鼠鸡狗】",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "【猴蛇兔鼠鸡狗】各数50",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "299期【杀一肖】 【牛】开？00准",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "闷声捞金",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161757&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161757&type=3",
+      "title": "💤",
+      "published_at": "2026-10-26 13:01",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "299：☛猪虎猴牛鼠鸡狗❶🉐",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "六合至尊",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161756&type=3",
+      "title": "6肖中特",
+      "published_at": "2026-10-26 13:01",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "6肖牛蛇兔鼠虎猪",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
       "author": "星际黑洞",
       "issue": "2026299",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161560&type=3",
@@ -4386,102 +5203,6 @@
         },
         {
           "text": "[[共0次]] 兔,虎,鼠, [共3肖]",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160439&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160439&type=3",
-      "title": "299期：公式综合资料",
-      "published_at": "2026-10-26 06:44",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "共03次: 龙,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共07次: 蛇,羊,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共08次: 牛,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共10次: 鼠,狗,猴,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共11次: 兔,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共12次: 猪,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共13次: 马,鸡,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "共16次: 虎,",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "潮州表",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11160405&type=3",
-      "title": "299期：150期错2期 一万公式选10条看看运气公式杀肖",
-      "published_at": "2026-10-26 06:44",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "〖共０次〗鼠 虎 狗",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖共１次〗牛 龙 蛇 马 羊 猴",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖共２次〗兔 鸡 猪xx",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖共０次〗牛 虎 羊 猴 狗",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖共１次〗鼠 龙 蛇 马",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "〖共２次〗兔 鸡 猪 xx",
           "reason": "unsupported or ambiguous play",
           "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
         }
@@ -4596,88 +5317,6 @@
       "excerpts": [
         {
           "text": "299期▶︎蛇猴鼠兔龙羊鸡虎📣开❓❓",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "赖赖赖",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159566&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159566&type=3",
-      "title": "鸡冲兔，参考",
-      "published_at": "2026-10-26 01:18",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "鼠☞牛☞马☞鸡☞狗☞猪",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "朱佬二",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159564&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159564&type=3",
-      "title": "统计",
-      "published_at": "2026-10-26 01:18",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "［1次］鼠龙猴x",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "［2次］牛兔鸡羊猪",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        },
-        {
-          "text": "［3次］虎蛇马狗",
-          "reason": "unsupported or ambiguous play",
-          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "六肖聚宝",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159849&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159849&type=3",
-      "title": "299期（记录，慎参）",
-      "published_at": "2026-10-26 01:18",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "蛇虎猴牛龙羊",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
-      "author": "菜半仙",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159940&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159940&type=3",
-      "title": "6肖慎参",
-      "published_at": "2026-10-26 01:18",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "299:鼠牛兔羊狗猪",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -4833,6 +5472,88 @@
           "text": "出现3次（共1个）：猴XXX",
           "reason": "unsupported or ambiguous play",
           "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "赖赖赖",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159566&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159566&type=3",
+      "title": "鸡冲兔，参考",
+      "published_at": "2026-10-26 01:18",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "鼠☞牛☞马☞鸡☞狗☞猪",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "六肖聚宝",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159849&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159849&type=3",
+      "title": "299期（记录，慎参）",
+      "published_at": "2026-10-26 01:18",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "蛇虎猴牛龙羊",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "朱佬二",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159564&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159564&type=3",
+      "title": "统计",
+      "published_at": "2026-10-26 01:18",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "［1次］鼠龙猴x",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "［2次］牛兔鸡羊猪",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        },
+        {
+          "text": "［3次］虎蛇马狗",
+          "reason": "unsupported or ambiguous play",
+          "question": "这些数字表示推荐次数还是被杀次数？哪些档位才是最终推荐或排除的生肖？"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "菜半仙",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159940&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159940&type=3",
+      "title": "6肖慎参",
+      "published_at": "2026-10-26 01:18",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "299:鼠牛兔羊狗猪",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
       ],
       "counted_for_ranking": false,
@@ -6339,29 +7060,6 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "阁阁閤",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
-      "title": "299期 澳彩公式九肖中特",
-      "published_at": "2026-10-25 23:00",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "299期16+3=19 猴鸡狗猪{鼠}牛虎兔龙-⁉️",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        },
-        {
-          "text": "299期          六肖-猴鸡狗猪鼠牛-⁉️",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
       "author": "金诗如梦",
       "issue": "2026299",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158983&type=3",
@@ -6380,16 +7078,21 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "求求其其",
+      "author": "阁阁閤",
       "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159028&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159028&type=3",
-      "title": "七肖中特",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159032&type=3",
+      "title": "299期 澳彩公式九肖中特",
       "published_at": "2026-10-25 23:00",
       "image_urls": [],
       "excerpts": [
         {
-          "text": "299期     狗兔羊鸡马猪鼠    ？",
+          "text": "299期16+3=19 猴鸡狗猪{鼠}牛虎兔龙-⁉️",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        },
+        {
+          "text": "299期          六肖-猴鸡狗猪鼠牛-⁉️",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -6539,24 +7242,6 @@
       "status": "pending_user_rule_confirmation"
     },
     {
-      "author": "牛哄哄",
-      "issue": "2026299",
-      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158621&type=3",
-      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158621&type=3",
-      "title": "❤️天天🀄特💯今天继续🉐吃❗٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ❤️",
-      "published_at": "2026-10-25 22:35",
-      "image_urls": [],
-      "excerpts": [
-        {
-          "text": "主    肖：鼠牛虎兔羊猴鸡猪✅",
-          "reason": "unsupported or ambiguous play",
-          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
-        }
-      ],
-      "counted_for_ranking": false,
-      "status": "pending_user_rule_confirmation"
-    },
-    {
       "author": "发东南西北旋风财",
       "issue": "2026299",
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158691&type=3",
@@ -6567,6 +7252,24 @@
       "excerpts": [
         {
           "text": "299期猪马猴兔虎羊蛇鼠牛",
+          "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "牛哄哄",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158621&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158621&type=3",
+      "title": "❤️天天🀄特💯今天继续🉐吃❗٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ❤️",
+      "published_at": "2026-10-25 22:35",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "主    肖：鼠牛虎兔羊猴鸡猪✅",
           "reason": "unsupported or ambiguous play",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
@@ -6675,6 +7378,24 @@
         {
           "text": "299期香山(6+1):猴蛇马猪牛龙+兔",
           "reason": "unsupported or ambiguous play",
+          "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
+        }
+      ],
+      "counted_for_ranking": false,
+      "status": "pending_user_rule_confirmation"
+    },
+    {
+      "author": "时来运赚",
+      "issue": "2026299",
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158692&type=3",
+      "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158692&type=3",
+      "title": "原创公式九肖中特",
+      "published_at": "2026-10-26 12:20",
+      "image_urls": [],
+      "excerpts": [
+        {
+          "text": "299期九肖【兔鸡鼠牛猪虎狗马龙】？",
+          "reason": "unknown or unverified mode",
           "question": "这部分是推荐、杀码还是其他玩法？请说明实际入选或排除的生肖及转换规则。"
         }
       ],
