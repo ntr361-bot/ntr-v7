@@ -1,46 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026299",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "40266808222",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40266808222",
-  "updated_at": "2026-10-26T04:03:38.338562+00:00",
+  "updated_at": "2026-10-26T04:04:43.013265+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 19,
+  "valid_authors": 19,
+  "successful_post_opens": 90,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 35,
+      "attempted": 35,
+      "opened": 35,
+      "extracted": 35,
+      "completed": 35
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 387,
+      "attempted": 56,
+      "opened": 55,
+      "extracted": 55,
+      "completed": 55
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 90,
+  "article_details_completed": 90,
+  "last_verified_post": {
+    "author": "又又赚了",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159889&type=3",
+    "verified_at": "2026-10-26T04:04:42.668800+00:00",
+    "text_length": 53,
+    "text_sha256": "5c40890e8ecc300bcb37eb5d6ca283a7099e4ec08839cb77b96e5f5d97db490e"
+  },
+  "last_attempted_post": {
+    "author": "朱佬二",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159564&type=3",
+    "attempt_index": 91
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T04:04:12.662308+00:00",
+      "featured_queued": 35,
+      "featured_attempted": 35,
+      "featured_completed": 35
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 71",
-  "progress_updated_at": "2026-10-26T04:03:37.760821+00:00",
+  "raw_count": 90,
+  "stage": "detail: 朱佬二 统计",
+  "progress_updated_at": "2026-10-26T04:04:42.718765+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
