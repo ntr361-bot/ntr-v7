@@ -3,8 +3,12 @@ on:
   workflow_dispatch:
   # User decision 2026-10-26: ONE nightly collection at 20:20 Beijing. The
   # 20:00 first-round and 20:30 second-round cron slots are removed (and
-  # rejected by forum_observer.schedule if ever delivered).
+  # rejected by forum_observer.schedule if ever delivered). Manual collection
+  # (workflow_dispatch or trigger(forum-collect-manual)) stays available.
   schedule:
+    # Independent backup for the 20:20 collection (UTC 12:20/12:25); skips
+    # when tonight's draft already exists, rejected outside 20:20-20:58.
+    - cron: '20,25 12 * * *'
     # Beijing 21:00 final freeze (and best-effort 21:05/21:10 backups).
     - cron: '0,5,10 13 * * *'
   # GitHub cron delivery has been observed hours late (2026-10-16..20), so an

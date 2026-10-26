@@ -10,6 +10,7 @@ from forum_observer.schedule import (
     current_issue, decide, snapshot_exists, ensure_daily_report,
     collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
     gpt_trigger_wait_seconds, ROUND_ONE_CRON, ROUND_TWO_CRON,
+    BACKUP_COLLECT_CRON, forum49_collect_gate,
 )
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -71,6 +72,11 @@ class ScheduleTests(unittest.TestCase):
                                  "retired_schedule_trigger", (minute, slot))
             self.assertEqual(decide(self.at(20, 33), tmp, scheduled=True, slot='',
                                     requested_round='2')[3], "retired_schedule_trigger")
+            # The 20:20/20:25 backup cron collects only inside the window.
+            self.assertTrue(decide(self.at(20, 20), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
+            self.assertTrue(decide(self.at(20, 41), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
+            self.assertEqual(decide(self.at(21, 30), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[3],
+                             "scheduled_event_outside_collection_window")
             self.assertEqual(decide(self.at(19,40),tmp,scheduled=True)[3],
                              "scheduled_event_outside_collection_window")
             self.assertEqual(decide(self.at(20,5),tmp,scheduled=True)[3],
@@ -111,18 +117,22 @@ class ScheduleTests(unittest.TestCase):
             folder=Path(tmp)/"issues"/issue
             folder.mkdir(parents=True)
             path=folder/"draft-status.json"
-            for stale in (self.at(1, 51), self.at(20, 10)):
-                # Overnight scans and pre-20:20 drafts are not tonight's collection.
+            for stale in (self.at(1, 51), self.at(19, 50)):
+                # Overnight or pre-20:00 scans are not tonight's collection.
                 path.write_text(json.dumps({
                     "issue":issue,"status":"ready_observation","valid_materials":50,
                     "fetched_at":stale.isoformat(),"collection_round":1
                 }),encoding="utf-8")
                 self.assertTrue(decide(self.at(20,20),tmp,scheduled=True,requested_round='1')[0])
+            # A manual collection from 20:00 is tonight's: automatic ones skip.
             evening=json.loads(path.read_text())
-            evening["fetched_at"]=self.at(20,30).isoformat()
+            evening["fetched_at"]=self.at(20,10).isoformat()
             path.write_text(json.dumps(evening),encoding="utf-8")
-            self.assertEqual(decide(self.at(20,35),tmp,scheduled=True,requested_round='1')[3],
+            self.assertEqual(decide(self.at(20,20),tmp,scheduled=True,requested_round='1')[3],
                              "current_round_already_completed")
+            self.assertEqual(decide(self.at(20,25),tmp,scheduled=True,slot=BACKUP_COLLECT_CRON)[3],
+                             "current_round_already_completed")
+            self.assertTrue(decide(self.at(20,25),tmp,manual=True)[0])
 
     def test_freeze_requires_a_current_evening_draft(self):
         with TemporaryDirectory() as tmp:
@@ -137,10 +147,10 @@ class ScheduleTests(unittest.TestCase):
             }),encoding="utf-8")
             self.assertFalse(freeze_window_allowed(now,tmp))
             fresh=json.loads(path.read_text())
-            fresh["fetched_at"]=self.at(20, 10).isoformat()
+            fresh["fetched_at"]=self.at(19, 55).isoformat()
             path.write_text(json.dumps(fresh),encoding="utf-8")
             self.assertFalse(freeze_window_allowed(now,tmp))
-            fresh["fetched_at"]=self.at(20, 31).isoformat()
+            fresh["fetched_at"]=self.at(20, 5).isoformat()
             path.write_text(json.dumps(fresh),encoding="utf-8")
             self.assertTrue(freeze_window_allowed(now,tmp))
 
@@ -215,6 +225,8 @@ class ScheduleTests(unittest.TestCase):
         # Single 20:20 marker collection since 2026-10-26: no collection cron.
         self.assertNotIn("cron: '0,5,10 12 * * *'",workflow)
         self.assertNotIn("cron: '30,35,40 12 * * *'",workflow)
+        self.assertIn("cron: '20,25 12 * * *'",workflow)
+        self.assertIn("workflow_dispatch:",workflow)
         self.assertNotIn("cron: '40,45,50 11 * * *'",workflow)
         self.assertIn("trigger(forum-collect-1):",workflow)
         self.assertIn("trigger(forum-collect-2):",workflow)
@@ -239,6 +251,36 @@ class ScheduleTests(unittest.TestCase):
                 and "workflow_dispatch" in line]
         self.assertEqual(len(gate), 1)
         self.assertNotIn("trigger(forum-freeze):", gate[0])
+
+    def test_forum49_gate_automatic_once_manual_always(self):
+        with TemporaryDirectory() as tmp:
+            issue = current_issue(self.at(20, 20))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 20), True), (True, "automatic_collection"))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 5), True)[1],
+                             "automatic_collection_outside_window")
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 50), True)[1],
+                             "automatic_collection_outside_window")
+            folder = Path(tmp) / "issues" / issue
+            folder.mkdir(parents=True)
+            (folder / "draft-status.json").write_text(json.dumps({
+                "issue": issue, "status": "ready_observation", "valid_materials": 90,
+                "fetched_at": self.at(20, 38).isoformat()}), encoding="utf-8")
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), True)[1],
+                             "already_collected_tonight")
+            # Manual dispatch keeps working at any time.
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), False), (True, "manual_collection"))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(19, 0), False), (True, "manual_collection"))
+
+    def test_forum49_workflow_keeps_manual_and_adds_backups(self):
+        workflow = (Path(__file__).resolve().parents[2] / ".github" /
+                    "workflows" / "forum49-model.yml").read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("skip_if_collected:", workflow)
+        self.assertIn("cron: '20,25 12 * * *'", workflow)
+        self.assertIn("cron: '0,5,10 13 * * *'", workflow)
+        self.assertIn("cron: '50 * * * *'", workflow)
+        self.assertIn("--forum49-collect-gate", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

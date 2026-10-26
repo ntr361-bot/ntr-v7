@@ -3,14 +3,22 @@ name: 49论坛模型 collection
 # Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
 # (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
 # own archive forum-observer/forum49/ and feed site/data/forum49/.
-#   mode=collect : single 20:20 collection (since 2026-10-26) -> replaceable draft (never a freeze)
+#   mode=collect : single 20:20 collection (since 2026-10-26) -> replaceable draft (never a freeze).
+#                  Automatic runs (backup cron below, or dispatch with
+#                  skip_if_collected=true) collect once per night in 20:20-20:50;
+#                  a manual dispatch (default skip_if_collected=false) always collects.
 #   mode=freeze  : 21:00-21:20 only -> immutable snapshot of last pre-21:00 draft
 #   mode=settle  : settle snapshots from verified draw history; never collects
 # Never touches 118's archive/feed, D1 or formal V7.
 on:
-  # Hourly settlement only (never collects or freezes); delays are harmless.
   schedule:
+    # Hourly settlement only (never collects or freezes); delays are harmless.
     - cron: '50 * * * *'
+    # Independent backups (user decision 2026-10-26), Beijing 20:20/20:25
+    # collect and 21:00/21:05/21:10 freeze. Collect skips when tonight's draft
+    # exists; freeze keeps its 21:00-21:20 window and write-once snapshot.
+    - cron: '20,25 12 * * *'
+    - cron: '0,5,10 13 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -29,14 +37,39 @@ on:
         description: Run Scrapling side-by-side check after collection
         required: false
         default: 'true'
+      skip_if_collected:
+        description: Skip when tonight's draft already exists (automatic runs only; manual = false)
+        required: false
+        default: 'false'
 permissions:
   contents: write
 concurrency:
-  group: forum49-${{ github.event_name == 'schedule' && 'settle' || inputs.mode || 'collect' }}
+  group: forum49-${{ github.event.schedule == '20,25 12 * * *' && 'collect' || github.event.schedule == '0,5,10 13 * * *' && 'freeze' || github.event_name == 'schedule' && 'settle' || inputs.mode || 'collect' }}
   cancel-in-progress: false
 jobs:
+  gate:
+    if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule == '20,25 12 * * *') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      collect: ${{ steps.gate.outputs.collect }}
+    defaults:
+      run:
+        working-directory: forum-observer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Decide whether to collect (automatic runs collect once per night)
+        id: gate
+        env:
+          F49_SKIP_IF_COLLECTED: ${{ github.event_name == 'schedule' && 'true' || inputs.skip_if_collected || 'false' }}
+        run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --forum49-collect-gate
+
   collect:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect' }}
+    needs: gate
+    if: ${{ needs.gate.outputs.collect == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 95
     defaults:
@@ -57,7 +90,7 @@ jobs:
         id: collect
         env:
           F49_ISSUE: ${{ inputs.issue }}
-          F49_URL: ${{ inputs.url }}
+          F49_URL: ${{ inputs.url || 'https://49217.com/#/forum' }}
         run: |
           python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive forum49
       - name: Publish pre-freeze draft (no freeze; refused at/after 21:00)
@@ -175,7 +208,7 @@ jobs:
           path: forum-observer/forum49-out/
 
   freeze:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -232,7 +265,7 @@ jobs:
           exit 1
 
   settle:
-    if: ${{ github.event_name == 'schedule' || inputs.mode == 'settle' }}
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '50 * * * *') || inputs.mode == 'settle' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
