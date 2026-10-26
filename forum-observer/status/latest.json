@@ -7,56 +7,61 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
-  "updated_at": "2026-10-26T12:25:22.749279+00:00",
+  "updated_at": "2026-10-26T12:26:26.446527+00:00",
   "error": null,
-  "valid_materials": 2,
-  "valid_authors": 2,
-  "successful_post_opens": 17,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 127,
   "article_details": {
     "featured": {
       "queued": 47,
-      "attempted": 18,
-      "opened": 17,
-      "extracted": 17,
-      "completed": 17
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
     },
     "ordinary": {
       "queued": 474,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 81,
+      "opened": 80,
+      "extracted": 79,
+      "completed": 80
     }
   },
-  "article_texts_extracted": 17,
-  "article_details_completed": 17,
+  "article_texts_extracted": 126,
+  "article_details_completed": 127,
   "last_verified_post": {
-    "author": "赵小刀",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158699&type=3",
-    "verified_at": "2026-10-26T12:25:22.316325+00:00",
-    "text_length": 1583,
-    "text_sha256": "62f8a46ac09f13b78085271c51d4862d5b645faf5db5d7f798a0d5ce4c839b84"
+    "author": "六肖聚宝",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159849&type=3",
+    "verified_at": "2026-10-26T12:26:25.932705+00:00",
+    "text_length": 6,
+    "text_sha256": "30ef38617f28e1380791d27e7a4c4ebb083e60b57349584129346b62b8a482a9"
   },
   "last_attempted_post": {
-    "author": "半杯奶茶一花花",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158737&type=3",
-    "attempt_index": 18
+    "author": "林家大少",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11162920&type=3",
+    "attempt_index": 128
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T12:25:38.705374+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 17,
-  "stage": "detail: 半杯奶茶一花花 花花※三期四肖 长跟稳赚",
-  "progress_updated_at": "2026-10-26T12:25:22.330644+00:00",
+  "raw_count": 126,
+  "stage": "detail: 林家大少 299",
+  "progress_updated_at": "2026-10-26T12:26:26.077973+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
