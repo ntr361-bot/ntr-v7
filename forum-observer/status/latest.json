@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026299",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "40322046707",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
-  "updated_at": "2026-10-26T12:31:45.213405+00:00",
+  "updated_at": "2026-10-26T12:31:51.611488+00:00",
   "error": null,
   "valid_materials": 91,
   "valid_authors": 91,
-  "successful_post_opens": 517,
+  "successful_post_opens": 521,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 474,
-      "attempted": 471,
-      "opened": 470,
-      "extracted": 468,
-      "completed": 470
+      "attempted": 474,
+      "opened": 474,
+      "extracted": 472,
+      "completed": 474
     }
   },
-  "article_texts_extracted": 515,
-  "article_details_completed": 517,
+  "article_texts_extracted": 519,
+  "article_details_completed": 521,
   "last_verified_post": {
-    "author": "苍穹剑泣",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158958&type=3",
-    "verified_at": "2026-10-26T12:31:44.491241+00:00",
-    "text_length": 469,
-    "text_sha256": "6c5cb4e92113c7ab951baa11501da0432879a79d96d2bf8613f5741f59cb90a7"
+    "author": "香山论坛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "verified_at": "2026-10-26T12:31:48.401329+00:00",
+    "text_length": 959,
+    "text_sha256": "6aa97ab65008c54a0cd25c1ee021963501f0ca071bdf0f94c35f90bb928ef5b6"
   },
   "last_attempted_post": {
-    "author": "排行老六",
+    "author": "香山论坛",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158957&type=3",
-    "attempt_index": 518
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "attempt_index": 521
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 515,
-  "stage": "detail: 排行老六 六〓合数大小〓",
-  "progress_updated_at": "2026-10-26T12:31:44.936519+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 519,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-26T12:31:49.269331+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 2,
+    "truncated": false,
     "unextracted_current_posts": 2
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
