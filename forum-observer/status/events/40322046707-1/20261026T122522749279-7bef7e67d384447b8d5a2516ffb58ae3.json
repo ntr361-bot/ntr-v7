@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "collecting_effectively",
+  "run_id": "40322046707",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
+  "updated_at": "2026-10-26T12:25:22.749279+00:00",
+  "error": null,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 17,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 18,
+      "opened": 17,
+      "extracted": 17,
+      "completed": 17
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 17,
+  "article_details_completed": 17,
+  "last_verified_post": {
+    "author": "赵小刀",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158699&type=3",
+    "verified_at": "2026-10-26T12:25:22.316325+00:00",
+    "text_length": 1583,
+    "text_sha256": "62f8a46ac09f13b78085271c51d4862d5b645faf5db5d7f798a0d5ce4c839b84"
+  },
+  "last_attempted_post": {
+    "author": "半杯奶茶一花花",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158737&type=3",
+    "attempt_index": 18
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 17,
+  "stage": "detail: 半杯奶茶一花花 花花※三期四肖 长跟稳赚",
+  "progress_updated_at": "2026-10-26T12:25:22.330644+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
