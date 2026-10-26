@@ -34,9 +34,9 @@ on:
         required: false
         default: https://49217.com/#/forum
       scrapling_check:
-        description: Run Scrapling side-by-side check after collection
+        description: Run Scrapling side-by-side check after collection (off by default since 2026-10-26)
         required: false
-        default: 'true'
+        default: 'false'
       skip_if_collected:
         description: Skip when tonight's draft already exists (automatic runs only; manual = false)
         required: false
@@ -127,7 +127,9 @@ jobs:
           exit 1
       - name: Scrapling side-by-side check (isolated; never affects collection)
         id: scrapling
-        if: always() && inputs.scrapling_check != 'false' && hashFiles('forum-observer/forum49-out/forum49-evidence.json') != ''
+        # Opt-in only (user decision 2026-10-26): 2026297/298 checked 0 posts
+        # (no_detail_shell); scheduled runs never run it.
+        if: always() && inputs.scrapling_check == 'true' && hashFiles('forum-observer/forum49-out/forum49-evidence.json') != ''
         continue-on-error: true
         timeout-minutes: 40
         run: |
