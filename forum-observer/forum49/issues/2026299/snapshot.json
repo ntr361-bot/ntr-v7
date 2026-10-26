@@ -1,0 +1,2292 @@
+{
+  "issue": "2026299",
+  "fetched_at": "2026-10-26T12:37:29.030919+00:00",
+  "ranking": [
+    {
+      "rank": 1,
+      "zodiac": "牛",
+      "score": 13.233766
+    },
+    {
+      "rank": 2,
+      "zodiac": "龙",
+      "score": 12.909957
+    },
+    {
+      "rank": 3,
+      "zodiac": "鼠",
+      "score": 12.469408
+    },
+    {
+      "rank": 4,
+      "zodiac": "兔",
+      "score": 12.241198
+    },
+    {
+      "rank": 5,
+      "zodiac": "蛇",
+      "score": 12.194048
+    },
+    {
+      "rank": 6,
+      "zodiac": "羊",
+      "score": 11.833694
+    },
+    {
+      "rank": 7,
+      "zodiac": "鸡",
+      "score": 11.662734
+    },
+    {
+      "rank": 8,
+      "zodiac": "虎",
+      "score": 10.348413
+    },
+    {
+      "rank": 9,
+      "zodiac": "狗",
+      "score": 10.224495
+    },
+    {
+      "rank": 10,
+      "zodiac": "猴",
+      "score": 9.167821
+    },
+    {
+      "rank": 11,
+      "zodiac": "猪",
+      "score": 8.779365
+    },
+    {
+      "rank": 12,
+      "zodiac": "马",
+      "score": 7.935101
+    }
+  ],
+  "top1": [
+    "牛"
+  ],
+  "top3": [
+    "牛",
+    "龙",
+    "鼠"
+  ],
+  "top6": [
+    "牛",
+    "龙",
+    "鼠",
+    "兔",
+    "蛇",
+    "羊"
+  ],
+  "valid_materials": 133,
+  "scoring_rule_version": "2026-10-15-one-author-9-8-7-6-priority-v8",
+  "scoring_rules": {
+    "minimum_recommendation_zodiacs": 6,
+    "kill_zodiac_vote": "remaining_zodiacs",
+    "kill_numbers_as_zodiacs": false,
+    "numbers_as_whole_zodiacs": false,
+    "explicit_zodiac_evidence": true,
+    "weight_per_material": 1,
+    "max_materials_per_author_per_issue": 1,
+    "independent_text_audit": true,
+    "named_group_plus_two": "same_article_verified_six_plus_two",
+    "kill_zodiac_max_count": 6,
+    "one_author_play_priority": "nine_eight_seven_six_other_recommendation_then_valid_kill",
+    "same_priority_tiebreak": "earliest_source_published_at_then_stable_source_identity",
+    "uncertain_materials": "excluded",
+    "author_ratio": null
+  },
+  "material_counts": {
+    "recommend": 86,
+    "kill_zodiac": 47
+  },
+  "classification": "experimental_unverified_leaderboard",
+  "minimum_valid_materials": 25,
+  "quality_status": "meets_minimum_samples",
+  "collection_status": "ready_observation",
+  "evidence_refs": [
+    {
+      "author": "马老师",
+      "url": "https://49217.com/#/corpusdetail?id=42446461&type=3"
+    },
+    {
+      "author": "夜舞狂风",
+      "url": "https://49217.com/#/corpusdetail?id=42445835&type=3"
+    },
+    {
+      "author": "主五六",
+      "url": "https://49217.com/#/corpusdetail?id=42449813&type=3"
+    },
+    {
+      "author": "杨过去",
+      "url": "https://49217.com/#/corpusdetail?id=42447861&type=3"
+    },
+    {
+      "author": "梦游天神",
+      "url": "https://49217.com/#/corpusdetail?id=42446240&type=3"
+    },
+    {
+      "author": "仲是情",
+      "url": "https://49217.com/#/corpusdetail?id=42446566&type=3"
+    },
+    {
+      "author": "缘姑娘",
+      "url": "https://49217.com/#/corpusdetail?id=42449523&type=3"
+    },
+    {
+      "author": "爱算码的路遥",
+      "url": "https://49217.com/#/corpusdetail?id=42446488&type=3"
+    },
+    {
+      "author": "八码神探",
+      "url": "https://49217.com/#/corpusdetail?id=42450165&type=3"
+    },
+    {
+      "author": "墨羽尘曦",
+      "url": "https://49217.com/#/corpusdetail?id=42450272&type=3"
+    },
+    {
+      "author": "浅月流歌",
+      "url": "https://49217.com/#/corpusdetail?id=42450271&type=3"
+    },
+    {
+      "author": "吸金俠",
+      "url": "https://49217.com/#/corpusdetail?id=42446688&type=3"
+    },
+    {
+      "author": "小四叶",
+      "url": "https://49217.com/#/corpusdetail?id=42446423&type=3"
+    },
+    {
+      "author": "陈龙稳小号",
+      "url": "https://49217.com/#/corpusdetail?id=42446740&type=3"
+    },
+    {
+      "author": "数据研究华哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452783&type=3"
+    },
+    {
+      "author": "伟哥围特",
+      "url": "https://49217.com/#/corpusdetail?id=42446592&type=3"
+    },
+    {
+      "author": "队长来了",
+      "url": "https://49217.com/#/corpusdetail?id=42447302&type=3"
+    },
+    {
+      "author": "迷迷风",
+      "url": "https://49217.com/#/corpusdetail?id=42445973&type=3"
+    },
+    {
+      "author": "黄瓜心水",
+      "url": "https://49217.com/#/corpusdetail?id=42446165&type=3"
+    },
+    {
+      "author": "唯品会特卖",
+      "url": "https://49217.com/#/corpusdetail?id=42452549&type=3"
+    },
+    {
+      "author": "欧阳修手机",
+      "url": "https://49217.com/#/corpusdetail?id=42452542&type=3"
+    },
+    {
+      "author": "神一样的穿越者",
+      "url": "https://49217.com/#/corpusdetail?id=42449840&type=3"
+    },
+    {
+      "author": "六合界巴菲特",
+      "url": "https://49217.com/#/corpusdetail?id=42448003&type=3"
+    },
+    {
+      "author": "那就逆天而行吧",
+      "url": "https://49217.com/#/corpusdetail?id=42451837&type=3"
+    },
+    {
+      "author": "云飞沈",
+      "url": "https://49217.com/#/corpusdetail?id=42446079&type=3"
+    },
+    {
+      "author": "澳彩研究中心",
+      "url": "https://49217.com/#/corpusdetail?id=42446347&type=3"
+    },
+    {
+      "author": "瞎蒙祖师爷",
+      "url": "https://49217.com/#/corpusdetail?id=42446734&type=3"
+    },
+    {
+      "author": "黄瓜心水",
+      "url": "https://49217.com/#/corpusdetail?id=42446207&type=3"
+    },
+    {
+      "author": "澳彩研究中心",
+      "url": "https://49217.com/#/corpusdetail?id=42446287&type=3"
+    },
+    {
+      "author": "钱塘江大潮",
+      "url": "https://49217.com/#/corpusdetail?id=42446466&type=3"
+    },
+    {
+      "author": "南海观世音",
+      "url": "https://49217.com/#/corpusdetail?id=42452576&type=3"
+    },
+    {
+      "author": "澳彩研究中心",
+      "url": "https://49217.com/#/corpusdetail?id=42452634&type=3"
+    },
+    {
+      "author": "澳彩研究中心",
+      "url": "https://49217.com/#/corpusdetail?id=42446512&type=3"
+    },
+    {
+      "author": "南海观世音",
+      "url": "https://49217.com/#/corpusdetail?id=42452580&type=3"
+    },
+    {
+      "author": "南安啊狗大",
+      "url": "https://49217.com/#/corpusdetail?id=42446509&type=3"
+    },
+    {
+      "author": "澳彩研究中心",
+      "url": "https://49217.com/#/corpusdetail?id=42452544&type=3"
+    },
+    {
+      "author": "弱水万千只取一瓢",
+      "url": "https://49217.com/#/corpusdetail?id=42451835&type=3"
+    },
+    {
+      "author": "六合皇子",
+      "url": "https://49217.com/#/corpusdetail?id=42446634&type=3"
+    },
+    {
+      "author": "乐享天下",
+      "url": "https://49217.com/#/corpusdetail?id=42445990&type=3"
+    },
+    {
+      "author": "稳中之稳",
+      "url": "https://49217.com/#/corpusdetail?id=42446065&type=3"
+    },
+    {
+      "author": "一個好人",
+      "url": "https://49217.com/#/corpusdetail?id=42445817&type=3"
+    },
+    {
+      "author": "稳中之稳",
+      "url": "https://49217.com/#/corpusdetail?id=42446007&type=3"
+    },
+    {
+      "author": "我要发工资了",
+      "url": "https://49217.com/#/corpusdetail?id=42452229&type=3"
+    },
+    {
+      "author": "好运佳",
+      "url": "https://49217.com/#/corpusdetail?id=42445823&type=3"
+    },
+    {
+      "author": "玄武八阵",
+      "url": "https://49217.com/#/corpusdetail?id=42446203&type=3"
+    },
+    {
+      "author": "玄武八阵",
+      "url": "https://49217.com/#/corpusdetail?id=42446234&type=3"
+    },
+    {
+      "author": "玄武八阵",
+      "url": "https://49217.com/#/corpusdetail?id=42446219&type=3"
+    },
+    {
+      "author": "伟哥围特",
+      "url": "https://49217.com/#/corpusdetail?id=42446508&type=3"
+    },
+    {
+      "author": "伟哥围特",
+      "url": "https://49217.com/#/corpusdetail?id=42446551&type=3"
+    },
+    {
+      "author": "随风大哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42446159&type=3"
+    },
+    {
+      "author": "陈平安丶",
+      "url": "https://49217.com/#/corpusdetail?id=42446916&type=3"
+    },
+    {
+      "author": "拼好宝贝",
+      "url": "https://49217.com/#/corpusdetail?id=42445864&type=3"
+    },
+    {
+      "author": "普度众生善",
+      "url": "https://49217.com/#/corpusdetail?id=42452072&type=3"
+    },
+    {
+      "author": "财神码客",
+      "url": "https://49217.com/#/corpusdetail?id=42445889&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451999&type=3"
+    },
+    {
+      "author": "冰淇淋不冷",
+      "url": "https://49217.com/#/corpusdetail?id=42446119&type=3"
+    },
+    {
+      "author": "阳光枫雪",
+      "url": "https://49217.com/#/corpusdetail?id=42446104&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451963&type=3"
+    },
+    {
+      "author": "原创作品",
+      "url": "https://49217.com/#/corpusdetail?id=42446082&type=3"
+    },
+    {
+      "author": "阳光枫雪",
+      "url": "https://49217.com/#/corpusdetail?id=42451970&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451953&type=3"
+    },
+    {
+      "author": "一点赔三边",
+      "url": "https://49217.com/#/corpusdetail?id=42447954&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451954&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451951&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451946&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451945&type=3"
+    },
+    {
+      "author": "敢赌敢博",
+      "url": "https://49217.com/#/corpusdetail?id=42446749&type=3"
+    },
+    {
+      "author": "敢赌敢博",
+      "url": "https://49217.com/#/corpusdetail?id=42446762&type=3"
+    },
+    {
+      "author": "敢赌敢博",
+      "url": "https://49217.com/#/corpusdetail?id=42446223&type=3"
+    },
+    {
+      "author": "中国首富豪",
+      "url": "https://49217.com/#/corpusdetail?id=42451941&type=3"
+    },
+    {
+      "author": "陈龙稳小号",
+      "url": "https://49217.com/#/corpusdetail?id=42446709&type=3"
+    },
+    {
+      "author": "大赢家发发",
+      "url": "https://49217.com/#/corpusdetail?id=42445840&type=3"
+    },
+    {
+      "author": "贵州神奇",
+      "url": "https://49217.com/#/corpusdetail?id=42450508&type=3"
+    },
+    {
+      "author": "出水了",
+      "url": "https://49217.com/#/corpusdetail?id=42450525&type=3"
+    },
+    {
+      "author": "无敌小妹",
+      "url": "https://49217.com/#/corpusdetail?id=42445865&type=3"
+    },
+    {
+      "author": "光头强杀肖",
+      "url": "https://49217.com/#/corpusdetail?id=42446766&type=3"
+    },
+    {
+      "author": "农夫山泉有点淡",
+      "url": "https://49217.com/#/corpusdetail?id=42446031&type=3"
+    },
+    {
+      "author": "大赢家发发",
+      "url": "https://49217.com/#/corpusdetail?id=42445812&type=3"
+    },
+    {
+      "author": "魔王杀戮",
+      "url": "https://49217.com/#/corpusdetail?id=42451240&type=3"
+    },
+    {
+      "author": "功夫女足",
+      "url": "https://49217.com/#/corpusdetail?id=42446738&type=3"
+    },
+    {
+      "author": "肖奥马市",
+      "url": "https://49217.com/#/corpusdetail?id=42446534&type=3"
+    },
+    {
+      "author": "策马奔驰",
+      "url": "https://49217.com/#/corpusdetail?id=42445819&type=3"
+    },
+    {
+      "author": "光头强杀肖",
+      "url": "https://49217.com/#/corpusdetail?id=42446754&type=3"
+    },
+    {
+      "author": "光头强杀肖",
+      "url": "https://49217.com/#/corpusdetail?id=42446761&type=3"
+    },
+    {
+      "author": "功夫女足",
+      "url": "https://49217.com/#/corpusdetail?id=42446746&type=3"
+    },
+    {
+      "author": "大赢家发发",
+      "url": "https://49217.com/#/corpusdetail?id=42445825&type=3"
+    },
+    {
+      "author": "光头强杀肖",
+      "url": "https://49217.com/#/corpusdetail?id=42446773&type=3"
+    },
+    {
+      "author": "大赢家发发",
+      "url": "https://49217.com/#/corpusdetail?id=42445852&type=3"
+    },
+    {
+      "author": "因为梦想所以折腾",
+      "url": "https://49217.com/#/corpusdetail?id=42445983&type=3"
+    },
+    {
+      "author": "每个人都可以上岸",
+      "url": "https://49217.com/#/corpusdetail?id=42446052&type=3"
+    },
+    {
+      "author": "东方神起",
+      "url": "https://49217.com/#/corpusdetail?id=42450141&type=3"
+    },
+    {
+      "author": "东方神起",
+      "url": "https://49217.com/#/corpusdetail?id=42450341&type=3"
+    },
+    {
+      "author": "我的任性你不懂",
+      "url": "https://49217.com/#/corpusdetail?id=42450324&type=3"
+    },
+    {
+      "author": "我的任性你不懂",
+      "url": "https://49217.com/#/corpusdetail?id=42450336&type=3"
+    },
+    {
+      "author": "肖奥马市",
+      "url": "https://49217.com/#/corpusdetail?id=42446325&type=3"
+    },
+    {
+      "author": "沙场湫点兵",
+      "url": "https://49217.com/#/corpusdetail?id=42450290&type=3"
+    },
+    {
+      "author": "沙场湫点兵",
+      "url": "https://49217.com/#/corpusdetail?id=42450317&type=3"
+    },
+    {
+      "author": "树大招风",
+      "url": "https://49217.com/#/corpusdetail?id=42450284&type=3"
+    },
+    {
+      "author": "树大招风",
+      "url": "https://49217.com/#/corpusdetail?id=42450309&type=3"
+    },
+    {
+      "author": "祖师爺",
+      "url": "https://49217.com/#/corpusdetail?id=42450308&type=3"
+    },
+    {
+      "author": "逍遥码神发发发",
+      "url": "https://49217.com/#/corpusdetail?id=42453032&type=3"
+    },
+    {
+      "author": "樱桃小丸纸",
+      "url": "https://49217.com/#/corpusdetail?id=42452981&type=3"
+    },
+    {
+      "author": "沐子眠",
+      "url": "https://49217.com/#/corpusdetail?id=42452998&type=3"
+    },
+    {
+      "author": "习惯加一",
+      "url": "https://49217.com/#/corpusdetail?id=42452869&type=3"
+    },
+    {
+      "author": "奶奶的胸",
+      "url": "https://49217.com/#/corpusdetail?id=42453031&type=3"
+    },
+    {
+      "author": "卖面包的小哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42453024&type=3"
+    },
+    {
+      "author": "风情淡雅",
+      "url": "https://49217.com/#/corpusdetail?id=42447514&type=3"
+    },
+    {
+      "author": "招八方来财好运",
+      "url": "https://49217.com/#/corpusdetail?id=42452840&type=3"
+    },
+    {
+      "author": "长卿大神神",
+      "url": "https://49217.com/#/corpusdetail?id=42452921&type=3"
+    },
+    {
+      "author": "铁海无崖",
+      "url": "https://49217.com/#/corpusdetail?id=42452828&type=3"
+    },
+    {
+      "author": "平特之洋哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452982&type=3"
+    },
+    {
+      "author": "上官秀儿",
+      "url": "https://49217.com/#/corpusdetail?id=42452969&type=3"
+    },
+    {
+      "author": "澳门溜溜",
+      "url": "https://49217.com/#/corpusdetail?id=42452880&type=3"
+    },
+    {
+      "author": "开心红古",
+      "url": "https://49217.com/#/corpusdetail?id=42453030&type=3"
+    },
+    {
+      "author": "张寒风",
+      "url": "https://49217.com/#/corpusdetail?id=42452993&type=3"
+    },
+    {
+      "author": "天美儿",
+      "url": "https://49217.com/#/corpusdetail?id=42453000&type=3"
+    },
+    {
+      "author": "守望中奖",
+      "url": "https://49217.com/#/corpusdetail?id=42447845&type=3"
+    },
+    {
+      "author": "一财神驾到了",
+      "url": "https://49217.com/#/corpusdetail?id=42452849&type=3"
+    },
+    {
+      "author": "向钱走总会过去的",
+      "url": "https://49217.com/#/corpusdetail?id=42452990&type=3"
+    },
+    {
+      "author": "海阔天成",
+      "url": "https://49217.com/#/corpusdetail?id=42446285&type=3"
+    },
+    {
+      "author": "风继续吹一码神",
+      "url": "https://49217.com/#/corpusdetail?id=42452985&type=3"
+    },
+    {
+      "author": "稳大中必胜",
+      "url": "https://49217.com/#/corpusdetail?id=42452989&type=3"
+    },
+    {
+      "author": "板筋哥",
+      "url": "https://49217.com/#/corpusdetail?id=42453001&type=3"
+    },
+    {
+      "author": "神马东西人",
+      "url": "https://49217.com/#/corpusdetail?id=42453005&type=3"
+    },
+    {
+      "author": "英雄三肖",
+      "url": "https://49217.com/#/corpusdetail?id=42453009&type=3"
+    },
+    {
+      "author": "无敌王爷",
+      "url": "https://49217.com/#/corpusdetail?id=42452962&type=3"
+    },
+    {
+      "author": "青衣神算",
+      "url": "https://49217.com/#/corpusdetail?id=42453016&type=3"
+    },
+    {
+      "author": "一骏黑马",
+      "url": "https://49217.com/#/corpusdetail?id=42452847&type=3"
+    },
+    {
+      "author": "龙虎山一",
+      "url": "https://49217.com/#/corpusdetail?id=42452931&type=3"
+    },
+    {
+      "author": "谁能知道我",
+      "url": "https://49217.com/#/corpusdetail?id=42452961&type=3"
+    },
+    {
+      "author": "蜗牛慢慢爬吧",
+      "url": "https://49217.com/#/corpusdetail?id=42452967&type=3"
+    },
+    {
+      "author": "冰心焰火",
+      "url": "https://49217.com/#/corpusdetail?id=42452973&type=3"
+    },
+    {
+      "author": "豹哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452974&type=3"
+    },
+    {
+      "author": "美丽修行在个人",
+      "url": "https://49217.com/#/corpusdetail?id=42452975&type=3"
+    },
+    {
+      "author": "虎威平特",
+      "url": "https://49217.com/#/corpusdetail?id=42453003&type=3"
+    },
+    {
+      "author": "沈知寒",
+      "url": "https://49217.com/#/corpusdetail?id=42453028&type=3"
+    },
+    {
+      "author": "盈运启川",
+      "url": "https://49217.com/#/corpusdetail?id=42445888&type=3"
+    },
+    {
+      "author": "新连长",
+      "url": "https://49217.com/#/corpusdetail?id=42452909&type=3"
+    },
+    {
+      "author": "无名小妖",
+      "url": "https://49217.com/#/corpusdetail?id=42452920&type=3"
+    },
+    {
+      "author": "腿哦无聊",
+      "url": "https://49217.com/#/corpusdetail?id=42452932&type=3"
+    },
+    {
+      "author": "彩印连连",
+      "url": "https://49217.com/#/corpusdetail?id=42452968&type=3"
+    },
+    {
+      "author": "東煌太爺",
+      "url": "https://49217.com/#/corpusdetail?id=42452984&type=3"
+    },
+    {
+      "author": "可来得",
+      "url": "https://49217.com/#/corpusdetail?id=42452870&type=3"
+    },
+    {
+      "author": "沐芃燕子",
+      "url": "https://49217.com/#/corpusdetail?id=42452899&type=3"
+    },
+    {
+      "author": "补望楚辛",
+      "url": "https://49217.com/#/corpusdetail?id=42452965&type=3"
+    },
+    {
+      "author": "再创佳绩",
+      "url": "https://49217.com/#/corpusdetail?id=42452750&type=3"
+    },
+    {
+      "author": "鱼生请多指教",
+      "url": "https://49217.com/#/corpusdetail?id=42452987&type=3"
+    },
+    {
+      "author": "浪迹天涯狼哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452977&type=3"
+    },
+    {
+      "author": "在于如何看待",
+      "url": "https://49217.com/#/corpusdetail?id=42452978&type=3"
+    },
+    {
+      "author": "金胖胖",
+      "url": "https://49217.com/#/corpusdetail?id=42452792&type=3"
+    },
+    {
+      "author": "北北跳",
+      "url": "https://49217.com/#/corpusdetail?id=42448674&type=3"
+    },
+    {
+      "author": "浪迹天涯狼哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452751&type=3"
+    },
+    {
+      "author": "阿源源",
+      "url": "https://49217.com/#/corpusdetail?id=42452979&type=3"
+    },
+    {
+      "author": "开饭来啦",
+      "url": "https://49217.com/#/corpusdetail?id=42446702&type=3"
+    },
+    {
+      "author": "深情的机器猫",
+      "url": "https://49217.com/#/corpusdetail?id=42451206&type=3"
+    },
+    {
+      "author": "小甜橙",
+      "url": "https://49217.com/#/corpusdetail?id=42452704&type=3"
+    },
+    {
+      "author": "龙川乡里别黎明",
+      "url": "https://49217.com/#/corpusdetail?id=42452731&type=3"
+    },
+    {
+      "author": "你的枸杞茶",
+      "url": "https://49217.com/#/corpusdetail?id=42452980&type=3"
+    },
+    {
+      "author": "自己把握",
+      "url": "https://49217.com/#/corpusdetail?id=42452963&type=3"
+    },
+    {
+      "author": "红中六条马",
+      "url": "https://49217.com/#/corpusdetail?id=42452871&type=3"
+    },
+    {
+      "author": "鬼谷纵横",
+      "url": "https://49217.com/#/corpusdetail?id=42446339&type=3"
+    },
+    {
+      "author": "如来如好",
+      "url": "https://49217.com/#/corpusdetail?id=42452875&type=3"
+    },
+    {
+      "author": "无糖加冰谢谢",
+      "url": "https://49217.com/#/corpusdetail?id=42452952&type=3"
+    },
+    {
+      "author": "见多识广的大表哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452735&type=3"
+    },
+    {
+      "author": "帅得被人砍",
+      "url": "https://49217.com/#/corpusdetail?id=42452784&type=3"
+    },
+    {
+      "author": "可馨儿",
+      "url": "https://49217.com/#/corpusdetail?id=42452788&type=3"
+    },
+    {
+      "author": "清风似我",
+      "url": "https://49217.com/#/corpusdetail?id=42452853&type=3"
+    },
+    {
+      "author": "六哥顺特",
+      "url": "https://49217.com/#/corpusdetail?id=42452910&type=3"
+    },
+    {
+      "author": "笑哈哈福禄寿",
+      "url": "https://49217.com/#/corpusdetail?id=42446706&type=3"
+    },
+    {
+      "author": "泉州第壹炮",
+      "url": "https://49217.com/#/corpusdetail?id=42452976&type=3"
+    },
+    {
+      "author": "财神小跟班啦",
+      "url": "https://49217.com/#/corpusdetail?id=42452986&type=3"
+    },
+    {
+      "author": "馨馨雨",
+      "url": "https://49217.com/#/corpusdetail?id=42452752&type=3"
+    },
+    {
+      "author": "想你湿",
+      "url": "https://49217.com/#/corpusdetail?id=42446276&type=3"
+    },
+    {
+      "author": "春风十三里",
+      "url": "https://49217.com/#/corpusdetail?id=42452988&type=3"
+    },
+    {
+      "author": "人生中第一场",
+      "url": "https://49217.com/#/corpusdetail?id=42447985&type=3"
+    },
+    {
+      "author": "嘉怡书",
+      "url": "https://49217.com/#/corpusdetail?id=42452971&type=3"
+    },
+    {
+      "author": "五十八度半",
+      "url": "https://49217.com/#/corpusdetail?id=42447319&type=3"
+    },
+    {
+      "author": "往往都是这样",
+      "url": "https://49217.com/#/corpusdetail?id=42452972&type=3"
+    },
+    {
+      "author": "水月宫",
+      "url": "https://49217.com/#/corpusdetail?id=42452749&type=3"
+    },
+    {
+      "author": "安小希",
+      "url": "https://49217.com/#/corpusdetail?id=42452827&type=3"
+    },
+    {
+      "author": "一语言轻",
+      "url": "https://49217.com/#/corpusdetail?id=42452873&type=3"
+    },
+    {
+      "author": "中发中又发",
+      "url": "https://49217.com/#/corpusdetail?id=42451000&type=3"
+    },
+    {
+      "author": "米多赢赢",
+      "url": "https://49217.com/#/corpusdetail?id=42452881&type=3"
+    },
+    {
+      "author": "千百度晗",
+      "url": "https://49217.com/#/corpusdetail?id=42452823&type=3"
+    },
+    {
+      "author": "从明天开始连胜",
+      "url": "https://49217.com/#/corpusdetail?id=42452872&type=3"
+    },
+    {
+      "author": "请叫我研究生",
+      "url": "https://49217.com/#/corpusdetail?id=42452966&type=3"
+    },
+    {
+      "author": "寒风六合",
+      "url": "https://49217.com/#/corpusdetail?id=42449507&type=3"
+    },
+    {
+      "author": "又欠欢",
+      "url": "https://49217.com/#/corpusdetail?id=42452595&type=3"
+    },
+    {
+      "author": "洙洙好运",
+      "url": "https://49217.com/#/corpusdetail?id=42452848&type=3"
+    },
+    {
+      "author": "藏红花",
+      "url": "https://49217.com/#/corpusdetail?id=42452874&type=3"
+    },
+    {
+      "author": "干嘛呢你好",
+      "url": "https://49217.com/#/corpusdetail?id=42452970&type=3"
+    },
+    {
+      "author": "李氏码皇",
+      "url": "https://49217.com/#/corpusdetail?id=42452983&type=3"
+    },
+    {
+      "author": "一号中奖员",
+      "url": "https://49217.com/#/corpusdetail?id=42452733&type=3"
+    },
+    {
+      "author": "郑思路",
+      "url": "https://49217.com/#/corpusdetail?id=42452736&type=3"
+    },
+    {
+      "author": "神算大神",
+      "url": "https://49217.com/#/corpusdetail?id=42452790&type=3"
+    },
+    {
+      "author": "情在云中",
+      "url": "https://49217.com/#/corpusdetail?id=42452854&type=3"
+    },
+    {
+      "author": "随遇而安鸭",
+      "url": "https://49217.com/#/corpusdetail?id=42452839&type=3"
+    },
+    {
+      "author": "彩坛剑客",
+      "url": "https://49217.com/#/corpusdetail?id=42447348&type=3"
+    },
+    {
+      "author": "好料搬运工",
+      "url": "https://49217.com/#/corpusdetail?id=42445997&type=3"
+    },
+    {
+      "author": "青龙好汉",
+      "url": "https://49217.com/#/corpusdetail?id=42445984&type=3"
+    },
+    {
+      "author": "枝摆给我中",
+      "url": "https://49217.com/#/corpusdetail?id=42446000&type=3"
+    },
+    {
+      "author": "郑它个亿",
+      "url": "https://49217.com/#/corpusdetail?id=42452822&type=3"
+    },
+    {
+      "author": "亿万个达步溜",
+      "url": "https://49217.com/#/corpusdetail?id=42452753&type=3"
+    },
+    {
+      "author": "有两手",
+      "url": "https://49217.com/#/corpusdetail?id=42446063&type=3"
+    },
+    {
+      "author": "无敌鷄佬",
+      "url": "https://49217.com/#/corpusdetail?id=42452596&type=3"
+    },
+    {
+      "author": "牛气冲天我要发",
+      "url": "https://49217.com/#/corpusdetail?id=42452741&type=3"
+    },
+    {
+      "author": "港澳宁财神小迷弟",
+      "url": "https://49217.com/#/corpusdetail?id=42452734&type=3"
+    },
+    {
+      "author": "雷澳天",
+      "url": "https://49217.com/#/corpusdetail?id=42452589&type=3"
+    },
+    {
+      "author": "鸿牛牛牛",
+      "url": "https://49217.com/#/corpusdetail?id=42452640&type=3"
+    },
+    {
+      "author": "不是大仙",
+      "url": "https://49217.com/#/corpusdetail?id=42452587&type=3"
+    },
+    {
+      "author": "随处蹦哒哒",
+      "url": "https://49217.com/#/corpusdetail?id=42452740&type=3"
+    },
+    {
+      "author": "爱玩的菜菜",
+      "url": "https://49217.com/#/corpusdetail?id=42452551&type=3"
+    },
+    {
+      "author": "旺仔小海",
+      "url": "https://49217.com/#/corpusdetail?id=42452737&type=3"
+    },
+    {
+      "author": "无情二十四",
+      "url": "https://49217.com/#/corpusdetail?id=42446220&type=3"
+    },
+    {
+      "author": "澳通行证",
+      "url": "https://49217.com/#/corpusdetail?id=42446516&type=3"
+    },
+    {
+      "author": "大鲨鱼奥尼尔",
+      "url": "https://49217.com/#/corpusdetail?id=42445868&type=3"
+    },
+    {
+      "author": "风月无边",
+      "url": "https://49217.com/#/corpusdetail?id=42445862&type=3"
+    },
+    {
+      "author": "大佬爷",
+      "url": "https://49217.com/#/corpusdetail?id=42445859&type=3"
+    },
+    {
+      "author": "风舞九天",
+      "url": "https://49217.com/#/corpusdetail?id=42445856&type=3"
+    },
+    {
+      "author": "码上寻特",
+      "url": "https://49217.com/#/corpusdetail?id=42445877&type=3"
+    },
+    {
+      "author": "关二爷六肖中特命中率九十九",
+      "url": "https://49217.com/#/corpusdetail?id=42452488&type=3"
+    },
+    {
+      "author": "太阳太大",
+      "url": "https://49217.com/#/corpusdetail?id=42452491&type=3"
+    },
+    {
+      "author": "长跟长有",
+      "url": "https://49217.com/#/corpusdetail?id=42452497&type=3"
+    },
+    {
+      "author": "红红火火财神爷",
+      "url": "https://49217.com/#/corpusdetail?id=42446776&type=3"
+    },
+    {
+      "author": "叶儿点",
+      "url": "https://49217.com/#/corpusdetail?id=42452462&type=3"
+    },
+    {
+      "author": "星辰子",
+      "url": "https://49217.com/#/corpusdetail?id=42452508&type=3"
+    },
+    {
+      "author": "关二爷六肖中特命中率九十九",
+      "url": "https://49217.com/#/corpusdetail?id=42452509&type=3"
+    },
+    {
+      "author": "港彩六叔",
+      "url": "https://49217.com/#/corpusdetail?id=42452577&type=3"
+    },
+    {
+      "author": "港彩六叔",
+      "url": "https://49217.com/#/corpusdetail?id=42452547&type=3"
+    },
+    {
+      "author": "烂废人",
+      "url": "https://49217.com/#/corpusdetail?id=42452540&type=3"
+    },
+    {
+      "author": "漺子座",
+      "url": "https://49217.com/#/corpusdetail?id=42452522&type=3"
+    },
+    {
+      "author": "张哥儿",
+      "url": "https://49217.com/#/corpusdetail?id=42452543&type=3"
+    },
+    {
+      "author": "稳如狗都",
+      "url": "https://49217.com/#/corpusdetail?id=42446033&type=3"
+    },
+    {
+      "author": "举个小栗子",
+      "url": "https://49217.com/#/corpusdetail?id=42452653&type=3"
+    },
+    {
+      "author": "四方进财",
+      "url": "https://49217.com/#/corpusdetail?id=42452655&type=3"
+    },
+    {
+      "author": "港彩六叔",
+      "url": "https://49217.com/#/corpusdetail?id=42452550&type=3"
+    },
+    {
+      "author": "自由如海风",
+      "url": "https://49217.com/#/corpusdetail?id=42452493&type=3"
+    },
+    {
+      "author": "峨眉豆腐",
+      "url": "https://49217.com/#/corpusdetail?id=42452651&type=3"
+    },
+    {
+      "author": "捡瓶盖破烂王",
+      "url": "https://49217.com/#/corpusdetail?id=42452498&type=3"
+    },
+    {
+      "author": "財運享通",
+      "url": "https://49217.com/#/corpusdetail?id=42452512&type=3"
+    },
+    {
+      "author": "一生安好",
+      "url": "https://49217.com/#/corpusdetail?id=42446173&type=3"
+    },
+    {
+      "author": "毛哥哥啊",
+      "url": "https://49217.com/#/corpusdetail?id=42452578&type=3"
+    },
+    {
+      "author": "笑一笑好彩自然来",
+      "url": "https://49217.com/#/corpusdetail?id=42452579&type=3"
+    },
+    {
+      "author": "业精于勤荒于嬉",
+      "url": "https://49217.com/#/corpusdetail?id=42452603&type=3"
+    },
+    {
+      "author": "周飞飞",
+      "url": "https://49217.com/#/corpusdetail?id=42452343&type=3"
+    },
+    {
+      "author": "起名困难户",
+      "url": "https://49217.com/#/corpusdetail?id=42452495&type=3"
+    },
+    {
+      "author": "多梦村",
+      "url": "https://49217.com/#/corpusdetail?id=42452507&type=3"
+    },
+    {
+      "author": "风云无忌赫",
+      "url": "https://49217.com/#/corpusdetail?id=42452654&type=3"
+    },
+    {
+      "author": "朱砂澳狗",
+      "url": "https://49217.com/#/corpusdetail?id=42446654&type=3"
+    },
+    {
+      "author": "青禾鸣晓辰光熹微",
+      "url": "https://49217.com/#/corpusdetail?id=42447988&type=3"
+    },
+    {
+      "author": "特邀一嘉宾",
+      "url": "https://49217.com/#/corpusdetail?id=42452490&type=3"
+    },
+    {
+      "author": "极致六合",
+      "url": "https://49217.com/#/corpusdetail?id=42452639&type=3"
+    },
+    {
+      "author": "日星高招",
+      "url": "https://49217.com/#/corpusdetail?id=42452521&type=3"
+    },
+    {
+      "author": "不容小觑",
+      "url": "https://49217.com/#/corpusdetail?id=42451958&type=3"
+    },
+    {
+      "author": "搜看料参考一下",
+      "url": "https://49217.com/#/corpusdetail?id=42452694&type=3"
+    },
+    {
+      "author": "福建战神九肖",
+      "url": "https://49217.com/#/corpusdetail?id=42445902&type=3"
+    },
+    {
+      "author": "三花淡奶",
+      "url": "https://49217.com/#/corpusdetail?id=42452602&type=3"
+    },
+    {
+      "author": "低调低调哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452588&type=3"
+    },
+    {
+      "author": "四九兄弟",
+      "url": "https://49217.com/#/corpusdetail?id=42452492&type=3"
+    },
+    {
+      "author": "喵喵发财",
+      "url": "https://49217.com/#/corpusdetail?id=42452345&type=3"
+    },
+    {
+      "author": "叫我哥",
+      "url": "https://49217.com/#/corpusdetail?id=42446135&type=3"
+    },
+    {
+      "author": "紫气东来开",
+      "url": "https://49217.com/#/corpusdetail?id=42446484&type=3"
+    },
+    {
+      "author": "阿源源",
+      "url": "https://49217.com/#/corpusdetail?id=42452489&type=3"
+    },
+    {
+      "author": "财源广进来米",
+      "url": "https://49217.com/#/corpusdetail?id=42452461&type=3"
+    },
+    {
+      "author": "太阳太大",
+      "url": "https://49217.com/#/corpusdetail?id=42452541&type=3"
+    },
+    {
+      "author": "关二爷六肖中特命中率九十九",
+      "url": "https://49217.com/#/corpusdetail?id=42452499&type=3"
+    },
+    {
+      "author": "上岸就靠你",
+      "url": "https://49217.com/#/corpusdetail?id=42446218&type=3"
+    },
+    {
+      "author": "清风伏月",
+      "url": "https://49217.com/#/corpusdetail?id=42451638&type=3"
+    },
+    {
+      "author": "买卖王",
+      "url": "https://49217.com/#/corpusdetail?id=42452548&type=3"
+    },
+    {
+      "author": "梦幻成真",
+      "url": "https://49217.com/#/corpusdetail?id=42452546&type=3"
+    },
+    {
+      "author": "一码中特不是期期有",
+      "url": "https://49217.com/#/corpusdetail?id=42450565&type=3"
+    },
+    {
+      "author": "随缘起势",
+      "url": "https://49217.com/#/corpusdetail?id=42446145&type=3"
+    },
+    {
+      "author": "廣西單車六叔公",
+      "url": "https://49217.com/#/corpusdetail?id=42452545&type=3"
+    },
+    {
+      "author": "你的马哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452523&type=3"
+    },
+    {
+      "author": "福建辉哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452496&type=3"
+    },
+    {
+      "author": "山风之家乐",
+      "url": "https://49217.com/#/corpusdetail?id=42452410&type=3"
+    },
+    {
+      "author": "财自东来",
+      "url": "https://49217.com/#/corpusdetail?id=42450179&type=3"
+    },
+    {
+      "author": "无广子一",
+      "url": "https://49217.com/#/corpusdetail?id=42452460&type=3"
+    },
+    {
+      "author": "不是吧这都行",
+      "url": "https://49217.com/#/corpusdetail?id=42452409&type=3"
+    },
+    {
+      "author": "规律性",
+      "url": "https://49217.com/#/corpusdetail?id=42452404&type=3"
+    },
+    {
+      "author": "小牛放风筝",
+      "url": "https://49217.com/#/corpusdetail?id=42452407&type=3"
+    },
+    {
+      "author": "永恒的恒",
+      "url": "https://49217.com/#/corpusdetail?id=42452408&type=3"
+    },
+    {
+      "author": "码王中中中",
+      "url": "https://49217.com/#/corpusdetail?id=42452406&type=3"
+    },
+    {
+      "author": "糖果一",
+      "url": "https://49217.com/#/corpusdetail?id=42452401&type=3"
+    },
+    {
+      "author": "澳门杨哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452405&type=3"
+    },
+    {
+      "author": "九龙难得糊涂",
+      "url": "https://49217.com/#/corpusdetail?id=42452402&type=3"
+    },
+    {
+      "author": "澳门杨哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452396&type=3"
+    },
+    {
+      "author": "你好树先生",
+      "url": "https://49217.com/#/corpusdetail?id=42452344&type=3"
+    },
+    {
+      "author": "六合神水",
+      "url": "https://49217.com/#/corpusdetail?id=42452353&type=3"
+    },
+    {
+      "author": "小石头老师",
+      "url": "https://49217.com/#/corpusdetail?id=42452300&type=3"
+    },
+    {
+      "author": "屠龙无悔",
+      "url": "https://49217.com/#/corpusdetail?id=42452268&type=3"
+    },
+    {
+      "author": "我要戒赌",
+      "url": "https://49217.com/#/corpusdetail?id=42452294&type=3"
+    },
+    {
+      "author": "诗信中特",
+      "url": "https://49217.com/#/corpusdetail?id=42452297&type=3"
+    },
+    {
+      "author": "这几肖",
+      "url": "https://49217.com/#/corpusdetail?id=42452296&type=3"
+    },
+    {
+      "author": "天上人间海阔",
+      "url": "https://49217.com/#/corpusdetail?id=42452299&type=3"
+    },
+    {
+      "author": "三少扫老六",
+      "url": "https://49217.com/#/corpusdetail?id=42452298&type=3"
+    },
+    {
+      "author": "可可鸡",
+      "url": "https://49217.com/#/corpusdetail?id=42452261&type=3"
+    },
+    {
+      "author": "闯天涯的人",
+      "url": "https://49217.com/#/corpusdetail?id=42452266&type=3"
+    },
+    {
+      "author": "神算马师",
+      "url": "https://49217.com/#/corpusdetail?id=42452267&type=3"
+    },
+    {
+      "author": "笑笑又一天",
+      "url": "https://49217.com/#/corpusdetail?id=42452269&type=3"
+    },
+    {
+      "author": "随波触流新号",
+      "url": "https://49217.com/#/corpusdetail?id=42452264&type=3"
+    },
+    {
+      "author": "寒烟秋月",
+      "url": "https://49217.com/#/corpusdetail?id=42452263&type=3"
+    },
+    {
+      "author": "幸运钥匙",
+      "url": "https://49217.com/#/corpusdetail?id=42452293&type=3"
+    },
+    {
+      "author": "很好看哦",
+      "url": "https://49217.com/#/corpusdetail?id=42446120&type=3"
+    },
+    {
+      "author": "叮当米",
+      "url": "https://49217.com/#/corpusdetail?id=42452259&type=3"
+    },
+    {
+      "author": "玩个球球",
+      "url": "https://49217.com/#/corpusdetail?id=42452228&type=3"
+    },
+    {
+      "author": "天赐杰哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452227&type=3"
+    },
+    {
+      "author": "庄家见到我掉头走",
+      "url": "https://49217.com/#/corpusdetail?id=42452230&type=3"
+    },
+    {
+      "author": "大麦麦",
+      "url": "https://49217.com/#/corpusdetail?id=42452258&type=3"
+    },
+    {
+      "author": "日进斗图",
+      "url": "https://49217.com/#/corpusdetail?id=42452220&type=3"
+    },
+    {
+      "author": "啊拼博奋斗",
+      "url": "https://49217.com/#/corpusdetail?id=42452219&type=3"
+    },
+    {
+      "author": "棉花糖飘在梦里",
+      "url": "https://49217.com/#/corpusdetail?id=42452216&type=3"
+    },
+    {
+      "author": "魑魅魍魉魍魉",
+      "url": "https://49217.com/#/corpusdetail?id=42452215&type=3"
+    },
+    {
+      "author": "三少爷的肖",
+      "url": "https://49217.com/#/corpusdetail?id=42452207&type=3"
+    },
+    {
+      "author": "谢绍明",
+      "url": "https://49217.com/#/corpusdetail?id=42452213&type=3"
+    },
+    {
+      "author": "午夜星辰",
+      "url": "https://49217.com/#/corpusdetail?id=42452208&type=3"
+    },
+    {
+      "author": "王牌特工零零柒",
+      "url": "https://49217.com/#/corpusdetail?id=42449116&type=3"
+    },
+    {
+      "author": "好好未来",
+      "url": "https://49217.com/#/corpusdetail?id=42452177&type=3"
+    },
+    {
+      "author": "愤怒的香蕉",
+      "url": "https://49217.com/#/corpusdetail?id=42452189&type=3"
+    },
+    {
+      "author": "杰尼尼龟",
+      "url": "https://49217.com/#/corpusdetail?id=42452205&type=3"
+    },
+    {
+      "author": "張添財",
+      "url": "https://49217.com/#/corpusdetail?id=42452204&type=3"
+    },
+    {
+      "author": "开心红古",
+      "url": "https://49217.com/#/corpusdetail?id=42452203&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446107&type=3"
+    },
+    {
+      "author": "一定得吃",
+      "url": "https://49217.com/#/corpusdetail?id=42452183&type=3"
+    },
+    {
+      "author": "大戳摆到篱笆跟",
+      "url": "https://49217.com/#/corpusdetail?id=42452186&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446137&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446162&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446409&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446355&type=3"
+    },
+    {
+      "author": "上岸就不玩了",
+      "url": "https://49217.com/#/corpusdetail?id=42446154&type=3"
+    },
+    {
+      "author": "勇哥是我",
+      "url": "https://49217.com/#/corpusdetail?id=42446227&type=3"
+    },
+    {
+      "author": "财喜门生",
+      "url": "https://49217.com/#/corpusdetail?id=42452198&type=3"
+    },
+    {
+      "author": "卓楚赢",
+      "url": "https://49217.com/#/corpusdetail?id=42452188&type=3"
+    },
+    {
+      "author": "搵六叔公关照",
+      "url": "https://49217.com/#/corpusdetail?id=42452170&type=3"
+    },
+    {
+      "author": "明月夜深深",
+      "url": "https://49217.com/#/corpusdetail?id=42452163&type=3"
+    },
+    {
+      "author": "抽根烟压压惊",
+      "url": "https://49217.com/#/corpusdetail?id=42452161&type=3"
+    },
+    {
+      "author": "王者之王",
+      "url": "https://49217.com/#/corpusdetail?id=42452164&type=3"
+    },
+    {
+      "author": "小菈椒",
+      "url": "https://49217.com/#/corpusdetail?id=42452165&type=3"
+    },
+    {
+      "author": "出家人不打诳语",
+      "url": "https://49217.com/#/corpusdetail?id=42446425&type=3"
+    },
+    {
+      "author": "錦上添花",
+      "url": "https://49217.com/#/corpusdetail?id=42452154&type=3"
+    },
+    {
+      "author": "来财顺财",
+      "url": "https://49217.com/#/corpusdetail?id=42452146&type=3"
+    },
+    {
+      "author": "随风大哥哥",
+      "url": "https://49217.com/#/corpusdetail?id=42446168&type=3"
+    },
+    {
+      "author": "标签权哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452129&type=3"
+    },
+    {
+      "author": "柳如烟",
+      "url": "https://49217.com/#/corpusdetail?id=42452136&type=3"
+    },
+    {
+      "author": "靓坤有料",
+      "url": "https://49217.com/#/corpusdetail?id=42452142&type=3"
+    },
+    {
+      "author": "你是我唯一的",
+      "url": "https://49217.com/#/corpusdetail?id=42452128&type=3"
+    },
+    {
+      "author": "陈代军",
+      "url": "https://49217.com/#/corpusdetail?id=42452121&type=3"
+    },
+    {
+      "author": "江月清风",
+      "url": "https://49217.com/#/corpusdetail?id=42452130&type=3"
+    },
+    {
+      "author": "哦哦哦哦略略略",
+      "url": "https://49217.com/#/corpusdetail?id=42452109&type=3"
+    },
+    {
+      "author": "山沟沟一枝花",
+      "url": "https://49217.com/#/corpusdetail?id=42452114&type=3"
+    },
+    {
+      "author": "广州东",
+      "url": "https://49217.com/#/corpusdetail?id=42452054&type=3"
+    },
+    {
+      "author": "赢赢来",
+      "url": "https://49217.com/#/corpusdetail?id=42452101&type=3"
+    },
+    {
+      "author": "澳门特朗普",
+      "url": "https://49217.com/#/corpusdetail?id=42452100&type=3"
+    },
+    {
+      "author": "吃芋头",
+      "url": "https://49217.com/#/corpusdetail?id=42452099&type=3"
+    },
+    {
+      "author": "夜猫子捡码",
+      "url": "https://49217.com/#/corpusdetail?id=42452089&type=3"
+    },
+    {
+      "author": "哦哦哦哦略略略",
+      "url": "https://49217.com/#/corpusdetail?id=42452085&type=3"
+    },
+    {
+      "author": "随浪而飘",
+      "url": "https://49217.com/#/corpusdetail?id=42450519&type=3"
+    },
+    {
+      "author": "甘标总",
+      "url": "https://49217.com/#/corpusdetail?id=42452084&type=3"
+    },
+    {
+      "author": "错过的烟火",
+      "url": "https://49217.com/#/corpusdetail?id=42452081&type=3"
+    },
+    {
+      "author": "错过的烟火",
+      "url": "https://49217.com/#/corpusdetail?id=42452073&type=3"
+    },
+    {
+      "author": "文文爱你",
+      "url": "https://49217.com/#/corpusdetail?id=42452075&type=3"
+    },
+    {
+      "author": "永远芳香",
+      "url": "https://49217.com/#/corpusdetail?id=42452074&type=3"
+    },
+    {
+      "author": "错过的烟火",
+      "url": "https://49217.com/#/corpusdetail?id=42452071&type=3"
+    },
+    {
+      "author": "大雄绵",
+      "url": "https://49217.com/#/corpusdetail?id=42452069&type=3"
+    },
+    {
+      "author": "完美创造奇迹",
+      "url": "https://49217.com/#/corpusdetail?id=42452067&type=3"
+    },
+    {
+      "author": "雪域光芒",
+      "url": "https://49217.com/#/corpusdetail?id=42449541&type=3"
+    },
+    {
+      "author": "朱家老大",
+      "url": "https://49217.com/#/corpusdetail?id=42452068&type=3"
+    },
+    {
+      "author": "错过的烟火",
+      "url": "https://49217.com/#/corpusdetail?id=42452066&type=3"
+    },
+    {
+      "author": "鸿利来",
+      "url": "https://49217.com/#/corpusdetail?id=42452064&type=3"
+    },
+    {
+      "author": "雷锋他弟雷管",
+      "url": "https://49217.com/#/corpusdetail?id=42452065&type=3"
+    },
+    {
+      "author": "遮天荒",
+      "url": "https://49217.com/#/corpusdetail?id=42452063&type=3"
+    },
+    {
+      "author": "财运腾达",
+      "url": "https://49217.com/#/corpusdetail?id=42452062&type=3"
+    },
+    {
+      "author": "时时發",
+      "url": "https://49217.com/#/corpusdetail?id=42452061&type=3"
+    },
+    {
+      "author": "牛哄哄的时候",
+      "url": "https://49217.com/#/corpusdetail?id=42452060&type=3"
+    },
+    {
+      "author": "入海容易上岸难",
+      "url": "https://49217.com/#/corpusdetail?id=42452059&type=3"
+    },
+    {
+      "author": "我是雷锋",
+      "url": "https://49217.com/#/corpusdetail?id=42446209&type=3"
+    },
+    {
+      "author": "廖哥澳彩",
+      "url": "https://49217.com/#/corpusdetail?id=42446336&type=3"
+    },
+    {
+      "author": "明天会发财",
+      "url": "https://49217.com/#/corpusdetail?id=42452047&type=3"
+    },
+    {
+      "author": "文文爱你",
+      "url": "https://49217.com/#/corpusdetail?id=42452053&type=3"
+    },
+    {
+      "author": "三湖六合",
+      "url": "https://49217.com/#/corpusdetail?id=42452034&type=3"
+    },
+    {
+      "author": "三湖六合",
+      "url": "https://49217.com/#/corpusdetail?id=42452037&type=3"
+    },
+    {
+      "author": "重肖再来",
+      "url": "https://49217.com/#/corpusdetail?id=42452033&type=3"
+    },
+    {
+      "author": "有心无力吐槽",
+      "url": "https://49217.com/#/corpusdetail?id=42452023&type=3"
+    },
+    {
+      "author": "概率方法心态",
+      "url": "https://49217.com/#/corpusdetail?id=42452036&type=3"
+    },
+    {
+      "author": "牛哄哄的时候",
+      "url": "https://49217.com/#/corpusdetail?id=42452009&type=3"
+    },
+    {
+      "author": "陈哥来说",
+      "url": "https://49217.com/#/corpusdetail?id=42452022&type=3"
+    },
+    {
+      "author": "小小鱼佬",
+      "url": "https://49217.com/#/corpusdetail?id=42452027&type=3"
+    },
+    {
+      "author": "愣住了",
+      "url": "https://49217.com/#/corpusdetail?id=42452030&type=3"
+    },
+    {
+      "author": "一二二年级",
+      "url": "https://49217.com/#/corpusdetail?id=42452040&type=3"
+    },
+    {
+      "author": "牛哄哄的时候",
+      "url": "https://49217.com/#/corpusdetail?id=42452039&type=3"
+    },
+    {
+      "author": "马佬哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452035&type=3"
+    },
+    {
+      "author": "野蛮小可爱",
+      "url": "https://49217.com/#/corpusdetail?id=42447884&type=3"
+    },
+    {
+      "author": "六合军师",
+      "url": "https://49217.com/#/corpusdetail?id=42452038&type=3"
+    },
+    {
+      "author": "三湖六合",
+      "url": "https://49217.com/#/corpusdetail?id=42452031&type=3"
+    },
+    {
+      "author": "陈三葬",
+      "url": "https://49217.com/#/corpusdetail?id=42452015&type=3"
+    },
+    {
+      "author": "马佬哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452026&type=3"
+    },
+    {
+      "author": "暴富彤彤",
+      "url": "https://49217.com/#/corpusdetail?id=42452010&type=3"
+    },
+    {
+      "author": "偷偷进村",
+      "url": "https://49217.com/#/corpusdetail?id=42452024&type=3"
+    },
+    {
+      "author": "马佬哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452025&type=3"
+    },
+    {
+      "author": "马佬哥",
+      "url": "https://49217.com/#/corpusdetail?id=42452032&type=3"
+    },
+    {
+      "author": "很想收山二",
+      "url": "https://49217.com/#/corpusdetail?id=42452016&type=3"
+    },
+    {
+      "author": "牛哄哄的时候",
+      "url": "https://49217.com/#/corpusdetail?id=42452028&type=3"
+    },
+    {
+      "author": "三湖六合",
+      "url": "https://49217.com/#/corpusdetail?id=42452029&type=3"
+    },
+    {
+      "author": "出家人不打诳语",
+      "url": "https://49217.com/#/corpusdetail?id=42446429&type=3"
+    },
+    {
+      "author": "千年蓝",
+      "url": "https://49217.com/#/corpusdetail?id=42452005&type=3"
+    },
+    {
+      "author": "赌王周润发叔叔",
+      "url": "https://49217.com/#/corpusdetail?id=42451981&type=3"
+    },
+    {
+      "author": "赵云云",
+      "url": "https://49217.com/#/corpusdetail?id=42451974&type=3"
+    },
+    {
+      "author": "晚睡晚起",
+      "url": "https://49217.com/#/corpusdetail?id=42451978&type=3"
+    },
+    {
+      "author": "地表最强蜗牛",
+      "url": "https://49217.com/#/corpusdetail?id=42451983&type=3"
+    },
+    {
+      "author": "希望中特",
+      "url": "https://49217.com/#/corpusdetail?id=42451982&type=3"
+    },
+    {
+      "author": "千年蓝",
+      "url": "https://49217.com/#/corpusdetail?id=42451986&type=3"
+    },
+    {
+      "author": "小菈椒",
+      "url": "https://49217.com/#/corpusdetail?id=42451980&type=3"
+    },
+    {
+      "author": "一部手机游天下",
+      "url": "https://49217.com/#/corpusdetail?id=42451985&type=3"
+    },
+    {
+      "author": "水清梦兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451979&type=3"
+    },
+    {
+      "author": "广西真龙天子",
+      "url": "https://49217.com/#/corpusdetail?id=42451977&type=3"
+    },
+    {
+      "author": "沉木解",
+      "url": "https://49217.com/#/corpusdetail?id=42451966&type=3"
+    },
+    {
+      "author": "闭眼入",
+      "url": "https://49217.com/#/corpusdetail?id=42451964&type=3"
+    },
+    {
+      "author": "传世天下二",
+      "url": "https://49217.com/#/corpusdetail?id=42451975&type=3"
+    },
+    {
+      "author": "姚哥中大奖",
+      "url": "https://49217.com/#/corpusdetail?id=42451976&type=3"
+    },
+    {
+      "author": "我要步步高升",
+      "url": "https://49217.com/#/corpusdetail?id=42451967&type=3"
+    },
+    {
+      "author": "专业户三中三",
+      "url": "https://49217.com/#/corpusdetail?id=42451957&type=3"
+    },
+    {
+      "author": "依然雄风",
+      "url": "https://49217.com/#/corpusdetail?id=42451960&type=3"
+    },
+    {
+      "author": "澳门十码中特",
+      "url": "https://49217.com/#/corpusdetail?id=42451968&type=3"
+    },
+    {
+      "author": "眼光独特",
+      "url": "https://49217.com/#/corpusdetail?id=42451969&type=3"
+    },
+    {
+      "author": "梁帅帅",
+      "url": "https://49217.com/#/corpusdetail?id=42451955&type=3"
+    },
+    {
+      "author": "一心两意",
+      "url": "https://49217.com/#/corpusdetail?id=42451956&type=3"
+    },
+    {
+      "author": "六合天尊",
+      "url": "https://49217.com/#/corpusdetail?id=42451972&type=3"
+    },
+    {
+      "author": "小伊塔",
+      "url": "https://49217.com/#/corpusdetail?id=42451973&type=3"
+    },
+    {
+      "author": "跑不快的我",
+      "url": "https://49217.com/#/corpusdetail?id=42451962&type=3"
+    },
+    {
+      "author": "泰荷技术总监",
+      "url": "https://49217.com/#/corpusdetail?id=42451961&type=3"
+    },
+    {
+      "author": "澳门十码中特",
+      "url": "https://49217.com/#/corpusdetail?id=42451971&type=3"
+    },
+    {
+      "author": "沉木解",
+      "url": "https://49217.com/#/corpusdetail?id=42451965&type=3"
+    },
+    {
+      "author": "财富学院恒富",
+      "url": "https://49217.com/#/corpusdetail?id=42451959&type=3"
+    },
+    {
+      "author": "我系大赢家",
+      "url": "https://49217.com/#/corpusdetail?id=42451952&type=3"
+    },
+    {
+      "author": "我是香港跑狗图他亲爹",
+      "url": "https://49217.com/#/corpusdetail?id=42445874&type=3"
+    },
+    {
+      "author": "六人一口拉拉",
+      "url": "https://49217.com/#/corpusdetail?id=42451949&type=3"
+    },
+    {
+      "author": "陈雅兰",
+      "url": "https://49217.com/#/corpusdetail?id=42451948&type=3"
+    },
+    {
+      "author": "小菈椒",
+      "url": "https://49217.com/#/corpusdetail?id=42451947&type=3"
+    },
+    {
+      "author": "老闫说码",
+      "url": "https://49217.com/#/corpusdetail?id=42451950&type=3"
+    },
+    {
+      "author": "风来雨去",
+      "url": "https://49217.com/#/corpusdetail?id=42451943&type=3"
+    },
+    {
+      "author": "无声的芦笙",
+      "url": "https://49217.com/#/corpusdetail?id=42451944&type=3"
+    },
+    {
+      "author": "丽美美",
+      "url": "https://49217.com/#/corpusdetail?id=42451940&type=3"
+    },
+    {
+      "author": "巴佬看码",
+      "url": "https://49217.com/#/corpusdetail?id=42446434&type=3"
+    },
+    {
+      "author": "中码去泡妞",
+      "url": "https://49217.com/#/corpusdetail?id=42451931&type=3"
+    },
+    {
+      "author": "澳门十码中特",
+      "url": "https://49217.com/#/corpusdetail?id=42451939&type=3"
+    },
+    {
+      "author": "周周周杀一肖",
+      "url": "https://49217.com/#/corpusdetail?id=42445882&type=3"
+    },
+    {
+      "author": "山水竹林",
+      "url": "https://49217.com/#/corpusdetail?id=42451938&type=3"
+    },
+    {
+      "author": "爱钓鱼步步高",
+      "url": "https://49217.com/#/corpusdetail?id=42451935&type=3"
+    },
+    {
+      "author": "适者生存物竞天择",
+      "url": "https://49217.com/#/corpusdetail?id=42451934&type=3"
+    },
+    {
+      "author": "嘿嘿马",
+      "url": "https://49217.com/#/corpusdetail?id=42451919&type=3"
+    },
+    {
+      "author": "唐三哥",
+      "url": "https://49217.com/#/corpusdetail?id=42451917&type=3"
+    },
+    {
+      "author": "小雪快跑",
+      "url": "https://49217.com/#/corpusdetail?id=42451922&type=3"
+    },
+    {
+      "author": "鈥中取栗",
+      "url": "https://49217.com/#/corpusdetail?id=42451923&type=3"
+    },
+    {
+      "author": "奔跑运气",
+      "url": "https://49217.com/#/corpusdetail?id=42451930&type=3"
+    },
+    {
+      "author": "可来得",
+      "url": "https://49217.com/#/corpusdetail?id=42451918&type=3"
+    },
+    {
+      "author": "大号小号的",
+      "url": "https://49217.com/#/corpusdetail?id=42451903&type=3"
+    },
+    {
+      "author": "秦凝雪月",
+      "url": "https://49217.com/#/corpusdetail?id=42451902&type=3"
+    },
+    {
+      "author": "浪人平特",
+      "url": "https://49217.com/#/corpusdetail?id=42451890&type=3"
+    },
+    {
+      "author": "溧浮的雪",
+      "url": "https://49217.com/#/corpusdetail?id=42451779&type=3"
+    },
+    {
+      "author": "五二二",
+      "url": "https://49217.com/#/corpusdetail?id=42451880&type=3"
+    },
+    {
+      "author": "六肖为王",
+      "url": "https://49217.com/#/corpusdetail?id=42451896&type=3"
+    },
+    {
+      "author": "凉瑾轩",
+      "url": "https://49217.com/#/corpusdetail?id=42447191&type=3"
+    },
+    {
+      "author": "西城男孩",
+      "url": "https://49217.com/#/corpusdetail?id=42451897&type=3"
+    },
+    {
+      "author": "昊昊呀",
+      "url": "https://49217.com/#/corpusdetail?id=42451888&type=3"
+    },
+    {
+      "author": "南京六号",
+      "url": "https://49217.com/#/corpusdetail?id=42450884&type=3"
+    },
+    {
+      "author": "嘟嘟嘟嘟嘴",
+      "url": "https://49217.com/#/corpusdetail?id=42451088&type=3"
+    },
+    {
+      "author": "小马真难",
+      "url": "https://49217.com/#/corpusdetail?id=42450756&type=3"
+    },
+    {
+      "author": "骑猪上天",
+      "url": "https://49217.com/#/corpusdetail?id=42450806&type=3"
+    },
+    {
+      "author": "喂你好冇吵",
+      "url": "https://49217.com/#/corpusdetail?id=42450498&type=3"
+    },
+    {
+      "author": "大神爆码",
+      "url": "https://49217.com/#/corpusdetail?id=42450681&type=3"
+    },
+    {
+      "author": "赢钱大富豪六鹤",
+      "url": "https://49217.com/#/corpusdetail?id=42450680&type=3"
+    },
+    {
+      "author": "四九教练",
+      "url": "https://49217.com/#/corpusdetail?id=42451780&type=3"
+    },
+    {
+      "author": "迪威圣手",
+      "url": "https://49217.com/#/corpusdetail?id=42451867&type=3"
+    },
+    {
+      "author": "幸福就是回报社会",
+      "url": "https://49217.com/#/corpusdetail?id=42451476&type=3"
+    },
+    {
+      "author": "图海寻准",
+      "url": "https://49217.com/#/corpusdetail?id=42451875&type=3"
+    },
+    {
+      "author": "半糖奶茶",
+      "url": "https://49217.com/#/corpusdetail?id=42451839&type=3"
+    },
+    {
+      "author": "开心杀一肖",
+      "url": "https://49217.com/#/corpusdetail?id=42451254&type=3"
+    },
+    {
+      "author": "叼虫小鸡",
+      "url": "https://49217.com/#/corpusdetail?id=42451443&type=3"
+    },
+    {
+      "author": "一二五八零",
+      "url": "https://49217.com/#/corpusdetail?id=42451637&type=3"
+    },
+    {
+      "author": "胖哥明",
+      "url": "https://49217.com/#/corpusdetail?id=42451791&type=3"
+    },
+    {
+      "author": "向三爺",
+      "url": "https://49217.com/#/corpusdetail?id=42451636&type=3"
+    },
+    {
+      "author": "暗号好",
+      "url": "https://49217.com/#/corpusdetail?id=42451878&type=3"
+    },
+    {
+      "author": "耶耶别别",
+      "url": "https://49217.com/#/corpusdetail?id=42451874&type=3"
+    },
+    {
+      "author": "平特拉满",
+      "url": "https://49217.com/#/corpusdetail?id=42451876&type=3"
+    },
+    {
+      "author": "陆野太场",
+      "url": "https://49217.com/#/corpusdetail?id=42451177&type=3"
+    },
+    {
+      "author": "期待你的名字",
+      "url": "https://49217.com/#/corpusdetail?id=42451071&type=3"
+    },
+    {
+      "author": "红烧小奥",
+      "url": "https://49217.com/#/corpusdetail?id=42451038&type=3"
+    },
+    {
+      "author": "沐湘源",
+      "url": "https://49217.com/#/corpusdetail?id=42450419&type=3"
+    },
+    {
+      "author": "兜兜转转兜",
+      "url": "https://49217.com/#/corpusdetail?id=42451175&type=3"
+    },
+    {
+      "author": "杀神星",
+      "url": "https://49217.com/#/corpusdetail?id=42450920&type=3"
+    },
+    {
+      "author": "叉叉好",
+      "url": "https://49217.com/#/corpusdetail?id=42450484&type=3"
+    },
+    {
+      "author": "西胡澳赛",
+      "url": "https://49217.com/#/corpusdetail?id=42449407&type=3"
+    },
+    {
+      "author": "遵义彭于晏",
+      "url": "https://49217.com/#/corpusdetail?id=42447957&type=3"
+    },
+    {
+      "author": "期待你的名字",
+      "url": "https://49217.com/#/corpusdetail?id=42450828&type=3"
+    },
+    {
+      "author": "蔡笑笑",
+      "url": "https://49217.com/#/corpusdetail?id=42451701&type=3"
+    },
+    {
+      "author": "回忆那伤",
+      "url": "https://49217.com/#/corpusdetail?id=42451778&type=3"
+    },
+    {
+      "author": "高高高兴兴兴",
+      "url": "https://49217.com/#/corpusdetail?id=42451861&type=3"
+    },
+    {
+      "author": "大总统",
+      "url": "https://49217.com/#/corpusdetail?id=42451037&type=3"
+    },
+    {
+      "author": "佰晓生",
+      "url": "https://49217.com/#/corpusdetail?id=42450469&type=3"
+    },
+    {
+      "author": "养狗人",
+      "url": "https://49217.com/#/corpusdetail?id=42451533&type=3"
+    },
+    {
+      "author": "我不管",
+      "url": "https://49217.com/#/corpusdetail?id=42451871&type=3"
+    },
+    {
+      "author": "佰晓生",
+      "url": "https://49217.com/#/corpusdetail?id=42450479&type=3"
+    },
+    {
+      "author": "日夜兼程二",
+      "url": "https://49217.com/#/corpusdetail?id=42451790&type=3"
+    },
+    {
+      "author": "我是雷锋",
+      "url": "https://49217.com/#/corpusdetail?id=42451340&type=3"
+    },
+    {
+      "author": "大王下山",
+      "url": "https://49217.com/#/corpusdetail?id=42445870&type=3"
+    },
+    {
+      "author": "沐湘源",
+      "url": "https://49217.com/#/corpusdetail?id=42450416&type=3"
+    },
+    {
+      "author": "陈三葬",
+      "url": "https://49217.com/#/corpusdetail?id=42450417&type=3"
+    },
+    {
+      "author": "财神阿芝",
+      "url": "https://49217.com/#/corpusdetail?id=42450459&type=3"
+    },
+    {
+      "author": "幽兰拿铁你真坑",
+      "url": "https://49217.com/#/corpusdetail?id=42450576&type=3"
+    },
+    {
+      "author": "愛我別膩",
+      "url": "https://49217.com/#/corpusdetail?id=42446233&type=3"
+    },
+    {
+      "author": "大澳仔",
+      "url": "https://49217.com/#/corpusdetail?id=42450774&type=3"
+    },
+    {
+      "author": "说一声感谢",
+      "url": "https://49217.com/#/corpusdetail?id=42451234&type=3"
+    },
+    {
+      "author": "沐湘源",
+      "url": "https://49217.com/#/corpusdetail?id=42450410&type=3"
+    },
+    {
+      "author": "潮汕小浪鸟",
+      "url": "https://49217.com/#/corpusdetail?id=42451721&type=3"
+    },
+    {
+      "author": "那湾表",
+      "url": "https://49217.com/#/corpusdetail?id=42450509&type=3"
+    },
+    {
+      "author": "莫断尘缘",
+      "url": "https://49217.com/#/corpusdetail?id=42446823&type=3"
+    },
+    {
+      "author": "杨春光",
+      "url": "https://49217.com/#/corpusdetail?id=42450592&type=3"
+    },
+    {
+      "author": "喵喵发财",
+      "url": "https://49217.com/#/corpusdetail?id=42451526&type=3"
+    },
+    {
+      "author": "轩雅阁主",
+      "url": "https://49217.com/#/corpusdetail?id=42446777&type=3"
+    },
+    {
+      "author": "妖魔佛",
+      "url": "https://49217.com/#/corpusdetail?id=42451235&type=3"
+    },
+    {
+      "author": "跟我吃肉",
+      "url": "https://49217.com/#/corpusdetail?id=42450520&type=3"
+    },
+    {
+      "author": "添好运",
+      "url": "https://49217.com/#/corpusdetail?id=42450460&type=3"
+    },
+    {
+      "author": "六合覅上头",
+      "url": "https://49217.com/#/corpusdetail?id=42451836&type=3"
+    },
+    {
+      "author": "反复研究",
+      "url": "https://49217.com/#/corpusdetail?id=42451842&type=3"
+    },
+    {
+      "author": "快乐小王子",
+      "url": "https://49217.com/#/corpusdetail?id=42451173&type=3"
+    },
+    {
+      "author": "中了个特码",
+      "url": "https://49217.com/#/corpusdetail?id=42451238&type=3"
+    },
+    {
+      "author": "天天出彩",
+      "url": "https://49217.com/#/corpusdetail?id=42451794&type=3"
+    },
+    {
+      "author": "潮汕小浪鸟",
+      "url": "https://49217.com/#/corpusdetail?id=42451655&type=3"
+    },
+    {
+      "author": "天天有奖",
+      "url": "https://49217.com/#/corpusdetail?id=42451027&type=3"
+    },
+    {
+      "author": "一直在路上走",
+      "url": "https://49217.com/#/corpusdetail?id=42451160&type=3"
+    },
+    {
+      "author": "大臀翘翘",
+      "url": "https://49217.com/#/corpusdetail?id=42450524&type=3"
+    },
+    {
+      "author": "大总统",
+      "url": "https://49217.com/#/corpusdetail?id=42450963&type=3"
+    },
+    {
+      "author": "张家的大少",
+      "url": "https://49217.com/#/corpusdetail?id=42451838&type=3"
+    },
+    {
+      "author": "鸿运加满",
+      "url": "https://49217.com/#/corpusdetail?id=42451599&type=3"
+    },
+    {
+      "author": "新潮澎拜",
+      "url": "https://49217.com/#/corpusdetail?id=42451639&type=3"
+    },
+    {
+      "author": "小仙女解正版挂牌",
+      "url": "https://49217.com/#/corpusdetail?id=42451521&type=3"
+    },
+    {
+      "author": "管家婆解析",
+      "url": "https://49217.com/#/corpusdetail?id=42451520&type=3"
+    },
+    {
+      "author": "妙解传真",
+      "url": "https://49217.com/#/corpusdetail?id=42451518&type=3"
+    },
+    {
+      "author": "民间大神",
+      "url": "https://49217.com/#/corpusdetail?id=42451517&type=3"
+    },
+    {
+      "author": "荔城小李",
+      "url": "https://49217.com/#/corpusdetail?id=42451457&type=3"
+    },
+    {
+      "author": "东方神起",
+      "url": "https://49217.com/#/corpusdetail?id=42450389&type=3"
+    },
+    {
+      "author": "爱拼才会赢呀",
+      "url": "https://49217.com/#/corpusdetail?id=42450369&type=3"
+    },
+    {
+      "author": "情谊佳人",
+      "url": "https://49217.com/#/corpusdetail?id=42450325&type=3"
+    },
+    {
+      "author": "悠悠峥",
+      "url": "https://49217.com/#/corpusdetail?id=42450332&type=3"
+    },
+    {
+      "author": "祖师爺",
+      "url": "https://49217.com/#/corpusdetail?id=42449547&type=3"
+    }
+  ],
+  "frozen_at": "2026-10-26T13:03:12.881988+00:00",
+  "digest": "716dcecedeaa7ccd8560511aac922bbbd87b654f2d03b5ac996e3be70c92f29f"
+}
