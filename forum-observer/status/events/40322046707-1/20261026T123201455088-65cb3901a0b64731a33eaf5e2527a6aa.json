@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "report_published",
+  "run_id": "40322046707",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
+  "updated_at": "2026-10-26T12:32:01.455088+00:00",
+  "error": null,
+  "valid_materials": 91,
+  "valid_authors": 91,
+  "successful_post_opens": 521,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 474,
+      "opened": 474,
+      "extracted": 472,
+      "completed": 474
+    }
+  },
+  "article_texts_extracted": 519,
+  "article_details_completed": 521,
+  "last_verified_post": {
+    "author": "香山论坛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "verified_at": "2026-10-26T12:31:48.401329+00:00",
+    "text_length": 959,
+    "text_sha256": "6aa97ab65008c54a0cd25c1ee021963501f0ca071bdf0f94c35f90bb928ef5b6"
+  },
+  "last_attempted_post": {
+    "author": "香山论坛",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "attempt_index": 521
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T12:25:38.705374+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 519,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-26T12:31:49.269331+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 2,
+    "truncated": false,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
