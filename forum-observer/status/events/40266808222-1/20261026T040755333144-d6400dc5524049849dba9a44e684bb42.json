@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "collecting_effectively",
+  "run_id": "40266808222",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40266808222",
+  "updated_at": "2026-10-26T04:07:55.333144+00:00",
+  "error": null,
+  "valid_materials": 62,
+  "valid_authors": 62,
+  "successful_post_opens": 394,
+  "article_details": {
+    "featured": {
+      "queued": 35,
+      "attempted": 35,
+      "opened": 35,
+      "extracted": 35,
+      "completed": 35
+    },
+    "ordinary": {
+      "queued": 387,
+      "attempted": 360,
+      "opened": 359,
+      "extracted": 359,
+      "completed": 359
+    }
+  },
+  "article_texts_extracted": 394,
+  "article_details_completed": 394,
+  "last_verified_post": {
+    "author": "很好很好",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158740&type=3",
+    "verified_at": "2026-10-26T04:07:54.658080+00:00",
+    "text_length": 670,
+    "text_sha256": "76697fb15f7b0adf93359990b756829e578fad00b71f049f0fb289f4b2770f69"
+  },
+  "last_attempted_post": {
+    "author": "繁华落尽",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158736&type=3",
+    "attempt_index": 395
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T04:04:12.662308+00:00",
+      "featured_queued": 35,
+      "featured_attempted": 35,
+      "featured_completed": 35
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 394,
+  "stage": "detail: 繁华落尽 杀2肖",
+  "progress_updated_at": "2026-10-26T04:07:54.874072+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
