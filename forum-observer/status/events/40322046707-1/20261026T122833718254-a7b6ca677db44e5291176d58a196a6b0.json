@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "collecting_effectively",
+  "run_id": "40322046707",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
+  "updated_at": "2026-10-26T12:28:33.718254+00:00",
+  "error": null,
+  "valid_materials": 54,
+  "valid_authors": 54,
+  "successful_post_opens": 298,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 252,
+      "opened": 251,
+      "extracted": 249,
+      "completed": 251
+    }
+  },
+  "article_texts_extracted": 296,
+  "article_details_completed": 298,
+  "last_verified_post": {
+    "author": "布帛蔬栗",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159472&type=3",
+    "verified_at": "2026-10-26T12:28:33.044880+00:00",
+    "text_length": 174,
+    "text_sha256": "de92167a1a6ea6bafc6ddf07a2bd6a0584319717f91482c2b5fff844bf81d8ab"
+  },
+  "last_attempted_post": {
+    "author": "瓜田李下",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159471&type=3",
+    "attempt_index": 299
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T12:25:38.705374+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 296,
+  "stage": "detail: 瓜田李下 299期：家野六肖",
+  "progress_updated_at": "2026-10-26T12:28:33.313961+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
