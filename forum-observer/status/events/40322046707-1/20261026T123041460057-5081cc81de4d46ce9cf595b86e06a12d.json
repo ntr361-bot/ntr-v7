@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026299",
+  "state": "collecting_effectively",
+  "run_id": "40322046707",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40322046707",
+  "updated_at": "2026-10-26T12:30:41.460057+00:00",
+  "error": null,
+  "valid_materials": 78,
+  "valid_authors": 78,
+  "successful_post_opens": 448,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 402,
+      "opened": 401,
+      "extracted": 399,
+      "completed": 401
+    }
+  },
+  "article_texts_extracted": 446,
+  "article_details_completed": 448,
+  "last_verified_post": {
+    "author": "澳彩千灯",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159068&type=3",
+    "verified_at": "2026-10-26T12:30:40.472873+00:00",
+    "text_length": 61,
+    "text_sha256": "488a9608a733e99b94ec3f70cab4bd0ab8d2c6086fb2d577b7167a10a33f3c40"
+  },
+  "last_attempted_post": {
+    "author": "瓜熟蒂落",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11159067&type=3",
+    "attempt_index": 449
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T12:25:38.705374+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 446,
+  "stage": "detail: 瓜熟蒂落 299期：精品六肖",
+  "progress_updated_at": "2026-10-26T12:30:40.815326+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
