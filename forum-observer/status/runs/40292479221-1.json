@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026299",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "40292479221",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40292479221",
-  "updated_at": "2026-10-26T08:35:32.023812+00:00",
+  "updated_at": "2026-10-26T08:35:50.803115+00:00",
   "error": null,
-  "valid_materials": 72,
-  "valid_authors": 72,
-  "successful_post_opens": 425,
+  "valid_materials": 74,
+  "valid_authors": 74,
+  "successful_post_opens": 445,
   "article_details": {
     "featured": {
       "queued": 38,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 407,
-      "attempted": 388,
-      "opened": 387,
-      "extracted": 386,
-      "completed": 387
+      "attempted": 407,
+      "opened": 407,
+      "extracted": 406,
+      "completed": 407
     }
   },
-  "article_texts_extracted": 424,
-  "article_details_completed": 425,
+  "article_texts_extracted": 444,
+  "article_details_completed": 445,
   "last_verified_post": {
-    "author": "无错九肖长期跟",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158778&type=3",
-    "verified_at": "2026-10-26T08:35:31.481023+00:00",
-    "text_length": 995,
-    "text_sha256": "4cfb1357236a3576f215fb109a2ea4cf038684d425f70ae710911e46c40c9ecb"
+    "author": "香山论坛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "verified_at": "2026-10-26T08:35:48.783065+00:00",
+    "text_length": 959,
+    "text_sha256": "6aa97ab65008c54a0cd25c1ee021963501f0ca071bdf0f94c35f90bb928ef5b6"
   },
   "last_attempted_post": {
-    "author": "水东枭雄",
+    "author": "香山论坛",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158931&type=3",
-    "attempt_index": 426
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "attempt_index": 445
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 424,
-  "stage": "detail: 水东枭雄 299期：三半单双",
-  "progress_updated_at": "2026-10-26T08:35:31.807283+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 444,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-26T08:35:49.499953+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
