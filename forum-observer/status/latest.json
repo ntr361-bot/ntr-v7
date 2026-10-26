@@ -1,51 +1,67 @@
 {
   "schema_version": 2,
   "issue": "2026299",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "40292479221",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40292479221",
-  "updated_at": "2026-10-26T08:30:12.260438+00:00",
+  "updated_at": "2026-10-26T08:31:16.276167+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 14,
+  "valid_authors": 14,
+  "successful_post_opens": 63,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 38,
+      "attempted": 38,
+      "opened": 38,
+      "extracted": 38,
+      "completed": 38
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 407,
+      "attempted": 25,
+      "opened": 25,
+      "extracted": 24,
+      "completed": 25
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 62,
+  "article_details_completed": 63,
+  "last_verified_post": {
+    "author": "澳门神算子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161760&type=3",
+    "verified_at": "2026-10-26T08:31:16.227033+00:00",
+    "text_length": 3286,
+    "text_sha256": "741410d69af8ea22b30b4d65622e4427acf4f745e560f5c0cbfca61e6e25db3e"
+  },
+  "last_attempted_post": {
+    "author": "澳门神算子",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11161760&type=3",
+    "attempt_index": 63
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-26T08:31:01.965552+00:00",
+      "featured_queued": 38,
+      "featured_attempted": 38,
+      "featured_completed": 38
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 70",
-  "progress_updated_at": "2026-10-26T08:30:11.975797+00:00",
+  "raw_count": 62,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-26T08:31:16.257668+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
