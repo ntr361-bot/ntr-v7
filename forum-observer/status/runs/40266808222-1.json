@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026299",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "40266808222",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40266808222",
-  "updated_at": "2026-10-26T04:07:55.333144+00:00",
+  "updated_at": "2026-10-26T04:08:16.421057+00:00",
   "error": null,
-  "valid_materials": 62,
-  "valid_authors": 62,
-  "successful_post_opens": 394,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 422,
   "article_details": {
     "featured": {
       "queued": 35,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 387,
-      "attempted": 360,
-      "opened": 359,
-      "extracted": 359,
-      "completed": 359
+      "attempted": 387,
+      "opened": 387,
+      "extracted": 387,
+      "completed": 387
     }
   },
-  "article_texts_extracted": 394,
-  "article_details_completed": 394,
+  "article_texts_extracted": 422,
+  "article_details_completed": 422,
   "last_verified_post": {
-    "author": "很好很好",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158740&type=3",
-    "verified_at": "2026-10-26T04:07:54.658080+00:00",
-    "text_length": 670,
-    "text_sha256": "76697fb15f7b0adf93359990b756829e578fad00b71f049f0fb289f4b2770f69"
+    "author": "香山论坛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "verified_at": "2026-10-26T04:08:15.193394+00:00",
+    "text_length": 959,
+    "text_sha256": "6aa97ab65008c54a0cd25c1ee021963501f0ca071bdf0f94c35f90bb928ef5b6"
   },
   "last_attempted_post": {
-    "author": "繁华落尽",
+    "author": "香山论坛",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158736&type=3",
-    "attempt_index": 395
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11158950&type=3",
+    "attempt_index": 422
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 394,
-  "stage": "detail: 繁华落尽 杀2肖",
-  "progress_updated_at": "2026-10-26T04:07:54.874072+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 422,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-26T04:08:15.688857+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": null,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
