@@ -50,6 +50,8 @@ class ScheduleTests(unittest.TestCase):
             self.assertTrue(decide(self.at(20,45),tmp,manual=True)[0])
             self.write_snapshot(tmp,issue)
             self.assertEqual(decide(self.at(20,50),tmp,manual=True)[3],
+                             "manual_test_after_freeze")
+            self.assertEqual(decide(self.at(20,50),tmp,scheduled=True,requested_round='1')[3],
                              "immutable_snapshot_exists")
 
     def test_cutoff_and_next_day_never_backfill(self):
@@ -134,7 +136,7 @@ class ScheduleTests(unittest.TestCase):
                              "current_round_already_completed")
             self.assertTrue(decide(self.at(20,25),tmp,manual=True)[0])
 
-    def test_freeze_requires_a_current_evening_draft(self):
+    def test_freeze_requires_a_same_day_draft(self):
         with TemporaryDirectory() as tmp:
             now=self.at(21, 0)
             issue=current_issue(now)
@@ -143,11 +145,11 @@ class ScheduleTests(unittest.TestCase):
             path=folder/"draft-status.json"
             path.write_text(json.dumps({
                 "issue":issue,"status":"ready_observation","valid_materials":50,
-                "fetched_at":self.at(1, 51).isoformat()
+                "fetched_at":self.at(23, 51, 11).isoformat()
             }),encoding="utf-8")
             self.assertFalse(freeze_window_allowed(now,tmp))
             fresh=json.loads(path.read_text())
-            fresh["fetched_at"]=self.at(19, 55).isoformat()
+            fresh["fetched_at"]=self.at(20, 5, 11).isoformat()
             path.write_text(json.dumps(fresh),encoding="utf-8")
             self.assertFalse(freeze_window_allowed(now,tmp))
             fresh["fetched_at"]=self.at(20, 5).isoformat()
@@ -175,8 +177,9 @@ class ScheduleTests(unittest.TestCase):
             self.assertFalse(decide(self.at(20,50),tmp)[0])
             self.assertTrue(decide(self.at(20,35),tmp,manual=True)[0])
             self.write_snapshot(tmp,issue)
+            # Once frozen, a manual run is only a test collection.
             self.assertEqual(decide(self.at(20,35),tmp,manual=True)[3],
-                             "immutable_snapshot_exists")
+                             "manual_test_after_freeze")
 
     def test_nightly_report_is_saved_even_without_any_verified_material(self):
         with TemporaryDirectory() as tmp:
@@ -255,7 +258,7 @@ class ScheduleTests(unittest.TestCase):
     def test_forum49_gate_automatic_once_manual_always(self):
         with TemporaryDirectory() as tmp:
             issue = current_issue(self.at(20, 20))
-            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 20), True), (True, "automatic_collection"))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 20), True), (True, "automatic_collection", False))
             self.assertEqual(forum49_collect_gate(tmp, self.at(20, 5), True)[1],
                              "automatic_collection_outside_window")
             self.assertEqual(forum49_collect_gate(tmp, self.at(20, 50), True)[1],
@@ -268,8 +271,53 @@ class ScheduleTests(unittest.TestCase):
             self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), True)[1],
                              "already_collected_tonight")
             # Manual dispatch keeps working at any time.
-            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), False), (True, "manual_collection"))
-            self.assertEqual(forum49_collect_gate(tmp, self.at(19, 0), False), (True, "manual_collection"))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), False), (True, "manual_collection", False))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(19, 0), False), (True, "manual_collection", False))
+            # From 21:00 a manual run is a test only; automatic runs never start.
+            self.assertEqual(forum49_collect_gate(tmp, self.at(21, 5), False), (True, "manual_test_after_freeze", True))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(23, 0), False)[2], True)
+            self.assertFalse(forum49_collect_gate(tmp, self.at(21, 5), True)[0])
+
+    def test_manual_118_collection_any_time_before_freeze_then_test_only(self):
+        with TemporaryDirectory() as tmp:
+            # Unlimited manual runs before the cutoff, even after tonight's draft.
+            for hour, minute in ((9, 0), (19, 30), (20, 40), (20, 57)):
+                go, _, _, reason = decide(self.at(hour, minute), tmp, manual=True)
+                self.assertTrue(go, (hour, minute))
+                self.assertEqual(reason, "manual_rerun")
+            issue = current_issue(self.at(20, 20))
+            folder = Path(tmp) / "issues" / issue
+            folder.mkdir(parents=True)
+            (folder / "draft-status.json").write_text(json.dumps({
+                "issue": issue, "status": "ready_observation", "valid_materials": 80,
+                "fetched_at": self.at(20, 31).isoformat()}), encoding="utf-8")
+            self.assertEqual(decide(self.at(20, 45), tmp, manual=True)[3], "manual_rerun")
+            # 21:00-21:20 before the snapshot exists: wait, never delay the freeze.
+            self.assertEqual(decide(self.at(21, 2), tmp, manual=True)[3], "manual_test_waits_for_freeze")
+            self.assertFalse(decide(self.at(21, 2), tmp, manual=True)[0])
+            # After the window, or once frozen: test collection allowed.
+            self.assertEqual(decide(self.at(21, 30), tmp, manual=True)[3], "manual_test_after_freeze")
+            self.write_snapshot(tmp, issue)
+            go, _, seconds, reason = decide(self.at(21, 5), tmp, manual=True)
+            self.assertEqual((go, reason, seconds), (True, "manual_test_after_freeze", 1800))
+            # Automatic triggers never start after the freeze.
+            self.assertFalse(decide(self.at(21, 30), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
+
+    def test_any_same_day_manual_draft_is_freezable(self):
+        with TemporaryDirectory() as tmp:
+            now = self.at(21, 1)
+            issue = current_issue(now)
+            folder = Path(tmp) / "issues" / issue
+            folder.mkdir(parents=True)
+            path = folder / "draft-status.json"
+            path.write_text(json.dumps({"issue": issue, "status": "ready_observation",
+                                        "valid_materials": 50,
+                                        "fetched_at": self.at(15, 0).isoformat()}), encoding="utf-8")
+            self.assertTrue(freeze_window_allowed(now, tmp))
+            path.write_text(json.dumps({"issue": issue, "status": "ready_observation",
+                                        "valid_materials": 50,
+                                        "fetched_at": self.at(20, 0, 11).isoformat()}), encoding="utf-8")
+            self.assertFalse(freeze_window_allowed(now, tmp))
 
     def test_forum49_workflow_keeps_manual_and_adds_backups(self):
         workflow = (Path(__file__).resolve().parents[2] / ".github" /

@@ -53,6 +53,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       collect: ${{ steps.gate.outputs.collect }}
+      test: ${{ steps.gate.outputs.test }}
     defaults:
       run:
         working-directory: forum-observer
@@ -86,23 +87,31 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Unit tests
         run: python -m unittest tests.test_forum49 tests.test_forum49_scrapling tests.test_forum49_cycle tests.test_source_probe -v
+      - name: Isolate archive for a manual test after the freeze time
+        # From 21:00 a manual run is a test: it reads/writes a throwaway copy
+        # and never publishes a draft or commits anything.
+        if: needs.gate.outputs.test == 'true'
+        run: |
+          echo "::notice title=49论坛模型 test::manual run after the freeze time; test only (artifact), no draft/freeze/commit"
+          rm -rf /tmp/forum49-test && cp -r forum49 /tmp/forum49-test
       - name: Collect (no limit on post count; stops at issue boundary)
         id: collect
         env:
           F49_ISSUE: ${{ inputs.issue }}
           F49_URL: ${{ inputs.url || 'https://49217.com/#/forum' }}
+          F49_ARCHIVE: ${{ needs.gate.outputs.test == 'true' && '/tmp/forum49-test' || 'forum49' }}
         run: |
-          python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive forum49
+          python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive "$F49_ARCHIVE"
       - name: Publish pre-freeze draft (no freeze; refused at/after 21:00)
         id: draft
-        if: steps.collect.outcome == 'success'
+        if: steps.collect.outcome == 'success' && needs.gate.outputs.test != 'true'
         continue-on-error: true
         run: |
           python -m forum_observer.cycle --out forum49-out --archive forum49 \
             --history ../site/data/history.json --public ../site/data/forum49 \
             --defer-freeze --model-id forum49
       - name: Commit draft and run record before the side check
-        if: always()
+        if: always() && needs.gate.outputs.test != 'true'
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -130,7 +139,7 @@ jobs:
           /tmp/scrapling-venv/bin/pip install -q "scrapling[fetchers]"
           /tmp/scrapling-venv/bin/python -m playwright install chromium
           /tmp/scrapling-venv/bin/scrapling install || echo "scrapling install step unavailable; continuing"
-          /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800
+          /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800 --archive "${{ needs.gate.outputs.test == 'true' && '/tmp/forum49-test' || 'forum49' }}"
       - name: Report (annotations + summary)
         if: always()
         run: |
@@ -187,7 +196,7 @@ jobs:
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines)+'\n')
           PY
       - name: Commit Scrapling record (forum49/ only)
-        if: always()
+        if: always() && needs.gate.outputs.test != 'true'
         shell: bash
         run: |
           [ -d forum49 ] || { echo "no record"; exit 0; }

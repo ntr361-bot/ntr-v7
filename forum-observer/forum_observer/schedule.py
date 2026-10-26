@@ -65,7 +65,7 @@ def gpt_trigger_wait_seconds(now, round_number=1):
     return None
 
 
-def draft_is_current_evening(data, issue, now):
+def draft_is_current_evening(data, issue, now, since=None):
     local = now.astimezone(TZ)
     if data.get("issue") != issue or not data.get("fetched_at"):
         return False
@@ -79,7 +79,7 @@ def draft_is_current_evening(data, issue, now):
     return (
         captured_local.date() == local.date()
         and current_issue(captured_local) == issue
-        and (captured_local.hour, captured_local.minute) >= EVENING_START
+        and (captured_local.hour, captured_local.minute) >= (EVENING_START if since is None else since)
     )
 
 
@@ -96,7 +96,9 @@ def freeze_window_allowed(now, archive=None):
         data = json.loads(draft.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return False
-    return draft_is_current_evening(data, issue, local)
+    # Manual collections may run at any time of the day before 21:00
+    # (user decision 2026-10-26); the latest same-day draft is frozen.
+    return draft_is_current_evening(data, issue, local, since=(0, 0))
 
 
 def snapshot_exists(archive, issue):
@@ -134,7 +136,20 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
         return False, issue, 0, "scheduled_event_outside_collection_window"
     if requested_round == '1' and not (COLLECTION_START <= minute < ROUND_ONE_END):
         return False, issue, 0, "requested_round_outside_window"
-    if snapshot_exists(archive, issue):
+    deadline = (CUTOFF_HOUR, CUTOFF_MINUTE)
+    cutoff = local.replace(hour=deadline[0], minute=deadline[1],
+                           second=0, microsecond=0)
+    remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
+    frozen = snapshot_exists(archive, issue)
+    if manual and (frozen or remaining < 60):
+        # User decision 2026-10-26: manual runs after the freeze time are
+        # test collections. They never publish a draft or touch the archive.
+        # Until tonight's freeze is written (21:00-21:20) they wait, so a
+        # test can never delay the freeze past its window.
+        if not frozen and (FREEZE_START <= minute < FREEZE_END):
+            return False, issue, 0, "manual_test_waits_for_freeze"
+        return True, issue, MAX_SECONDS, "manual_test_after_freeze"
+    if frozen:
         return False, issue, 0, "immutable_snapshot_exists"
     round_number = 1
     draft = Path(archive) / 'issues' / issue / 'draft-status.json'
@@ -147,10 +162,6 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
             # Tonight's collection (automatic or a manual run from 20:00)
             # already produced a draft: automatic triggers never repeat it.
             return False, issue, 0, "current_round_already_completed"
-    deadline = (CUTOFF_HOUR, CUTOFF_MINUTE)
-    cutoff = local.replace(hour=deadline[0], minute=deadline[1],
-                           second=0, microsecond=0)
-    remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
     if remaining < 60:
         return False, issue, 0, "daily_collection_cutoff_passed"
     return True, issue, min(MAX_SECONDS, remaining), ("manual_rerun" if manual else "round_collection_or_retry")
@@ -159,24 +170,29 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
 def forum49_collect_gate(archive, now, skip_if_collected):
     """49论坛模型: automatic collections (backup cron, scheduled task) run once
     per night inside 20:20-20:50 and skip when tonight's draft exists.
-    A manual dispatch (skip_if_collected=False) always collects."""
-    if not skip_if_collected:
-        return True, "manual_collection"
+    A manual dispatch (skip_if_collected=False) always collects: before
+    21:00 it publishes a replaceable draft; from 21:00 (or once frozen) it is
+    a test that uses an isolated copy of the archive and publishes nothing.
+    Returns (collect, reason, test_only)."""
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
-    if not (COLLECTION_START <= minute < FORUM49_AUTO_COLLECT_END):
-        return False, "automatic_collection_outside_window"
     issue = current_issue(local)
+    if not skip_if_collected:
+        if minute >= FREEZE_START or snapshot_exists(archive, issue):
+            return True, "manual_test_after_freeze", True
+        return True, "manual_collection", False
+    if not (COLLECTION_START <= minute < FORUM49_AUTO_COLLECT_END):
+        return False, "automatic_collection_outside_window", False
     if snapshot_exists(archive, issue):
-        return False, "immutable_snapshot_exists"
+        return False, "immutable_snapshot_exists", False
     draft = Path(archive) / "issues" / issue / "draft-status.json"
     try:
         data = json.loads(draft.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         data = None
     if data and data.get("status") == "ready_observation" and draft_is_current_evening(data, issue, local):
-        return False, "already_collected_tonight"
-    return True, "automatic_collection"
+        return False, "already_collected_tonight", False
+    return True, "automatic_collection", False
 
 
 def ensure_daily_report(archive, now):
@@ -252,11 +268,11 @@ def main():
         return 0
     if a.forum49_collect_gate:
         skip = os.environ.get("F49_SKIP_IF_COLLECTED", "false").lower() == "true"
-        collect, reason = forum49_collect_gate(a.archive, now, skip)
-        print(json.dumps({"collect": collect, "reason": reason}, ensure_ascii=False), flush=True)
+        collect, reason, test = forum49_collect_gate(a.archive, now, skip)
+        print(json.dumps({"collect": collect, "reason": reason, "test_only": test}, ensure_ascii=False), flush=True)
         if a.github_output:
             with open(a.github_output, "a", encoding="utf-8") as f:
-                f.write(f"collect={str(collect).lower()}\nreason={reason}\n")
+                f.write(f"collect={str(collect).lower()}\nreason={reason}\ntest={str(test).lower()}\n")
         return 0
     if a.check_freeze_window:
         allowed = freeze_window_allowed(now, a.archive)
