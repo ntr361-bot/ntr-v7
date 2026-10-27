@@ -23,12 +23,23 @@
     "虎",
     "猪"
   ],
-  "frozen": false,
-  "prediction_top3": [],
-  "prediction_top6": [],
-  "snapshot_digest": null,
-  "freeze_quality_status": null,
-  "freeze_minimum_valid_materials": null,
+  "frozen": true,
+  "prediction_top3": [
+    "鸡",
+    "鼠",
+    "羊"
+  ],
+  "prediction_top6": [
+    "鸡",
+    "鼠",
+    "羊",
+    "蛇",
+    "虎",
+    "猪"
+  ],
+  "snapshot_digest": "184a5eea01769d1766b834c332ffe03d63e99f8ca34f0350d765901685152ccd",
+  "freeze_quality_status": "meets_minimum_samples",
+  "freeze_minimum_valid_materials": 25,
   "settlement": null,
   "settled_count": 15,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
