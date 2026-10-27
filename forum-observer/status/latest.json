@@ -1,31 +1,67 @@
 {
   "schema_version": 2,
   "issue": "2026300",
-  "state": "starting",
+  "state": "frozen",
   "run_id": "40508488683",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40508488683",
-  "updated_at": "2026-10-27T13:01:50.985546+00:00",
+  "updated_at": "2026-10-27T13:02:02.280566+00:00",
   "error": null,
-  "valid_materials": null,
-  "valid_authors": null,
-  "successful_post_opens": null,
-  "article_details": null,
-  "article_texts_extracted": null,
-  "article_details_completed": null,
-  "last_verified_post": null,
-  "last_attempted_post": null,
-  "priority_audit": null,
-  "raw_count": null,
-  "stage": null,
-  "progress_updated_at": null,
-  "collection_status": null,
-  "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
-    "unextracted_current_posts": null
+  "valid_materials": 89,
+  "valid_authors": 89,
+  "successful_post_opens": 531,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 480,
+      "opened": 480,
+      "extracted": 479,
+      "completed": 480
+    }
   },
-  "coverage_label": null
+  "article_texts_extracted": 530,
+  "article_details_completed": 531,
+  "last_verified_post": {
+    "author": "老六神算",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164608&type=3",
+    "verified_at": "2026-10-27T12:47:21.183198+00:00",
+    "text_length": 51,
+    "text_sha256": "d33c3bb363cd3242e8525903c567697c75857076335629f9f62fcb29f916bd54"
+  },
+  "last_attempted_post": {
+    "author": "老六神算",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164608&type=3",
+    "attempt_index": 531
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-27T12:41:16.712629+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 530,
+  "stage": null,
+  "progress_updated_at": "2026-10-27T12:47:21.859496+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 1,
+    "truncated": false,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
