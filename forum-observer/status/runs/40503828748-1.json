@@ -7,25 +7,45 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40503828748",
-  "updated_at": "2026-10-27T12:38:50.776599+00:00",
+  "updated_at": "2026-10-27T12:39:54.609730+00:00",
   "error": null,
-  "valid_materials": null,
-  "valid_authors": null,
-  "successful_post_opens": null,
-  "article_details": null,
-  "article_texts_extracted": null,
-  "article_details_completed": null,
+  "valid_materials": 0,
+  "valid_authors": 0,
+  "successful_post_opens": 0,
+  "article_details": {
+    "featured": {
+      "queued": 0,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    },
+    "ordinary": {
+      "queued": 0,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 0,
+  "article_details_completed": 0,
   "last_verified_post": null,
   "last_attempted_post": null,
-  "priority_audit": null,
-  "raw_count": null,
-  "stage": null,
-  "progress_updated_at": null,
-  "collection_status": null,
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 0,
+  "stage": "forum_scan: 69",
+  "progress_updated_at": "2026-10-27T12:39:54.195607+00:00",
+  "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": null
+    "unextracted_current_posts": 0
   },
   "coverage_label": null
 }
