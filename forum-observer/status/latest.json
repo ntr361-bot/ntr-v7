@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026300",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "40503828748",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40503828748",
-  "updated_at": "2026-10-27T12:46:20.445333+00:00",
+  "updated_at": "2026-10-27T12:47:22.808740+00:00",
   "error": null,
-  "valid_materials": 81,
-  "valid_authors": 81,
-  "successful_post_opens": 462,
+  "valid_materials": 89,
+  "valid_authors": 89,
+  "successful_post_opens": 531,
   "article_details": {
     "featured": {
       "queued": 51,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 480,
-      "attempted": 412,
-      "opened": 411,
-      "extracted": 410,
-      "completed": 411
+      "attempted": 480,
+      "opened": 480,
+      "extracted": 479,
+      "completed": 480
     }
   },
-  "article_texts_extracted": 461,
-  "article_details_completed": 462,
+  "article_texts_extracted": 530,
+  "article_details_completed": 531,
   "last_verified_post": {
-    "author": "圆桌会议",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164733&type=3",
-    "verified_at": "2026-10-27T12:46:20.032753+00:00",
-    "text_length": 53,
-    "text_sha256": "8f949539f4e53226655055f5013d2ec1ebf8a55ca1e8d152988fd2453b8b9515"
+    "author": "老六神算",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164608&type=3",
+    "verified_at": "2026-10-27T12:47:21.183198+00:00",
+    "text_length": 51,
+    "text_sha256": "d33c3bb363cd3242e8525903c567697c75857076335629f9f62fcb29f916bd54"
   },
   "last_attempted_post": {
-    "author": "六合诡码",
+    "author": "老六神算",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164732&type=3",
-    "attempt_index": 463
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11164608&type=3",
+    "attempt_index": 531
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 461,
-  "stage": "detail: 六合诡码 300期六肖",
-  "progress_updated_at": "2026-10-27T12:46:20.381030+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 530,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-27T12:47:21.859496+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
