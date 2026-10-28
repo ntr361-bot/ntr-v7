@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026301",
+  "state": "collecting_effectively",
+  "run_id": "40680277330",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40680277330",
+  "updated_at": "2026-10-28T11:35:01.822296+00:00",
+  "error": null,
+  "valid_materials": 55,
+  "valid_authors": 55,
+  "successful_post_opens": 329,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 447,
+      "attempted": 285,
+      "opened": 284,
+      "extracted": 283,
+      "completed": 284
+    }
+  },
+  "article_texts_extracted": 328,
+  "article_details_completed": 329,
+  "last_verified_post": {
+    "author": "我该如何存在",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11170448&type=3",
+    "verified_at": "2026-10-28T11:35:01.390362+00:00",
+    "text_length": 46,
+    "text_sha256": "1165a025bce95427ebc56d9c6c9990f321a28d94eb07240af7e3e14421615947"
+  },
+  "last_attempted_post": {
+    "author": "鹤归孤山",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11170447&type=3",
+    "attempt_index": 330
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-28T11:31:43.940598+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 328,
+  "stage": "detail: 鹤归孤山 301期琴棋书画肖，姐妹们，靠它好过靠男人",
+  "progress_updated_at": "2026-10-28T11:35:01.642924+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
