@@ -1,46 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026301",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "40680277330",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40680277330",
-  "updated_at": "2026-10-28T11:30:44.254545+00:00",
+  "updated_at": "2026-10-28T11:31:48.702317+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 10,
+  "valid_authors": 10,
+  "successful_post_opens": 53,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 447,
+      "attempted": 9,
+      "opened": 8,
+      "extracted": 8,
+      "completed": 8
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 53,
+  "article_details_completed": 53,
+  "last_verified_post": {
+    "author": "六公子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11174920&type=3",
+    "verified_at": "2026-10-28T11:31:48.213968+00:00",
+    "text_length": 262,
+    "text_sha256": "bf49340983fad43e0d91d49900477b2407ecee80a7f240778d1a60da469295e5"
+  },
+  "last_attempted_post": {
+    "author": "道人小炒肉",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11174889&type=3",
+    "attempt_index": 54
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-28T11:31:43.940598+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 71",
-  "progress_updated_at": "2026-10-28T11:30:44.041673+00:00",
+  "raw_count": 53,
+  "stage": "detail: 道人小炒肉 301",
+  "progress_updated_at": "2026-10-28T11:31:48.243622+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
