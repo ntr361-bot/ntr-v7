@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026301",
+  "state": "collecting_effectively",
+  "run_id": "40680277330",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40680277330",
+  "updated_at": "2026-10-28T11:32:53.208942+00:00",
+  "error": null,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 154,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 447,
+      "attempted": 110,
+      "opened": 109,
+      "extracted": 108,
+      "completed": 109
+    }
+  },
+  "article_texts_extracted": 153,
+  "article_details_completed": 154,
+  "last_verified_post": {
+    "author": "中发大大大大",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11172219&type=3",
+    "verified_at": "2026-10-28T11:32:52.744570+00:00",
+    "text_length": 164,
+    "text_sha256": "379af8fec3b1dfc03bb43337a0062642722c00bb78bb32e438f0735ed1bc3710"
+  },
+  "last_attempted_post": {
+    "author": "微笑美眉",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11172286&type=3",
+    "attempt_index": 155
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-28T11:31:43.940598+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 153,
+  "stage": "detail: 微笑美眉 301杀肖杀尾大围",
+  "progress_updated_at": "2026-10-28T11:32:52.941877+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
