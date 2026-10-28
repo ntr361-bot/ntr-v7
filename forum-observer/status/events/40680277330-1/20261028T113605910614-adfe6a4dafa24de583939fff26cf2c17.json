@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026301",
+  "state": "collecting_effectively",
+  "run_id": "40680277330",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40680277330",
+  "updated_at": "2026-10-28T11:36:05.910614+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 411,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 447,
+      "attempted": 367,
+      "opened": 366,
+      "extracted": 365,
+      "completed": 366
+    }
+  },
+  "article_texts_extracted": 410,
+  "article_details_completed": 411,
+  "last_verified_post": {
+    "author": "六叔他叔",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11170130&type=3",
+    "verified_at": "2026-10-28T11:36:05.168641+00:00",
+    "text_length": 65,
+    "text_sha256": "78c98d7a294a035f7209f82cbcba671151af00b152fc2c9028476a2b7c2d7fd0"
+  },
+  "last_attempted_post": {
+    "author": "风花雪月",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11170129&type=3",
+    "attempt_index": 412
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-28T11:31:43.940598+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 410,
+  "stage": "detail: 风花雪月 301期:四肖≦四肖≧",
+  "progress_updated_at": "2026-10-28T11:36:05.443043+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
