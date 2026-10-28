@@ -38,3 +38,7 @@
 ## 冻结前审查排除：不补采（2026-10-25用户决定）
 
 用户决定：每晚冻结前审查当晚草稿，发现违反上述规则而被计分的资料，直接排除，不重新采集，并在报告中说明。做法：21:00 前把要排除的资料写入 `issues/<期号>/pre-freeze-exclusions.json`（`python -m forum_observer.pre_freeze --archive <archive> --issue <期号> add ...`，可先用 `preview` 查看效果）。21:00 冻结时，finalizer 只移除这些资料，按第1–2条规则重新选材、按原计分规则重算排名，并把排除明细写入快照的 `pre_freeze_exclusions` 和本期报告。21:00 或开奖之后决定的条目一律不生效。审查只依据资料本身，严禁参考开奖结果。原草稿保留不改，计分规则与版本不变；需要改变玩法解释或计分规则的，仍须用户另行授权。
+
+## 118论坛模型「只用精华帖」影子榜：只记录观察（2026-10-28用户决定）
+
+用户决定：只为118论坛模型增加影子榜，49论坛模型不做。21:00 冻结写入正式快照的同时，用同一份草稿中的加精帖（is_featured=true），按完全相同的计分规则（第1–4条不变）重算排名，写入 `archive/issues/<期号>/featured-shadow.json`（只写一次，used_for_freeze=false）。开奖后用同一条已核实开奖结算到 `featured-shadow-settlement.json`，并在 `archive/featured-shadow-summary.json` 汇总与正式榜的命中对照。影子榜不影响正式冻结、结算、报告和账本；是否改为正式规则须用户另行决定。

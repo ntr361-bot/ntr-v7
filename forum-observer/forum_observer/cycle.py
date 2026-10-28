@@ -244,6 +244,11 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 core['frozen_at']=now.isoformat()
                 core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
                 write_once(folder/'snapshot.json',core)
+                if model_id=='forum-observer':
+                    # 118 only: featured-posts-only shadow board (user 2026-10-28).
+                    # Observation only; never used for freeze or settlement.
+                    from .featured_shadow import record_at_freeze
+                    record_at_freeze(folder,status,core['frozen_at'],write_once)
         # The human-readable report must explicitly say if the immutable
         # snapshot was frozen with fewer than 25 valid samples.
         saved_snapshot=folder/'snapshot.json'
@@ -317,6 +322,11 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 'top3_hit':zodiac in snap['top3'],
                 'top6_hit':zodiac in snap['top6'],
                 'classification':'experimental_unverified_leaderboard'})
+        if model_id=='forum-observer' and actual and actual.get('special_zodiac') in ZODIACS:
+            drawn=draw_time(actual)
+            if drawn is not None:
+                from .featured_shadow import settle as settle_shadow
+                settle_shadow(folder,actual['special_zodiac'],drawn,write_once)
         settlement=folder/'settlement.json'
         if settlement.exists():
             # Additive public fields so readers need not fetch every snapshot;
@@ -331,6 +341,9 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         'settlements':[{'issue':s['issue'],'rank':s['rank'],
                         'actual':s['actual'],'top3_hit':s['top3_hit'],'top6_hit':s['top6_hit']} for s in summary]})
     # Read-only, separately namespaced feed. No existing V7 prediction/history
+    if model_id=='forum-observer':
+        from .featured_shadow import summarize as summarize_shadow
+        summarize_shadow(archive,atomic)
     # paths are written. The frontend must distinguish drafts from snapshots.
     if public_dir is not None:
         public_dir=Path(public_dir)
