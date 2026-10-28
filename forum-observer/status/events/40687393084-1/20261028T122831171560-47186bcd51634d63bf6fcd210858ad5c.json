@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026301",
+  "state": "collecting_effectively",
+  "run_id": "40687393084",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40687393084",
+  "updated_at": "2026-10-28T12:28:31.171560+00:00",
+  "error": null,
+  "valid_materials": 43,
+  "valid_authors": 43,
+  "successful_post_opens": 236,
+  "article_details": {
+    "featured": {
+      "queued": 46,
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
+    },
+    "ordinary": {
+      "queued": 493,
+      "attempted": 191,
+      "opened": 190,
+      "extracted": 189,
+      "completed": 190
+    }
+  },
+  "article_texts_extracted": 235,
+  "article_details_completed": 236,
+  "last_verified_post": {
+    "author": "港澳牛总",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11169738&type=3",
+    "verified_at": "2026-10-28T12:28:30.901562+00:00",
+    "text_length": 66,
+    "text_sha256": "1ca7c48ecd10567d5418d1db0d0cb839344d1617c765477eecb536a7a8c5103d"
+  },
+  "last_attempted_post": {
+    "author": "刘哥博彩",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11170591&type=3",
+    "attempt_index": 237
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-28T12:26:29.518708+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 235,
+  "stage": "detail: 刘哥博彩 九肖中特",
+  "progress_updated_at": "2026-10-28T12:28:31.137846+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
