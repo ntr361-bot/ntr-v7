@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026302",
+  "state": "collecting_effectively",
+  "run_id": "40872958200",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40872958200",
+  "updated_at": "2026-10-29T12:30:17.049888+00:00",
+  "error": null,
+  "valid_materials": 54,
+  "valid_authors": 54,
+  "successful_post_opens": 333,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 460,
+      "attempted": 289,
+      "opened": 288,
+      "extracted": 288,
+      "completed": 288
+    }
+  },
+  "article_texts_extracted": 333,
+  "article_details_completed": 333,
+  "last_verified_post": {
+    "author": "月儿弯弯",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175767&type=3",
+    "verified_at": "2026-10-29T12:30:16.525411+00:00",
+    "text_length": 85,
+    "text_sha256": "fe54f2e15894c8efd8cdaa7560bb82330cf4a3838d69748592487f3b13cf2928"
+  },
+  "last_attempted_post": {
+    "author": "心软成患",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175766&type=3",
+    "attempt_index": 334
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-29T12:27:05.940191+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 333,
+  "stage": "detail: 心软成患 302期:平特①肖",
+  "progress_updated_at": "2026-10-29T12:30:16.729192+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
