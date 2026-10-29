@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026302",
+  "state": "collecting_effectively",
+  "run_id": "40872958200",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40872958200",
+  "updated_at": "2026-10-29T12:32:25.716114+00:00",
+  "error": null,
+  "valid_materials": 85,
+  "valid_authors": 85,
+  "successful_post_opens": 503,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 460,
+      "attempted": 459,
+      "opened": 458,
+      "extracted": 458,
+      "completed": 458
+    }
+  },
+  "article_texts_extracted": 503,
+  "article_details_completed": 503,
+  "last_verified_post": {
+    "author": "赌神之神",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175338&type=3",
+    "verified_at": "2026-10-29T12:32:25.367616+00:00",
+    "text_length": 475,
+    "text_sha256": "f8841438e0d0102183fbcc45e86d380b3b90f416889392a85a6912f1e48b4653"
+  },
+  "last_attempted_post": {
+    "author": "林家大少",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175473&type=3",
+    "attempt_index": 504
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-29T12:27:05.940191+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 503,
+  "stage": "detail: 林家大少 302",
+  "progress_updated_at": "2026-10-29T12:32:25.622328+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
