@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026302",
+  "state": "collecting_effectively",
+  "run_id": "40872958200",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/40872958200",
+  "updated_at": "2026-10-29T12:27:05.603006+00:00",
+  "error": null,
+  "valid_materials": 7,
+  "valid_authors": 7,
+  "successful_post_opens": 44,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 460,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 44,
+  "article_details_completed": 44,
+  "last_verified_post": {
+    "author": "投桃报李",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175384&type=3",
+    "verified_at": "2026-10-29T12:27:05.395915+00:00",
+    "text_length": 171,
+    "text_sha256": "81d3d82d2f62c9b3c47b7039513d7e1d9b9e6472cbd0b21301ca73cc2c817499"
+  },
+  "last_attempted_post": {
+    "author": "开花结果",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11175383&type=3",
+    "attempt_index": 45
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 44,
+  "stage": "detail: 开花结果 港澳任我发【平特三中二】",
+  "progress_updated_at": "2026-10-29T12:27:05.418581+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
