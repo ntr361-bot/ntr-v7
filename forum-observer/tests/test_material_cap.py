@@ -22,8 +22,20 @@ def counted(mats):
 
 
 class MaterialCap(unittest.TestCase):
-    def test_forum49_formal_cap_is_100(self):
+    def test_forum49_cap_is_shadow_only(self):
+        # User 2026-10-29: formal stays uncapped; cap 100 recorded as shadow.
+        self.assertIsNone(forum49.FORMAL_MATERIAL_CAP)
         self.assertEqual(forum49.MATERIAL_CAP, 100)
+
+    def test_cap_shadow_observation_never_used_for_freeze(self):
+        posts = [post(1, featured=True)] + [post(i, clicks=i) for i in range(2, 6)]
+        ranking, mats = score_posts([dict(p) for p in posts], False)
+        result = {'evidence': posts, 'ranking': ranking, 'parsed_predictions': mats}
+        shadow = forum49.cap_shadow_observation(result, cap=3)
+        self.assertFalse(shadow['used_for_freeze'])
+        self.assertEqual(shadow['valid_materials'], 3)
+        self.assertEqual(shadow['cut_materials'], 2)
+        self.assertEqual(sum(m['counted_for_ranking'] for m in mats), 5)  # formal untouched
 
     def test_featured_all_then_ordinary_by_clicks(self):
         posts = [post(1, featured=True), post(2, featured=True),

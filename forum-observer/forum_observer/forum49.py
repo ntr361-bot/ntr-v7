@@ -43,12 +43,13 @@ SHADOW_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10}
 # strict-rule shadow score (strict_shadow) for comparison. Never used for freeze.
 STRICT_ISSUE_LINES = False
 STRICT_SHADOW = True
-# User decision 2026-10-29 (from issue 303): formal scoring keeps every
-# featured (加精) material and fills up with ordinary-post materials by card
-# click count to 100 valid materials in total; if featured materials alone
-# exceed 100, all of them count and no ordinary material is kept.
-# See page_collector.apply_material_cap. Collection itself stays full.
+# User decision 2026-10-29: a 100-material cap (every featured author, then
+# ordinary-only authors by card click count; see page_collector.
+# apply_material_cap) is recorded as a SHADOW observation only (cap_shadow,
+# used_for_freeze=false). Formal collection, scoring and freeze stay uncapped
+# until the user decides after comparing enough settled issues.
 MATERIAL_CAP = 100
+FORMAL_MATERIAL_CAP = None
 
 
 def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
@@ -56,7 +57,7 @@ def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
     from .page_collector import apply_collection_scope, score_posts
     posts = [dict(p) for p in (result.get('evidence') or [])]
     kept, audit = apply_collection_scope(posts, scope)
-    ranking, mats = score_posts([dict(p) for p in kept], STRICT_ISSUE_LINES, MATERIAL_CAP)
+    ranking, mats = score_posts([dict(p) for p in kept], STRICT_ISSUE_LINES, FORMAL_MATERIAL_CAP)
     counted = [m for m in mats if m.get('counted_for_ranking')]
     return {
         'scope': dict(scope), 'used_for_freeze': False,
@@ -73,7 +74,7 @@ def strict_shadow_observation(result: dict) -> dict:
     """Re-score the same posts under the strict issue-line rule (test mode only)."""
     from .page_collector import score_posts
     posts = [dict(p) for p in (result.get('evidence') or [])]
-    ranking, mats = score_posts(posts, True, MATERIAL_CAP)
+    ranking, mats = score_posts(posts, True, FORMAL_MATERIAL_CAP)
     counted = [m for m in mats if m.get('counted_for_ranking')]
     formal = {m.get('author'): m for m in (result.get('parsed_predictions') or [])
               if m.get('counted_for_ranking')}
@@ -97,6 +98,25 @@ def strict_shadow_observation(result: dict) -> dict:
             'author': m.get('author'), 'play': m.get('play'), 'mode': m.get('mode'),
             'picks': m.get('picks'), 'source_url': m.get('source_url'),
             'issue_line_check': m.get('issue_line_check')} for m in counted],
+    }
+
+
+def cap_shadow_observation(result: dict, cap: int = MATERIAL_CAP) -> dict:
+    """Re-score the same posts with the 100-material cap (observation only)."""
+    from .page_collector import score_posts, MATERIAL_CAP_REASON
+    posts = [dict(p) for p in (result.get('evidence') or [])]
+    ranking, mats = score_posts(posts, STRICT_ISSUE_LINES, cap)
+    counted = [m for m in mats if m.get('counted_for_ranking')]
+    formal_top6 = [r['zodiac'] for r in (result.get('ranking') or [])[:6]]
+    return {
+        'rule': 'material_cap_featured_all_then_ordinary_by_clicks', 'material_cap': cap,
+        'used_for_freeze': False,
+        'valid_materials': len(counted),
+        'cut_materials': sum(1 for m in mats if m.get('exclusion_reason') == MATERIAL_CAP_REASON),
+        'material_counts': material_counts(mats),
+        'top6': [r['zodiac'] for r in ranking[:6]],
+        'formal_top6': formal_top6,
+        'ranking': [[r['zodiac'], r.get('score')] for r in ranking],
     }
 
 
@@ -156,7 +176,7 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
                daily_profile_authors=0, collection_mode='current_feed',
-               strict_issue_lines=STRICT_ISSUE_LINES, material_cap=MATERIAL_CAP)
+               strict_issue_lines=STRICT_ISSUE_LINES, material_cap=FORMAL_MATERIAL_CAP)
     from zoneinfo import ZoneInfo
     now_local = datetime.now(ZoneInfo('Asia/Shanghai'))
     started = datetime.now(timezone.utc)
@@ -177,6 +197,10 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
             record['shadow_scope'] = shadow_observation(result)
         except Exception as exc:
             record['shadow_scope'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
+        try:  # observation only (user 2026-10-29); never affects the formal record
+            record['cap_shadow'] = cap_shadow_observation(result)
+        except Exception as exc:
+            record['cap_shadow'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
         if STRICT_SHADOW:
             try:  # test mode; a failure here never affects the formal record
                 record['strict_shadow'] = strict_shadow_observation(result)
