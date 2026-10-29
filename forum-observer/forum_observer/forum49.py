@@ -43,6 +43,12 @@ SHADOW_SCOPE = {'ordinary_min_clicks': 300, 'ordinary_min_likes': 10}
 # strict-rule shadow score (strict_shadow) for comparison. Never used for freeze.
 STRICT_ISSUE_LINES = False
 STRICT_SHADOW = True
+# User decision 2026-10-29 (from issue 303): formal scoring keeps every
+# featured (加精) material and fills up with ordinary-post materials by card
+# click count to 100 valid materials in total; if featured materials alone
+# exceed 100, all of them count and no ordinary material is kept.
+# See page_collector.apply_material_cap. Collection itself stays full.
+MATERIAL_CAP = 100
 
 
 def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
@@ -50,7 +56,7 @@ def shadow_observation(result: dict, scope: dict = SHADOW_SCOPE) -> dict:
     from .page_collector import apply_collection_scope, score_posts
     posts = [dict(p) for p in (result.get('evidence') or [])]
     kept, audit = apply_collection_scope(posts, scope)
-    ranking, mats = score_posts([dict(p) for p in kept], STRICT_ISSUE_LINES)
+    ranking, mats = score_posts([dict(p) for p in kept], STRICT_ISSUE_LINES, MATERIAL_CAP)
     counted = [m for m in mats if m.get('counted_for_ranking')]
     return {
         'scope': dict(scope), 'used_for_freeze': False,
@@ -67,7 +73,7 @@ def strict_shadow_observation(result: dict) -> dict:
     """Re-score the same posts under the strict issue-line rule (test mode only)."""
     from .page_collector import score_posts
     posts = [dict(p) for p in (result.get('evidence') or [])]
-    ranking, mats = score_posts(posts, True)
+    ranking, mats = score_posts(posts, True, MATERIAL_CAP)
     counted = [m for m in mats if m.get('counted_for_ranking')]
     formal = {m.get('author'): m for m in (result.get('parsed_predictions') or [])
               if m.get('counted_for_ranking')}
@@ -150,7 +156,7 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     cfg = json.loads(Path(config_path).read_text(encoding='utf-8'))
     cfg.update(max_posts=MAX_POSTS, max_pages=50, freeze_enabled=False,
                daily_profile_authors=0, collection_mode='current_feed',
-               strict_issue_lines=STRICT_ISSUE_LINES)
+               strict_issue_lines=STRICT_ISSUE_LINES, material_cap=MATERIAL_CAP)
     from zoneinfo import ZoneInfo
     now_local = datetime.now(ZoneInfo('Asia/Shanghai'))
     started = datetime.now(timezone.utc)

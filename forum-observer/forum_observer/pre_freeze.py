@@ -129,6 +129,22 @@ def apply(status, spec):
             row.update(counted_for_ranking=True, exclusion_reason=None,
                        vote_zodiacs=picks, weight_per_zodiac=1.0 / len(picks))
     admit_one_material_per_author(rows)
+    cap = status.get('material_cap')
+    if cap:
+        # 49论坛模型 cap (user 2026-10-29): exclusions free room, so ordinary
+        # materials cut only by the cap are re-offered and the same outcome-blind
+        # click-order cap is applied again.
+        from .page_collector import MATERIAL_CAP_REASON, apply_material_cap
+        for row in rows:
+            if row.get('exclusion_reason') == MATERIAL_CAP_REASON and _key(row) not in excluded_keys:
+                try:
+                    picks = vote_zodiacs(row['picks'], row['mode'], row.get('play', ''), row.get('excerpt', ''))
+                except (ValueError, KeyError, TypeError):
+                    continue
+                row.update(counted_for_ranking=True, exclusion_reason=None,
+                           vote_zodiacs=picks, weight_per_zodiac=1.0 / len(picks))
+        admit_one_material_per_author(rows)
+        apply_material_cap(rows, status.get('evidence') or [], cap)
     counted = [r for r in rows if r.get('counted_for_ranking')]
     ranking = _rank(rows) if counted else []
     minimum = int(status.get('author_selection', {}).get('min_valid_materials', 25))

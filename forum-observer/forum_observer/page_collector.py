@@ -1113,7 +1113,46 @@ def previous_period_records(text,requested_issue,post):
     return records
 
 
-def score_posts(posts,strict_issue_lines=False):
+MATERIAL_CAP_REASON='outside material cap: featured all, ordinary by clicks'
+_ADMISSION_REASONS=('superseded_by_same_author_higher_priority',
+                    'duplicate author/equal priority earlier source')
+
+
+def apply_material_cap(picks, posts, cap):
+    """49论坛模型 (user 2026-10-29, from issue 303): every author with a valid
+    material from a featured (加精) post is admitted; authors with only
+    ordinary-post materials fill up to `cap` valid materials in total, ordered
+    by the card click count of their admitted material's post (then likes,
+    earliest publication, source URL) - never by draw results. If featured
+    authors alone reach the cap, no ordinary-only author is admitted.
+    Runs after one-author admission, so each author still counts with the
+    single material chosen by rules 1-2. Returns an audit dict."""
+    if not cap:
+        return None
+    cap=int(cap)
+    post_by=dict((x.get('detail_url'),x) for x in posts)
+    def card(r):
+        return post_by.get(r.get('source_url')) or {}
+    def author_key(r):
+        return (str(r.get('issue','')).strip(),str(r.get('author','')).strip().casefold())
+    secured=set(author_key(r) for r in picks
+                if card(r).get('is_featured') is True
+                and (r.get('counted_for_ranking') or r.get('exclusion_reason') in _ADMISSION_REASONS))
+    counted=[r for r in picks if r.get('counted_for_ranking')]
+    featured_side=[r for r in counted if author_key(r) in secured]
+    ordinary=sorted([r for r in counted if author_key(r) not in secured],key=lambda r:(
+        -(card(r).get('click_count') or 0),-(card(r).get('like_count') or 0),
+        str(r.get('published_at') or '9999'),str(r.get('source_url') or '')))
+    room=max(0,cap-len(featured_side))
+    for r in ordinary[room:]:
+        r.update(counted_for_ranking=False,exclusion_reason=MATERIAL_CAP_REASON,
+                 vote_zodiacs=[],weight_per_zodiac=0.0)
+    return {'rule':'featured_authors_all_then_ordinary_by_clicks','material_cap':cap,
+            'featured_authors':len(featured_side),'ordinary_found':len(ordinary),
+            'ordinary_kept':min(room,len(ordinary)),'ordinary_cut':max(0,len(ordinary)-room)}
+
+
+def score_posts(posts,strict_issue_lines=False,material_cap=None):
     """strict_issue_lines (49论坛模型 only; 118 keeps the default False):
     every candidate's own line or section heading must name exactly the
     current issue; see issue_lines."""
@@ -1183,6 +1222,7 @@ def score_posts(posts,strict_issue_lines=False):
     # Exact user rule: one author / one issue / one adopted material.
     # Verified alternatives are compared by a frozen, outcome-blind priority.
     admit_one_material_per_author(picks)
+    apply_material_cap(picks,posts,material_cap)
     votes={z:0.0 for z in ZODIACS}
     for p in picks:
         if p['counted_for_ranking']:
@@ -1244,7 +1284,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     issue=target_issue
     listing_candidates=[]
     def checkpoint(stage):
-        ranking,predictions=score_posts(posts,strict_issue_lines)
+        ranking,predictions=score_posts(posts,strict_issue_lines,policy.get('material_cap'))
         progress={'scoring_rule_version':SCORING_RULE_VERSION,'scoring_rules':SCORING_RULES,
                   'material_counts':material_counts(predictions),'issue':issue,'status':'incomplete_observation',
                   'stage':stage,'fetched_at':datetime.now(timezone.utc).isoformat(),
@@ -1558,7 +1598,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
         if key not in history_seen:
             history_seen.add(key);deduped.append(record)
     historical_references=deduped
-    ranking,predictions=score_posts(posts,strict_issue_lines)
+    ranking,predictions=score_posts(posts,strict_issue_lines,policy.get('material_cap'))
     candidates=set(policy.get('top_authors',[]))
     top_found=sorted({p['author'] for p in posts if p['author'] in candidates})
     other_found=sorted({p['author'] for p in posts if p['author'] not in candidates})
@@ -1592,6 +1632,8 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
         feed_mode or (not errors and not truncated and not profile_incomplete))
     result={'issue':issue,'status':'ready_observation' if ready else 'incomplete_observation',
             'collection_priority':'featured_article_before_ordinary_then_favored_author',
+            'material_cap':policy.get('material_cap'),
+            'material_cap_cut':sum(1 for x in predictions if x.get('exclusion_reason')==MATERIAL_CAP_REASON),
             'source_url':url,'collector':'rendered-dom',
             'draw_at':draw_at.isoformat(),'pre_draw_verified':pre_draw,
             'evidence_scope':'post_article',
