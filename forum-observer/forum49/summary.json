@@ -1,7 +1,7 @@
 {
-  "settled_count": 7,
-  "top3_hits": 1,
-  "top6_hits": 4,
+  "settled_count": 8,
+  "top3_hits": 2,
+  "top6_hits": 5,
   "settlements": [
     {
       "issue": "2026295",
@@ -51,6 +51,13 @@
       "actual": "虎",
       "top3_hit": false,
       "top6_hit": false
+    },
+    {
+      "issue": "2026302",
+      "rank": 3,
+      "actual": "狗",
+      "top3_hit": true,
+      "top6_hit": true
     }
   ]
 }
