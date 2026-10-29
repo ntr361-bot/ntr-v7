@@ -15,7 +15,7 @@ def _literal_sequence(source, label):
     at = source.find(label)
     if at < 0:
         return []
-    tail = source[at + len(label):].lstrip(" \t:：=【[（(")
+    tail = source[at + len(label):].lstrip(" \t:：=【[（(〖《｛{")
     result = []
     started = False
     for ch in tail:
@@ -36,6 +36,15 @@ def audit_material(row, evidence_text):
     excerpt = str(row.get("excerpt", ""))
     if not picks or len(picks) != len(set(picks)) or any(z not in ZODIACS for z in picks):
         return "audit: invalid or duplicated zodiac picks"
+    if play == "杀（期杀。固定格式）":
+        raw = str(row.get("raw_expression", ""))
+        m = re.search(r"期\s*杀\s*。\s*([鼠牛虎兔龙蛇马羊猴鸡狗猪]+)\s*。", raw)
+        if not raw or raw not in excerpt or not m or list(m.group(1)) != picks:
+            return "audit: period-dot kill disagrees with source"
+    if play.startswith("推荐（标题肖中特"):
+        raw = str(row.get("raw_expression", ""))
+        if not raw or raw not in excerpt or [z for z in raw if z in ZODIACS] != picks or len(picks) < 6:
+            return "audit: titled bare list disagrees with source"
     if "胆大" in excerpt or "胆小" in excerpt or "胆大" in play or "胆小" in play:
         if play not in ("六肖（胆大）", "六肖（胆小）"):
             return "audit: unverified big/small direction"
@@ -126,6 +135,24 @@ def audit_material(row, evidence_text):
             return "audit: unclear complementary group selection"
         if picks != defs[label]:
             return "audit: selected group does not match picks"
+    elif play == "八肖（三色组合）":
+        # Re-derive independently: one "红蓝绿肖【XY肖】" choice and three
+        # four-zodiac colour legends that together cover all twelve.
+        expression = str(row.get("raw_expression", ""))
+        if not expression or expression not in excerpt:
+            return "audit: missing colour-group expression"
+        m = re.search(r"红蓝绿肖\s*【\s*([红蓝绿])\s*([红蓝绿])\s*肖\s*】", expression)
+        if not m or m.group(1) == m.group(2):
+            return "audit: invalid colour-group choice"
+        defs = {}
+        for colour, raw in re.findall(r"([红蓝绿])肖\s*[:：]\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][\s、，,]*){4})(?![鼠牛虎兔龙蛇马羊猴鸡狗猪])", excerpt):
+            defs.setdefault(colour, []).append([z for z in raw if z in ZODIACS])
+        if set(defs) != {"红", "蓝", "绿"} or any(len(v) != 1 or len(set(v[0])) != 4 for v in defs.values()):
+            return "audit: missing or duplicate colour legend"
+        if len({z for v in defs.values() for z in v[0]}) != 12:
+            return "audit: colour legends do not partition all zodiacs"
+        if picks != defs[m.group(1)][0] + defs[m.group(2)][0]:
+            return "audit: colour-group vote does not match literal article"
     elif play == "🔪杀肖":
         m=re.search(r"🔪\s*((?:[鼠牛虎兔龙蛇马羊猴鸡狗猪][ \t、，,]*){1,12})",excerpt)
         if not m or [z for z in m.group(1) if z in ZODIACS]!=picks:

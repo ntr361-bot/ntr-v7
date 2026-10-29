@@ -22,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-15-one-author-9-8-7-6-priority-v8'
+SCORING_RULE_VERSION = '2026-10-29-one-author-9-8-7-6-priority-v9'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -33,12 +33,27 @@ SCORING_RULES = {
     'max_materials_per_author_per_issue': 1,
     'independent_text_audit': True,
     'named_group_plus_two': 'same_article_verified_six_plus_two',
+    'colour_group_two_of_three': 'same_article_verified_three_colour_legend_two_chosen',
+    'result_placeholder_is_not_uncertainty': True,
     'kill_zodiac_max_count': 6,
     'one_author_play_priority': 'nine_eight_seven_six_other_recommendation_then_valid_kill',
     'same_priority_tiebreak': 'earliest_source_published_at_then_stable_source_identity',
     'uncertain_materials': 'excluded',
     'author_ratio': None,
 }
+
+
+_CN_COUNT={'一':1,'壹':1,'二':2,'两':2,'贰':2,'三':3,'叁':3,'四':4,'肆':4,'五':5,'伍':5,
+           '六':6,'陆':6,'七':7,'柒':7,'八':8,'捌':8,'九':9,'玖':9,'十':10,'拾':10}
+
+
+def declared_zodiac_count(play):
+    """Count written in the play label ("六肖", "杀两肖", "杀２肖"), else None."""
+    m=re.search(r'([一壹二两贰三叁四肆五伍六陆七柒八捌九玖十拾]|\d{1,2})肖',str(play))
+    if not m:
+        return None
+    label=m.group(1)
+    return int(label) if label.isdigit() else _CN_COUNT[label]
 
 
 def vote_zodiacs(picks, mode, play='', evidence=''):
@@ -52,18 +67,18 @@ def vote_zodiacs(picks, mode, play='', evidence=''):
             raise ValueError('kill more than six zodiacs is not eligible')
         if re.search(r'(?:杀|排除)[^\n:：]*?(?:码|号码|尾|头|波)', play):
             raise ValueError('kill numbers are not kill zodiacs')
+        expected=declared_zodiac_count(play)
+        if expected is not None and expected!=len(picks):
+            raise ValueError('declared zodiac count does not match picks')
         picks = [z for z in ZODIACS if z not in picks]
         if not picks:
             raise ValueError('no remaining zodiac')
     elif mode == 'include':
         if len(picks) < 6:
             raise ValueError('recommendation requires at least 6 distinct zodiacs')
-        count=re.search(r'([一二三四五六七八九十]|\d{1,2})肖',play)
-        if count:
-            label=count.group(1)
-            expected=int(label) if label.isdigit() else '一二三四五六七八九十'.index(label)+1
-            if expected!=len(picks):
-                raise ValueError('declared zodiac count does not match picks')
+        expected=declared_zodiac_count(play)
+        if expected is not None and expected!=len(picks):
+            raise ValueError('declared zodiac count does not match picks')
     else:
         raise ValueError('unknown or unverified mode')
     return picks

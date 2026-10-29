@@ -98,9 +98,180 @@ def _ocr_image(src: str, psm=None) -> str:
 
 LOCAL_TZ=ZoneInfo("Asia/Shanghai")
 ZODIAC_CLASS=''.join(ZODIACS)
-PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓]*\s*[:：=\-、【】〔〕(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
+# 2026-10-29 用户授权：两/壹 等中文数字、全角括号与箭头（《》〖〗｛｝→－）视为同一写法，不改变计分含义。
+COUNT_CLASS='一二两三四五六七八九十壹贰叁肆伍陆柒捌玖拾\\d'
+PICK_PATTERN=re.compile(r'(?P<play>(?:绝)?杀['+COUNT_CLASS+r']{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:['+COUNT_CLASS+r']{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓→]*\s*[:：=\-－—、【】〔〕〖〗《》｛｝{}(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
 UNCERTAIN_PATTERN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
-BARE_KILL_PATTERN=re.compile(r'(?:(?<![\u4e00-\u9fff])|(?<=期))(?P<play>杀)\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
+BARE_KILL_PATTERN=re.compile(r'(?:(?<![一-鿿])|(?<=期)|(?<=绝)|(?<=精)|(?<=稳))(?P<play>杀)\s*[:：]?\s*[【〖《(（｛{\[]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
+# Unfilled result placeholder ending a current-issue line: "开:？00准" "开：？🀄️"
+# "開？00准" "开：00✅" "开:0000准" "开:？00准杀庄必备". Its "？" means the
+# result is not drawn yet, not doubt about the prediction (user 2026-10-29).
+RESULT_PLACEHOLDER=re.compile(r'[开開]\s*[:：]?\s*[《【(（〖]?\s*(?:[?？]+\s*0*|0{2,}(?:\s*[-.]\s*0{2,})?)\s*[》】)）〗]?[^'+ZODIAC_CLASS+r'?？\n]*$')
+# Zodiac emoji written right after 杀 ("302期:杀🐯🐎开"), user 2026-10-29.
+ZODIAC_EMOJI={'🐭':'鼠','🐀':'鼠','🐮':'牛','🐂':'牛','🐃':'牛','🐄':'牛','🐯':'虎','🐅':'虎',
+              '🐰':'兔','🐇':'兔','🐲':'龙','🐉':'龙','🐍':'蛇','🐎':'马','🐴':'马','🐑':'羊',
+              '🐐':'羊','🐏':'羊','🐒':'猴','🐵':'猴','🐔':'鸡','🐓':'鸡','🐶':'狗','🐕':'狗',
+              '🐷':'猪','🐖':'猪'}
+_EMOJI_KILL=re.compile('杀((?:['+''.join(ZODIAC_EMOJI)+ZODIAC_CLASS+'][️ \t、，,]*)+)')
+COLOR_LEGEND=re.compile(r'([红蓝绿])肖\s*[:：]\s*((?:['+ZODIAC_CLASS+r'][\s、，,]*){4})(?!['+ZODIAC_CLASS+r'])')
+COLOR_SELECTION=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*[:：]?\s*红蓝绿肖\s*【\s*([红蓝绿])\s*([红蓝绿])\s*肖\s*】')
+
+
+_LEAD_ISSUE=re.compile(r'^\s*[^\d\n]{0,3}?(20\d{5}|\d{3}(?!\d)|\d{1,2}(?=\s*期))')
+
+
+def line_issue_guard(excerpt, issue):
+    """Fail closed when the source line names another issue ("296绝杀二肖
+    《兔马》√" inside a 299 post) or already shows a drawn result ("开猪08✅"):
+    neither is this issue's pre-draw prediction (2026-10-29)."""
+    # The excerpt may be "heading | line"; judge the piece holding the picks.
+    pieces=str(excerpt).split(' | ')
+    line=max(pieces,key=lambda x:sum(c in ZODIACS for c in x))
+    m=_LEAD_ISSUE.match(line)
+    if m and m.group(1) not in (str(issue),str(issue)[-3:]):
+        return 'source line names another issue'
+    # A real result is a zodiac plus its number ("开猪08"); "开：虎XX" is a placeholder.
+    if re.search(r'[开開]\s*[:：]?\s*['+ZODIAC_CLASS+r']\s*\d{1,2}',line):
+        return 'source line already shows a drawn result'
+    return None
+
+
+_BARE_LIST=re.compile(r'^\s*(?:第\s*)?(?:20\d{5}|\d{3})\s*期\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6,12})(?:[开開].*)?$')
+
+
+def extract_titled_bare_list(text, title):
+    """User 2026-10-29: in a post titled "N肖中特", a current-issue line that
+    lists only zodiacs ("302期:龙猪牛兔羊狗猴开") is a recommendation of the
+    zodiacs actually listed; with six or more it is usable even if the title's
+    N differs. Lines with 杀/禁/防 or a filled result are not this play."""
+    if not re.search(r'(?:['+COUNT_CLASS+r']{1,2})肖中特',str(title)):
+        return []
+    rows=[]
+    for line in str(text).splitlines():
+        m=_BARE_LIST.match(line)
+        if not m or re.search(r'杀|禁|防|🈲',line):
+            continue
+        picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
+        certainty=RESULT_PLACEHOLDER.sub('',line)
+        uncertain=UNCERTAIN_PATTERN.search(certainty) or '?' in certainty or '？' in certainty
+        rows.append({'play':'推荐（标题肖中特，按实列%d肖）'%len(picks),'picks':picks,
+                     'mode':'unverified' if uncertain else 'include','excerpt':line[:450],
+                     'raw_expression':m.group('picks').strip()})
+    return rows
+
+
+# Frozen pre-2026-10-29 generic recogniser. Rows it already produced keep their
+# old behaviour; only rows recognised *because of* the 2026-10-29 rules get the
+# extra fail-closed checks below (formal issue-line strictness stays a separate
+# user decision, see AGENTS.md 2026-10-25).
+_LEGACY_PICK=re.compile(r'(?P<play>(?:绝)?杀[一二三四五六七八九十\d]{1,2}(?:码|号码)|(?:精选|推荐|主推|心水|看好|必出|重点|排除|杀)?(?:[一二三四五六七八九十\d]{1,2}肖|生肖|特肖|杀肖|红肖|蓝肖)(?:中特|必中|中)?)\s*[↑↓]*\s*[:：=\-、【】〔〕(（）\[\]]*\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][\s、，,/|+.\-]*){1,12})')
+_LEGACY_UNCERTAIN=re.compile(r'不确定|未确定|不明确|待确认|待核实|可能|或许|疑似|是否|不知|看不清|仅供猜测|不是|并非|不杀|不推荐|取消|作废|尽中尽|固定杀肖|混合杀肖|杀肖次数')
+_LEGACY_BARE=re.compile(r'(?:(?<![\u4e00-\u9fff])|(?<=期))(?P<play>杀)\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){1,12})(?!['+ZODIAC_CLASS+r'])')
+_LEGACY_CERTAINTY=re.compile(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$')
+
+
+def legacy_candidate_keys(text):
+    rows=(extract_front_back_eight(str(text))+extract_named_group_plus_two(str(text))
+          +extract_big_small(str(text))+extract_confirmed(str(text)))
+    for line in str(text).splitlines():
+        if re.search(r'胆[大小](?:生肖|肖)|胆大胆小|单肖\s*[:：]|双肖\s*[:：]|灭庄', line):
+            continue
+        certainty_line=_LEGACY_CERTAINTY.sub('',line)
+        for m in sorted(list(_LEGACY_PICK.finditer(line))+list(_LEGACY_BARE.finditer(line)),key=lambda m:m.start()):
+            if m.start() and line[m.start()-1] in '前后':continue
+            play=m.group('play')
+            picks=list(dict.fromkeys(c for c in m.group('picks') if c in ZODIACS))
+            if not picks:continue
+            mode=('unverified' if _LEGACY_UNCERTAIN.search(certainty_line) or '?' in certainty_line or '？' in certainty_line else
+                  'color_unverified' if '红肖' in play or '蓝肖' in play else
+                  'exclude' if '杀' in play or '排除' in play else 'include')
+            rows.append({'play':play,'picks':picks,'mode':mode,'excerpt':line[:450]})
+    rows=_resolve_partition_groups(rows,str(text))
+    return {(r['mode'],tuple(r['picks'])) for r in rows if not r.get('parse_error')}
+
+
+def new_rule_guard(row, issue):
+    """Fail-closed checks for rows recognised only under the 2026-10-29 rules."""
+    reason=line_issue_guard(row.get('excerpt',''),issue)
+    if reason:
+        return reason
+    pieces=str(row.get('excerpt','')).split(' | ')
+    lead=max(pieces,key=lambda x:sum(c in ZODIACS for c in x))
+    if '🈲' in lead:
+        return 'mixed kill/ban markers'
+    if row.get('mode')=='include' and re.search(r'防\s*[《【(（〖]?\s*['+ZODIAC_CLASS+r']',lead):
+        return 'hedge zodiac makes the selection ambiguous'
+    if re.search(r'杀\s*[(（【〖《｛{]\s*['+ZODIAC_CLASS+r' 、，,]+[)）】〗》｝}]\s*[(（【〖《｛{]\s*['+ZODIAC_CLASS+r']',lead):
+        return 'kill list split across brackets'
+    if re.search(r'应该',lead):
+        return 'uncertain wording'
+    return None
+
+
+_PERIOD_KILL=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*杀\s*。\s*(?P<picks>['+ZODIAC_CLASS+r']{1,12})\s*。')
+
+
+def extract_period_dot_kill(text):
+    """User 2026-10-29 (乐享天下 fixed format): "302期杀。马蛇兔虎猴龙。牛猪个人不要。
+    杀火行。" kills exactly the first zodiac run after "期杀。"; the later
+    "X个人不要" and "杀X行" are not part of it. More than six is invalid (rule 3)."""
+    rows=[]
+    for line in str(text).splitlines():
+        for m in _PERIOD_KILL.finditer(line):
+            picks=list(dict.fromkeys(m.group('picks')))
+            rows.append({'play':'杀（期杀。固定格式）','picks':picks,'mode':'exclude',
+                         'excerpt':line[:450],'raw_expression':m.group(0)})
+    return rows
+
+
+def normalize_kill_emoji(text):
+    """Map zodiac emoji to characters only inside a 杀 run; other text unchanged."""
+    def repl(m):
+        out=[]
+        for ch in m.group(1).replace('\ufe0f',''):
+            z=ZODIAC_EMOJI.get(ch)
+            if z is None:
+                out.append(ch)
+            elif z not in out:  # "杀鸡🐔": the emoji only annotates 鸡
+                out.append(z)
+        return '杀'+''.join(out)
+    return _EMOJI_KILL.sub(repl,str(text))
+
+
+def extract_color_groups(text):
+    """三色生肖: 红/蓝/绿肖 legends (4 each, together all 12) plus one explicit
+    current-issue choice such as "302期:红蓝绿肖【蓝红肖】" count as the 8 zodiacs
+    of the two chosen colours (user authorised 2026-10-29). Missing or
+    duplicate legends, or zero/several/one-colour choices are not countable."""
+    text=str(text)
+    selections=list(COLOR_SELECTION.finditer(text))
+    if not selections:
+        return []
+    legends={}
+    for m in COLOR_LEGEND.finditer(text):
+        legends.setdefault(m.group(1),[]).append([z for z in m.group(2) if z in ZODIACS])
+    sel=selections[0]
+    first,second=sel.group(1),sel.group(2)
+    error=None
+    if len(selections)!=1:
+        error='ambiguous colour-group selection'
+    elif first==second:
+        error='colour-group selection repeats one colour'
+    elif set(legends)!={'红','蓝','绿'} or any(len(v)!=1 or len(set(v[0]))!=4 for v in legends.values()):
+        error='missing or duplicate colour-group legend'
+    elif len({z for v in legends.values() for z in v[0]})!=12:
+        error='colour groups do not partition all zodiacs'
+    start=text.rfind('\n',0,sel.start())+1
+    end=text.find('\n',sel.end())
+    selection=text[start:end if end>=0 else None].strip()
+    legend_text=' '.join(c+'肖：'+''.join(legends[c][0]) for c in '红蓝绿' if len(legends.get(c,[]))==1)
+    certainty=RESULT_PLACEHOLDER.sub('',selection)
+    uncertain=bool(UNCERTAIN_PATTERN.search(certainty) or '?' in certainty or '？' in certainty)
+    picks=[] if error else list(dict.fromkeys(legends[first][0]+legends[second][0]))
+    return [{'play':'八肖（三色组合）','picks':picks,
+             'mode':'unverified' if (error or uncertain) else 'include',
+             'excerpt':(selection+' | '+legend_text)[:450],'raw_expression':sel.group(0),
+             'parse_error':error or ('uncertain colour-group selection' if uncertain else None)}]
 BIG_SMALL_GROUP=re.compile(r'胆(?P<group>大|小)(?:生肖|肖)\s*[:：=]\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6})(?!['+ZODIAC_CLASS+r'])')
 BIG_SMALL_CHOICE=re.compile(r'(?:20\d{5}|\d{3})\s*期\s*胆大小肖\s*[:：]\s*胆(?P<group>大|小)生肖(?=\s*开|[\s，。,])')
 HOSTS={'jmz.chunshengsh.com','x5k1pok.11852.com'}
@@ -610,12 +781,14 @@ def extract_picks(text):
     output=(extract_front_back_eight(str(text))
             +extract_named_group_plus_two(str(text))
             +extract_big_small(str(text))
-            +extract_confirmed(str(text)))
+            +extract_confirmed(str(text))
+            +extract_color_groups(str(text))
+            +extract_period_dot_kill(str(text)))
     for line in str(text).splitlines():
         # Choice/legend needs article-level direction, never generic "生肖" parsing.
         if re.search(r'胆[大小](?:生肖|肖)|胆大胆小|单肖\s*[:：]|双肖\s*[:：]|灭庄', line):
             continue
-        certainty_line=re.sub(r'开\s*[:：]?\s*[《【(（]?\s*(?:[?？]+\s*(?:00)?|00)\s*[》】)）]?\s*(?:准|中|对)?\s*$', '',line)
+        certainty_line=RESULT_PLACEHOLDER.sub('',line)
         matches=list(PICK_PATTERN.finditer(line))+list(BARE_KILL_PATTERN.finditer(line))
         for m in sorted(matches,key=lambda m:m.start()):
             # Front/back group definitions are legends, not six-zodiac tips.
@@ -947,32 +1120,42 @@ def score_posts(posts,strict_issue_lines=False):
     picks=[]
     for post in posts:
         # Reply text is saved as evidence, but must not be attributed to OP.
-        raw_body=post['body']
-        raw_replies=_author_comments(post.get('comments',''),post['author'])
+        legacy_body=post['body']
+        legacy_replies=_author_comments(post.get('comments',''),post['author'])
+        raw_body=normalize_kill_emoji(legacy_body)
+        raw_replies=normalize_kill_emoji(legacy_replies)
         ocr_texts=[]
         if strict_issue_lines:
             from .issue_lines import split_issue_units
             raw_body=split_issue_units(raw_body)
             raw_replies=split_issue_units(raw_replies)
+            legacy_body=split_issue_units(legacy_body)
+            legacy_replies=split_issue_units(legacy_replies)
         body=current_period_text(raw_body,post['issue'])
         replies=current_period_text(raw_replies,post['issue'])
-        text=current_period_text(post['title'],post['issue'])+'\n'+body+'\n'+replies
+        text=current_period_text(normalize_kill_emoji(post['title']),post['issue'])+'\n'+body+'\n'+replies
         for pic in post.get('images',[]):
             if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
                     or eligible_comment_image(pic,post)):
                 ocr=split_issue_units(pic['ocr']) if strict_issue_lines else pic['ocr']
                 ocr_texts.append(ocr)
                 text+='\n'+current_period_text(ocr,post['issue'])
+        legacy_text=(current_period_text(post['title'],post['issue'])+'\n'
+                     +current_period_text(legacy_body,post['issue'])+'\n'
+                     +current_period_text(legacy_replies,post['issue']))
         parsed=extract_picks(text)
+        seen={(r['mode'],tuple(r['picks'])) for r in parsed}
+        parsed+=[r for r in extract_titled_bare_list(body,post['title']) if (r['mode'],tuple(r['picks'])) not in seen]
         if strict_issue_lines:
             from .issue_lines import classify_segment, title_context, candidate_reason, REASON_MULTI
-            heading=title_context(post['title'],post['issue'])
-            rows=classify_segment(post['title'],post['issue'])
+            heading=title_context(normalize_kill_emoji(post['title']),post['issue'])
+            rows=classify_segment(normalize_kill_emoji(post['title']),post['issue'])
             for section in [raw_body,*ocr_texts]:
                 rows+=classify_segment(section,post['issue'],heading)
             rows+=classify_segment(raw_replies,post['issue'])
             from .issue_lines import post_is_plan
             title_multi=heading[0]=='multi' or post_is_plan(post['title'],raw_body,*ocr_texts)
+        legacy_keys=legacy_candidate_keys(legacy_text+''.join('\n'+current_period_text(o,post['issue']) for o in ocr_texts))
         for p in parsed:
             reason=p.get('parse_error')
             if strict_issue_lines:
@@ -981,6 +1164,9 @@ def score_posts(posts,strict_issue_lines=False):
                 if strict_reason:reason=strict_reason
             if UNCERTAIN_PATTERN.search(post['title']):
                 p['mode']='unverified'
+            if (p['mode'],tuple(p['picks'])) not in legacy_keys:
+                p['rule_20261029']=True
+                reason=reason or new_rule_guard(p,post['issue'])
             try:
                 if reason:raise ValueError(reason)
                 audit_error=audit_material(p,text)
@@ -1010,13 +1196,14 @@ def score_posts(posts,strict_issue_lines=False):
 def unparsed_evidence(posts):
     rejected=[]
     for post in posts:
-        text=current_period_text(post['body'],post['issue'])
-        text+='\n'+current_period_text(_author_comments(post.get('comments',''),post['author']),post['issue'])
+        text=current_period_text(normalize_kill_emoji(post['body']),post['issue'])
+        text+='\n'+current_period_text(normalize_kill_emoji(_author_comments(post.get('comments',''),post['author'])),post['issue'])
         for pic in post.get('images',[]):
             if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
                     or eligible_comment_image(pic,post)):
                 text+='\n'+current_period_text(pic.get('ocr',''),post['issue'])
-        parsed_lines={p['excerpt'] for p in extract_picks(post['title']+'\n'+text)}
+        parsed=extract_picks(normalize_kill_emoji(post['title'])+'\n'+text)
+        parsed_lines={piece for p in parsed for piece in [p['excerpt'],*p['excerpt'].split(' | ')]}
         found=False
         for line in text.splitlines():
             if any(z in line for z in ZODIACS) and line[:450] not in parsed_lines:
@@ -1024,7 +1211,7 @@ def unparsed_evidence(posts):
                                  'evidence_id':post.get('evidence_id',post['detail_url']),'excerpt':line[:450],'reason':'unsupported or ambiguous play',
                                  'counted_for_ranking':False})
                 found=True
-        if not found and not extract_picks(post['title']+'\n'+text):
+        if not found and not parsed:
             rejected.append({'author':post['author'],'source_url':post['detail_url'],
                              'evidence_id':post.get('evidence_id',post['detail_url']),'excerpt':post['title'][:450],'reason':'no supported current-issue play',
                              'counted_for_ranking':False})
