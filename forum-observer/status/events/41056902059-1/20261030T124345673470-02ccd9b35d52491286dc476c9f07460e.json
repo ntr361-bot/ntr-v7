@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41056902059",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41056902059",
+  "updated_at": "2026-10-30T12:43:45.673470+00:00",
+  "error": null,
+  "valid_materials": 54,
+  "valid_authors": 54,
+  "successful_post_opens": 217,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 171,
+      "opened": 170,
+      "extracted": 169,
+      "completed": 170
+    }
+  },
+  "article_texts_extracted": 216,
+  "article_details_completed": 217,
+  "last_verified_post": {
+    "author": "肌瘦的肖人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182293&type=3",
+    "verified_at": "2026-10-30T12:43:44.837807+00:00",
+    "text_length": 536,
+    "text_sha256": "6ca24c85160dc4ae22a2b36e70ff9ba64fd1c99f8672742ace902c92099373d5"
+  },
+  "last_attempted_post": {
+    "author": "人黄的老狗",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182292&type=3",
+    "attempt_index": 218
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:41:44.763800+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 216,
+  "stage": "detail: 人黄的老狗 303期：杀一尾",
+  "progress_updated_at": "2026-10-30T12:43:45.138786+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
