@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41057179966",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41057179966",
+  "updated_at": "2026-10-30T12:57:31.978230+00:00",
+  "error": null,
+  "valid_materials": 77,
+  "valid_authors": 77,
+  "successful_post_opens": 372,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 481,
+      "attempted": 325,
+      "opened": 325,
+      "extracted": 324,
+      "completed": 325
+    }
+  },
+  "article_texts_extracted": 371,
+  "article_details_completed": 372,
+  "last_verified_post": {
+    "author": "暮雨而桐",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182022&type=3",
+    "verified_at": "2026-10-30T12:57:31.414153+00:00",
+    "text_length": 185,
+    "text_sha256": "e1f4c25d2f972911a4b66a5c3166159de7f5e186df16e1a6e2044f1d14c60e6b"
+  },
+  "last_attempted_post": {
+    "author": "暮雨而桐",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182022&type=3",
+    "attempt_index": 372
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:52:35.751626+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 371,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-10-30T12:57:31.694632+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
