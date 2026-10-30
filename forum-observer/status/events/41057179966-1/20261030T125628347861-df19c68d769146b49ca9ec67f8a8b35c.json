@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41057179966",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41057179966",
+  "updated_at": "2026-10-30T12:56:28.347861+00:00",
+  "error": null,
+  "valid_materials": 67,
+  "valid_authors": 67,
+  "successful_post_opens": 311,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 481,
+      "attempted": 265,
+      "opened": 264,
+      "extracted": 263,
+      "completed": 264
+    }
+  },
+  "article_texts_extracted": 310,
+  "article_details_completed": 311,
+  "last_verified_post": {
+    "author": "结婚多年",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182102&type=3",
+    "verified_at": "2026-10-30T12:56:27.100945+00:00",
+    "text_length": 97,
+    "text_sha256": "42dc40abc7cebc16bf57b72ca441745402a10c47b3785abae5d78daaa79d8761"
+  },
+  "last_attempted_post": {
+    "author": "看到结果",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182101&type=3",
+    "attempt_index": 312
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:52:35.751626+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 310,
+  "stage": "detail: 看到结果 303期:单双，已免费公开",
+  "progress_updated_at": "2026-10-30T12:56:27.611941+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
