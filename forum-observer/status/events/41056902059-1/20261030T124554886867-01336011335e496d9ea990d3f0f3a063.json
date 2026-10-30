@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41056902059",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41056902059",
+  "updated_at": "2026-10-30T12:45:54.886867+00:00",
+  "error": null,
+  "valid_materials": 75,
+  "valid_authors": 75,
+  "successful_post_opens": 367,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 321,
+      "opened": 320,
+      "extracted": 319,
+      "completed": 320
+    }
+  },
+  "article_texts_extracted": 366,
+  "article_details_completed": 367,
+  "last_verified_post": {
+    "author": "鹤归孤山",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182027&type=3",
+    "verified_at": "2026-10-30T12:45:53.982048+00:00",
+    "text_length": 150,
+    "text_sha256": "6a7d47d5eed3347e7d1012921a15e8ee99ddbf4968a592bdbb1fa0d07475040a"
+  },
+  "last_attempted_post": {
+    "author": "红颜情断肠",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182026&type=3",
+    "attempt_index": 368
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:41:44.763800+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 366,
+  "stage": "detail: 红颜情断肠 303期红蓝绿肖",
+  "progress_updated_at": "2026-10-30T12:45:54.368607+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
