@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026303",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "41057179966",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41057179966",
-  "updated_at": "2026-10-30T12:57:31.978230+00:00",
+  "updated_at": "2026-10-30T12:58:01.915467+00:00",
   "error": null,
-  "valid_materials": 77,
-  "valid_authors": 77,
-  "successful_post_opens": 372,
+  "valid_materials": 80,
+  "valid_authors": 80,
+  "successful_post_opens": 398,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 481,
-      "attempted": 325,
-      "opened": 325,
-      "extracted": 324,
-      "completed": 325
+      "attempted": 351,
+      "opened": 351,
+      "extracted": 350,
+      "completed": 351
     }
   },
-  "article_texts_extracted": 371,
-  "article_details_completed": 372,
+  "article_texts_extracted": 397,
+  "article_details_completed": 398,
   "last_verified_post": {
-    "author": "暮雨而桐",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182022&type=3",
-    "verified_at": "2026-10-30T12:57:31.414153+00:00",
-    "text_length": 185,
-    "text_sha256": "e1f4c25d2f972911a4b66a5c3166159de7f5e186df16e1a6e2044f1d14c60e6b"
+    "author": "天下我有",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181995&type=3",
+    "verified_at": "2026-10-30T12:57:59.796518+00:00",
+    "text_length": 862,
+    "text_sha256": "b65fa04098a48b6b270c1e8581a77208dacff0ce3b12e50a8fb8805eb3803270"
   },
   "last_attempted_post": {
-    "author": "暮雨而桐",
+    "author": "天下我有",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11182022&type=3",
-    "attempt_index": 372
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181995&type=3",
+    "attempt_index": 398
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 371,
-  "stage": "detail_complete",
-  "progress_updated_at": "2026-10-30T12:57:31.694632+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 397,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-30T12:58:00.920609+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 2,
+    "truncated": true,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "部分覆盖：超时或未完成"
 }
