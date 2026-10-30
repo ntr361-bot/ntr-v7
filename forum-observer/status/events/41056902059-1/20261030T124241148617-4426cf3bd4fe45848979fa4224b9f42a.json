@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41056902059",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41056902059",
+  "updated_at": "2026-10-30T12:42:41.148617+00:00",
+  "error": null,
+  "valid_materials": 35,
+  "valid_authors": 35,
+  "successful_post_opens": 132,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 86,
+      "opened": 85,
+      "extracted": 84,
+      "completed": 85
+    }
+  },
+  "article_texts_extracted": 131,
+  "article_details_completed": 132,
+  "last_verified_post": {
+    "author": "澳门神算子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11186546&type=3",
+    "verified_at": "2026-10-30T12:42:40.589684+00:00",
+    "text_length": 1357,
+    "text_sha256": "2ddf70bfb0c7a976da7aa22306c26b18f60fb5ed2622397c8c994ee8006be2b5"
+  },
+  "last_attempted_post": {
+    "author": "小六子小兔兔",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11186506&type=3",
+    "attempt_index": 133
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:41:44.763800+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 131,
+  "stage": "detail: 小六子小兔兔 职业双杀 独一平",
+  "progress_updated_at": "2026-10-30T12:42:40.795609+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
