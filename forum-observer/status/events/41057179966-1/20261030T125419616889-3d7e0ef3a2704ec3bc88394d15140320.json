@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41057179966",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41057179966",
+  "updated_at": "2026-10-30T12:54:19.616889+00:00",
+  "error": null,
+  "valid_materials": 48,
+  "valid_authors": 48,
+  "successful_post_opens": 179,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 481,
+      "attempted": 133,
+      "opened": 132,
+      "extracted": 131,
+      "completed": 132
+    }
+  },
+  "article_texts_extracted": 178,
+  "article_details_completed": 179,
+  "last_verified_post": {
+    "author": "饭王归来",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11184374&type=3",
+    "verified_at": "2026-10-30T12:54:19.206277+00:00",
+    "text_length": 79,
+    "text_sha256": "f1fbcd91cad2532c804346020229685f538b5837d64a47495b28df835ac157a7"
+  },
+  "last_attempted_post": {
+    "author": "早起的鸟",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11184276&type=3",
+    "attempt_index": 180
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-30T12:52:35.751626+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 178,
+  "stage": "detail: 早起的鸟 六肖中特",
+  "progress_updated_at": "2026-10-30T12:54:19.566859+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
