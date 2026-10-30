@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026303",
+  "state": "collecting_effectively",
+  "run_id": "41056902059",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41056902059",
+  "updated_at": "2026-10-30T12:41:36.699869+00:00",
+  "error": null,
+  "valid_materials": 9,
+  "valid_authors": 9,
+  "successful_post_opens": 33,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 34,
+      "opened": 33,
+      "extracted": 33,
+      "completed": 33
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 33,
+  "article_details_completed": 33,
+  "last_verified_post": {
+    "author": "咖啡里的茶",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181464&type=3",
+    "verified_at": "2026-10-30T12:41:36.591248+00:00",
+    "text_length": 433,
+    "text_sha256": "381ca726cfeac76f1b929fb1890c6c15f08dfa69fffb99e2bf203ab366a79691"
+  },
+  "last_attempted_post": {
+    "author": "港澳曾道人",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181983&type=3",
+    "attempt_index": 34
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 33,
+  "stage": "detail: 港澳曾道人 曾道人《绝杀三肖》",
+  "progress_updated_at": "2026-10-30T12:41:36.654474+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
