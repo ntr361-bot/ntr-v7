@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026303",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "41057179966",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41057179966",
-  "updated_at": "2026-10-30T12:51:07.561648+00:00",
+  "updated_at": "2026-10-30T12:52:11.565577+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 7,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 47,
+      "attempted": 8,
+      "opened": 7,
+      "extracted": 7,
+      "completed": 7
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 481,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 7,
+  "article_details_completed": 7,
+  "last_verified_post": {
+    "author": "顺藤摸瓜",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181687&type=3",
+    "verified_at": "2026-10-30T12:52:11.061901+00:00",
+    "text_length": 149,
+    "text_sha256": "70ec0a55080fb3098cec57566dfaddc0985fc7509bd372e9bde33d557414a0fa"
+  },
+  "last_attempted_post": {
+    "author": "斩草除根",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11181686&type=3",
+    "attempt_index": 8
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 67",
-  "progress_updated_at": "2026-10-30T12:51:06.770448+00:00",
+  "raw_count": 7,
+  "stage": "detail: 斩草除根 港澳牛魔王【內部六尾】",
+  "progress_updated_at": "2026-10-30T12:52:11.076539+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
