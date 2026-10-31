@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "forum49",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 9,
+  "settled_count": 10,
   "top3_hits": 2,
   "top6_hits": 5,
   "settlements": [
@@ -248,6 +248,33 @@
         "鼠"
       ],
       "frozen_at": "2026-10-30T13:03:11.634386+00:00"
+    },
+    {
+      "issue": "2026304",
+      "actual": "狗",
+      "actual_source": "site/data/history.json",
+      "drawn_at": "2026-10-31T21:35:30+08:00",
+      "snapshot_digest": "b648cf4d4083651df3331b4338d4a79a79e8a9f10eb92f97fd61f8165880dc6d",
+      "snapshot_at": "2026-10-31T12:43:19.422426+00:00",
+      "rank": 10,
+      "top1_hit": false,
+      "top3_hit": false,
+      "top6_hit": false,
+      "classification": "experimental_unverified_leaderboard",
+      "top3": [
+        "羊",
+        "鸡",
+        "马"
+      ],
+      "top6": [
+        "羊",
+        "鸡",
+        "马",
+        "牛",
+        "蛇",
+        "鼠"
+      ],
+      "frozen_at": "2026-10-31T13:03:15.515537+00:00"
     }
   ]
 }
