@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026304",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "41200395105",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41200395105",
-  "updated_at": "2026-10-31T12:28:52.306718+00:00",
+  "updated_at": "2026-10-31T12:29:55.041542+00:00",
   "error": null,
-  "valid_materials": 76,
-  "valid_authors": 76,
-  "successful_post_opens": 434,
+  "valid_materials": 90,
+  "valid_authors": 90,
+  "successful_post_opens": 484,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 437,
-      "attempted": 387,
-      "opened": 387,
-      "extracted": 386,
-      "completed": 387
+      "attempted": 437,
+      "opened": 437,
+      "extracted": 436,
+      "completed": 437
     }
   },
-  "article_texts_extracted": 433,
-  "article_details_completed": 434,
+  "article_texts_extracted": 483,
+  "article_details_completed": 484,
   "last_verified_post": {
-    "author": "小场面",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187844&type=3",
-    "verified_at": "2026-10-31T12:28:51.810377+00:00",
-    "text_length": 3,
-    "text_sha256": "aea6d572452f2da3a170a87fa9331cd517912e7c4a4c376271a8a27003eaa9b7"
+    "author": "赖赖赖",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187610&type=3",
+    "verified_at": "2026-10-31T12:29:52.315694+00:00",
+    "text_length": 197,
+    "text_sha256": "0561f46baaddf20d84d9e28548e8c96e264e3ada8f1b6438d1252262d019e644"
   },
   "last_attempted_post": {
-    "author": "小场面",
+    "author": "赖赖赖",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187844&type=3",
-    "attempt_index": 434
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187610&type=3",
+    "attempt_index": 484
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 433,
-  "stage": "detail_complete",
-  "progress_updated_at": "2026-10-31T12:28:52.153676+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 483,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-10-31T12:29:53.560494+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
