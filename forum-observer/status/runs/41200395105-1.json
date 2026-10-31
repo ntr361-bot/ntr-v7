@@ -7,56 +7,61 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41200395105",
-  "updated_at": "2026-10-31T12:22:33.471781+00:00",
+  "updated_at": "2026-10-31T12:23:36.636610+00:00",
   "error": null,
-  "valid_materials": 8,
-  "valid_authors": 8,
-  "successful_post_opens": 37,
+  "valid_materials": 31,
+  "valid_authors": 31,
+  "successful_post_opens": 134,
   "article_details": {
     "featured": {
       "queued": 47,
-      "attempted": 38,
-      "opened": 37,
-      "extracted": 37,
-      "completed": 37
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
     },
     "ordinary": {
       "queued": 437,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 88,
+      "opened": 87,
+      "extracted": 86,
+      "completed": 87
     }
   },
-  "article_texts_extracted": 37,
-  "article_details_completed": 37,
+  "article_texts_extracted": 133,
+  "article_details_completed": 134,
   "last_verified_post": {
-    "author": "深圳好日子",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187401&type=3",
-    "verified_at": "2026-10-31T12:22:32.912350+00:00",
-    "text_length": 1133,
-    "text_sha256": "d3fb949ce8feefdf64687f3430c7a4a479b780c6b2485b22ce0db78704b390f9"
+    "author": "小白围统",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11190721&type=3",
+    "verified_at": "2026-10-31T12:23:35.983629+00:00",
+    "text_length": 1549,
+    "text_sha256": "fb5f60636c2618df055423086d2c510b591b4aaa318d0e7aeab8e5722aa9bb12"
   },
   "last_attempted_post": {
-    "author": "唐精杀一肖",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11187613&type=3",
-    "attempt_index": 38
+    "author": "致富哥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11190724&type=3",
+    "attempt_index": 135
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-10-31T12:22:38.803814+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 37,
-  "stage": "detail: 唐精杀一肖 精杀一肖 错后勿喷☞☞☞想想一直跟别人对的时候 资料是参考☜☜没绝对☞看好可拉回 资料大家以参考为主，下注自己衡量",
-  "progress_updated_at": "2026-10-31T12:22:32.970477+00:00",
+  "raw_count": 133,
+  "stage": "detail: 致富哥 统计资料！",
+  "progress_updated_at": "2026-10-31T12:23:36.226080+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
