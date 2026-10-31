@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026304",
+  "state": "collecting_effectively",
+  "run_id": "41200395105",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41200395105",
+  "updated_at": "2026-10-31T12:24:39.871539+00:00",
+  "error": null,
+  "valid_materials": 45,
+  "valid_authors": 45,
+  "successful_post_opens": 203,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 437,
+      "attempted": 157,
+      "opened": 156,
+      "extracted": 155,
+      "completed": 156
+    }
+  },
+  "article_texts_extracted": 202,
+  "article_details_completed": 203,
+  "last_verified_post": {
+    "author": "不要问我是谁",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11189560&type=3",
+    "verified_at": "2026-10-31T12:24:38.993759+00:00",
+    "text_length": 27,
+    "text_sha256": "5c023c28e9ca1fc60c870b8a4c28532557e427b4a3fb58030819024953711a08"
+  },
+  "last_attempted_post": {
+    "author": "不放手",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11189561&type=3",
+    "attempt_index": 204
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-31T12:22:38.803814+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 202,
+  "stage": "detail: 不放手 304期家野单双",
+  "progress_updated_at": "2026-10-31T12:24:39.426459+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
