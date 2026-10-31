@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026304",
+  "state": "collecting_effectively",
+  "run_id": "41200395105",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41200395105",
+  "updated_at": "2026-10-31T12:23:36.636610+00:00",
+  "error": null,
+  "valid_materials": 31,
+  "valid_authors": 31,
+  "successful_post_opens": 134,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 437,
+      "attempted": 88,
+      "opened": 87,
+      "extracted": 86,
+      "completed": 87
+    }
+  },
+  "article_texts_extracted": 133,
+  "article_details_completed": 134,
+  "last_verified_post": {
+    "author": "小白围统",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11190721&type=3",
+    "verified_at": "2026-10-31T12:23:35.983629+00:00",
+    "text_length": 1549,
+    "text_sha256": "fb5f60636c2618df055423086d2c510b591b4aaa318d0e7aeab8e5722aa9bb12"
+  },
+  "last_attempted_post": {
+    "author": "致富哥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11190724&type=3",
+    "attempt_index": 135
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-10-31T12:22:38.803814+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 133,
+  "stage": "detail: 致富哥 统计资料！",
+  "progress_updated_at": "2026-10-31T12:23:36.226080+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
