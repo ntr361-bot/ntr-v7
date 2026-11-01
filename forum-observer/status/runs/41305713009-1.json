@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026305",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "41305713009",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
-  "updated_at": "2026-11-01T12:21:32.994929+00:00",
+  "updated_at": "2026-11-01T12:22:36.755483+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 6,
+  "valid_authors": 6,
+  "successful_post_opens": 35,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 45,
+      "attempted": 36,
+      "opened": 35,
+      "extracted": 35,
+      "completed": 35
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 471,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 35,
+  "article_details_completed": 35,
+  "last_verified_post": {
+    "author": "港澳牛总",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192712&type=3",
+    "verified_at": "2026-11-01T12:22:36.302862+00:00",
+    "text_length": 246,
+    "text_sha256": "1a0d24ccd2596643b7ec09a6e0cf4b426f144e67c7339a397fba2ea5b9902954"
+  },
+  "last_attempted_post": {
+    "author": "楼兰一九八六",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192733&type=3",
+    "attempt_index": 36
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 71",
-  "progress_updated_at": "2026-11-01T12:21:32.274983+00:00",
+  "raw_count": 35,
+  "stage": "detail: 楼兰一九八六 绝杀2尾",
+  "progress_updated_at": "2026-11-01T12:22:36.338055+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
