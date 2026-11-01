@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026305",
+  "state": "collecting_effectively",
+  "run_id": "41305713009",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
+  "updated_at": "2026-11-01T12:26:52.238428+00:00",
+  "error": null,
+  "valid_materials": 70,
+  "valid_authors": 70,
+  "successful_post_opens": 361,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 317,
+      "opened": 316,
+      "extracted": 316,
+      "completed": 316
+    }
+  },
+  "article_texts_extracted": 361,
+  "article_details_completed": 361,
+  "last_verified_post": {
+    "author": "凉兮清婉丽",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11193533&type=3",
+    "verified_at": "2026-11-01T12:26:51.211600+00:00",
+    "text_length": 100,
+    "text_sha256": "6e8006ec47faa8507fdda093c7f056e92cbd6919611b86b292058c1ca162c040"
+  },
+  "last_attempted_post": {
+    "author": "定格我的天空",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11193532&type=3",
+    "attempt_index": 362
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-01T12:22:41.926412+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 361,
+  "stage": "detail: 定格我的天空 305期:白黑肖(免费已公开）",
+  "progress_updated_at": "2026-11-01T12:26:51.622099+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
