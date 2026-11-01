@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026305",
+  "state": "collecting_effectively",
+  "run_id": "41305713009",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
+  "updated_at": "2026-11-01T12:29:00.109461+00:00",
+  "error": null,
+  "valid_materials": 93,
+  "valid_authors": 93,
+  "successful_post_opens": 483,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 439,
+      "opened": 438,
+      "extracted": 438,
+      "completed": 438
+    }
+  },
+  "article_texts_extracted": 483,
+  "article_details_completed": 483,
+  "last_verified_post": {
+    "author": "水东枭雄",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192835&type=3",
+    "verified_at": "2026-11-01T12:28:50.573265+00:00",
+    "text_length": 149,
+    "text_sha256": "50fcbcfe575563e0ed4b47d6f6959109a37040f6af0203b1569b816a79eda94f"
+  },
+  "last_attempted_post": {
+    "author": "又又赚了",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192745&type=3",
+    "attempt_index": 484
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-01T12:22:41.926412+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 483,
+  "stage": "detail: 又又赚了 305期。金财通稳定7肖，试料别跟。",
+  "progress_updated_at": "2026-11-01T12:28:51.077766+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
