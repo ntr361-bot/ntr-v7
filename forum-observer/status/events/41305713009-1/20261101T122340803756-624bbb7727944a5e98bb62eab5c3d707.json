@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026305",
+  "state": "collecting_effectively",
+  "run_id": "41305713009",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
+  "updated_at": "2026-11-01T12:23:40.803756+00:00",
+  "error": null,
+  "valid_materials": 35,
+  "valid_authors": 35,
+  "successful_post_opens": 139,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 95,
+      "opened": 94,
+      "extracted": 94,
+      "completed": 94
+    }
+  },
+  "article_texts_extracted": 139,
+  "article_details_completed": 139,
+  "last_verified_post": {
+    "author": "稳定特围",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11196366&type=3",
+    "verified_at": "2026-11-01T12:23:40.481240+00:00",
+    "text_length": 411,
+    "text_sha256": "165cc931438dface3ac1115ba34dc0f4ab463c313748ac66f9e1b43c76f2554a"
+  },
+  "last_attempted_post": {
+    "author": "稳了的",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11198258&type=3",
+    "attempt_index": 140
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-01T12:22:41.926412+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 139,
+  "stage": "detail: 稳了的 参考",
+  "progress_updated_at": "2026-11-01T12:23:40.644470+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
