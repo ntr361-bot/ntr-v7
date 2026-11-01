@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026305",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "41305713009",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
-  "updated_at": "2026-11-01T12:29:00.109461+00:00",
+  "updated_at": "2026-11-01T12:29:47.083672+00:00",
   "error": null,
-  "valid_materials": 93,
-  "valid_authors": 93,
-  "successful_post_opens": 483,
+  "valid_materials": 96,
+  "valid_authors": 96,
+  "successful_post_opens": 515,
   "article_details": {
     "featured": {
       "queued": 45,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 471,
-      "attempted": 439,
-      "opened": 438,
-      "extracted": 438,
-      "completed": 438
+      "attempted": 471,
+      "opened": 470,
+      "extracted": 470,
+      "completed": 471
     }
   },
-  "article_texts_extracted": 483,
-  "article_details_completed": 483,
+  "article_texts_extracted": 515,
+  "article_details_completed": 516,
   "last_verified_post": {
-    "author": "水东枭雄",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192835&type=3",
-    "verified_at": "2026-11-01T12:28:50.573265+00:00",
-    "text_length": 149,
-    "text_sha256": "50fcbcfe575563e0ed4b47d6f6959109a37040f6af0203b1569b816a79eda94f"
+    "author": "都是逆风",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192755&type=3",
+    "verified_at": "2026-11-01T12:29:45.005881+00:00",
+    "text_length": 127,
+    "text_sha256": "c615cd093b806344f52fc011720ad88c0a9a995ad1a3c9dfd40814063046a339"
   },
   "last_attempted_post": {
-    "author": "又又赚了",
+    "author": "都是逆风",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192745&type=3",
-    "attempt_index": 484
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11192755&type=3",
+    "attempt_index": 516
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 483,
-  "stage": "detail: 又又赚了 305期。金财通稳定7肖，试料别跟。",
-  "progress_updated_at": "2026-11-01T12:28:51.077766+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 515,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-01T12:29:46.131924+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
