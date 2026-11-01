@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026305",
+  "state": "collecting_effectively",
+  "run_id": "41305713009",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41305713009",
+  "updated_at": "2026-11-01T12:27:56.198496+00:00",
+  "error": null,
+  "valid_materials": 78,
+  "valid_authors": 78,
+  "successful_post_opens": 428,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 384,
+      "opened": 383,
+      "extracted": 383,
+      "completed": 383
+    }
+  },
+  "article_texts_extracted": 428,
+  "article_details_completed": 428,
+  "last_verified_post": {
+    "author": "一码当先",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11193299&type=3",
+    "verified_at": "2026-11-01T12:27:55.125180+00:00",
+    "text_length": 174,
+    "text_sha256": "5ba51f41fdb7e6046fc330541e21aa5b0205899c0b5679ba9ee5f0e6624b4672"
+  },
+  "last_attempted_post": {
+    "author": "阁阁閤",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11193218&type=3",
+    "attempt_index": 429
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-01T12:22:41.926412+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 428,
+  "stage": "detail: 阁阁閤 305期 澳彩公式九肖中特",
+  "progress_updated_at": "2026-11-01T12:27:55.567677+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
