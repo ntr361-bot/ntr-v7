@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026306",
+  "state": "collecting_effectively",
+  "run_id": "41444316285",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41444316285",
+  "updated_at": "2026-11-02T12:28:34.085041+00:00",
+  "error": null,
+  "valid_materials": 48,
+  "valid_authors": 48,
+  "successful_post_opens": 183,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 510,
+      "attempted": 134,
+      "opened": 133,
+      "extracted": 132,
+      "completed": 133
+    }
+  },
+  "article_texts_extracted": 182,
+  "article_details_completed": 183,
+  "last_verified_post": {
+    "author": "喵喵招财",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11202551&type=3",
+    "verified_at": "2026-11-02T12:28:33.385542+00:00",
+    "text_length": 171,
+    "text_sha256": "d90f74420be91175475b46ece34eec669bcfcb90b56ffb84d61a6c2b4d0689df"
+  },
+  "last_attempted_post": {
+    "author": "阿一森",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11202547&type=3",
+    "attempt_index": 184
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-02T12:26:58.191098+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 182,
+  "stage": "detail: 阿一森 306",
+  "progress_updated_at": "2026-11-02T12:28:33.761304+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
