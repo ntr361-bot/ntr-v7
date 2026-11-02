@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026306",
+  "state": "collecting_effectively",
+  "run_id": "41444316285",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41444316285",
+  "updated_at": "2026-11-02T12:33:53.967195+00:00",
+  "error": null,
+  "valid_materials": 91,
+  "valid_authors": 91,
+  "successful_post_opens": 476,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 510,
+      "attempted": 426,
+      "opened": 426,
+      "extracted": 425,
+      "completed": 426
+    }
+  },
+  "article_texts_extracted": 475,
+  "article_details_completed": 476,
+  "last_verified_post": {
+    "author": "期期红",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11199869&type=3",
+    "verified_at": "2026-11-02T12:33:53.576602+00:00",
+    "text_length": 218,
+    "text_sha256": "65c046032f07f452fe419ebb2b30ad7f7403fa551958c5569d72c114a77a25b6"
+  },
+  "last_attempted_post": {
+    "author": "期期红",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11199869&type=3",
+    "attempt_index": 476
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-02T12:26:58.191098+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 475,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-02T12:33:53.925264+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
