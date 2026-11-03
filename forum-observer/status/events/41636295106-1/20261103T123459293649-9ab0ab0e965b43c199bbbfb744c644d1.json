@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026307",
+  "state": "collecting_effectively",
+  "run_id": "41636295106",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41636295106",
+  "updated_at": "2026-11-03T12:34:59.293649+00:00",
+  "error": null,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 110,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 66,
+      "opened": 65,
+      "extracted": 62,
+      "completed": 65
+    }
+  },
+  "article_texts_extracted": 107,
+  "article_details_completed": 110,
+  "last_verified_post": {
+    "author": "六合至尊",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11209765&type=3",
+    "verified_at": "2026-11-03T12:34:58.541744+00:00",
+    "text_length": 18,
+    "text_sha256": "0d23c15efd596b828c9b2a9a723b9665a190c9e47081ef039f41ce7e96765efa"
+  },
+  "last_attempted_post": {
+    "author": "卓楚赢",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205478&type=3",
+    "attempt_index": 111
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:34:16.477919+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 107,
+  "stage": "detail: 卓楚赢 杀肖统计（杀多次）",
+  "progress_updated_at": "2026-11-03T12:34:58.730335+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
