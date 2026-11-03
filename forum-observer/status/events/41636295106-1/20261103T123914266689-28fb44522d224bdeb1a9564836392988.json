@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026307",
+  "state": "collecting_effectively",
+  "run_id": "41636295106",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41636295106",
+  "updated_at": "2026-11-03T12:39:14.266689+00:00",
+  "error": null,
+  "valid_materials": 81,
+  "valid_authors": 81,
+  "successful_post_opens": 372,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 327,
+      "opened": 327,
+      "extracted": 321,
+      "completed": 327
+    }
+  },
+  "article_texts_extracted": 366,
+  "article_details_completed": 372,
+  "last_verified_post": {
+    "author": "旧巷里的旧少年",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205538&type=3",
+    "verified_at": "2026-11-03T12:39:13.823381+00:00",
+    "text_length": 34,
+    "text_sha256": "97e98b2bdbbfcae36ccbe34ef2b666d069b8256ceb21b7b79b59af09d6a606a6"
+  },
+  "last_attempted_post": {
+    "author": "旧巷里的旧少年",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205538&type=3",
+    "attempt_index": 372
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:34:16.477919+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 366,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-03T12:39:14.126418+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 6
+  },
+  "coverage_label": null
+}
