@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "issue": "2026307",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "41636295106",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41636295106",
-  "updated_at": "2026-11-03T12:42:25.852379+00:00",
+  "updated_at": "2026-11-03T12:42:27.147948+00:00",
   "error": null,
   "valid_materials": 102,
   "valid_authors": 102,
@@ -56,12 +56,12 @@
   },
   "raw_count": 525,
   "stage": "browser_closing",
-  "progress_updated_at": "2026-11-03T12:42:25.469383+00:00",
-  "collection_status": "incomplete_observation",
+  "progress_updated_at": "2026-11-03T12:42:26.077438+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 7,
+    "truncated": false,
     "unextracted_current_posts": 7
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
