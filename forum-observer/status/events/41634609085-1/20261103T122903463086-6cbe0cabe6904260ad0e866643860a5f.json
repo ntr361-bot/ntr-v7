@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026307",
+  "state": "collecting_effectively",
+  "run_id": "41634609085",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41634609085",
+  "updated_at": "2026-11-03T12:29:03.463086+00:00",
+  "error": null,
+  "valid_materials": 94,
+  "valid_authors": 94,
+  "successful_post_opens": 450,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 490,
+      "attempted": 406,
+      "opened": 405,
+      "extracted": 399,
+      "completed": 405
+    }
+  },
+  "article_texts_extracted": 444,
+  "article_details_completed": 450,
+  "last_verified_post": {
+    "author": "筑梦小丑",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205330&type=3",
+    "verified_at": "2026-11-03T12:29:02.139464+00:00",
+    "text_length": 91,
+    "text_sha256": "f84d081df780a9c0514aa3c9c224d4708ce071885f2673b6d0814c0ba0107a40"
+  },
+  "last_attempted_post": {
+    "author": "南笙兮墨汐",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205329&type=3",
+    "attempt_index": 451
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:22:52.750240+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 444,
+  "stage": "detail: 南笙兮墨汐 精准24码",
+  "progress_updated_at": "2026-11-03T12:29:02.719195+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 6
+  },
+  "coverage_label": null
+}
