@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026307",
+  "state": "collecting_effectively",
+  "run_id": "41636295106",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41636295106",
+  "updated_at": "2026-11-03T12:37:07.131125+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 253,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 209,
+      "opened": 208,
+      "extracted": 202,
+      "completed": 208
+    }
+  },
+  "article_texts_extracted": 247,
+  "article_details_completed": 253,
+  "last_verified_post": {
+    "author": "面红耳是",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205969&type=3",
+    "verified_at": "2026-11-03T12:37:06.525621+00:00",
+    "text_length": 60,
+    "text_sha256": "e80e9168e9f4514169e85f4e6b913ed3c41084e1a1941272ac3d84cf6da9bac1"
+  },
+  "last_attempted_post": {
+    "author": "隔壁王哥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205968&type=3",
+    "attempt_index": 254
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:34:16.477919+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 247,
+  "stage": "detail: 隔壁王哥 307期：绝杀四尾",
+  "progress_updated_at": "2026-11-03T12:37:07.005556+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 6
+  },
+  "coverage_label": null
+}
