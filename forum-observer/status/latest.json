@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026307",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "41634609085",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41634609085",
-  "updated_at": "2026-11-03T12:30:07.438187+00:00",
+  "updated_at": "2026-11-03T12:30:43.745306+00:00",
   "error": null,
-  "valid_materials": 101,
-  "valid_authors": 101,
-  "successful_post_opens": 506,
+  "valid_materials": 103,
+  "valid_authors": 103,
+  "successful_post_opens": 535,
   "article_details": {
     "featured": {
       "queued": 45,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 490,
-      "attempted": 462,
-      "opened": 461,
-      "extracted": 454,
-      "completed": 461
+      "attempted": 490,
+      "opened": 490,
+      "extracted": 483,
+      "completed": 490
     }
   },
-  "article_texts_extracted": 499,
-  "article_details_completed": 506,
+  "article_texts_extracted": 528,
+  "article_details_completed": 535,
   "last_verified_post": {
-    "author": "深圳好日子",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205026&type=3",
-    "verified_at": "2026-11-03T12:30:06.270187+00:00",
-    "text_length": 797,
-    "text_sha256": "7f108b8894411fe92d58c572fd4eed0f314b3dcc4fd4b5a1966eb08eb603febd"
+    "author": "盛世唐朝",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205147&type=3",
+    "verified_at": "2026-11-03T12:30:40.552541+00:00",
+    "text_length": 392,
+    "text_sha256": "56e4d5908a484938cf633a5378b91725a8f52f184a27fd0de7c028e6bcb13dad"
   },
   "last_attempted_post": {
-    "author": "射到腿软",
+    "author": "盛世唐朝",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205025&type=3",
-    "attempt_index": 507
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205147&type=3",
+    "attempt_index": 535
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 499,
-  "stage": "detail: 射到腿软 307",
-  "progress_updated_at": "2026-11-03T12:30:06.905296+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 528,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-03T12:30:41.788287+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 7,
+    "truncated": false,
     "unextracted_current_posts": 7
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
