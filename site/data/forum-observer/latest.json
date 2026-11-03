@@ -40,7 +40,19 @@
   "snapshot_digest": "1fe63a3144a20a51651748429eb911ff45d226fb1d1081e94f938f558826ca56",
   "freeze_quality_status": "meets_minimum_samples",
   "freeze_minimum_valid_materials": 25,
-  "settlement": null,
-  "settled_count": 22,
+  "settlement": {
+    "issue": "2026307",
+    "actual": "牛",
+    "actual_source": "smart-ledger:/api/results",
+    "drawn_at": "2026-11-03T21:37:04+08:00",
+    "snapshot_digest": "1fe63a3144a20a51651748429eb911ff45d226fb1d1081e94f938f558826ca56",
+    "snapshot_at": "2026-11-03T12:42:26.077438+00:00",
+    "rank": 3,
+    "top1_hit": false,
+    "top3_hit": true,
+    "top6_hit": true,
+    "classification": "experimental_unverified_leaderboard"
+  },
+  "settled_count": 23,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
 }
