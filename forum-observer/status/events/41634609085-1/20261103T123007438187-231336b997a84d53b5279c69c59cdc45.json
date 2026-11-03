@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026307",
+  "state": "collecting_effectively",
+  "run_id": "41634609085",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41634609085",
+  "updated_at": "2026-11-03T12:30:07.438187+00:00",
+  "error": null,
+  "valid_materials": 101,
+  "valid_authors": 101,
+  "successful_post_opens": 506,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 490,
+      "attempted": 462,
+      "opened": 461,
+      "extracted": 454,
+      "completed": 461
+    }
+  },
+  "article_texts_extracted": 499,
+  "article_details_completed": 506,
+  "last_verified_post": {
+    "author": "深圳好日子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205026&type=3",
+    "verified_at": "2026-11-03T12:30:06.270187+00:00",
+    "text_length": 797,
+    "text_sha256": "7f108b8894411fe92d58c572fd4eed0f314b3dcc4fd4b5a1966eb08eb603febd"
+  },
+  "last_attempted_post": {
+    "author": "射到腿软",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205025&type=3",
+    "attempt_index": 507
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:22:52.750240+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 499,
+  "stage": "detail: 射到腿软 307",
+  "progress_updated_at": "2026-11-03T12:30:06.905296+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 7
+  },
+  "coverage_label": null
+}
