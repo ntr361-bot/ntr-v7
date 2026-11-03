@@ -7,56 +7,61 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41636295106",
-  "updated_at": "2026-11-03T12:33:55.155144+00:00",
+  "updated_at": "2026-11-03T12:34:59.293649+00:00",
   "error": null,
-  "valid_materials": 2,
-  "valid_authors": 2,
-  "successful_post_opens": 7,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 110,
   "article_details": {
     "featured": {
       "queued": 45,
-      "attempted": 8,
-      "opened": 7,
-      "extracted": 7,
-      "completed": 7
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
     },
     "ordinary": {
       "queued": 487,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 66,
+      "opened": 65,
+      "extracted": 62,
+      "completed": 65
     }
   },
-  "article_texts_extracted": 7,
-  "article_details_completed": 7,
+  "article_texts_extracted": 107,
+  "article_details_completed": 110,
   "last_verified_post": {
-    "author": "顺藤摸瓜",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205311&type=3",
-    "verified_at": "2026-11-03T12:33:54.663184+00:00",
-    "text_length": 244,
-    "text_sha256": "c4ddfae81e3e432e4884f09730754ca08aca7d7c82dc6e284a3b5eed06d08f94"
+    "author": "六合至尊",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11209765&type=3",
+    "verified_at": "2026-11-03T12:34:58.541744+00:00",
+    "text_length": 18,
+    "text_sha256": "0d23c15efd596b828c9b2a9a723b9665a190c9e47081ef039f41ce7e96765efa"
   },
   "last_attempted_post": {
-    "author": "斩草除根",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205307&type=3",
-    "attempt_index": 8
+    "author": "卓楚赢",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11205478&type=3",
+    "attempt_index": 111
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-03T12:34:16.477919+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 7,
-  "stage": "detail: 斩草除根 港澳牛魔王【內部六尾】",
-  "progress_updated_at": "2026-11-03T12:33:54.676915+00:00",
+  "raw_count": 107,
+  "stage": "detail: 卓楚赢 杀肖统计（杀多次）",
+  "progress_updated_at": "2026-11-03T12:34:58.730335+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 3
   },
   "coverage_label": null
 }
