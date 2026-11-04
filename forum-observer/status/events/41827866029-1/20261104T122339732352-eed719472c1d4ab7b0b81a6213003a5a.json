@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026308",
+  "state": "collecting_effectively",
+  "run_id": "41827866029",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41827866029",
+  "updated_at": "2026-11-04T12:23:39.732352+00:00",
+  "error": null,
+  "valid_materials": 24,
+  "valid_authors": 24,
+  "successful_post_opens": 110,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 62,
+      "opened": 61,
+      "extracted": 60,
+      "completed": 61
+    }
+  },
+  "article_texts_extracted": 109,
+  "article_details_completed": 110,
+  "last_verified_post": {
+    "author": "澳门熬吧嘛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11214963&type=3",
+    "verified_at": "2026-11-04T12:23:39.505822+00:00",
+    "text_length": 130,
+    "text_sha256": "1bc78264f853ce08a005c386d286eebb919b7dd14cb6ead2dee1574ce23ffc63"
+  },
+  "last_attempted_post": {
+    "author": "旺旺沐兒",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11214955&type=3",
+    "attempt_index": 111
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-04T12:23:00.433453+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 109,
+  "stage": "detail: 旺旺沐兒 308杀肖",
+  "progress_updated_at": "2026-11-04T12:23:39.663675+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
