@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026308",
+  "state": "collecting_effectively",
+  "run_id": "41827866029",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41827866029",
+  "updated_at": "2026-11-04T12:25:47.009449+00:00",
+  "error": null,
+  "valid_materials": 55,
+  "valid_authors": 55,
+  "successful_post_opens": 264,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 216,
+      "opened": 215,
+      "extracted": 214,
+      "completed": 215
+    }
+  },
+  "article_texts_extracted": 263,
+  "article_details_completed": 264,
+  "last_verified_post": {
+    "author": "如火如荼",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211890&type=3",
+    "verified_at": "2026-11-04T12:25:45.875731+00:00",
+    "text_length": 50,
+    "text_sha256": "5d7559a9966e1b84bcbb1d378d5b3931f5caec0968b1c20feb678c9f13aa0218"
+  },
+  "last_attempted_post": {
+    "author": "豆蔻年华",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211889&type=3",
+    "attempt_index": 265
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-04T12:23:00.433453+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 263,
+  "stage": "detail: 豆蔻年华 308期：必开六肖",
+  "progress_updated_at": "2026-11-04T12:25:46.272866+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
