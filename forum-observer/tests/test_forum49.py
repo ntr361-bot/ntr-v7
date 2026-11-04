@@ -245,10 +245,16 @@ class StrictIssueLineTest(unittest.TestCase):
         self.assertEqual(len(counted(mats)), 1)
 
     def test_118_default_scoring_is_unchanged(self):
-        # Without the opt-in flag the old behaviour (and its known flaw) remains.
-        _, mats = score_posts([dict(post('295-297--牛蛇羊鸡猴狗', title='六肖'))])
+        # Without the opt-in flag no strict line check is recorded.
+        _, mats = score_posts([dict(post('297期六肖：牛蛇羊鸡猴狗', title='六肖'))])
         self.assertEqual(len(counted(mats)), 1)
         self.assertNotIn('issue_line_check', mats[0])
+
+    def test_default_scoring_rejects_line_opening_with_other_issue(self):
+        # User 2026-11-04: a line opening with another issue number (even a
+        # range such as "295-297--") is not this issue's material.
+        _, mats = score_posts([dict(post('295-297--牛蛇羊鸡猴狗', title='六肖'))])
+        self.assertEqual(len(counted(mats)), 0)
 
     def test_forum49_strict_gate_is_test_mode_only(self):
         # User decision 2026-10-25: formal scoring keeps the old rule for now;
@@ -257,14 +263,20 @@ class StrictIssueLineTest(unittest.TestCase):
         self.assertTrue(forum49.STRICT_SHADOW)
 
     def test_strict_shadow_reports_differences_without_touching_formal(self):
-        p1 = post(ICE_BLOCK, title='4肖.6肖中特-杀肖-平特(有连中版)', author='冰淇淋不冷')
+        # 2026-11-04: formal scoring now also drops lines opening with another
+        # issue (ICE_BLOCK -> 0 formal materials); a line without any explicit
+        # issue still differs between formal and the strict shadow.
+        p0 = post(ICE_BLOCK, title='4肖.6肖中特-杀肖-平特(有连中版)', author='冰淇淋不冷')
+        _, formal0 = score_posts([dict(p0)])
+        self.assertEqual(sum(m['counted_for_ranking'] for m in formal0), 0)
+        p1 = post('六肖：鼠牛虎兔龙蛇', title='六肖', author='无期号')
         p2 = post('297期:六肖【猴虎羊鸡兔牛】开 ？准', author='乙')
         _, formal = score_posts([dict(p1), dict(p2)])
         result = {'evidence': [p1, p2], 'parsed_predictions': formal}
         shadow = forum49.strict_shadow_observation(result)
         self.assertFalse(shadow['used_for_freeze'])
         self.assertEqual(shadow['valid_materials'], 1)
-        self.assertEqual(shadow['dropped_authors'], ['冰淇淋不冷'])
+        self.assertEqual(shadow['dropped_authors'], ['无期号'])
         self.assertEqual(sum(m['counted_for_ranking'] for m in formal), 2)
 
 

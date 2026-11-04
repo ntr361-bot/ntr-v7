@@ -136,15 +136,48 @@ def line_issue_guard(excerpt, issue):
     return None
 
 
-_BARE_LIST=re.compile(r'^\s*(?:第\s*)?(?:20\d{5}|\d{3})\s*期\s*[:：]?\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6,12})(?:[开開].*)?$')
+_OTHER_ISSUE_LEAD=re.compile(r'^\s*[^\d\n]{0,3}?(?:第\s*)?(20\d{5}|\d{3})(?!\d)')
+
+
+def other_issue_line(excerpt, issue):
+    """User 2026-11-04 (AGENTS rule 5): a source line that opens with another
+    explicit issue number ("304六肖中特（牛兔马狗鼠鸡）狗21✔️", "307 七肖 ...",
+    "302绝杀二肖兔鼠" inside a 308 post) is a track record, never this issue's
+    material, whatever the post title says. Applies to both forum models."""
+    pieces=str(excerpt).split(' | ')
+    line=max(pieces,key=lambda x:sum(c in ZODIACS for c in x))
+    m=_OTHER_ISSUE_LEAD.match(line)
+    if m and m.group(1) not in (str(issue),str(issue)[-3:]):
+        return OTHER_ISSUE_REASON
+    return None
+
+
+OTHER_ISSUE_REASON='source line names another issue'
+
+
+def drop_other_issue_lines(text, issue):
+    """Remove whole lines that open with another explicit issue number before
+    parsing, so a current-issue line is never dropped as a duplicate of an
+    identical older row ("284绝杀一肖：蛇✓" ... "308绝杀一肖：蛇") (2026-11-04)."""
+    # Lines that current_period_text already reads as period markers ("307期:")
+    # are kept: they switch the section context for the lines below them.
+    year=str(issue)[:4]
+    return '\n'.join(line for line in period_lines(text)
+                     if _period_marker(line,year) or not other_issue_line(line, issue))
+
+
+_BARE_LIST=re.compile(r'^\s*(?:第\s*)?(?:20\d{5}|\d{3})\s*(?:期\s*[:：]?|[，,:：])\s*(?P<picks>(?:['+ZODIAC_CLASS+r'][ \t、，,]*){6,12})(?:[开開].*)?$')
 
 
 def extract_titled_bare_list(text, title):
     """User 2026-10-29: in a post titled "N肖中特", a current-issue line that
     lists only zodiacs ("302期:龙猪牛兔羊狗猴开") is a recommendation of the
     zodiacs actually listed; with six or more it is usable even if the title's
-    N differs. Lines with 杀/禁/防 or a filled result are not this play."""
-    if not re.search(r'(?:['+COUNT_CLASS+r']{1,2})肖中特',str(title)):
+    N differs. Lines with 杀/禁/防 or a filled result are not this play.
+    User 2026-11-04: the same applies to a title "N肖" without 中特 (e.g.
+    "精选9肖") and to an issue number followed by a comma or colon instead of
+    期 ("308，羊蛇龙虎鼠狗兔鸡，开？" -> eight-zodiac recommendation)."""
+    if not re.search(r'(?:['+COUNT_CLASS+r']{1,2})肖',str(title)):
         return []
     rows=[]
     for line in str(text).splitlines():
@@ -1161,6 +1194,11 @@ def score_posts(posts,strict_issue_lines=False,material_cap=None):
         # Reply text is saved as evidence, but must not be attributed to OP.
         legacy_body=post['body']
         legacy_replies=_author_comments(post.get('comments',''),post['author'])
+        if not strict_issue_lines:
+            # 2026-11-04: formal scoring (both models) drops other-issue lines;
+            # the strict 49 shadow keeps them and records its own reasons.
+            legacy_body=drop_other_issue_lines(legacy_body,post['issue'])
+            legacy_replies=drop_other_issue_lines(legacy_replies,post['issue'])
         raw_body=normalize_kill_emoji(legacy_body)
         raw_replies=normalize_kill_emoji(legacy_replies)
         ocr_texts=[]
@@ -1177,6 +1215,8 @@ def score_posts(posts,strict_issue_lines=False,material_cap=None):
             if (('/article/' in pic['src'] and pic.get('ocr_status')=='recognized_consistent' and pic.get('period_verified') is True)
                     or eligible_comment_image(pic,post)):
                 ocr=split_issue_units(pic['ocr']) if strict_issue_lines else pic['ocr']
+                if not strict_issue_lines:
+                    ocr=drop_other_issue_lines(ocr,post['issue'])
                 ocr_texts.append(ocr)
                 text+='\n'+current_period_text(ocr,post['issue'])
         legacy_text=(current_period_text(post['title'],post['issue'])+'\n'
@@ -1203,6 +1243,8 @@ def score_posts(posts,strict_issue_lines=False,material_cap=None):
                 if strict_reason:reason=strict_reason
             if UNCERTAIN_PATTERN.search(post['title']):
                 p['mode']='unverified'
+            if not strict_issue_lines:
+                reason=reason or other_issue_line(p.get('excerpt',''),post['issue'])
             if (p['mode'],tuple(p['picks'])) not in legacy_keys:
                 p['rule_20261029']=True
                 reason=reason or new_rule_guard(p,post['issue'])

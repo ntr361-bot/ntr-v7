@@ -22,7 +22,7 @@ def counted(body, title='t', strict=True):
 
 class ConfirmedPlays(unittest.TestCase):
     def test_rule_version_bumped(self):
-        self.assertEqual(SCORING_RULE_VERSION, '2026-10-29-one-author-9-8-7-6-priority-v9')
+        self.assertEqual(SCORING_RULE_VERSION, '2026-11-04-one-author-9-8-7-6-priority-v10')
 
     def test_six_with_number_ignores_number(self):  # 广东壹码神
         self.assertEqual(counted('302期（六肖中特）【马龙狗猴兔牛+24】开：？🀄️'),
