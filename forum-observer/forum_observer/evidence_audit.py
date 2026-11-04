@@ -224,6 +224,17 @@ def _admission_priority(row):
     return 6
 
 
+_REPLACEMENT_LINE = re.compile(r"^\s*(?:\d{3}\s*期?\s*)?替换")
+
+
+def _replacement_rank(row):
+    """User 2026-11-04: inside one post, a "替换版" line replaces the author's
+    original line ("308期🔪鼠马蛇猪（原公式）" / "替换版🔪虎蛇猴猪"), so it is
+    preferred over equal-priority rows of the same post."""
+    pieces = str(row.get("excerpt") or "").split(" | ")
+    return 0 if any(_REPLACEMENT_LINE.match(p) for p in pieces) else 1
+
+
 def admit_one_material_per_author(rows):
     """Choose exactly ONE verified material per author per issue.
 
@@ -250,6 +261,7 @@ def admit_one_material_per_author(rows):
             _admission_priority(r),
             str(r.get("published_at") or "9999-12-31T23:59:59"),
             str(r.get("source_url") or ""),
+            _replacement_rank(r),
             str(r.get("play") or ""),
             "".join(r.get("picks") or r.get("vote_zodiacs") or []),
         ))
