@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026308",
+  "state": "collecting_effectively",
+  "run_id": "41827866029",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41827866029",
+  "updated_at": "2026-11-04T12:27:55.350287+00:00",
+  "error": null,
+  "valid_materials": 75,
+  "valid_authors": 75,
+  "successful_post_opens": 396,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 348,
+      "opened": 347,
+      "extracted": 346,
+      "completed": 347
+    }
+  },
+  "article_texts_extracted": 395,
+  "article_details_completed": 396,
+  "last_verified_post": {
+    "author": "小财迷",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211548&type=3",
+    "verified_at": "2026-11-04T12:27:54.087357+00:00",
+    "text_length": 65,
+    "text_sha256": "3b0683f70597d03ce02aff4453f21eea9edb32e9a466b82635d33965ec6d87ff"
+  },
+  "last_attempted_post": {
+    "author": "迷之自信",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211547&type=3",
+    "attempt_index": 397
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-04T12:23:00.433453+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 395,
+  "stage": "detail: 迷之自信 308期：●六肖中特●‖★★你敢跟,我敢开!★★",
+  "progress_updated_at": "2026-11-04T12:27:54.575222+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
