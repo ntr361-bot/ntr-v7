@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026308",
+  "state": "collecting_effectively",
+  "run_id": "41827866029",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/41827866029",
+  "updated_at": "2026-11-04T12:26:51.017994+00:00",
+  "error": null,
+  "valid_materials": 67,
+  "valid_authors": 67,
+  "successful_post_opens": 332,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 476,
+      "attempted": 284,
+      "opened": 283,
+      "extracted": 282,
+      "completed": 283
+    }
+  },
+  "article_texts_extracted": 331,
+  "article_details_completed": 332,
+  "last_verified_post": {
+    "author": "密封罐",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211722&type=3",
+    "verified_at": "2026-11-04T12:26:50.150140+00:00",
+    "text_length": 144,
+    "text_sha256": "e2406684970c3a33759f34bf29b60f684f813d096d157f62f598c899040873b1"
+  },
+  "last_attempted_post": {
+    "author": "拟定蒂娜",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11211721&type=3",
+    "attempt_index": 333
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-04T12:23:00.433453+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 331,
+  "stage": "detail: 拟定蒂娜 308期天地肖爆特",
+  "progress_updated_at": "2026-11-04T12:26:50.580776+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
