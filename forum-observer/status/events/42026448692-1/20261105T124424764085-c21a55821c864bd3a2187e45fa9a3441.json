@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42026448692",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42026448692",
+  "updated_at": "2026-11-05T12:44:24.764085+00:00",
+  "error": null,
+  "valid_materials": 97,
+  "valid_authors": 97,
+  "successful_post_opens": 520,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 493,
+      "attempted": 476,
+      "opened": 476,
+      "extracted": 475,
+      "completed": 476
+    }
+  },
+  "article_texts_extracted": 519,
+  "article_details_completed": 520,
+  "last_verified_post": {
+    "author": "竹报彡多",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216020&type=3",
+    "verified_at": "2026-11-05T12:44:24.105723+00:00",
+    "text_length": 1715,
+    "text_sha256": "70c6ad6e065636d77b5f804da4ec7a36592a068f6d185dda1801d5310b98d3b7"
+  },
+  "last_attempted_post": {
+    "author": "竹报彡多",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216020&type=3",
+    "attempt_index": 520
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-05T12:35:22.030582+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 519,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-05T12:44:24.561414+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
