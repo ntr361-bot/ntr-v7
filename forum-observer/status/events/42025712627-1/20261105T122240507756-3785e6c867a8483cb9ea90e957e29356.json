@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42025712627",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42025712627",
+  "updated_at": "2026-11-05T12:22:40.507756+00:00",
+  "error": null,
+  "valid_materials": 3,
+  "valid_authors": 3,
+  "successful_post_opens": 11,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 12,
+      "opened": 11,
+      "extracted": 11,
+      "completed": 11
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 11,
+  "article_details_completed": 11,
+  "last_verified_post": {
+    "author": "港澳牛总",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216773&type=3",
+    "verified_at": "2026-11-05T12:22:40.269003+00:00",
+    "text_length": 513,
+    "text_sha256": "b5ef9a6ee94e7a783e270361d0926d96e5b5ae2000cb43b50d0b2424c36f6b34"
+  },
+  "last_attempted_post": {
+    "author": "泉州打工人",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11215549&type=3",
+    "attempt_index": 12
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 11,
+  "stage": "detail: 泉州打工人 309",
+  "progress_updated_at": "2026-11-05T12:22:40.285167+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
