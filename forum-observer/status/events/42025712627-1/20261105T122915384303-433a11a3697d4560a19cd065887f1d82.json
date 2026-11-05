@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42025712627",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42025712627",
+  "updated_at": "2026-11-05T12:29:15.384303+00:00",
+  "error": null,
+  "valid_materials": 82,
+  "valid_authors": 82,
+  "successful_post_opens": 423,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 380,
+      "opened": 379,
+      "extracted": 378,
+      "completed": 379
+    }
+  },
+  "article_texts_extracted": 422,
+  "article_details_completed": 423,
+  "last_verified_post": {
+    "author": "朝暮思雪",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216920&type=3",
+    "verified_at": "2026-11-05T12:29:14.368326+00:00",
+    "text_length": 76,
+    "text_sha256": "9009536938c74d80b7e95c5e309f4869813cde40c0d3ff1ba812bebf3d1bad52"
+  },
+  "last_attempted_post": {
+    "author": "秋风霜月",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216913&type=3",
+    "attempt_index": 424
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-05T12:22:59.125539+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 422,
+  "stage": "detail: 秋风霜月 309期：两个半单双",
+  "progress_updated_at": "2026-11-05T12:29:15.029268+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
