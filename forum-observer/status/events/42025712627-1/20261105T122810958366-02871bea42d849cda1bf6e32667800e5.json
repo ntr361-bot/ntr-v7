@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42025712627",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42025712627",
+  "updated_at": "2026-11-05T12:28:10.958366+00:00",
+  "error": null,
+  "valid_materials": 75,
+  "valid_authors": 75,
+  "successful_post_opens": 369,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 326,
+      "opened": 325,
+      "extracted": 324,
+      "completed": 325
+    }
+  },
+  "article_texts_extracted": 368,
+  "article_details_completed": 369,
+  "last_verified_post": {
+    "author": "滑稽的球",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11217166&type=3",
+    "verified_at": "2026-11-05T12:28:09.685556+00:00",
+    "text_length": 120,
+    "text_sha256": "914bac5a429d4605fa11487f6e1794f2abb433fa23815918d5d071308129031d"
+  },
+  "last_attempted_post": {
+    "author": "一花一树开",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11217157&type=3",
+    "attempt_index": 370
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-05T12:22:59.125539+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 368,
+  "stage": "detail: 一花一树开 309期:左右生肖",
+  "progress_updated_at": "2026-11-05T12:28:10.313767+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
