@@ -1,0 +1,187 @@
+{
+  "issue": "2026309",
+  "model_id": "forum-observer",
+  "rule": "featured_posts_only_same_scoring",
+  "used_for_freeze": false,
+  "classification": "shadow_observation_only",
+  "fetched_at": "2026-11-05T12:44:50.290448+00:00",
+  "draw_at": "2026-11-05T21:32:00+08:00",
+  "scoring_rule_version": "2026-10-29-one-author-9-8-7-6-priority-v9",
+  "featured_posts": 44,
+  "valid_materials": 7,
+  "ranking": [
+    {
+      "rank": 1,
+      "zodiac": "牛",
+      "score": 0.854798
+    },
+    {
+      "rank": 2,
+      "zodiac": "羊",
+      "score": 0.854798
+    },
+    {
+      "rank": 3,
+      "zodiac": "马",
+      "score": 0.729798
+    },
+    {
+      "rank": 4,
+      "zodiac": "虎",
+      "score": 0.618687
+    },
+    {
+      "rank": 5,
+      "zodiac": "鸡",
+      "score": 0.57702
+    },
+    {
+      "rank": 6,
+      "zodiac": "狗",
+      "score": 0.57702
+    },
+    {
+      "rank": 7,
+      "zodiac": "猪",
+      "score": 0.57702
+    },
+    {
+      "rank": 8,
+      "zodiac": "龙",
+      "score": 0.493687
+    },
+    {
+      "rank": 9,
+      "zodiac": "鼠",
+      "score": 0.479798
+    },
+    {
+      "rank": 10,
+      "zodiac": "兔",
+      "score": 0.438131
+    },
+    {
+      "rank": 11,
+      "zodiac": "猴",
+      "score": 0.438131
+    },
+    {
+      "rank": 12,
+      "zodiac": "蛇",
+      "score": 0.361111
+    }
+  ],
+  "top1": [
+    "牛"
+  ],
+  "top3": [
+    "牛",
+    "羊",
+    "马"
+  ],
+  "top6": [
+    "牛",
+    "羊",
+    "马",
+    "虎",
+    "鸡",
+    "狗"
+  ],
+  "materials": [
+    {
+      "author": "叶落归根",
+      "play": "八肖（家野组合）",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "马",
+        "羊",
+        "鸡",
+        "狗",
+        "猪",
+        "龙",
+        "蛇"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216168&type=3"
+    },
+    {
+      "author": "顺藤摸瓜",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "蛇",
+        "猪",
+        "龙"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216036&type=3"
+    },
+    {
+      "author": "港澳牛总",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "龙",
+        "马",
+        "牛",
+        "羊",
+        "虎"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216773&type=3"
+    },
+    {
+      "author": "韩财神",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "虎",
+        "鸡"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11215571&type=3"
+    },
+    {
+      "author": "扶姚直上",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11217078&type=3"
+    },
+    {
+      "author": "粗枝大叶",
+      "play": "八肖（单双组合）",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "猪",
+        "鸡",
+        "羊",
+        "蛇",
+        "虎",
+        "狗"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216154&type=3"
+    },
+    {
+      "author": "灰心丧气",
+      "play": "八肖（前后二肖）",
+      "mode": "include",
+      "picks": [
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "猪",
+        "牛",
+        "虎"
+      ],
+      "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216151&type=3"
+    }
+  ],
+  "frozen_at": "2026-11-05T13:01:33.266263+00:00",
+  "digest": "100587bb671773ba512f851147e57f2d455e6e742aeadc5263adf94653ed8e56"
+}

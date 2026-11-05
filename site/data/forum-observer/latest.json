@@ -12,23 +12,34 @@
   "distinct_prediction_authors": 99,
   "preview_top3": [
     "羊",
-    "马",
-    "狗"
+    "狗",
+    "马"
   ],
   "preview_top6": [
     "羊",
-    "马",
     "狗",
+    "马",
     "鸡",
     "龙",
-    "猪"
+    "蛇"
   ],
-  "frozen": false,
-  "prediction_top3": [],
-  "prediction_top6": [],
-  "snapshot_digest": null,
-  "freeze_quality_status": null,
-  "freeze_minimum_valid_materials": null,
+  "frozen": true,
+  "prediction_top3": [
+    "羊",
+    "狗",
+    "马"
+  ],
+  "prediction_top6": [
+    "羊",
+    "狗",
+    "马",
+    "鸡",
+    "龙",
+    "蛇"
+  ],
+  "snapshot_digest": "29e7c488f6f249bed67a77d188b55d76c9aa9c5f8b9ed7ce2ad516c1f375101c",
+  "freeze_quality_status": "meets_minimum_samples",
+  "freeze_minimum_valid_materials": 25,
   "settlement": null,
   "settled_count": 24,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
