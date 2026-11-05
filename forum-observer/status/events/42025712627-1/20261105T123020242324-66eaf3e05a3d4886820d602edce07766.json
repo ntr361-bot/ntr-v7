@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42025712627",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42025712627",
+  "updated_at": "2026-11-05T12:30:20.242324+00:00",
+  "error": null,
+  "valid_materials": 89,
+  "valid_authors": 89,
+  "successful_post_opens": 476,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 432,
+      "opened": 432,
+      "extracted": 431,
+      "completed": 432
+    }
+  },
+  "article_texts_extracted": 475,
+  "article_details_completed": 476,
+  "last_verified_post": {
+    "author": "王道人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216550&type=3",
+    "verified_at": "2026-11-05T12:30:19.564758+00:00",
+    "text_length": 601,
+    "text_sha256": "0324da960e566e61d774b44875ae6cebcaaa46d98ef647aa2732e0a4c303cc62"
+  },
+  "last_attempted_post": {
+    "author": "王道人",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11216550&type=3",
+    "attempt_index": 476
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-05T12:22:59.125539+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 475,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-05T12:30:19.903641+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
