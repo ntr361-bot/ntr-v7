@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026309",
+  "state": "collecting_effectively",
+  "run_id": "42025712627",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42025712627",
+  "updated_at": "2026-11-05T12:31:24.425443+00:00",
+  "error": null,
+  "valid_materials": 97,
+  "valid_authors": 97,
+  "successful_post_opens": 527,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 494,
+      "attempted": 483,
+      "opened": 483,
+      "extracted": 482,
+      "completed": 483
+    }
+  },
+  "article_texts_extracted": 526,
+  "article_details_completed": 527,
+  "last_verified_post": {
+    "author": "白日沉沦夜",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11215954&type=3",
+    "verified_at": "2026-11-05T12:31:23.831752+00:00",
+    "text_length": 533,
+    "text_sha256": "c41b2e1712de9ca7ec0c08e992b5f9975e0d15fd1afb20141dac89c758023958"
+  },
+  "last_attempted_post": {
+    "author": "白日沉沦夜",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11215954&type=3",
+    "attempt_index": 527
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-05T12:22:59.125539+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 526,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-05T12:31:24.200426+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
