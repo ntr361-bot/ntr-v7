@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216789280",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
+  "updated_at": "2026-11-06T12:26:47.465893+00:00",
+  "error": null,
+  "valid_materials": 57,
+  "valid_authors": 57,
+  "successful_post_opens": 272,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 229,
+      "opened": 228,
+      "extracted": 226,
+      "completed": 228
+    }
+  },
+  "article_texts_extracted": 270,
+  "article_details_completed": 272,
+  "last_verified_post": {
+    "author": "风吹草动",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221326&type=3",
+    "verified_at": "2026-11-06T12:26:46.391965+00:00",
+    "text_length": 114,
+    "text_sha256": "878307d66ff9ee472774ae4f66159af4acdd60508f8ddbb785e9b1325bc3278c"
+  },
+  "last_attempted_post": {
+    "author": "世外桃源",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221325&type=3",
+    "attempt_index": 273
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:22:52.525628+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 270,
+  "stage": "detail: 世外桃源 310期：大小中特",
+  "progress_updated_at": "2026-11-06T12:26:47.090881+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
