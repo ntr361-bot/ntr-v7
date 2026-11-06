@@ -103,78 +103,78 @@
     "issue_filter_strict": true
   },
   "top3": [
-    "兔",
     "鼠",
+    "兔",
     "羊"
   ],
   "top6": [
-    "兔",
     "鼠",
+    "兔",
     "羊",
     "牛",
-    "鸡",
+    "狗",
     "猴"
   ],
   "ranking": [
     {
       "rank": 1,
-      "zodiac": "兔",
-      "score": 9.687049
-    },
-    {
-      "rank": 2,
       "zodiac": "鼠",
       "score": 9.47114
     },
     {
+      "rank": 2,
+      "zodiac": "兔",
+      "score": 9.453716
+    },
+    {
       "rank": 3,
       "zodiac": "羊",
-      "score": 9.033514
+      "score": 9.30018
     },
     {
       "rank": 4,
       "zodiac": "牛",
-      "score": 8.216017
+      "score": 8.549351
     },
     {
       "rank": 5,
-      "zodiac": "鸡",
-      "score": 8.04026
+      "zodiac": "狗",
+      "score": 7.943795
     },
     {
       "rank": 6,
       "zodiac": "猴",
-      "score": 7.864827
+      "score": 7.809271
     },
     {
       "rank": 7,
-      "zodiac": "狗",
-      "score": 7.777128
+      "zodiac": "猪",
+      "score": 7.802128
     },
     {
       "rank": 8,
-      "zodiac": "马",
-      "score": 7.47197
+      "zodiac": "虎",
+      "score": 7.653211
     },
     {
       "rank": 9,
-      "zodiac": "虎",
-      "score": 7.343687
+      "zodiac": "鸡",
+      "score": 7.352958
     },
     {
       "rank": 10,
-      "zodiac": "猪",
-      "score": 7.302128
+      "zodiac": "马",
+      "score": 6.87197
     },
     {
       "rank": 11,
       "zodiac": "龙",
-      "score": 6.759199
+      "score": 6.87031
     },
     {
       "rank": 12,
       "zodiac": "蛇",
-      "score": 6.033081
+      "score": 5.92197
     }
   ],
   "author_selection": {
@@ -1345,10 +1345,17 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "牛",
+        "兔",
+        "龙",
+        "狗",
+        "猪",
+        "羊"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
     },
     {
       "play": "六肖",
@@ -1369,7 +1376,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1392,7 +1399,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（308期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1415,7 +1422,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（307期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1438,7 +1445,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（306期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1461,7 +1468,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（305期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1483,17 +1490,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "牛",
-        "兔",
-        "马",
-        "狗",
-        "鼠",
-        "鸡"
-      ],
-      "weight_per_zodiac": 0.16666666666666666
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（304期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "六肖",
@@ -1514,7 +1514,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（303期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1537,7 +1537,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（301期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1560,7 +1560,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（300期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1583,7 +1583,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（299期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1606,7 +1606,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（297期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1629,7 +1629,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（296期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1652,7 +1652,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（295期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1675,7 +1675,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（294期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1698,7 +1698,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（293期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1721,7 +1721,7 @@
       "published_at": "2026-11-06 19:48",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227726&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（292期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1745,7 +1745,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（302期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1769,7 +1769,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（303期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1793,7 +1793,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（304期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1817,7 +1817,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（305期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1841,7 +1841,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（306期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1864,18 +1864,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "羊",
-        "猴",
-        "鸡",
-        "狗",
-        "龙",
-        "牛",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.14285714285714285
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（307期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "七肖",
@@ -1897,7 +1889,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（308期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1921,7 +1913,7 @@
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -1944,10 +1936,18 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
       "published_at": "2026-11-06 19:49",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220890&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "虎",
+        "狗",
+        "猪",
+        "羊",
+        "猴",
+        "龙",
+        "牛"
+      ],
+      "weight_per_zodiac": 0.14285714285714285
     },
     {
       "play": "杀",
@@ -2573,7 +2573,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（296期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2596,7 +2596,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（297期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2619,7 +2619,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（298期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2642,7 +2642,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（299期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2665,7 +2665,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（300期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2688,7 +2688,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（301期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2711,7 +2711,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（302期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2734,7 +2734,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（303期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2757,7 +2757,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（305期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2779,17 +2779,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "兔",
-        "龙",
-        "猴",
-        "鸡",
-        "羊",
-        "马"
-      ],
-      "weight_per_zodiac": 0.16666666666666666
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（306期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "六肖",
@@ -2810,7 +2803,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（307期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2833,7 +2826,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（308期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2856,7 +2849,7 @@
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -2878,10 +2871,17 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
       "published_at": "2026-11-06 17:42",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227077&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "羊",
+        "鼠",
+        "猪",
+        "虎",
+        "龙",
+        "牛"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
     },
     {
       "play": "六肖",
@@ -3300,10 +3300,20 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "猴",
+        "马",
+        "龙",
+        "鼠",
+        "兔",
+        "牛",
+        "猪",
+        "狗",
+        "羊"
+      ],
+      "weight_per_zodiac": 0.1111111111111111
     },
     {
       "play": "九肖",
@@ -3326,20 +3336,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "兔",
-        "牛",
-        "马",
-        "蛇",
-        "猪",
-        "狗",
-        "羊",
-        "鼠",
-        "鸡"
-      ],
-      "weight_per_zodiac": 0.1111111111111111
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "九肖",
@@ -3363,7 +3363,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（306期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3389,7 +3389,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（305期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3415,7 +3415,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（304期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3441,7 +3441,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（303期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3467,7 +3467,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（302期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3493,7 +3493,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（301期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3519,7 +3519,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（300期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3545,7 +3545,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（299期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3571,7 +3571,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（298期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3597,7 +3597,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（294期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3623,7 +3623,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（295期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3649,7 +3649,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（296期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3675,7 +3675,7 @@
       "published_at": "2026-11-06 16:39",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225983&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（297期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3920,7 +3920,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（301期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3938,7 +3938,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（302期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3956,7 +3956,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（303期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3974,7 +3974,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（304期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -3992,7 +3992,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（305期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -4010,7 +4010,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（306期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -4028,7 +4028,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（307期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -4046,7 +4046,7 @@
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（308期）记录且已写开奖结果，非本期推荐",
       "vote_zodiacs": [],
       "weight_per_zodiac": 0.0
     },
@@ -4063,21 +4063,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "鼠",
-        "牛",
-        "虎",
-        "龙",
-        "蛇",
-        "马",
-        "猴",
-        "鸡",
-        "狗",
-        "猪"
-      ],
-      "weight_per_zodiac": 0.1
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "杀二肖",
@@ -4092,10 +4081,21 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
       "published_at": "2026-11-06 11:36",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11224514&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "羊",
+        "猴",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.1
     },
     {
       "play": "五肖",
@@ -4954,17 +4954,10 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221263&type=3",
       "published_at": "2026-11-05 23:26",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221263&type=3",
-      "counted_for_ranking": true,
-      "exclusion_reason": null,
-      "vote_zodiacs": [
-        "兔",
-        "龙",
-        "蛇",
-        "马",
-        "羊",
-        "猴"
-      ],
-      "weight_per_zodiac": 0.16666666666666666
+      "counted_for_ranking": false,
+      "exclusion_reason": "pre-freeze audit: 同帖多期记录，计分行为往期（309期）记录且已写开奖结果，非本期推荐",
+      "vote_zodiacs": [],
+      "weight_per_zodiac": 0.0
     },
     {
       "play": "六肖",
@@ -4984,10 +4977,17 @@
       "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221263&type=3",
       "published_at": "2026-11-05 23:26",
       "evidence_id": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221263&type=3",
-      "counted_for_ranking": false,
-      "exclusion_reason": "duplicate author/equal priority earlier source",
-      "vote_zodiacs": [],
-      "weight_per_zodiac": 0.0
+      "counted_for_ranking": true,
+      "exclusion_reason": null,
+      "vote_zodiacs": [
+        "牛",
+        "蛇",
+        "羊",
+        "猴",
+        "狗",
+        "猪"
+      ],
+      "weight_per_zodiac": 0.16666666666666666
     },
     {
       "play": "六肖",
