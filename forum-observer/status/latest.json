@@ -7,51 +7,56 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216931432",
-  "updated_at": "2026-11-06T12:35:32.588042+00:00",
+  "updated_at": "2026-11-06T12:36:35.861930+00:00",
   "error": null,
-  "valid_materials": 3,
-  "valid_authors": 3,
-  "successful_post_opens": 13,
+  "valid_materials": 24,
+  "valid_authors": 24,
+  "successful_post_opens": 94,
   "article_details": {
     "featured": {
       "queued": 44,
-      "attempted": 14,
-      "opened": 13,
-      "extracted": 13,
-      "completed": 13
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
     },
     "ordinary": {
       "queued": 480,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
     }
   },
-  "article_texts_extracted": 13,
-  "article_details_completed": 13,
+  "article_texts_extracted": 94,
+  "article_details_completed": 94,
   "last_verified_post": {
-    "author": "潮汕大鸟哥",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221732&type=3",
-    "verified_at": "2026-11-06T12:35:32.209385+00:00",
-    "text_length": 56,
-    "text_sha256": "dde278b974da2e20e346de33c010fba8093f87b895b65d72887c9589628f2337"
+    "author": "湘西密藏",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220688&type=3",
+    "verified_at": "2026-11-06T12:36:35.585379+00:00",
+    "text_length": 1390,
+    "text_sha256": "d14f98c702c45aecf2d48612c31cf2c6c02107d96a314f4f26bb72fe6f4460b3"
   },
   "last_attempted_post": {
-    "author": "窝里马",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220698&type=3",
-    "attempt_index": 14
+    "author": "湘西密藏",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220688&type=3",
+    "attempt_index": 94
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:36:00.249627+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 13,
-  "stage": "detail: 窝里马 杀肖/杀码",
-  "progress_updated_at": "2026-11-06T12:35:32.241168+00:00",
+  "raw_count": 94,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-06T12:36:35.771336+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
