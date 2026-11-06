@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216931432",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216931432",
+  "updated_at": "2026-11-06T12:36:35.861930+00:00",
+  "error": null,
+  "valid_materials": 24,
+  "valid_authors": 24,
+  "successful_post_opens": 94,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    }
+  },
+  "article_texts_extracted": 94,
+  "article_details_completed": 94,
+  "last_verified_post": {
+    "author": "湘西密藏",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220688&type=3",
+    "verified_at": "2026-11-06T12:36:35.585379+00:00",
+    "text_length": 1390,
+    "text_sha256": "d14f98c702c45aecf2d48612c31cf2c6c02107d96a314f4f26bb72fe6f4460b3"
+  },
+  "last_attempted_post": {
+    "author": "湘西密藏",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220688&type=3",
+    "attempt_index": 94
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:36:00.249627+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 94,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-06T12:36:35.771336+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
