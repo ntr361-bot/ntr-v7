@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216789280",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
+  "updated_at": "2026-11-06T12:27:50.796537+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 323,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 279,
+      "opened": 279,
+      "extracted": 277,
+      "completed": 279
+    }
+  },
+  "article_texts_extracted": 321,
+  "article_details_completed": 323,
+  "last_verified_post": {
+    "author": "澳门不倒靠养老",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221267&type=3",
+    "verified_at": "2026-11-06T12:27:50.144239+00:00",
+    "text_length": 243,
+    "text_sha256": "799cf7f181a96276b1f7790754ca3872d9a01e9d7cb335cc3f216a634b238d67"
+  },
+  "last_attempted_post": {
+    "author": "澳门不倒靠养老",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221267&type=3",
+    "attempt_index": 323
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:22:52.525628+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 321,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-06T12:27:50.513329+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
