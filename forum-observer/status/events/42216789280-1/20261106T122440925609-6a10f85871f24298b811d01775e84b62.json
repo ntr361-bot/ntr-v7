@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216789280",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
+  "updated_at": "2026-11-06T12:24:40.925609+00:00",
+  "error": null,
+  "valid_materials": 36,
+  "valid_authors": 36,
+  "successful_post_opens": 164,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 121,
+      "opened": 120,
+      "extracted": 118,
+      "completed": 120
+    }
+  },
+  "article_texts_extracted": 162,
+  "article_details_completed": 164,
+  "last_verified_post": {
+    "author": "今晚睡得香",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225142&type=3",
+    "verified_at": "2026-11-06T12:24:39.097819+00:00",
+    "text_length": 74,
+    "text_sha256": "14ea1a93c88f8d1c741d379eb0aa7f1644c22814ca663b5c4fa724c8dc178592"
+  },
+  "last_attempted_post": {
+    "author": "纯属娱乐丨",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225139&type=3",
+    "attempt_index": 165
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:22:52.525628+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 162,
+  "stage": "detail: 纯属娱乐丨 龙",
+  "progress_updated_at": "2026-11-06T12:24:40.788716+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
