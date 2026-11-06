@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
-  "updated_at": "2026-11-06T12:22:34.542470+00:00",
+  "updated_at": "2026-11-06T12:23:37.830409+00:00",
   "error": null,
-  "valid_materials": 2,
-  "valid_authors": 2,
-  "successful_post_opens": 12,
+  "valid_materials": 24,
+  "valid_authors": 24,
+  "successful_post_opens": 100,
   "article_details": {
     "featured": {
       "queued": 44,
-      "attempted": 13,
-      "opened": 12,
-      "extracted": 12,
-      "completed": 12
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
     },
     "ordinary": {
       "queued": 480,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 57,
+      "opened": 56,
+      "extracted": 56,
+      "completed": 56
     }
   },
-  "article_texts_extracted": 12,
-  "article_details_completed": 12,
+  "article_texts_extracted": 100,
+  "article_details_completed": 100,
   "last_verified_post": {
-    "author": "泉州打工人",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220663&type=3",
-    "verified_at": "2026-11-06T12:22:33.989656+00:00",
-    "text_length": 23,
-    "text_sha256": "29509c5d1597e6f1b7050740ec33e6a45340ed0fdf62b3b6ebd2f64a04b821aa"
+    "author": "上上签哦",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227084&type=3",
+    "verified_at": "2026-11-06T12:23:37.054227+00:00",
+    "text_length": 233,
+    "text_sha256": "e6297b7279abe767f87c011cce15c74909775a077468b9f99c6430e8d1dcf074"
   },
   "last_attempted_post": {
-    "author": "潮汕大鸟哥",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221732&type=3",
-    "attempt_index": 13
+    "author": "开本田的阿杰",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11227083&type=3",
+    "attempt_index": 101
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:22:52.525628+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 12,
-  "stage": "detail: 潮汕大鸟哥 主杀肖-310。",
-  "progress_updated_at": "2026-11-06T12:22:34.016121+00:00",
+  "raw_count": 100,
+  "stage": "detail: 开本田的阿杰 试水六肖",
+  "progress_updated_at": "2026-11-06T12:23:37.438135+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
