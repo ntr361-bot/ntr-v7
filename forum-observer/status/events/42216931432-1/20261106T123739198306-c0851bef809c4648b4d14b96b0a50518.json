@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216931432",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216931432",
+  "updated_at": "2026-11-06T12:37:39.198306+00:00",
+  "error": null,
+  "valid_materials": 36,
+  "valid_authors": 36,
+  "successful_post_opens": 159,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 116,
+      "opened": 115,
+      "extracted": 114,
+      "completed": 115
+    }
+  },
+  "article_texts_extracted": 158,
+  "article_details_completed": 159,
+  "last_verified_post": {
+    "author": "娱乐码皇",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220661&type=3",
+    "verified_at": "2026-11-06T12:37:38.464529+00:00",
+    "text_length": 59,
+    "text_sha256": "0161e2124eaf17a86026210bcd70b041a0f834799c3148eb7dda865a05b6a237"
+  },
+  "last_attempted_post": {
+    "author": "杀疯了",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11225145&type=3",
+    "attempt_index": 160
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:36:00.249627+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 158,
+  "stage": "detail: 杀疯了 310期个人心水",
+  "progress_updated_at": "2026-11-06T12:37:39.047596+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
