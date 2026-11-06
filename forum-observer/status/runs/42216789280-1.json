@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026310",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "42216789280",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
-  "updated_at": "2026-11-06T12:21:31.381828+00:00",
+  "updated_at": "2026-11-06T12:22:34.542470+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 12,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 44,
+      "attempted": 13,
+      "opened": 12,
+      "extracted": 12,
+      "completed": 12
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 480,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 12,
+  "article_details_completed": 12,
+  "last_verified_post": {
+    "author": "泉州打工人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220663&type=3",
+    "verified_at": "2026-11-06T12:22:33.989656+00:00",
+    "text_length": 23,
+    "text_sha256": "29509c5d1597e6f1b7050740ec33e6a45340ed0fdf62b3b6ebd2f64a04b821aa"
+  },
+  "last_attempted_post": {
+    "author": "潮汕大鸟哥",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221732&type=3",
+    "attempt_index": 13
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 66",
-  "progress_updated_at": "2026-11-06T12:21:30.572038+00:00",
+  "raw_count": 12,
+  "stage": "detail: 潮汕大鸟哥 主杀肖-310。",
+  "progress_updated_at": "2026-11-06T12:22:34.016121+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
