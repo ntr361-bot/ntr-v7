@@ -1206,6 +1206,10 @@ def score_posts(posts,strict_issue_lines=False,material_cap=None):
             if (p['mode'],tuple(p['picks'])) not in legacy_keys:
                 p['rule_20261029']=True
                 reason=reason or new_rule_guard(p,post['issue'])
+            else:
+                # 2026-11-06 user decision: every row, not only 2026-10-29 rows,
+                # fails closed on another issue's line or a drawn result.
+                reason=reason or line_issue_guard(p.get('excerpt',''),post['issue'])
             try:
                 if reason:raise ValueError(reason)
                 audit_error=audit_material(p,text)

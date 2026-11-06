@@ -244,10 +244,12 @@ class StrictIssueLineTest(unittest.TestCase):
         _, mats = strict(post('297期平9尾各90元\n024头各20元\n杀兔龙蛇，新规律', title='记录'))
         self.assertEqual(len(counted(mats)), 1)
 
-    def test_118_default_scoring_is_unchanged(self):
-        # Without the opt-in flag the old behaviour (and its known flaw) remains.
+    def test_118_default_scoring_rejects_other_issue_line(self):
+        # User decision 2026-11-06: without the strict flag a line led by
+        # another issue ("295-297--") still fails closed; strict tags stay off.
         _, mats = score_posts([dict(post('295-297--牛蛇羊鸡猴狗', title='六肖'))])
-        self.assertEqual(len(counted(mats)), 1)
+        self.assertEqual(len(counted(mats)), 0)
+        self.assertEqual(mats[0]['exclusion_reason'], 'source line names another issue')
         self.assertNotIn('issue_line_check', mats[0])
 
     def test_forum49_strict_gate_is_test_mode_only(self):
@@ -264,8 +266,9 @@ class StrictIssueLineTest(unittest.TestCase):
         shadow = forum49.strict_shadow_observation(result)
         self.assertFalse(shadow['used_for_freeze'])
         self.assertEqual(shadow['valid_materials'], 1)
-        self.assertEqual(shadow['dropped_authors'], ['冰淇淋不冷'])
-        self.assertEqual(sum(m['counted_for_ranking'] for m in formal), 2)
+        # 2026-11-06: formal scoring now also drops 冰淇淋不冷's past-issue rows.
+        self.assertEqual(shadow['dropped_authors'], [])
+        self.assertEqual(sum(m['counted_for_ranking'] for m in formal), 1)
 
 
 SURE_BLOCK = """283期-284期 ❤️（兔龙羊鸡狗猪）中🔥
