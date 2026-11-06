@@ -22,7 +22,7 @@ class Work:
     evidence: str = ''
 
 
-SCORING_RULE_VERSION = '2026-10-29-one-author-9-8-7-6-priority-v9'
+SCORING_RULE_VERSION = '2026-11-06-one-author-9-8-7-6-priority-v10'
 SCORING_RULES = {
     'minimum_recommendation_zodiacs': 6,
     'kill_zodiac_vote': 'remaining_zodiacs',
@@ -39,6 +39,7 @@ SCORING_RULES = {
     'one_author_play_priority': 'nine_eight_seven_six_other_recommendation_then_valid_kill',
     'same_priority_tiebreak': 'earliest_source_published_at_then_stable_source_identity',
     'uncertain_materials': 'excluded',
+    'other_issue_or_drawn_result_line': 'excluded_for_all_rows',
     'author_ratio': None,
 }
 
