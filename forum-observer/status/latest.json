@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026310",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "42216789280",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216789280",
-  "updated_at": "2026-11-06T12:32:03.862076+00:00",
+  "updated_at": "2026-11-06T12:32:28.400519+00:00",
   "error": null,
-  "valid_materials": 94,
-  "valid_authors": 94,
-  "successful_post_opens": 508,
+  "valid_materials": 95,
+  "valid_authors": 95,
+  "successful_post_opens": 524,
   "article_details": {
     "featured": {
       "queued": 44,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 480,
-      "attempted": 465,
-      "opened": 464,
-      "extracted": 462,
-      "completed": 464
+      "attempted": 480,
+      "opened": 480,
+      "extracted": 478,
+      "completed": 480
     }
   },
-  "article_texts_extracted": 506,
-  "article_details_completed": 508,
+  "article_texts_extracted": 522,
+  "article_details_completed": 524,
   "last_verified_post": {
-    "author": "阿姨挣钱花",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220930&type=3",
-    "verified_at": "2026-11-06T12:32:02.533167+00:00",
-    "text_length": 158,
-    "text_sha256": "989a7aefab2f5d01ba14f7efc12c6b5abbc4f91d922430842614ecc27e80ef56"
+    "author": "头条号",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220910&type=3",
+    "verified_at": "2026-11-06T12:32:25.863946+00:00",
+    "text_length": 242,
+    "text_sha256": "239a7eb5fb4bc909c5f482402b0a1f064f9bb05c1b432bf3ea8b52dadfebe78f"
   },
   "last_attempted_post": {
-    "author": "绝无情",
+    "author": "头条号",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220929&type=3",
-    "attempt_index": 509
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220910&type=3",
+    "attempt_index": 524
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 506,
-  "stage": "detail: 绝无情 310期五肖爆特",
-  "progress_updated_at": "2026-11-06T12:32:03.481009+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 522,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-06T12:32:27.502464+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 2,
+    "truncated": false,
     "unextracted_current_posts": 2
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
