@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026310",
+  "state": "collecting_effectively",
+  "run_id": "42216931432",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42216931432",
+  "updated_at": "2026-11-06T12:38:42.502454+00:00",
+  "error": null,
+  "valid_materials": 46,
+  "valid_authors": 46,
+  "successful_post_opens": 213,
+  "article_details": {
+    "featured": {
+      "queued": 44,
+      "attempted": 44,
+      "opened": 44,
+      "extracted": 44,
+      "completed": 44
+    },
+    "ordinary": {
+      "queued": 480,
+      "attempted": 170,
+      "opened": 169,
+      "extracted": 167,
+      "completed": 169
+    }
+  },
+  "article_texts_extracted": 211,
+  "article_details_completed": 213,
+  "last_verified_post": {
+    "author": "稳定特围",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11220724&type=3",
+    "verified_at": "2026-11-06T12:38:39.820506+00:00",
+    "text_length": 124,
+    "text_sha256": "3093f875a10c7a7ea5043edbd1cae4ca7b5b60d4f1a053f1ac13bfa3c85b1749"
+  },
+  "last_attempted_post": {
+    "author": "水东枭雄",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11221447&type=3",
+    "attempt_index": 214
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-06T12:36:00.249627+00:00",
+      "featured_queued": 44,
+      "featured_attempted": 44,
+      "featured_completed": 44
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 211,
+  "stage": "detail: 水东枭雄 310期：特码波色",
+  "progress_updated_at": "2026-11-06T12:38:40.471927+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 2
+  },
+  "coverage_label": null
+}
