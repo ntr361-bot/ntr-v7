@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371901770",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371901770",
+  "updated_at": "2026-11-07T12:37:25.490698+00:00",
+  "error": null,
+  "valid_materials": 59,
+  "valid_authors": 59,
+  "successful_post_opens": 278,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 227,
+      "opened": 226,
+      "extracted": 225,
+      "completed": 226
+    }
+  },
+  "article_texts_extracted": 277,
+  "article_details_completed": 278,
+  "last_verified_post": {
+    "author": "名列前茅",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228939&type=3",
+    "verified_at": "2026-11-07T12:37:24.753621+00:00",
+    "text_length": 71,
+    "text_sha256": "534aec000a0e9405821fbabaea71a3070f0449e5119acf97e3f57512bc073b28"
+  },
+  "last_attempted_post": {
+    "author": "如火如荼",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228938&type=3",
+    "attempt_index": 279
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:34:21.693308+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 277,
+  "stage": "detail: 如火如荼 311期：黑白肖中特",
+  "progress_updated_at": "2026-11-07T12:37:25.238334+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
