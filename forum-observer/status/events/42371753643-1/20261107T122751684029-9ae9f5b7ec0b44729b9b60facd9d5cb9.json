@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371753643",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
+  "updated_at": "2026-11-07T12:27:51.684029+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 353,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 302,
+      "opened": 301,
+      "extracted": 300,
+      "completed": 301
+    }
+  },
+  "article_texts_extracted": 352,
+  "article_details_completed": 353,
+  "last_verified_post": {
+    "author": "恋恋风景",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228763&type=3",
+    "verified_at": "2026-11-07T12:27:48.245961+00:00",
+    "text_length": 38,
+    "text_sha256": "9a10f783a221bb2f59fdd90c6979c28a7198404a87c6d47438c7b26387519359"
+  },
+  "last_attempted_post": {
+    "author": "卿愿与君书",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228762&type=3",
+    "attempt_index": 354
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:22:53.308567+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 352,
+  "stage": "detail: 卿愿与君书 311期：大小",
+  "progress_updated_at": "2026-11-07T12:27:48.833033+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
