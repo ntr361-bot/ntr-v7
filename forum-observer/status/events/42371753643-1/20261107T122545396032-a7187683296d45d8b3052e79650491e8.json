@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371753643",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
+  "updated_at": "2026-11-07T12:25:45.396032+00:00",
+  "error": null,
+  "valid_materials": 57,
+  "valid_authors": 57,
+  "successful_post_opens": 253,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 202,
+      "opened": 201,
+      "extracted": 200,
+      "completed": 201
+    }
+  },
+  "article_texts_extracted": 252,
+  "article_details_completed": 253,
+  "last_verified_post": {
+    "author": "张扶摇",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11229010&type=3",
+    "verified_at": "2026-11-07T12:25:44.718416+00:00",
+    "text_length": 329,
+    "text_sha256": "83b14a847b97b35eaf25cb02f2ddd4916a452beabea19f90eec13a61e93a610c"
+  },
+  "last_attempted_post": {
+    "author": "欧拉欧拉",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11229009&type=3",
+    "attempt_index": 254
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:22:53.308567+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 252,
+  "stage": "detail: 欧拉欧拉 311期： 六尾中特",
+  "progress_updated_at": "2026-11-07T12:25:45.243305+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
