@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371753643",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
+  "updated_at": "2026-11-07T12:31:01.701354+00:00",
+  "error": null,
+  "valid_materials": 92,
+  "valid_authors": 92,
+  "successful_post_opens": 503,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 452,
+      "opened": 451,
+      "extracted": 450,
+      "completed": 451
+    }
+  },
+  "article_texts_extracted": 502,
+  "article_details_completed": 503,
+  "last_verified_post": {
+    "author": "排行老六",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228523&type=3",
+    "verified_at": "2026-11-07T12:31:00.785249+00:00",
+    "text_length": 204,
+    "text_sha256": "ca96901f73b69e3bdb2065e201ec687c88f93473ad884824e9c259b1f0520549"
+  },
+  "last_attempted_post": {
+    "author": "二哥独秀",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228521&type=3",
+    "attempt_index": 504
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:22:53.308567+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 502,
+  "stage": "detail: 二哥独秀 香山•成语平特",
+  "progress_updated_at": "2026-11-07T12:31:01.497895+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
