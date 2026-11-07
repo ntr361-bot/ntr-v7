@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371901770",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371901770",
+  "updated_at": "2026-11-07T12:38:29.471435+00:00",
+  "error": null,
+  "valid_materials": 69,
+  "valid_authors": 69,
+  "successful_post_opens": 342,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 290,
+      "opened": 290,
+      "extracted": 289,
+      "completed": 290
+    }
+  },
+  "article_texts_extracted": 341,
+  "article_details_completed": 342,
+  "last_verified_post": {
+    "author": "顶峰相见",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228776&type=3",
+    "verified_at": "2026-11-07T12:38:29.001898+00:00",
+    "text_length": 60,
+    "text_sha256": "9770b04f9da86b9cc3007c50bf6fc68044514e002985ad0ca1f383528e0648e2"
+  },
+  "last_attempted_post": {
+    "author": "顶峰相见",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228776&type=3",
+    "attempt_index": 342
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:34:21.693308+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 341,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-07T12:38:29.248853+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
