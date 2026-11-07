@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371753643",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
+  "updated_at": "2026-11-07T12:26:48.402061+00:00",
+  "error": null,
+  "valid_materials": 65,
+  "valid_authors": 65,
+  "successful_post_opens": 311,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 259,
+      "opened": 259,
+      "extracted": 258,
+      "completed": 259
+    }
+  },
+  "article_texts_extracted": 310,
+  "article_details_completed": 311,
+  "last_verified_post": {
+    "author": "财经人生之路",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228847&type=3",
+    "verified_at": "2026-11-07T12:26:47.876791+00:00",
+    "text_length": 119,
+    "text_sha256": "eabbaefb6e6b92bbd7c5ceba693c22a7bb2d1ce9f5fe4a65751c5decb0575dc7"
+  },
+  "last_attempted_post": {
+    "author": "财经人生之路",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228847&type=3",
+    "attempt_index": 311
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:22:53.308567+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 310,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-07T12:26:48.160603+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
