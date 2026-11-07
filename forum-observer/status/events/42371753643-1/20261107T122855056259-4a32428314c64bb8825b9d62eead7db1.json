@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026311",
+  "state": "collecting_effectively",
+  "run_id": "42371753643",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
+  "updated_at": "2026-11-07T12:28:55.056259+00:00",
+  "error": null,
+  "valid_materials": 78,
+  "valid_authors": 78,
+  "successful_post_opens": 407,
+  "article_details": {
+    "featured": {
+      "queued": 52,
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 356,
+      "opened": 355,
+      "extracted": 354,
+      "completed": 355
+    }
+  },
+  "article_texts_extracted": 406,
+  "article_details_completed": 407,
+  "last_verified_post": {
+    "author": "无边无际",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228697&type=3",
+    "verified_at": "2026-11-07T12:28:53.821066+00:00",
+    "text_length": 102,
+    "text_sha256": "22beadc856cd62d248e3b255ef214d004bea816b881bb40236b8c740f50d5eeb"
+  },
+  "last_attempted_post": {
+    "author": "通行天下",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228695&type=3",
+    "attempt_index": 408
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:22:53.308567+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 406,
+  "stage": "detail: 通行天下 311期:惠泽一波，这份料我跟踪来下注，跟大家分享。",
+  "progress_updated_at": "2026-11-07T12:28:54.452770+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
