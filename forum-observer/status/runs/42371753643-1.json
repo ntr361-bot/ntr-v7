@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026311",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "42371753643",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371753643",
-  "updated_at": "2026-11-07T12:31:01.701354+00:00",
+  "updated_at": "2026-11-07T12:31:13.132181+00:00",
   "error": null,
-  "valid_materials": 92,
-  "valid_authors": 92,
-  "successful_post_opens": 503,
+  "valid_materials": 93,
+  "valid_authors": 93,
+  "successful_post_opens": 511,
   "article_details": {
     "featured": {
       "queued": 52,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 459,
-      "attempted": 452,
-      "opened": 451,
-      "extracted": 450,
-      "completed": 451
+      "attempted": 459,
+      "opened": 459,
+      "extracted": 458,
+      "completed": 459
     }
   },
-  "article_texts_extracted": 502,
-  "article_details_completed": 503,
+  "article_texts_extracted": 510,
+  "article_details_completed": 511,
   "last_verified_post": {
-    "author": "排行老六",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228523&type=3",
-    "verified_at": "2026-11-07T12:31:00.785249+00:00",
-    "text_length": 204,
-    "text_sha256": "ca96901f73b69e3bdb2065e201ec687c88f93473ad884824e9c259b1f0520549"
+    "author": "头条号",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228500&type=3",
+    "verified_at": "2026-11-07T12:31:11.004427+00:00",
+    "text_length": 242,
+    "text_sha256": "ce053223be59826f9f016f86dfe80808a1fc148bf0dd798a3bcf3ac33c34c1ce"
   },
   "last_attempted_post": {
-    "author": "二哥独秀",
+    "author": "头条号",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228521&type=3",
-    "attempt_index": 504
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228500&type=3",
+    "attempt_index": 511
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 502,
-  "stage": "detail: 二哥独秀 香山•成语平特",
-  "progress_updated_at": "2026-11-07T12:31:01.497895+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 510,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-07T12:31:12.239975+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
