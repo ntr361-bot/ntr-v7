@@ -7,56 +7,61 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42371901770",
-  "updated_at": "2026-11-07T12:34:15.100593+00:00",
+  "updated_at": "2026-11-07T12:35:18.722396+00:00",
   "error": null,
-  "valid_materials": 8,
-  "valid_authors": 8,
-  "successful_post_opens": 40,
+  "valid_materials": 37,
+  "valid_authors": 37,
+  "successful_post_opens": 137,
   "article_details": {
     "featured": {
       "queued": 52,
-      "attempted": 41,
-      "opened": 40,
-      "extracted": 40,
-      "completed": 40
+      "attempted": 52,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
     },
     "ordinary": {
       "queued": 459,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 85,
+      "opened": 85,
+      "extracted": 84,
+      "completed": 85
     }
   },
-  "article_texts_extracted": 40,
-  "article_details_completed": 40,
+  "article_texts_extracted": 136,
+  "article_details_completed": 137,
   "last_verified_post": {
-    "author": "咖啡里的茶",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228186&type=3",
-    "verified_at": "2026-11-07T12:34:14.826209+00:00",
-    "text_length": 269,
-    "text_sha256": "f2737d8b8398d5177226976e2c1268ad80a38e7d0b370a652dedaca63d68c9e7"
+    "author": "阁阁閤",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11232171&type=3",
+    "verified_at": "2026-11-07T12:35:18.579421+00:00",
+    "text_length": 1994,
+    "text_sha256": "f93796c95f53aca92a8da6059a6244281f0754c689142c3ea91ff6f868617913"
   },
   "last_attempted_post": {
-    "author": "粗枝大叶",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11228717&type=3",
-    "attempt_index": 41
+    "author": "阁阁閤",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11232171&type=3",
+    "attempt_index": 137
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-07T12:34:21.693308+00:00",
+      "featured_queued": 52,
+      "featured_attempted": 52,
+      "featured_completed": 52
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 40,
-  "stage": "detail: 粗枝大叶 港澳百家网【必中特码单双】",
-  "progress_updated_at": "2026-11-07T12:34:14.943549+00:00",
+  "raw_count": 136,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-07T12:35:18.712784+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
