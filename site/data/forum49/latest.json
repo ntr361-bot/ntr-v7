@@ -40,7 +40,19 @@
   "snapshot_digest": "f1a61890a86ef8c987c62fcee90dcf5997dea3d5a787f492aa89f7b00353b0fc",
   "freeze_quality_status": "meets_minimum_samples",
   "freeze_minimum_valid_materials": 25,
-  "settlement": null,
-  "settled_count": 16,
+  "settlement": {
+    "issue": "2026311",
+    "actual": "鸡",
+    "actual_source": "site/data/history.json",
+    "drawn_at": "2026-11-07T21:35:31+08:00",
+    "snapshot_digest": "f1a61890a86ef8c987c62fcee90dcf5997dea3d5a787f492aa89f7b00353b0fc",
+    "snapshot_at": "2026-11-07T12:38:34.628292+00:00",
+    "rank": 12,
+    "top1_hit": false,
+    "top3_hit": false,
+    "top6_hit": false,
+    "classification": "experimental_unverified_leaderboard"
+  },
+  "settled_count": 17,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
 }
