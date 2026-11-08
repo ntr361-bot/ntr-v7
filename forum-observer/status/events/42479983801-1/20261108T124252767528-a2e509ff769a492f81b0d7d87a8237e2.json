@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026312",
+  "state": "collecting_effectively",
+  "run_id": "42479983801",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479983801",
+  "updated_at": "2026-11-08T12:42:52.767528+00:00",
+  "error": null,
+  "valid_materials": 86,
+  "valid_authors": 86,
+  "successful_post_opens": 485,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 491,
+      "attempted": 441,
+      "opened": 440,
+      "extracted": 439,
+      "completed": 440
+    }
+  },
+  "article_texts_extracted": 484,
+  "article_details_completed": 485,
+  "last_verified_post": {
+    "author": "周星驰啊",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11234248&type=3",
+    "verified_at": "2026-11-08T12:42:51.606791+00:00",
+    "text_length": 250,
+    "text_sha256": "e9a1527e4d98f1822f14276f9fba2df733d5522f93df90df2f405f945b8aab38"
+  },
+  "last_attempted_post": {
+    "author": "幸运星星",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233785&type=3",
+    "attempt_index": 486
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:34:55.255185+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 484,
+  "stage": "detail: 幸运星星 精准-绝禁",
+  "progress_updated_at": "2026-11-08T12:42:52.480076+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
