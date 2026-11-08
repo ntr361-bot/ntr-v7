@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026312",
+  "state": "collecting_effectively",
+  "run_id": "42479452915",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479452915",
+  "updated_at": "2026-11-08T12:25:48.266641+00:00",
+  "error": null,
+  "valid_materials": 55,
+  "valid_authors": 55,
+  "successful_post_opens": 252,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 492,
+      "attempted": 208,
+      "opened": 207,
+      "extracted": 206,
+      "completed": 207
+    }
+  },
+  "article_texts_extracted": 251,
+  "article_details_completed": 252,
+  "last_verified_post": {
+    "author": "竹马起飞",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11234521&type=3",
+    "verified_at": "2026-11-08T12:25:47.557742+00:00",
+    "text_length": 175,
+    "text_sha256": "f7e3d95bf7440b5f93c69e2cffa78752a1a8c506a805dc224dc9d96c5adb08d2"
+  },
+  "last_attempted_post": {
+    "author": "绿草如茵",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11234520&type=3",
+    "attempt_index": 253
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:23:03.546222+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 251,
+  "stage": "detail: 绿草如茵 312期:（赚钱单双）免费公开",
+  "progress_updated_at": "2026-11-08T12:25:48.017956+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
