@@ -1,46 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026312",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "42479983801",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479983801",
-  "updated_at": "2026-11-08T12:34:27.418357+00:00",
+  "updated_at": "2026-11-08T12:35:30.692703+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 97,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 491,
+      "attempted": 53,
+      "opened": 52,
+      "extracted": 52,
+      "completed": 52
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 97,
+  "article_details_completed": 97,
+  "last_verified_post": {
+    "author": "香格里拉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11239811&type=3",
+    "verified_at": "2026-11-08T12:35:30.516298+00:00",
+    "text_length": 195,
+    "text_sha256": "b4db232ddc214babcfc37704e0356ee144820637d399e26c52881d64ebf81a6f"
+  },
+  "last_attempted_post": {
+    "author": "湘西密藏",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233812&type=3",
+    "attempt_index": 98
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:34:55.255185+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 110",
-  "progress_updated_at": "2026-11-08T12:34:26.409756+00:00",
+  "raw_count": 97,
+  "stage": "detail: 湘西密藏 312期：【上岸特围】上轮10中8",
+  "progress_updated_at": "2026-11-08T12:35:30.682269+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
