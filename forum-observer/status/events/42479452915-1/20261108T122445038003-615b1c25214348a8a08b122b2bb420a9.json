@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026312",
+  "state": "collecting_effectively",
+  "run_id": "42479452915",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479452915",
+  "updated_at": "2026-11-08T12:24:45.038003+00:00",
+  "error": null,
+  "valid_materials": 43,
+  "valid_authors": 43,
+  "successful_post_opens": 184,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 492,
+      "attempted": 140,
+      "opened": 139,
+      "extracted": 138,
+      "completed": 139
+    }
+  },
+  "article_texts_extracted": 183,
+  "article_details_completed": 184,
+  "last_verified_post": {
+    "author": "竹城标志",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11237704&type=3",
+    "verified_at": "2026-11-08T12:24:44.520333+00:00",
+    "text_length": 2,
+    "text_sha256": "5d8fe2ac193b890fd521ab046383612973a44d5ca95aaf72d04df1e5c4eec680"
+  },
+  "last_attempted_post": {
+    "author": "未来预言家",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11237702&type=3",
+    "attempt_index": 185
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:23:03.546222+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 183,
+  "stage": "detail: 未来预言家 312期",
+  "progress_updated_at": "2026-11-08T12:24:44.840421+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
