@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479452915",
-  "updated_at": "2026-11-08T12:22:39.206041+00:00",
+  "updated_at": "2026-11-08T12:23:42.009290+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 1,
+  "valid_materials": 31,
+  "valid_authors": 31,
+  "successful_post_opens": 106,
   "article_details": {
     "featured": {
       "queued": 45,
-      "attempted": 2,
-      "opened": 1,
-      "extracted": 1,
-      "completed": 1
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
     },
     "ordinary": {
       "queued": 492,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 61,
+      "opened": 61,
+      "extracted": 61,
+      "completed": 61
     }
   },
-  "article_texts_extracted": 1,
-  "article_details_completed": 1,
+  "article_texts_extracted": 106,
+  "article_details_completed": 106,
   "last_verified_post": {
-    "author": "石更走己",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11237742&type=3",
-    "verified_at": "2026-11-08T12:22:38.969904+00:00",
-    "text_length": 26,
-    "text_sha256": "9008557d35be25376a2b30f62c468fe91e638a6a029ba8f53f8309e9287d55f7"
+    "author": "十二妹数鸭子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11239687&type=3",
+    "verified_at": "2026-11-08T12:23:41.875802+00:00",
+    "text_length": 936,
+    "text_sha256": "3e557008b215d147e4619676b7d2675d2cf5724ac63b51b7a60f478fced9edbf"
   },
   "last_attempted_post": {
-    "author": "蛋蛋有伤",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233816&type=3",
-    "attempt_index": 2
+    "author": "十二妹数鸭子",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11239687&type=3",
+    "attempt_index": 106
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:23:03.546222+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 1,
-  "stage": "detail: 蛋蛋有伤 312期绝禁一肖",
-  "progress_updated_at": "2026-11-08T12:22:38.974569+00:00",
+  "raw_count": 106,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-08T12:23:41.953179+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
