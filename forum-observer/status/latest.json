@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026312",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "42479983801",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479983801",
-  "updated_at": "2026-11-08T12:43:55.657501+00:00",
+  "updated_at": "2026-11-08T12:44:09.540717+00:00",
   "error": null,
-  "valid_materials": 92,
-  "valid_authors": 92,
-  "successful_post_opens": 528,
+  "valid_materials": 93,
+  "valid_authors": 93,
+  "successful_post_opens": 536,
   "article_details": {
     "featured": {
       "queued": 45,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 491,
-      "attempted": 484,
-      "opened": 483,
-      "extracted": 482,
-      "completed": 483
+      "attempted": 491,
+      "opened": 491,
+      "extracted": 490,
+      "completed": 491
     }
   },
-  "article_texts_extracted": 527,
-  "article_details_completed": 528,
+  "article_texts_extracted": 535,
+  "article_details_completed": 536,
   "last_verified_post": {
-    "author": "护你周全哦",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233808&type=3",
-    "verified_at": "2026-11-08T12:43:54.401723+00:00",
-    "text_length": 1193,
-    "text_sha256": "4f7a8e99c90b5463e5e8506416636852ab681aa226cc5862e915432a156f4a56"
+    "author": "赌神不是神",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233844&type=3",
+    "verified_at": "2026-11-08T12:44:06.305182+00:00",
+    "text_length": 74,
+    "text_sha256": "13b6b033680dccbead204b43a479a6c2e3f2759516327fbbb1f2ce8aaf939b59"
   },
   "last_attempted_post": {
-    "author": "左路左路",
+    "author": "赌神不是神",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233809&type=3",
-    "attempt_index": 529
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233844&type=3",
+    "attempt_index": 536
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 527,
-  "stage": "detail: 左路左路 不定量杀一肖 杀码",
-  "progress_updated_at": "2026-11-08T12:43:55.331466+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 535,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-08T12:44:07.965844+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
