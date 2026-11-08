@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026312",
+  "state": "collecting_effectively",
+  "run_id": "42479452915",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42479452915",
+  "updated_at": "2026-11-08T12:31:03.979718+00:00",
+  "error": null,
+  "valid_materials": 92,
+  "valid_authors": 92,
+  "successful_post_opens": 529,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 492,
+      "attempted": 485,
+      "opened": 484,
+      "extracted": 483,
+      "completed": 484
+    }
+  },
+  "article_texts_extracted": 528,
+  "article_details_completed": 529,
+  "last_verified_post": {
+    "author": "护你周全哦",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233808&type=3",
+    "verified_at": "2026-11-08T12:31:02.745051+00:00",
+    "text_length": 1193,
+    "text_sha256": "4f7a8e99c90b5463e5e8506416636852ab681aa226cc5862e915432a156f4a56"
+  },
+  "last_attempted_post": {
+    "author": "左路左路",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11233809&type=3",
+    "attempt_index": 530
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-08T12:23:03.546222+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 528,
+  "stage": "detail: 左路左路 不定量杀一肖 杀码",
+  "progress_updated_at": "2026-11-08T12:31:03.470955+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
