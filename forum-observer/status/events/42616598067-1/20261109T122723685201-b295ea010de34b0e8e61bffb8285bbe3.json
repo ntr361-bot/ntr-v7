@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026313",
+  "state": "collecting_effectively",
+  "run_id": "42616598067",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42616598067",
+  "updated_at": "2026-11-09T12:27:23.685201+00:00",
+  "error": null,
+  "valid_materials": 33,
+  "valid_authors": 33,
+  "successful_post_opens": 113,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 456,
+      "attempted": 68,
+      "opened": 68,
+      "extracted": 68,
+      "completed": 68
+    }
+  },
+  "article_texts_extracted": 113,
+  "article_details_completed": 113,
+  "last_verified_post": {
+    "author": "财喜门生",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245402&type=3",
+    "verified_at": "2026-11-09T12:27:23.558806+00:00",
+    "text_length": 19,
+    "text_sha256": "2f613a18a3391f18b14627e20f7698d4ef2fb2aa7c6a6e5ccf2177a4b88740b7"
+  },
+  "last_attempted_post": {
+    "author": "财喜门生",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245402&type=3",
+    "attempt_index": 113
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-09T12:26:38.961309+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 113,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-09T12:27:23.665264+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
