@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026313",
+  "state": "collecting_effectively",
+  "run_id": "42616598067",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42616598067",
+  "updated_at": "2026-11-09T12:29:32.266539+00:00",
+  "error": null,
+  "valid_materials": 56,
+  "valid_authors": 56,
+  "successful_post_opens": 238,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 456,
+      "attempted": 194,
+      "opened": 193,
+      "extracted": 193,
+      "completed": 193
+    }
+  },
+  "article_texts_extracted": 238,
+  "article_details_completed": 238,
+  "last_verified_post": {
+    "author": "天才大叔一码中特",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242066&type=3",
+    "verified_at": "2026-11-09T12:29:31.590587+00:00",
+    "text_length": 29,
+    "text_sha256": "783482162dac6a712983ac33049922e0aeead8451d28c0648188118f64fd63bc"
+  },
+  "last_attempted_post": {
+    "author": "酸菜炒牛肉",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242078&type=3",
+    "attempt_index": 239
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-09T12:26:38.961309+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 238,
+  "stage": "detail: 酸菜炒牛肉 313",
+  "progress_updated_at": "2026-11-09T12:29:32.150625+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
