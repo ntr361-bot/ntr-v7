@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026313",
+  "state": "collecting_effectively",
+  "run_id": "42616598067",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42616598067",
+  "updated_at": "2026-11-09T12:26:19.344880+00:00",
+  "error": null,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 11,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 12,
+      "opened": 11,
+      "extracted": 11,
+      "completed": 11
+    },
+    "ordinary": {
+      "queued": 456,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 11,
+  "article_details_completed": 11,
+  "last_verified_post": {
+    "author": "俄罗斯",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241040&type=3",
+    "verified_at": "2026-11-09T12:26:18.963863+00:00",
+    "text_length": 29,
+    "text_sha256": "cebcc01c9fbc5fe8273476aed3fc2541d4d43f6c25f79e3a46c212adb299a96f"
+  },
+  "last_attempted_post": {
+    "author": "泉州打工人",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240651&type=3",
+    "attempt_index": 12
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 11,
+  "stage": "detail: 泉州打工人 313",
+  "progress_updated_at": "2026-11-09T12:26:18.981400+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
