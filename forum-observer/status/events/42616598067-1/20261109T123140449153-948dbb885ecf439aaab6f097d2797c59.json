@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026313",
+  "state": "collecting_effectively",
+  "run_id": "42616598067",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42616598067",
+  "updated_at": "2026-11-09T12:31:40.449153+00:00",
+  "error": null,
+  "valid_materials": 72,
+  "valid_authors": 72,
+  "successful_post_opens": 348,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 456,
+      "attempted": 304,
+      "opened": 303,
+      "extracted": 303,
+      "completed": 303
+    }
+  },
+  "article_texts_extracted": 348,
+  "article_details_completed": 348,
+  "last_verified_post": {
+    "author": "大海的方向",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241805&type=3",
+    "verified_at": "2026-11-09T12:31:39.370470+00:00",
+    "text_length": 45,
+    "text_sha256": "d8390a30af834750efd51a887fca26366b3c45ae0836cf44f861d8b2ddcc7eb6"
+  },
+  "last_attempted_post": {
+    "author": "小白鼠",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241804&type=3",
+    "attempt_index": 349
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-09T12:26:38.961309+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 348,
+  "stage": "detail: 小白鼠 313期:十码",
+  "progress_updated_at": "2026-11-09T12:31:40.027544+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
