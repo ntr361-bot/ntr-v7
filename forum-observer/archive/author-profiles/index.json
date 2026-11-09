@@ -29,7 +29,8 @@
     "2026309",
     "2026310",
     "2026311",
-    "2026312"
+    "2026312",
+    "2026313"
   ],
   "skipped_issues": [
     {
@@ -45,7 +46,7 @@
       "reason": "no verified single-author equal-weight rule"
     }
   ],
-  "author_count": 204,
+  "author_count": 207,
   "authors": [
     {
       "id": "nickname-00c57ecd6f16a9cfa0fe4822",
@@ -1453,11 +1454,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期:杀马，开？",
+          "published_at": "2026-11-09 14:03",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243590&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 22,
+      "last_issue": "2026313",
+      "observed_issue_count": 23,
       "settled_issue_count": 22
     },
     {
@@ -2015,11 +2046,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "羊",
+            "马",
+            "龙",
+            "猪",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "羊",
+            "马",
+            "龙",
+            "猪",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "[六肖中特]港澳牛总 | 313期六肖中特牛羊马龙猪鸡",
+          "published_at": "2026-11-09 15:53",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240871&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026291",
-      "last_issue": "2026312",
-      "observed_issue_count": 10,
+      "last_issue": "2026313",
+      "observed_issue_count": 11,
       "settled_issue_count": 10
     },
     {
@@ -2948,11 +3009,41 @@
           "snapshot_digest": "236642f437ddf7e3c3ef8f0d37a433e7e6b01db8b1608d101a0997eebba9d1a8",
           "actual": "虎",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀肖",
+          "mode": "exclude",
+          "picks": [
+            "猴",
+            "鼠",
+            "狗",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猪"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "杀肖：猴鼠狗鸡",
+          "published_at": "2026-11-09 18:42",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245561&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026301",
-      "last_issue": "2026303",
-      "observed_issue_count": 2,
+      "last_issue": "2026313",
+      "observed_issue_count": 3,
       "settled_issue_count": 2
     },
     {
@@ -3172,11 +3263,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "猴",
+            "狗",
+            "鸡",
+            "兔",
+            "马",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "龙",
+            "羊",
+            "猪"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313杀猴狗鸡兔马蛇",
+          "published_at": "2026-11-09 12:36",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243423&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026312",
-      "last_issue": "2026312",
-      "observed_issue_count": 1,
+      "last_issue": "2026313",
+      "observed_issue_count": 2,
       "settled_issue_count": 1
     },
     {
@@ -3582,11 +3703,41 @@
           "snapshot_digest": "891252d453b7ec2bbbb5b2cbe5b523ad47fb8b83d6436603714360eecdb344d5",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "马",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "蛇",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期绝杀鸡马龙",
+          "published_at": "2026-11-09 01:09",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242184&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026305",
-      "last_issue": "2026310",
-      "observed_issue_count": 5,
+      "last_issue": "2026313",
+      "observed_issue_count": 6,
       "settled_issue_count": 5
     },
     {
@@ -4864,11 +5015,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鸡",
+            "鼠",
+            "狗",
+            "猪",
+            "羊",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "鸡",
+            "鼠",
+            "狗",
+            "猪",
+            "羊",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期六肖 | 313期:必中六肖【鸡鼠狗猪羊蛇】开00准",
+          "published_at": "2026-11-09 00:02",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241882&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -5265,11 +5446,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313杀猴",
+          "published_at": "2026-11-09 18:28",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245456&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026298",
-      "last_issue": "2026312",
-      "observed_issue_count": 13,
+      "last_issue": "2026313",
+      "observed_issue_count": 14,
       "settled_issue_count": 13
     },
     {
@@ -6044,11 +6255,43 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "七肖",
+          "mode": "include",
+          "picks": [
+            "兔",
+            "狗",
+            "羊",
+            "龙",
+            "鼠",
+            "猪",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "兔",
+            "狗",
+            "羊",
+            "龙",
+            "鼠",
+            "猪",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.583333,
+          "original_text": "313期:七肖中特 稳稳稳 | 313期:↑七肖中特↓【兔狗羊龙鼠猪蛇】开:00准",
+          "published_at": "2026-11-09 00:25",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242095&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -6266,11 +6509,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖",
+          "mode": "include",
+          "picks": [
+            "马",
+            "虎",
+            "猴",
+            "羊",
+            "鼠",
+            "狗",
+            "猪",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "虎",
+            "猴",
+            "羊",
+            "鼠",
+            "狗",
+            "猪",
+            "牛"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "超准八肖 | 313:马虎猴羊鼠狗猪牛",
+          "published_at": "2026-11-09 20:00",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11244286&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026301",
-      "last_issue": "2026312",
-      "observed_issue_count": 5,
+      "last_issue": "2026313",
+      "observed_issue_count": 6,
       "settled_issue_count": 5
     },
     {
@@ -6978,11 +7255,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "猪",
+            "兔",
+            "龙",
+            "虎",
+            "狗",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "猪",
+            "兔",
+            "龙",
+            "虎",
+            "狗",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期六肖，平特肖，杀肖 | 313期 六肖猪兔龙虎狗羊",
+          "published_at": "2026-11-09 18:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241117&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 22,
+      "last_issue": "2026313",
+      "observed_issue_count": 23,
       "settled_issue_count": 22
     },
     {
@@ -7780,11 +8087,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "马",
+            "猴",
+            "狗",
+            "虎",
+            "兔",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "猴",
+            "狗",
+            "虎",
+            "兔",
+            "牛"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:◆精准六肖 | 313期:◆精准六肖◆【马猴狗虎兔牛】开00准",
+          "published_at": "2026-11-09 01:41",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242251&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -8481,11 +8818,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "羊",
+            "狗",
+            "猴",
+            "虎",
+            "猪",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "羊",
+            "狗",
+            "猴",
+            "虎",
+            "猪",
+            "马"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "赚钱六肖 | 313期:赚钱六肖〔羊狗猴虎猪马〕开：00准",
+          "published_at": "2026-11-08 22:34",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240966&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -9421,11 +9788,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖（家野组合）",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "蛇",
+            "龙",
+            "虎",
+            "猴",
+            "兔",
+            "猪",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "蛇",
+            "龙",
+            "虎",
+            "猴",
+            "兔",
+            "猪",
+            "马"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期:家野两肖【野兽+猪马】开？00中 | 家禽：猪狗牛羊鸡马 | 野兽：鼠蛇龙虎猴兔",
+          "published_at": "2026-11-08 22:33",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240954&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026298",
-      "last_issue": "2026312",
-      "observed_issue_count": 14,
+      "last_issue": "2026313",
+      "observed_issue_count": 15,
       "settled_issue_count": 14
     },
     {
@@ -10152,12 +10553,89 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "羊",
+            "猴",
+            "鸡",
+            "龙",
+            "蛇",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "羊",
+            "猴",
+            "鸡",
+            "龙",
+            "蛇",
+            "牛"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:六肖=庄死一片 | 313期:◆六肖◆【羊猴鸡龙蛇牛】开00准",
+          "published_at": "2026-11-09 00:01",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241873&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
+    },
+    {
+      "id": "nickname-23389e59ac4c5cf44cdde1f5",
+      "nickname": "歇泡泡",
+      "identity_status": "nickname_only_unverified_account",
+      "records": [
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "狗",
+            "蛇",
+            "龙",
+            "鼠",
+            "鸡",
+            "虎",
+            "兔",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "狗",
+            "蛇",
+            "龙",
+            "鼠",
+            "鸡",
+            "虎",
+            "兔",
+            "猪"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "精品九肖一肖一码 | 九肖：牛狗蛇龙鼠鸡虎兔猪",
+          "published_at": "2026-11-09 18:42",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245515&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
+        }
+      ],
+      "first_issue": "2026313",
+      "last_issue": "2026313",
+      "observed_issue_count": 1,
+      "settled_issue_count": 0
     },
     {
       "id": "nickname-2378fc36523218a1b2d05950",
@@ -10845,11 +11323,41 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "龙",
+            "兔",
+            "鼠",
+            "猪",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "龙",
+            "兔",
+            "鼠",
+            "猪",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "【今日头条】头条六肖 | 313期今日陆肖: 牛龙兔鼠猪鸡",
+          "published_at": "2026-11-08 22:44",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241053&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026311",
-      "observed_issue_count": 19,
+      "last_issue": "2026313",
+      "observed_issue_count": 20,
       "settled_issue_count": 19
     },
     {
@@ -11306,11 +11814,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "琴棋书画，本期杀牛",
+          "published_at": "2026-11-09 12:15",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243419&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 15,
+      "last_issue": "2026313",
+      "observed_issue_count": 16,
       "settled_issue_count": 15
     },
     {
@@ -12048,11 +12586,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀两肖",
+          "mode": "exclude",
+          "picks": [
+            "马",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期：稳杀两肖【马+羊】开：？✔",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240665&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 10,
+      "last_issue": "2026313",
+      "observed_issue_count": 11,
       "settled_issue_count": 10
     },
     {
@@ -13152,12 +13720,89 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "猪",
+            "牛",
+            "羊",
+            "虎",
+            "猴",
+            "鸡",
+            "狗",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "猪",
+            "牛",
+            "羊",
+            "虎",
+            "猴",
+            "鸡",
+            "狗",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "敢赌敢博九肖中特 | 313期九肖中【鼠猪牛羊虎猴鸡狗蛇】开🀄️💰",
+          "published_at": "2026-11-09 17:39",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240760&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026289",
-      "last_issue": "2026312",
-      "observed_issue_count": 20,
+      "last_issue": "2026313",
+      "observed_issue_count": 21,
       "settled_issue_count": 20
+    },
+    {
+      "id": "nickname-34a29876fc836980174ec3cc",
+      "nickname": "绝绝子",
+      "identity_status": "nickname_only_unverified_account",
+      "records": [
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀2肖",
+          "mode": "exclude",
+          "picks": [
+            "鼠",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期杀2肖鼠鸡",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246077&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
+        }
+      ],
+      "first_issue": "2026313",
+      "last_issue": "2026313",
+      "observed_issue_count": 1,
+      "settled_issue_count": 0
     },
     {
       "id": "nickname-3590340a4f4ce4c2f225d5a7",
@@ -13883,11 +14528,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖（选野兽）",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "猴"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期家野六肖【野兽】开:？00准 | 家禽：牛、马、羊、鸡、狗、猪 | 野獸：鼠、虎、兔、龙、蛇、猴",
+          "published_at": "2026-11-09 00:07",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241926&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -13971,11 +14646,47 @@
           "snapshot_digest": "891252d453b7ec2bbbb5b2cbe5b523ad47fb8b83d6436603714360eecdb344d5",
           "actual": "鸡",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "虎",
+            "龙",
+            "猴",
+            "狗",
+            "鼠",
+            "马",
+            "猪",
+            "兔",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "龙",
+            "猴",
+            "狗",
+            "鼠",
+            "马",
+            "猪",
+            "兔",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "澳门🇲🇴 | 九肖虎龙猴狗鼠马～猪兔蛇",
+          "published_at": "2026-11-09 18:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245617&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026310",
-      "last_issue": "2026310",
-      "observed_issue_count": 1,
+      "last_issue": "2026313",
+      "observed_issue_count": 2,
       "settled_issue_count": 1
     },
     {
@@ -14743,11 +15454,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "猪",
+            "鼠",
+            "鸡",
+            "蛇",
+            "龙",
+            "狗"
+          ],
+          "vote_zodiacs": [
+            "猪",
+            "鼠",
+            "鸡",
+            "蛇",
+            "龙",
+            "狗"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:六肖 | 313期特肖：猪鼠鸡蛇龙狗 开00准",
+          "published_at": "2026-11-08 23:53",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241791&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -15474,11 +16215,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "羊",
+            "猴",
+            "虎",
+            "鼠",
+            "龙",
+            "兔"
+          ],
+          "vote_zodiacs": [
+            "羊",
+            "猴",
+            "虎",
+            "鼠",
+            "龙",
+            "兔"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:六肖 | 313期：六肖 {羊猴虎鼠龙兔}开00准",
+          "published_at": "2026-11-08 23:51",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241774&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -16205,11 +16976,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "狗",
+            "羊",
+            "兔",
+            "猴",
+            "蛇",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "狗",
+            "羊",
+            "兔",
+            "猴",
+            "蛇",
+            "马"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期六肖 | 313期：六肖：狗羊兔猴蛇马 开00准",
+          "published_at": "2026-11-08 23:33",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241498&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -17178,11 +17979,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖（单双组合）",
+          "mode": "include",
+          "picks": [
+            "龙",
+            "虎",
+            "鼠",
+            "狗",
+            "猴",
+            "马",
+            "蛇",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "龙",
+            "虎",
+            "鼠",
+            "狗",
+            "猴",
+            "马",
+            "蛇",
+            "牛"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期:必中单双【单肖+蛇牛】开:？00准 | 单肖：龙虎鼠狗猴马 | 双肖：兔牛猪鸡羊蛇",
+          "published_at": "2026-11-08 22:41",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241027&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -17489,11 +18324,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期杀【羊】🐏",
+          "published_at": "2026-11-09 09:58",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243113&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 10,
+      "last_issue": "2026313",
+      "observed_issue_count": 11,
       "settled_issue_count": 10
     },
     {
@@ -18217,11 +19082,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "牛",
+            "龙",
+            "蛇",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "龙",
+            "蛇",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期：（八肖中特）爆庄资料 | 【 鼠牛龙蛇猴鸡狗猪】",
+          "published_at": "2026-11-09 13:19",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243447&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 18,
+      "last_issue": "2026313",
+      "observed_issue_count": 19,
       "settled_issue_count": 18
     },
     {
@@ -18258,11 +19157,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "猪",
+            "兔",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "鸡",
+            "狗"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期：绝杀【猪兔猴】，开：鸟，准！",
+          "published_at": "2026-11-08 23:37",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241463&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026312",
-      "last_issue": "2026312",
-      "observed_issue_count": 1,
+      "last_issue": "2026313",
+      "observed_issue_count": 2,
       "settled_issue_count": 1
     },
     {
@@ -19251,11 +20180,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀二肖",
+          "mode": "exclude",
+          "picks": [
+            "牛",
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期杀二肖:【牛-鼠】开  ？",
+          "published_at": "2026-11-08 23:37",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241324&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -19352,11 +20311,41 @@
           "snapshot_digest": "891252d453b7ec2bbbb5b2cbe5b523ad47fb8b83d6436603714360eecdb344d5",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀三肖",
+          "mode": "exclude",
+          "picks": [
+            "牛",
+            "鸡",
+            "狗"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "猪"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期精杀三肖牛鸡狗",
+          "published_at": "2026-11-09 20:00",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245830&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026308",
-      "last_issue": "2026310",
-      "observed_issue_count": 3,
+      "last_issue": "2026313",
+      "observed_issue_count": 4,
       "settled_issue_count": 3
     },
     {
@@ -20179,11 +21168,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖（前后二肖）",
+          "mode": "include",
+          "picks": [
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪",
+            "虎",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪",
+            "虎",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期前后肖【后肖+虎蛇】开:？00准",
+          "published_at": "2026-11-08 22:41",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241013&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -20951,11 +21974,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖（胆大）",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "虎",
+            "马",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "马",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期胆大小肖：胆大生肖 | 胆大肖:牛虎马猴狗猪 | 胆小生肖:鼠兔龙蛇羊鸡",
+          "published_at": "2026-11-08 23:38",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241576&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -21800,11 +22853,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀一肖",
+          "mode": "exclude",
+          "picks": [
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期 绝杀一肖【鼠】%%开？00准",
+          "published_at": "2026-11-09 00:26",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242104&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 25,
+      "last_issue": "2026313",
+      "observed_issue_count": 26,
       "settled_issue_count": 25
     },
     {
@@ -22531,11 +23614,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖·独字组",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "马",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "马",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期(独合肖)【独肖】开00准 | 独字生肖:鼠牛虎兔马羊 合字生肖:龙蛇猴鸡狗猪",
+          "published_at": "2026-11-08 23:40",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241611&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -23142,11 +24255,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "猪",
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "猪",
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期 澳彩公式九肖中特 | 313期         六肖-猪鼠牛虎兔羊-⁉️",
+          "published_at": "2026-11-09 01:44",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242242&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026289",
-      "last_issue": "2026312",
-      "observed_issue_count": 20,
+      "last_issue": "2026313",
+      "observed_issue_count": 21,
       "settled_issue_count": 20
     },
     {
@@ -23405,11 +24548,47 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "特肖",
+          "mode": "include",
+          "picks": [
+            "猴",
+            "龙",
+            "蛇",
+            "牛",
+            "马",
+            "兔",
+            "鸡",
+            "羊",
+            "虎"
+          ],
+          "vote_zodiacs": [
+            "猴",
+            "龙",
+            "蛇",
+            "牛",
+            "马",
+            "兔",
+            "鸡",
+            "羊",
+            "虎"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313特肖 猴龙蛇牛马兔鸡  羊虎",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246015&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026291",
-      "last_issue": "2026311",
-      "observed_issue_count": 7,
+      "last_issue": "2026313",
+      "observed_issue_count": 8,
       "settled_issue_count": 7
     },
     {
@@ -23997,11 +25176,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀一肖",
+          "mode": "exclude",
+          "picks": [
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期乱杀一肖鼠",
+          "published_at": "2026-11-09 08:55",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242262&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026298",
-      "last_issue": "2026312",
-      "observed_issue_count": 15,
+      "last_issue": "2026313",
+      "observed_issue_count": 16,
       "settled_issue_count": 15
     },
     {
@@ -24123,11 +25332,43 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "七肖",
+          "mode": "include",
+          "picks": [
+            "猴",
+            "牛",
+            "鸡",
+            "羊",
+            "狗",
+            "猪",
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "猴",
+            "牛",
+            "鸡",
+            "羊",
+            "狗",
+            "猪",
+            "鼠"
+          ],
+          "random_hit_baseline": 0.583333,
+          "original_text": "313期资料 | 313期:[必中七肖]猴牛鸡羊狗猪鼠",
+          "published_at": "2026-11-08 23:37",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241236&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026311",
-      "last_issue": "2026311",
-      "observed_issue_count": 1,
+      "last_issue": "2026313",
+      "observed_issue_count": 2,
       "settled_issue_count": 1
     },
     {
@@ -25446,11 +26687,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "马",
+            "狗",
+            "羊",
+            "猴",
+            "虎",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "狗",
+            "羊",
+            "猴",
+            "虎",
+            "猪"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "天天3-6肖🀄️ | 马狗羊猴虎猪",
+          "published_at": "2026-11-09 20:00",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245764&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 21,
+      "last_issue": "2026313",
+      "observed_issue_count": 22,
       "settled_issue_count": 21
     },
     {
@@ -26428,11 +27699,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "猪",
+            "蛇",
+            "兔",
+            "羊",
+            "龙",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "猪",
+            "蛇",
+            "兔",
+            "羊",
+            "龙",
+            "马"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:六肖 | 313期特肖：猪蛇兔羊龙马开00准",
+          "published_at": "2026-11-08 23:25",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241379&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -27468,11 +28769,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "鸡",
+            "鼠",
+            "猪",
+            "龙",
+            "狗",
+            "虎",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "鸡",
+            "鼠",
+            "猪",
+            "龙",
+            "狗",
+            "虎",
+            "羊"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期：大湿八肖中特 | 313期：牛鸡鼠猪龙狗虎羊：开？？？准",
+          "published_at": "2026-11-09 00:19",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242039&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -27539,11 +28874,41 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鼠",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期：杀鼠鸡",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246046&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026309",
-      "last_issue": "2026311",
-      "observed_issue_count": 2,
+      "last_issue": "2026313",
+      "observed_issue_count": 3,
       "settled_issue_count": 2
     },
     {
@@ -28293,11 +29658,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "羊",
+            "鼠",
+            "虎",
+            "鸡",
+            "牛",
+            "兔"
+          ],
+          "vote_zodiacs": [
+            "羊",
+            "鼠",
+            "虎",
+            "鸡",
+            "牛",
+            "兔"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期: 六肖中特 跟我稳赚啊，铁们 | 313期:↑六肖中特↓【羊鼠虎鸡牛兔】开:？00准",
+          "published_at": "2026-11-08 23:15",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241284&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 22,
+      "last_issue": "2026313",
+      "observed_issue_count": 23,
       "settled_issue_count": 22
     },
     {
@@ -28962,11 +30357,41 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀二肖",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313绝杀二肖鸡龙  稳稳的",
+          "published_at": "2026-11-09 16:57",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11244822&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026311",
-      "observed_issue_count": 15,
+      "last_issue": "2026313",
+      "observed_issue_count": 16,
       "settled_issue_count": 15
     },
     {
@@ -29734,11 +31159,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖·无边组",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "马",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "马",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期有无生肖： 无肖 开00准 | 有边生肖:龙蛇猴鸡狗猪 无边生肖:鼠牛虎兔马羊",
+          "published_at": "2026-11-08 23:40",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241610&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -30480,11 +31935,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "牛",
+            "兔",
+            "狗",
+            "马",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "兔",
+            "狗",
+            "马",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期：●六肖中特●‖★★你敢跟,我敢开!★★ | 313期【六肖】：鼠牛兔狗马羊 开00准",
+          "published_at": "2026-11-09 01:38",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242245&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -31252,11 +32737,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖（选后肖）",
+          "mode": "include",
+          "picks": [
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期前后六肖【后肖】开:？00准 | 前六肖：鼠 牛 虎 兔 龙 蛇 | 后六肖：马 羊 猴 鸡 狗 猪",
+          "published_at": "2026-11-09 00:07",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241919&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -31983,11 +33498,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀三肖",
+          "mode": "exclude",
+          "picks": [
+            "猴",
+            "蛇",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "马",
+            "羊",
+            "鸡",
+            "狗"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期【绝杀三肖】【猴蛇猪】开？00准",
+          "published_at": "2026-11-09 00:26",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242103&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -32886,11 +34431,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鸡",
+            "鼠",
+            "虎",
+            "猪",
+            "蛇",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鸡",
+            "鼠",
+            "虎",
+            "猪",
+            "蛇",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:六肖，大围，供参考下注 | 313期六肖【鸡鼠虎猪蛇羊】开00准",
+          "published_at": "2026-11-09 00:03",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241883&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -33794,11 +35369,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鼠",
+            "狗"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期杀《鼠狗》🀄",
+          "published_at": "2026-11-09 16:17",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11244266&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026294",
-      "last_issue": "2026312",
-      "observed_issue_count": 17,
+      "last_issue": "2026313",
+      "observed_issue_count": 18,
       "settled_issue_count": 17
     },
     {
@@ -34525,11 +36130,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "兔"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期杀:兔 杀肖类 [L序] 落1头+落4头+落5位+落6码+期尾+4  连准:-1期",
+          "published_at": "2026-11-09 14:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243787&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -35226,11 +36861,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期杀龙！开",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245867&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -35380,11 +37045,47 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "猪",
+            "羊",
+            "兔",
+            "蛇",
+            "虎",
+            "鼠",
+            "马",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "猪",
+            "羊",
+            "兔",
+            "蛇",
+            "虎",
+            "鼠",
+            "马",
+            "龙"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "九肖中特：（升级九肖） | 313期：牛 猪 羊 兔 蛇 虎 鼠 马 龙",
+          "published_at": "2026-11-09 13:27",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243514&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026311",
-      "last_issue": "2026312",
-      "observed_issue_count": 2,
+      "last_issue": "2026313",
+      "observed_issue_count": 3,
       "settled_issue_count": 2
     },
     {
@@ -35904,11 +37605,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期绝杀【 鸡猴】：🀄🀄",
+          "published_at": "2026-11-09 16:17",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11244278&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 10,
+      "last_issue": "2026313",
+      "observed_issue_count": 11,
       "settled_issue_count": 10
     },
     {
@@ -36665,11 +38396,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀三肖",
+          "mode": "exclude",
+          "picks": [
+            "兔",
+            "猪",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期:绝杀三肖 【兔猪牛】 开:？00准",
+          "published_at": "2026-11-08 22:33",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240956&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 25,
+      "last_issue": "2026313",
+      "observed_issue_count": 26,
       "settled_issue_count": 25
     },
     {
@@ -36946,11 +38707,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期：杀（鼠）开",
+          "published_at": "2026-11-09 18:42",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245523&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 9,
+      "last_issue": "2026313",
+      "observed_issue_count": 10,
       "settled_issue_count": 9
     },
     {
@@ -37677,11 +39468,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "马",
+            "猪",
+            "龙",
+            "狗",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "马",
+            "猪",
+            "龙",
+            "狗",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:6肖，范围不算很大，可以下注 | 313期:＂6肖中特＂〖牛马猪龙狗鸡〗开00准",
+          "published_at": "2026-11-08 23:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241857&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -38670,11 +40491,47 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "兔",
+            "马",
+            "羊",
+            "鼠",
+            "猪",
+            "龙",
+            "牛",
+            "鸡",
+            "狗"
+          ],
+          "vote_zodiacs": [
+            "兔",
+            "马",
+            "羊",
+            "鼠",
+            "猪",
+            "龙",
+            "牛",
+            "鸡",
+            "狗"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期:九肖中特 免费公开 | 313期:九肖中特【兔马羊鼠猪龙牛鸡狗】开:？00准",
+          "published_at": "2026-11-09 00:26",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242097&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 25,
+      "last_issue": "2026313",
+      "observed_issue_count": 26,
       "settled_issue_count": 25
     },
     {
@@ -40479,11 +42336,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "兔",
+            "龙",
+            "猴",
+            "鸡",
+            "狗"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "兔",
+            "龙",
+            "猴",
+            "鸡",
+            "狗"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "六肖中特 | 313期    鼠兔龙猴鸡狗   开？",
+          "published_at": "2026-11-09 09:58",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243150&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -40550,11 +42437,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "马",
+            "羊",
+            "蛇",
+            "鸡",
+            "猴",
+            "兔"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "羊",
+            "蛇",
+            "鸡",
+            "猴",
+            "兔"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "六肖中特 | 313期，马羊蛇鸡猴兔，开？",
+          "published_at": "2026-11-09 13:56",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243571&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026311",
-      "last_issue": "2026312",
-      "observed_issue_count": 2,
+      "last_issue": "2026313",
+      "observed_issue_count": 3,
       "settled_issue_count": 2
     },
     {
@@ -42265,11 +44182,43 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "七肖",
+          "mode": "include",
+          "picks": [
+            "虎",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.583333,
+          "original_text": "【重点七肖围特】 | 313期：虎蛇马羊猴狗猪",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246045&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026304",
-      "last_issue": "2026312",
-      "observed_issue_count": 5,
+      "last_issue": "2026313",
+      "observed_issue_count": 6,
       "settled_issue_count": 5
     },
     {
@@ -43588,11 +45537,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313杀鸡龙      杀17         杀4头",
+          "published_at": "2026-11-09 20:00",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240692&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026301",
-      "last_issue": "2026312",
-      "observed_issue_count": 11,
+      "last_issue": "2026313",
+      "observed_issue_count": 12,
       "settled_issue_count": 11
     },
     {
@@ -43749,11 +45728,41 @@
           "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
           "actual": "鸡",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "龙",
+            "虎",
+            "猪",
+            "马",
+            "羊",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "龙",
+            "虎",
+            "猪",
+            "马",
+            "羊",
+            "猴"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期六肖中特 | 313 龙虎猪马羊猴  开？",
+          "published_at": "2026-11-09 09:58",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242999&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026306",
-      "last_issue": "2026311",
-      "observed_issue_count": 5,
+      "last_issue": "2026313",
+      "observed_issue_count": 6,
       "settled_issue_count": 5
     },
     {
@@ -45245,11 +47254,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀二肖",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313绝杀二肖《鸡牛》√",
+          "published_at": "2026-11-09 18:18",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245419&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 9,
+      "last_issue": "2026313",
+      "observed_issue_count": 10,
       "settled_issue_count": 9
     },
     {
@@ -46527,11 +48566,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "鸡",
+            "龙",
+            "兔",
+            "猴",
+            "蛇",
+            "猪",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "鸡",
+            "龙",
+            "兔",
+            "猴",
+            "蛇",
+            "猪",
+            "马"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期:八肖中特 | 313期:↑八肖中特↓【鼠鸡龙兔猴蛇猪马】开:？？准",
+          "published_at": "2026-11-09 00:25",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242096&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -47258,11 +49331,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "狗",
+            "虎",
+            "龙",
+            "牛",
+            "蛇",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "狗",
+            "虎",
+            "龙",
+            "牛",
+            "蛇",
+            "猴"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期：六肖中特 | 313期六肖中特『狗虎龙牛蛇猴』开:？00准",
+          "published_at": "2026-11-09 00:17",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242022&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -47340,11 +49443,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "龙",
+            "马",
+            "羊",
+            "鼠",
+            "兔",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "龙",
+            "马",
+            "羊",
+            "鼠",
+            "兔",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "【 | 313期 六肖 【龙马羊鼠兔鸡】 开：？？",
+          "published_at": "2026-11-09 16:58",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11244676&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026312",
-      "last_issue": "2026312",
-      "observed_issue_count": 1,
+      "last_issue": "2026313",
+      "observed_issue_count": 2,
       "settled_issue_count": 1
     },
     {
@@ -48071,11 +50204,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "狗",
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "狗",
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期【六肖】看好一起来下注 | 313期:六肖【狗猴羊鼠虎鸡】开00准",
+          "published_at": "2026-11-08 23:50",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241747&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -48303,11 +50466,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀二肖",
+          "mode": "exclude",
+          "picks": [
+            "猴",
+            "虎"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期稳杀二肖（猴虎）开",
+          "published_at": "2026-11-09 18:07",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245404&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026306",
-      "last_issue": "2026312",
-      "observed_issue_count": 6,
+      "last_issue": "2026313",
+      "observed_issue_count": 7,
       "settled_issue_count": 6
     },
     {
@@ -49505,11 +51698,45 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "八肖（家野组合）",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "猴",
+            "鸡",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "猴",
+            "鸡",
+            "马"
+          ],
+          "random_hit_baseline": 0.666667,
+          "original_text": "313期家野两肖【野兽+鸡马】开:？00准 | 家禽：牛、马、羊、鸡、狗、猪 | 野兽：鼠、虎、兔、龙、蛇、猴",
+          "published_at": "2026-11-08 22:42",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241029&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 25,
+      "last_issue": "2026313",
+      "observed_issue_count": 26,
       "settled_issue_count": 25
     },
     {
@@ -50168,11 +52395,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "鸡",
+            "牛",
+            "狗",
+            "龙",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "虎",
+            "兔",
+            "蛇",
+            "马",
+            "猴",
+            "猪"
+          ],
+          "random_hit_baseline": 0.583333,
+          "original_text": "杀 鸡 牛 狗 龙 羊",
+          "published_at": "2026-11-09 19:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246078&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 16,
+      "last_issue": "2026313",
+      "observed_issue_count": 17,
       "settled_issue_count": 16
     },
     {
@@ -50869,11 +53126,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鸡",
+            "鼠",
+            "虎",
+            "猪",
+            "蛇",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "鸡",
+            "鼠",
+            "虎",
+            "猪",
+            "蛇",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:高级六肖 | 313期高级六肖鸡鼠虎猪蛇羊 开00准",
+          "published_at": "2026-11-08 23:29",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241446&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -52423,11 +54710,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "虎",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313: 杀虎猴",
+          "published_at": "2026-11-09 01:09",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242078&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -53435,11 +55752,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猪"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期杀一肖6肖中特 | 313期6肖中特：兔,龙,蛇,马,羊,猪开？",
+          "published_at": "2026-11-09 18:50",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240655&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 19,
+      "last_issue": "2026313",
+      "observed_issue_count": 20,
       "settled_issue_count": 19
     },
     {
@@ -53542,6 +55889,53 @@
       "last_issue": "2026306",
       "observed_issue_count": 3,
       "settled_issue_count": 3
+    },
+    {
+      "id": "nickname-b551525e2c401905330701c0",
+      "nickname": "疯狂六彩人生",
+      "identity_status": "nickname_only_unverified_account",
+      "records": [
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "虎",
+            "牛",
+            "猪",
+            "鼠",
+            "猴",
+            "狗",
+            "龙",
+            "兔",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "牛",
+            "猪",
+            "鼠",
+            "猴",
+            "狗",
+            "龙",
+            "兔",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "九肖中特 中特九肖 | 313期:中特九肖〖虎牛猪鼠猴狗龙兔蛇〗开:？00准",
+          "published_at": "2026-11-08 23:37",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241292&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
+        }
+      ],
+      "first_issue": "2026313",
+      "last_issue": "2026313",
+      "observed_issue_count": 1,
+      "settled_issue_count": 0
     },
     {
       "id": "nickname-b5a207c23115834f18faf9c3",
@@ -55132,11 +57526,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "龙",
+            "兔",
+            "羊",
+            "猪",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "龙",
+            "兔",
+            "羊",
+            "猪",
+            "马"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期（心水六肖）对错勿怪 | 313期 六肖（鼠龙兔羊猪马）开猫猫准",
+          "published_at": "2026-11-08 23:37",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241264&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 20,
+      "last_issue": "2026313",
+      "observed_issue_count": 21,
       "settled_issue_count": 20
     },
     {
@@ -56551,11 +58975,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "蛇",
+            "狗",
+            "兔",
+            "龙",
+            "鸡",
+            "羊"
+          ],
+          "vote_zodiacs": [
+            "蛇",
+            "狗",
+            "兔",
+            "龙",
+            "鸡",
+            "羊"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期：必开六肖 | 313期:必开六肖〖蛇狗兔龙鸡羊〗开:？00准",
+          "published_at": "2026-11-09 00:11",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241969&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -56741,11 +59195,47 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "虎",
+            "猴",
+            "龙",
+            "狗",
+            "鼠",
+            "牛",
+            "羊",
+            "兔",
+            "猪"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "猴",
+            "龙",
+            "狗",
+            "鼠",
+            "牛",
+            "羊",
+            "兔",
+            "猪"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "九肖中特 | 313期:虎猴龙狗鼠牛羊兔猪",
+          "published_at": "2026-11-09 08:55",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11242416&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026310",
-      "last_issue": "2026312",
-      "observed_issue_count": 3,
+      "last_issue": "2026313",
+      "observed_issue_count": 4,
       "settled_issue_count": 3
     },
     {
@@ -57472,11 +59962,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "狗",
+            "马",
+            "羊",
+            "鸡",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "狗",
+            "马",
+            "羊",
+            "鸡",
+            "龙"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期六肖期期准 | 313期六肖【牛狗马羊鸡龙】开？00准",
+          "published_at": "2026-11-08 23:45",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241691&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -58131,11 +60651,47 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "虎",
+            "蛇",
+            "猴",
+            "鼠",
+            "羊",
+            "马",
+            "猪",
+            "狗",
+            "牛"
+          ],
+          "vote_zodiacs": [
+            "虎",
+            "蛇",
+            "猴",
+            "鼠",
+            "羊",
+            "马",
+            "猪",
+            "狗",
+            "牛"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️ | 313期九肖【虎蛇猴鼠羊马猪狗牛】开✅",
+          "published_at": "2026-11-09 17:39",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240772&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026289",
-      "last_issue": "2026312",
-      "observed_issue_count": 18,
+      "last_issue": "2026313",
+      "observed_issue_count": 19,
       "settled_issue_count": 18
     },
     {
@@ -58757,11 +61313,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期 杀蛇肖 开                 杀8尾 开",
+          "published_at": "2026-11-09 12:27",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243422&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 18,
+      "last_issue": "2026313",
+      "observed_issue_count": 19,
       "settled_issue_count": 18
     },
     {
@@ -59596,11 +62182,47 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "九肖",
+          "mode": "include",
+          "picks": [
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "鸡",
+            "马",
+            "牛",
+            "兔",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "鸡",
+            "马",
+            "牛",
+            "兔",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期：一份九肖选三肖 | 九肖:猴羊鼠虎鸡马牛兔蛇，六肖:猴羊鼠虎鸡马，三肖:猴羊鼠开：？？？",
+          "published_at": "2026-11-08 23:14",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241273&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -59927,11 +62549,43 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "七肖",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "羊",
+            "猴",
+            "兔",
+            "鸡",
+            "龙",
+            "蛇"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "羊",
+            "猴",
+            "兔",
+            "鸡",
+            "龙",
+            "蛇"
+          ],
+          "random_hit_baseline": 0.583333,
+          "original_text": "原创七肖 | 313期七肖【鼠羊猴兔鸡龙蛇】开？",
+          "published_at": "2026-11-09 20:01",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240821&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026302",
-      "last_issue": "2026312",
-      "observed_issue_count": 10,
+      "last_issue": "2026313",
+      "observed_issue_count": 11,
       "settled_issue_count": 10
     },
     {
@@ -60639,11 +63293,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "牛",
+            "鼠",
+            "龙",
+            "兔",
+            "猪",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "牛",
+            "鼠",
+            "龙",
+            "兔",
+            "猪",
+            "马"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期；六肖中特【精彩不断】 | 313期【牛鼠龙兔猪马】",
+          "published_at": "2026-11-09 18:59",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11245619&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 20,
+      "last_issue": "2026313",
+      "observed_issue_count": 21,
       "settled_issue_count": 20
     },
     {
@@ -61778,11 +64462,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀一肖",
+          "mode": "exclude",
+          "picks": [
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313期绝杀一肖【鸡】开✅",
+          "published_at": "2026-11-08 22:53",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240737&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026298",
-      "last_issue": "2026312",
-      "observed_issue_count": 13,
+      "last_issue": "2026313",
+      "observed_issue_count": 14,
       "settled_issue_count": 13
     },
     {
@@ -62902,11 +65616,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "猪",
+            "鸡",
+            "龙",
+            "蛇",
+            "虎",
+            "猴"
+          ],
+          "vote_zodiacs": [
+            "猪",
+            "鸡",
+            "龙",
+            "蛇",
+            "虎",
+            "猴"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期：精品六肖 | 313期:精品六肖【猪鸡龙蛇虎猴】开:？00准",
+          "published_at": "2026-11-08 23:13",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241256&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -63543,11 +66287,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖（胆小）",
+          "mode": "include",
+          "picks": [
+            "鼠",
+            "兔",
+            "龙",
+            "蛇",
+            "羊",
+            "鸡"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "兔",
+            "龙",
+            "蛇",
+            "羊",
+            "鸡"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期胆大胆小【胆小】 | 胆大：牛虎马猴狗猪 | 胆小：鼠兔龙蛇羊鸡",
+          "published_at": "2026-11-09 09:38",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243132&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 21,
+      "last_issue": "2026313",
+      "observed_issue_count": 22,
       "settled_issue_count": 21
     },
     {
@@ -64274,11 +67048,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "狗",
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "龙"
+          ],
+          "vote_zodiacs": [
+            "狗",
+            "猴",
+            "羊",
+            "鼠",
+            "虎",
+            "龙"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期：●六肖中特★可以下注，大家一起来赚钱★ | 313期：狗猴羊鼠虎龙 开00准",
+          "published_at": "2026-11-09 00:00",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241859&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -64709,11 +67513,41 @@
           "snapshot_digest": "7db39bb2d5885ae90fe21388430367213d4fb2b8c0d7a8f24a6c62666f81655d",
           "actual": "虎",
           "outcome": "miss"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀三肖",
+          "mode": "exclude",
+          "picks": [
+            "猴",
+            "羊",
+            "马"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "虎",
+            "兔",
+            "龙",
+            "蛇",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.75,
+          "original_text": "313期绝杀三肖猴羊马开",
+          "published_at": "2026-11-09 14:21",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243644&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026295",
-      "last_issue": "2026301",
-      "observed_issue_count": 7,
+      "last_issue": "2026313",
+      "observed_issue_count": 8,
       "settled_issue_count": 7
     },
     {
@@ -65451,11 +68285,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "虎"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "兔",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.916667,
+          "original_text": "313。杀虎。开？",
+          "published_at": "2026-11-09 00:12",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11240688&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 23,
+      "last_issue": "2026313",
+      "observed_issue_count": 24,
       "settled_issue_count": 23
     },
     {
@@ -66969,11 +69833,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "马",
+            "猪",
+            "蛇",
+            "狗",
+            "猴",
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "马",
+            "猪",
+            "蛇",
+            "狗",
+            "猴",
+            "鼠"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "313期:精准六肖 | 313期:精准六肖:[马猪蛇狗猴鼠]开00准",
+          "published_at": "2026-11-08 23:43",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241639&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 24,
+      "last_issue": "2026313",
+      "observed_issue_count": 25,
       "settled_issue_count": 24
     },
     {
@@ -67250,11 +70144,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "杀",
+          "mode": "exclude",
+          "picks": [
+            "虎",
+            "兔"
+          ],
+          "vote_zodiacs": [
+            "鼠",
+            "牛",
+            "龙",
+            "蛇",
+            "马",
+            "羊",
+            "猴",
+            "鸡",
+            "狗",
+            "猪"
+          ],
+          "random_hit_baseline": 0.833333,
+          "original_text": "313期绝杀 虎兔",
+          "published_at": "2026-11-09 14:41",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11243850&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026303",
-      "last_issue": "2026312",
-      "observed_issue_count": 9,
+      "last_issue": "2026313",
+      "observed_issue_count": 10,
       "settled_issue_count": 9
     },
     {
@@ -67921,11 +70845,41 @@
           "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
           "actual": "蛇",
           "outcome": "hit"
+        },
+        {
+          "issue": "2026313",
+          "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+          "quality_status": "meets_minimum_samples",
+          "play": "六肖",
+          "mode": "include",
+          "picks": [
+            "鸡",
+            "牛",
+            "兔",
+            "龙",
+            "猪",
+            "鼠"
+          ],
+          "vote_zodiacs": [
+            "鸡",
+            "牛",
+            "兔",
+            "龙",
+            "猪",
+            "鼠"
+          ],
+          "random_hit_baseline": 0.5,
+          "original_text": "盛世唐朝【六肖⑥码】 | 313期六肖:鸡牛兔龙猪鼠\t六码:22.18.04.39.20.07",
+          "published_at": "2026-11-08 22:48",
+          "source_url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11241083&type=3",
+          "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
+          "actual": null,
+          "outcome": "pending"
         }
       ],
       "first_issue": "2026288",
-      "last_issue": "2026312",
-      "observed_issue_count": 22,
+      "last_issue": "2026313",
+      "observed_issue_count": 23,
       "settled_issue_count": 22
     },
     {
