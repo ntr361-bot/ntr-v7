@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026314",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "42814817561",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42814817561",
-  "updated_at": "2026-11-10T12:31:16.404367+00:00",
+  "updated_at": "2026-11-10T12:31:49.001414+00:00",
   "error": null,
-  "valid_materials": 92,
-  "valid_authors": 92,
-  "successful_post_opens": 509,
+  "valid_materials": 96,
+  "valid_authors": 96,
+  "successful_post_opens": 532,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 485,
-      "attempted": 463,
-      "opened": 462,
-      "extracted": 461,
-      "completed": 462
+      "attempted": 485,
+      "opened": 485,
+      "extracted": 484,
+      "completed": 485
     }
   },
-  "article_texts_extracted": 508,
-  "article_details_completed": 509,
+  "article_texts_extracted": 531,
+  "article_details_completed": 532,
   "last_verified_post": {
-    "author": "踩着高跷看矮子",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246610&type=3",
-    "verified_at": "2026-11-10T12:31:14.983317+00:00",
-    "text_length": 781,
-    "text_sha256": "e66c5b0527c0b3463f9309f359ea1543f4bbf488928824783e8db45c108ab7b5"
+    "author": "赌神不是神",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246381&type=3",
+    "verified_at": "2026-11-10T12:31:46.646672+00:00",
+    "text_length": 75,
+    "text_sha256": "b9e1c2007be0651ebadff1c20a1ced51d610219605753afab0ebb77b3947b53a"
   },
   "last_attempted_post": {
-    "author": "苍穹剑泣",
+    "author": "赌神不是神",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246608&type=3",
-    "attempt_index": 510
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11246381&type=3",
+    "attempt_index": 532
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 508,
-  "stage": "detail: 苍穹剑泣 单双两肖",
-  "progress_updated_at": "2026-11-10T12:31:15.834695+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 531,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-10T12:31:48.055938+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
