@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026314",
+  "state": "collecting_effectively",
+  "run_id": "42814817561",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42814817561",
+  "updated_at": "2026-11-10T12:30:12.108484+00:00",
+  "error": null,
+  "valid_materials": 85,
+  "valid_authors": 85,
+  "successful_post_opens": 460,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 414,
+      "opened": 413,
+      "extracted": 412,
+      "completed": 413
+    }
+  },
+  "article_texts_extracted": 459,
+  "article_details_completed": 460,
+  "last_verified_post": {
+    "author": "王道人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247484&type=3",
+    "verified_at": "2026-11-10T12:30:10.783841+00:00",
+    "text_length": 553,
+    "text_sha256": "3f3368e13e2e32bb76c0fac49414c6dfa441110fa54e8553f70eb9d18a1bd91d"
+  },
+  "last_attempted_post": {
+    "author": "刘天仙",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247483&type=3",
+    "attempt_index": 461
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-10T12:23:04.430434+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 459,
+  "stage": "detail: 刘天仙 314期： 实力绝杀半波三尾",
+  "progress_updated_at": "2026-11-10T12:30:11.466419+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
