@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026314",
+  "state": "collecting_effectively",
+  "run_id": "42814817561",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42814817561",
+  "updated_at": "2026-11-10T12:27:00.272799+00:00",
+  "error": null,
+  "valid_materials": 63,
+  "valid_authors": 63,
+  "successful_post_opens": 300,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 254,
+      "opened": 253,
+      "extracted": 252,
+      "completed": 253
+    }
+  },
+  "article_texts_extracted": 299,
+  "article_details_completed": 300,
+  "last_verified_post": {
+    "author": "專司赢",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247961&type=3",
+    "verified_at": "2026-11-10T12:26:55.872216+00:00",
+    "text_length": 313,
+    "text_sha256": "3946018b60fb4be21fb5a436351db63d8828374a248efbee2f6531f0a636073e"
+  },
+  "last_attempted_post": {
+    "author": "雄霸六合",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247960&type=3",
+    "attempt_index": 301
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-10T12:23:04.430434+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 299,
+  "stage": "detail: 雄霸六合 314期:家野，家野家野",
+  "progress_updated_at": "2026-11-10T12:26:56.468307+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
