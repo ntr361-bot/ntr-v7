@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026314",
+  "state": "collecting_effectively",
+  "run_id": "42814817561",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/42814817561",
+  "updated_at": "2026-11-10T12:28:03.962838+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 351,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 305,
+      "opened": 304,
+      "extracted": 303,
+      "completed": 304
+    }
+  },
+  "article_texts_extracted": 350,
+  "article_details_completed": 351,
+  "last_verified_post": {
+    "author": "慕井云染",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247872&type=3",
+    "verified_at": "2026-11-10T12:28:02.623877+00:00",
+    "text_length": 107,
+    "text_sha256": "b953c2f6bb97a9bb50ce22ffc206233bdc8799e41f31de78fbcbb583a9f338da"
+  },
+  "last_attempted_post": {
+    "author": "长青诗",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11247871&type=3",
+    "attempt_index": 352
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-10T12:23:04.430434+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 350,
+  "stage": "detail: 长青诗 314期六肖，期期中这么简单就好",
+  "progress_updated_at": "2026-11-10T12:28:03.229020+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
