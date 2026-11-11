@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026315",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "43021176193",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
-  "updated_at": "2026-11-11T12:33:58.542921+00:00",
+  "updated_at": "2026-11-11T12:35:01.717798+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 3,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 49,
+      "attempted": 4,
+      "opened": 3,
+      "extracted": 3,
+      "completed": 3
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 485,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 3,
+  "article_details_completed": 3,
+  "last_verified_post": {
+    "author": "贝贝丹丹",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258276&type=3",
+    "verified_at": "2026-11-11T12:35:01.595572+00:00",
+    "text_length": 150,
+    "text_sha256": "0e4a05e22d9431f7c1a84c20227ff7d41eac9a2c7b722aeb2435ebb2a8295555"
+  },
+  "last_attempted_post": {
+    "author": "贝贝丹丹",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258284&type=3",
+    "attempt_index": 4
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 66",
-  "progress_updated_at": "2026-11-11T12:33:57.971346+00:00",
+  "raw_count": 3,
+  "stage": "detail: 贝贝丹丹 澳门彩315期：¥贝贝丹¥特码¥",
+  "progress_updated_at": "2026-11-11T12:35:01.602455+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
