@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026315",
+  "state": "collecting_effectively",
+  "run_id": "43021176193",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
+  "updated_at": "2026-11-11T12:37:08.788472+00:00",
+  "error": null,
+  "valid_materials": 47,
+  "valid_authors": 47,
+  "successful_post_opens": 179,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 131,
+      "opened": 130,
+      "extracted": 130,
+      "completed": 130
+    }
+  },
+  "article_texts_extracted": 179,
+  "article_details_completed": 179,
+  "last_verified_post": {
+    "author": "湘之印",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11256005&type=3",
+    "verified_at": "2026-11-11T12:37:07.837347+00:00",
+    "text_length": 84,
+    "text_sha256": "273e6084b486d9585442163686809692195519dc4ca6dd2f0098c581233c3820"
+  },
+  "last_attempted_post": {
+    "author": "十四码围特",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251789&type=3",
+    "attempt_index": 180
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-11T12:35:27.934289+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 179,
+  "stage": "detail: 十四码围特 已更新",
+  "progress_updated_at": "2026-11-11T12:37:08.288814+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
