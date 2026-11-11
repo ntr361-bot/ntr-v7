@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026315",
+  "state": "collecting_effectively",
+  "run_id": "43019285834",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43019285834",
+  "updated_at": "2026-11-11T12:28:59.096994+00:00",
+  "error": null,
+  "valid_materials": 86,
+  "valid_authors": 86,
+  "successful_post_opens": 471,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 48,
+      "extracted": 48,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 452,
+      "attempted": 423,
+      "opened": 423,
+      "extracted": 423,
+      "completed": 423
+    }
+  },
+  "article_texts_extracted": 471,
+  "article_details_completed": 471,
+  "last_verified_post": {
+    "author": "回眸醉倾城",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251891&type=3",
+    "verified_at": "2026-11-11T12:28:58.587821+00:00",
+    "text_length": 874,
+    "text_sha256": "48ff4c6b5f3d514e3ed44472307f9ceaec7d7b8c0e9d2fc20e80087e0a768d48"
+  },
+  "last_attempted_post": {
+    "author": "回眸醉倾城",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251891&type=3",
+    "attempt_index": 471
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-11T12:22:35.994680+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 471,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-11T12:28:58.875498+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
