@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026315",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "43021176193",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
-  "updated_at": "2026-11-11T12:43:28.886040+00:00",
+  "updated_at": "2026-11-11T12:44:23.364404+00:00",
   "error": null,
-  "valid_materials": 94,
-  "valid_authors": 94,
-  "successful_post_opens": 497,
+  "valid_materials": 100,
+  "valid_authors": 100,
+  "successful_post_opens": 534,
   "article_details": {
     "featured": {
       "queued": 49,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 485,
-      "attempted": 449,
-      "opened": 448,
-      "extracted": 448,
-      "completed": 448
+      "attempted": 485,
+      "opened": 485,
+      "extracted": 485,
+      "completed": 485
     }
   },
-  "article_texts_extracted": 497,
-  "article_details_completed": 497,
+  "article_texts_extracted": 534,
+  "article_details_completed": 534,
   "last_verified_post": {
-    "author": "國足之魂",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251933&type=3",
-    "verified_at": "2026-11-11T12:43:27.896530+00:00",
-    "text_length": 286,
-    "text_sha256": "9bf89f23a508426db799b7db1a7cdf5a6bd09f6d18aed7fb32cc211814352bc8"
+    "author": "鱼鱼鱼",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251813&type=3",
+    "verified_at": "2026-11-11T12:44:19.558427+00:00",
+    "text_length": 29,
+    "text_sha256": "85a55efd46a55324c778b3e9a1aa9ae22774cba1a2ebb2477da829e5d092833c"
   },
   "last_attempted_post": {
-    "author": "单身托儿所",
+    "author": "鱼鱼鱼",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251910&type=3",
-    "attempt_index": 498
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251813&type=3",
+    "attempt_index": 534
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 497,
-  "stage": "detail: 单身托儿所 平特一肖",
-  "progress_updated_at": "2026-11-11T12:43:28.731455+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 534,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-11T12:44:21.091082+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": null,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
