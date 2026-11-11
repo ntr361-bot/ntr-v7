@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026315",
+  "state": "collecting_effectively",
+  "run_id": "43021176193",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
+  "updated_at": "2026-11-11T12:43:28.886040+00:00",
+  "error": null,
+  "valid_materials": 94,
+  "valid_authors": 94,
+  "successful_post_opens": 497,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 449,
+      "opened": 448,
+      "extracted": 448,
+      "completed": 448
+    }
+  },
+  "article_texts_extracted": 497,
+  "article_details_completed": 497,
+  "last_verified_post": {
+    "author": "國足之魂",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251933&type=3",
+    "verified_at": "2026-11-11T12:43:27.896530+00:00",
+    "text_length": 286,
+    "text_sha256": "9bf89f23a508426db799b7db1a7cdf5a6bd09f6d18aed7fb32cc211814352bc8"
+  },
+  "last_attempted_post": {
+    "author": "单身托儿所",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251910&type=3",
+    "attempt_index": 498
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-11T12:35:27.934289+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 497,
+  "stage": "detail: 单身托儿所 平特一肖",
+  "progress_updated_at": "2026-11-11T12:43:28.731455+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
