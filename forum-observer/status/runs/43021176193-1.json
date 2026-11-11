@@ -7,51 +7,56 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
-  "updated_at": "2026-11-11T12:35:01.717798+00:00",
+  "updated_at": "2026-11-11T12:36:05.263960+00:00",
   "error": null,
-  "valid_materials": 2,
-  "valid_authors": 2,
-  "successful_post_opens": 3,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 106,
   "article_details": {
     "featured": {
       "queued": 49,
-      "attempted": 4,
-      "opened": 3,
-      "extracted": 3,
-      "completed": 3
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
     },
     "ordinary": {
       "queued": 485,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 58,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
     }
   },
-  "article_texts_extracted": 3,
-  "article_details_completed": 3,
+  "article_texts_extracted": 106,
+  "article_details_completed": 106,
   "last_verified_post": {
-    "author": "贝贝丹丹",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258276&type=3",
-    "verified_at": "2026-11-11T12:35:01.595572+00:00",
-    "text_length": 150,
-    "text_sha256": "0e4a05e22d9431f7c1a84c20227ff7d41eac9a2c7b722aeb2435ebb2a8295555"
+    "author": "淇淇中钱",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258402&type=3",
+    "verified_at": "2026-11-11T12:36:04.918757+00:00",
+    "text_length": 58,
+    "text_sha256": "1fd6a7330e442069ac8207c3395d2affa64dd2bf8f790946faef9c64126d0f90"
   },
   "last_attempted_post": {
-    "author": "贝贝丹丹",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258284&type=3",
-    "attempt_index": 4
+    "author": "咖啡里的茶",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251848&type=3",
+    "attempt_index": 107
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-11T12:35:27.934289+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 3,
-  "stage": "detail: 贝贝丹丹 澳门彩315期：¥贝贝丹¥特码¥",
-  "progress_updated_at": "2026-11-11T12:35:01.602455+00:00",
+  "raw_count": 106,
+  "stage": "detail: 咖啡里的茶 《绝杀三肖》",
+  "progress_updated_at": "2026-11-11T12:36:05.104674+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
