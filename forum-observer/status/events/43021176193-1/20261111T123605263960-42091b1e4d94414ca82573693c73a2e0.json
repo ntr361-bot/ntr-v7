@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026315",
+  "state": "collecting_effectively",
+  "run_id": "43021176193",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43021176193",
+  "updated_at": "2026-11-11T12:36:05.263960+00:00",
+  "error": null,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 106,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 485,
+      "attempted": 58,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
+    }
+  },
+  "article_texts_extracted": 106,
+  "article_details_completed": 106,
+  "last_verified_post": {
+    "author": "淇淇中钱",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11258402&type=3",
+    "verified_at": "2026-11-11T12:36:04.918757+00:00",
+    "text_length": 58,
+    "text_sha256": "1fd6a7330e442069ac8207c3395d2affa64dd2bf8f790946faef9c64126d0f90"
+  },
+  "last_attempted_post": {
+    "author": "咖啡里的茶",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11251848&type=3",
+    "attempt_index": 107
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-11T12:35:27.934289+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 106,
+  "stage": "detail: 咖啡里的茶 《绝杀三肖》",
+  "progress_updated_at": "2026-11-11T12:36:05.104674+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
