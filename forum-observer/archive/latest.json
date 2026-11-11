@@ -1,24 +1,24 @@
 {
-  "issue": "2026314",
+  "issue": "2026315",
   "status": "ready_observation",
-  "raw_count": 531,
-  "valid_materials": 96,
-  "pending_rule_question_count": 104,
+  "raw_count": 500,
+  "valid_materials": 92,
+  "pending_rule_question_count": 99,
   "article_image_audit": {},
-  "valid_prediction_authors": 96,
-  "updated_at": "2026-11-10T12:31:48.055938+00:00",
+  "valid_prediction_authors": 92,
+  "updated_at": "2026-11-11T12:29:31.942098+00:00",
   "top3": [
-    "马",
-    "虎",
-    "猴"
-  ],
-  "top6": [
-    "马",
-    "虎",
     "猴",
     "狗",
-    "鼠",
-    "羊"
+    "龙"
+  ],
+  "top6": [
+    "猴",
+    "狗",
+    "龙",
+    "兔",
+    "羊",
+    "蛇"
   ],
   "notes": "Forum feed and author pages are progressively scrolled to load cards. Missing author profiles or incomplete scrolling are reported. Retrospective references in next-period posts are not pre-draw forecasts; page top draw results are excluded from scoring. Experimental evidence only; no verified live leaderboard."
 }
