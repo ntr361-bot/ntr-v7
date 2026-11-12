@@ -1,67 +1,31 @@
 {
   "schema_version": 2,
-  "issue": "2026316",
-  "state": "frozen",
-  "run_id": "43223256842",
+  "issue": "2026317",
+  "state": "starting",
+  "run_id": "43296952463",
   "attempt": 1,
-  "event": "push",
+  "event": "schedule",
   "test_only": false,
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43223256842",
-  "updated_at": "2026-11-12T13:01:35.769779+00:00",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43296952463",
+  "updated_at": "2026-11-12T20:06:43.725307+00:00",
   "error": null,
-  "valid_materials": 94,
-  "valid_authors": 94,
-  "successful_post_opens": 514,
-  "article_details": {
-    "featured": {
-      "queued": 43,
-      "attempted": 43,
-      "opened": 43,
-      "extracted": 43,
-      "completed": 43
-    },
-    "ordinary": {
-      "queued": 471,
-      "attempted": 471,
-      "opened": 471,
-      "extracted": 470,
-      "completed": 471
-    }
-  },
-  "article_texts_extracted": 513,
-  "article_details_completed": 514,
-  "last_verified_post": {
-    "author": "八闽郡王",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11259276&type=3",
-    "verified_at": "2026-11-12T12:30:09.563698+00:00",
-    "text_length": 18,
-    "text_sha256": "fb75646dbee60b5fbc8fd0a017fb52ac3c546461cbe517b157d33c4c621c4ba8"
-  },
-  "last_attempted_post": {
-    "author": "中国人民银行",
-    "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11259275&type=3",
-    "attempt_index": 514
-  },
-  "priority_audit": {
-    "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": {
-      "at": "2026-11-12T12:22:46.025087+00:00",
-      "featured_queued": 43,
-      "featured_attempted": 43,
-      "featured_completed": 43
-    },
-    "violation_count": 0,
-    "state": "verified"
-  },
-  "raw_count": 513,
+  "valid_materials": null,
+  "valid_authors": null,
+  "successful_post_opens": null,
+  "article_details": null,
+  "article_texts_extracted": null,
+  "article_details_completed": null,
+  "last_verified_post": null,
+  "last_attempted_post": null,
+  "priority_audit": null,
+  "raw_count": null,
   "stage": null,
-  "progress_updated_at": "2026-11-12T12:30:11.796855+00:00",
-  "collection_status": "ready_observation",
+  "progress_updated_at": null,
+  "collection_status": null,
   "quality_summary": {
-    "detail_errors": 1,
-    "truncated": false,
-    "unextracted_current_posts": 1
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": null
   },
-  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+  "coverage_label": null
 }
