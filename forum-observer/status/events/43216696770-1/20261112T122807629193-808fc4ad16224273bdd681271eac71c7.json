@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026316",
+  "state": "collecting_effectively",
+  "run_id": "43216696770",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43216696770",
+  "updated_at": "2026-11-12T12:28:07.629193+00:00",
+  "error": null,
+  "valid_materials": 79,
+  "valid_authors": 79,
+  "successful_post_opens": 401,
+  "article_details": {
+    "featured": {
+      "queued": 43,
+      "attempted": 43,
+      "opened": 43,
+      "extracted": 43,
+      "completed": 43
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 358,
+      "opened": 358,
+      "extracted": 358,
+      "completed": 358
+    }
+  },
+  "article_texts_extracted": 401,
+  "article_details_completed": 401,
+  "last_verified_post": {
+    "author": "浪迹天涯",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11259509&type=3",
+    "verified_at": "2026-11-12T12:28:07.101550+00:00",
+    "text_length": 56,
+    "text_sha256": "f52e492fea27f781bdf42718d8e82a7115d06fb81a94505fa8e85eadadb7b265"
+  },
+  "last_attempted_post": {
+    "author": "浪迹天涯",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11259509&type=3",
+    "attempt_index": 401
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-12T12:22:46.025087+00:00",
+      "featured_queued": 43,
+      "featured_attempted": 43,
+      "featured_completed": 43
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 401,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-12T12:28:07.372136+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
