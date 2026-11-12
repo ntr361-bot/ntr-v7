@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026316",
+  "state": "collecting_effectively",
+  "run_id": "43216696770",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43216696770",
+  "updated_at": "2026-11-12T12:23:48.257166+00:00",
+  "error": null,
+  "valid_materials": 29,
+  "valid_authors": 29,
+  "successful_post_opens": 134,
+  "article_details": {
+    "featured": {
+      "queued": 43,
+      "attempted": 43,
+      "opened": 43,
+      "extracted": 43,
+      "completed": 43
+    },
+    "ordinary": {
+      "queued": 471,
+      "attempted": 92,
+      "opened": 91,
+      "extracted": 91,
+      "completed": 91
+    }
+  },
+  "article_texts_extracted": 134,
+  "article_details_completed": 134,
+  "last_verified_post": {
+    "author": "周瑜伽砖",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264109&type=3",
+    "verified_at": "2026-11-12T12:23:47.945282+00:00",
+    "text_length": 1,
+    "text_sha256": "0ca5d3d94399f4138d011d2c9869e71c5715b06946c80cbb2eefc4bd8fe41655"
+  },
+  "last_attempted_post": {
+    "author": "赵小刀",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264088&type=3",
+    "attempt_index": 135
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-12T12:22:46.025087+00:00",
+      "featured_queued": 43,
+      "featured_attempted": 43,
+      "featured_completed": 43
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 134,
+  "stage": "detail: 赵小刀 平肖平尾",
+  "progress_updated_at": "2026-11-12T12:23:48.224866+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
