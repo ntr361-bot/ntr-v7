@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026317",
+  "state": "collecting_effectively",
+  "run_id": "43425732502",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43425732502",
+  "updated_at": "2026-11-13T12:36:52.942168+00:00",
+  "error": null,
+  "valid_materials": 47,
+  "valid_authors": 47,
+  "successful_post_opens": 204,
+  "article_details": {
+    "featured": {
+      "queued": 57,
+      "attempted": 57,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
+    },
+    "ordinary": {
+      "queued": 483,
+      "attempted": 148,
+      "opened": 147,
+      "extracted": 146,
+      "completed": 147
+    }
+  },
+  "article_texts_extracted": 203,
+  "article_details_completed": 204,
+  "last_verified_post": {
+    "author": "牛料啊",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11268982&type=3",
+    "verified_at": "2026-11-13T12:36:52.291075+00:00",
+    "text_length": 94,
+    "text_sha256": "0b795e0714bc939701022a297deece5b5b270e79009c53c08cb2cddd46e11918"
+  },
+  "last_attempted_post": {
+    "author": "牛料啊",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11268981&type=3",
+    "attempt_index": 205
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-13T12:34:30.056558+00:00",
+      "featured_queued": 57,
+      "featured_attempted": 57,
+      "featured_completed": 57
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 203,
+  "stage": "detail: 牛料啊 三肖中平特",
+  "progress_updated_at": "2026-11-13T12:36:52.820100+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
