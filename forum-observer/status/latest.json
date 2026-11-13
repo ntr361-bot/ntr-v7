@@ -7,51 +7,56 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43425732502",
-  "updated_at": "2026-11-13T12:33:36.623023+00:00",
+  "updated_at": "2026-11-13T12:34:42.330452+00:00",
   "error": null,
-  "valid_materials": 2,
-  "valid_authors": 2,
-  "successful_post_opens": 10,
+  "valid_materials": 16,
+  "valid_authors": 16,
+  "successful_post_opens": 76,
   "article_details": {
     "featured": {
       "queued": 57,
-      "attempted": 11,
-      "opened": 10,
-      "extracted": 10,
-      "completed": 10
+      "attempted": 57,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
     },
     "ordinary": {
       "queued": 483,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 20,
+      "opened": 19,
+      "extracted": 19,
+      "completed": 19
     }
   },
-  "article_texts_extracted": 10,
-  "article_details_completed": 10,
+  "article_texts_extracted": 76,
+  "article_details_completed": 76,
   "last_verified_post": {
-    "author": "叶落归根",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264694&type=3",
-    "verified_at": "2026-11-13T12:33:36.480426+00:00",
-    "text_length": 261,
-    "text_sha256": "6ff57dce1381f5f9ee1c66f80625991909e9c755d35feaca5cafdb1fff970c48"
+    "author": "六合园长",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11271590&type=3",
+    "verified_at": "2026-11-13T12:34:41.813063+00:00",
+    "text_length": 4,
+    "text_sha256": "90efd6cdb8a253c5fa2f8dae23d71b023ba579ab3cb35757be11c423bb890004"
   },
   "last_attempted_post": {
-    "author": "顺藤摸瓜",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264642&type=3",
-    "attempt_index": 11
+    "author": "今晚睡得香",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11271615&type=3",
+    "attempt_index": 77
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-13T12:34:30.056558+00:00",
+      "featured_queued": 57,
+      "featured_attempted": 57,
+      "featured_completed": 57
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 10,
-  "stage": "detail: 顺藤摸瓜 港澳钱庄【绝杀三肖】",
-  "progress_updated_at": "2026-11-13T12:33:36.503939+00:00",
+  "raw_count": 76,
+  "stage": "detail: 今晚睡得香 317期一码中特",
+  "progress_updated_at": "2026-11-13T12:34:41.931643+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
