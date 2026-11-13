@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026317",
+  "state": "frozen",
+  "run_id": "43432466688",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43432466688",
+  "updated_at": "2026-11-13T13:18:25.127636+00:00",
+  "error": null,
+  "valid_materials": 97,
+  "valid_authors": 97,
+  "successful_post_opens": 540,
+  "article_details": {
+    "featured": {
+      "queued": 57,
+      "attempted": 57,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
+    },
+    "ordinary": {
+      "queued": 483,
+      "attempted": 483,
+      "opened": 483,
+      "extracted": 482,
+      "completed": 483
+    }
+  },
+  "article_texts_extracted": 539,
+  "article_details_completed": 540,
+  "last_verified_post": {
+    "author": "头条号",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264643&type=3",
+    "verified_at": "2026-11-13T12:44:20.328860+00:00",
+    "text_length": 240,
+    "text_sha256": "854e2c1debbd563d5dac57e7ac623d3d8d570c190d7e147ee2085c92020bfd90"
+  },
+  "last_attempted_post": {
+    "author": "头条号",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264643&type=3",
+    "attempt_index": 540
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-13T12:34:30.056558+00:00",
+      "featured_queued": 57,
+      "featured_attempted": 57,
+      "featured_completed": 57
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 539,
+  "stage": null,
+  "progress_updated_at": "2026-11-13T12:44:21.971932+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 1,
+    "truncated": false,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
