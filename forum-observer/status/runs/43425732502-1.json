@@ -1,46 +1,57 @@
 {
   "schema_version": 2,
   "issue": "2026317",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "43425732502",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43425732502",
-  "updated_at": "2026-11-13T12:32:31.671601+00:00",
+  "updated_at": "2026-11-13T12:33:36.623023+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 2,
+  "valid_authors": 2,
+  "successful_post_opens": 10,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 57,
+      "attempted": 11,
+      "opened": 10,
+      "extracted": 10,
+      "completed": 10
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 483,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 10,
+  "article_details_completed": 10,
+  "last_verified_post": {
+    "author": "叶落归根",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264694&type=3",
+    "verified_at": "2026-11-13T12:33:36.480426+00:00",
+    "text_length": 261,
+    "text_sha256": "6ff57dce1381f5f9ee1c66f80625991909e9c755d35feaca5cafdb1fff970c48"
+  },
+  "last_attempted_post": {
+    "author": "顺藤摸瓜",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11264642&type=3",
+    "attempt_index": 11
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 69",
-  "progress_updated_at": "2026-11-13T12:32:30.821706+00:00",
+  "raw_count": 10,
+  "stage": "detail: 顺藤摸瓜 港澳钱庄【绝杀三肖】",
+  "progress_updated_at": "2026-11-13T12:33:36.503939+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
