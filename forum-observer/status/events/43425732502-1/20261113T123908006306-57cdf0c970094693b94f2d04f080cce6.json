@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026317",
+  "state": "collecting_effectively",
+  "run_id": "43425732502",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43425732502",
+  "updated_at": "2026-11-13T12:39:08.006306+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 324,
+  "article_details": {
+    "featured": {
+      "queued": 57,
+      "attempted": 57,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
+    },
+    "ordinary": {
+      "queued": 483,
+      "attempted": 267,
+      "opened": 267,
+      "extracted": 266,
+      "completed": 267
+    }
+  },
+  "article_texts_extracted": 323,
+  "article_details_completed": 324,
+  "last_verified_post": {
+    "author": "我是你老子",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11265376&type=3",
+    "verified_at": "2026-11-13T12:39:07.403071+00:00",
+    "text_length": 95,
+    "text_sha256": "9bf5aa5dc854b331d5156d52d72ffbe8120070d7a509216d4e21101c10bf4364"
+  },
+  "last_attempted_post": {
+    "author": "我是你老子",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11265376&type=3",
+    "attempt_index": 324
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-13T12:34:30.056558+00:00",
+      "featured_queued": 57,
+      "featured_attempted": 57,
+      "featured_completed": 57
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 323,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-13T12:39:07.731408+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
