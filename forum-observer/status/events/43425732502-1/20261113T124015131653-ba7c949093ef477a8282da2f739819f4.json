@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026317",
+  "state": "collecting_effectively",
+  "run_id": "43425732502",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43425732502",
+  "updated_at": "2026-11-13T12:40:15.131653+00:00",
+  "error": null,
+  "valid_materials": 73,
+  "valid_authors": 73,
+  "successful_post_opens": 378,
+  "article_details": {
+    "featured": {
+      "queued": 57,
+      "attempted": 57,
+      "opened": 57,
+      "extracted": 57,
+      "completed": 57
+    },
+    "ordinary": {
+      "queued": 483,
+      "attempted": 321,
+      "opened": 321,
+      "extracted": 320,
+      "completed": 321
+    }
+  },
+  "article_texts_extracted": 377,
+  "article_details_completed": 378,
+  "last_verified_post": {
+    "author": "情深不寿",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11265325&type=3",
+    "verified_at": "2026-11-13T12:40:14.634255+00:00",
+    "text_length": 93,
+    "text_sha256": "99e6e2da84fed8e257896b4a3c8f59ffee893d37167c3eab3d3c8d0f014a2a93"
+  },
+  "last_attempted_post": {
+    "author": "情深不寿",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11265325&type=3",
+    "attempt_index": 378
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-13T12:34:30.056558+00:00",
+      "featured_queued": 57,
+      "featured_attempted": 57,
+      "featured_completed": 57
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 377,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-13T12:40:15.022782+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
