@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026318",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "43594938077",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43594938077",
-  "updated_at": "2026-11-14T12:37:13.861029+00:00",
+  "updated_at": "2026-11-14T12:38:03.793202+00:00",
   "error": null,
-  "valid_materials": 86,
-  "valid_authors": 86,
-  "successful_post_opens": 462,
+  "valid_materials": 93,
+  "valid_authors": 93,
+  "successful_post_opens": 510,
   "article_details": {
     "featured": {
       "queued": 51,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 459,
-      "attempted": 411,
-      "opened": 411,
-      "extracted": 411,
-      "completed": 411
+      "attempted": 459,
+      "opened": 459,
+      "extracted": 459,
+      "completed": 459
     }
   },
-  "article_texts_extracted": 462,
-  "article_details_completed": 462,
+  "article_texts_extracted": 510,
+  "article_details_completed": 510,
   "last_verified_post": {
-    "author": "苍穹剑泣",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272486&type=3",
-    "verified_at": "2026-11-14T12:37:13.498420+00:00",
-    "text_length": 833,
-    "text_sha256": "c0c96e83ecc02b9d5b6627e90faf88d4f3a9f039ee3d0b9102c6b64bc68d508b"
+    "author": "老黄历",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272259&type=3",
+    "verified_at": "2026-11-14T12:38:01.728881+00:00",
+    "text_length": 982,
+    "text_sha256": "67e6ab876f0bc65f4762f1c0f7ec447856130168676439c0700f8028f44f6364"
   },
   "last_attempted_post": {
-    "author": "苍穹剑泣",
+    "author": "老黄历",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272486&type=3",
-    "attempt_index": 462
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272259&type=3",
+    "attempt_index": 510
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 462,
-  "stage": "detail_complete",
-  "progress_updated_at": "2026-11-14T12:37:13.717650+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 510,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-14T12:38:02.561051+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": null,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
