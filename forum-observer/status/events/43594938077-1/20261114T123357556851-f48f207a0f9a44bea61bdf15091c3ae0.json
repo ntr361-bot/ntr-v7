@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026318",
+  "state": "collecting_effectively",
+  "run_id": "43594938077",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43594938077",
+  "updated_at": "2026-11-14T12:33:57.556851+00:00",
+  "error": null,
+  "valid_materials": 55,
+  "valid_authors": 55,
+  "successful_post_opens": 274,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 223,
+      "opened": 223,
+      "extracted": 223,
+      "completed": 223
+    }
+  },
+  "article_texts_extracted": 274,
+  "article_details_completed": 274,
+  "last_verified_post": {
+    "author": "火中取栗",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11273606&type=3",
+    "verified_at": "2026-11-14T12:33:57.316485+00:00",
+    "text_length": 294,
+    "text_sha256": "43bc0d599b27f76f3ecac817d39663bc378b8613a6faa107f89de890e4a979db"
+  },
+  "last_attempted_post": {
+    "author": "火中取栗",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11273606&type=3",
+    "attempt_index": 274
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-14T12:30:55.827033+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 274,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-14T12:33:57.484867+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
