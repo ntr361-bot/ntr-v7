@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026318",
+  "state": "collecting_effectively",
+  "run_id": "43594938077",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43594938077",
+  "updated_at": "2026-11-14T12:35:01.705304+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 336,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 459,
+      "attempted": 286,
+      "opened": 285,
+      "extracted": 285,
+      "completed": 285
+    }
+  },
+  "article_texts_extracted": 336,
+  "article_details_completed": 336,
+  "last_verified_post": {
+    "author": "吸纳的技能",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11273428&type=3",
+    "verified_at": "2026-11-14T12:35:00.965898+00:00",
+    "text_length": 208,
+    "text_sha256": "5a0c29c79dbf013b107c975c9e38eabadf6f451b8dd38a22b2f5b8ed192e4043"
+  },
+  "last_attempted_post": {
+    "author": "阿斯利康",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11273421&type=3",
+    "attempt_index": 337
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-14T12:30:55.827033+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 336,
+  "stage": "detail: 阿斯利康 318期:四肖，小围",
+  "progress_updated_at": "2026-11-14T12:35:01.343086+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
