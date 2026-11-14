@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026318",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "43595991443",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43595991443",
-  "updated_at": "2026-11-14T12:51:37.095037+00:00",
+  "updated_at": "2026-11-14T12:52:40.654575+00:00",
   "error": null,
-  "valid_materials": 90,
-  "valid_authors": 90,
-  "successful_post_opens": 479,
+  "valid_materials": 98,
+  "valid_authors": 98,
+  "successful_post_opens": 533,
   "article_details": {
     "featured": {
       "queued": 51,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 482,
-      "attempted": 428,
-      "opened": 428,
-      "extracted": 427,
-      "completed": 428
+      "attempted": 482,
+      "opened": 482,
+      "extracted": 481,
+      "completed": 482
     }
   },
-  "article_texts_extracted": 478,
-  "article_details_completed": 479,
+  "article_texts_extracted": 532,
+  "article_details_completed": 533,
   "last_verified_post": {
-    "author": "萌你一身血",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272525&type=3",
-    "verified_at": "2026-11-14T12:51:36.710356+00:00",
-    "text_length": 144,
-    "text_sha256": "5ffcd61888de0eb60deae0bcae57c406059d50853e6b8c69c0b64ac4615a79f8"
+    "author": "老黄历",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272259&type=3",
+    "verified_at": "2026-11-14T12:52:37.476206+00:00",
+    "text_length": 982,
+    "text_sha256": "67e6ab876f0bc65f4762f1c0f7ec447856130168676439c0700f8028f44f6364"
   },
   "last_attempted_post": {
-    "author": "萌你一身血",
+    "author": "老黄历",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272525&type=3",
-    "attempt_index": 479
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272259&type=3",
+    "attempt_index": 533
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 478,
-  "stage": "detail_complete",
-  "progress_updated_at": "2026-11-14T12:51:36.991409+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 532,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-14T12:52:38.618950+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
