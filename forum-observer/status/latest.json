@@ -7,56 +7,61 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43595991443",
-  "updated_at": "2026-11-14T12:43:51.514826+00:00",
+  "updated_at": "2026-11-14T12:44:54.763010+00:00",
   "error": null,
-  "valid_materials": 3,
-  "valid_authors": 3,
-  "successful_post_opens": 16,
+  "valid_materials": 25,
+  "valid_authors": 25,
+  "successful_post_opens": 108,
   "article_details": {
     "featured": {
       "queued": 51,
-      "attempted": 17,
-      "opened": 16,
-      "extracted": 16,
-      "completed": 16
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
     },
     "ordinary": {
       "queued": 482,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 58,
+      "opened": 57,
+      "extracted": 56,
+      "completed": 57
     }
   },
-  "article_texts_extracted": 16,
-  "article_details_completed": 16,
+  "article_texts_extracted": 107,
+  "article_details_completed": 108,
   "last_verified_post": {
-    "author": "灵云道人",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272114&type=3",
-    "verified_at": "2026-11-14T12:43:51.127549+00:00",
-    "text_length": 541,
-    "text_sha256": "f8299c826c9ee43c53169355efe3389a7247fb405d526d479866f47c72357f36"
+    "author": "六合拉拉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11276982&type=3",
+    "verified_at": "2026-11-14T12:44:54.512589+00:00",
+    "text_length": 417,
+    "text_sha256": "955f21756d3385e26a5ec8033fe5e5b7f932fa498f312dec85d13779d74ba71f"
   },
   "last_attempted_post": {
-    "author": "六杀码统计",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11272741&type=3",
-    "attempt_index": 17
+    "author": "无影中特",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277007&type=3",
+    "attempt_index": 109
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-14T12:44:19.783862+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 16,
-  "stage": "detail: 六杀码统计 318",
-  "progress_updated_at": "2026-11-14T12:43:51.150365+00:00",
+  "raw_count": 107,
+  "stage": "detail: 无影中特 318A",
+  "progress_updated_at": "2026-11-14T12:44:54.672481+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
