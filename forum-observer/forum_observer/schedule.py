@@ -83,10 +83,10 @@ def draft_is_current_evening(data, issue, now, since=None):
     )
 
 
-def freeze_window_allowed(now, archive=None):
+def freeze_window_allowed(now, archive=None, manual=False):
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
-    if not (FREEZE_START <= minute < FREEZE_END):
+    if not manual and not (FREEZE_START <= minute < FREEZE_END):
         return False
     if archive is None:
         return True
@@ -96,8 +96,9 @@ def freeze_window_allowed(now, archive=None):
         data = json.loads(draft.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return False
-    # Manual collections may run at any time of the day before 21:00
-    # (user decision 2026-10-26); the latest same-day draft is frozen.
+    # Scheduled freezes remain limited to the 21:00 window. A manual freeze
+    # may use today's current-issue draft at any time; the cycle still checks
+    # the 21:00 evidence cutoff and refuses to overwrite an existing snapshot.
     return draft_is_current_evening(data, issue, local, since=(0, 0))
 
 
@@ -248,6 +249,8 @@ def main():
     parser.add_argument("--align-gpt-trigger", action="store_true",
                         help="Wait for 20:20 only when a GPT trigger arrives up to five minutes early")
     parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
+    parser.add_argument("--manual-freeze", action="store_true",
+                        help="Allow an explicit freeze outside the nightly window for today's current-issue draft")
     parser.add_argument("--gpt-second-round", action="store_true",help="Retired 20:30 second round: always rejected")
     parser.add_argument("--forum49-collect-gate", action="store_true",
                         help="Decide whether a 49论坛模型 collect run should collect (env F49_SKIP_IF_COLLECTED)")
@@ -275,9 +278,11 @@ def main():
                 f.write(f"collect={str(collect).lower()}\nreason={reason}\ntest={str(test).lower()}\n")
         return 0
     if a.check_freeze_window:
-        allowed = freeze_window_allowed(now, a.archive)
+        allowed = freeze_window_allowed(now, a.archive, manual=a.manual_freeze)
         if allowed:
-            reason = "within_freeze_window"
+            reason = "manual_current_draft" if a.manual_freeze else "within_freeze_window"
+        elif a.manual_freeze:
+            reason = "manual_freeze_missing_current_draft"
         elif not freeze_window_allowed(now):
             reason = "scheduled_freeze_window_missed"
         else:

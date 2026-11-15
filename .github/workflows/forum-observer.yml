@@ -1,6 +1,13 @@
 name: Forum observer daily cycle
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: collect | freeze current draft
+        type: choice
+        options: [collect, freeze]
+        required: false
+        default: collect
   # User decision 2026-10-26: ONE nightly collection at 20:20 Beijing. The
   # 20:00 first-round and 20:30 second-round cron slots are removed (and
   # rejected by forum_observer.schedule if ever delivered). Manual collection
@@ -65,7 +72,7 @@ jobs:
         id: collection-gate
         # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
+        if: (github.event_name == 'schedule' && github.event.schedule != '0,5,10 13 * * *') || (github.event_name == 'workflow_dispatch' && inputs.mode != 'freeze') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
           SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
@@ -121,12 +128,19 @@ jobs:
         run: python -m forum_observer.schedule --archive archive --ensure-report
       - name: Check nightly freeze window (21:00 cron or trigger(forum-freeze) marker)
         id: freeze-window
-        if: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
-        run: python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --check-freeze-window
+        if: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):')) || (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze')) }}
+        env:
+          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
+        run: |
+          if [ "$MANUAL_FREEZE" = "true" ]; then
+            python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
+          else
+            python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --check-freeze-window
+          fi
       - name: Reject delayed scheduled freeze
         if: steps.freeze-window.outputs.allowed == 'false'
         run: |
-          echo "::error::Forum freeze (cron or trigger(forum-freeze) marker) arrived outside today's 21:00-21:20 Asia/Shanghai window; no late freeze was attempted."
+          echo "::error::Forum freeze was rejected because no eligible current-issue draft exists or the scheduled freeze window was missed."
           exit 1
       - name: Publish completed-run report or finalize nightly freeze
         # A manual run after the freeze time is a test: results stay in the
@@ -134,10 +148,15 @@ jobs:
         if: steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         env:
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
-          FINALIZE_CYCLE: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):'))) }}
+          FINALIZE_CYCLE: ${{ ((github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):')) || (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze')) }}
+          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
-            python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
+            if [ "$MANUAL_FREEZE" = "true" ]; then
+              python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize --manual-freeze
+            else
+              python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
+            fi
           else
             # An observation report is published after every completed scan.
             # Do not create immutable predictions until the 21:00 finalizer.

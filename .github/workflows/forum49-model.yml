@@ -7,7 +7,7 @@ name: 49论坛模型 collection
 #                  Automatic runs (backup cron below, or dispatch with
 #                  skip_if_collected=true) collect once per night in 20:20-20:50;
 #                  a manual dispatch (default skip_if_collected=false) always collects.
-#   mode=freeze  : 21:00-21:20 only -> immutable snapshot of last pre-21:00 draft
+#   mode=freeze  : scheduled 21:00-21:20 or explicit manual request -> immutable current-issue draft
 #   mode=settle  : settle snapshots from verified draw history; never collects
 # Never touches 118's archive/feed, D1 or formal V7.
 on:
@@ -44,7 +44,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: forum49-${{ github.event.schedule == '20,25 12 * * *' && 'collect' || github.event.schedule == '0,5,10 13 * * *' && 'freeze' || github.event_name == 'schedule' && 'settle' || inputs.mode || 'collect' }}
+  group: forum49-${{ (github.event.schedule == '50 * * * *' || inputs.mode == 'settle') && 'settle' || 'archive' }}
   cancel-in-progress: false
 jobs:
   gate:
@@ -232,17 +232,32 @@ jobs:
           python-version: "3.12"
       - name: Check 21:00-21:20 Asia/Shanghai window and evening draft
         id: window
-        run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
+        env:
+          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
+        run: |
+          if [ "$MANUAL_FREEZE" = "true" ]; then
+            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
+          else
+            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
+          fi
       - name: Reject freeze outside window
         if: steps.window.outputs.allowed != 'true'
         run: |
-          echo "::error title=49论坛模型 freeze::refused (${{ steps.window.outputs.reason }}); no late or early freeze attempted"
+          echo "::error title=49论坛模型 freeze::refused (${{ steps.window.outputs.reason }}); no eligible current-issue draft exists"
           exit 1
       - name: Freeze last pre-21:00 draft (write-once snapshot)
+        env:
+          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
         run: |
-          python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
-            --history ../site/data/history.json --public ../site/data/forum49 \
-            --finalize --model-id forum49
+          if [ "$MANUAL_FREEZE" = "true" ]; then
+            python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
+              --history ../site/data/history.json --public ../site/data/forum49 \
+              --finalize --manual-freeze --model-id forum49
+          else
+            python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
+              --history ../site/data/history.json --public ../site/data/forum49 \
+              --finalize --model-id forum49
+          fi
       - name: Record 49 author history from verified frozen evidence only
         # Same append-only author memory as 118论坛模型, separate archive
         # (forum49/author-profiles/). No scraping, rescoring or frozen edits;
@@ -268,7 +283,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add forum49/ ../site/data/forum49/
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "chore(forum49): 49论坛模型 21:00 freeze ${GITHUB_RUN_ID}"
+          git commit -m "chore(forum49): 49论坛模型 freeze ${GITHUB_RUN_ID}"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             git pull --rebase origin main
