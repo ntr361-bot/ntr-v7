@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026319",
+  "state": "collecting_effectively",
+  "run_id": "43713993967",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
+  "updated_at": "2026-11-15T12:33:23.672932+00:00",
+  "error": null,
+  "valid_materials": 51,
+  "valid_authors": 51,
+  "successful_post_opens": 199,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 150,
+      "opened": 149,
+      "extracted": 148,
+      "completed": 149
+    }
+  },
+  "article_texts_extracted": 198,
+  "article_details_completed": 199,
+  "last_verified_post": {
+    "author": "一岁一枯荣",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11280491&type=3",
+    "verified_at": "2026-11-15T12:33:23.050825+00:00",
+    "text_length": 223,
+    "text_sha256": "59a0b1eb7cd1daf38881c1616f6de51ca5c3787d7f6f7568fbd5a4ded7e107fd"
+  },
+  "last_attempted_post": {
+    "author": "奥特只王",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11280490&type=3",
+    "attempt_index": 200
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 198,
+  "stage": "detail: 奥特只王 个人记录",
+  "progress_updated_at": "2026-11-15T12:33:23.469958+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
