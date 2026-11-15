@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026319",
+  "state": "collecting_effectively",
+  "run_id": "43713993967",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
+  "updated_at": "2026-11-15T12:38:51.936089+00:00",
+  "error": null,
+  "valid_materials": 95,
+  "valid_authors": 95,
+  "successful_post_opens": 487,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 438,
+      "opened": 437,
+      "extracted": 436,
+      "completed": 437
+    }
+  },
+  "article_texts_extracted": 486,
+  "article_details_completed": 487,
+  "last_verified_post": {
+    "author": "夜夜都爆中",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277745&type=3",
+    "verified_at": "2026-11-15T12:38:50.835585+00:00",
+    "text_length": 23,
+    "text_sha256": "086aeb626d523621344f9da8e1c17524606c6209de795a0cd8ef1c4e0955cf03"
+  },
+  "last_attempted_post": {
+    "author": "白猫黑猫",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277758&type=3",
+    "attempt_index": 488
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 486,
+  "stage": "detail: 白猫黑猫 319",
+  "progress_updated_at": "2026-11-15T12:38:51.567731+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
