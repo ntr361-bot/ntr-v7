@@ -96,9 +96,8 @@ def freeze_window_allowed(now, archive=None, manual=False):
         data = json.loads(draft.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return False
-    # Scheduled freezes remain limited to the 21:00 window. A manual freeze
-    # may use today's current-issue draft at any time; the cycle still checks
-    # the 21:00 evidence cutoff and refuses to overwrite an existing snapshot.
+    # Manual freeze accepts the current-issue draft at any time. The cycle
+    # still checks the 21:00 evidence cutoff and refuses snapshot overwrites.
     return draft_is_current_evening(data, issue, local, since=(0, 0))
 
 

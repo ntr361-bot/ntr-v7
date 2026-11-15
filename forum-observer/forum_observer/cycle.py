@@ -65,27 +65,21 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,manual_freeze=False,model_id='forum-observer'):
-    """Publish reports immediately; freeze via the scheduled or explicit finalizer.
+def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer'):
+    """Publish reports immediately or freeze an explicitly selected current draft.
 
     Existing callers retain the original immediate-freeze behavior. Production
-    GitHub Actions uses defer_freeze for collection, finalize for the nightly
-    freeze, and manual_freeze only for an explicitly requested current draft.
+    GitHub Actions uses defer_freeze for collection and finalize for manual freeze.
     """
     if defer_freeze and finalize:
         raise ValueError('defer_freeze and finalize cannot be combined')
-    if manual_freeze and not finalize:
-        raise ValueError('manual_freeze requires finalize')
     archive=Path(archive);out=Path(out)
     now_local=datetime.now(TZ)
     issue=f"{now_local.year}{now_local.timetuple().tm_yday:03d}"
     folder=archive/'issues'/issue
     if finalize:
-        # Scheduled finalization remains locked to 21:00. An explicit manual
-        # freeze may run earlier, but still uses today's draft, the 21:00
-        # evidence cutoff, and the same write-once snapshot guard below.
-        if not manual_freeze and (now_local.hour,now_local.minute)<(21,0):
-            raise ValueError('nightly forum freeze is not permitted before 21:00')
+        # Freeze may be started manually at any time; evidence cutoff and
+        # write-once snapshot checks below remain in force.
         draft=folder/'draft-status.json'
         status=json.loads(draft.read_text(encoding='utf-8')) if draft.exists() and not (folder/'snapshot.json').exists() else None
         if status is not None:
@@ -421,8 +415,7 @@ if __name__=='__main__':
     p.add_argument('--history',default='../site/data/history.json')
     p.add_argument('--public',default=None)
     p.add_argument('--defer-freeze',action='store_true',help='Publish a replaceable report immediately; defer immutable freeze')
-    p.add_argument('--finalize',action='store_true',help='At 21:00 freeze last verified current-day draft')
-    p.add_argument('--manual-freeze',action='store_true',help='Freeze today's eligible draft before the nightly finalizer')
+    p.add_argument('--finalize',action='store_true',help='Freeze eligible current-issue draft as a write-once snapshot')
     p.add_argument('--model-id',default='forum-observer',
                    help='Public feed model id (49论坛模型 uses forum49); default unchanged for 118')
     p.add_argument('--ledger-live-results',default=None,
@@ -436,8 +429,6 @@ if __name__=='__main__':
             print('Verified live ledger draw records:',len(live))
         except Exception as error:
             print('Live result unavailable; using verified committed V7 history only:',error)
-    # Older GitHub rerun attempts may retain their original workflow YAML.
-    # Never freeze early unless the dedicated manual-freeze option is explicit.
     defer=a.defer_freeze or not a.finalize
-    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,manual_freeze=a.manual_freeze,model_id=a.model_id))
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,model_id=a.model_id))
 

@@ -1,24 +1,13 @@
 name: 49论坛模型 collection
-# 49图库 高手论坛 (Macau only), triggered externally (scheduled tasks).
+# 49图库 高手论坛 (Macau only), started manually.
 # Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
 # (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
 # own archive forum-observer/forum49/ and feed site/data/forum49/.
-#   mode=collect : single 20:20 collection (since 2026-10-26) -> replaceable draft (never a freeze).
-#                  Automatic runs (backup cron below, or dispatch with
-#                  skip_if_collected=true) collect once per night in 20:20-20:50;
-#                  a manual dispatch (default skip_if_collected=false) always collects.
-#   mode=freeze  : scheduled 21:00-21:20 or explicit manual request -> immutable current-issue draft
+#   mode=collect : explicit request -> replaceable current-issue draft (never a freeze).
+#   mode=freeze  : explicit request -> immutable current-issue draft
 #   mode=settle  : settle snapshots from verified draw history; never collects
 # Never touches 118's archive/feed, D1 or formal V7.
 on:
-  schedule:
-    # Hourly settlement only (never collects or freezes); delays are harmless.
-    - cron: '50 * * * *'
-    # Independent backups (user decision 2026-10-26), Beijing 20:20/20:25
-    # collect and 21:00/21:05/21:10 freeze. Collect skips when tonight's draft
-    # exists; freeze keeps its 21:00-21:20 window and write-once snapshot.
-    - cron: '20,25 12 * * *'
-    - cron: '0,5,10 13 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -38,17 +27,17 @@ on:
         required: false
         default: 'false'
       skip_if_collected:
-        description: Skip when tonight's draft already exists (automatic runs only; manual = false)
+        description: Skip when an existing current-issue draft is present
         required: false
         default: 'false'
 permissions:
   contents: write
 concurrency:
-  group: forum49-${{ (github.event.schedule == '50 * * * *' || inputs.mode == 'settle') && 'settle' || 'archive' }}
+  group: forum49-${{ inputs.mode == 'settle' && 'settle' || 'archive' }}
   cancel-in-progress: false
 jobs:
   gate:
-    if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule == '20,25 12 * * *') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -219,7 +208,7 @@ jobs:
           path: forum-observer/forum49-out/
 
   freeze:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && github.event.schedule == '0,5,10 13 * * *') }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -230,34 +219,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check 21:00-21:20 Asia/Shanghai window and evening draft
+      - name: Check current-issue draft for manual freeze
         id: window
-        env:
-          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
-        run: |
-          if [ "$MANUAL_FREEZE" = "true" ]; then
-            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
-          else
-            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
-          fi
-      - name: Reject freeze outside window
+        run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
+      - name: Reject freeze without an eligible current-issue draft
         if: steps.window.outputs.allowed != 'true'
         run: |
           echo "::error title=49论坛模型 freeze::refused (${{ steps.window.outputs.reason }}); no eligible current-issue draft exists"
           exit 1
-      - name: Freeze last pre-21:00 draft (write-once snapshot)
-        env:
-          MANUAL_FREEZE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze' }}
-        run: |
-          if [ "$MANUAL_FREEZE" = "true" ]; then
-            python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
-              --history ../site/data/history.json --public ../site/data/forum49 \
-              --finalize --manual-freeze --model-id forum49
-          else
-            python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
-              --history ../site/data/history.json --public ../site/data/forum49 \
-              --finalize --model-id forum49
-          fi
+      - name: Freeze current-issue draft (write-once snapshot)
+        run: python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
+          --history ../site/data/history.json --public ../site/data/forum49 \
+          --finalize --model-id forum49
       - name: Record 49 author history from verified frozen evidence only
         # Same append-only author memory as 118论坛模型, separate archive
         # (forum49/author-profiles/). No scraping, rescoring or frozen edits;
@@ -291,7 +264,7 @@ jobs:
           exit 1
 
   settle:
-    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '50 * * * *') || inputs.mode == 'settle' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'settle' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
