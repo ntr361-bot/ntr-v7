@@ -7,56 +7,61 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
-  "updated_at": "2026-11-15T12:31:14.383085+00:00",
+  "updated_at": "2026-11-15T12:32:19.555412+00:00",
   "error": null,
-  "valid_materials": 11,
-  "valid_authors": 11,
-  "successful_post_opens": 43,
+  "valid_materials": 33,
+  "valid_authors": 33,
+  "successful_post_opens": 139,
   "article_details": {
     "featured": {
       "queued": 50,
-      "attempted": 44,
-      "opened": 43,
-      "extracted": 43,
-      "completed": 43
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
     },
     "ordinary": {
       "queued": 474,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 90,
+      "opened": 89,
+      "extracted": 88,
+      "completed": 89
     }
   },
-  "article_texts_extracted": 43,
-  "article_details_completed": 43,
+  "article_texts_extracted": 138,
+  "article_details_completed": 139,
   "last_verified_post": {
-    "author": "灰飞烟灭",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277984&type=3",
-    "verified_at": "2026-11-15T12:31:14.051600+00:00",
-    "text_length": 53,
-    "text_sha256": "af467fc8a8182ffc1cc5ac5da27bb6536a5dac77e432b147b7066303acbb4161"
+    "author": "致富哥",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11282327&type=3",
+    "verified_at": "2026-11-15T12:32:18.917279+00:00",
+    "text_length": 183,
+    "text_sha256": "9ed53a080587e2b78dc4f151e3bd7f6b445e36d005c849d260c335b94c54298f"
   },
   "last_attempted_post": {
-    "author": "灰头土脸",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277982&type=3",
-    "attempt_index": 44
+    "author": "羊无敌神医",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11282301&type=3",
+    "attempt_index": 140
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 43,
-  "stage": "detail: 灰头土脸 港澳百家网【平特一码】",
-  "progress_updated_at": "2026-11-15T12:31:14.127754+00:00",
+  "raw_count": 138,
+  "stage": "detail: 羊无敌神医 319期",
+  "progress_updated_at": "2026-11-15T12:32:19.274587+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
