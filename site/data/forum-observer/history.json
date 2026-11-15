@@ -2,9 +2,9 @@
   "schema_version": 1,
   "model": "forum-observer",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 33,
+  "settled_count": 34,
   "top3_hits": 14,
-  "top6_hits": 22,
+  "top6_hits": 23,
   "settlements": [
     {
       "issue": "2026285",
@@ -896,6 +896,33 @@
         "龙"
       ],
       "frozen_at": "2026-11-13T13:18:20.347221+00:00"
+    },
+    {
+      "issue": "2026319",
+      "actual": "虎",
+      "actual_source": "smart-ledger:/api/results",
+      "drawn_at": "2026-11-15T21:35:30+08:00",
+      "snapshot_digest": "73fea4a34edb77c281da41ccaf856f11f861e0a438c39c2f1d84334bd588bc7a",
+      "snapshot_at": "2026-11-15T12:39:54.827064+00:00",
+      "rank": 5,
+      "top1_hit": false,
+      "top3_hit": false,
+      "top6_hit": true,
+      "classification": "experimental_unverified_leaderboard",
+      "top3": [
+        "鼠",
+        "羊",
+        "兔"
+      ],
+      "top6": [
+        "鼠",
+        "羊",
+        "兔",
+        "猪",
+        "虎",
+        "龙"
+      ],
+      "frozen_at": "2026-11-15T13:23:14.004313+00:00"
     }
   ]
 }
