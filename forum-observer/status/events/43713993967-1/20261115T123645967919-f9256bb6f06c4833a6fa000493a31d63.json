@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026319",
+  "state": "collecting_effectively",
+  "run_id": "43713993967",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
+  "updated_at": "2026-11-15T12:36:45.967919+00:00",
+  "error": null,
+  "valid_materials": 76,
+  "valid_authors": 76,
+  "successful_post_opens": 377,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 328,
+      "opened": 327,
+      "extracted": 326,
+      "completed": 327
+    }
+  },
+  "article_texts_extracted": 376,
+  "article_details_completed": 377,
+  "last_verified_post": {
+    "author": "风起缘落",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11279083&type=3",
+    "verified_at": "2026-11-15T12:36:45.319966+00:00",
+    "text_length": 170,
+    "text_sha256": "bfb51cbe2b2bf45c793a5a92228d2a4871e308f7719f829b1908666e5afe8d8e"
+  },
+  "last_attempted_post": {
+    "author": "凉风有信",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11279030&type=3",
+    "attempt_index": 378
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 376,
+  "stage": "detail: 凉风有信 319期...风雨雷电肖...★★...",
+  "progress_updated_at": "2026-11-15T12:36:45.920275+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
