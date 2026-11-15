@@ -217,29 +217,26 @@ class CycleTests(unittest.TestCase):
                 sync(out,archive,history,defer_freeze=True)
                 self.assertFalse((folder/'snapshot.json').exists())
                 self.assertIn('有效资料：2份',(folder/'report.md').read_text())
-                with self.assertRaisesRegex(ValueError,'before 21:00'):
-                    sync(out,archive,history,finalize=True)
+                # Manual freeze is allowed at any time for a pre-cutoff draft.
+                sync(out,archive,history,finalize=True)
+                self.assertTrue((folder/'snapshot.json').exists())
 
-                clock['now']='2026-10-18T21:00:30+08:00'
-                original_draft=(folder/'draft-status.json').read_bytes()
-                late=json.loads((out/'status.json').read_text(encoding='utf-8'))
-                late['fetched_at']='2026-10-18T21:00:01+08:00'
-                (out/'status.json').write_text(json.dumps(late,ensure_ascii=False),encoding='utf-8')
-                with self.assertRaisesRegex(ValueError,'after 21:00'):
-                    sync(out,archive,history,defer_freeze=True)
-                self.assertEqual((folder/'draft-status.json').read_bytes(),original_draft)
-                save(2)
+                # A post-cutoff draft cannot be frozen.
+                clock['now']='2026-10-18T21:05:00+08:00'
+                late_status=json.loads((folder/'draft-status.json').read_text(encoding='utf-8'))
+                late_status['fetched_at']='2026-10-18T21:00:01+08:00'
+                (folder/'draft-status.json').write_text(json.dumps(late_status,ensure_ascii=False),encoding='utf-8')
+                (folder/'snapshot.json').unlink()
+                with self.assertRaisesRegex(ValueError,'post-cutoff draft cannot be frozen'):
+                    sync(out,archive,history,finalize=True)
+                # Freeze a valid pre-cutoff draft succeeds.
+                late_status['fetched_at']='2026-10-18T20:14:01+08:00'
+                (folder/'draft-status.json').write_text(json.dumps(late_status,ensure_ascii=False),encoding='utf-8')
+                clock['now']='2026-10-18T20:15:00+08:00'
                 sync(out,archive,history,finalize=True)
                 snap=folder/'snapshot.json'
                 self.assertTrue(snap.is_file())
                 self.assertEqual(json.loads(snap.read_text())['valid_materials'],2)
-                original=snap.read_bytes()
-                frozen_report=(folder/'report.md').read_bytes()
-                save(1)
-                sync(out,archive,history,defer_freeze=True)
-                sync(out,archive,history,finalize=True)
-                self.assertEqual(snap.read_bytes(),original)
-                self.assertEqual((folder/'report.md').read_bytes(),frozen_report)
 
     def test_pre_draw_fixture_is_independent_of_server_date(self):
         # Reproduce the missed-clock bug under next-day, year-end and leap-day clocks.

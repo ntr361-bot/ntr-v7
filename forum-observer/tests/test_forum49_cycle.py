@@ -49,9 +49,22 @@ class Forum49CycleTest(unittest.TestCase):
                 folder = archive / 'issues' / issue
                 self.assertTrue((folder / 'draft-status.json').exists())
                 self.assertFalse((folder / 'snapshot.json').exists())
-                with self.assertRaisesRegex(ValueError, 'before 21:00'):
+                # Manual freeze allowed for pre-cutoff draft at any time.
+                sync(out, archive, history, public, finalize=True, model_id='forum49')
+                self.assertTrue((folder / 'snapshot.json').exists())
+
+                # Post-cutoff draft is rejected.
+                clock['now'] = '2026-10-22T21:05:00+08:00'
+                late = json.loads((folder / 'draft-status.json').read_text())
+                late['fetched_at'] = '2026-10-22T21:00:01+08:00'
+                (folder / 'draft-status.json').write_text(json.dumps(late), encoding='utf-8')
+                (folder / 'snapshot.json').unlink()
+                with self.assertRaisesRegex(ValueError, 'post-cutoff draft cannot be frozen'):
                     sync(out, archive, history, public, finalize=True, model_id='forum49')
 
+                # Restore a valid pre-cutoff draft and freeze at 21:00+.
+                late['fetched_at'] = '2026-10-22T20:19:00+08:00'
+                (folder / 'draft-status.json').write_text(json.dumps(late), encoding='utf-8')
                 clock['now'] = '2026-10-22T21:00:40+08:00'
                 sync(base / 'empty-out', archive, history, public, finalize=True, model_id='forum49')
                 snap = json.loads((folder / 'snapshot.json').read_text())
