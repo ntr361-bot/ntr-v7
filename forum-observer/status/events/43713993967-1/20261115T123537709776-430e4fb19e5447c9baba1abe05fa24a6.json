@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026319",
+  "state": "collecting_effectively",
+  "run_id": "43713993967",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
+  "updated_at": "2026-11-15T12:35:37.709776+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 331,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 282,
+      "opened": 281,
+      "extracted": 280,
+      "completed": 281
+    }
+  },
+  "article_texts_extracted": 330,
+  "article_details_completed": 331,
+  "last_verified_post": {
+    "author": "小白鼠",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11279129&type=3",
+    "verified_at": "2026-11-15T12:35:36.972090+00:00",
+    "text_length": 160,
+    "text_sha256": "3484945f00a9684fd7a6a6904609767ccc0d281fadd34fedc2f2a0593d04fa33"
+  },
+  "last_attempted_post": {
+    "author": "内塞那些",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11279128&type=3",
+    "attempt_index": 332
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 330,
+  "stage": "detail: 内塞那些 319期:20码特围",
+  "progress_updated_at": "2026-11-15T12:35:37.504277+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
