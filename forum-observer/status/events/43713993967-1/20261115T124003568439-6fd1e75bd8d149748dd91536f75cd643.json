@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026319",
+  "state": "report_published",
+  "run_id": "43713993967",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43713993967",
+  "updated_at": "2026-11-15T12:40:03.568439+00:00",
+  "error": null,
+  "valid_materials": 103,
+  "valid_authors": 103,
+  "successful_post_opens": 524,
+  "article_details": {
+    "featured": {
+      "queued": 50,
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
+    },
+    "ordinary": {
+      "queued": 474,
+      "attempted": 474,
+      "opened": 474,
+      "extracted": 473,
+      "completed": 474
+    }
+  },
+  "article_texts_extracted": 523,
+  "article_details_completed": 524,
+  "last_verified_post": {
+    "author": "赌神之神",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277723&type=3",
+    "verified_at": "2026-11-15T12:39:53.532599+00:00",
+    "text_length": 507,
+    "text_sha256": "bc4b0abf4d9eadc95298b6e472346d0b85b31a8e879a5dfb7a438c281e3b19ab"
+  },
+  "last_attempted_post": {
+    "author": "赌神之神",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11277723&type=3",
+    "attempt_index": 524
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-15T12:31:17.994705+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 523,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-15T12:39:54.827064+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 1,
+    "truncated": false,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
