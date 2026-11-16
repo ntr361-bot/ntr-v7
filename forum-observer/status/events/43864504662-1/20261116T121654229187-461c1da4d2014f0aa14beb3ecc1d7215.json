@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026320",
+  "state": "collecting_effectively",
+  "run_id": "43864504662",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43864504662",
+  "updated_at": "2026-11-16T12:16:54.229187+00:00",
+  "error": null,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 124,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 437,
+      "attempted": 77,
+      "opened": 77,
+      "extracted": 77,
+      "completed": 77
+    }
+  },
+  "article_texts_extracted": 124,
+  "article_details_completed": 124,
+  "last_verified_post": {
+    "author": "星际黑洞",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11287029&type=3",
+    "verified_at": "2026-11-16T12:16:53.924122+00:00",
+    "text_length": 165,
+    "text_sha256": "78189874c3cbfe4646be3c2d6776a10eac6bb81c0f0a36748691d7bc2d488e75"
+  },
+  "last_attempted_post": {
+    "author": "星际黑洞",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11287029&type=3",
+    "attempt_index": 124
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-16T12:15:54.080563+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 124,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-16T12:16:54.106646+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
