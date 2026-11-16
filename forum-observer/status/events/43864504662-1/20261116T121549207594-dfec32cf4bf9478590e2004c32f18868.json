@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026320",
+  "state": "collecting_effectively",
+  "run_id": "43864504662",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43864504662",
+  "updated_at": "2026-11-16T12:15:49.207594+00:00",
+  "error": null,
+  "valid_materials": 8,
+  "valid_authors": 8,
+  "successful_post_opens": 38,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 39,
+      "opened": 38,
+      "extracted": 38,
+      "completed": 38
+    },
+    "ordinary": {
+      "queued": 437,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 38,
+  "article_details_completed": 38,
+  "last_verified_post": {
+    "author": "楼兰一九八六",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11283529&type=3",
+    "verified_at": "2026-11-16T12:15:48.758654+00:00",
+    "text_length": 262,
+    "text_sha256": "3368739daccd769c3d572f60b8985cd5901779378423254766902a585fdb5ff6"
+  },
+  "last_attempted_post": {
+    "author": "叶枫阿",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11283066&type=3",
+    "attempt_index": 39
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 38,
+  "stage": "detail: 叶枫阿 杀一肖一尾",
+  "progress_updated_at": "2026-11-16T12:15:48.824643+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
