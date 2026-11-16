@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026320",
+  "state": "collecting_effectively",
+  "run_id": "43864504662",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/43864504662",
+  "updated_at": "2026-11-16T12:20:05.430196+00:00",
+  "error": null,
+  "valid_materials": 67,
+  "valid_authors": 67,
+  "successful_post_opens": 311,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 437,
+      "attempted": 264,
+      "opened": 264,
+      "extracted": 264,
+      "completed": 264
+    }
+  },
+  "article_texts_extracted": 311,
+  "article_details_completed": 311,
+  "last_verified_post": {
+    "author": "梦幻加工厂",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11283547&type=3",
+    "verified_at": "2026-11-16T12:20:04.923954+00:00",
+    "text_length": 18568,
+    "text_sha256": "a8e01bede233fb813b9238cf98b7251b17943485ff59cb4c1da6a08906116ce2"
+  },
+  "last_attempted_post": {
+    "author": "梦幻加工厂",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11283547&type=3",
+    "attempt_index": 311
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-16T12:15:54.080563+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 311,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-16T12:20:05.255279+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
