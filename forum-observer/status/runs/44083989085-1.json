@@ -1,51 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026321",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "44083989085",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44083989085",
-  "updated_at": "2026-11-17T12:34:45.403169+00:00",
+  "updated_at": "2026-11-17T12:35:48.520345+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 27,
+  "valid_authors": 27,
+  "successful_post_opens": 101,
   "article_details": {
     "featured": {
       "queued": 50,
-      "attempted": 1,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 50,
+      "opened": 50,
+      "extracted": 50,
+      "completed": 50
     },
     "ordinary": {
       "queued": 474,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 52,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
+  "article_texts_extracted": 101,
+  "article_details_completed": 101,
+  "last_verified_post": {
+    "author": "棍棍到肉",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11293603&type=3",
+    "verified_at": "2026-11-17T12:35:48.266354+00:00",
+    "text_length": 837,
+    "text_sha256": "9248df962eeb578aeaf474cf4ae8936a733cf632f04aa62a70e123e340cfa9c9"
+  },
   "last_attempted_post": {
-    "author": "石更走己",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11292827&type=3",
-    "attempt_index": 1
+    "author": "精准肖王",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11295543&type=3",
+    "attempt_index": 102
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-17T12:35:15.398135+00:00",
+      "featured_queued": 50,
+      "featured_attempted": 50,
+      "featured_completed": 50
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "detail: 石更走己 321",
-  "progress_updated_at": "2026-11-17T12:34:44.414429+00:00",
+  "raw_count": 101,
+  "stage": "detail: 精准肖王 澳门🇲🇴",
+  "progress_updated_at": "2026-11-17T12:35:48.411273+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
