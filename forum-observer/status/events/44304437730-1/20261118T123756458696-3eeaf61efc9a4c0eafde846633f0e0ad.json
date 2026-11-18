@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026322",
+  "state": "collecting_effectively",
+  "run_id": "44304437730",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44304437730",
+  "updated_at": "2026-11-18T12:37:56.458696+00:00",
+  "error": null,
+  "valid_materials": 84,
+  "valid_authors": 84,
+  "successful_post_opens": 441,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 429,
+      "attempted": 393,
+      "opened": 392,
+      "extracted": 391,
+      "completed": 392
+    }
+  },
+  "article_texts_extracted": 440,
+  "article_details_completed": 441,
+  "last_verified_post": {
+    "author": "香山论坛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296270&type=3",
+    "verified_at": "2026-11-18T12:37:55.879125+00:00",
+    "text_length": 659,
+    "text_sha256": "67be4ff12db7c54a206974708ec5b4a790e4df9e62bcc04968ae63d23656346a"
+  },
+  "last_attempted_post": {
+    "author": "藍海雲天",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296257&type=3",
+    "attempt_index": 442
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-18T12:32:30.272822+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 440,
+  "stage": "detail: 藍海雲天 大小单双",
+  "progress_updated_at": "2026-11-18T12:37:56.398141+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
