@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026322",
+  "state": "collecting_effectively",
+  "run_id": "44304437730",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44304437730",
+  "updated_at": "2026-11-18T12:34:43.839163+00:00",
+  "error": null,
+  "valid_materials": 53,
+  "valid_authors": 53,
+  "successful_post_opens": 230,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 429,
+      "attempted": 182,
+      "opened": 181,
+      "extracted": 180,
+      "completed": 181
+    }
+  },
+  "article_texts_extracted": 229,
+  "article_details_completed": 230,
+  "last_verified_post": {
+    "author": "草菅人命",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296785&type=3",
+    "verified_at": "2026-11-18T12:34:43.218715+00:00",
+    "text_length": 172,
+    "text_sha256": "23ec85e48bf20a09f0bfc4ddf5c75f081fc0db43918b7ac7dedb315d690c5ac1"
+  },
+  "last_attempted_post": {
+    "author": "横生枝节",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296784&type=3",
+    "attempt_index": 231
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-18T12:32:30.272822+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 229,
+  "stage": "detail: 横生枝节 322期：两个半单双",
+  "progress_updated_at": "2026-11-18T12:34:43.535243+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
