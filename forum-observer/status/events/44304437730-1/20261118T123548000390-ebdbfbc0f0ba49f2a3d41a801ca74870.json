@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026322",
+  "state": "collecting_effectively",
+  "run_id": "44304437730",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44304437730",
+  "updated_at": "2026-11-18T12:35:48.000390+00:00",
+  "error": null,
+  "valid_materials": 65,
+  "valid_authors": 65,
+  "successful_post_opens": 305,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 429,
+      "attempted": 257,
+      "opened": 256,
+      "extracted": 255,
+      "completed": 256
+    }
+  },
+  "article_texts_extracted": 304,
+  "article_details_completed": 305,
+  "last_verified_post": {
+    "author": "月中仙女",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296708&type=3",
+    "verified_at": "2026-11-18T12:35:47.347992+00:00",
+    "text_length": 51,
+    "text_sha256": "cd45fbcfdb4faa985fd05043e29a9c3a94e62e0dfd0167038e0f6cac6d85d7bb"
+  },
+  "last_attempted_post": {
+    "author": "孤芳又自赏",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11296707&type=3",
+    "attempt_index": 306
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-18T12:32:30.272822+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 304,
+  "stage": "detail: 孤芳又自赏 322期12码中特",
+  "progress_updated_at": "2026-11-18T12:35:47.704477+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
