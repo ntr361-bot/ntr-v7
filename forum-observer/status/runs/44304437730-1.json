@@ -1,46 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026322",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "44304437730",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44304437730",
-  "updated_at": "2026-11-18T12:31:31.267515+00:00",
+  "updated_at": "2026-11-18T12:32:35.570603+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 16,
+  "valid_authors": 16,
+  "successful_post_opens": 58,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 429,
+      "attempted": 10,
+      "opened": 9,
+      "extracted": 9,
+      "completed": 9
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 58,
+  "article_details_completed": 58,
+  "last_verified_post": {
+    "author": "生活愉快就好",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11302419&type=3",
+    "verified_at": "2026-11-18T12:32:35.376530+00:00",
+    "text_length": 2,
+    "text_sha256": "02107ba378e217106310c3e5a9977b0f7f33e04069a98795aecd6dda08a3937c"
+  },
+  "last_attempted_post": {
+    "author": "广西谋财酒",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11295791&type=3",
+    "attempt_index": 59
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-18T12:32:30.272822+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 71",
-  "progress_updated_at": "2026-11-18T12:31:30.768229+00:00",
+  "raw_count": 58,
+  "stage": "detail: 广西谋财酒 公式杀肖统计",
+  "progress_updated_at": "2026-11-18T12:32:35.451138+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
