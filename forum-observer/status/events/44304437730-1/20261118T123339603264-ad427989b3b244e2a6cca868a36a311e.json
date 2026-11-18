@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026322",
+  "state": "collecting_effectively",
+  "run_id": "44304437730",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44304437730",
+  "updated_at": "2026-11-18T12:33:39.603264+00:00",
+  "error": null,
+  "valid_materials": 40,
+  "valid_authors": 40,
+  "successful_post_opens": 149,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 429,
+      "attempted": 101,
+      "opened": 100,
+      "extracted": 99,
+      "completed": 100
+    }
+  },
+  "article_texts_extracted": 148,
+  "article_details_completed": 149,
+  "last_verified_post": {
+    "author": "稳定特围",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11295785&type=3",
+    "verified_at": "2026-11-18T12:33:38.722595+00:00",
+    "text_length": 376,
+    "text_sha256": "ae404037aff29640ff84bd53655d1af3484a9cfd5063b3b428cd0b760a7bbcf9"
+  },
+  "last_attempted_post": {
+    "author": "澳門牛总",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11300084&type=3",
+    "attempt_index": 150
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-18T12:32:30.272822+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 148,
+  "stage": "detail: 澳門牛总 禁一肖",
+  "progress_updated_at": "2026-11-18T12:33:38.985567+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
