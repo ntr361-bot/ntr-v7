@@ -30,6 +30,12 @@ on:
         description: Skip when an existing current-issue draft is present
         required: false
         default: 'false'
+  schedule:
+    # Beijing 20:20 collect / 20:35 backup / 21:00 freeze / 21:10 backup.
+    - cron: "20 12 * * *"
+    - cron: "35 12 * * *"
+    - cron: "0 13 * * *"
+    - cron: "10 13 * * *"
 permissions:
   contents: write
 concurrency:
@@ -37,7 +43,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   gate:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule != '0 13 * * *' && github.event.schedule != '10 13 * * *') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -208,7 +214,7 @@ jobs:
           path: forum-observer/forum49-out/
 
   freeze:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -219,9 +225,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check current-issue draft for manual freeze
+      - name: Check current-issue draft and freeze window
         id: window
-        run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
+          else
+            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
+          fi
       - name: Reject freeze without an eligible current-issue draft
         if: steps.window.outputs.allowed != 'true'
         run: |
