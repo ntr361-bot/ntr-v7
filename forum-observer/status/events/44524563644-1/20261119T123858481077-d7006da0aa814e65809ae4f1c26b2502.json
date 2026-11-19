@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026323",
+  "state": "collecting_effectively",
+  "run_id": "44524563644",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44524563644",
+  "updated_at": "2026-11-19T12:38:58.481077+00:00",
+  "error": null,
+  "valid_materials": 83,
+  "valid_authors": 83,
+  "successful_post_opens": 409,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 486,
+      "attempted": 363,
+      "opened": 362,
+      "extracted": 361,
+      "completed": 362
+    }
+  },
+  "article_texts_extracted": 408,
+  "article_details_completed": 409,
+  "last_verified_post": {
+    "author": "凉兮清婉丽",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11304080&type=3",
+    "verified_at": "2026-11-19T12:38:57.642127+00:00",
+    "text_length": 83,
+    "text_sha256": "8e5768e8db1a2c7f3ea41227b2e0fcdf7766c2c8ef44478c86cc8afa2e040ae0"
+  },
+  "last_attempted_post": {
+    "author": "定格我的天空",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11304073&type=3",
+    "attempt_index": 410
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-19T12:33:48.826950+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 408,
+  "stage": "detail: 定格我的天空 323期:白黑肖(免费已公开）",
+  "progress_updated_at": "2026-11-19T12:38:58.205126+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
