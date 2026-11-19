@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026323",
+  "state": "collecting_effectively",
+  "run_id": "44524563644",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44524563644",
+  "updated_at": "2026-11-19T12:34:43.713421+00:00",
+  "error": null,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 138,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 486,
+      "attempted": 92,
+      "opened": 91,
+      "extracted": 90,
+      "completed": 91
+    }
+  },
+  "article_texts_extracted": 137,
+  "article_details_completed": 138,
+  "last_verified_post": {
+    "author": "三合月",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308387&type=3",
+    "verified_at": "2026-11-19T12:34:43.437041+00:00",
+    "text_length": 377,
+    "text_sha256": "37bda742ee3007d2e957ec7a911c1eae6170c470f48b2b51111fe3c8a57f3492"
+  },
+  "last_attempted_post": {
+    "author": "金诗如梦",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308385&type=3",
+    "attempt_index": 139
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-19T12:33:48.826950+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 137,
+  "stage": "detail: 金诗如梦 323期（心水六肖）对错勿怪",
+  "progress_updated_at": "2026-11-19T12:34:43.675665+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
