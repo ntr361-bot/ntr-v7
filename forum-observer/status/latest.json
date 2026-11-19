@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026323",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "44524563644",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44524563644",
-  "updated_at": "2026-11-19T12:41:05.410904+00:00",
+  "updated_at": "2026-11-19T12:41:17.916392+00:00",
   "error": null,
-  "valid_materials": 96,
-  "valid_authors": 96,
-  "successful_post_opens": 523,
+  "valid_materials": 99,
+  "valid_authors": 99,
+  "successful_post_opens": 533,
   "article_details": {
     "featured": {
       "queued": 47,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 486,
-      "attempted": 476,
-      "opened": 476,
-      "extracted": 475,
-      "completed": 476
+      "attempted": 486,
+      "opened": 486,
+      "extracted": 485,
+      "completed": 486
     }
   },
-  "article_texts_extracted": 522,
-  "article_details_completed": 523,
+  "article_texts_extracted": 532,
+  "article_details_completed": 533,
   "last_verified_post": {
-    "author": "華燈初上",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303720&type=3",
-    "verified_at": "2026-11-19T12:41:04.752986+00:00",
-    "text_length": 409,
-    "text_sha256": "c4aed021d1204954deeaa04e9c7e981ec93250c3fabe3376c6f33416c117c82d"
+    "author": "國足之魂",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303665&type=3",
+    "verified_at": "2026-11-19T12:41:16.351766+00:00",
+    "text_length": 186,
+    "text_sha256": "497b7b1b55807a7c8d66f2cd6bc1c10ffec883128e86bfa6998385658567ba8a"
   },
   "last_attempted_post": {
-    "author": "華燈初上",
+    "author": "國足之魂",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303720&type=3",
-    "attempt_index": 523
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303665&type=3",
+    "attempt_index": 533
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 522,
-  "stage": "detail_complete",
-  "progress_updated_at": "2026-11-19T12:41:05.068821+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 532,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-19T12:41:17.492929+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
