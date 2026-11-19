@@ -207,39 +207,38 @@ class ScheduleTests(unittest.TestCase):
 
 
     def test_workflow_audit_never_activates_freeze(self):
-        """Regression: audit pushes must not finalize; freeze is manual only."""
+        """Regression: audit pushes must not finalize; freeze needs dispatch
+        or the authorized nightly freeze cron (user decision 2026-11-19)."""
         workflow = (Path(__file__).resolve().parents[2] / ".github" /
                     "workflows" / "forum-observer.yml").read_text(encoding="utf-8")
         finalize_lines = [line.strip() for line in workflow.splitlines()
                           if "FINALIZE_CYCLE:" in line and "false" not in line]
         self.assertGreaterEqual(len(finalize_lines), 1)
         for line in finalize_lines:
-            self.assertIn("workflow_dispatch", line)
             self.assertIn("inputs.mode == 'freeze'", line)
             self.assertNotIn("trigger(forum-audit):", line)
-            self.assertNotIn("schedule", line)
+        # Nightly automation (user-authorized 2026-11-19): only the authorized
+        # cron slots exist — 20:20/20:25 collect, 21:00/21:10 freeze (Beijing).
+        self.assertIn("schedule:", workflow)
+        for cron in ('"20,25 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
+            self.assertIn("- cron: " + cron, workflow)
+        for retired in ('0,5,10 12', '30,35,40 12'):
+            self.assertNotIn(retired, workflow)
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("--finalize", workflow)
         self.assertIn("--defer-freeze", workflow)
-        # No cron schedules remain.
-        self.assertNotIn("cron:", workflow)
-        self.assertIn("Collection and freeze are started manually", workflow)
+        self.assertIn("Nightly automation (user-authorized 2026-11-19)", workflow)
 
-    def test_workflow_freeze_marker_uses_same_window_as_cron(self):
-        """Manual freeze is started via workflow_dispatch mode=freeze; no cron window."""
+    def test_workflow_nightly_cron_matches_freeze_window(self):
+        """Nightly cron (user-authorized 2026-11-19): collect at 20:20/20:25,
+        freeze at 21:00/21:10 Beijing; manual dispatch keeps working."""
         workflow = (Path(__file__).resolve().parents[2] / ".github" /
                     "workflows" / "forum-observer.yml").read_text(encoding="utf-8")
-        finalize_lines = [line.strip() for line in workflow.splitlines()
-                          if "FINALIZE_CYCLE:" in line and "false" not in line]
-        self.assertGreaterEqual(len(finalize_lines), 1)
-        for line in finalize_lines:
-            self.assertIn("workflow_dispatch", line)
-            self.assertIn("inputs.mode == 'freeze'", line)
-            self.assertNotIn("trigger(forum-freeze):", line)
-            self.assertNotIn("cron:", line)
         self.assertIn("mode:", workflow)
         self.assertIn("freeze", workflow)
-        self.assertNotIn("cron:", workflow)
+        self.assertIn("github.event.schedule == '20,25 12 * * *'", workflow)
+        self.assertIn("github.event.schedule == '0 13 * * *'", workflow)
+        self.assertIn("github.event.schedule == '10 13 * * *'", workflow)
 
     def test_forum49_gate_automatic_once_manual_always(self):
         with TemporaryDirectory() as tmp:
@@ -305,15 +304,20 @@ class ScheduleTests(unittest.TestCase):
                                         "fetched_at": self.at(20, 0, 11).isoformat()}), encoding="utf-8")
             self.assertFalse(freeze_window_allowed(now, tmp))
 
-    def test_forum49_workflow_keeps_manual_and_adds_backups(self):
+    def test_forum49_workflow_keeps_manual_and_adds_nightly_cron(self):
+        """Manual dispatch stays; nightly cron (user-authorized 2026-11-19) is
+        limited to 20:20/20:35 collect and 21:00/21:10 freeze (Beijing)."""
         workflow = (Path(__file__).resolve().parents[2] / ".github" /
                     "workflows" / "forum49-model.yml").read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("mode:", workflow)
         self.assertIn("freeze", workflow)
         self.assertIn("started manually", workflow)
-        # No cron schedules.
-        self.assertNotIn("cron:", workflow)
+        for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
+            self.assertIn("- cron: " + cron, workflow)
+        # Collect gate refuses the freeze crons; freeze job accepts only them.
+        self.assertIn("github.event.schedule != '0 13 * * *'", workflow)
+        self.assertIn("github.event.schedule == '0 13 * * *'", workflow)
 
 
 if __name__ == "__main__":
