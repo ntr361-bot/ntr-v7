@@ -7,56 +7,61 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44524563644",
-  "updated_at": "2026-11-19T12:33:39.723726+00:00",
+  "updated_at": "2026-11-19T12:34:43.713421+00:00",
   "error": null,
-  "valid_materials": 7,
-  "valid_authors": 7,
-  "successful_post_opens": 30,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 138,
   "article_details": {
     "featured": {
       "queued": 47,
-      "attempted": 31,
-      "opened": 30,
-      "extracted": 30,
-      "completed": 30
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
     },
     "ordinary": {
       "queued": 486,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 92,
+      "opened": 91,
+      "extracted": 90,
+      "completed": 91
     }
   },
-  "article_texts_extracted": 30,
-  "article_details_completed": 30,
+  "article_texts_extracted": 137,
+  "article_details_completed": 138,
   "last_verified_post": {
-    "author": "优优码皇",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303602&type=3",
-    "verified_at": "2026-11-19T12:33:39.551169+00:00",
-    "text_length": 360,
-    "text_sha256": "939dd5e1bb58e1442748388b4183d1e3d384f4c6c5757da535072d89c979ad42"
+    "author": "三合月",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308387&type=3",
+    "verified_at": "2026-11-19T12:34:43.437041+00:00",
+    "text_length": 377,
+    "text_sha256": "37bda742ee3007d2e957ec7a911c1eae6170c470f48b2b51111fe3c8a57f3492"
   },
   "last_attempted_post": {
-    "author": "大顺发富豪榜",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11303468&type=3",
-    "attempt_index": 31
+    "author": "金诗如梦",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308385&type=3",
+    "attempt_index": 139
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-19T12:33:48.826950+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 30,
-  "stage": "detail: 大顺发富豪榜 大富豪必中九肖中特～稳中之稳🀄️🀄️🀄️",
-  "progress_updated_at": "2026-11-19T12:33:39.585337+00:00",
+  "raw_count": 137,
+  "stage": "detail: 金诗如梦 323期（心水六肖）对错勿怪",
+  "progress_updated_at": "2026-11-19T12:34:43.675665+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
     "truncated": null,
-    "unextracted_current_posts": 0
+    "unextracted_current_posts": 1
   },
   "coverage_label": null
 }
