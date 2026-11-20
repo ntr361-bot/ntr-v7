@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44734351920",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44734351920",
+  "updated_at": "2026-11-20T12:25:44.095738+00:00",
+  "error": null,
+  "valid_materials": 57,
+  "valid_authors": 57,
+  "successful_post_opens": 286,
+  "article_details": {
+    "featured": {
+      "queued": 46,
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 240,
+      "opened": 240,
+      "extracted": 240,
+      "completed": 240
+    }
+  },
+  "article_texts_extracted": 286,
+  "article_details_completed": 286,
+  "last_verified_post": {
+    "author": "大老爺",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309816&type=3",
+    "verified_at": "2026-11-20T12:25:43.736241+00:00",
+    "text_length": 163,
+    "text_sha256": "93cc83d7ed3ce50121cf281f96fedd5f4cb6bf892e1c3b75b3000735ef0302b3"
+  },
+  "last_attempted_post": {
+    "author": "大老爺",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309816&type=3",
+    "attempt_index": 286
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:22:35.438162+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 286,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-20T12:25:43.921691+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
