@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44735813166",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44735813166",
+  "updated_at": "2026-11-20T12:34:44.560160+00:00",
+  "error": null,
+  "valid_materials": 49,
+  "valid_authors": 49,
+  "successful_post_opens": 231,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 187,
+      "opened": 186,
+      "extracted": 186,
+      "completed": 186
+    }
+  },
+  "article_texts_extracted": 231,
+  "article_details_completed": 231,
+  "last_verified_post": {
+    "author": "花容月貌",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309989&type=3",
+    "verified_at": "2026-11-20T12:34:44.034508+00:00",
+    "text_length": 53,
+    "text_sha256": "3e2135b138d7266c478d6b2ab996da6d1e4deb49eb11d9192ef50a977e285c3a"
+  },
+  "last_attempted_post": {
+    "author": "拔苗助长",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309982&type=3",
+    "attempt_index": 232
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:32:32.783670+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 231,
+  "stage": "detail: 拔苗助长 324期：平特一尾",
+  "progress_updated_at": "2026-11-20T12:34:44.309540+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
