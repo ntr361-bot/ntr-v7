@@ -253,7 +253,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         if saved_snapshot.exists() and frozen_report.exists():
             saved=json.loads(saved_snapshot.read_text(encoding='utf-8'))
             source=frozen_report.read_text(encoding='utf-8')
-            marker='**本期冻结状态：'
+            marker='本期冻结状态：'
             if marker not in source:
                 count=saved.get('valid_materials','未知')
                 minimum=saved.get('minimum_valid_materials',25)
@@ -325,18 +325,18 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 from .featured_shadow import settle as settle_shadow
                 settle_shadow(folder,actual['special_zodiac'],drawn,write_once)
         settlement=folder/'settlement.json'
-        if settlement.exists():
-            # Additive public fields so readers need not fetch every snapshot;
-            # values come from the digest-verified immutable snapshot above.
-            summary.append({**json.loads(settlement.read_text(encoding='utf-8')),
-                            'top3':snap.get('top3',[]),'top6':snap.get('top6',[]),
-                            'frozen_at':snap.get('frozen_at') or snap.get('fetched_at')})
-    atomic(archive/'summary.json',{
-        'settled_count':len(summary),
-        'top3_hits':sum(bool(s['top3_hit']) for s in summary),
-        'top6_hits':sum(bool(s['top6_hit']) for s in summary),
-        'settlements':[{'issue':s['issue'],'rank':s['rank'],
-                        'actual':s['actual'],'top3_hit':s['top3_hit'],'top6_hit':s['top6_hit']} for s in summary]})
+        summary.append({
+            'issue':issue,'actual':actual.get('special_zodiac') if actual else None,
+            'top3':snap.get('top3',[]),'top6':snap.get('top6',[]),
+            'top3_hit':bool(settlement.exists() and json.loads(settlement.read_text(encoding='utf-8')).get('top3_hit')),
+            'top6_hit':bool(settlement.exists() and json.loads(settlement.read_text(encoding='utf-8')).get('top6_hit')),
+            'rank':json.loads(settlement.read_text(encoding='utf-8')).get('rank') if settlement.exists() else None,
+            'frozen_at':snap.get('frozen_at') or snap.get('fetched_at'),
+            'quality_status':snap.get('quality_status',snap.get('freeze_classification','legacy_unclassified')),
+            'valid_materials':snap.get('valid_materials'),
+            'minimum_valid_materials':snap.get('minimum_valid_materials')
+        })
+    # Featured-posts-only shadow board summary (118 only; observation, not a prediction).
     # Read-only, separately namespaced feed. No existing V7 prediction/history
     if model_id=='forum-observer':
         from .featured_shadow import summarize as summarize_shadow
@@ -406,6 +406,13 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 'minimum_valid_materials':saved.get('minimum_valid_materials'),
                 'settlement':json.loads(st.read_text(encoding='utf-8')) if st.exists() else None
             })
+            # Publish the human-readable report so the ledger static site can open it.
+            report_src = folder / 'report.md'
+            if report_src.exists():
+                dest = public_dir / 'issues' / folder.name / 'report.md'
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(report_src, dest)
+
     return len(summary)
 
 if __name__=='__main__':
@@ -431,4 +438,3 @@ if __name__=='__main__':
             print('Live result unavailable; using verified committed V7 history only:',error)
     defer=a.defer_freeze or not a.finalize
     print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,model_id=a.model_id))
-
