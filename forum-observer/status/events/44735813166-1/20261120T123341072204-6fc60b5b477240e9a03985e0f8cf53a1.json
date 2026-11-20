@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44735813166",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44735813166",
+  "updated_at": "2026-11-20T12:33:41.072204+00:00",
+  "error": null,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 148,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 104,
+      "opened": 103,
+      "extracted": 103,
+      "completed": 103
+    }
+  },
+  "article_texts_extracted": 148,
+  "article_details_completed": 148,
+  "last_verified_post": {
+    "author": "君君崽",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11312090&type=3",
+    "verified_at": "2026-11-20T12:33:40.636512+00:00",
+    "text_length": 250,
+    "text_sha256": "24a5ccbd118a659528b597c35f161856557f48876ad977d90088c6b36baf50be"
+  },
+  "last_attempted_post": {
+    "author": "没眼睇乱",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11312091&type=3",
+    "attempt_index": 149
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:32:32.783670+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 148,
+  "stage": "detail: 没眼睇乱 自己记录一下，不要跟，不包中",
+  "progress_updated_at": "2026-11-20T12:33:40.853628+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
