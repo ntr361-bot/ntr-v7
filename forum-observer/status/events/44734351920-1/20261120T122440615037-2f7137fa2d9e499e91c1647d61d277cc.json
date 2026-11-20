@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44734351920",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44734351920",
+  "updated_at": "2026-11-20T12:24:40.615037+00:00",
+  "error": null,
+  "valid_materials": 43,
+  "valid_authors": 43,
+  "successful_post_opens": 213,
+  "article_details": {
+    "featured": {
+      "queued": 46,
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 168,
+      "opened": 167,
+      "extracted": 167,
+      "completed": 167
+    }
+  },
+  "article_texts_extracted": 213,
+  "article_details_completed": 213,
+  "last_verified_post": {
+    "author": "姹紫嫣",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11310038&type=3",
+    "verified_at": "2026-11-20T12:24:40.240878+00:00",
+    "text_length": 57,
+    "text_sha256": "88f4e04185361e78913939cf28db2008fc30cb76441eb0a485e1780ba67919b5"
+  },
+  "last_attempted_post": {
+    "author": "大湿鸽",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11310030&type=3",
+    "attempt_index": 214
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:22:35.438162+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 213,
+  "stage": "detail: 大湿鸽 324期：琴棋书画",
+  "progress_updated_at": "2026-11-20T12:24:40.572923+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
