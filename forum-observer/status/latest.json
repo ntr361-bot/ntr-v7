@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44734351920",
-  "updated_at": "2026-11-20T12:22:34.062920+00:00",
+  "updated_at": "2026-11-20T12:23:37.346915+00:00",
   "error": null,
-  "valid_materials": 8,
-  "valid_authors": 8,
-  "successful_post_opens": 43,
+  "valid_materials": 26,
+  "valid_authors": 26,
+  "successful_post_opens": 135,
   "article_details": {
     "featured": {
       "queued": 46,
-      "attempted": 44,
-      "opened": 43,
-      "extracted": 43,
-      "completed": 43
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
     },
     "ordinary": {
       "queued": 457,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 89,
+      "opened": 89,
+      "extracted": 89,
+      "completed": 89
     }
   },
-  "article_texts_extracted": 43,
-  "article_details_completed": 43,
+  "article_texts_extracted": 135,
+  "article_details_completed": 135,
   "last_verified_post": {
-    "author": "奇花异草",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308723&type=3",
-    "verified_at": "2026-11-20T12:22:33.756963+00:00",
-    "text_length": 287,
-    "text_sha256": "6c254ca43f209dd5968814e25cd53079f9f2ade09984593883f627556e57a383"
+    "author": "稳了的",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11313370&type=3",
+    "verified_at": "2026-11-20T12:23:37.167217+00:00",
+    "text_length": 24,
+    "text_sha256": "f47544f383ec7a56c929c97e9a9eb75e7104a81e9f1b207a8badc43057ce8f4c"
   },
   "last_attempted_post": {
-    "author": "披荆斩棘",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308721&type=3",
-    "attempt_index": 44
+    "author": "稳了的",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11313370&type=3",
+    "attempt_index": 135
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:22:35.438162+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 43,
-  "stage": "detail: 披荆斩棘 港澳金元宝【特码大小】",
-  "progress_updated_at": "2026-11-20T12:22:33.805757+00:00",
+  "raw_count": 135,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-20T12:23:37.299373+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
