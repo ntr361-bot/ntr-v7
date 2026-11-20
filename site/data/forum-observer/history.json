@@ -2,22 +2,13 @@
   "schema_version": 1,
   "model": "forum-observer",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 38,
+  "settled_count": 39,
   "top3_hits": 15,
   "top6_hits": 24,
   "settlements": [
     {
       "issue": "2026285",
       "actual": "鼠",
-      "actual_source": "site/data/history.json",
-      "drawn_at": "2026-10-12T21:35:31+08:00",
-      "snapshot_digest": "542c2e0e847215385cb165de521f251a26e8a897017ca1581f3043e4659ab9b8",
-      "snapshot_at": "2026-10-12T13:10:46.804600+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鼠",
         "兔",
@@ -31,20 +22,17 @@
         "蛇",
         "猪"
       ],
-      "frozen_at": "2026-10-12T13:19:06.726307+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-10-12T13:19:06.726307+00:00",
+      "quality_status": "legacy_unclassified",
+      "valid_materials": 10,
+      "minimum_valid_materials": null
     },
     {
       "issue": "2026286",
       "actual": "羊",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-13T21:35:31+08:00",
-      "snapshot_digest": "f650f540de16b6afb2c144128ecaa4b2f3a45d3a21ce1d4efd7a8ad9fec083a1",
-      "snapshot_at": "2026-10-13T20:59:06+08:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "猪",
@@ -58,20 +46,17 @@
         "蛇",
         "狗"
       ],
-      "frozen_at": "2026-10-13T20:59:06+08:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-10-13T20:59:06+08:00",
+      "quality_status": "manual_exception_below_minimum_materials",
+      "valid_materials": 24,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026287",
       "actual": "猪",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-14T21:35:30+08:00",
-      "snapshot_digest": "70ff1bf25a9b43d0622d6d8761148ec93b53664877a1ad15a0056caae7b6d8bd",
-      "snapshot_at": "2026-10-14T11:48:56.988681+00:00",
-      "rank": 12,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "龙",
         "猴",
@@ -85,20 +70,17 @@
         "蛇",
         "羊"
       ],
-      "frozen_at": "2026-10-14T11:48:58.491799+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 12,
+      "frozen_at": "2026-10-14T11:48:58.491799+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 53,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026288",
       "actual": "马",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-15T21:35:31+08:00",
-      "snapshot_digest": "9da7ee8039c14942c007b9cbb798ef0fa7aec53b5acc50481b9cdb1675c2cb64",
-      "snapshot_at": "2026-10-15T12:20:44.620128+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "牛",
@@ -112,20 +94,17 @@
         "兔",
         "鼠"
       ],
-      "frozen_at": "2026-10-15T12:20:46.083449+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-10-15T12:20:46.083449+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 83,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026289",
       "actual": "蛇",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-16T21:35:31+08:00",
-      "snapshot_digest": "f826c057dd395c18dbf92d275323dbc38aec8cc0005d6df2a8de0b956c2740f9",
-      "snapshot_at": "2026-10-16T11:47:13.753471+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "兔",
         "狗",
@@ -139,20 +118,17 @@
         "羊",
         "牛"
       ],
-      "frozen_at": "2026-10-16T11:47:15.250387+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-10-16T11:47:15.250387+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 73,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026290",
       "actual": "兔",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-17T21:35:30+08:00",
-      "snapshot_digest": "edaba26710d41da8debaf16ceea8e0524b37fa91b661025c32971334b5d45694",
-      "snapshot_at": "2026-10-17T12:23:59.221913+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "猴",
         "龙",
@@ -166,20 +142,17 @@
         "虎",
         "蛇"
       ],
-      "frozen_at": "2026-10-17T12:23:59.727146+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-10-17T12:23:59.727146+00:00",
+      "quality_status": "below_minimum_samples",
+      "valid_materials": 12,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026291",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-18T21:35:30+08:00",
-      "snapshot_digest": "add75d9f2e91b2136bbab31154fa6dff5ab482921e9dc31187dc4ceb950e00d4",
-      "snapshot_at": "2026-10-18T12:23:57.319657+00:00",
-      "rank": 10,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "狗",
         "马",
@@ -193,20 +166,17 @@
         "鼠",
         "牛"
       ],
-      "frozen_at": "2026-10-18T13:00:35.072908+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 10,
+      "frozen_at": "2026-10-18T13:00:35.072908+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 85,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026292",
       "actual": "羊",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-19T21:35:31+08:00",
-      "snapshot_digest": "59376b526f363af4f4991c2da2dcce71ba73bf8a229178a2d736ffe137f0309e",
-      "snapshot_at": "2026-10-19T12:30:30.325757+00:00",
-      "rank": 5,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "鸡",
@@ -220,20 +190,17 @@
         "羊",
         "猴"
       ],
-      "frozen_at": "2026-10-19T13:10:39.765908+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 5,
+      "frozen_at": "2026-10-19T13:10:39.765908+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 80,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026293",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-20T21:35:30+08:00",
-      "snapshot_digest": "7d8868ff8b1a51440c000553243ae9ab261dc5d490ce5ddda9516c587d41046b",
-      "snapshot_at": "2026-10-20T12:43:31.396410+00:00",
-      "rank": 8,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "兔",
         "龙",
@@ -247,20 +214,17 @@
         "牛",
         "蛇"
       ],
-      "frozen_at": "2026-10-20T13:00:36.874394+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 8,
+      "frozen_at": "2026-10-20T13:00:36.874394+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 83,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026294",
       "actual": "兔",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-21T21:35:31+08:00",
-      "snapshot_digest": "a2fbd7d65c8f72dea5714bc082f039c07855c6049ea66e905aec2fcda7c990b2",
-      "snapshot_at": "2026-10-21T12:39:14.910735+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "兔",
         "猴",
@@ -274,20 +238,17 @@
         "狗",
         "马"
       ],
-      "frozen_at": "2026-10-21T13:03:52.872465+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-10-21T13:03:52.872465+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 84,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026295",
       "actual": "马",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-22T21:35:30+08:00",
-      "snapshot_digest": "74e3ee7c285dec148abf77d42e36da4270f9ffa83f9a19fc19d0cac1197debea",
-      "snapshot_at": "2026-10-22T12:40:47.411898+00:00",
-      "rank": 2,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "羊",
         "马",
@@ -301,20 +262,17 @@
         "鼠",
         "牛"
       ],
-      "frozen_at": "2026-10-22T13:03:03.070018+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 2,
+      "frozen_at": "2026-10-22T13:03:03.070018+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 84,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026296",
       "actual": "猴",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-23T21:35:30+08:00",
-      "snapshot_digest": "ee6dd9dd9d541527e704710894694b9b5390bf2d244c223db2a78b95d7978a28",
-      "snapshot_at": "2026-10-23T12:38:40.491039+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "狗",
         "羊",
@@ -328,20 +286,17 @@
         "马",
         "鼠"
       ],
-      "frozen_at": "2026-10-23T13:01:25.541841+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-10-23T13:01:25.541841+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 81,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026297",
       "actual": "马",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-24T21:35:30+08:00",
-      "snapshot_digest": "23fd9200d1bc1b65e7b2cc11f99df046255dc47be0da3599643219e272e91798",
-      "snapshot_at": "2026-10-24T12:39:13.049900+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "蛇",
@@ -355,20 +310,17 @@
         "兔",
         "狗"
       ],
-      "frozen_at": "2026-10-24T13:01:23.987081+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-10-24T13:01:23.987081+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 83,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026298",
       "actual": "猪",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-25T21:35:30+08:00",
-      "snapshot_digest": "17f1bac0db180a08e4e1625e5de12700bf5d45b7f005fff9fcaade612de13fbb",
-      "snapshot_at": "2026-10-25T12:38:57.189807+00:00",
-      "rank": 7,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鼠",
         "狗",
@@ -382,20 +334,17 @@
         "蛇",
         "羊"
       ],
-      "frozen_at": "2026-10-25T13:01:32.154230+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 7,
+      "frozen_at": "2026-10-25T13:01:32.154230+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 83,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026299",
       "actual": "猴",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-26T21:35:30+08:00",
-      "snapshot_digest": "49cf38f8a5c42801b7c0a32f102d79504ac8965ebda21e8b5f756b2c37002f01",
-      "snapshot_at": "2026-10-26T12:31:49.269331+00:00",
-      "rank": 10,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "蛇",
         "鸡",
@@ -409,20 +358,17 @@
         "兔",
         "鼠"
       ],
-      "frozen_at": "2026-10-26T13:01:21.830649+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 10,
+      "frozen_at": "2026-10-26T13:01:21.830649+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 91,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026300",
       "actual": "蛇",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-27T21:35:31+08:00",
-      "snapshot_digest": "184a5eea01769d1766b834c332ffe03d63e99f8ca34f0350d765901685152ccd",
-      "snapshot_at": "2026-10-27T12:47:21.859496+00:00",
-      "rank": 4,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鸡",
         "鼠",
@@ -436,20 +382,17 @@
         "虎",
         "猪"
       ],
-      "frozen_at": "2026-10-27T13:01:58.378722+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 4,
+      "frozen_at": "2026-10-27T13:01:58.378722+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 89,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026301",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-28T21:35:30+08:00",
-      "snapshot_digest": "7db39bb2d5885ae90fe21388430367213d4fb2b8c0d7a8f24a6c62666f81655d",
-      "snapshot_at": "2026-10-28T12:32:32.305319+00:00",
-      "rank": 6,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鼠",
         "狗",
@@ -463,20 +406,17 @@
         "牛",
         "虎"
       ],
-      "frozen_at": "2026-10-28T13:01:27.657101+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 6,
+      "frozen_at": "2026-10-28T13:01:27.657101+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 92,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026302",
       "actual": "狗",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-29T21:35:30+08:00",
-      "snapshot_digest": "608dbb1e53bb2be365a0ae130575db517a7a396631f9e06496aa990a1820f601",
-      "snapshot_at": "2026-10-29T12:32:27.543017+00:00",
-      "rank": 4,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "羊",
@@ -490,20 +430,17 @@
         "鸡",
         "龙"
       ],
-      "frozen_at": "2026-10-29T13:01:40.447989+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 4,
+      "frozen_at": "2026-10-29T13:01:40.447989+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 86,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026303",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-30T21:35:30+08:00",
-      "snapshot_digest": "236642f437ddf7e3c3ef8f0d37a433e7e6b01db8b1608d101a0997eebba9d1a8",
-      "snapshot_at": "2026-10-30T12:58:00.920609+00:00",
-      "rank": 9,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "兔",
         "鸡",
@@ -517,20 +454,17 @@
         "羊",
         "鼠"
       ],
-      "frozen_at": "2026-10-30T13:01:23.248472+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 9,
+      "frozen_at": "2026-10-30T13:01:23.248472+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 80,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026304",
       "actual": "狗",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-10-31T21:35:30+08:00",
-      "snapshot_digest": "eec82c5215365bad6d315d155458f84a36b25ab187060b3efeaae54fe61cc932",
-      "snapshot_at": "2026-10-31T12:29:53.560494+00:00",
-      "rank": 9,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鸡",
         "猴",
@@ -544,20 +478,17 @@
         "龙",
         "鼠"
       ],
-      "frozen_at": "2026-10-31T13:01:24.217868+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 9,
+      "frozen_at": "2026-10-31T13:01:24.217868+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 90,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026305",
       "actual": "蛇",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-01T21:35:32+08:00",
-      "snapshot_digest": "0da3066a50ffa9d8d6c415593704a42d9ef5c2af1f9b362442c7a2b25d89a963",
-      "snapshot_at": "2026-11-01T12:29:46.131924+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "蛇",
         "兔",
@@ -571,20 +502,17 @@
         "猪",
         "鼠"
       ],
-      "frozen_at": "2026-11-01T13:01:28.817505+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-11-01T13:01:28.817505+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 96,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026306",
       "actual": "龙",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-02T21:35:30+08:00",
-      "snapshot_digest": "f6f5286e0d0741a372c7fb367b9e5539e1138f06f3f359855c5afb857c28dd57",
-      "snapshot_at": "2026-11-02T12:35:41.588774+00:00",
-      "rank": 8,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "羊",
         "兔",
@@ -598,20 +526,17 @@
         "猪",
         "鸡"
       ],
-      "frozen_at": "2026-11-02T13:03:58.174278+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 8,
+      "frozen_at": "2026-11-02T13:03:58.174278+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 108,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026307",
       "actual": "牛",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-03T21:37:04+08:00",
-      "snapshot_digest": "1fe63a3144a20a51651748429eb911ff45d226fb1d1081e94f938f558826ca56",
-      "snapshot_at": "2026-11-03T12:42:26.077438+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鸡",
         "猴",
@@ -625,20 +550,17 @@
         "狗",
         "马"
       ],
-      "frozen_at": "2026-11-03T13:01:30.303694+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-11-03T13:01:30.303694+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 102,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026308",
       "actual": "鸡",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-04T21:35:31+08:00",
-      "snapshot_digest": "caaaa9ec8f0e646abf2642b06a7a1f01fd641b31e4615a0422337a4548749f4e",
-      "snapshot_at": "2026-11-04T12:30:28.982407+00:00",
-      "rank": 8,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "羊",
@@ -652,20 +574,17 @@
         "虎",
         "鼠"
       ],
-      "frozen_at": "2026-11-04T13:01:28.136285+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 8,
+      "frozen_at": "2026-11-04T13:01:28.136285+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 95,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026309",
       "actual": "马",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-05T21:35:31+08:00",
-      "snapshot_digest": "29e7c488f6f249bed67a77d188b55d76c9aa9c5f8b9ed7ce2ad516c1f375101c",
-      "snapshot_at": "2026-11-05T12:44:50.290448+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "羊",
         "狗",
@@ -679,20 +598,17 @@
         "龙",
         "蛇"
       ],
-      "frozen_at": "2026-11-05T13:01:33.266263+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-11-05T13:01:33.266263+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 99,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026310",
       "actual": "鸡",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-06T21:35:30+08:00",
-      "snapshot_digest": "891252d453b7ec2bbbb5b2cbe5b523ad47fb8b83d6436603714360eecdb344d5",
-      "snapshot_at": "2026-11-06T12:45:51.513269+00:00",
-      "rank": 9,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鼠",
         "兔",
@@ -706,20 +622,17 @@
         "狗",
         "猴"
       ],
-      "frozen_at": "2026-11-06T13:01:28.169033+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 9,
+      "frozen_at": "2026-11-06T13:01:28.169033+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 95,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026311",
       "actual": "鸡",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-07T21:35:31+08:00",
-      "snapshot_digest": "16673982f79db598b93daddf55b8c128f4c8a216476bb109000478a21c7ce9b4",
-      "snapshot_at": "2026-11-07T12:41:31.525460+00:00",
-      "rank": 11,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "羊",
         "龙",
@@ -733,20 +646,17 @@
         "牛",
         "鼠"
       ],
-      "frozen_at": "2026-11-07T13:01:29.534150+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 11,
+      "frozen_at": "2026-11-07T13:01:29.534150+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 93,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026312",
       "actual": "蛇",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-08T21:35:31+08:00",
-      "snapshot_digest": "84f752d702365c88e3d095af6e9d5e535e486706fc82dd75490723ca0ba7173f",
-      "snapshot_at": "2026-11-08T12:44:07.965844+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "蛇",
         "虎",
@@ -760,20 +670,17 @@
         "鼠",
         "兔"
       ],
-      "frozen_at": "2026-11-08T13:01:25.388966+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-11-08T13:01:25.388966+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 93,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026313",
       "actual": "鼠",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-09T21:35:32+08:00",
-      "snapshot_digest": "91137fedb00142981bf1145b5a9553ca8514d7c0b6ce554e34f00961cd2d7c74",
-      "snapshot_at": "2026-11-09T12:35:09.825609+00:00",
-      "rank": 3,
-      "top1_hit": false,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "羊",
         "猪",
@@ -787,20 +694,17 @@
         "虎",
         "兔"
       ],
-      "frozen_at": "2026-11-09T13:01:39.068587+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 3,
+      "frozen_at": "2026-11-09T13:01:39.068587+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 94,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026314",
       "actual": "鼠",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-10T21:35:33+08:00",
-      "snapshot_digest": "d321cf2d0bd9c39b6ad2a2e555c9ac40714c552be1e3114bb8de9fb28f55bd73",
-      "snapshot_at": "2026-11-10T12:31:48.055938+00:00",
-      "rank": 5,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "马",
         "虎",
@@ -814,20 +718,17 @@
         "鼠",
         "羊"
       ],
-      "frozen_at": "2026-11-10T13:01:38.566751+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 5,
+      "frozen_at": "2026-11-10T13:01:38.566751+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 96,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026315",
       "actual": "羊",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-11T21:35:34+08:00",
-      "snapshot_digest": "8271ca4658736995147b670bcbdc0ca3952e1cbca8f3944e71c0c15a8d779204",
-      "snapshot_at": "2026-11-11T12:44:21.091082+00:00",
-      "rank": 6,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "狗",
         "猴",
@@ -841,20 +742,17 @@
         "蛇",
         "羊"
       ],
-      "frozen_at": "2026-11-11T13:01:25.250964+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 6,
+      "frozen_at": "2026-11-11T13:01:25.250964+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 100,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026316",
       "actual": "龙",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-12T21:35:30+08:00",
-      "snapshot_digest": "2102736fe09c24a8d61262c219445f27d010f748a7266869592bda1ea1565b3f",
-      "snapshot_at": "2026-11-12T12:30:11.796855+00:00",
-      "rank": 5,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "猴",
         "马",
@@ -868,20 +766,17 @@
         "龙",
         "猪"
       ],
-      "frozen_at": "2026-11-12T13:01:30.840972+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 5,
+      "frozen_at": "2026-11-12T13:01:30.840972+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 94,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026317",
       "actual": "蛇",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-13T21:35:31+08:00",
-      "snapshot_digest": "0553759ac5285f2da5ecb2fc1d57210904bc0f4a3439551367c21588cf9bc98f",
-      "snapshot_at": "2026-11-13T12:44:21.971932+00:00",
-      "rank": 4,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "猪",
         "狗",
@@ -895,20 +790,17 @@
         "羊",
         "龙"
       ],
-      "frozen_at": "2026-11-13T13:18:20.347221+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 4,
+      "frozen_at": "2026-11-13T13:18:20.347221+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 97,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026319",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-15T21:35:30+08:00",
-      "snapshot_digest": "73fea4a34edb77c281da41ccaf856f11f861e0a438c39c2f1d84334bd588bc7a",
-      "snapshot_at": "2026-11-15T12:39:54.827064+00:00",
-      "rank": 5,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "鼠",
         "羊",
@@ -922,20 +814,17 @@
         "虎",
         "龙"
       ],
-      "frozen_at": "2026-11-15T13:23:14.004313+00:00"
+      "top3_hit": false,
+      "top6_hit": true,
+      "rank": 5,
+      "frozen_at": "2026-11-15T13:23:14.004313+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 103,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026320",
       "actual": "猪",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-16T21:35:32+08:00",
-      "snapshot_digest": "3ef3013306c1a2e743e6df4b9fd7eae42c14b2a739de09c8c6c57656c8372eb8",
-      "snapshot_at": "2026-11-16T12:23:51.067862+00:00",
-      "rank": 7,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "猴",
         "鸡",
@@ -949,20 +838,17 @@
         "马",
         "虎"
       ],
-      "frozen_at": "2026-11-16T12:42:44.091372+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 7,
+      "frozen_at": "2026-11-16T12:42:44.091372+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 95,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026321",
       "actual": "虎",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-17T21:35:31+08:00",
-      "snapshot_digest": "7860a486bd6e0ebe7ee71ac5f7021b35524d76358c89626592cc63a78039232d",
-      "snapshot_at": "2026-11-17T12:44:08.017982+00:00",
-      "rank": 1,
-      "top1_hit": true,
-      "top3_hit": true,
-      "top6_hit": true,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "虎",
         "猴",
@@ -976,20 +862,17 @@
         "马",
         "鸡"
       ],
-      "frozen_at": "2026-11-17T12:58:42.447801+00:00"
+      "top3_hit": true,
+      "top6_hit": true,
+      "rank": 1,
+      "frozen_at": "2026-11-17T12:58:42.447801+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 107,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026322",
       "actual": "鼠",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-18T21:35:40+08:00",
-      "snapshot_digest": "dfb802ad5461a211add062e3ea5e0dd7ac0593567b0db48e541187f67155766d",
-      "snapshot_at": "2026-11-18T12:38:35.831275+00:00",
-      "rank": 12,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "兔",
         "狗",
@@ -1003,20 +886,17 @@
         "马",
         "羊"
       ],
-      "frozen_at": "2026-11-18T13:07:30.176228+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 12,
+      "frozen_at": "2026-11-18T13:07:30.176228+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 94,
+      "minimum_valid_materials": 25
     },
     {
       "issue": "2026323",
       "actual": "猴",
-      "actual_source": "smart-ledger:/api/results",
-      "drawn_at": "2026-11-19T21:35:30+08:00",
-      "snapshot_digest": "baa65ef01d34f3d421fe4d5ab380547754f89a39af6c7258956c84928757b71b",
-      "snapshot_at": "2026-11-19T12:41:17.492929+00:00",
-      "rank": 9,
-      "top1_hit": false,
-      "top3_hit": false,
-      "top6_hit": false,
-      "classification": "experimental_unverified_leaderboard",
       "top3": [
         "牛",
         "马",
@@ -1030,7 +910,37 @@
         "羊",
         "猪"
       ],
-      "frozen_at": "2026-11-19T13:05:03.324010+00:00"
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 9,
+      "frozen_at": "2026-11-19T13:05:03.324010+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 99,
+      "minimum_valid_materials": 25
+    },
+    {
+      "issue": "2026324",
+      "actual": "鼠",
+      "top3": [
+        "兔",
+        "羊",
+        "蛇"
+      ],
+      "top6": [
+        "兔",
+        "羊",
+        "蛇",
+        "龙",
+        "狗",
+        "牛"
+      ],
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": 11,
+      "frozen_at": "2026-11-20T13:00:34.135157+00:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 90,
+      "minimum_valid_materials": 25
     }
   ]
 }

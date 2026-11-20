@@ -1,13 +1,13 @@
 {
   "rule": "featured_posts_only_same_scoring",
   "used_for_freeze": false,
-  "settled_count": 21,
-  "shadow_top3_hits": 5,
-  "shadow_top6_hits": 9,
+  "settled_count": 22,
+  "shadow_top3_hits": 6,
+  "shadow_top6_hits": 10,
   "formal_top3_hits": 6,
   "formal_top6_hits": 12,
-  "shadow_mean_rank": 6.81,
-  "formal_mean_rank": 5.86,
+  "shadow_mean_rank": 6.55,
+  "formal_mean_rank": 6.09,
   "random_baseline": {
     "top3": 0.25,
     "top6": 0.5,
@@ -242,6 +242,17 @@
       "shadow_top6_hit": false,
       "shadow_valid_materials": 10,
       "formal_rank": 9,
+      "formal_top3_hit": false,
+      "formal_top6_hit": false
+    },
+    {
+      "issue": "2026324",
+      "actual": "鼠",
+      "shadow_rank": 1,
+      "shadow_top3_hit": true,
+      "shadow_top6_hit": true,
+      "shadow_valid_materials": 8,
+      "formal_rank": 11,
       "formal_top3_hit": false,
       "formal_top6_hit": false
     }
