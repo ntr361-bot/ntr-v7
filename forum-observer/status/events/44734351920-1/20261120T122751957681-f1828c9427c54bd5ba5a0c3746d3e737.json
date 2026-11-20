@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44734351920",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44734351920",
+  "updated_at": "2026-11-20T12:27:51.957681+00:00",
+  "error": null,
+  "valid_materials": 74,
+  "valid_authors": 74,
+  "successful_post_opens": 424,
+  "article_details": {
+    "featured": {
+      "queued": 46,
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 379,
+      "opened": 378,
+      "extracted": 378,
+      "completed": 378
+    }
+  },
+  "article_texts_extracted": 424,
+  "article_details_completed": 424,
+  "last_verified_post": {
+    "author": "水东枭雄",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308890&type=3",
+    "verified_at": "2026-11-20T12:27:51.042998+00:00",
+    "text_length": 149,
+    "text_sha256": "5ed9f074ba34189873d8f3d515db98c3a9dd84e210ab81a2df52e471dddff8a8"
+  },
+  "last_attempted_post": {
+    "author": "萌你一身血",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308906&type=3",
+    "attempt_index": 425
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:22:35.438162+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 424,
+  "stage": "detail: 萌你一身血 五肖中特",
+  "progress_updated_at": "2026-11-20T12:27:51.488148+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
