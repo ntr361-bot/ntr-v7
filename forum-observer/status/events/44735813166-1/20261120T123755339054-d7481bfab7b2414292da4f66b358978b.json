@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44735813166",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44735813166",
+  "updated_at": "2026-11-20T12:37:55.339054+00:00",
+  "error": null,
+  "valid_materials": 83,
+  "valid_authors": 83,
+  "successful_post_opens": 457,
+  "article_details": {
+    "featured": {
+      "queued": 45,
+      "attempted": 45,
+      "opened": 45,
+      "extracted": 45,
+      "completed": 45
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 412,
+      "opened": 412,
+      "extracted": 412,
+      "completed": 412
+    }
+  },
+  "article_texts_extracted": 457,
+  "article_details_completed": 457,
+  "last_verified_post": {
+    "author": "射到腿软",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308655&type=3",
+    "verified_at": "2026-11-20T12:37:55.129156+00:00",
+    "text_length": 4,
+    "text_sha256": "7cfeac4c7f35159c9a44e9b579f1bcab58271edf845d039960ebcf9eafcfd630"
+  },
+  "last_attempted_post": {
+    "author": "射到腿软",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11308655&type=3",
+    "attempt_index": 457
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:32:32.783670+00:00",
+      "featured_queued": 45,
+      "featured_attempted": 45,
+      "featured_completed": 45
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 457,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-20T12:37:55.324339+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
