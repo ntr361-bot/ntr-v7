@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026324",
+  "state": "collecting_effectively",
+  "run_id": "44734351920",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/44734351920",
+  "updated_at": "2026-11-20T12:26:48.135790+00:00",
+  "error": null,
+  "valid_materials": 66,
+  "valid_authors": 66,
+  "successful_post_opens": 356,
+  "article_details": {
+    "featured": {
+      "queued": 46,
+      "attempted": 46,
+      "opened": 46,
+      "extracted": 46,
+      "completed": 46
+    },
+    "ordinary": {
+      "queued": 457,
+      "attempted": 311,
+      "opened": 310,
+      "extracted": 310,
+      "completed": 310
+    }
+  },
+  "article_texts_extracted": 356,
+  "article_details_completed": 356,
+  "last_verified_post": {
+    "author": "该怎样生活",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309628&type=3",
+    "verified_at": "2026-11-20T12:26:47.446193+00:00",
+    "text_length": 121,
+    "text_sha256": "29da8d8bf3053e9168e7ea65994ac0719703420950f957956348a6c2b1dc4311"
+  },
+  "last_attempted_post": {
+    "author": "一缕墨香",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11309627&type=3",
+    "attempt_index": 357
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-20T12:22:35.438162+00:00",
+      "featured_queued": 46,
+      "featured_attempted": 46,
+      "featured_completed": 46
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 356,
+  "stage": "detail: 一缕墨香 324期:单笔双笔肖",
+  "progress_updated_at": "2026-11-20T12:26:47.844579+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
