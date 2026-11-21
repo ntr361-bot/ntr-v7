@@ -219,11 +219,6 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 core['frozen_at']=now.isoformat()
                 core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
                 write_once(folder/'snapshot.json',core)
-                if model_id=='forum-observer':
-                    from .featured_shadow import record_at_freeze
-                    record_at_freeze(folder,status,core['frozen_at'],write_once)
-                    from .top30_shadow import record_at_freeze as record_top30
-                    record_top30(folder,status,core['frozen_at'],write_once)
         saved_snapshot=folder/'snapshot.json'
         frozen_report=folder/'report.md'
         if saved_snapshot.exists() and frozen_report.exists():
@@ -292,13 +287,6 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 'top3_hit':zodiac in snap['top3'],
                 'top6_hit':zodiac in snap['top6'],
                 'classification':'experimental_unverified_leaderboard'})
-        if model_id=='forum-observer' and actual and actual.get('special_zodiac') in ZODIACS:
-            drawn=draw_time(actual)
-            if drawn is not None:
-                from .featured_shadow import settle as settle_shadow
-                settle_shadow(folder,actual['special_zodiac'],drawn,write_once)
-                from .top30_shadow import settle as settle_top30
-                settle_top30(folder,actual['special_zodiac'],drawn,write_once)
         settlement=folder/'settlement.json'
         summary.append({
             'issue':issue,'actual':actual.get('special_zodiac') if actual else None,
@@ -311,11 +299,6 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             'valid_materials':snap.get('valid_materials'),
             'minimum_valid_materials':snap.get('minimum_valid_materials')
         })
-    if model_id=='forum-observer':
-        from .featured_shadow import summarize as summarize_shadow
-        summarize_shadow(archive,atomic)
-        from .top30_shadow import summarize as summarize_top30
-        summarize_top30(archive,atomic)
     if public_dir is not None:
         public_dir=Path(public_dir)
         latest_path=archive/'latest.json'
