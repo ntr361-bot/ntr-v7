@@ -258,6 +258,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             continue
         by_issue[issue]=candidate
     summary=[]
+    new_settlements=0
     for folder in sorted((archive/'issues').glob('20?????')) if (archive/'issues').exists() else []:
         snap_path=folder/'snapshot.json'
         if not snap_path.exists():continue
@@ -279,14 +280,15 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 continue
             rank=next((v['rank'] for v in snap['ranking'] if v['zodiac']==zodiac),None)
             if rank is None:raise ValueError('rank missing for actual zodiac')
-            write_once(folder/'settlement.json',{
+            if write_once(folder/'settlement.json',{
                 'issue':issue,'actual':zodiac,'actual_source':actual.get('actual_source','site/data/history.json'),
                 'drawn_at':drawn_at.isoformat(),'snapshot_digest':digest,
                 'snapshot_at':snap['fetched_at'],'rank':rank,
                 'top1_hit':zodiac in snap['top1'],
                 'top3_hit':zodiac in snap['top3'],
                 'top6_hit':zodiac in snap['top6'],
-                'classification':'experimental_unverified_leaderboard'})
+                'classification':'experimental_unverified_leaderboard'}):
+                new_settlements += 1
         settlement=folder/'settlement.json'
         summary.append({
             'issue':issue,'actual':actual.get('special_zodiac') if actual else None,
@@ -367,7 +369,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(report_src, dest)
 
-    return len(summary)
+    return new_settlements
 
 if __name__=='__main__':
     p=argparse.ArgumentParser()
