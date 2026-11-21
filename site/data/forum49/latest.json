@@ -2,45 +2,34 @@
   "schema_version": 1,
   "model": "forum49",
   "classification": "experimental_unverified_leaderboard",
-  "issue": "2026324",
+  "issue": "2026325",
   "collection_status": "ready_observation",
-  "raw_count": 929,
-  "valid_materials": 189,
-  "pending_rule_question_count": 167,
+  "raw_count": 554,
+  "valid_materials": 126,
+  "pending_rule_question_count": 108,
   "article_image_audit": {},
-  "updated_at": "2026-11-20T12:48:01.970020+00:00",
-  "distinct_prediction_authors": 189,
+  "updated_at": "2026-11-21T12:58:30.521519+00:00",
+  "distinct_prediction_authors": 126,
   "preview_top3": [
-    "马",
     "羊",
-    "鸡"
+    "猪",
+    "马"
   ],
   "preview_top6": [
-    "马",
     "羊",
-    "鸡",
-    "兔",
+    "猪",
+    "马",
+    "龙",
     "蛇",
-    "龙"
+    "猴"
   ],
-  "frozen": true,
-  "prediction_top3": [
-    "马",
-    "羊",
-    "鸡"
-  ],
-  "prediction_top6": [
-    "马",
-    "羊",
-    "鸡",
-    "兔",
-    "蛇",
-    "龙"
-  ],
-  "snapshot_digest": "0bb57175f3c5f6d497fe50ce495c37b53ed34454ddf4e763abd5c4bdacd1b1db",
-  "freeze_quality_status": "meets_minimum_samples",
-  "freeze_minimum_valid_materials": 25,
+  "frozen": false,
+  "prediction_top3": [],
+  "prediction_top6": [],
+  "snapshot_digest": null,
+  "freeze_quality_status": null,
+  "freeze_minimum_valid_materials": null,
   "settlement": null,
-  "settled_count": 25,
+  "settled_count": 26,
   "note": "preview fields are unverified observations; only prediction fields are immutable experimental snapshots"
 }
