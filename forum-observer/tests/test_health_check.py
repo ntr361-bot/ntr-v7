@@ -191,6 +191,26 @@ class HealthCheckTests(unittest.TestCase):
         self.assertNotIn("manual_verified_rate_below_80_pct",
                          health.findings_for("probe", {}, {}, sample))
 
+    def test_probe_and_nightly_audit_cannot_clear_each_others_alerts(self):
+        old = ["118_probe_network_error", "49_audit_draft_not_frozen"]
+        self.assertEqual(health.merge_findings("probe", [], old),
+                         ["49_audit_draft_not_frozen"])
+        self.assertEqual(health.merge_findings("audit", [], old),
+                         ["118_probe_network_error"])
+        self.assertEqual(health.merge_findings("all", [], old), [])
+
+        g = FakeGithub(snapshot("2026327"), alert_open=True)
+        g.latest_data = {"findings": ["118_probe_http_denied"]}
+        with patch.object(health, "fetch_manual_sample",
+                          return_value={**health.manual_sample([]),
+                                        "by_model": {"118": {}, "49": {}}}):
+            report = health.run("audit", publish=True, github=g,
+                                now=datetime(2026, 11, 23, 22, 15, tzinfo=health.TZ))
+        self.assertEqual(report["current_check_findings"], [])
+        self.assertEqual(report["findings"], ["118_probe_http_denied"])
+        self.assertFalse(any(method == "PATCH" for _, method, _ in g.calls),
+                         "a healthy archive audit does not prove website recovery")
+
     def test_alert_issue_is_deduplicated_and_closed_when_recovered(self):
         g = FakeGithub(alert_open=False)
         health.update_alert(g, ["118_probe_network_error"], [], {})
