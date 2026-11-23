@@ -193,19 +193,9 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
         from .report import render
         render(result, out / str(result['issue']) / 'report.md', compact=True)
         record.update(ok=True, **summarize(result, issue))
-        try:  # observation only; a failure here never affects the formal record
-            record['shadow_scope'] = shadow_observation(result)
-        except Exception as exc:
-            record['shadow_scope'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
-        try:  # observation only (user 2026-10-29); never affects the formal record
-            record['cap_shadow'] = cap_shadow_observation(result)
-        except Exception as exc:
-            record['cap_shadow'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
-        if STRICT_SHADOW:
-            try:  # test mode; a failure here never affects the formal record
-                record['strict_shadow'] = strict_shadow_observation(result)
-            except Exception as exc:
-                record['strict_shadow'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
+        # User retired shadow experiments: do not spend collection time
+        # recomputing shadow rankings or persist any new shadow fields.
+        # Formal unscoped materials, scoring and freeze are unchanged.
         # Full post evidence for the Scrapling side-by-side comparison step.
         # Workflow-local only (artifact), not committed.
         (out / 'forum49-evidence.json').write_text(json.dumps(
