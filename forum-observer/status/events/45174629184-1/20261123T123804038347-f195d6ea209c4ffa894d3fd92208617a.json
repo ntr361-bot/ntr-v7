@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45174629184",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45174629184",
+  "updated_at": "2026-11-23T12:38:04.038347+00:00",
+  "error": null,
+  "valid_materials": 90,
+  "valid_authors": 90,
+  "successful_post_opens": 460,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 473,
+      "attempted": 414,
+      "opened": 413,
+      "extracted": 413,
+      "completed": 413
+    }
+  },
+  "article_texts_extracted": 460,
+  "article_details_completed": 461,
+  "last_verified_post": {
+    "author": "边缘人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326575&type=3",
+    "verified_at": "2026-11-23T12:38:02.944643+00:00",
+    "text_length": 61,
+    "text_sha256": "3f27f3d5bb08733df8be2a2462cbcbe5521df16080ec4d6fa8ddadfa427728a6"
+  },
+  "last_attempted_post": {
+    "author": "之乎者也",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326574&type=3",
+    "attempt_index": 462
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T12:32:17.143478+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 460,
+  "stage": "detail: 之乎者也 327期:必准单双",
+  "progress_updated_at": "2026-11-23T12:38:03.460127+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
