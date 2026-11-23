@@ -118,6 +118,40 @@ jobs:
             --history ../site/data/history.json --public ../site/data/forum49 \
             --defer-freeze --model-id forum49
 
+      - name: Enforce eligible current-issue draft after collection
+        # The collector can exit 0 with zero qualifying posts. Without a
+        # complete verified draft that is NOT a successful nightly collection.
+        if: steps.collection-gate.outputs.collect == 'true' && steps.collection-gate.outputs.test != 'true'
+        id: verify-draft
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          now = datetime.now(ZoneInfo('Asia/Shanghai'))
+          issue = f"{now.year}{now.timetuple().tm_yday:03d}"
+          path = Path('forum49/issues') / issue / 'draft-status.json'
+          try:
+              row = json.loads(path.read_text(encoding='utf-8'))
+              captured = datetime.fromisoformat(row['fetched_at'])
+              ok = (row.get('issue') == issue
+                    and captured.tzinfo is not None
+                    and captured.astimezone(ZoneInfo('Asia/Shanghai')).date() == now.date()
+                    and int(row.get('valid_materials') or 0) > 0
+                    and row.get('status') in ('ready_observation', 'incomplete_observation')
+                    and len(row.get('ranking') or []) == 12
+                    and len(row.get('top3') or []) == 3
+                    and len(row.get('top6') or []) == 6)
+          except (OSError, ValueError, TypeError, KeyError) as exc:
+              print('::error title=49论坛模型 draft::missing or invalid current-issue draft:', exc)
+              raise SystemExit(2)
+          if not ok:
+              print('::error title=49论坛模型 draft::collection did not publish a qualifying current-issue draft')
+              raise SystemExit(2)
+          print('Verified 49 current-issue draft:', path, 'valid_materials:', row['valid_materials'])
+          PY
+
       - name: Check freeze window
         id: freeze-window
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
@@ -137,7 +171,7 @@ jobs:
       - name: Publish completed-run report or finalize freeze
         # Never finalize on a rejected freeze window, even via always().
         # A failed or skipped collection must not look like a published draft.
-        if: ${{ always() && steps.collection-gate.outputs.test != 'true' && ((steps.freeze-window.outputs.allowed == 'true') || (steps.collection-gate.outputs.collect == 'true' && steps.collect.outcome == 'success' && steps.draft.outcome == 'success')) }}
+        if: ${{ always() && steps.collection-gate.outputs.test != 'true' && ((steps.freeze-window.outputs.allowed == 'true') || (steps.collection-gate.outputs.collect == 'true' && steps.collect.outcome == 'success' && steps.draft.outcome == 'success' && steps.verify-draft.outcome == 'success')) }}
         env:
           FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
         run: |
@@ -191,6 +225,7 @@ jobs:
           COLLECT_GATE: ${{ steps.collection-gate.outputs.reason }}
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           DRAFT_OUTCOME: ${{ steps.draft.outcome }}
+          VERIFIED_DRAFT: ${{ steps.verify-draft.outcome }}
           FREEZE_GATE: ${{ steps.freeze-window.outputs.reason }}
           FREEZE_ALLOWED: ${{ steps.freeze-window.outputs.allowed }}
         run: |
@@ -208,7 +243,8 @@ jobs:
           else:
               print('::notice title=49论坛模型::no summary (gate may have skipped collect)')
           state = dict(collection_gate=os.environ.get('COLLECT_GATE'), collect_outcome=os.environ.get('COLLECT_OUTCOME'),
-                       draft_outcome=os.environ.get('DRAFT_OUTCOME'), freeze_gate=os.environ.get('FREEZE_GATE'),
+                       draft_outcome=os.environ.get('DRAFT_OUTCOME'), verified_draft=os.environ.get('VERIFIED_DRAFT'),
+                       freeze_gate=os.environ.get('FREEZE_GATE'),
                        freeze_allowed=os.environ.get('FREEZE_ALLOWED'))
           print('::notice title=49论坛模型 gates::'+esc(json.dumps(state, ensure_ascii=False)))
           Path(os.environ.get('GITHUB_STEP_SUMMARY','/dev/stdout')).write_text(
