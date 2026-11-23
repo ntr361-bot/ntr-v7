@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45174629184",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45174629184",
+  "updated_at": "2026-11-23T12:34:52.637473+00:00",
+  "error": null,
+  "valid_materials": 60,
+  "valid_authors": 60,
+  "successful_post_opens": 263,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 473,
+      "attempted": 217,
+      "opened": 216,
+      "extracted": 216,
+      "completed": 216
+    }
+  },
+  "article_texts_extracted": 263,
+  "article_details_completed": 264,
+  "last_verified_post": {
+    "author": "枯木逢春",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11327097&type=3",
+    "verified_at": "2026-11-23T12:34:52.130980+00:00",
+    "text_length": 76,
+    "text_sha256": "15ed253083286208659f24d226588aa03820ab79831f885d7ed8b7035fb5e67d"
+  },
+  "last_attempted_post": {
+    "author": "滚瓜烂熟",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11327096&type=3",
+    "attempt_index": 265
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T12:32:17.143478+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 263,
+  "stage": "detail: 滚瓜烂熟 327期：大小中特",
+  "progress_updated_at": "2026-11-23T12:34:52.536937+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
