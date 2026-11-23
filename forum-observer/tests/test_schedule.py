@@ -322,6 +322,9 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("forum-observer/triggers/forum49/**", workflow)
         self.assertIn("trigger(forum49-collect):", workflow)
         self.assertIn("github.event_name != 'workflow_dispatch' && 'true'", workflow)
+        self.assertIn("Enforce eligible current-issue draft after collection", workflow)
+        self.assertIn("steps.verify-draft.outcome == 'success'", workflow)
+        self.assertIn("collection did not publish a qualifying current-issue draft", workflow)
         for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         # Collect gate refuses the freeze crons; freeze job accepts only them.
