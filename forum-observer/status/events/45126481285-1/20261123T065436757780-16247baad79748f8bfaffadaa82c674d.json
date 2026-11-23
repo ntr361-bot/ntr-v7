@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45126481285",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45126481285",
+  "updated_at": "2026-11-23T06:54:36.757780+00:00",
+  "error": null,
+  "valid_materials": 67,
+  "valid_authors": 67,
+  "successful_post_opens": 388,
+  "article_details": {
+    "featured": {
+      "queued": 43,
+      "attempted": 43,
+      "opened": 43,
+      "extracted": 43,
+      "completed": 43
+    },
+    "ordinary": {
+      "queued": 398,
+      "attempted": 346,
+      "opened": 345,
+      "extracted": 345,
+      "completed": 345
+    }
+  },
+  "article_texts_extracted": 388,
+  "article_details_completed": 388,
+  "last_verified_post": {
+    "author": "风起缘落",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326564&type=3",
+    "verified_at": "2026-11-23T06:54:36.212544+00:00",
+    "text_length": 50,
+    "text_sha256": "e1a877e7a2d44f7880c33aa6cdf769e14a275834b4dae91947a2802ed49df7e8"
+  },
+  "last_attempted_post": {
+    "author": "干一杯烈酒",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326563&type=3",
+    "attempt_index": 389
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T06:50:05.347452+00:00",
+      "featured_queued": 43,
+      "featured_attempted": 43,
+      "featured_completed": 43
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 388,
+  "stage": "detail: 干一杯烈酒 唐朝论坛三连尾",
+  "progress_updated_at": "2026-11-23T06:54:36.624010+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
