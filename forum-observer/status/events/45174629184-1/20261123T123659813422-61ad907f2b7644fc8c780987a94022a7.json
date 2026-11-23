@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45174629184",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45174629184",
+  "updated_at": "2026-11-23T12:36:59.813422+00:00",
+  "error": null,
+  "valid_materials": 79,
+  "valid_authors": 79,
+  "successful_post_opens": 397,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 473,
+      "attempted": 350,
+      "opened": 350,
+      "extracted": 350,
+      "completed": 350
+    }
+  },
+  "article_texts_extracted": 397,
+  "article_details_completed": 398,
+  "last_verified_post": {
+    "author": "不再回头",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326648&type=3",
+    "verified_at": "2026-11-23T12:36:59.361449+00:00",
+    "text_length": 84,
+    "text_sha256": "690c1a9e296f8500a9f82c65bade13f6a3f2d2f6134a1013ed6eaf0c62fc390c"
+  },
+  "last_attempted_post": {
+    "author": "不再回头",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326648&type=3",
+    "attempt_index": 398
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T12:32:17.143478+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 397,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-23T12:36:59.593732+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
