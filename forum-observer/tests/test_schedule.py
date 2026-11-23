@@ -312,7 +312,10 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("mode:", workflow)
         self.assertIn("freeze", workflow)
-        self.assertIn("started manually", workflow)
+        # Manual dispatch remains explicit; a late cron must not be marked green.
+        self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
+        self.assertIn("Reject delayed scheduled collection", workflow)
+        self.assertIn("steps.freeze-window.outputs.allowed == 'true'", workflow)
         for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         # Collect gate refuses the freeze crons; freeze job accepts only them.
