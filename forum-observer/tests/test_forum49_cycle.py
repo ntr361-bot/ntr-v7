@@ -44,6 +44,8 @@ class Forum49CycleTest(unittest.TestCase):
                           draw_at='2026-10-22T21:32:00+08:00', pre_draw_verified=True,
                           author_selection={'min_valid_materials': 25, 'valid_prediction_authors': 2})
             (out / 'status.json').write_text(json.dumps(status, ensure_ascii=False), encoding='utf-8')
+            (out / issue).mkdir(parents=True)
+            (out / issue / 'report.md').write_text('# verified issue 295\n', encoding='utf-8')
             with patch('forum_observer.cycle.datetime', Clock), patch('forum_observer.core.datetime', Clock):
                 sync(out, archive, history, public, defer_freeze=True, model_id='forum49')
                 folder = archive / 'issues' / issue
