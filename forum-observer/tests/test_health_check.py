@@ -54,6 +54,8 @@ class FakeGithub:
             return {"sha": "report"} if self.report else {}
         if path.startswith("actions/workflows/manual-forum-operations.yml/runs?"):
             return {"workflow_runs": [parent(0), parent(1, conclusion="failure")]}
+        if path.startswith("actions/workflows/forum-observer.yml/runs?") or path.startswith("actions/workflows/forum49-model.yml/runs?"):
+            return {"workflow_runs": []}
         if path == "issues?state=open&per_page=100":
             return ([{"title": health.ALERT_TITLE, "number": 7}]
                     if self.alert_open else [])
@@ -100,6 +102,52 @@ class HealthCheckTests(unittest.TestCase):
         self.assertEqual(row["sample_size"], 0)
         self.assertIsNone(row["verified_rate_pct"])
         self.assertIsNone(row["mean_completed_minutes"])
+
+    def test_last30_per_model_rates_require_matching_run_specific_receipts(self):
+        g = FakeGithub()
+        good = parent(0)
+        failed = parent(1, conclusion="failure", target="118")
+        def child(model, upstream, valid=True):
+            return {
+                "id": 800 if upstream["id"] == 1000 else 801,
+                "run_attempt": 1,
+                "event": "workflow_dispatch",
+                "display_title": f"Forum {model} collect manual#{upstream['id']}",
+                "path": (".github/workflows/forum-observer.yml" if model == "118"
+                         else ".github/workflows/forum49-model.yml"),
+                "status": "completed",
+                "conclusion": "success" if valid else "failure",
+            }
+        children = {"118": [child("118", good), child("118", failed, False)],
+                    "49": [child("49", good)]}
+        original_request = g.request
+        def get(path, method="GET", data=None):
+            if path.startswith("actions/workflows/forum-observer.yml/runs?"):
+                return {"workflow_runs": children["118"]}
+            if path.startswith("actions/workflows/forum49-model.yml/runs?"):
+                return {"workflow_runs": children["49"]}
+            return original_request(path, method, data)
+        g.request = get
+        original_content = g.content
+        def get_content(path):
+            if "collection-runs/800-1.json" in path:
+                model = "118" if "/archive/" in path else "49"
+                return {"sha": "receipt"}, {
+                    "issue": "2026327", "run_id": "800", "run_attempt": 1,
+                    "valid_materials": 25, "draft_published": True,
+                    "report_published": True,
+                }
+            return original_content(path)
+        g.content = get_content
+        quality = health._model_quality(g, [good, failed])
+        self.assertEqual(quality["118"]["requested"], 2)
+        self.assertEqual(quality["118"]["started"], 2)
+        self.assertEqual(quality["118"]["effective_collections"], 1)
+        self.assertEqual(quality["118"]["archived_reports"], 1)
+        self.assertEqual(quality["118"]["startup_rate_pct"], 100.0)
+        self.assertEqual(quality["118"]["report_archive_rate_pct"], 50.0)
+        self.assertEqual(quality["49"]["requested"], 1)
+        self.assertEqual(quality["49"]["archived_reports"], 1)
 
     def test_explicit_118_and_49_configured_sources(self):
         with TemporaryDirectory() as d:
