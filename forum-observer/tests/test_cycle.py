@@ -291,31 +291,36 @@ class CycleTests(unittest.TestCase):
             self.assertEqual(settled['actual_source'],'smart-ledger:/api/results')
             self.assertEqual(json.loads(history.read_text())['records'],[])
 
-    def test_append_only_after_real_draw(self):
+    def test_late_legacy_snapshot_cannot_be_settled_as_a_pre_draw_prediction(self):
+        # An old-style fixture can carry a historical collection time but be
+        # written only after the real draw. It must NOT gain a settlement:
+        # the immutable snapshot's actual freeze time proves it was late.
         with TemporaryDirectory() as tmp:
             base=Path(tmp);out=base/'out';out.mkdir();archive=base/'archive'
             history=base/'history.json'
             history.write_text(json.dumps({'records':[]}),encoding='utf-8')
-            now='2026-10-08T11:00:00+00:00'
+            collected='2026-10-08T11:00:00+00:00'
             ranks=[{'rank':i+1,'zodiac':z,'score':12-i} for i,z in enumerate(
                    '鼠牛虎兔龙蛇马羊猴鸡狗猪')]
             status={'issue':'2026282','status':'ready_observation',
                     'ranking':ranks,'top1':['鼠'],'top3':['鼠','牛','虎'],
                     'top6':['鼠','牛','虎','兔','龙','蛇'],
-                    'fetched_at':now,'evidence':[],'raw_count':25,
+                    'fetched_at':collected,'evidence':[],'raw_count':25,
                     'author_selection':{'valid_prediction_authors':25}}
             (out/'status.json').write_text(json.dumps(status),encoding='utf-8')
             self.assertEqual(sync(out,archive,history),0)
-            snap=(archive/'issues'/'2026282'/'snapshot.json')
+            folder=archive/'issues'/'2026282'
+            snap=folder/'snapshot.json'
             self.assertTrue(snap.exists())
             history.write_text(json.dumps({'records':[{'issue':'2026282',
                 'special_zodiac':'虎','open_time':'2026-10-08 21:35:31'}]}),encoding='utf-8')
-            self.assertEqual(sync(out,archive,history),1)
-            settled=archive/'issues'/'2026282'/'settlement.json'
-            self.assertTrue(json.loads(settled.read_text())['top3_hit'])
-            again=settled.read_bytes()
-            self.assertEqual(sync(out,archive,history),1)
-            self.assertEqual(again,settled.read_bytes())
+            before=snap.read_bytes()
+            self.assertEqual(sync(out,archive,history),0)
+            self.assertFalse((folder/'settlement.json').exists())
+            self.assertTrue((folder/'settlement-blocked.json').exists())
+            self.assertEqual(before,snap.read_bytes())
+            self.assertEqual(sync(out,archive,history),0)
+            self.assertFalse((folder/'settlement.json').exists())
     def test_public_feed_draft_then_frozen_and_settled(self):
         with TemporaryDirectory() as tmp:
             base=Path(tmp)
