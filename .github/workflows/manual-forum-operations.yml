@@ -1,5 +1,5 @@
 name: Manual Forum Operations (118 / 49)
-run-name: ${{ format('Manual forum {0}: {1}', inputs.target, inputs.mode) }}
+run-name: "Manual forum ${{ inputs.target }} - ${{ inputs.mode }}"
 on:
   workflow_dispatch:
     inputs:
