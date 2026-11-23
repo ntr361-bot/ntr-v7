@@ -69,6 +69,38 @@ class ManualDispatchTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,"invalid"):
                 manual.verify("owner/repo","118","collect","2026285",run)
 
+    def test_custom_run_names_must_match_by_stable_workflow_path(self):
+        # GitHub's real 2026-11-23 run.name was a custom title, not the
+        # workflow's fixed name. Never lose track of a real collection.
+        one={"path":".github/workflows/forum-observer.yml",
+             "name":"Forum 118 collect manual#45126445530",
+             "display_title":"Forum 118 collect manual#45126445530",
+             "event":"workflow_dispatch", "status":"completed","id":101}
+        two={"path":".github/workflows/forum49-model.yml",
+             "name":"Forum 49 collect manual#45126445530",
+             "display_title":"Forum 49 collect manual#45126445530",
+             "event":"workflow_dispatch","status":"in_progress","id":102}
+        older=dict(one,id=99,display_title="Forum 118 collect manual#42")
+        with patch.object(manual,"api",return_value={"workflow_runs":[older,one,two]}):
+            matched=manual.find_runs("owner/repo","45126445530",["118","49"])
+        self.assertEqual(matched["118"]["id"],101)
+        self.assertEqual(matched["49"]["id"],102)
+        with patch.object(manual,"api",return_value={"workflow_runs":[two]}):
+            with self.assertRaisesRegex(RuntimeError,"another run"):
+                manual.assert_no_active_runs("owner/repo",["49"])
+
+    def test_safe_read_only_github_calls_retry_but_never_dispatch_again(self):
+        with patch.object(manual,"gh",side_effect=[
+                RuntimeError("GitHub operation failed: 503 Service Unavailable"),
+                '{"workflow_runs":[]}']) as request, patch.object(manual.time,"sleep") as sleep:
+            self.assertEqual(manual.api("repos/owner/repo/actions/runs")["workflow_runs"],[])
+            self.assertEqual(request.call_count,2)
+            sleep.assert_called_once_with(1)
+        with patch.object(manual,"gh",side_effect=RuntimeError("403 Forbidden")) as request:
+            with self.assertRaisesRegex(RuntimeError,"403"):
+                manual.api("repos/owner/repo/actions/runs")
+            self.assertEqual(request.call_count,1)
+
     def test_does_not_dispatch_when_workflow_already_active(self):
         with patch.object(manual,"api",return_value={"workflow_runs":[{
             "name":"Forum observer daily cycle",
