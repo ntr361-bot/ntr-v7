@@ -57,7 +57,7 @@ defaults:
 jobs:
   forum49-cycle:
     # Collect or freeze (settle is a separate job).
-    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
+    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum49-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):'))) }}
     runs-on: ubuntu-latest
     timeout-minutes: 95
     steps:
@@ -154,7 +154,7 @@ jobs:
 
       - name: Check freeze window
         id: freeze-window
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')) }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
@@ -173,7 +173,7 @@ jobs:
         # A failed or skipped collection must not look like a published draft.
         if: ${{ always() && steps.collection-gate.outputs.test != 'true' && ((steps.freeze-window.outputs.allowed == 'true') || (steps.collection-gate.outputs.collect == 'true' && steps.collect.outcome == 'success' && steps.draft.outcome == 'success' && steps.verify-draft.outcome == 'success')) }}
         env:
-          FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
+          FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')) }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
             python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
@@ -183,6 +183,10 @@ jobs:
             # Draft already published above; this is a no-op safety path for non-freeze.
             echo "Draft path already handled"
           fi
+
+      - name: Enforce immutable current-issue snapshot after freeze
+        if: steps.freeze-window.outputs.allowed == 'true'
+        run: python -m forum_observer.schedule --archive forum49 --require-snapshot
 
       - name: Record 49 author history from verified frozen evidence only
         if: ${{ always() && steps.collection-gate.outputs.test != 'true' }}
