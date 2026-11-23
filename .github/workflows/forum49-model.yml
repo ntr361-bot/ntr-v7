@@ -33,6 +33,13 @@ on:
         description: Skip when an existing current-issue draft is present
         required: false
         default: 'false'
+  # Independent backup trigger. This branch must be based on deployed main,
+  # and its marker commit must start with trigger(forum49-collect):.
+  # Never listen to main pushes; those include other models' artifacts.
+  push:
+    branches: [forum49-trigger]
+    paths:
+      - 'forum-observer/triggers/forum49/**'
   schedule:
     # Beijing 20:20 collect / 20:35 backup / 21:00 freeze / 21:10 backup.
     - cron: "20 12 * * *"
@@ -50,7 +57,7 @@ defaults:
 jobs:
   forum49-cycle:
     # Collect or freeze (settle is a separate job).
-    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') }}
+    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 95
     steps:
@@ -64,15 +71,15 @@ jobs:
 
       - name: Decide current-issue collection
         id: collection-gate
-        if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule != '0 13 * * *' && github.event.schedule != '10 13 * * *') }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule != '0 13 * * *' && github.event.schedule != '10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
         env:
-          F49_SKIP_IF_COLLECTED: ${{ github.event_name == 'schedule' && 'true' || inputs.skip_if_collected || 'false' }}
+          F49_SKIP_IF_COLLECTED: ${{ github.event_name != 'workflow_dispatch' && 'true' || inputs.skip_if_collected || 'false' }}
         run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --forum49-collect-gate
 
       - name: Reject delayed scheduled collection
         # GitHub can queue cron events for hours. A skipped overnight scan
         # must be a visible failure, not a green "collection" workflow.
-        if: ${{ github.event_name == 'schedule' && (github.event.schedule == '20 12 * * *' || github.event.schedule == '35 12 * * *') && steps.collection-gate.outputs.reason == 'automatic_collection_outside_window' }}
+        if: ${{ (github.event_name == 'push' || (github.event_name == 'schedule' && (github.event.schedule == '20 12 * * *' || github.event.schedule == '35 12 * * *'))) && steps.collection-gate.outputs.reason == 'automatic_collection_outside_window' }}
         run: |
           echo "::error title=49论坛模型 collection::cron began outside the authorized Beijing 20:20-20:50 collection window; no data were collected or frozen"
           exit 1
