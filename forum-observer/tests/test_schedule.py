@@ -316,6 +316,12 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
         self.assertIn("Reject delayed scheduled collection", workflow)
         self.assertIn("steps.freeze-window.outputs.allowed == 'true'", workflow)
+        # Backup push trigger belongs to an isolated marker branch; never
+        # reuses 118's trigger branch or initiates a freeze.
+        self.assertIn("branches: [forum49-trigger]", workflow)
+        self.assertIn("forum-observer/triggers/forum49/**", workflow)
+        self.assertIn("trigger(forum49-collect):", workflow)
+        self.assertIn("github.event_name != 'workflow_dispatch' && 'true'", workflow)
         for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         # Collect gate refuses the freeze crons; freeze job accepts only them.
