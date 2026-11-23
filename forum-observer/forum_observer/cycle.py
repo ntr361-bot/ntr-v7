@@ -270,8 +270,12 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         actual=by_issue.get(issue)
         if actual and not (folder/'settlement.json').exists():
             drawn_at=draw_time(actual)
-            snap_at=datetime.fromisoformat(snap['fetched_at'])
-            if drawn_at is None or snap_at>=drawn_at:
+            # A report may have been collected before the draw but frozen later.
+            # The real immutable freeze timestamp, when present, is what proves
+            # the prediction existed before the verified draw.
+            snap_at=datetime.fromisoformat(snap.get('frozen_at') or snap['fetched_at'])
+            if (drawn_at is None or snap_at.tzinfo is None
+                    or snap_at>=drawn_at):
                 atomic(folder/'settlement-blocked.json',{'issue':issue,'reason':'snapshot_not_provably_pre_draw'})
                 continue
             zodiac=actual.get('special_zodiac')
