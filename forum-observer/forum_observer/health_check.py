@@ -142,19 +142,111 @@ def manual_sample(runs):
     }
 
 
-def fetch_manual_sample(github, pages=4):
-    all_runs = []
+def _recent_runs(github, workflow, needed, pages=3):
+    items = []
     for page in range(1, pages + 1):
-        body = github.request(
-            "actions/workflows/manual-forum-operations.yml/runs?"
-            f"event=workflow_dispatch&per_page=100&page={page}")
+        body = github.request(f"actions/workflows/{workflow}/runs?"
+                              f"event=workflow_dispatch&per_page=100&page={page}")
         rows = body.get("workflow_runs", [])
-        all_runs.extend(rows)
-        count = sum(bool(MANUAL_TITLE.fullmatch(str(r.get("display_title") or "")))
-                    for r in all_runs)
-        if count >= MAX_SAMPLES or len(rows) < 100:
+        items.extend(rows)
+        if len(items) >= needed or len(rows) < 100:
             break
-    return manual_sample(all_runs)
+    return items
+
+
+def run_model_receipt(github, model, child, issue):
+    """Verify matching current-run archive receipt and report via GitHub API."""
+    archive = "archive" if model == "118" else "forum49"
+    base = f"forum-observer/{archive}/issues/{issue}"
+    attempt = int(child.get("run_attempt") or 1)
+    try:
+        _, doc = github.content(
+            f"{base}/collection-runs/{child['id']}-{attempt}.json")
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return False, False
+        raise
+    if not doc or doc.get("issue") != issue or str(doc.get("run_id")) != str(child["id"]):
+        return False, False
+    if (doc.get("run_attempt") != attempt or
+            int(doc.get("valid_materials") or 0) <= 0 or
+            not doc.get("draft_published")):
+        return False, False
+    if not doc.get("report_published"):
+        return True, False
+    try:
+        report = github.request(f"contents/{base}/report.md?ref=main")
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return True, False
+        raise
+    return True, bool(report.get("sha"))
+
+
+def _model_quality(github, parent_rows):
+    """Separate startup, usable collection and report archiving for 30 runs."""
+    sample = sorted((r for r in parent_rows if
+                     r.get("event") == "workflow_dispatch" and
+                     MANUAL_TITLE.fullmatch(str(r.get("display_title") or "")) and
+                     str(r.get("path") or "").endswith("/manual-forum-operations.yml")),
+                    key=lambda r: str(r.get("created_at") or ""), reverse=True)[:MAX_SAMPLES]
+    targets = []
+    for parent in sample:
+        m = MANUAL_TITLE.fullmatch(parent["display_title"])
+        for model in ("118", "49") if m.group(1).lower() == "both" else (m.group(1),):
+            targets.append((parent, model, m.group(2).lower()))
+    child_runs = {}
+    for model, workflow in (("118", "forum-observer.yml"), ("49", "forum49-model.yml")):
+        needed = sum(model == target for _, target, _ in targets)
+        if not needed:
+            continue
+        for run in _recent_runs(github, workflow, max(100, needed)):
+            key = re.fullmatch(rf"Forum {model} (collect|freeze) manual#(\d+)",
+                               str(run.get("display_title") or ""))
+            if key and str(run.get("path") or "").endswith("/" + workflow):
+                child_runs[(model, key.group(1), key.group(2))] = run
+    results = {model: {"requested": 0, "started": 0, "unmatched": 0,
+                       "collection_attempts": 0, "effective_collections": 0,
+                       "archived_reports": 0} for model in ("118", "49")}
+    for parent, model, mode in targets:
+        entry = results[model]
+        entry["requested"] += 1
+        if mode == "collect":
+            entry["collection_attempts"] += 1
+        child = child_runs.get((model, mode, str(parent["id"])))
+        if child is None:
+            entry["unmatched"] += 1
+            continue
+        if child.get("status") in ("in_progress", "completed") and child.get("conclusion") != "skipped":
+            entry["started"] += 1
+        if mode != "collect" or child.get("status") != "completed":
+            continue
+        date = _dt(parent.get("created_at"))
+        if date is None:
+            continue
+        issue = current_issue(date.astimezone(TZ))
+        collected, archived = run_model_receipt(github, model, child, issue)
+        entry["effective_collections"] += int(collected)
+        entry["archived_reports"] += int(archived)
+    for entry in results.values():
+        requested = entry["requested"]
+        collected = entry["collection_attempts"]
+        entry["startup_rate_pct"] = (round(100 * entry["started"] / requested, 1)
+                                     if requested else None)
+        entry["effective_collection_rate_pct"] = (
+            round(100 * entry["effective_collections"] / collected, 1)
+            if collected else None)
+        entry["report_archive_rate_pct"] = (
+            round(100 * entry["archived_reports"] / collected, 1)
+            if collected else None)
+    return results
+
+
+def fetch_manual_sample(github, pages=4):
+    all_runs = _recent_runs(github, "manual-forum-operations.yml", MAX_SAMPLES, pages)
+    result = manual_sample(all_runs)
+    result["by_model"] = _model_quality(github, all_runs)
+    return result
 
 
 def snapshot_audit(github, issue):
