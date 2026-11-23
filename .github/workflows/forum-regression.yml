@@ -1,0 +1,29 @@
+name: Forum models regression (no collection)
+on:
+  pull_request:
+    paths:
+      - 'forum-observer/forum_observer/**'
+      - 'forum-observer/tests/**'
+      - '.github/workflows/forum-observer.yml'
+      - '.github/workflows/forum49-model.yml'
+      - '.github/workflows/forum-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  forum-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run 118 and 49 regression suites without collection or publication
+        working-directory: forum-observer
+        run: python -m unittest discover -s tests -v
+      - name: Confirm no data or frozen snapshots were touched
+        run: |
+          git diff --exit-code -- site/data forum-observer/archive forum-observer/forum49
