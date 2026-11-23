@@ -266,6 +266,7 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
     report = {
         "schema_version": 1,
         "checked_at": now.isoformat(),
+        "updated_at": now.isoformat(),
         "issue": issue,
         "mode": mode,
         "state": "attention" if findings else "healthy",
