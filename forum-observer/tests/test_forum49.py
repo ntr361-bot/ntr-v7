@@ -57,7 +57,7 @@ class Forum49Test(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
 
-    def test_formal_collection_is_unscoped_and_shadow_is_recorded(self):
+    def test_formal_collection_is_unscoped_without_shadow_publication(self):
         with TemporaryDirectory() as d:
             d = Path(d)
             (d / 'collector-config.json').write_text('{}')
@@ -70,8 +70,9 @@ class Forum49Test(unittest.TestCase):
             for key in ('ordinary_min_clicks', 'ordinary_min_likes', 'scoped_post_cap'):
                 self.assertNotIn(key, cfg)
             self.assertEqual(rec['valid_materials'], 2)  # formal record unchanged
-            self.assertIn('shadow_scope', rec)
-            self.assertFalse(rec['shadow_scope'].get('used_for_freeze', True))
+            self.assertNotIn('shadow_scope', rec)
+            self.assertNotIn('cap_shadow', rec)
+            self.assertNotIn('strict_shadow', rec)
 
     def test_shadow_scores_only_featured_and_popular_posts(self):
         def post(author, body, **card):
