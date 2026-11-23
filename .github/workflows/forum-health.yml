@@ -1,0 +1,55 @@
+name: Forum Health and Reliability (no collection)
+run-name: "Forum health · ${{ github.event_name == 'schedule' && (github.event.schedule == '30 10 * * *' && 'preflight' || 'nightly audit') || inputs.mode }}"
+on:
+  schedule:
+    # Beijing time 18:30 - cheap HTTP reachability probes before manual use.
+    - cron: "30 10 * * *"
+    # Beijing time 22:15 - verify each forum's immutable archive, report,
+    # and latest 30 completed ledger-manual operations after normal freeze.
+    - cron: "15 14 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Health probe, nightly archive audit, or both (never scrape)
+        type: choice
+        options: [probe, audit, all]
+        default: all
+      publish:
+        description: Publish health-only report and deduplicated issue alert
+        type: boolean
+        default: false
+
+# Only status/health/*.json and a deduplicated GitHub issue may be written.
+# Never dispatch a collector, run a formal model or mutate snapshot/D1/history.
+permissions:
+  actions: read
+  contents: write
+  issues: write
+concurrency:
+  group: forum-health-status
+  cancel-in-progress: false
+
+jobs:
+  health-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read-only preflight probe / archive audit / 30-run report
+        working-directory: forum-observer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_MODE: ${{ github.event_name == 'schedule' && (github.event.schedule == '30 10 * * *' && 'probe' || 'audit') || inputs.mode }}
+          PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
+        run: |
+          if [ "$PUBLISH" = "true" ]; then
+            python -u -m forum_observer.health_check --mode "$RUN_MODE" --publish
+          else
+            python -u -m forum_observer.health_check --mode "$RUN_MODE"
+          fi
