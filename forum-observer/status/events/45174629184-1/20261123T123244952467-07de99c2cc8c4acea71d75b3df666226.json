@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45174629184",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45174629184",
+  "updated_at": "2026-11-23T12:32:44.952467+00:00",
+  "error": null,
+  "valid_materials": 21,
+  "valid_authors": 21,
+  "successful_post_opens": 95,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 473,
+      "attempted": 49,
+      "opened": 48,
+      "extracted": 48,
+      "completed": 48
+    }
+  },
+  "article_texts_extracted": 95,
+  "article_details_completed": 96,
+  "last_verified_post": {
+    "author": "下辈子做男人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326388&type=3",
+    "verified_at": "2026-11-23T12:32:44.553243+00:00",
+    "text_length": 175,
+    "text_sha256": "3b893bf52043c50369e4a67e38c72df981a34180b8eb447f3a2f06d0b686abfe"
+  },
+  "last_attempted_post": {
+    "author": "走杀不服",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11331468&type=3",
+    "attempt_index": 97
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T12:32:17.143478+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 95,
+  "stage": "detail: 走杀不服 327期",
+  "progress_updated_at": "2026-11-23T12:32:44.689040+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
