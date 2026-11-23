@@ -1,8 +1,13 @@
 name: Manual Forum Operations (118 / 49)
-run-name: "Manual forum ${{ inputs.target }} - ${{ inputs.mode }}"
+run-name: "Manual forum ${{ inputs.target }} - ${{ inputs.mode }} · request#${{ inputs.request_id }}"
 on:
   workflow_dispatch:
     inputs:
+      request_id:
+        description: Optional ledger request id (for exact status polling)
+        required: false
+        type: string
+        default: ''
       target:
         description: Select 118, 49, or both
         required: true
