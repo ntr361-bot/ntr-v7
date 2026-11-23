@@ -16,6 +16,13 @@ class ManualDispatchTests(unittest.TestCase):
     def at(self,h,m):
         return datetime(2026,10,12,h,m,tzinfo=TZ)
 
+    def test_ledger_request_id_is_exposed_in_manual_workflow_title(self):
+        workflow=(Path(__file__).resolve().parents[2]/".github"/"workflows"/
+                  "manual-forum-operations.yml").read_text(encoding="utf-8")
+        self.assertIn("request_id:",workflow)
+        self.assertIn("request#${{ inputs.request_id }}",workflow)
+        self.assertIn("workflow_dispatch:",workflow)
+
     def test_manual_collect_can_start_both_and_never_starts_too_close_to_cutoff(self):
         with TemporaryDirectory() as root:
             self.assertEqual(manual.preflight("both","collect",root,self.at(20,20)),
