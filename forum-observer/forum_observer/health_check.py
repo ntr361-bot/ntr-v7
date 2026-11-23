@@ -318,6 +318,20 @@ def findings_for(mode, probes, audits, stats):
     return sorted(findings)
 
 
+def merge_findings(mode, new_findings, previous_findings):
+    """Keep untested dimensions in alert state, so audit != probe recovery.
+
+    The daytime HTTP probe cannot clear a missing nightly snapshot, and the
+    nightly archive audit cannot declare an earlier unreachable forum healthy.
+    A check can only clear findings that it actually rechecks.
+    """
+    if mode == "all":
+        return sorted(set(new_findings))
+    preserve = ("118_audit_", "49_audit_") if mode == "probe" else ("118_probe_", "49_probe_")
+    return sorted(set(new_findings) |
+                  {f for f in previous_findings if f.startswith(preserve)})
+
+
 def update_alert(github, findings, previous_findings, report):
     """One open issue for current problems, no repeated identical comments."""
     issues = github.request("issues?state=open&per_page=100")
@@ -354,7 +368,12 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
             probes[model] = probe_with_retry(url)
     audits = safe_snapshot_audit(github, issue) if mode in ("audit", "all") else {}
     stats = fetch_manual_sample(github)
-    findings = findings_for(mode, probes, audits, stats)
+    current_findings = findings_for(mode, probes, audits, stats)
+    previous_record = {}
+    if publish:
+        _, previous_record = github.content(HEALTH_DIR + "latest.json")
+    previous_findings = previous_record.get("findings", [])
+    findings = merge_findings(mode, current_findings, previous_findings)
     report = {
         "schema_version": 1,
         "checked_at": now.isoformat(),
@@ -365,6 +384,7 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
         "probes": probes,
         "archive_audit": audits,
         "last_30_manual_operations": stats,
+        "current_check_findings": current_findings,
         "findings": findings,
         "notes": "Probe only checks HTTP shell, not actual DOM parsing; "
                  "reliability counts only completed verified parent workflows. "
@@ -384,12 +404,10 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
                        f"- 平均已完成任务耗时：{stats['mean_completed_minutes']}分钟\n"
                        f"- 异常：{', '.join(findings) if findings else '无'}\n\n")
     if publish:
-        previous, prev_data = github.content(HEALTH_DIR + "latest.json")
-        prev_findings = prev_data.get("findings", []) if previous else []
         # Status-only paths; never touch archive, frozen data or site/data.
         github.write(HEALTH_DIR + f"{today}-{mode}.json", report)
         github.write(HEALTH_DIR + "latest.json", report, latest=True)
-        update_alert(github, findings, prev_findings, report)
+        update_alert(github, findings, previous_findings, report)
     return report
 
 
