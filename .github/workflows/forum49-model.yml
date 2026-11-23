@@ -164,7 +164,7 @@ jobs:
           except (OSError, ValueError, TypeError, KeyError):
               ok=False
           if not ok:
-              print('::error title=49论坛模型 draft::collection did not publish a verified current-run draft and report')
+              print('::error title=49论坛模型 draft::collection did not publish a qualifying current-issue draft from this run')
               raise SystemExit(2)
           print('Verified 49 current-run receipt:', receipt, 'valid_materials:', row['valid_materials'])
           PY
