@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45152632731",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45152632731",
+  "updated_at": "2026-11-23T10:07:44.051816+00:00",
+  "error": null,
+  "valid_materials": 39,
+  "valid_authors": 39,
+  "successful_post_opens": 153,
+  "article_details": {
+    "featured": {
+      "queued": 47,
+      "attempted": 47,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 47
+    },
+    "ordinary": {
+      "queued": 435,
+      "attempted": 107,
+      "opened": 106,
+      "extracted": 106,
+      "completed": 106
+    }
+  },
+  "article_texts_extracted": 153,
+  "article_details_completed": 153,
+  "last_verified_post": {
+    "author": "星期八八八八八八",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11327230&type=3",
+    "verified_at": "2026-11-23T10:07:43.186604+00:00",
+    "text_length": 3160,
+    "text_sha256": "e2a1a725a3eafd7928c471f94657396d2ecbf2ec96c10804b8996cfd60fd01bd"
+  },
+  "last_attempted_post": {
+    "author": "不夜天",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11327175&type=3",
+    "attempt_index": 154
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T10:06:36.855898+00:00",
+      "featured_queued": 47,
+      "featured_attempted": 47,
+      "featured_completed": 47
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 153,
+  "stage": "detail: 不夜天 327期：复式连肖",
+  "progress_updated_at": "2026-11-23T10:07:43.458982+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
