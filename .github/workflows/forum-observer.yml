@@ -31,7 +31,7 @@ defaults:
     working-directory: forum-observer
 jobs:
   forum-cycle:
-    if: ${{ github.event_name != 'push' || (!startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') && !startsWith(github.event.head_commit.message, 'trigger(forum):') && !startsWith(github.event.head_commit.message, 'trigger(forum-collect):') && !startsWith(github.event.head_commit.message, 'trigger(forum-freeze):')) }}
+    if: ${{ github.event_name != 'push' || (!startsWith(github.event.head_commit.message, 'trigger(forum-retro286):') && !startsWith(github.event.head_commit.message, 'trigger(forum):') && !startsWith(github.event.head_commit.message, 'trigger(forum-collect):')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 80
     steps:
@@ -117,7 +117,7 @@ jobs:
         run: python -m forum_observer.schedule --archive archive --ensure-report
       - name: Check freeze window
         id: freeze-window
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):')) }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
@@ -133,7 +133,7 @@ jobs:
         if: steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         env:
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
-          FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
+          FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-freeze):')) }}
         run: |
           if [ "$FINALIZE_CYCLE" = "true" ]; then
             python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --finalize
@@ -142,6 +142,10 @@ jobs:
             # Manual collection publishes a replaceable report; freeze is a separate manual action.
             python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --defer-freeze
           fi
+      - name: Enforce immutable current-issue snapshot after freeze
+        if: steps.freeze-window.outputs.allowed == 'true'
+        run: python -m forum_observer.schedule --archive archive --require-snapshot
+
       - name: Record author history from verified frozen evidence only
         # Separate append-only author memory; no scraping, score updates or frozen edits.
         run: python -m forum_observer.author_profiles --archive archive

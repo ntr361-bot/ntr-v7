@@ -239,6 +239,10 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("github.event.schedule == '20,25 12 * * *'", workflow)
         self.assertIn("github.event.schedule == '0 13 * * *'", workflow)
         self.assertIn("github.event.schedule == '10 13 * * *'", workflow)
+        # External freeze is gated in exactly the same pre-draw window as cron.
+        self.assertIn("trigger(forum-freeze):", workflow)
+        self.assertIn("--check-freeze-window", workflow)
+        self.assertIn("--require-snapshot", workflow)
 
     def test_forum49_gate_automatic_once_manual_always(self):
         with TemporaryDirectory() as tmp:
@@ -325,6 +329,9 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("Enforce eligible current-issue draft after collection", workflow)
         self.assertIn("steps.verify-draft.outcome == 'success'", workflow)
         self.assertIn("collection did not publish a qualifying current-issue draft", workflow)
+        self.assertIn("trigger(forum49-freeze):", workflow)
+        self.assertIn("steps.freeze-window.outputs.allowed == 'true'", workflow)
+        self.assertIn("--require-snapshot", workflow)
         for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"10 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         # Collect gate refuses the freeze crons; freeze job accepts only them.
