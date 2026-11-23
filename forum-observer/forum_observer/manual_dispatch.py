@@ -165,7 +165,7 @@ def main():
     mode = os.environ.get("FORUM_MODE", "collect")
     request_id = os.environ["GITHUB_RUN_ID"]
     try:
-        selected, issue = preflight(target, mode, Path("forum-observer"))
+        selected, issue = preflight(target, mode, Path("."))
         assert_no_active_runs(repo, selected)
         summary(f"### Manual forum operation: {mode}, issue {issue}, target {target}")
         for model in selected:
