@@ -347,7 +347,15 @@ class CycleTests(unittest.TestCase):
                           top3=['鼠','牛','虎'],
                           top6=['鼠','牛','虎','兔','龙','蛇'])
             (out/'status.json').write_text(json.dumps(status),encoding='utf-8')
-            sync(out,archive,history,public)
+            # Freeze must be known to predate the historical verified draw.
+            # The machine running the regression is now in a later month.
+            class FreezeClock(datetime):
+                @classmethod
+                def now(cls, tz=None):
+                    fixed=datetime.fromisoformat('2026-10-08T21:00:30+08:00')
+                    return fixed.astimezone(tz) if tz else fixed
+            with patch('forum_observer.cycle.datetime', FreezeClock):
+                sync(out,archive,history,public)
             feed=json.loads((public/'latest.json').read_text(encoding='utf-8'))
             self.assertTrue(feed['frozen'])
             self.assertEqual(len(feed['prediction_top6']),6)
