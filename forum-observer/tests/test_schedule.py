@@ -156,6 +156,19 @@ class ScheduleTests(unittest.TestCase):
             path.write_text(json.dumps(fresh),encoding="utf-8")
             self.assertTrue(freeze_window_allowed(now,tmp))
 
+    def test_manual_freeze_must_wait_until_2100(self):
+        with TemporaryDirectory() as tmp:
+            folder=Path(tmp)/'issues'/current_issue(self.at(20, 59))
+            folder.mkdir(parents=True)
+            (folder/'draft-status.json').write_text(json.dumps({
+                'issue':current_issue(self.at(20, 59)),
+                'status':'ready_observation', 'valid_materials':25,
+                'fetched_at':self.at(20, 40).isoformat()
+            }),encoding='utf-8')
+            self.assertFalse(freeze_window_allowed(self.at(20, 59),tmp,manual=True))
+            self.assertTrue(freeze_window_allowed(self.at(21, 0),tmp,manual=True))
+            self.assertTrue(freeze_window_allowed(self.at(21, 25),tmp,manual=True))
+
     def test_freeze_window_rejects_delayed_next_day_events(self):
         self.assertFalse(freeze_window_allowed(self.at(20, 59)))
         self.assertTrue(freeze_window_allowed(self.at(21, 0)))
