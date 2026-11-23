@@ -75,6 +75,10 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
     issue=f"{now_local.year}{now_local.timetuple().tm_yday:03d}"
     folder=archive/'issues'/issue
     if finalize:
+        # Enforce the cutoff even when cycle is invoked directly rather than
+        # through the workflow's schedule gate.
+        if (now_local.hour, now_local.minute) < (21, 0):
+            raise ValueError('formal freeze requires 21:00 Asia/Shanghai or later')
         draft=folder/'draft-status.json'
         status=json.loads(draft.read_text(encoding='utf-8')) if draft.exists() and not (folder/'snapshot.json').exists() else None
         if status is not None:
@@ -120,6 +124,8 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             status=None
         else:
             verify_scored_result(status,min_materials=1 if valid_count<25 else 25)
+            if not (out / issue / 'report.md').is_file():
+                raise ValueError('collector produced no matching current-issue report')
             captured_round=os.environ.get('FORUM_COLLECTION_ROUND')
             if captured_round in ('1','2'):
                 status['collection_round']=int(captured_round)
@@ -150,6 +156,10 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         folder=archive/'issues'/issue
         if defer_freeze:
             run_id=re.sub(r'[^0-9a-zA-Z_-]','',os.environ.get('GITHUB_RUN_ID','local'))
+            attempt=re.sub(r'[^0-9]','',os.environ.get('GITHUB_RUN_ATTEMPT','1')) or '1'
+            if run_id.isdigit():
+                status['collection_run_id']=run_id
+                status['collection_run_attempt']=int(attempt)
             stamp=datetime.fromisoformat(status['fetched_at']).astimezone(TZ)
             report_name=f"round{status['collection_round']}-{stamp.strftime('%Y%m%dT%H%M%S%f')}-{run_id}"
             round_folder=folder/'rounds'/report_name
@@ -165,6 +175,16 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             if round_report.exists():
                 shutil.copyfile(round_report,round_folder/'report.md')
             atomic(folder/'draft-status.json',status)
+            if run_id.isdigit():
+                # Append-only, run-specific proof. A green skipped gate or
+                # stale draft from another run cannot satisfy manual acceptance.
+                write_once(folder/'collection-runs'/f'{run_id}-{attempt}.json',{
+                    'issue':issue,'run_id':run_id,'run_attempt':int(attempt),
+                    'fetched_at':status['fetched_at'],
+                    'valid_materials':status['valid_materials'],
+                    'status':status['status'],'draft_published':True,
+                    'report_published':True
+                })
         persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
             'issue':issue,'fetched_at':status['fetched_at'],'status':status['status'],

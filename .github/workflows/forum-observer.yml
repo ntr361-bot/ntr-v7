@@ -1,7 +1,12 @@
 name: Forum observer daily cycle
+run-name: ${{ inputs.request_id && format('Forum 118 {0} manual#{1}', inputs.mode, inputs.request_id) || 'Forum observer daily cycle' }}
 on:
   workflow_dispatch:
     inputs:
+      request_id:
+        description: Dispatcher correlation id (blank for direct manual use)
+        required: false
+        default: ''
       mode:
         description: collect | freeze current draft
         type: choice
@@ -83,8 +88,8 @@ jobs:
         run: |
           pip install playwright
           python -m playwright install --with-deps chromium
-      - name: Unit tests
-        run: python -m unittest discover -s tests -v
+      - name: Fast collector code check (full suite runs in PR regression CI)
+        run: python -m compileall -q forum_observer
       - uses: actions/cache/restore@v4
         with:
           path: |
@@ -159,7 +164,7 @@ jobs:
             echo "No forum archive changes"
             exit 0
           fi
-          git commit -m "chore(forum): archive independent observer cycle"
+          git commit -m "chore(forum): archive observer run ${GITHUB_RUN_ID} attempt ${GITHUB_RUN_ATTEMPT}"
           for attempt in 1 2 3; do
             git fetch origin main
             # Old runs must never rebase a stale collector's archive onto
@@ -200,15 +205,36 @@ jobs:
             site/data/forum-observer/history.json
           if-no-files-found: ignore
       - name: Enforce collection quality
-        # A completed collection must publish its draft report, not freeze early.
+        # Neither a stale draft nor a green step that did no collection counts.
         if: always() && steps.observe.outcome != 'skipped' && steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         shell: bash
         run: |
-          if [ -f out/status.json ]; then
-            python -c "import json,sys,pathlib; a=json.load(open('out/status.json')); f=pathlib.Path('archive/issues')/str(a.get('issue',''))/'draft-status.json'; p=pathlib.Path('archive/issues')/str(a.get('issue',''))/'report.md'; ok=f.is_file() and p.is_file(); print('Published collector report:',p,'valid_materials:',a.get('valid_materials',0),'minimum:',a.get('author_selection',{}).get('min_valid_materials',25));sys.exit(0 if ok else 2)"
-          else
-            echo "No collector status"; exit 2
-          fi
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          status_path=Path('out/status.json')
+          if not status_path.is_file():
+              raise SystemExit('::error::118 did not produce collector status')
+          status=json.loads(status_path.read_text(encoding='utf-8'))
+          issue=str(status.get('issue',''))
+          folder=Path('archive/issues')/issue
+          rid=os.environ['GITHUB_RUN_ID']; attempt=os.environ['GITHUB_RUN_ATTEMPT']
+          receipt=folder/'collection-runs'/f'{rid}-{attempt}.json'
+          try:
+              evidence=json.loads(receipt.read_text(encoding='utf-8'))
+          except (OSError,ValueError):
+              raise SystemExit('::error::118 missing this run\'s published receipt')
+          ok=(evidence.get('issue')==issue and evidence.get('run_id')==rid
+              and evidence.get('run_attempt')==int(attempt)
+              and int(evidence.get('valid_materials') or 0)>0
+              and evidence.get('draft_published') and evidence.get('report_published')
+              and (folder/'draft-status.json').is_file()
+              and (folder/'report.md').is_file())
+          if not ok:
+              raise SystemExit('::error::118 current-run receipt or report is invalid')
+          print('118 published current-run receipt:',receipt,
+                'valid_materials:',evidence['valid_materials'])
+          PY
 
       - name: Publish independent monitor status
         if: always()

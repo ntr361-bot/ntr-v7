@@ -86,6 +86,11 @@ def draft_is_current_evening(data, issue, now, since=None):
 def freeze_window_allowed(now, archive=None, manual=False):
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
+    # Even an explicit manual freeze must not happen before 21:00 Beijing.
+    # Manual retries after the scheduled window still need a verified
+    # current-day draft and the cycle's pre-draw cutoff check.
+    if minute < FREEZE_START:
+        return False
     if not manual and not (FREEZE_START <= minute < FREEZE_END):
         return False
     if archive is None:

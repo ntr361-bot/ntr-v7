@@ -44,21 +44,24 @@ class Forum49CycleTest(unittest.TestCase):
                           draw_at='2026-10-22T21:32:00+08:00', pre_draw_verified=True,
                           author_selection={'min_valid_materials': 25, 'valid_prediction_authors': 2})
             (out / 'status.json').write_text(json.dumps(status, ensure_ascii=False), encoding='utf-8')
+            (out / issue).mkdir(parents=True)
+            (out / issue / 'report.md').write_text('# verified issue 295\n', encoding='utf-8')
             with patch('forum_observer.cycle.datetime', Clock), patch('forum_observer.core.datetime', Clock):
                 sync(out, archive, history, public, defer_freeze=True, model_id='forum49')
                 folder = archive / 'issues' / issue
                 self.assertTrue((folder / 'draft-status.json').exists())
                 self.assertFalse((folder / 'snapshot.json').exists())
-                # Manual freeze allowed for pre-cutoff draft at any time.
-                sync(out, archive, history, public, finalize=True, model_id='forum49')
-                self.assertTrue((folder / 'snapshot.json').exists())
+                # Formal freeze is never legal before 21:00, even when called
+                # directly by a manual script rather than the workflow gate.
+                with self.assertRaisesRegex(ValueError, 'requires 21:00'):
+                    sync(out, archive, history, public, finalize=True, model_id='forum49')
+                self.assertFalse((folder / 'snapshot.json').exists())
 
                 # Post-cutoff draft is rejected.
                 clock['now'] = '2026-10-22T21:05:00+08:00'
                 late = json.loads((folder / 'draft-status.json').read_text())
                 late['fetched_at'] = '2026-10-22T21:00:01+08:00'
                 (folder / 'draft-status.json').write_text(json.dumps(late), encoding='utf-8')
-                (folder / 'snapshot.json').unlink()
                 with self.assertRaisesRegex(ValueError, 'post-cutoff draft cannot be frozen'):
                     sync(out, archive, history, public, finalize=True, model_id='forum49')
 

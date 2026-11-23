@@ -1,0 +1,46 @@
+name: Manual Forum Operations (118 / 49)
+run-name: ${{ format('Manual forum {0}: {1}', inputs.target, inputs.mode) }}
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Select 118, 49, or both
+        required: true
+        type: choice
+        options: [both, '118', '49']
+        default: both
+      mode:
+        description: Collect and publish draft, or freeze eligible current-day draft
+        required: true
+        type: choice
+        options: [collect, freeze]
+        default: collect
+
+# The dispatcher itself never runs collector code, changes history or writes
+# snapshot files. Its token may only read content and dispatch existing Actions.
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: manual-forum-operation
+  cancel-in-progress: false
+
+jobs:
+  dispatch-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preflight, dispatch existing workflows, verify each run's committed evidence
+        working-directory: forum-observer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORUM_TARGET: ${{ inputs.target }}
+          FORUM_MODE: ${{ inputs.mode }}
+        run: python -u -m forum_observer.manual_dispatch

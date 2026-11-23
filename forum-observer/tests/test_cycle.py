@@ -217,7 +217,10 @@ class CycleTests(unittest.TestCase):
                 sync(out,archive,history,defer_freeze=True)
                 self.assertFalse((folder/'snapshot.json').exists())
                 self.assertIn('有效资料：2份',(folder/'report.md').read_text())
-                # Manual freeze is allowed at any time for a pre-cutoff draft.
+                # Manual freeze cannot be bypassed by calling cycle early.
+                with self.assertRaisesRegex(ValueError,'requires 21:00'):
+                    sync(out,archive,history,finalize=True)
+                clock['now']='2026-10-18T21:00:30+08:00'
                 sync(out,archive,history,finalize=True)
                 self.assertTrue((folder/'snapshot.json').exists())
 
@@ -232,7 +235,7 @@ class CycleTests(unittest.TestCase):
                 # Freeze a valid pre-cutoff draft succeeds.
                 late_status['fetched_at']='2026-10-18T20:14:01+08:00'
                 (folder/'draft-status.json').write_text(json.dumps(late_status,ensure_ascii=False),encoding='utf-8')
-                clock['now']='2026-10-18T20:15:00+08:00'
+                clock['now']='2026-10-18T21:00:30+08:00'
                 sync(out,archive,history,finalize=True)
                 snap=folder/'snapshot.json'
                 self.assertTrue(snap.is_file())
