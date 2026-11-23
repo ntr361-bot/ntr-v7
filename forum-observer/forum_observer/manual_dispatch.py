@@ -36,7 +36,23 @@ def gh(*args):
 
 
 def api(path):
-    return json.loads(gh("api", path))
+    """Retry only safe read-only GitHub requests after transient outages.
+
+    Never retry the downstream workflow_dispatch action: an ambiguous POST
+    response could have launched a real collection already.
+    """
+    for attempt in range(3):
+        try:
+            return json.loads(gh("api", path))
+        except (RuntimeError, json.JSONDecodeError) as exc:
+            message = str(exc).lower()
+            transient = any(mark in message for mark in (
+                "429", "502", "503", "504", "timeout", "timed out",
+                "connection reset", "temporarily unavailable", "eof"))
+            if attempt == 2 or not transient:
+                raise
+            time.sleep(attempt + 1)
+    raise AssertionError("unreachable")
 
 
 def github_contents(repo, path):
@@ -99,11 +115,21 @@ def preflight(target, mode, root, now=None):
     return selected, today
 
 
+def matches_model_run(item, model):
+    """GitHub's run.name may equal the custom run-name, not workflow name.
+
+    The workflow's stable path is authoritative for matching the actual job.
+    Older API fixtures without path still support their fixed workflow name.
+    """
+    workflow, fixed_name, _, _ = MODELS[model]
+    path = str(item.get("path") or "")
+    return path.endswith("/" + workflow) or (not path and item.get("name") == fixed_name)
+
+
 def assert_no_active_runs(repo, selected):
     runs = api(f"repos/{repo}/actions/runs?per_page=100").get("workflow_runs", [])
     for model in selected:
-        name = MODELS[model][1]
-        active = [v for v in runs if v.get("name") == name
+        active = [v for v in runs if matches_model_run(v, model)
                   and v.get("status") not in ("completed", None)]
         if active:
             v = active[0]
@@ -116,10 +142,11 @@ def find_runs(repo, request_id, selected):
     for item in items:
         if item.get("event") != "workflow_dispatch":
             continue
-        if f"manual#{request_id}" not in item.get("display_title", ""):
-            continue
+        title = str(item.get("display_title") or "")
         for model in selected:
-            if item.get("name") == MODELS[model][1]:
+            if (matches_model_run(item, model)
+                    and title.startswith(f"Forum {model} ")
+                    and title.endswith(f" manual#{request_id}")):
                 found[model] = item
     return found
 
