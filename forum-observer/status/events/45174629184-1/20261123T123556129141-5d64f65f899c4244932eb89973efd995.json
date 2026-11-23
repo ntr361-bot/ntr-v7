@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026327",
+  "state": "collecting_effectively",
+  "run_id": "45174629184",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45174629184",
+  "updated_at": "2026-11-23T12:35:56.129141+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 331,
+  "article_details": {
+    "featured": {
+      "queued": 48,
+      "attempted": 48,
+      "opened": 47,
+      "extracted": 47,
+      "completed": 48
+    },
+    "ordinary": {
+      "queued": 473,
+      "attempted": 285,
+      "opened": 284,
+      "extracted": 284,
+      "completed": 284
+    }
+  },
+  "article_texts_extracted": 331,
+  "article_details_completed": 332,
+  "last_verified_post": {
+    "author": "大汉美男",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326795&type=3",
+    "verified_at": "2026-11-23T12:35:55.415099+00:00",
+    "text_length": 138,
+    "text_sha256": "11929810df9adc4016abd81a902e0fe3269305f24a0c7d7a1280b3d4e6a7e9ff"
+  },
+  "last_attempted_post": {
+    "author": "黄大仙",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11326794&type=3",
+    "attempt_index": 333
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-23T12:32:17.143478+00:00",
+      "featured_queued": 48,
+      "featured_attempted": 48,
+      "featured_completed": 48
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 331,
+  "stage": "detail: 黄大仙 327期:五肖",
+  "progress_updated_at": "2026-11-23T12:35:55.851541+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
