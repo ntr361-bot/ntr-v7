@@ -17,7 +17,15 @@ def write_once(path,obj):
     if path.exists():return False
     path.parent.mkdir(parents=True,exist_ok=True)
     payload=(json.dumps(obj,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
-    with path.open('xb') as f:f.write(payload)
+    from tempfile import NamedTemporaryFile
+    with NamedTemporaryFile(dir=path.parent) as temp:
+        temp.write(payload)
+        temp.flush()
+        os.fsync(temp.fileno())
+        try:
+            os.link(temp.name, path)
+        except FileExistsError:
+            return False
     return True
 
 def draw_time(record):
@@ -62,7 +70,7 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer'):
+def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer',before_snapshot=None,freeze_receipt=None):
     """Publish reports immediately or freeze an explicitly selected current draft.
 
     Existing callers retain the original immediate-freeze behavior. Production
@@ -79,6 +87,8 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         # through the workflow's schedule gate.
         if (now_local.hour, now_local.minute) < (21, 0):
             raise ValueError('formal freeze requires 21:00 Asia/Shanghai or later')
+        if issue=='2026327':
+            raise ValueError('2026327 is excluded from normal freeze')
         draft=folder/'draft-status.json'
         status=json.loads(draft.read_text(encoding='utf-8')) if draft.exists() and not (folder/'snapshot.json').exists() else None
         if status is not None:
@@ -86,7 +96,7 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 raise ValueError('draft period mismatch; refusing freeze')
             fetched=datetime.fromisoformat(status['fetched_at'])
             cutoff=now_local.replace(hour=21,minute=0,second=0,microsecond=0)
-            if fetched.tzinfo is None or fetched.astimezone(TZ)>cutoff:
+            if fetched.tzinfo is None or fetched.astimezone(TZ).date()!=now_local.date() or fetched>=cutoff:
                 raise ValueError('post-cutoff draft cannot be frozen')
             from .pre_freeze import apply as apply_pre_freeze, load as load_pre_freeze
             status,pre_freeze_record=apply_pre_freeze(status,load_pre_freeze(folder))
@@ -224,18 +234,27 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             now=datetime.now(timezone.utc)
             draw_cutoff=datetime.fromisoformat(status['draw_at']) if status.get('draw_at') else None
             captured=datetime.fromisoformat(status['fetched_at'])
-            in_time=(draw_cutoff is None or
-                     (draw_cutoff.tzinfo is not None and captured.tzinfo is not None
+            in_time=((draw_cutoff is None and not finalize) or
+                     (draw_cutoff is not None and draw_cutoff.tzinfo is not None and captured.tzinfo is not None
                       and captured<=now and captured<draw_cutoff and now<draw_cutoff))
             if finalize:
                 cutoff=now.astimezone(TZ).replace(hour=21,minute=0,second=0,microsecond=0)
                 in_time=in_time and captured.astimezone(TZ)<=cutoff
             drawn=set()
             if Path(history).exists():
-                drawn={str(r['issue']) for r in json.loads(Path(history).read_text(encoding='utf-8')).get('records',[])}
+                drawn={str(r['issue']) for r in json.loads(Path(history).read_text(encoding='utf-8'))['records']}
+            elif finalize:
+                raise ValueError('verified draw history file absent')
+            drawn.update(str(r['issue']) for r in (live_draws or []))
             if in_time and issue not in drawn and not (folder/'snapshot.json').exists():
                 if status.get('scoring_rule_version')==SCORING_RULE_VERSION:
                     verify_scored_result(status,min_materials=1 if partial else 25)
+                if before_snapshot is not None:
+                    now=before_snapshot()
+                if finalize and (now>=draw_cutoff or now.astimezone(TZ).date()!=now_local.date()):
+                    raise ValueError('freeze deadline passed before snapshot write')
+                if freeze_receipt is not None:
+                    core['freeze_provenance']=freeze_receipt
                 core['frozen_at']=now.isoformat()
                 core['digest']=hashlib.sha256(json.dumps(core,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
                 write_once(folder/'snapshot.json',core)
@@ -408,6 +427,8 @@ if __name__=='__main__':
     p.add_argument('--ledger-live-results',default=None,
                    help='Read the existing smart ledger live results API, never its fallback data')
     a=p.parse_args()
+    if a.finalize and os.environ.get('GITHUB_ACTIONS') == 'true':
+        raise SystemExit('Production freeze must use the guarded forum_observer.freeze_operation entry point')
     live=[]
     if a.ledger_live_results:
         try:
