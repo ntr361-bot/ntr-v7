@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026328",
+  "state": "collecting_effectively",
+  "run_id": "45389650436",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45389650436",
+  "updated_at": "2026-11-24T12:06:01.343015+00:00",
+  "error": null,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 116,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 465,
+      "attempted": 66,
+      "opened": 65,
+      "extracted": 65,
+      "completed": 65
+    }
+  },
+  "article_texts_extracted": 116,
+  "article_details_completed": 116,
+  "last_verified_post": {
+    "author": "精准肖王",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11336428&type=3",
+    "verified_at": "2026-11-24T12:06:00.777239+00:00",
+    "text_length": 41,
+    "text_sha256": "5411e1a5adb19075cda6fe7907124247ea07f497f1982a00a66672c9f13acc82"
+  },
+  "last_attempted_post": {
+    "author": "明月夜深深",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11336371&type=3",
+    "attempt_index": 117
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-24T12:05:17.753469+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 116,
+  "stage": "detail: 明月夜深深 专业杀特肖",
+  "progress_updated_at": "2026-11-24T12:06:01.067653+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
