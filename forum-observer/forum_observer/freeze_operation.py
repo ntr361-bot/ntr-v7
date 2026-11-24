@@ -11,13 +11,12 @@ from urllib.request import Request, urlopen
 
 from .core import SCORING_RULE_VERSION, ZODIACS, verify_scored_result
 from .cycle import sync
-from .live_draw import fetch_live_draws
 from .runtime import GitHub
 from .schedule import FREEZE_END, TZ, current_issue, snapshot_exists
 
 ARCHIVES = {"forum-observer": "archive", "forum49": "forum49"}
 HISTORY = Path("../site/data/history.json")
-LEDGER = "https://smart-ledger-2026.ntr133.chatgpt.site"
+DRAW_SOURCE = "https://api.00853lhc.com/api/HistoryOpenInfo"
 RAW = "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/"
 EXCLUDED = "2026327"
 
@@ -83,6 +82,42 @@ def load_draft(folder, issue, now):
     if (round_dir / "report.md").read_bytes() != report:
         raise FreezeError("archived_report_mismatch")
     return status, report
+
+
+def live_draw_state(now=None):
+    """Read the same Macau results source used by the ledger's /api/results."""
+    now = now or datetime.now(TZ)
+    request = Request(f"{DRAW_SOURCE}?issueNum={now.date()}&lotteryId=2032",
+                      headers={"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"})
+    with urlopen(request, timeout=8) as response:
+        raw = response.read(1_000_001)
+    if len(raw) > 1_000_000:
+        raise FreezeError("live_results_too_large")
+    payload = json.loads(raw)
+    if payload.get("code") != 0 or not isinstance(payload.get("data"), list):
+        raise FreezeError("live_results_unavailable")
+    records = []
+    for row in payload["data"]:
+        if row.get("lotteryId") != 2032:
+            continue
+        issue = str(row.get("issue"))
+        if issue == current_issue(now):
+            # A current-period result or placeholder is sufficient to stop
+            # normal freeze; never filter it out on malformed result fields.
+            records.append({"issue": issue})
+            continue
+        try:
+            when = datetime.fromisoformat(row["openTime"])
+            if when.utcoffset() is None:
+                when = when.replace(tzinfo=TZ)
+            numbers = [int(value) for value in row["openCode"].split(",")]
+            if (current_issue(when) == issue and when <= now
+                    and len(set(numbers)) == len(numbers) == 7
+                    and all(1 <= n <= 49 for n in numbers)):
+                records.append({"issue": issue})
+        except (KeyError, TypeError, ValueError):
+            continue
+    return records
 
 
 def guard(issue, manual, draw_at, clock, live):
@@ -181,7 +216,7 @@ def create_snapshot(model, archive, folder, issue, manual, journal, clock, live)
 
 
 def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
-            live=lambda: fetch_live_draws(LEDGER + "/api/results"), read=read_remote):
+            live=live_draw_state, read=read_remote):
     archive = Path(ARCHIVES[model])
     folder = archive / "issues" / issue
     journal["snapshot_path"] = str(Path("forum-observer") / folder / "snapshot.json")

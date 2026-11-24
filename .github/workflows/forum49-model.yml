@@ -280,7 +280,6 @@ jobs:
     permissions:
       contents: write
       actions: read
-      id-token: write
       issues: write
     steps:
       - uses: actions/checkout@v4
@@ -292,15 +291,9 @@ jobs:
       - name: Freeze or verify committed snapshot and ledger source
         env:
           GH_TOKEN: ${{ github.token }}
-          SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
           FREEZE_PHASE: ${{ github.event_name != 'schedule' && 'manual' || (github.event.schedule == '5 13 * * *' && 'verify' || 'auto') }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if token_response="$(curl -fsS --max-time 8 \
-              -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-              "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=smart-ledger-v7")"; then
-            export FORUM_LEDGER_AUTH_BEARER="$(python -c 'import json,sys;print(json.load(sys.stdin)["value"])' <<<"$token_response")"
-          fi
           python -m forum_observer.freeze_operation forum49 "$FREEZE_PHASE"

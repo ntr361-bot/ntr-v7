@@ -157,6 +157,20 @@ class FreezeOperationTests(unittest.TestCase):
         self.assertEqual(journal["ledger_retry_count"], 1)
         self.assertEqual(journal["ledger_sync"], "verified_ledger_source")
 
+    def test_live_results_require_matching_draw_and_block_current_placeholder(self):
+        valid = {"lotteryId": 2032, "issue": "2026327",
+                 "openTime": "2026-11-23 21:35:31", "openCode": "01,02,03,04,05,06,07"}
+        malformed = dict(valid, issue="2026326", openCode="00,02,03,04,05,06,07")
+        current = {"lotteryId": 2032, "issue": self.issue}
+        response = Mock()
+        response.__enter__ = Mock(return_value=response)
+        response.__exit__ = Mock(return_value=False)
+        response.read.return_value = json.dumps(
+            {"code": 0, "data": [valid, malformed, current]}).encode()
+        with patch.object(op, "urlopen", return_value=response):
+            self.assertEqual(op.live_draw_state(self.now),
+                             [{"issue": "2026327"}, {"issue": self.issue}])
+
     def test_after_deadline_or_missing_draw_state_never_writes(self):
         for clock in (lambda: self.draw, lambda: self.now.replace(minute=20)):
             with self.assertRaisesRegex(op.FreezeError, "outside_safe_freeze_window"):
