@@ -1,0 +1,6504 @@
+{
+  "model": "49论坛模型",
+  "url": "https://49217.com/#/forum",
+  "category": "澳门",
+  "run_id": "45389654520",
+  "started_at": "2026-11-24T12:02:53.477448+00:00",
+  "max_collection_seconds": 1800,
+  "ok": true,
+  "requested_issue": null,
+  "issue": "2026328",
+  "issue_matches_request": true,
+  "detail_posts": 922,
+  "nonempty_article_posts": 922,
+  "valid_materials": 176,
+  "distinct_valid_authors": 176,
+  "material_counts": {
+    "recommend": 102,
+    "kill_zodiac": 74
+  },
+  "ranking_observation": [
+    {
+      "zodiac": "牛",
+      "score": 17.062807
+    },
+    {
+      "zodiac": "兔",
+      "score": 16.700505
+    },
+    {
+      "zodiac": "猪",
+      "score": 16.584993
+    },
+    {
+      "zodiac": "羊",
+      "score": 16.432323
+    },
+    {
+      "zodiac": "鸡",
+      "score": 16.360462
+    },
+    {
+      "zodiac": "马",
+      "score": 15.162302
+    },
+    {
+      "zodiac": "猴",
+      "score": 14.567172
+    },
+    {
+      "zodiac": "蛇",
+      "score": 14.06039
+    },
+    {
+      "zodiac": "龙",
+      "score": 13.523016
+    },
+    {
+      "zodiac": "虎",
+      "score": 13.099206
+    },
+    {
+      "zodiac": "鼠",
+      "score": 11.731385
+    },
+    {
+      "zodiac": "狗",
+      "score": 10.71544
+    }
+  ],
+  "materials": [
+    {
+      "author": "心想事宸",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032567&type=3",
+      "published_at": "2026-11-23 22:41"
+    },
+    {
+      "author": "广东壹码神",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032051&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "广东壹码神",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "狗",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032089&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "广东壹码神",
+      "play": "杀壹肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032089&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "郭哥心水",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032281&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "伟哥围特",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032426&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "李小双",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "牛",
+        "鸡",
+        "羊",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032119&type=3",
+      "published_at": "2026-11-24 18:55"
+    },
+    {
+      "author": "李小双",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032175&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "李小双",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032134&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "李小双",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "兔",
+        "虎",
+        "牛",
+        "猪",
+        "鸡",
+        "猴",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032157&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "海王码",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猪",
+        "虎",
+        "蛇",
+        "羊",
+        "牛",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038079&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "海王码",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "兔",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038079&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "海王码",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038079&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "疯狂大神",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032263&type=3",
+      "published_at": "2026-11-24 18:48"
+    },
+    {
+      "author": "疯狂大神",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "兔",
+        "牛",
+        "猪",
+        "鸡",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032272&type=3",
+      "published_at": "2026-11-24 18:48"
+    },
+    {
+      "author": "疯狂大神",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "牛",
+        "猪",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032340&type=3",
+      "published_at": "2026-11-24 18:47"
+    },
+    {
+      "author": "疯狂大神",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032303&type=3",
+      "published_at": "2026-11-24 18:47"
+    },
+    {
+      "author": "勤奋的毛毛姐",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔",
+        "龙",
+        "马",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031898&type=3",
+      "published_at": "2026-11-24 18:45"
+    },
+    {
+      "author": "黄瓜心水",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "牛",
+        "鸡",
+        "蛇",
+        "羊",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031876&type=3",
+      "published_at": "2026-11-24 18:44"
+    },
+    {
+      "author": "黄瓜心水",
+      "play": "杀壹肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031876&type=3",
+      "published_at": "2026-11-24 18:44"
+    },
+    {
+      "author": "神算大神",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "猴",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031885&type=3",
+      "published_at": "2026-11-24 18:44"
+    },
+    {
+      "author": "黄瓜心水",
+      "play": "壹肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031902&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "勤奋的毛毛姐",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031922&type=3",
+      "published_at": "2026-11-24 18:35"
+    },
+    {
+      "author": "肖奥马市",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "declared zodiac count does not match picks",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031969&type=3",
+      "published_at": "2026-11-24 18:29"
+    },
+    {
+      "author": "大港澳",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037906&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "风月无边",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "虎",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031932&type=3",
+      "published_at": "2026-11-24 17:52"
+    },
+    {
+      "author": "风月无边",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031932&type=3",
+      "published_at": "2026-11-24 17:52"
+    },
+    {
+      "author": "风月无边",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "猴",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031932&type=3",
+      "published_at": "2026-11-24 17:52"
+    },
+    {
+      "author": "风月无边",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "猪",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031932&type=3",
+      "published_at": "2026-11-24 17:52"
+    },
+    {
+      "author": "雪梨姐姐",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鸡",
+        "虎",
+        "马",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "audit: truncated bare kill zodiac list",
+      "source_url": "https://49217.com/#/corpusdetail?id=43033253&type=3",
+      "published_at": "2026-11-24 17:47"
+    },
+    {
+      "author": "爱算码的路遥",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "鼠",
+        "猴",
+        "狗",
+        "牛",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031904&type=3",
+      "published_at": "2026-11-24 17:43"
+    },
+    {
+      "author": "小童子杀庄七肖",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032260&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "小童子杀庄七肖",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032260&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "陈龙稳小号",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "马",
+        "兔",
+        "蛇",
+        "虎",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032043&type=3",
+      "published_at": "2026-11-24 17:30"
+    },
+    {
+      "author": "陈龙稳小号",
+      "play": "杀",
+      "mode": "unverified",
+      "picks": [
+        "猴",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032043&type=3",
+      "published_at": "2026-11-24 17:30"
+    },
+    {
+      "author": "每个人都可以上岸",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "猪",
+        "鼠",
+        "猴",
+        "蛇",
+        "兔",
+        "牛",
+        "羊",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43033210&type=3",
+      "published_at": "2026-11-24 17:09"
+    },
+    {
+      "author": "每个人都可以上岸",
+      "play": "壹肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43033185&type=3",
+      "published_at": "2026-11-24 17:09"
+    },
+    {
+      "author": "财富世家",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "马",
+        "兔",
+        "猪",
+        "牛",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032170&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "光头强杀肖",
+      "play": "八肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "牛",
+        "狗",
+        "猪",
+        "兔",
+        "虎",
+        "鸡",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037261&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "财神码客",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031917&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "补陀岩",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猪",
+        "鸡",
+        "羊",
+        "兔",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037093&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "功夫女足",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "羊",
+        "牛",
+        "鸡",
+        "兔",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032128&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "光头强杀肖",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "马",
+        "猪",
+        "牛",
+        "羊",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037322&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "功夫女足",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "猪",
+        "羊",
+        "鸡",
+        "牛",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037384&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "大赢家发发",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "牛",
+        "兔",
+        "猪",
+        "羊",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031863&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "补陀岩",
+      "play": "八肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "猪",
+        "鸡",
+        "猴",
+        "狗",
+        "羊",
+        "兔",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032191&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "满山的猴子我腚最红啊",
+      "play": "杀一肖",
+      "mode": "unverified",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036751&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "四十二度的酒",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032067&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "陈雅兰",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "蛇",
+        "虎",
+        "兔",
+        "鸡",
+        "马",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032058&type=3",
+      "published_at": "2026-11-24 14:34"
+    },
+    {
+      "author": "很准稳",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "马"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036223&type=3",
+      "published_at": "2026-11-24 14:24"
+    },
+    {
+      "author": "东西贵",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036164&type=3",
+      "published_at": "2026-11-24 14:15"
+    },
+    {
+      "author": "很准稳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "猪",
+        "兔",
+        "羊",
+        "鸡",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036159&type=3",
+      "published_at": "2026-11-24 14:14"
+    },
+    {
+      "author": "很准稳",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "猴",
+        "虎",
+        "牛",
+        "羊",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036156&type=3",
+      "published_at": "2026-11-24 14:12"
+    },
+    {
+      "author": "嘿嘿马",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "蛇",
+        "牛",
+        "马",
+        "鸡",
+        "兔",
+        "羊",
+        "猪",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43033212&type=3",
+      "published_at": "2026-11-24 14:09"
+    },
+    {
+      "author": "我的任性你不懂",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛",
+        "鸡",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036131&type=3",
+      "published_at": "2026-11-24 14:08"
+    },
+    {
+      "author": "沙场湫点兵",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036128&type=3",
+      "published_at": "2026-11-24 14:03"
+    },
+    {
+      "author": "树大招风",
+      "play": "１肖",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036106&type=3",
+      "published_at": "2026-11-24 14:03"
+    },
+    {
+      "author": "绝无神",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "羊",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036111&type=3",
+      "published_at": "2026-11-24 14:01"
+    },
+    {
+      "author": "今日六肖",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "猴",
+        "虎",
+        "牛",
+        "羊",
+        "鸡",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036114&type=3",
+      "published_at": "2026-11-24 14:00"
+    },
+    {
+      "author": "墨羽尘曦",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "兔",
+        "牛",
+        "猪",
+        "虎",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036115&type=3",
+      "published_at": "2026-11-24 13:59"
+    },
+    {
+      "author": "今日六肖",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "蛇",
+        "虎",
+        "兔",
+        "鸡",
+        "马",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036094&type=3",
+      "published_at": "2026-11-24 13:56"
+    },
+    {
+      "author": "巍巍中华",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036099&type=3",
+      "published_at": "2026-11-24 13:54"
+    },
+    {
+      "author": "好运一点通",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "狗",
+        "猪",
+        "兔",
+        "虎",
+        "羊",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036092&type=3",
+      "published_at": "2026-11-24 13:53"
+    },
+    {
+      "author": "好运一点通",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "狗",
+        "猪",
+        "兔",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036092&type=3",
+      "published_at": "2026-11-24 13:53"
+    },
+    {
+      "author": "好运一点通",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "狗",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036092&type=3",
+      "published_at": "2026-11-24 13:53"
+    },
+    {
+      "author": "好运一点通",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036092&type=3",
+      "published_at": "2026-11-24 13:53"
+    },
+    {
+      "author": "一飞冲天",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "鼠",
+        "虎",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036088&type=3",
+      "published_at": "2026-11-24 13:51"
+    },
+    {
+      "author": "谁是谁的主角",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "牛",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036085&type=3",
+      "published_at": "2026-11-24 13:51"
+    },
+    {
+      "author": "奥巴码",
+      "play": "杀２肖",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036081&type=3",
+      "published_at": "2026-11-24 13:49"
+    },
+    {
+      "author": "乱舞春秋",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猪",
+        "羊",
+        "马",
+        "蛇",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036072&type=3",
+      "published_at": "2026-11-24 13:46"
+    },
+    {
+      "author": "横财富",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "猴",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036068&type=3",
+      "published_at": "2026-11-24 13:46"
+    },
+    {
+      "author": "横财富",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036068&type=3",
+      "published_at": "2026-11-24 13:46"
+    },
+    {
+      "author": "横财富",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036068&type=3",
+      "published_at": "2026-11-24 13:46"
+    },
+    {
+      "author": "横财富",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036068&type=3",
+      "published_at": "2026-11-24 13:46"
+    },
+    {
+      "author": "榜一大哥",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036065&type=3",
+      "published_at": "2026-11-24 13:44"
+    },
+    {
+      "author": "如意特码",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "猪",
+        "羊",
+        "鸡",
+        "牛",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036060&type=3",
+      "published_at": "2026-11-24 13:41"
+    },
+    {
+      "author": "迪丽热巴",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "羊",
+        "鸡",
+        "兔",
+        "狗",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036059&type=3",
+      "published_at": "2026-11-24 13:40"
+    },
+    {
+      "author": "醉插美人荫",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "鸡",
+        "牛",
+        "猪",
+        "虎",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036033&type=3",
+      "published_at": "2026-11-24 13:28"
+    },
+    {
+      "author": "醉插美人荫",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036033&type=3",
+      "published_at": "2026-11-24 13:28"
+    },
+    {
+      "author": "百达翡丽",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "猪",
+        "蛇",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036032&type=3",
+      "published_at": "2026-11-24 13:27"
+    },
+    {
+      "author": "门皇门",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032041&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "兔子大大",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "猴",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035789&type=3",
+      "published_at": "2026-11-24 11:39"
+    },
+    {
+      "author": "好料搬运工",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "猪",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032030&type=3",
+      "published_at": "2026-11-24 19:52"
+    },
+    {
+      "author": "没有中一次",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "狗",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038363&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "和生财",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038137&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "秋葵子",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038333&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "稳中之稳",
+      "play": "8六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "马",
+        "猴",
+        "鸡",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032207&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "天才交易员零九",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038312&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "天才交易员零九",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038312&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "开心杀一肖",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038128&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "旺旺小小初",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038362&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "幽冥子",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "羊",
+        "鸡",
+        "鼠",
+        "猪",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038369&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "幽冥子",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "鸡",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038369&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "遮天荒",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "牛",
+        "猴",
+        "羊",
+        "猪",
+        "马"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032299&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "稳大中必胜",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "虎",
+        "猴",
+        "狗",
+        "牛",
+        "羊",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038117&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "海纳百床",
+      "play": "杀一肖",
+      "mode": "unverified",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43034228&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "港澳宁财神小迷弟",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038218&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "单眼撩",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038198&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "单眼撩",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038198&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大顺了吧",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "虎",
+        "狗",
+        "龙",
+        "马",
+        "羊",
+        "鸡",
+        "鼠",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038132&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大顺了吧",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "虎",
+        "龙",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038132&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "羊洋炀",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "牛",
+        "猪",
+        "狗",
+        "马",
+        "龙",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038268&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "清风伏月",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔",
+        "蛇",
+        "羊",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036682&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "清风伏月",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "龙",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036682&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "发吧哦",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "猪",
+        "兔",
+        "牛",
+        "鸡",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038170&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "码上寻特",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "兔",
+        "虎",
+        "牛",
+        "猪",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032137&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "稳才是真的赢",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "鸡",
+        "鼠",
+        "猪",
+        "龙",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038215&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "稳才是真的赢",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038215&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "红红火火财神爷",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "兔",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032218&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "发财平特一肖",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032037&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "阿源源",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038184&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "广州东",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "鸡",
+        "蛇",
+        "狗",
+        "牛",
+        "马",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038347&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "广州东",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038347&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "晋楚手机懥",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038169&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "广东赌神王贵",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "鼠",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038196&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "小房子选澳",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛",
+        "虎",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038226&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "魑魅魍魉魍魉",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038246&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "随缘起势",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032781&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "随缘起势",
+      "play": "杀3肖",
+      "mode": "exclude",
+      "picks": [
+        "兔",
+        "狗",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032781&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "标签权哥",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "龙",
+        "猴",
+        "狗",
+        "羊",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038157&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "半颗糖的忧伤",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "鼠",
+        "猴",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038138&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "风云无忌赫",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038367&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "风云无忌赫",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038367&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "祖哥又中了",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "虎",
+        "兔",
+        "鸡",
+        "鼠",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43034367&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "祖哥又中了",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "龙",
+        "虎",
+        "兔",
+        "鼠",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43034367&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "南海观世音",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "马",
+        "狗",
+        "牛",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038321&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大象鼻子长",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "虎",
+        "牛",
+        "鼠",
+        "猪",
+        "狗",
+        "鸡",
+        "猴",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038254&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "漺子座",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "kill list split across brackets",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038356&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "玉林学弟",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038273&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "成功者加",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038297&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "成功者加",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038297&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "成功者加",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038297&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "成功者加",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038297&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "成功者加",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038297&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大臀翘翘",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "兔"
+      ],
+      "counted": false,
+      "reason": "audit: truncated bare kill zodiac list",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038360&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "勇哥是我",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038365&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "特串星王",
+      "play": "特肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猴",
+        "蛇",
+        "龙",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43033800&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "野蛮小可爱",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "蛇",
+        "鼠",
+        "兔",
+        "马",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43034253&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大不刘",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "虎",
+        "鸡",
+        "猴",
+        "羊",
+        "猪",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038256&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "辣彼小新",
+      "play": "八肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "狗",
+        "马",
+        "蛇",
+        "羊",
+        "兔",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038217&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "幸运笨鸟",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "鼠",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038350&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "羊",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "虎",
+        "狗",
+        "鸡",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "马",
+        "兔",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "兔",
+        "蛇",
+        "马",
+        "猴",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "老蔡头猜六合",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "蛇",
+        "马",
+        "牛",
+        "虎",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038139&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "横扫六合彩",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "蛇",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038255&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "横扫六合彩",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猴",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "audit: truncated bare kill zodiac list",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038255&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "红酒花海",
+      "play": "杀2肖",
+      "mode": "exclude",
+      "picks": [
+        "鸡",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038257&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "唯品会特卖",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "猴",
+        "羊",
+        "蛇",
+        "龙",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038285&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "唯品会特卖",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "猴",
+        "羊",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038285&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "唯品会特卖",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038285&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "唯品会特卖",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038285&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "技术为负小菜鸡",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "猪",
+        "猴",
+        "鼠",
+        "鸡",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038197&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "末代隐官",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038182&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "再创佳绩",
+      "play": "杀",
+      "mode": "unverified",
+      "picks": [
+        "鼠",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038118&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "合六杀",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "虎",
+        "兔",
+        "马",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038325&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "飞龙履虎尾",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "龙",
+        "牛",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038323&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "永恒的恒",
+      "play": "七肖中特",
+      "mode": "unverified",
+      "picks": [
+        "马",
+        "虎",
+        "猴",
+        "鸡",
+        "羊",
+        "牛",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038129&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "永恒的恒",
+      "play": "四肖中特",
+      "mode": "unverified",
+      "picks": [
+        "马",
+        "虎",
+        "猴",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038129&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "永恒的恒",
+      "play": "二肖中特",
+      "mode": "unverified",
+      "picks": [
+        "马",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038129&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "永恒的恒",
+      "play": "一肖",
+      "mode": "unverified",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038129&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "大神不是我",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038270&type=3",
+      "published_at": "2026-11-24 19:49"
+    },
+    {
+      "author": "澳通行证",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "龙",
+        "鸡",
+        "猪",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032083&type=3",
+      "published_at": "2026-11-24 18:59"
+    },
+    {
+      "author": "偷猪的小伙子",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038095&type=3",
+      "published_at": "2026-11-24 18:59"
+    },
+    {
+      "author": "话儿呀",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038101&type=3",
+      "published_at": "2026-11-24 18:59"
+    },
+    {
+      "author": "三湖六合",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "鸡",
+        "牛",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038074&type=3",
+      "published_at": "2026-11-24 18:59"
+    },
+    {
+      "author": "臻義打输出",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038092&type=3",
+      "published_at": "2026-11-24 18:56"
+    },
+    {
+      "author": "赌王周润发叔叔",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "兔",
+        "蛇",
+        "龙",
+        "猴",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038077&type=3",
+      "published_at": "2026-11-24 18:55"
+    },
+    {
+      "author": "你郭哥",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038071&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "鸿运加满",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "龙",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038080&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "嘟嘟富",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038073&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "嘟嘟富",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038073&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "嘟嘟富",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038073&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "嘟嘟富",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "狗",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038073&type=3",
+      "published_at": "2026-11-24 18:54"
+    },
+    {
+      "author": "掠杀特",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038067&type=3",
+      "published_at": "2026-11-24 18:47"
+    },
+    {
+      "author": "脚踏星河",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "鸡",
+        "马",
+        "猴",
+        "蛇",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038061&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "脚踏星河",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "牛",
+        "兔",
+        "虎",
+        "猴",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038061&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "脚踏星河",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "虎",
+        "狗",
+        "马",
+        "猪",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038061&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "脚踏星河",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "鼠",
+        "鸡",
+        "羊",
+        "马",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038061&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "脚踏星河",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "鸡",
+        "猴",
+        "马",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038061&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "日进斗金招财进宝",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "蛇",
+        "马",
+        "鸡",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038062&type=3",
+      "published_at": "2026-11-24 18:42"
+    },
+    {
+      "author": "佛山大雪无痕",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "audit: truncated bare kill zodiac list",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038044&type=3",
+      "published_at": "2026-11-24 18:37"
+    },
+    {
+      "author": "不是吧这都行",
+      "play": "八肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "鸡",
+        "蛇",
+        "猪",
+        "羊",
+        "龙",
+        "猴",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038026&type=3",
+      "published_at": "2026-11-24 18:37"
+    },
+    {
+      "author": "丢狗送回民工",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "兔",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038050&type=3",
+      "published_at": "2026-11-24 18:35"
+    },
+    {
+      "author": "三湖六合",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "兔",
+        "猴",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038028&type=3",
+      "published_at": "2026-11-24 18:35"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇",
+        "狗",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猪",
+        "狗",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇",
+        "猪",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "羊",
+        "猪",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "猴",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "鸡",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "羊",
+        "虎",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猪",
+        "蛇",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "天天艳阳天",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛",
+        "马",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038034&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "莫问对错",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "虎",
+        "鼠",
+        "牛",
+        "猪",
+        "狗",
+        "兔",
+        "龙",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038036&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "莫问对错",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "虎",
+        "鼠",
+        "牛",
+        "猪",
+        "狗",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038036&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "莫问对错",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "虎",
+        "鼠",
+        "牛",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038036&type=3",
+      "published_at": "2026-11-24 18:32"
+    },
+    {
+      "author": "美丽修行在个人",
+      "play": "杀",
+      "mode": "unverified",
+      "picks": [
+        "虎",
+        "马",
+        "鼠",
+        "狗",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038021&type=3",
+      "published_at": "2026-11-24 18:29"
+    },
+    {
+      "author": "六合天尊",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "虎",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038027&type=3",
+      "published_at": "2026-11-24 18:29"
+    },
+    {
+      "author": "三湖六合",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "羊",
+        "虎",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43038016&type=3",
+      "published_at": "2026-11-24 18:26"
+    },
+    {
+      "author": "糟头子",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43038007&type=3",
+      "published_at": "2026-11-24 18:25"
+    },
+    {
+      "author": "你是我唯一的",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "鸡",
+        "兔",
+        "龙",
+        "马",
+        "牛",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037992&type=3",
+      "published_at": "2026-11-24 18:18"
+    },
+    {
+      "author": "你是我唯一的",
+      "play": "杀",
+      "mode": "unverified",
+      "picks": [
+        "鼠",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037992&type=3",
+      "published_at": "2026-11-24 18:18"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "兔"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "泅泅泅",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032085&type=3",
+      "published_at": "2026-11-24 18:17"
+    },
+    {
+      "author": "神仙难倒",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037990&type=3",
+      "published_at": "2026-11-24 18:16"
+    },
+    {
+      "author": "所香披米",
+      "play": "杀二肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032343&type=3",
+      "published_at": "2026-11-24 18:14"
+    },
+    {
+      "author": "嘉怡书",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037988&type=3",
+      "published_at": "2026-11-24 18:14"
+    },
+    {
+      "author": "嘉怡书",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037988&type=3",
+      "published_at": "2026-11-24 18:14"
+    },
+    {
+      "author": "晚风不声张",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "兔",
+        "蛇",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037982&type=3",
+      "published_at": "2026-11-24 18:12"
+    },
+    {
+      "author": "开心红古",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "羊",
+        "马",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037976&type=3",
+      "published_at": "2026-11-24 18:10"
+    },
+    {
+      "author": "释然吖",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "蛇",
+        "鸡",
+        "羊",
+        "马",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037956&type=3",
+      "published_at": "2026-11-24 18:08"
+    },
+    {
+      "author": "大麦麦",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "牛",
+        "羊",
+        "鸡",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037962&type=3",
+      "published_at": "2026-11-24 18:08"
+    },
+    {
+      "author": "大麦麦",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037962&type=3",
+      "published_at": "2026-11-24 18:08"
+    },
+    {
+      "author": "九点三十几",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "蛇",
+        "猴",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037932&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "香澳捡漏王",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "鼠",
+        "马",
+        "猪",
+        "鸡",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037929&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "小胖大哥",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "马",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037950&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "抽根烟压压惊",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037934&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "说一声感谢",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037935&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "沐湘源",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "牛",
+        "龙",
+        "鼠",
+        "蛇",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037938&type=3",
+      "published_at": "2026-11-24 18:04"
+    },
+    {
+      "author": "山水竹林",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔",
+        "龙",
+        "蛇",
+        "马",
+        "羊",
+        "猴",
+        "鸡",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037900&type=3",
+      "published_at": "2026-11-24 17:56"
+    },
+    {
+      "author": "神一样的穿越者",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "龙",
+        "牛",
+        "虎",
+        "兔",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037896&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "神一样的穿越者",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "龙",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037896&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "神一样的穿越者",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037896&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "神一样的穿越者",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037896&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "多少个十年之约",
+      "play": "杀",
+      "mode": "unverified",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "unknown or unverified mode",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037916&type=3",
+      "published_at": "2026-11-24 17:55"
+    },
+    {
+      "author": "鲁支大浪",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "鸡",
+        "鼠",
+        "狗",
+        "猪",
+        "羊",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037891&type=3",
+      "published_at": "2026-11-24 17:47"
+    },
+    {
+      "author": "鲁支大浪",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "鸡",
+        "鼠",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037891&type=3",
+      "published_at": "2026-11-24 17:47"
+    },
+    {
+      "author": "鲁支大浪",
+      "play": "两肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037891&type=3",
+      "published_at": "2026-11-24 17:47"
+    },
+    {
+      "author": "微笑面对生活",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "虎",
+        "猴",
+        "牛",
+        "羊",
+        "猪",
+        "鸡",
+        "兔",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037881&type=3",
+      "published_at": "2026-11-24 17:44"
+    },
+    {
+      "author": "小童子杀庄七肖",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "鸡",
+        "马",
+        "猪",
+        "羊",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037785&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "小童子杀庄七肖",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "兔",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037785&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "执念头",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037786&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "陈科长官",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猪",
+        "蛇",
+        "兔",
+        "羊",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037824&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "九叔心水",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "蛇",
+        "猴",
+        "猪",
+        "马",
+        "鸡",
+        "兔",
+        "羊",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032174&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "輸過敗過何曾怕過",
+      "play": "杀五肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "猴",
+        "虎",
+        "猪",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037811&type=3",
+      "published_at": "2026-11-24 17:37"
+    },
+    {
+      "author": "小童子",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037769&type=3",
+      "published_at": "2026-11-24 17:29"
+    },
+    {
+      "author": "一部手机游天下",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037768&type=3",
+      "published_at": "2026-11-24 17:29"
+    },
+    {
+      "author": "贵州第一深情的",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "猴",
+        "蛇",
+        "兔",
+        "鸡",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037060&type=3",
+      "published_at": "2026-11-24 17:24"
+    },
+    {
+      "author": "遵义彭于晏",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032129&type=3",
+      "published_at": "2026-11-24 17:24"
+    },
+    {
+      "author": "紫米豆",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037674&type=3",
+      "published_at": "2026-11-24 17:24"
+    },
+    {
+      "author": "财富学院恒富",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037694&type=3",
+      "published_at": "2026-11-24 17:24"
+    },
+    {
+      "author": "四九兄弟",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037684&type=3",
+      "published_at": "2026-11-24 17:24"
+    },
+    {
+      "author": "小仙女解正版挂牌",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "虎",
+        "牛",
+        "马",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037751&type=3",
+      "published_at": "2026-11-24 17:22"
+    },
+    {
+      "author": "妙解传真",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "马",
+        "鼠",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037744&type=3",
+      "published_at": "2026-11-24 17:21"
+    },
+    {
+      "author": "妙解传真",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037744&type=3",
+      "published_at": "2026-11-24 17:21"
+    },
+    {
+      "author": "民间大神",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "羊",
+        "鼠",
+        "牛",
+        "虎",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037743&type=3",
+      "published_at": "2026-11-24 17:21"
+    },
+    {
+      "author": "荔城小李",
+      "play": "特肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "蛇",
+        "鼠",
+        "虎",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037736&type=3",
+      "published_at": "2026-11-24 17:20"
+    },
+    {
+      "author": "荔城小李",
+      "play": "精选四肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "蛇",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037736&type=3",
+      "published_at": "2026-11-24 17:20"
+    },
+    {
+      "author": "明月夜深深",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037620&type=3",
+      "published_at": "2026-11-24 17:10"
+    },
+    {
+      "author": "好运旺子",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "龙",
+        "虎",
+        "猴",
+        "猪",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037645&type=3",
+      "published_at": "2026-11-24 17:09"
+    },
+    {
+      "author": "世纪几",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "猪",
+        "马",
+        "猴",
+        "牛",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037647&type=3",
+      "published_at": "2026-11-24 17:09"
+    },
+    {
+      "author": "枭菜鸡",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037580&type=3",
+      "published_at": "2026-11-24 17:01"
+    },
+    {
+      "author": "广西大掌柜",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037578&type=3",
+      "published_at": "2026-11-24 17:01"
+    },
+    {
+      "author": "康少爷们",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "蛇",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037559&type=3",
+      "published_at": "2026-11-24 16:58"
+    },
+    {
+      "author": "稳稳的才硬",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "蛇",
+        "牛",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037491&type=3",
+      "published_at": "2026-11-24 16:58"
+    },
+    {
+      "author": "内幕弔戼",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037572&type=3",
+      "published_at": "2026-11-24 16:58"
+    },
+    {
+      "author": "杰尼尼龟",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43037412&type=3",
+      "published_at": "2026-11-24 16:47"
+    },
+    {
+      "author": "胖哥明",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036985&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "胖哥明",
+      "play": "二肖中特",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036985&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "胖哥明",
+      "play": "一肖中特",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036985&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "向三爺",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036923&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "一锤爆料",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "羊",
+        "虎",
+        "龙",
+        "马",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036901&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "羽哥多大",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "羊",
+        "猴",
+        "虎",
+        "鸡",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036849&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "释然吖",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "牛",
+        "蛇",
+        "鸡",
+        "羊",
+        "马",
+        "虎",
+        "猴",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036848&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "贵州第一深情的",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "羊"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036875&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "轩雅阁主",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "蛇",
+        "兔",
+        "虎",
+        "牛",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43037298&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "大仙出特",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "兔",
+        "牛",
+        "龙",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43034856&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "中了中中还中中",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "羊",
+        "马",
+        "猴",
+        "鸡",
+        "狗",
+        "鼠",
+        "牛",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036863&type=3",
+      "published_at": "2026-11-24 16:46"
+    },
+    {
+      "author": "推波王",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "兔",
+        "蛇",
+        "鸡",
+        "猴",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036814&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "生肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "龙",
+        "虎",
+        "鼠",
+        "猴",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "龙",
+        "马",
+        "猴",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "龙",
+        "马",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "传世天下二",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "龙",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036815&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "成佑家安",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036801&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "华山论彩",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "牛",
+        "羊",
+        "鸡",
+        "蛇",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036479&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "神算马师",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036826&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "神算马师",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036826&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "羊"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "兔"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "心动验证码",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036681&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "爱钓鱼步步高",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "audit: truncated bare kill zodiac list",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036827&type=3",
+      "published_at": "2026-11-24 16:01"
+    },
+    {
+      "author": "只只植",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036497&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "宮喜你中奖了",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "虎",
+        "猪",
+        "猴",
+        "牛",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036606&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "南宁波",
+      "play": "特肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "鼠",
+        "狗",
+        "羊",
+        "猪",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43032132&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "琴之谷",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "虎",
+        "蛇",
+        "羊",
+        "鸡",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036478&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "植叶子",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036504&type=3",
+      "published_at": "2026-11-24 15:31"
+    },
+    {
+      "author": "妖魔佛",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036432&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "羊"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "潮州表",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "duplicate author/equal priority earlier source",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036431&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "清楚了吗",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "虎",
+        "蛇",
+        "猪",
+        "鸡",
+        "龙",
+        "狗",
+        "鼠",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036423&type=3",
+      "published_at": "2026-11-24 14:59"
+    },
+    {
+      "author": "杀特王吴",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "牛",
+        "猴",
+        "鸡",
+        "狗",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036409&type=3",
+      "published_at": "2026-11-24 14:52"
+    },
+    {
+      "author": "带你飞单双",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "马",
+        "龙",
+        "羊",
+        "狗",
+        "鼠",
+        "牛",
+        "兔",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036342&type=3",
+      "published_at": "2026-11-24 14:45"
+    },
+    {
+      "author": "带你飞单双",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "马",
+        "龙",
+        "羊",
+        "狗",
+        "鼠",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "superseded_by_same_author_higher_priority",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036342&type=3",
+      "published_at": "2026-11-24 14:45"
+    },
+    {
+      "author": "带你飞单双",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "马",
+        "龙",
+        "羊",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036342&type=3",
+      "published_at": "2026-11-24 14:45"
+    },
+    {
+      "author": "每期中六肖中特",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "羊",
+        "虎",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036291&type=3",
+      "published_at": "2026-11-24 14:34"
+    },
+    {
+      "author": "专研澳门六合",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036224&type=3",
+      "published_at": "2026-11-24 14:24"
+    },
+    {
+      "author": "琳姐姐",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036197&type=3",
+      "published_at": "2026-11-24 14:24"
+    },
+    {
+      "author": "玲珑湾",
+      "play": "八肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "蛇",
+        "龙",
+        "虎",
+        "猪",
+        "鸡",
+        "羊",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036157&type=3",
+      "published_at": "2026-11-24 14:12"
+    },
+    {
+      "author": "信就点料",
+      "play": "杀肖",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036158&type=3",
+      "published_at": "2026-11-24 14:12"
+    },
+    {
+      "author": "水云间浚",
+      "play": "特肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "蛇",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036121&type=3",
+      "published_at": "2026-11-24 14:09"
+    },
+    {
+      "author": "金童财子",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "龙",
+        "狗",
+        "鼠",
+        "猴",
+        "虎"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036122&type=3",
+      "published_at": "2026-11-24 14:04"
+    },
+    {
+      "author": "澳门星爷",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036110&type=3",
+      "published_at": "2026-11-24 14:00"
+    },
+    {
+      "author": "中中定",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "蛇",
+        "狗",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036093&type=3",
+      "published_at": "2026-11-24 13:56"
+    },
+    {
+      "author": "六叔生肖",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43036061&type=3",
+      "published_at": "2026-11-24 13:49"
+    },
+    {
+      "author": "六叔生肖",
+      "play": "杀特肖",
+      "mode": "exclude",
+      "picks": [
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036061&type=3",
+      "published_at": "2026-11-24 13:49"
+    },
+    {
+      "author": "艺可在线分享",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "猴",
+        "鸡",
+        "鼠",
+        "马",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036030&type=3",
+      "published_at": "2026-11-24 13:26"
+    },
+    {
+      "author": "沉睡的小鱼儿",
+      "play": "杀",
+      "mode": "exclude",
+      "picks": [
+        "猪",
+        "鼠",
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036029&type=3",
+      "published_at": "2026-11-24 13:26"
+    },
+    {
+      "author": "小课堂",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鸡"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43036025&type=3",
+      "published_at": "2026-11-24 13:23"
+    },
+    {
+      "author": "九龙难得糊涂",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035996&type=3",
+      "published_at": "2026-11-24 13:18"
+    },
+    {
+      "author": "雪飘花已落",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "兔",
+        "牛",
+        "鼠",
+        "猪",
+        "羊",
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035978&type=3",
+      "published_at": "2026-11-24 13:09"
+    },
+    {
+      "author": "素笺淡墨",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035976&type=3",
+      "published_at": "2026-11-24 13:09"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "猴",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "牛",
+        "蛇",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "虎",
+        "龙",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "狗",
+        "马",
+        "虎"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "虎",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "虎",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "猪",
+        "鼠",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "手写笔记",
+      "play": "🔪杀肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "龙",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035971&type=3",
+      "published_at": "2026-11-24 13:01"
+    },
+    {
+      "author": "大神到来了",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035969&type=3",
+      "published_at": "2026-11-24 12:58"
+    },
+    {
+      "author": "大神到来了",
+      "play": "两肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035969&type=3",
+      "published_at": "2026-11-24 12:58"
+    },
+    {
+      "author": "拯救众生",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035963&type=3",
+      "published_at": "2026-11-24 12:42"
+    },
+    {
+      "author": "河清海晏",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035962&type=3",
+      "published_at": "2026-11-24 12:42"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "牛",
+        "鸡",
+        "鼠",
+        "龙",
+        "马"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "羊",
+        "蛇",
+        "猪",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "马",
+        "鸡",
+        "鼠",
+        "虎",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "蛇",
+        "虎",
+        "鼠",
+        "羊",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "龙",
+        "猴",
+        "虎",
+        "鸡",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "蛇",
+        "虎",
+        "羊",
+        "猴",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "羊",
+        "猴",
+        "狗",
+        "龙",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "source line names another issue",
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "码农港澳",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "兔",
+        "鸡",
+        "牛",
+        "猴",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43031880&type=3",
+      "published_at": "2026-11-24 12:34"
+    },
+    {
+      "author": "只想钱",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035958&type=3",
+      "published_at": "2026-11-24 12:33"
+    },
+    {
+      "author": "紫气东来开",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035955&type=3",
+      "published_at": "2026-11-24 12:25"
+    },
+    {
+      "author": "概率之巅",
+      "play": "１肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035939&type=3",
+      "published_at": "2026-11-24 12:02"
+    },
+    {
+      "author": "沉鱼一梦",
+      "play": "二肖中特",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035926&type=3",
+      "published_at": "2026-11-24 11:58"
+    },
+    {
+      "author": "浪子情深",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "狗",
+        "马",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035924&type=3",
+      "published_at": "2026-11-24 11:58"
+    },
+    {
+      "author": "键盘书生",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "马",
+        "羊",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035912&type=3",
+      "published_at": "2026-11-24 11:56"
+    },
+    {
+      "author": "心锁了雾",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035910&type=3",
+      "published_at": "2026-11-24 11:56"
+    },
+    {
+      "author": "偷心少年",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猴",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035905&type=3",
+      "published_at": "2026-11-24 11:55"
+    },
+    {
+      "author": "朝雾初",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035904&type=3",
+      "published_at": "2026-11-24 11:55"
+    },
+    {
+      "author": "寂寞红酒",
+      "play": "二肖中特",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035903&type=3",
+      "published_at": "2026-11-24 11:55"
+    },
+    {
+      "author": "漫步雨夜",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035901&type=3",
+      "published_at": "2026-11-24 11:54"
+    },
+    {
+      "author": "莽苍踏雪行",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "牛",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035900&type=3",
+      "published_at": "2026-11-24 11:54"
+    },
+    {
+      "author": "桃花散漫",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "猪",
+        "羊",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035898&type=3",
+      "published_at": "2026-11-24 11:54"
+    },
+    {
+      "author": "轻春的碎月",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "龙",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035894&type=3",
+      "published_at": "2026-11-24 11:53"
+    },
+    {
+      "author": "月影至尊",
+      "play": "三肖中特",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "兔",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035890&type=3",
+      "published_at": "2026-11-24 11:53"
+    },
+    {
+      "author": "立场简单",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "鼠",
+        "猴",
+        "蛇",
+        "虎",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035886&type=3",
+      "published_at": "2026-11-24 11:52"
+    },
+    {
+      "author": "海未深",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "龙",
+        "牛",
+        "蛇",
+        "鼠",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035882&type=3",
+      "published_at": "2026-11-24 11:51"
+    },
+    {
+      "author": "手心的海",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "龙",
+        "鸡",
+        "狗",
+        "猴",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035881&type=3",
+      "published_at": "2026-11-24 11:51"
+    },
+    {
+      "author": "追忆那片晴空",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035876&type=3",
+      "published_at": "2026-11-24 11:50"
+    },
+    {
+      "author": "梦荧光笔",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "蛇",
+        "兔",
+        "猪",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035875&type=3",
+      "published_at": "2026-11-24 11:50"
+    },
+    {
+      "author": "深海夜未眠",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "猴",
+        "猪",
+        "鼠",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035873&type=3",
+      "published_at": "2026-11-24 11:49"
+    },
+    {
+      "author": "醉生忧愁",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035872&type=3",
+      "published_at": "2026-11-24 11:49"
+    },
+    {
+      "author": "夕阳追脚尖",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035871&type=3",
+      "published_at": "2026-11-24 11:49"
+    },
+    {
+      "author": "孤独比酒暖",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035870&type=3",
+      "published_at": "2026-11-24 11:49"
+    },
+    {
+      "author": "快递哥哥",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "蛇",
+        "鼠",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035862&type=3",
+      "published_at": "2026-11-24 11:48"
+    },
+    {
+      "author": "海很蓝",
+      "play": "七肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "鸡",
+        "蛇",
+        "猪",
+        "牛",
+        "羊",
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035855&type=3",
+      "published_at": "2026-11-24 11:46"
+    },
+    {
+      "author": "孤者傲凡",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "兔",
+        "猪",
+        "虎",
+        "蛇",
+        "狗"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035853&type=3",
+      "published_at": "2026-11-24 11:46"
+    },
+    {
+      "author": "山高云阔",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "龙",
+        "猴",
+        "兔",
+        "虎",
+        "牛"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035851&type=3",
+      "published_at": "2026-11-24 11:46"
+    },
+    {
+      "author": "夏水流萤",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "猴",
+        "蛇",
+        "马",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035849&type=3",
+      "published_at": "2026-11-24 11:45"
+    },
+    {
+      "author": "忆当年看今朝",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "蛇",
+        "兔",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035848&type=3",
+      "published_at": "2026-11-24 11:45"
+    },
+    {
+      "author": "叶清风",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "猴",
+        "牛",
+        "鼠",
+        "兔",
+        "蛇"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035843&type=3",
+      "published_at": "2026-11-24 11:45"
+    },
+    {
+      "author": "轻雾山林",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "马",
+        "牛",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035842&type=3",
+      "published_at": "2026-11-24 11:44"
+    },
+    {
+      "author": "依风雨晴",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "牛",
+        "龙",
+        "马",
+        "鸡",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035841&type=3",
+      "published_at": "2026-11-24 11:44"
+    },
+    {
+      "author": "朦胧时间",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "羊",
+        "鼠",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035840&type=3",
+      "published_at": "2026-11-24 11:43"
+    },
+    {
+      "author": "逆天轩辕子",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "鸡",
+        "蛇",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035836&type=3",
+      "published_at": "2026-11-24 11:43"
+    },
+    {
+      "author": "薄荷音少年",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035833&type=3",
+      "published_at": "2026-11-24 11:42"
+    },
+    {
+      "author": "大冲羊羊羊",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035826&type=3",
+      "published_at": "2026-11-24 11:42"
+    },
+    {
+      "author": "独钓一江月",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035831&type=3",
+      "published_at": "2026-11-24 11:42"
+    },
+    {
+      "author": "远山浅",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "蛇",
+        "鼠",
+        "羊",
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035824&type=3",
+      "published_at": "2026-11-24 11:40"
+    },
+    {
+      "author": "菩提树下叶撕阳",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035823&type=3",
+      "published_at": "2026-11-24 11:40"
+    },
+    {
+      "author": "隐匿在梦境",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "虎",
+        "鼠",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035819&type=3",
+      "published_at": "2026-11-24 11:39"
+    },
+    {
+      "author": "泱泱星河",
+      "play": "杀肖",
+      "mode": "exclude",
+      "picks": [
+        "龙"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035800&type=3",
+      "published_at": "2026-11-24 11:39"
+    },
+    {
+      "author": "哖少輕狂",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "蛇",
+        "兔",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035814&type=3",
+      "published_at": "2026-11-24 11:38"
+    },
+    {
+      "author": "梦好沉",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猪",
+        "鼠",
+        "牛",
+        "狗",
+        "马"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035812&type=3",
+      "published_at": "2026-11-24 11:38"
+    },
+    {
+      "author": "幻莫成烟",
+      "play": "2肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035799&type=3",
+      "published_at": "2026-11-24 11:35"
+    },
+    {
+      "author": "北葵向南",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "兔",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035795&type=3",
+      "published_at": "2026-11-24 11:35"
+    },
+    {
+      "author": "等三年",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "猴",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035793&type=3",
+      "published_at": "2026-11-24 11:34"
+    },
+    {
+      "author": "挽情深",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035784&type=3",
+      "published_at": "2026-11-24 11:33"
+    },
+    {
+      "author": "离城梦",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "马",
+        "猴",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035776&type=3",
+      "published_at": "2026-11-24 11:31"
+    },
+    {
+      "author": "幽沁儿",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035775&type=3",
+      "published_at": "2026-11-24 11:31"
+    },
+    {
+      "author": "硬妹儿",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "马",
+        "鸡",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035771&type=3",
+      "published_at": "2026-11-24 11:31"
+    },
+    {
+      "author": "崽崽酱",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "鸡",
+        "羊",
+        "牛",
+        "龙",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035770&type=3",
+      "published_at": "2026-11-24 11:30"
+    },
+    {
+      "author": "笨笨蜜蜜",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "龙",
+        "蛇",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035768&type=3",
+      "published_at": "2026-11-24 11:30"
+    },
+    {
+      "author": "灵韵飞五",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "虎",
+        "龙",
+        "羊",
+        "猴",
+        "兔"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035767&type=3",
+      "published_at": "2026-11-24 11:30"
+    },
+    {
+      "author": "烟波流传",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035760&type=3",
+      "published_at": "2026-11-24 11:28"
+    },
+    {
+      "author": "秋香姐姐",
+      "play": "杀一肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035747&type=3",
+      "published_at": "2026-11-24 11:27"
+    },
+    {
+      "author": "到最后",
+      "play": "四肖中特",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "龙",
+        "牛",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035756&type=3",
+      "published_at": "2026-11-24 11:27"
+    },
+    {
+      "author": "若水微香",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "蛇",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035751&type=3",
+      "published_at": "2026-11-24 11:25"
+    },
+    {
+      "author": "常愿花色新",
+      "play": "3肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "羊",
+        "马"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035748&type=3",
+      "published_at": "2026-11-24 11:25"
+    },
+    {
+      "author": "明月下西楼",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035743&type=3",
+      "published_at": "2026-11-24 11:24"
+    },
+    {
+      "author": "笑清颜",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "龙"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035742&type=3",
+      "published_at": "2026-11-24 11:24"
+    },
+    {
+      "author": "兩夢三醒",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "兔",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035738&type=3",
+      "published_at": "2026-11-24 11:23"
+    },
+    {
+      "author": "西胡澳赛",
+      "play": "杀三肖",
+      "mode": "exclude",
+      "picks": [
+        "鼠",
+        "牛",
+        "猪"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035726&type=3",
+      "published_at": "2026-11-24 11:23"
+    },
+    {
+      "author": "风尘君",
+      "play": "五肖中特",
+      "mode": "include",
+      "picks": [
+        "马",
+        "龙",
+        "猪",
+        "虎",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035737&type=3",
+      "published_at": "2026-11-24 11:23"
+    },
+    {
+      "author": "试用期",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "羊",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035736&type=3",
+      "published_at": "2026-11-24 11:22"
+    },
+    {
+      "author": "一梦醉千城",
+      "play": "二肖",
+      "mode": "include",
+      "picks": [
+        "猪",
+        "狗"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035734&type=3",
+      "published_at": "2026-11-24 11:22"
+    },
+    {
+      "author": "红遍全球",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "羊",
+        "蛇",
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035733&type=3",
+      "published_at": "2026-11-24 11:22"
+    },
+    {
+      "author": "君可见",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "鸡",
+        "鼠",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035731&type=3",
+      "published_at": "2026-11-24 11:22"
+    },
+    {
+      "author": "小七情",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "虎",
+        "猪",
+        "兔",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035730&type=3",
+      "published_at": "2026-11-24 11:22"
+    },
+    {
+      "author": "花舞珊",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "牛"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035729&type=3",
+      "published_at": "2026-11-24 11:21"
+    },
+    {
+      "author": "风流转",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "羊",
+        "鸡"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035725&type=3",
+      "published_at": "2026-11-24 11:21"
+    },
+    {
+      "author": "倾城红颜醉",
+      "play": "三肖",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "猪",
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035724&type=3",
+      "published_at": "2026-11-24 11:21"
+    },
+    {
+      "author": "醉仙词",
+      "play": "一肖",
+      "mode": "include",
+      "picks": [
+        "蛇"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035721&type=3",
+      "published_at": "2026-11-24 11:20"
+    },
+    {
+      "author": "酷出界限",
+      "play": "六肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "猪",
+        "虎",
+        "狗",
+        "牛",
+        "猴"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035720&type=3",
+      "published_at": "2026-11-24 11:20"
+    },
+    {
+      "author": "兰花恋",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "鸡",
+        "兔",
+        "猪",
+        "鼠"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035714&type=3",
+      "published_at": "2026-11-24 11:19"
+    },
+    {
+      "author": "杨四九四九",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "马",
+        "兔",
+        "羊",
+        "猴"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035690&type=3",
+      "published_at": "2026-11-24 11:19"
+    },
+    {
+      "author": "网恋冠军",
+      "play": "五肖",
+      "mode": "include",
+      "picks": [
+        "龙",
+        "虎",
+        "马",
+        "狗",
+        "兔"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035713&type=3",
+      "published_at": "2026-11-24 11:19"
+    },
+    {
+      "author": "等天亮",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "兔",
+        "马",
+        "龙",
+        "猪"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035712&type=3",
+      "published_at": "2026-11-24 11:18"
+    },
+    {
+      "author": "精准消杀",
+      "play": "九肖",
+      "mode": "include",
+      "picks": [
+        "鼠",
+        "猴",
+        "虎",
+        "龙",
+        "猪",
+        "马",
+        "牛",
+        "狗",
+        "羊"
+      ],
+      "counted": true,
+      "reason": null,
+      "source_url": "https://49217.com/#/corpusdetail?id=43035701&type=3",
+      "published_at": "2026-11-24 11:18"
+    },
+    {
+      "author": "重命名",
+      "play": "四肖",
+      "mode": "include",
+      "picks": [
+        "狗",
+        "马",
+        "猪",
+        "羊"
+      ],
+      "counted": false,
+      "reason": "recommendation requires at least 6 distinct zodiacs",
+      "source_url": "https://49217.com/#/corpusdetail?id=43035705&type=3",
+      "published_at": "2026-11-24 11:17"
+    }
+  ],
+  "excluded_reasons": [
+    [
+      "recommendation requires at least 6 distinct zodiacs",
+      160
+    ],
+    [
+      "source line names another issue",
+      53
+    ],
+    [
+      "superseded_by_same_author_higher_priority",
+      18
+    ],
+    [
+      "duplicate author/equal priority earlier source",
+      13
+    ],
+    [
+      "unknown or unverified mode",
+      11
+    ],
+    [
+      "audit: truncated bare kill zodiac list",
+      5
+    ],
+    [
+      "declared zodiac count does not match picks",
+      1
+    ],
+    [
+      "kill list split across brackets",
+      1
+    ]
+  ],
+  "collector_rejected": [
+    {
+      "author": "断水流逼王大师兄",
+      "title": "328澳",
+      "reason": "verified detail has no extractable article text",
+      "detail_diagnostic": {
+        "expected_article_id": 43037991,
+        "navigation": "in_app_article_id_primary",
+        "detail_url_seen": true,
+        "title_seen": true,
+        "author_seen": true,
+        "last_url": "https://49217.com/#/corpusdetail?id=43037991&type=3",
+        "detail_shell_seen": true,
+        "detail_preview": "详情\n关注\n历史帖子\n0\n获赞\n0\n粉丝\n0\n关注\n0\n成长值\n0\n阅读数\n网址大全：\n澳彩\n港彩\n收起\n查看更多 >\n暂无评论\n最新评论\n只看楼主\n加载中...\n想说点什么...\n0\n分享\n发表\n六合图库\n幽默猜测\n聊天室\n挑码助手\n加载中...",
+        "verification": "verified"
+      }
+    },
+    {
+      "author": "杀码大亨",
+      "title": "『公式』杀码",
+      "reason": "verified detail has no extractable article text",
+      "detail_diagnostic": {
+        "expected_article_id": 43036433,
+        "navigation": "in_app_article_id_primary",
+        "detail_url_seen": true,
+        "title_seen": true,
+        "author_seen": true,
+        "last_url": "https://49217.com/#/corpusdetail?id=43036433&type=3",
+        "detail_shell_seen": true,
+        "detail_preview": "详情\n关注\n历史帖子\n0\n获赞\n0\n粉丝\n0\n关注\n0\n成长值\n0\n阅读数\n网址大全：\n澳彩\n港彩\n收起\n查看更多 >\n暂无评论\n最新评论\n只看楼主\n加载中...\n想说点什么...\n0\n分享\n发表\n六合图库\n幽默猜测\n聊天室\n挑码助手\n加载中...",
+        "verification": "verified"
+      }
+    },
+    {
+      "author": "陈诗言梦",
+      "title": "328",
+      "reason": "verified detail has no extractable article text",
+      "detail_diagnostic": {
+        "expected_article_id": 43036103,
+        "navigation": "in_app_article_id_primary",
+        "detail_url_seen": true,
+        "title_seen": true,
+        "author_seen": true,
+        "last_url": "https://49217.com/#/corpusdetail?id=43036103&type=3",
+        "detail_shell_seen": true,
+        "detail_preview": "详情\n关注\n历史帖子\n0\n获赞\n0\n粉丝\n0\n关注\n0\n成长值\n0\n阅读数\n网址大全：\n澳彩\n港彩\n收起\n查看更多 >\n暂无评论\n最新评论\n只看楼主\n加载中...\n想说点什么...\n0\n分享\n发表\n六合图库\n幽默猜测\n聊天室\n挑码助手\n加载中...",
+        "verification": "verified"
+      }
+    }
+  ],
+  "frozen": false,
+  "settled": false,
+  "published_to_ledger": false,
+  "elapsed_seconds": 1168.5,
+  "finished_at": "2026-11-24T12:22:21.994744+00:00"
+}
