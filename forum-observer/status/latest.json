@@ -7,51 +7,56 @@
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45389650436",
-  "updated_at": "2026-11-24T12:04:57.226921+00:00",
+  "updated_at": "2026-11-24T12:06:01.343015+00:00",
   "error": null,
-  "valid_materials": 3,
-  "valid_authors": 3,
-  "successful_post_opens": 14,
+  "valid_materials": 28,
+  "valid_authors": 28,
+  "successful_post_opens": 116,
   "article_details": {
     "featured": {
       "queued": 51,
-      "attempted": 15,
-      "opened": 14,
-      "extracted": 14,
-      "completed": 14
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
     },
     "ordinary": {
       "queued": 465,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 66,
+      "opened": 65,
+      "extracted": 65,
+      "completed": 65
     }
   },
-  "article_texts_extracted": 14,
-  "article_details_completed": 14,
+  "article_texts_extracted": 116,
+  "article_details_completed": 116,
   "last_verified_post": {
-    "author": "窝里马",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11331825&type=3",
-    "verified_at": "2026-11-24T12:04:56.687721+00:00",
-    "text_length": 1213,
-    "text_sha256": "1dc0dbf6edca5641bde0d67c4c58cdb4549190a5f8677de0a887d5f0af4db430"
+    "author": "精准肖王",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11336428&type=3",
+    "verified_at": "2026-11-24T12:06:00.777239+00:00",
+    "text_length": 41,
+    "text_sha256": "5411e1a5adb19075cda6fe7907124247ea07f497f1982a00a66672c9f13acc82"
   },
   "last_attempted_post": {
-    "author": "小小白狐",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11331837&type=3",
-    "attempt_index": 15
+    "author": "明月夜深深",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11336371&type=3",
+    "attempt_index": 117
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-24T12:05:17.753469+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 14,
-  "stage": "detail: 小小白狐 328期",
-  "progress_updated_at": "2026-11-24T12:04:56.719473+00:00",
+  "raw_count": 116,
+  "stage": "detail: 明月夜深深 专业杀特肖",
+  "progress_updated_at": "2026-11-24T12:06:01.067653+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
