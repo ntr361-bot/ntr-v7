@@ -11,6 +11,11 @@ on:
       - 'forum-observer/forum_observer/author_profiles.py'
       - '.github/workflows/forum-author-profiles.yml'
   workflow_dispatch:
+    inputs:
+      rebuild:
+        description: Rebuild derived statistics from all verified frozen evidence
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -32,23 +37,35 @@ jobs:
           python-version: '3.12'
       - name: Verify append-only author memory
         run: python -m unittest discover -s tests -p 'test_author_profiles.py' -v
-      - name: Derive historical author records without collecting or rescoring
-        run: python -m forum_observer.author_profiles --archive archive
-      - name: Commit independent author memory only
+      - name: Verify both production archives on pull requests
+        if: github.event_name == 'pull_request'
+        run: |
+          python -m forum_observer.author_profiles --archive archive --rebuild
+          python -m forum_observer.author_profiles --archive forum49 --rebuild
+      - name: Generate and publish both forum statistics
         if: github.event_name != 'pull_request'
         shell: bash
+        env:
+          REBUILD: ${{ inputs.rebuild }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add archive/author-profiles/
-          if git diff --cached --quiet; then
-            echo "No author memory changes"
-            exit 0
-          fi
-          git commit -m "chore(forum): append verified author memory"
+          args=()
+          if [ "$REBUILD" = "true" ]; then args+=(--rebuild); fi
           for attempt in 1 2 3; do
             git fetch origin main
+            git reset --hard origin/main
+            for archive in archive forum49; do
+              python -m forum_observer.author_profiles --archive "$archive" "${args[@]}"
+              python -m forum_observer.author_profiles --archive "$archive"
+            done
+            git add archive/author-profiles/ forum49/author-profiles/
+            if git diff --cached --quiet; then
+              echo "No author memory changes"
+              exit 0
+            fi
+            git commit -m "chore(forum): publish verified author statistics"
             if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main
           done
           exit 1

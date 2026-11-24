@@ -9,7 +9,10 @@ import argparse
 import hashlib
 import json
 import math
+import os
 import re
+from collections import defaultdict
+from tempfile import NamedTemporaryFile
 from datetime import datetime
 from pathlib import Path
 
@@ -158,10 +161,8 @@ def write_once(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     data = dict(value)
     data["record_digest"] = sha256(value)
-    content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     try:
-        with path.open("x", encoding="utf-8") as handle:
-            handle.write(content)
+        write_json(path, data, immutable=True)
         return True
     except FileExistsError:
         existing = load(path)
@@ -213,82 +214,234 @@ def valid_settlement(folder, record):
     return settle["actual"]
 
 
-def build(archive):
-    """Append per-issue author evidence, rebuild only a separate derived index."""
+def write_json(path, value, *, immutable=False, compact=False):
+    """Publish a complete file even if a run is interrupted during serialization."""
+    with NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                            delete=False) as handle:
+        temporary = Path(handle.name)
+        try:
+            json.dump(value, handle, ensure_ascii=False, indent=None if compact else 2)
+            handle.write("\n")
+            handle.close()
+            if immutable:
+                os.link(temporary, path)
+            else:
+                temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+
+def file_digest(path):
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except FileNotFoundError:
+        return None
+
+
+def inputs(folder, record_path):
+    return [
+        file_digest(folder / "snapshot.json"),
+        file_digest(record_path) if record_path.is_file() else
+        file_digest(folder / "observation.json"),
+        record_path.is_file(),
+        file_digest(folder / "settlement.json"),
+    ]
+
+
+def profile_record(record, item, actual):
+    return {
+        "issue": record["issue"], "frozen_at": record["frozen_at"],
+        "quality_status": record["quality_status"], "play": item["play"],
+        "mode": item["mode"], "picks": item["picks"],
+        "vote_zodiacs": item["vote_zodiacs"],
+        "random_hit_baseline": item["random_hit_baseline"],
+        "original_text": item["original_text"], "published_at": item["published_at"],
+        "source_url": item["source_url"], "snapshot_digest": record["snapshot_digest"],
+        "actual": actual, "outcome": ("pending" if actual is None else
+                                    "hit" if actual in item["vote_zodiacs"] else "miss"),
+    }
+
+
+def rate(hits, count):
+    return round(hits / count, 6) if count else None
+
+
+def statistics(profile):
+    rows = [r for r in profile["records"] if r["outcome"] != "pending"]
+    hits = [r["outcome"] == "hit" for r in rows]
+    recent = {
+        str(size): {"count": len(hits[-size:]),
+                    "hit_rate": rate(sum(hits[-size:]), len(hits[-size:]))}
+        for size in (10, 20, 50)
+    }
+    # Use full rolling ten-participation windows to avoid mixing sample sizes.
+    rolling = [sum(hits[i - 10:i]) for i in range(10, len(hits) + 1)]
+    longest = {"hit": 0, "miss": 0}
+    previous, length = None, 0
+    for row in rows:
+        outcome = row["outcome"]
+        length = length + 1 if outcome == previous else 1
+        longest[outcome] = max(longest[outcome], length)
+        previous = outcome
+    baseline = sum(len(r["vote_zodiacs"]) for r in rows)
+    return {
+        "nickname": profile["nickname"],
+        "first_issue": profile["first_issue"], "last_issue": profile["last_issue"],
+        "participations": len(profile["records"]), "settled": len(hits),
+        "hits": sum(hits), "misses": len(hits) - sum(hits),
+        "hit_rate": rate(sum(hits), len(hits)), "recent": recent,
+        "rolling_10_range": rate(max(rolling) - min(rolling), 10) if rolling else None,
+        "current_streak": {"outcome": previous, "count": length},
+        "longest_streak": longest,
+        "random_hit_baseline": rate(baseline, 12 * len(rows)),
+    }
+
+
+def build(archive, *, rebuild=False):
+    """Refresh changed issues and recompute only the authors they affect."""
     archive = Path(archive)
     destination = archive / "author-profiles"
-    entries = []
-    skipped = []
+    destination.mkdir(parents=True, exist_ok=True)
+    index_path = destination / "index.json"
+    report_path = destination / "statistics.json"
+    checkpoint = destination / "statistics-state.json"
+    folders = {p.name: p for p in sorted((archive / "issues").glob("20?????"))
+               if (p / "snapshot.json").is_file()}
+    paths = {issue: destination / "records" / (issue + ".json") for issue in folders}
+    signatures = {issue: inputs(folder, paths[issue]) for issue, folder in folders.items()}
+    before = {}
+    valid_checkpoint = False
+    profiles, stats = {}, {}
+    try:
+        if not rebuild and checkpoint.is_file():
+            state = load(checkpoint)
+            digest = state.pop("digest")
+            if (digest == sha256(state) and state["version"] == 1 and
+                    state["index"] == file_digest(index_path) and
+                    state["report"] == file_digest(report_path)):
+                before = state["issues"]
+                valid_checkpoint = True
+    except (ValueError, TypeError, KeyError, OSError):
+        pass
+    changed = {issue for issue in signatures.keys() | before.keys()
+               if issue not in before or signatures.get(issue) != before[issue]["inputs"]}
+    if valid_checkpoint and not changed:
+        return result(before, state["author_count"], 0, 0)
+    if before:
+        profiles = {p["id"]: p for p in load(index_path)["authors"]}
+        stats = load(report_path)["authors"]
+    additions = defaultdict(list)
+    affected = set()
+    states = {issue: entry for issue, entry in before.items() if issue not in changed}
     created = 0
-    for folder in sorted((archive / "issues").glob("20?????")):
-        if not (folder / "snapshot.json").is_file():
-            continue
+    for issue in sorted(changed & folders.keys()):
+        folder, path = folders[issue], paths[issue]
+        entry = states[issue] = {"inputs": signatures[issue]}
         try:
-            record_path = destination / "records" / (folder.name + ".json")
-            if record_path.is_file():
-                # Later status refreshes may rewrite observation.json. Never erase
-                # a previously verified, sealed history record from the index.
-                record = read_sealed_record(record_path, folder)
-            else:
+            if not path.is_file():
                 candidate = frozen_evidence(folder)
-                if write_once(record_path, candidate):
-                    created += 1
-                record = read_sealed_record(record_path, folder)
-            actual = valid_settlement(folder, record)
-            for item in record["materials"]:
-                entries.append((record, item, actual))
-        except (ValueError, TypeError, KeyError, OSError, json.JSONDecodeError) as error:
-            skipped.append({"issue": folder.name, "reason": str(error)})
-    profiles = {}
-    for record, item, actual in entries:
-        profile = profiles.setdefault(item["id"], {
-            "id": item["id"], "nickname": item["nickname"],
-            "identity_status": item["identity_status"], "records": [],
-        })
-        if profile["nickname"] != item["nickname"]:
-            raise ValueError("nickname identity hash collision")
-        profile["records"].append({
-            "issue": record["issue"], "frozen_at": record["frozen_at"],
-            "quality_status": record["quality_status"], "play": item["play"],
-            "mode": item["mode"], "picks": item["picks"],
-            "vote_zodiacs": item["vote_zodiacs"],
-            "random_hit_baseline": item["random_hit_baseline"],
-            "original_text": item["original_text"], "published_at": item["published_at"],
-            "source_url": item["source_url"], "snapshot_digest": record["snapshot_digest"],
-            "actual": actual, "outcome": ("pending" if actual is None else
-                                        "hit" if actual in item["vote_zodiacs"] else "miss"),
-        })
-    for profile in profiles.values():
-        profile["records"].sort(key=lambda row: row["issue"])
-        profile["first_issue"] = profile["records"][0]["issue"]
-        profile["last_issue"] = profile["records"][-1]["issue"]
-        profile["observed_issue_count"] = len(profile["records"])
-        profile["settled_issue_count"] = sum(r["outcome"] != "pending" for r in profile["records"])
+                created += write_once(path, candidate)
+                entry["inputs"] = inputs(folder, path)
+            record = read_sealed_record(path, folder)
+            try:
+                actual = valid_settlement(folder, record)
+            except (ValueError, TypeError, KeyError):
+                actual = None
+            entry["status"] = "settled" if actual else "pending"
+            if actual is None and entry["inputs"][-1] is not None:
+                entry["settlement_error"] = "settlement fails frozen evidence validation"
+            rows = [(item, profile_record(record, item, actual)) for item in record["materials"]]
+            entry["authors"] = [item["id"] for item, _ in rows]
+            if len(set(entry["authors"])) != len(rows):
+                raise ValueError("duplicate author in sealed record")
+            for item, row in rows:
+                additions[item["id"]].append((item, row))
+        except (ValueError, TypeError, KeyError, OSError) as error:
+            entry.pop("authors", None)
+            entry.pop("settlement_error", None)
+            entry["status"] = "skipped"
+            entry["reason"] = str(error)
+        affected.update(entry.get("authors", []))
+    for issue in changed & before.keys():
+        affected.update(before[issue].get("authors", []))
+    for identity in affected:
+        profile = profiles.get(identity)
+        rows = [] if profile is None else [
+            row for row in profile["records"] if row["issue"] not in changed
+        ]
+        for item, row in additions[identity]:
+            if profile is None:
+                profile = {key: item[key] for key in ("id", "nickname", "identity_status")}
+            if profile["nickname"] != item["nickname"]:
+                raise ValueError("nickname identity hash collision")
+            rows.append(row)
+        if not rows:
+            profiles.pop(identity, None)
+            stats.pop(identity, None)
+            continue
+        rows.sort(key=lambda row: row["issue"])
+        profile.update(records=rows, first_issue=rows[0]["issue"], last_issue=rows[-1]["issue"],
+                       observed_issue_count=len(rows),
+                       settled_issue_count=sum(row["outcome"] != "pending" for row in rows))
+        profiles[identity] = profile
+        stats[identity] = statistics(profile)
+    summary = result(states, len(profiles), created, len(changed))
     index = {
         "schema_version": SCHEMA,
         "classification": "read_only_author_memory_experimental",
         "used_for_predictions": False, "author_weighting_enabled": False,
         "identity_note": "Nickname-only provisional ID; a renamed account is not automatically merged.",
-        "included_issues": sorted({e[0]["issue"] for e in entries}),
-        "skipped_issues": skipped,
+        "included_issues": summary["included_issues"], "skipped_issues": summary["skipped_issues"],
         "author_count": len(profiles),
-        "authors": sorted(profiles.values(), key=lambda x: x["id"]),
+        "authors": [profiles[key] for key in sorted(profiles)],
     }
-    destination.mkdir(parents=True, exist_ok=True)
-    # Derived index may be rebuilt; immutable per-issue records may not.
-    target = destination / "index.json"
-    temp = destination / "index.json.tmp"
-    temp.write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    temp.replace(target)
-    return {"created_issue_records": created, "profiles": len(profiles),
-            "included_issues": index["included_issues"], "skipped_issues": skipped}
+    report = {
+        "schema_version": 1, "forum": {"archive": "118", "forum49": "49"}.get(archive.name, archive.name),
+        "definitions": {
+            "identity": "论坛内昵称，未验证为账号",
+            "recent_and_streak": "按作者实际已结算参与期顺序，跳过缺席及待结算",
+            "rolling_10_range": "完整滚动10次参与命中率的最高值减最低值，少于10次为空",
+            "random_hit_baseline": "已结算各期有效覆盖生肖数除以12后取平均",
+            "rates": "比例使用0至1，样本不足的近期窗口展示实际样本数",
+        },
+        "author_count": len(profiles), "included_issues": summary["included_issues"],
+        "settled_issues": sorted(i for i, e in states.items() if e["status"] == "settled"),
+        "pending_issues": sorted(i for i, e in states.items() if e["status"] == "pending"),
+        "skipped_issues": summary["skipped_issues"],
+        "invalid_settlements": sorted(i for i, e in states.items() if "settlement_error" in e),
+        "participations": sum(row["participations"] for row in stats.values()),
+        "settled_participations": sum(row["settled"] for row in stats.values()),
+        "hits": sum(row["hits"] for row in stats.values()),
+        "authors_with_full_windows": {
+            str(size): sum(row["settled"] >= size for row in stats.values())
+            for size in (10, 20, 50)
+        },
+        "authors": dict(sorted(stats.items())),
+    }
+    write_json(index_path, index)
+    write_json(report_path, report, compact=True)
+    state = {"version": 1, "issues": dict(sorted(states.items())), "author_count": len(profiles),
+             "index": file_digest(index_path), "report": file_digest(report_path)}
+    state["digest"] = sha256(state)
+    write_json(checkpoint, state)
+    return summary
+
+
+def result(states, authors, created, changed):
+    return {
+        "created_issue_records": created, "profiles": authors, "reprocessed_issues": changed,
+        "included_issues": sorted(i for i, e in states.items() if e["status"] != "skipped"),
+        "skipped_issues": [{"issue": i, "reason": e["reason"]} for i, e in sorted(states.items())
+                           if e["status"] == "skipped"],
+    }
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--archive", default="archive")
+    parser.add_argument("--rebuild", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(build(args.archive), ensure_ascii=False, indent=2))
+    print(json.dumps(build(args.archive, rebuild=args.rebuild), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
