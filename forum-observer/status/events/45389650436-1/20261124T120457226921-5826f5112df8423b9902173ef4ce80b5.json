@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "issue": "2026328",
+  "state": "collecting_effectively",
+  "run_id": "45389650436",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45389650436",
+  "updated_at": "2026-11-24T12:04:57.226921+00:00",
+  "error": null,
+  "valid_materials": 3,
+  "valid_authors": 3,
+  "successful_post_opens": 14,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 15,
+      "opened": 14,
+      "extracted": 14,
+      "completed": 14
+    },
+    "ordinary": {
+      "queued": 465,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 14,
+  "article_details_completed": 14,
+  "last_verified_post": {
+    "author": "窝里马",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11331825&type=3",
+    "verified_at": "2026-11-24T12:04:56.687721+00:00",
+    "text_length": 1213,
+    "text_sha256": "1dc0dbf6edca5641bde0d67c4c58cdb4549190a5f8677de0a887d5f0af4db430"
+  },
+  "last_attempted_post": {
+    "author": "小小白狐",
+    "is_featured": true,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11331837&type=3",
+    "attempt_index": 15
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 14,
+  "stage": "detail: 小小白狐 328期",
+  "progress_updated_at": "2026-11-24T12:04:56.719473+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
