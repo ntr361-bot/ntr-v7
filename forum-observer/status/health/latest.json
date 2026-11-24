@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-25T04:45:10.267294+08:00",
-  "updated_at": "2026-11-25T04:45:10.267294+08:00",
+  "checked_at": "2026-11-25T07:29:10.856922+08:00",
+  "updated_at": "2026-11-25T07:29:10.856922+08:00",
   "issue": "2026329",
-  "mode": "probe",
+  "mode": "audit",
   "state": "attention",
-  "probes": {
+  "probes": {},
+  "archive_audit": {
     "118": {
-      "state": "reachable",
-      "host": "x5k1pok.11852.com",
-      "http_status": 206
+      "state": "no_verified_snapshot",
+      "report_present": false,
+      "draft_present": false
     },
     "49": {
-      "state": "reachable",
-      "host": "49217.com",
-      "http_status": 206
+      "state": "no_verified_snapshot",
+      "report_present": false,
+      "draft_present": false
     }
   },
-  "archive_audit": {},
   "last_30_manual_operations": {
     "scope": "last_30_ledger_manual_dispatches; success=parent_verified_committed_evidence",
     "sample_size": 5,
@@ -59,7 +59,10 @@
       }
     }
   },
-  "current_check_findings": [],
+  "current_check_findings": [
+    "118_audit_no_verified_snapshot",
+    "49_audit_no_verified_snapshot"
+  ],
   "findings": [
     "118_audit_no_verified_snapshot",
     "49_audit_no_verified_snapshot"
