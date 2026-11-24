@@ -252,6 +252,10 @@ jobs:
             --history ../site/data/history.json --public ../site/data/forum-observer \
             --ledger-live-results https://smart-ledger-2026.ntr133.chatgpt.site/api/results
 
+      - name: Update 118 author statistics from verified settlements
+        working-directory: forum-observer
+        run: python -m forum_observer.author_profiles --archive archive
+
       - name: Commit only independently namespaced forum settlements
         shell: bash
         run: |

@@ -83,6 +83,34 @@ class AuthorProfilesTests(unittest.TestCase):
             self.assertEqual(record_path.read_bytes(), first)
             self.assertTrue(all(x["identity_status"] == "nickname_only_unverified_account" for x in settled))
 
+    def test_incremental_update_and_recovery_match_full_rebuild(self):
+        with TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "archive"
+            fixture(archive)
+            self.assertEqual(build(archive)["reprocessed_issues"], 1)
+            self.assertEqual(build(archive)["reprocessed_issues"], 0)
+            fixture(archive, include_settlement=True)
+            self.assertEqual(build(archive)["reprocessed_issues"], 1)
+            destination = archive / "author-profiles"
+            report = destination / "statistics.json"
+            expected = report.read_bytes()
+            authors = json.loads(expected)["authors"]
+            self.assertEqual(len(authors), 2)
+            for row in authors.values():
+                self.assertEqual(row["participations"], 1)
+                self.assertEqual(row["hit_rate"], 1)
+                self.assertEqual(row["recent"]["50"], {"count": 1, "hit_rate": 1})
+                self.assertEqual(row["current_streak"], {"count": 1, "outcome": "hit"})
+                self.assertIsNone(row["rolling_10_range"])
+            self.assertEqual({row["random_hit_baseline"] for row in authors.values()},
+                             {0.5, 0.833333})
+            report.write_text("interrupted")
+            self.assertEqual(build(archive)["reprocessed_issues"], 1)
+            self.assertEqual(report.read_bytes(), expected)
+            self.assertEqual(build(archive, rebuild=True)["reprocessed_issues"], 1)
+            self.assertEqual(report.read_bytes(), expected)
+            self.assertEqual(build(archive)["reprocessed_issues"], 0)
+
     def test_historical_frozen_rule_survives_future_code_rule_changes(self):
         with TemporaryDirectory() as tmp:
             archive = Path(tmp) / "archive"
