@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-24T06:10:03.881918+08:00",
-  "updated_at": "2026-11-24T06:10:03.881918+08:00",
+  "checked_at": "2026-11-24T09:41:04.290382+08:00",
+  "updated_at": "2026-11-24T09:41:04.290382+08:00",
   "issue": "2026328",
-  "mode": "probe",
-  "state": "healthy",
-  "probes": {
+  "mode": "audit",
+  "state": "attention",
+  "probes": {},
+  "archive_audit": {
     "118": {
-      "state": "reachable",
-      "host": "x5k1pok.11852.com",
-      "http_status": 206
+      "state": "no_verified_snapshot",
+      "report_present": false,
+      "draft_present": false
     },
     "49": {
-      "state": "reachable",
-      "host": "49217.com",
-      "http_status": 206
+      "state": "no_verified_snapshot",
+      "report_present": false,
+      "draft_present": false
     }
   },
-  "archive_audit": {},
   "last_30_manual_operations": {
     "scope": "last_30_ledger_manual_dispatches; success=parent_verified_committed_evidence",
     "sample_size": 3,
@@ -59,7 +59,13 @@
       }
     }
   },
-  "current_check_findings": [],
-  "findings": [],
+  "current_check_findings": [
+    "118_audit_no_verified_snapshot",
+    "49_audit_no_verified_snapshot"
+  ],
+  "findings": [
+    "118_audit_no_verified_snapshot",
+    "49_audit_no_verified_snapshot"
+  ],
   "notes": "Probe only checks HTTP shell, not actual DOM parsing; reliability counts only completed verified parent workflows. No collector, freeze, V7 or D1 writes."
 }
