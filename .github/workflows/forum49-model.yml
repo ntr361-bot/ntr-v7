@@ -92,10 +92,10 @@ jobs:
         if: steps.collection-gate.outputs.collect == 'true'
         run: python -m compileall -q forum_observer
 
-      - name: Isolate archive for a manual test after the freeze time
+      - name: Isolate archive for post-freeze test collection
         if: steps.collection-gate.outputs.test == 'true'
         run: |
-          echo "::notice title=49论坛模型 test::manual run after the freeze time; test only (artifact), no draft/freeze/commit"
+          echo "::notice title=49论坛模型 test::post-freeze collection; test only (artifact), no formal draft/freeze/commit"
           rm -rf /tmp/forum49-test && cp -r forum49 /tmp/forum49-test
 
       - name: Collect (no limit on post count; stops at issue boundary)

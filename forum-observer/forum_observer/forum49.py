@@ -24,8 +24,6 @@ from .core import material_counts
 MODEL_NAME = '49论坛模型'
 DEFAULT_URL = 'https://49217.com/#/forum'
 MAX_POSTS = 2000  # collector's own ceiling; feed scan stops at the issue boundary
-FREEZE_CUTOFF = (21, 0)
-PUBLISH_RESERVE_SECONDS = 90
 # 49图库 marks featured (加精) cards with a '精' icon here; its `span.up > img`
 # (no .icon class) is the pinned/置顶 marker. Verified by source probe run
 # 40058947187: 11 of 20 cards had this icon and all 11 had highQuality=1.

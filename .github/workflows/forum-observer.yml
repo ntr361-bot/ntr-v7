@@ -82,7 +82,7 @@ jobs:
           key: forum-images-${{ runner.os }}-${{ github.run_id }}
           restore-keys: forum-images-${{ runner.os }}-
       - name: Observe current issue
-        # GPT/manual triggers are idempotent; never rescan a frozen issue.
+        # Formal archive remains immutable; post-freeze scans stay isolated.
         if: steps.collection-gate.outputs.collect == 'true'
         id: observe
         continue-on-error: true
