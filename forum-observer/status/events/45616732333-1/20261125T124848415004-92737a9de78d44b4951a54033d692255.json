@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026329",
+  "state": "collecting_effectively",
+  "run_id": "45616732333",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
+  "updated_at": "2026-11-25T12:48:48.415004+00:00",
+  "error": null,
+  "valid_materials": 32,
+  "valid_authors": 32,
+  "successful_post_opens": 127,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 79,
+      "opened": 78,
+      "extracted": 77,
+      "completed": 78
+    }
+  },
+  "article_texts_extracted": 126,
+  "article_details_completed": 127,
+  "last_verified_post": {
+    "author": "天命人",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11342711&type=3",
+    "verified_at": "2026-11-25T12:48:47.932492+00:00",
+    "text_length": 4284,
+    "text_sha256": "e126f93f4114a8660db3ef0a7dc298fa20805bbf8627f2b2d1a6824141bd69f2"
+  },
+  "last_attempted_post": {
+    "author": "闷声捞金",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11342681&type=3",
+    "attempt_index": 128
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T12:47:57.813451+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 126,
+  "stage": "detail: 闷声捞金 💤",
+  "progress_updated_at": "2026-11-25T12:48:48.168241+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
