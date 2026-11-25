@@ -1,4 +1,5 @@
 name: 49论坛模型 collection
+run-name: ${{ inputs.request_id && format('Forum 49 {0} manual#{1}', inputs.mode, inputs.request_id) || '49论坛模型 collection' }}
 # 49图库 高手论坛 (Macau only).
 # Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
 # (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
@@ -7,10 +8,13 @@ name: 49论坛模型 collection
 #   mode=freeze  : explicit request -> immutable current-issue draft
 #   mode=settle  : settle snapshots from verified draw history; never collects
 # Never touches 118's archive/feed, D1 or formal V7.
-# Startup flow aligned with Forum observer (single job for collect/freeze).
 on:
   workflow_dispatch:
     inputs:
+      request_id:
+        description: Dispatcher correlation id (blank for direct manual use)
+        required: false
+        default: ''
       mode:
         description: collect | freeze | settle
         type: choice
@@ -41,13 +45,15 @@ on:
     paths:
       - 'forum-observer/triggers/forum49/**'
   schedule:
-    # Beijing 20:20 collect / 20:35 backup / 21:00 freeze / 21:10 backup.
+    # Existing automatic backup slots; delayed/manual collection is accepted all day.
+    # 21:00 and 21:05 remain freeze backups.
     - cron: "20 12 * * *"
     - cron: "35 12 * * *"
     - cron: "0 13 * * *"
-    - cron: "10 13 * * *"
+    - cron: "5 13 * * *"
 permissions:
   contents: write
+  actions: read
 concurrency:
   group: forum49-archive
   cancel-in-progress: false
@@ -56,8 +62,8 @@ defaults:
     working-directory: forum-observer
 jobs:
   forum49-cycle:
-    # Collect or freeze (settle is a separate job).
-    if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
+    # Collection, freeze and settlement are separate jobs.
+    if: ${{ (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum49-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')))) && !((github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):'))) }}
     runs-on: ubuntu-latest
     timeout-minutes: 95
     steps:
@@ -71,18 +77,10 @@ jobs:
 
       - name: Decide current-issue collection
         id: collection-gate
-        if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule != '0 13 * * *' && github.event.schedule != '10 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.mode || 'collect') == 'collect') || (github.event_name == 'schedule' && github.event.schedule != '0 13 * * *' && github.event.schedule != '5 13 * * *') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-collect):')) }}
         env:
           F49_SKIP_IF_COLLECTED: ${{ github.event_name != 'workflow_dispatch' && 'true' || inputs.skip_if_collected || 'false' }}
         run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --forum49-collect-gate
-
-      - name: Reject delayed scheduled collection
-        # GitHub can queue cron events for hours. A skipped overnight scan
-        # must be a visible failure, not a green "collection" workflow.
-        if: ${{ (github.event_name == 'push' || (github.event_name == 'schedule' && (github.event.schedule == '20 12 * * *' || github.event.schedule == '35 12 * * *'))) && steps.collection-gate.outputs.reason == 'automatic_collection_outside_window' }}
-        run: |
-          echo "::error title=49论坛模型 collection::cron began outside the authorized Beijing 20:20-20:50 collection window; no data were collected or frozen"
-          exit 1
 
       - name: Install browser
         if: steps.collection-gate.outputs.collect == 'true'
@@ -90,14 +88,14 @@ jobs:
           pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Unit tests
+      - name: Fast collector code check (full suite runs in PR regression CI)
         if: steps.collection-gate.outputs.collect == 'true'
-        run: python -m unittest tests.test_forum49 tests.test_forum49_scrapling tests.test_forum49_cycle tests.test_source_probe -v
+        run: python -m compileall -q forum_observer
 
-      - name: Isolate archive for a manual test after the freeze time
+      - name: Isolate archive for post-freeze test collection
         if: steps.collection-gate.outputs.test == 'true'
         run: |
-          echo "::notice title=49论坛模型 test::manual run after the freeze time; test only (artifact), no draft/freeze/commit"
+          echo "::notice title=49论坛模型 test::post-freeze collection; test only (artifact), no formal draft/freeze/commit"
           rm -rf /tmp/forum49-test && cp -r forum49 /tmp/forum49-test
 
       - name: Collect (no limit on post count; stops at issue boundary)
@@ -126,6 +124,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import os
           from datetime import datetime
           from pathlib import Path
           from zoneinfo import ZoneInfo
@@ -146,43 +145,22 @@ jobs:
           except (OSError, ValueError, TypeError, KeyError) as exc:
               print('::error title=49论坛模型 draft::missing or invalid current-issue draft:', exc)
               raise SystemExit(2)
+          receipt=Path('forum49/issues') / issue / 'collection-runs' / (os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '.json')
+          try:
+              verified=json.loads(receipt.read_text(encoding='utf-8'))
+              ok=ok and (verified.get('issue') == issue
+                  and str(verified.get('run_id')) == os.environ['GITHUB_RUN_ID']
+                  and verified.get('run_attempt') == int(os.environ['GITHUB_RUN_ATTEMPT'])
+                  and int(verified.get('valid_materials') or 0)>0
+                  and verified.get('draft_published') is True
+                  and verified.get('report_published') is True)
+          except (OSError, ValueError, TypeError, KeyError):
+              ok=False
           if not ok:
-              print('::error title=49论坛模型 draft::collection did not publish a qualifying current-issue draft')
+              print('::error title=49论坛模型 draft::collection did not publish a qualifying current-issue draft from this run')
               raise SystemExit(2)
-          print('Verified 49 current-issue draft:', path, 'valid_materials:', row['valid_materials'])
+          print('Verified 49 current-run receipt:', receipt, 'valid_materials:', row['valid_materials'])
           PY
-
-      - name: Check freeze window
-        id: freeze-window
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window --manual-freeze
-          else
-            python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --check-freeze-window
-          fi
-
-      - name: Reject freeze without an eligible current-issue draft
-        if: steps.freeze-window.outputs.allowed == 'false'
-        run: |
-          echo "::error title=49论坛模型 freeze::refused (${{ steps.freeze-window.outputs.reason }}); no eligible current-issue draft exists"
-          exit 1
-
-      - name: Publish completed-run report or finalize freeze
-        # Never finalize on a rejected freeze window, even via always().
-        # A failed or skipped collection must not look like a published draft.
-        if: ${{ always() && steps.collection-gate.outputs.test != 'true' && ((steps.freeze-window.outputs.allowed == 'true') || (steps.collection-gate.outputs.collect == 'true' && steps.collect.outcome == 'success' && steps.draft.outcome == 'success' && steps.verify-draft.outcome == 'success')) }}
-        env:
-          FINALIZE_CYCLE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '10 13 * * *')) }}
-        run: |
-          if [ "$FINALIZE_CYCLE" = "true" ]; then
-            python -m forum_observer.cycle --out forum49-no-collection --archive forum49 \
-              --history ../site/data/history.json --public ../site/data/forum49 \
-              --finalize --model-id forum49
-          elif [ "${{ steps.collect.outcome }}" = "success" ]; then
-            # Draft already published above; this is a no-op safety path for non-freeze.
-            echo "Draft path already handled"
-          fi
 
       - name: Record 49 author history from verified frozen evidence only
         if: ${{ always() && steps.collection-gate.outputs.test != 'true' }}
@@ -226,8 +204,6 @@ jobs:
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           DRAFT_OUTCOME: ${{ steps.draft.outcome }}
           VERIFIED_DRAFT: ${{ steps.verify-draft.outcome }}
-          FREEZE_GATE: ${{ steps.freeze-window.outputs.reason }}
-          FREEZE_ALLOWED: ${{ steps.freeze-window.outputs.allowed }}
         run: |
           python - <<'PY'
           import json, os
@@ -243,9 +219,7 @@ jobs:
           else:
               print('::notice title=49论坛模型::no summary (gate may have skipped collect)')
           state = dict(collection_gate=os.environ.get('COLLECT_GATE'), collect_outcome=os.environ.get('COLLECT_OUTCOME'),
-                       draft_outcome=os.environ.get('DRAFT_OUTCOME'), verified_draft=os.environ.get('VERIFIED_DRAFT'),
-                       freeze_gate=os.environ.get('FREEZE_GATE'),
-                       freeze_allowed=os.environ.get('FREEZE_ALLOWED'))
+                       draft_outcome=os.environ.get('DRAFT_OUTCOME'), verified_draft=os.environ.get('VERIFIED_DRAFT'))
           print('::notice title=49论坛模型 gates::'+esc(json.dumps(state, ensure_ascii=False)))
           Path(os.environ.get('GITHUB_STEP_SUMMARY','/dev/stdout')).write_text(
               '## 49论坛模型 cycle status\n\n' + '\n'.join(f'- {key}: {value}' for key, value in state.items()) + '\n')
@@ -291,3 +265,28 @@ jobs:
             git pull --rebase origin main || true
           done
           exit 1
+
+  freeze:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    permissions:
+      contents: write
+      actions: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Freeze or verify committed snapshot and ledger source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FREEZE_PHASE: ${{ github.event_name != 'schedule' && 'manual' || (github.event.schedule == '5 13 * * *' && 'verify' || 'auto') }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python -m forum_observer.freeze_operation forum49 "$FREEZE_PHASE"
