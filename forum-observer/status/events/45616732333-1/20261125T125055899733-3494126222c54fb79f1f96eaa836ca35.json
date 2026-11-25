@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026329",
+  "state": "collecting_effectively",
+  "run_id": "45616732333",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
+  "updated_at": "2026-11-25T12:50:55.899733+00:00",
+  "error": null,
+  "valid_materials": 59,
+  "valid_authors": 59,
+  "successful_post_opens": 256,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 207,
+      "opened": 207,
+      "extracted": 206,
+      "completed": 207
+    }
+  },
+  "article_texts_extracted": 255,
+  "article_details_completed": 256,
+  "last_verified_post": {
+    "author": "拔苗助长",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11338742&type=3",
+    "verified_at": "2026-11-25T12:50:55.340771+00:00",
+    "text_length": 126,
+    "text_sha256": "845fcd7f09d5dce0f7c26be161089258b06870a7a66a19b55da7e033b1eac86c"
+  },
+  "last_attempted_post": {
+    "author": "拔苗助长",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11338742&type=3",
+    "attempt_index": 256
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T12:47:57.813451+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 255,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-25T12:50:55.642701+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
