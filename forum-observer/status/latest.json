@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026329",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "45616732333",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
-  "updated_at": "2026-11-25T12:56:13.951274+00:00",
+  "updated_at": "2026-11-25T12:56:27.052959+00:00",
   "error": null,
-  "valid_materials": 94,
-  "valid_authors": 94,
-  "successful_post_opens": 522,
+  "valid_materials": 95,
+  "valid_authors": 95,
+  "successful_post_opens": 531,
   "article_details": {
     "featured": {
       "queued": 49,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 482,
-      "attempted": 474,
-      "opened": 473,
-      "extracted": 472,
-      "completed": 473
+      "attempted": 482,
+      "opened": 482,
+      "extracted": 481,
+      "completed": 482
     }
   },
-  "article_texts_extracted": 521,
-  "article_details_completed": 522,
+  "article_texts_extracted": 530,
+  "article_details_completed": 531,
   "last_verified_post": {
-    "author": "苍穹剑泣",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337220&type=3",
-    "verified_at": "2026-11-25T12:56:12.713605+00:00",
-    "text_length": 261,
-    "text_sha256": "a2fe7d851dc91cc1ffc5502ddb36acce5d1085677f595343e2f2b3ab86e844f5"
+    "author": "盛世唐朝",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337164&type=3",
+    "verified_at": "2026-11-25T12:56:24.427389+00:00",
+    "text_length": 186,
+    "text_sha256": "1880edbde90556e1a1b8e10b483fadf8f862a28774b7e4cae81190d254070275"
   },
   "last_attempted_post": {
-    "author": "排行老六",
+    "author": "盛世唐朝",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337207&type=3",
-    "attempt_index": 523
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337164&type=3",
+    "attempt_index": 531
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 521,
-  "stage": "detail: 排行老六 六〓合数大小〓",
-  "progress_updated_at": "2026-11-25T12:56:13.476485+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 530,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-25T12:56:25.782841+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 1,
+    "truncated": false,
     "unextracted_current_posts": 1
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
