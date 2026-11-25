@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026330",
+  "state": "collecting_effectively",
+  "run_id": "45706825421",
+  "attempt": 1,
+  "event": "schedule",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45706825421",
+  "updated_at": "2026-11-25T21:48:38.310266+00:00",
+  "error": null,
+  "valid_materials": 55,
+  "valid_authors": 55,
+  "successful_post_opens": 363,
+  "article_details": {
+    "featured": {
+      "queued": 34,
+      "attempted": 34,
+      "opened": 34,
+      "extracted": 34,
+      "completed": 34
+    },
+    "ordinary": {
+      "queued": 339,
+      "attempted": 330,
+      "opened": 329,
+      "extracted": 329,
+      "completed": 329
+    }
+  },
+  "article_texts_extracted": 363,
+  "article_details_completed": 363,
+  "last_verified_post": {
+    "author": "國足之魂",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343908&type=3",
+    "verified_at": "2026-11-25T21:48:37.523790+00:00",
+    "text_length": 186,
+    "text_sha256": "52d732875309db59273cdf3d68160c35a17a3dc0b5839db31172c5048a69d182"
+  },
+  "last_attempted_post": {
+    "author": "藍海雲天",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343886&type=3",
+    "attempt_index": 364
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T21:44:50.320628+00:00",
+      "featured_queued": 34,
+      "featured_attempted": 34,
+      "featured_completed": 34
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 363,
+  "stage": "detail: 藍海雲天 大小单双",
+  "progress_updated_at": "2026-11-25T21:48:37.869595+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
