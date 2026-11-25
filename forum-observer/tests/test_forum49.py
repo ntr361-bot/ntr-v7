@@ -109,17 +109,10 @@ class BudgetTest(unittest.TestCase):
         from zoneinfo import ZoneInfo
         return datetime(2026, 10, 22, h, m, tzinfo=ZoneInfo('Asia/Shanghai'))
 
-    def test_evening_scan_ends_before_freeze(self):
-        # 20:30 -> 30 min to cutoff minus 90 s reserve
-        self.assertEqual(forum49.collection_budget(self.at(20, 30), 1800), 1710)
-        self.assertEqual(forum49.collection_budget(self.at(20, 0), 1800), 1800)
-
-    def test_too_close_to_freeze_is_refused(self):
-        with self.assertRaises(ValueError):
-            forum49.collection_budget(self.at(20, 58), 1800)
-
-    def test_after_freeze_is_observation_only_budget(self):
-        self.assertEqual(forum49.collection_budget(self.at(21, 30), 1800), 1800)
+    def test_collection_budget_is_independent_of_time_of_day(self):
+        for now in (self.at(1, 0), self.at(20, 30), self.at(20, 58), self.at(21, 30)):
+            self.assertEqual(forum49.collection_budget(now, 1800), 1800)
+        self.assertEqual(forum49.collection_budget(self.at(21, 30), 30), 60)
 
 
 if __name__ == '__main__':

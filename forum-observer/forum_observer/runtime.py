@@ -57,10 +57,21 @@ class GitHub:
             raise ValueError('runtime writes are restricted to independent status')
         for attempt in range(3):
             old, previous = self.content(path)
-            if latest and previous.get('updated_at', '') > value['updated_at']:
-                return
-            if latest and previous.get('issue') == value.get('issue'):
-                if previous.get('state') == 'frozen' and value.get('state') in ('starting', 'skipped'):
+            if latest and previous:
+                same_issue = previous.get('issue') == value.get('issue')
+                # GitHub run ids are monotonically increasing. A delayed older
+                # run must never replace a newer run's success/failure status,
+                # even when its final telemetry is written later.
+                try:
+                    previous_order = (int(previous.get('run_id')), int(previous.get('attempt') or 1))
+                    current_order = (int(value.get('run_id')), int(value.get('attempt') or 1))
+                except (TypeError, ValueError):
+                    previous_order = current_order = None
+                if previous_order and current_order and previous_order > current_order:
+                    return
+                if same_issue and (previous_order is None or previous_order == current_order) and previous.get('updated_at', '') > value['updated_at']:
+                    return
+                if same_issue and previous.get('state') == 'frozen' and value.get('state') != 'frozen':
                     return
             payload = {'branch': 'main', 'message': 'chore(forum): record runtime status',
                        'content': base64.b64encode((json.dumps(value, ensure_ascii=False, indent=2)+'\n').encode()).decode()}

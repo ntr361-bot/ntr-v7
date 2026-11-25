@@ -22,7 +22,6 @@ MODELS = {
     "118": ("forum-observer.yml", "Forum observer daily cycle", "archive", "forum-observer"),
     "49": ("forum49-model.yml", "49论坛模型 collection", "forum49", "forum49"),
 }
-MIN_START_LEAD_SECONDS = 300  # Leave room for browser startup before the 21:00 cutoff.
 POLL_SECONDS = 12
 MAX_WAIT_SECONDS = 65 * 60
 
@@ -77,25 +76,23 @@ def preflight(target, mode, root, now=None):
     now = (now or datetime.now(TZ)).astimezone(TZ)
     today = current_issue(now)
     selected = checked_targets(target)
-    cutoff = now.replace(hour=21, minute=0, second=0, microsecond=0)
     for model in selected:
         _, _, folder, _ = MODELS[model]
         archive = Path(root) / folder
-        if snapshot_exists(archive, today):
-            raise ValueError(f"{model} issue {today} is already frozen; refusing {mode}")
         if mode == "collect":
-            remaining = (cutoff - now).total_seconds()
-            if remaining < MIN_START_LEAD_SECONDS:
-                raise ValueError(f"{model} collect: fewer than 5 minutes remain before the 21:00 cutoff")
+            # A frozen issue may still be observed, but downstream workflows
+            # must isolate it from the formal archive and prediction history.
             if model == "118":
                 allowed, _, _, reason = decide(now, archive, manual=True)
-                if not allowed or reason != "manual_rerun":
+                if not allowed or reason not in ("manual_rerun", "manual_test_after_freeze"):
                     raise ValueError(f"118 collection gate refused: {reason}")
             else:
                 allowed, reason, test_only = forum49_collect_gate(archive, now, False)
-                if not allowed or test_only:
+                if not allowed:
                     raise ValueError(f"49 collection gate refused: {reason}")
         else:
+            if snapshot_exists(archive, today):
+                raise ValueError(f"{model} issue {today} is already frozen; refusing {mode}")
             if not freeze_window_allowed(now, archive, manual=True):
                 raise ValueError(f"{model} freeze: no eligible same-day draft after 21:00")
             p = archive / "issues" / today / "draft-status.json"

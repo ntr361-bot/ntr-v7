@@ -121,18 +121,11 @@ def cap_shadow_observation(result: dict, cap: int = MATERIAL_CAP) -> dict:
 
 
 def collection_budget(now_local, default_seconds: int) -> int:
-    """Bound a same-evening scan so it completes before the 21:00 freeze.
+    """Use the configured collector budget at any time of day.
 
-    After 21:00 the scan may still run as a pure observation; the cycle step
-    then refuses to use it as a pre-freeze draft.
+    The cycle independently enforces the pre-draw and immutable-freeze rules.
     """
-    cutoff = now_local.replace(hour=FREEZE_CUTOFF[0], minute=FREEZE_CUTOFF[1], second=0, microsecond=0)
-    remaining = (cutoff - now_local).total_seconds() - PUBLISH_RESERVE_SECONDS
-    if now_local >= cutoff:
-        return default_seconds
-    if remaining < 60:
-        raise ValueError('too close to the 21:00 freeze to complete a collection')
-    return int(min(default_seconds, remaining))
+    return max(60, int(default_seconds))
 
 
 def summarize(result: dict, requested_issue: str | None) -> dict:

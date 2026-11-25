@@ -13,9 +13,8 @@ on:
         options: [collect, freeze]
         required: false
         default: collect
-  # Nightly automation (user-authorized 2026-11-19): Beijing 20:20/20:25
-  # collection (BACKUP_COLLECT_CRON slot), 21:00/21:05 freeze. Script-side gates
-  # keep the original windows; AGENTS.md scoring rules are untouched.
+  # Automatic collection backups remain at the existing slots; any delayed or
+  # manual collection can start 24 hours. Freeze remains at 21:00/21:05.
   schedule:
     - cron: "20,25 12 * * *"
     - cron: "0 13 * * *"
@@ -53,19 +52,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m forum_observer.runtime starting
-      - name: Align GPT collection trigger to its assigned round
-        if: github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))
-        env:
-          GPT_ROUND_TWO: ${{ startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') }}
-        run: |
-          if [ "$GPT_ROUND_TWO" = "true" ]; then
-            python -m forum_observer.schedule --align-gpt-trigger --gpt-second-round
-          else
-            python -m forum_observer.schedule --align-gpt-trigger
-          fi
       - name: Decide current-issue collection
         id: collection-gate
-        # Scheduled backup, GPT collect marker, or manual dispatch may enter; snapshot gate prevents re-freezing.
+        # Existing backup schedule and manual/GPT triggers may enter at any time; snapshots remain immutable.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
         if: (github.event_name == 'workflow_dispatch' && inputs.mode != 'freeze') || (github.event_name == 'schedule' && github.event.schedule == '20,25 12 * * *') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
@@ -79,11 +68,6 @@ jobs:
           else
             python -m forum_observer.schedule --archive archive --github-output "$GITHUB_OUTPUT" --scheduled
           fi
-      - name: Reject delayed scheduled collection
-        if: steps.collection-gate.outputs.reason == 'scheduled_event_outside_collection_window' || steps.collection-gate.outputs.reason == 'requested_round_outside_window' || steps.collection-gate.outputs.reason == 'retired_schedule_trigger'
-        run: |
-          echo "::error::Retired or delayed forum trigger rejected; only the single 20:20 collection (trigger(forum-collect-1)) may collect, inside 20:20-20:58."
-          exit 1
       - name: Install text collector
         if: steps.collection-gate.outputs.collect == 'true'
         run: |
