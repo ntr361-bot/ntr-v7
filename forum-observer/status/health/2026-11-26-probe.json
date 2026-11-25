@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-26T04:02:33.012877+08:00",
+  "updated_at": "2026-11-26T04:02:33.012877+08:00",
+  "issue": "2026330",
+  "mode": "probe",
+  "state": "attention",
+  "probes": {
+    "118": {
+      "state": "reachable",
+      "host": "x5k1pok.11852.com",
+      "http_status": 206
+    },
+    "49": {
+      "state": "reachable",
+      "host": "49217.com",
+      "http_status": 206
+    }
+  },
+  "archive_audit": {},
+  "last_30_manual_operations": {
+    "scope": "last_30_ledger_manual_dispatches; success=parent_verified_committed_evidence",
+    "sample_size": 7,
+    "completed": 7,
+    "verified": 4,
+    "failed_or_cancelled": 3,
+    "in_progress": 0,
+    "verified_rate_pct": 57.1,
+    "mean_completed_minutes": 22.7,
+    "by_target": {
+      "both": {
+        "total": 6,
+        "verified": 4
+      },
+      "49": {
+        "total": 1,
+        "verified": 0
+      }
+    },
+    "sample_complete": false,
+    "by_model": {
+      "118": {
+        "requested": 6,
+        "started": 6,
+        "unmatched": 0,
+        "collection_attempts": 5,
+        "effective_collections": 4,
+        "archived_reports": 4,
+        "startup_rate_pct": 100.0,
+        "effective_collection_rate_pct": 80.0,
+        "report_archive_rate_pct": 80.0
+      },
+      "49": {
+        "requested": 7,
+        "started": 7,
+        "unmatched": 0,
+        "collection_attempts": 6,
+        "effective_collections": 4,
+        "archived_reports": 4,
+        "startup_rate_pct": 100.0,
+        "effective_collection_rate_pct": 66.7,
+        "report_archive_rate_pct": 66.7
+      }
+    }
+  },
+  "current_check_findings": [],
+  "findings": [
+    "118_audit_no_verified_snapshot",
+    "49_audit_no_verified_snapshot"
+  ],
+  "notes": "Probe only checks HTTP shell, not actual DOM parsing; reliability counts only completed verified parent workflows. No collector, freeze, V7 or D1 writes."
+}
