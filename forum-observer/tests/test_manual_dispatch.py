@@ -23,12 +23,11 @@ class ManualDispatchTests(unittest.TestCase):
         self.assertIn("request#${{ inputs.request_id }}",workflow)
         self.assertIn("workflow_dispatch:",workflow)
 
-    def test_manual_collect_can_start_both_and_never_starts_too_close_to_cutoff(self):
+    def test_manual_collect_runs_anytime_and_after_freeze_as_test_only(self):
         with TemporaryDirectory() as root:
-            self.assertEqual(manual.preflight("both","collect",root,self.at(20,20)),
-                             (["118","49"],"2026285"))
-            with self.assertRaisesRegex(ValueError,"fewer than 5 minutes"):
-                manual.preflight("both","collect",root,self.at(20,57))
+            for hour, minute in ((0, 5), (9, 0), (20, 57), (21, 5), (23, 59)):
+                self.assertEqual(manual.preflight("both","collect",root,self.at(hour,minute)),
+                                 (["118","49"],"2026285"))
             with self.assertRaisesRegex(ValueError,"target must"):
                 manual.preflight("invalid","collect",root,self.at(20,20))
 

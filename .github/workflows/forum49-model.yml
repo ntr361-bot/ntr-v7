@@ -45,7 +45,8 @@ on:
     paths:
       - 'forum-observer/triggers/forum49/**'
   schedule:
-    # Beijing 20:20 collect / 20:35 backup / 21:00 freeze / 21:05 backup.
+    # Existing automatic backup slots; delayed/manual collection is accepted all day.
+    # 21:00 and 21:05 remain freeze backups.
     - cron: "20 12 * * *"
     - cron: "35 12 * * *"
     - cron: "0 13 * * *"
@@ -81,14 +82,6 @@ jobs:
           F49_SKIP_IF_COLLECTED: ${{ github.event_name != 'workflow_dispatch' && 'true' || inputs.skip_if_collected || 'false' }}
         run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --forum49-collect-gate
 
-      - name: Reject delayed scheduled collection
-        # GitHub can queue cron events for hours. A skipped overnight scan
-        # must be a visible failure, not a green "collection" workflow.
-        if: ${{ (github.event_name == 'push' || (github.event_name == 'schedule' && (github.event.schedule == '20 12 * * *' || github.event.schedule == '35 12 * * *'))) && steps.collection-gate.outputs.reason == 'automatic_collection_outside_window' }}
-        run: |
-          echo "::error title=49论坛模型 collection::cron began outside the authorized Beijing 20:20-20:50 collection window; no data were collected or frozen"
-          exit 1
-
       - name: Install browser
         if: steps.collection-gate.outputs.collect == 'true'
         run: |
@@ -99,10 +92,10 @@ jobs:
         if: steps.collection-gate.outputs.collect == 'true'
         run: python -m compileall -q forum_observer
 
-      - name: Isolate archive for a manual test after the freeze time
+      - name: Isolate archive for post-freeze test collection
         if: steps.collection-gate.outputs.test == 'true'
         run: |
-          echo "::notice title=49论坛模型 test::manual run after the freeze time; test only (artifact), no draft/freeze/commit"
+          echo "::notice title=49论坛模型 test::post-freeze collection; test only (artifact), no formal draft/freeze/commit"
           rm -rf /tmp/forum49-test && cp -r forum49 /tmp/forum49-test
 
       - name: Collect (no limit on post count; stops at issue boundary)

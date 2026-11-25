@@ -24,8 +24,6 @@ from .core import material_counts
 MODEL_NAME = '49论坛模型'
 DEFAULT_URL = 'https://49217.com/#/forum'
 MAX_POSTS = 2000  # collector's own ceiling; feed scan stops at the issue boundary
-FREEZE_CUTOFF = (21, 0)
-PUBLISH_RESERVE_SECONDS = 90
 # 49图库 marks featured (加精) cards with a '精' icon here; its `span.up > img`
 # (no .icon class) is the pinned/置顶 marker. Verified by source probe run
 # 40058947187: 11 of 20 cards had this icon and all 11 had highQuality=1.
@@ -121,18 +119,11 @@ def cap_shadow_observation(result: dict, cap: int = MATERIAL_CAP) -> dict:
 
 
 def collection_budget(now_local, default_seconds: int) -> int:
-    """Bound a same-evening scan so it completes before the 21:00 freeze.
+    """Use the configured collector budget at any time of day.
 
-    After 21:00 the scan may still run as a pure observation; the cycle step
-    then refuses to use it as a pre-freeze draft.
+    The cycle independently enforces the pre-draw and immutable-freeze rules.
     """
-    cutoff = now_local.replace(hour=FREEZE_CUTOFF[0], minute=FREEZE_CUTOFF[1], second=0, microsecond=0)
-    remaining = (cutoff - now_local).total_seconds() - PUBLISH_RESERVE_SECONDS
-    if now_local >= cutoff:
-        return default_seconds
-    if remaining < 60:
-        raise ValueError('too close to the 21:00 freeze to complete a collection')
-    return int(min(default_seconds, remaining))
+    return max(60, int(default_seconds))
 
 
 def summarize(result: dict, requested_issue: str | None) -> dict:

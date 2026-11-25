@@ -9,8 +9,7 @@ from zoneinfo import ZoneInfo
 from forum_observer.schedule import (
     current_issue, decide, snapshot_exists, ensure_daily_report,
     collection_window_allowed, freeze_window_allowed, draft_is_current_evening,
-    gpt_trigger_wait_seconds, ROUND_ONE_CRON, ROUND_TWO_CRON,
-    BACKUP_COLLECT_CRON, forum49_collect_gate,
+    gpt_trigger_wait_seconds, BACKUP_COLLECT_CRON, forum49_collect_gate,
 )
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -51,67 +50,42 @@ class ScheduleTests(unittest.TestCase):
             self.write_snapshot(tmp,issue)
             self.assertEqual(decide(self.at(20,50),tmp,manual=True)[3],
                              "manual_test_after_freeze")
-            self.assertEqual(decide(self.at(20,50),tmp,scheduled=True,requested_round='1')[3],
-                             "immutable_snapshot_exists")
+            self.assertEqual(decide(self.at(21,50),tmp,scheduled=True,requested_round='1')[3],
+                             "manual_test_after_freeze")
 
     def test_cutoff_and_next_day_never_backfill(self):
         with TemporaryDirectory() as tmp:
             self.assertTrue(decide(self.at(20, 15), tmp)[0])
             self.assertTrue(decide(self.at(20, 57), tmp)[0])
-            self.assertEqual(decide(self.at(20, 59), tmp)[3],
-                             "daily_collection_cutoff_passed")
-            self.assertFalse(decide(self.at(21, 0), tmp)[0])
+            self.assertTrue(decide(self.at(20, 59), tmp)[0])
+            self.assertTrue(decide(self.at(21, 0), tmp)[0])
+            self.assertEqual(decide(self.at(21, 0), tmp)[3], "manual_test_after_freeze")
             self.write_snapshot(tmp, "2026285")
             self.assertTrue(decide(self.at(19, 10, 13), tmp)[0])
             self.assertEqual(current_issue(self.at(19, 10, 13)), "2026286")
 
-    def test_all_collection_cron_slots_and_round_two_are_retired(self):
+    def test_scheduled_collection_has_no_time_or_delay_gate(self):
         with TemporaryDirectory() as tmp:
-            for minute, slot in ((0, ROUND_ONE_CRON), (20, ROUND_ONE_CRON),
-                                 (30, ROUND_TWO_CRON), (35, ROUND_TWO_CRON),
-                                 (15, '40,45,50 11 * * *'), (55, '0 12 * * *')):
-                self.assertEqual(decide(self.at(20, minute), tmp, scheduled=True, slot=slot)[3],
-                                 "retired_schedule_trigger", (minute, slot))
-            self.assertEqual(decide(self.at(20, 33), tmp, scheduled=True, slot='',
-                                    requested_round='2')[3], "retired_schedule_trigger")
-            # The 20:20/20:25 backup cron collects only inside the window.
-            self.assertTrue(decide(self.at(20, 20), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
-            self.assertTrue(decide(self.at(20, 41), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
-            self.assertEqual(decide(self.at(21, 30), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[3],
-                             "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(19,40),tmp,scheduled=True)[3],
-                             "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(20,5),tmp,scheduled=True)[3],
-                             "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(20,59),tmp,scheduled=True)[3],
-                             "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(1,46,13),tmp,scheduled=True)[3],
-                             "scheduled_event_outside_collection_window")
+            for hour, minute in ((0, 0), (1, 46), (9, 10), (19, 0), (20, 5), (21, 30), (23, 59)):
+                go, issue, seconds, reason = decide(
+                    self.at(hour, minute, day=13 if hour == 0 else 12), tmp,
+                    scheduled=True, slot='delayed-or-legacy-cron', requested_round='2')
+                self.assertTrue(go, (hour, minute, reason))
+                self.assertGreater(seconds, 0)
+                self.assertIn(issue, ('2026285', '2026286'))
 
-    def test_collect_marker_window_is_2020_to_2058(self):
-        # Push markers expand ${{ github.event.schedule }} to "" (2026-10-21 regression).
+    def test_legacy_marker_and_delayed_trigger_are_accepted(self):
         with TemporaryDirectory() as tmp:
-            self.assertTrue(decide(self.at(20, 20), tmp, scheduled=True, slot='',
-                                   requested_round='1')[0])
-            self.assertTrue(decide(self.at(20, 45), tmp, scheduled=True, slot='',
-                                   requested_round='1')[0])
-            self.assertEqual(decide(self.at(20, 3), tmp, scheduled=True, slot='',
-                                    requested_round='1')[3],
-                             "scheduled_event_outside_collection_window")
-            self.assertEqual(decide(self.at(20, 58), tmp, scheduled=True,
-                                    requested_round='1')[3],
-                             "requested_round_outside_window")
-            self.assertEqual(decide(self.at(21, 5), tmp, scheduled=True, slot='',
-                                    requested_round='1')[3],
-                             "scheduled_event_outside_collection_window")
+            for hour, minute in ((1, 46), (20, 3), (20, 58), (21, 5)):
+                self.assertTrue(decide(self.at(hour, minute), tmp, scheduled=True,
+                                       requested_round='1')[0])
+            self.assertTrue(decide(self.at(20, 33), tmp, scheduled=True,
+                                   requested_round='2')[0])
 
-    def test_gpt_trigger_aligns_to_2020_and_round_two_never_aligns(self):
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,15)),300)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,19)),60)
-        self.assertEqual(gpt_trigger_wait_seconds(self.at(20,20)),0)
-        self.assertIsNone(gpt_trigger_wait_seconds(self.at(19,56)))
-        self.assertIsNone(gpt_trigger_wait_seconds(self.at(20,25),2))
-        self.assertIsNone(gpt_trigger_wait_seconds(self.at(20,30),2))
+    def test_gpt_trigger_never_waits_or_rejects_legacy_rounds(self):
+        for h, m in ((1, 0), (19, 56), (20, 25), (23, 59)):
+            self.assertEqual(gpt_trigger_wait_seconds(self.at(h, m)), 0)
+            self.assertEqual(gpt_trigger_wait_seconds(self.at(h, m), 2), 0)
 
     def test_overnight_ready_draft_is_refreshed_instead_of_blocking_tonight(self):
         with TemporaryDirectory() as tmp:
@@ -238,7 +212,9 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("forum_observer.freeze_operation", workflow)
         self.assertIn("--defer-freeze", workflow)
-        self.assertIn("Nightly automation (user-authorized 2026-11-19)", workflow)
+        self.assertIn("any delayed or", workflow)
+        self.assertNotIn("Reject delayed scheduled collection", workflow)
+        self.assertNotIn("Align GPT collection trigger", workflow)
 
     def test_workflow_nightly_cron_matches_freeze_window(self):
         """Nightly cron (user-authorized 2026-11-19): collect at 20:20/20:25,
@@ -259,10 +235,10 @@ class ScheduleTests(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             issue = current_issue(self.at(20, 20))
             self.assertEqual(forum49_collect_gate(tmp, self.at(20, 20), True), (True, "automatic_collection", False))
-            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 5), True)[1],
-                             "automatic_collection_outside_window")
-            self.assertEqual(forum49_collect_gate(tmp, self.at(20, 50), True)[1],
-                             "automatic_collection_outside_window")
+            self.assertEqual(forum49_collect_gate(tmp, self.at(1, 5), True),
+                             (True, "automatic_collection", False))
+            self.assertEqual(forum49_collect_gate(tmp, self.at(23, 50), True),
+                             (True, "manual_test_after_freeze", True))
             folder = Path(tmp) / "issues" / issue
             folder.mkdir(parents=True)
             (folder / "draft-status.json").write_text(json.dumps({
@@ -276,7 +252,8 @@ class ScheduleTests(unittest.TestCase):
             # From 21:00 a manual run is a test only; automatic runs never start.
             self.assertEqual(forum49_collect_gate(tmp, self.at(21, 5), False), (True, "manual_test_after_freeze", True))
             self.assertEqual(forum49_collect_gate(tmp, self.at(23, 0), False)[2], True)
-            self.assertFalse(forum49_collect_gate(tmp, self.at(21, 5), True)[0])
+            self.assertEqual(forum49_collect_gate(tmp, self.at(21, 5), True),
+                             (True, "manual_test_after_freeze", True))
 
     def test_manual_118_collection_any_time_before_freeze_then_test_only(self):
         with TemporaryDirectory() as tmp:
@@ -292,16 +269,17 @@ class ScheduleTests(unittest.TestCase):
                 "issue": issue, "status": "ready_observation", "valid_materials": 80,
                 "fetched_at": self.at(20, 31).isoformat()}), encoding="utf-8")
             self.assertEqual(decide(self.at(20, 45), tmp, manual=True)[3], "manual_rerun")
-            # 21:00-21:20 before the snapshot exists: wait, never delay the freeze.
-            self.assertEqual(decide(self.at(21, 2), tmp, manual=True)[3], "manual_test_waits_for_freeze")
-            self.assertFalse(decide(self.at(21, 2), tmp, manual=True)[0])
+            # After 21:00, a run is isolated test collection and never delays freeze.
+            self.assertEqual(decide(self.at(21, 2), tmp, manual=True)[3], "manual_test_after_freeze")
+            self.assertTrue(decide(self.at(21, 2), tmp, manual=True)[0])
             # After the window, or once frozen: test collection allowed.
             self.assertEqual(decide(self.at(21, 30), tmp, manual=True)[3], "manual_test_after_freeze")
             self.write_snapshot(tmp, issue)
             go, _, seconds, reason = decide(self.at(21, 5), tmp, manual=True)
             self.assertEqual((go, reason, seconds), (True, "manual_test_after_freeze", 1800))
-            # Automatic triggers never start after the freeze.
-            self.assertFalse(decide(self.at(21, 30), tmp, scheduled=True, slot=BACKUP_COLLECT_CRON)[0])
+            # Delayed automatic triggers also use the isolated test path.
+            self.assertEqual(decide(self.at(21, 30), tmp, scheduled=True,
+                                    slot=BACKUP_COLLECT_CRON)[3], "manual_test_after_freeze")
 
     def test_any_same_day_manual_draft_is_freezable(self):
         with TemporaryDirectory() as tmp:
@@ -329,7 +307,7 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("freeze", workflow)
         # Manual dispatch remains explicit; a late cron must not be marked green.
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
-        self.assertIn("Reject delayed scheduled collection", workflow)
+        self.assertNotIn("Reject delayed scheduled collection", workflow)
         # Backup push trigger belongs to an isolated marker branch; never
         # reuses 118's trigger branch or initiates a freeze.
         self.assertIn("branches: [forum49-trigger]", workflow)

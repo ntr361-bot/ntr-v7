@@ -1,41 +1,25 @@
 """Idempotent schedule gate for the independent forum observer only.
 
-User decision 2026-10-26: ONE nightly collection at 20:20 Asia/Shanghai
-(trigger(forum-collect-1) marker), running until the 21:00 cutoff. The old
-20:00 first round and 20:30 second round are retired; their cron slots and
-the trigger(forum-collect-2) marker are rejected. Once tonight's collection
-has a valid draft, automatic repeats skip. Old snapshots stay immutable.
+Collection may start at any time. Schedule events use the actual Beijing date
+at process start, and an existing frozen snapshot sends later collection to
+an isolated test path. Freeze remains separately gated at 21:00.
 """
 import argparse
 import hashlib
 import json
-import math
 import os
-import time
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
-COLLECTION_START = (20, 20)  # the single nightly collection (2026-10-26)
-COLLECTION_END = (20, 58)
-# A manual collection started from 20:00 also counts as tonight's draft
-# (it can be frozen, and automatic collections then skip).
-EVENING_START = (20, 0)
-# Independent GitHub cron backup for the 20:20 collection; it skips when
-# tonight's draft already exists (user decision 2026-10-26).
+# Existing backup cron identity is retained for compatibility; it is not a time gate.
 BACKUP_COLLECT_CRON = '20,25 12 * * *'
-FORUM49_AUTO_COLLECT_END = (20, 50)
-# Retired cron slots (20:00 first round, 20:30 second round): never collect.
-ROUND_ONE_CRON = '0,5,10 12 * * *'
-ROUND_TWO_CRON = '30,35,40 12 * * *'
-ROUND_ONE_END = COLLECTION_END
+EVENING_START = (20, 0)
 FREEZE_START = (21, 0)
 FREEZE_END = (21, 20)
 MAX_SECONDS = 1800
-PUBLISH_RESERVE_SECONDS = 90
-GPT_TRIGGER_EARLY_TOLERANCE_SECONDS = 5 * 60
 
 
 def current_issue(now):
@@ -44,25 +28,13 @@ def current_issue(now):
 
 
 def collection_window_allowed(now):
-    local = now.astimezone(TZ)
-    minute = (local.hour, local.minute)
-    return COLLECTION_START <= minute <= COLLECTION_END
+    """Collection has no time-of-day gate; retained for API compatibility."""
+    return True
 
 
 def gpt_trigger_wait_seconds(now, round_number=1):
-    """Wait up to five minutes for the 20:20 collection; round two is retired."""
-    if round_number != 1:
-        return None
-    local = now.astimezone(TZ)
-    target = COLLECTION_START
-    start = local.replace(hour=target[0], minute=target[1],
-                          second=0, microsecond=0)
-    delay = math.ceil((start - local).total_seconds())
-    if delay <= 0:
-        return 0
-    if delay <= GPT_TRIGGER_EARLY_TOLERANCE_SECONDS:
-        return delay
-    return None
+    """Compatibility helper: every GPT trigger starts immediately."""
+    return 0
 
 
 def draft_is_current_evening(data, issue, now, since=None):
@@ -88,7 +60,7 @@ def freeze_window_allowed(now, archive=None, manual=False):
     minute = (local.hour, local.minute)
     # Even an explicit manual freeze must not happen before 21:00 Beijing.
     # Manual retries after the scheduled window still need a verified
-    # current-day draft and the cycle's pre-draw cutoff check.
+    # current-issue draft and the cycle's separate pre-draw cutoff check.
     if minute < FREEZE_START:
         return False
     if not manual and not (FREEZE_START <= minute < FREEZE_END):
@@ -122,40 +94,22 @@ def snapshot_exists(archive, issue):
 
 
 def decide(now, archive, manual=False, scheduled=False, slot=None, requested_round=None):
-    """Gate the two independent daily rounds without duplicate backup scans.
+    """Gate an all-day collection or backup retry without duplicate scans.
 
-    First round opens 20:00; a valid first draft never blocks round two.
-    The last verified completed draft before 21:00 is the freeze candidate.
+    All-day retries are allowed. A completed current-issue automatic draft
+    suppresses redundant backups; manual requests can always refresh it.
     """
     local = now.astimezone(TZ)
     issue = current_issue(now)
     minute = (local.hour, local.minute)
-    # Push markers expand ${{ github.event.schedule }} to an empty string, not
-    # an unset variable: "" means "no cron slot", never a retired cron.
-    slot = slot or None
-    # Since 2026-10-26 only the 20:20 backup cron may collect on a schedule;
-    # the 20:00/20:30 slots and the second-round marker are retired.
-    if (slot is not None and slot != BACKUP_COLLECT_CRON) or requested_round == '2':
-        return False, issue, 0, "retired_schedule_trigger"
-    if scheduled and not manual and not collection_window_allowed(local):
-        return False, issue, 0, "scheduled_event_outside_collection_window"
-    if requested_round == '1' and not (COLLECTION_START <= minute < ROUND_ONE_END):
-        return False, issue, 0, "requested_round_outside_window"
-    deadline = (CUTOFF_HOUR, CUTOFF_MINUTE)
-    cutoff = local.replace(hour=deadline[0], minute=deadline[1],
-                           second=0, microsecond=0)
-    remaining = int((cutoff - local).total_seconds()) - PUBLISH_RESERVE_SECONDS
+    # Cron slots and trigger markers identify a request, but never limit its
+    # execution time. Delayed events are evaluated against the current issue.
     frozen = snapshot_exists(archive, issue)
-    if manual and (frozen or remaining < 60):
-        # User decision 2026-10-26: manual runs after the freeze time are
-        # test collections. They never publish a draft or touch the archive.
-        # Until tonight's freeze is written (21:00-21:20) they wait, so a
-        # test can never delay the freeze past its window.
-        if not frozen and (FREEZE_START <= minute < FREEZE_END):
-            return False, issue, 0, "manual_test_waits_for_freeze"
+    after_freeze = minute >= FREEZE_START
+    if frozen or after_freeze:
+        # Post-freeze observations run in test mode and never publish to the
+        # formal archive, even if a delayed freeze has not produced a snapshot.
         return True, issue, MAX_SECONDS, "manual_test_after_freeze"
-    if frozen:
-        return False, issue, 0, "immutable_snapshot_exists"
     round_number = 1
     draft = Path(archive) / 'issues' / issue / 'draft-status.json'
     if not manual and draft.exists():
@@ -167,29 +121,23 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
             # Tonight's collection (automatic or a manual run from 20:00)
             # already produced a draft: automatic triggers never repeat it.
             return False, issue, 0, "current_round_already_completed"
-    if remaining < 60:
-        return False, issue, 0, "daily_collection_cutoff_passed"
-    return True, issue, min(MAX_SECONDS, remaining), ("manual_rerun" if manual else "round_collection_or_retry")
+    return True, issue, MAX_SECONDS, ("manual_rerun" if manual else "round_collection_or_retry")
 
 
 def forum49_collect_gate(archive, now, skip_if_collected):
-    """49论坛模型: automatic collections (backup cron, scheduled task) run once
-    per night inside 20:20-20:50 and skip when tonight's draft exists.
-    A manual dispatch (skip_if_collected=False) always collects: before
-    21:00 it publishes a replaceable draft; from 21:00 (or once frozen) it is
-    a test that uses an isolated copy of the archive and publishes nothing.
-    Returns (collect, reason, test_only)."""
+    """Decide collection vs. post-freeze isolated observation for forum 49.
+
+    Automatic backup retries run without a time gate and skip when a valid
+    current-issue draft already exists. Returns (collect, reason, test_only).
+    """
     local = now.astimezone(TZ)
     minute = (local.hour, local.minute)
     issue = current_issue(local)
+    frozen = snapshot_exists(archive, issue)
+    if minute >= FREEZE_START or frozen:
+        return True, "manual_test_after_freeze", True
     if not skip_if_collected:
-        if minute >= FREEZE_START or snapshot_exists(archive, issue):
-            return True, "manual_test_after_freeze", True
         return True, "manual_collection", False
-    if not (COLLECTION_START <= minute < FORUM49_AUTO_COLLECT_END):
-        return False, "automatic_collection_outside_window", False
-    if snapshot_exists(archive, issue):
-        return False, "immutable_snapshot_exists", False
     draft = Path(archive) / "issues" / issue / "draft-status.json"
     try:
         data = json.loads(draft.read_text(encoding="utf-8"))
@@ -248,30 +196,20 @@ def main():
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT"))
     parser.add_argument("--require-snapshot", action="store_true")
     parser.add_argument("--ensure-report", action="store_true")
-    parser.add_argument("--manual", action="store_true",help="Allow an explicit rerun before the freeze deadline")
-    parser.add_argument("--scheduled", action="store_true",help="Require the scheduled collection window")
+    parser.add_argument("--manual", action="store_true",help="Allow an explicit current-issue collection")
+    parser.add_argument("--scheduled", action="store_true",help="Mark a scheduled collection request")
     parser.add_argument("--align-gpt-trigger", action="store_true",
-                        help="Wait for 20:20 only when a GPT trigger arrives up to five minutes early")
+                        help="Compatibility no-op; GPT collection triggers start immediately")
     parser.add_argument("--check-freeze-window", action="store_true",help="Check the current Beijing nightly freeze window")
     parser.add_argument("--manual-freeze", action="store_true",
                         help="Allow an explicit freeze outside the nightly window for today's current-issue draft")
-    parser.add_argument("--gpt-second-round", action="store_true",help="Retired 20:30 second round: always rejected")
+    parser.add_argument("--gpt-second-round", action="store_true",help="Compatibility flag for older triggers")
     parser.add_argument("--forum49-collect-gate", action="store_true",
                         help="Decide whether a 49论坛模型 collect run should collect (env F49_SKIP_IF_COLLECTED)")
     a = parser.parse_args()
     now = datetime.now(TZ)
     if a.align_gpt_trigger:
-        if a.gpt_second_round:
-            raise SystemExit("ERROR: the 20:30 second collection round is retired (single 20:20 collection "
-                             "since 2026-10-26). No collection was started.")
-        delay = gpt_trigger_wait_seconds(now,1)
-        if delay is None:
-            raise SystemExit("ERROR: GPT collection trigger arrived more than five minutes before 20:20. "
-                             "No early collection was started.")
-        if delay:
-            print(f"GPT collection trigger arrived early; waiting {delay}s for 20:20 Asia/Shanghai.",
-                  flush=True)
-            time.sleep(delay)
+        print("GPT collection trigger accepted; collection is available 24 hours.", flush=True)
         return 0
     if a.forum49_collect_gate:
         skip = os.environ.get("F49_SKIP_IF_COLLECTED", "false").lower() == "true"
