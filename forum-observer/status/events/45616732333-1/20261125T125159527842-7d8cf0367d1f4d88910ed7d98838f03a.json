@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026329",
+  "state": "collecting_effectively",
+  "run_id": "45616732333",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
+  "updated_at": "2026-11-25T12:51:59.527842+00:00",
+  "error": null,
+  "valid_materials": 67,
+  "valid_authors": 67,
+  "successful_post_opens": 312,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 264,
+      "opened": 263,
+      "extracted": 262,
+      "completed": 263
+    }
+  },
+  "article_texts_extracted": 311,
+  "article_details_completed": 312,
+  "last_verified_post": {
+    "author": "周星驰",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11338662&type=3",
+    "verified_at": "2026-11-25T12:51:58.738686+00:00",
+    "text_length": 49,
+    "text_sha256": "0d1a18b8300a1a972043d1cf8bca0ac7ece66b2484635d87ece49f03ad74db51"
+  },
+  "last_attempted_post": {
+    "author": "电压表",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11338661&type=3",
+    "attempt_index": 313
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T12:47:57.813451+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 311,
+  "stage": "detail: 电压表 329期:五肖",
+  "progress_updated_at": "2026-11-25T12:51:59.368625+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
