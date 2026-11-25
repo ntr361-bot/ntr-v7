@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026329",
+  "state": "collecting_effectively",
+  "run_id": "45616732333",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
+  "updated_at": "2026-11-25T12:49:51.904964+00:00",
+  "error": null,
+  "valid_materials": 46,
+  "valid_authors": 46,
+  "successful_post_opens": 197,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 149,
+      "opened": 148,
+      "extracted": 147,
+      "completed": 148
+    }
+  },
+  "article_texts_extracted": 196,
+  "article_details_completed": 197,
+  "last_verified_post": {
+    "author": "朝阳冬泳怪鸽",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11340377&type=3",
+    "verified_at": "2026-11-25T12:49:50.593042+00:00",
+    "text_length": 34,
+    "text_sha256": "2dca9ed1e4e44e9e25b27ae3430f948a2cd321731cdb6d98282056459d9a5802"
+  },
+  "last_attempted_post": {
+    "author": "依然饭太稀",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11340374&type=3",
+    "attempt_index": 198
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T12:47:57.813451+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 196,
+  "stage": "detail: 依然饭太稀 仙姑杀什么开什么九肖连错六期",
+  "progress_updated_at": "2026-11-25T12:49:51.152775+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
