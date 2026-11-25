@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026330",
+  "state": "collecting_effectively",
+  "run_id": "45706825421",
+  "attempt": 1,
+  "event": "schedule",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45706825421",
+  "updated_at": "2026-11-25T21:45:28.454001+00:00",
+  "error": null,
+  "valid_materials": 17,
+  "valid_authors": 17,
+  "successful_post_opens": 99,
+  "article_details": {
+    "featured": {
+      "queued": 34,
+      "attempted": 34,
+      "opened": 34,
+      "extracted": 34,
+      "completed": 34
+    },
+    "ordinary": {
+      "queued": 339,
+      "attempted": 66,
+      "opened": 65,
+      "extracted": 65,
+      "completed": 65
+    }
+  },
+  "article_texts_extracted": 99,
+  "article_details_completed": 99,
+  "last_verified_post": {
+    "author": "视如草芥",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11345122&type=3",
+    "verified_at": "2026-11-25T21:45:28.131666+00:00",
+    "text_length": 19,
+    "text_sha256": "262b643a16cd209016be7c5507c7ed32ee7c4e5578c8a5aeaabc497257e0b4fb"
+  },
+  "last_attempted_post": {
+    "author": "出水芙蓉",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11345121&type=3",
+    "attempt_index": 100
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T21:44:50.320628+00:00",
+      "featured_queued": 34,
+      "featured_attempted": 34,
+      "featured_completed": 34
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 99,
+  "stage": "detail: 出水芙蓉 330期：平特一肖",
+  "progress_updated_at": "2026-11-25T21:45:28.222160+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
