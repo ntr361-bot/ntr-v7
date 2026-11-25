@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026329",
+  "state": "collecting_effectively",
+  "run_id": "45616732333",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45616732333",
+  "updated_at": "2026-11-25T12:56:13.951274+00:00",
+  "error": null,
+  "valid_materials": 94,
+  "valid_authors": 94,
+  "successful_post_opens": 522,
+  "article_details": {
+    "featured": {
+      "queued": 49,
+      "attempted": 49,
+      "opened": 49,
+      "extracted": 49,
+      "completed": 49
+    },
+    "ordinary": {
+      "queued": 482,
+      "attempted": 474,
+      "opened": 473,
+      "extracted": 472,
+      "completed": 473
+    }
+  },
+  "article_texts_extracted": 521,
+  "article_details_completed": 522,
+  "last_verified_post": {
+    "author": "苍穹剑泣",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337220&type=3",
+    "verified_at": "2026-11-25T12:56:12.713605+00:00",
+    "text_length": 261,
+    "text_sha256": "a2fe7d851dc91cc1ffc5502ddb36acce5d1085677f595343e2f2b3ab86e844f5"
+  },
+  "last_attempted_post": {
+    "author": "排行老六",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11337207&type=3",
+    "attempt_index": 523
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-25T12:47:57.813451+00:00",
+      "featured_queued": 49,
+      "featured_attempted": 49,
+      "featured_completed": 49
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 521,
+  "stage": "detail: 排行老六 六〓合数大小〓",
+  "progress_updated_at": "2026-11-25T12:56:13.476485+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
