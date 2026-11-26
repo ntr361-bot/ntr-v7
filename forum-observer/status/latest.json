@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026331",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "45898940948",
   "attempt": 1,
   "event": "schedule",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45898940948",
-  "updated_at": "2026-11-26T21:38:20.437317+00:00",
+  "updated_at": "2026-11-26T21:38:57.673241+00:00",
   "error": null,
-  "valid_materials": 37,
-  "valid_authors": 37,
-  "successful_post_opens": 286,
+  "valid_materials": 42,
+  "valid_authors": 42,
+  "successful_post_opens": 332,
   "article_details": {
     "featured": {
       "queued": 15,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 317,
-      "attempted": 272,
-      "opened": 271,
-      "extracted": 271,
-      "completed": 271
+      "attempted": 317,
+      "opened": 317,
+      "extracted": 317,
+      "completed": 317
     }
   },
-  "article_texts_extracted": 286,
-  "article_details_completed": 286,
+  "article_texts_extracted": 332,
+  "article_details_completed": 332,
   "last_verified_post": {
-    "author": "王道人",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349234&type=3",
-    "verified_at": "2026-11-26T21:38:19.844881+00:00",
-    "text_length": 81,
-    "text_sha256": "f27cbc1cbd6d73baabea0cd7de7a44743133d536dfdca0c4ecaeb9c07b2d2c6f"
+    "author": "六合奇谈",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349203&type=3",
+    "verified_at": "2026-11-26T21:38:55.860682+00:00",
+    "text_length": 56,
+    "text_sha256": "5cd9446b78bb28353d034628009fcc7a65effe7365c168a7f0e3da7d224a6425"
   },
   "last_attempted_post": {
-    "author": "天道酬勤",
+    "author": "六合奇谈",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349233&type=3",
-    "attempt_index": 287
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349203&type=3",
+    "attempt_index": 332
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 286,
-  "stage": "detail: 天道酬勤 331期【四肖】开完奖就更新！",
-  "progress_updated_at": "2026-11-26T21:38:20.099764+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 332,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-26T21:38:56.408704+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": null,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
