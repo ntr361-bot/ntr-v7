@@ -23,6 +23,21 @@ class ShadowSummaryTests(unittest.TestCase):
         self.assertEqual(periods, ["2025330", "2026329", "2026330"])
         self.assertEqual(evidence, [])
 
+    def test_only_explicit_recommendations_with_at_least_six_are_admitted(self):
+        lines = recognized("330期推荐:鼠牛虎兔龙蛇",
+                           "330期六肖:鼠、牛、虎、兔、龙、蛇开？00",
+                           "330期六肖:鼠鼠虎兔龙蛇",
+                           "330期五肖:鼠牛虎兔龙",
+                           "330期九肖:鼠牛虎兔龙蛇",
+                           "330期绝杀六肖:鼠牛虎兔龙蛇",
+                           "330期六肖中特:01 02 03 04 05 06",
+                           "330期家野两肖", "家禽：牛猪狗鸡羊马",
+                           "330期六肖:鼠牛虎兔龙蛇开奖：蛇26",
+                           "330期必中肖【猪蛇鸡兔猴鼠龙虎马】")
+        _, candidates = inspect_lines(lines, "2026330")
+        self.assertEqual([row["line"] for row in candidates], [1, 2, 11])
+        self.assertEqual([len(row["zodiacs"]) for row in candidates], [6, 6, 9])
+
     def test_sha256_dedup_keeps_source_links_and_distinguishes_missing_text(self):
         def image(digest, url, lines):
             return {"sha256": digest * 64, "source_url": f"https://example.com/post/{url}",

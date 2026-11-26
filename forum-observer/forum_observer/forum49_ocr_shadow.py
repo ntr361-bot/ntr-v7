@@ -12,8 +12,13 @@ from zoneinfo import ZoneInfo
 
 PERIOD = re.compile(r"(?<!\d)(?:(20\d{2})\s*年?\s*)?(?:第\s*)?(\d\s*\d\s*\d)\s*期")
 ZODIACS = "鼠牛虎兔龙蛇马羊猴鸡狗猪"
-ANIMALS = re.compile(f"[{ZODIACS}]{{2,}}")
-PLAY = re.compile(r"[一二两三四五六七八九十单双1-9]肖|肖中特|杀.{0,3}肖|特肖|[前后家野]肖|平特|特码|围特|平码")
+MIN_ZODIACS = 6
+COUNTS = {"六": 6, "七": 7, "八": 8, "九": 9, "十": 10, "十一": 11, "十二": 12}
+RECOMMENDATION = re.compile(r"(?<![\d一二三四五六七八九十])(十二|十一|十|九|八|七|六|1[0-2]|[6-9])肖(?:中特|王)?|必中肖|推荐(?:生肖|肖)?")
+BRACKETS = "【】[]〖〗「」『』()《》"
+PICKS = re.compile(f"[{ZODIACS}](?:[、,·+／/]*[{ZODIACS}])*")
+NON_RECOMMENDATION = re.compile(r"杀|杀码|前后|家野|四季|生肖对照|生肖表|图例")
+DRAW_RESULT = re.compile(r"(?:开|开奖)[^\d]*?(?:0?[1-9]|[1-9]\d)(?!\d)")
 SHELL = re.compile(r"历史帖子|历史推荐|开奖直播|导航|彩票|点击立即|期的号码")
 VARIANTS = str.maketrans("龍馬雞豬鷄", "龙马鸡猪鸡")
 SHA256 = re.compile(r"[a-f0-9]{64}")
@@ -24,7 +29,8 @@ def inspect_lines(lines: list, issue: str) -> tuple[list[str], list[dict]]:
     periods = set()
     candidates = []
     active = None
-    anchor = recent_play = -100
+    pending = None
+    anchor = -100
     for number, line in enumerate(lines, 1):
         text = unicodedata.normalize("NFKC", line["text"]).translate(VARIANTS)
         marks = list(PERIOD.finditer(text))
@@ -35,24 +41,42 @@ def inspect_lines(lines: list, issue: str) -> tuple[list[str], list[dict]]:
                 active = (year or issue[:4]) + re.sub(r"\s+", "", short)
                 periods.add(active)
             anchor = number
-            recent_play = -100
+            pending = None
             if len(marks) != 1:
                 active = None
                 continue
             text = text[marks[0].end():]
-        if active != issue or number - anchor > 8 or not text.strip() or SHELL.search(text):
-            continue
-        if PLAY.search(text):
-            recent_play = number
-        if number - recent_play > 2:
+        if active != issue or number - anchor > 8:
             continue
         text = re.sub(r"\s+", "", text)
-        single = re.search("杀|一肖|平特", text) and any(x in text for x in ZODIACS)
-        if ANIMALS.search(text) or single:
-            candidates.append({
-                "line": number, "period_line": anchor, "text": line["text"],
-                "confidence": line.get("confidence"),
-            })
+        if not text.strip(BRACKETS + ":：·•●"):
+            continue
+        label = RECOMMENDATION.search(text)
+        prior, pending = pending, None
+        if SHELL.search(text) or NON_RECOMMENDATION.search(text) or DRAW_RESULT.search(text):
+            continue
+        if label:
+            raw_count = label[1]
+            expected = int(raw_count) if raw_count and raw_count.isdecimal() else COUNTS.get(raw_count)
+            payload = text[label.end():]
+        elif prior is not None and number - prior[0] <= 2:
+            expected = prior[1]
+            payload = text
+        else:
+            continue
+        payload = re.split(r"开[奖：:]?|[+＋]\d", payload, maxsplit=1)[0].strip(BRACKETS + ":：·•●")
+        if not payload and label:
+            pending = (number, expected)
+            continue
+        if not PICKS.fullmatch(payload):
+            continue
+        picks = list(dict.fromkeys(symbol for symbol in payload if symbol in ZODIACS))
+        if len(picks) < MIN_ZODIACS or (expected is not None and len(picks) != expected):
+            continue
+        candidates.append({
+            "line": number, "period_line": anchor, "text": line["text"],
+            "confidence": line.get("confidence"), "zodiacs": picks,
+        })
     return sorted(periods), candidates
 
 
@@ -100,7 +124,7 @@ def summarize(report: dict, issue: str) -> dict:
         "failed_downloads": len(report.get("download_failures", [])),
     }
     return {
-        "schema_version": 1, "issue": issue, "mode": "forum49_image_shadow",
+        "schema_version": 2, "min_recommended_zodiacs": MIN_ZODIACS, "issue": issue, "mode": "forum49_image_shadow",
         "test_only": True, "used_for_freeze": False, "source_generated_at": report.get("generated_at"),
         "coverage": figures, "images": evidence,
     }
@@ -116,13 +140,13 @@ def markdown(result: dict) -> str:
         "images_showing_other_issues_only": "仅有其他期号的图片",
         "images_without_period_marker": "有文字但无期号的图片",
         "images_without_ocr_text": "无 OCR 文字的图片",
-        "images_with_review_candidates": "有待复核候选的图片",
+        "images_with_review_candidates": "有至少 6 个明确推荐生肖的候选图片",
         "failed_downloads": "下载失败链接",
     }
     output = [
         f"# 49 论坛 {result['issue']} 期图片影子统计", "",
         f"北京时间 {datetime.now(ZoneInfo('Asia/Shanghai')):%Y-%m-%d %H:%M:%S}。",
-        "候选供人工复核。图例、断行和 OCR 错字可能影响候选，统计不参与正式预测。", "",
+        "图片须有目标期号，并明确推荐至少 6 个不同生肖。候选供人工复核，统计不参与正式预测。", "",
         "| 项目 | 数量 |", "|---|---:|",
     ]
     for name, value in result["coverage"].items():
