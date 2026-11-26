@@ -1,0 +1,62 @@
+name: 49 forum public article image OCR test
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/forum49-article-ocr-test]
+permissions:
+  contents: read
+
+jobs:
+  experiment:
+    # GitHub registers workflow_dispatch from its default branch. To run this
+    # isolated branch, opt in by adding [run forum49 OCR] to the push commit.
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run forum49 OCR]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: forum-observer
+    env:
+      PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: 'True'
+      PADDLE_PDX_MODEL_SOURCE: bos
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated OCR dependencies
+        run: python -m pip install -r forum49-ocr-test-requirements.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -p 'test_forum49_ocr.py' -v
+      - name: Restore recognized text cache
+        uses: actions/cache@v4
+        with:
+          path: forum-observer/forum49-ocr-test-out/recognition-cache.sqlite3
+          key: forum49-article-ocr-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: forum49-article-ocr-v1-${{ runner.os }}-
+      - name: Evaluate 20 real public article images
+        run: python -u -m forum_observer.forum49_ocr_test
+      - name: Publish report summary
+        if: always()
+        run: |
+          if test -f forum49-ocr-test-out/report.md; then
+            cat forum49-ocr-test-out/report.md >> "$GITHUB_STEP_SUMMARY"
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("forum49-ocr-test-out/report.json").read_text())
+          print(f"::notice title=49 OCR sample::{r['sampled']}/{r['requested']} sampled, "
+                f"{r['recognized']} recognized, {len(r['download_failures'])} download failures, "
+                f"{r['elapsed_seconds']} seconds")
+          PY
+          fi
+      - name: Upload standalone OCR report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forum49-article-ocr-report
+          path: |
+            forum-observer/forum49-ocr-test-out/report.json
+            forum-observer/forum49-ocr-test-out/report.md
