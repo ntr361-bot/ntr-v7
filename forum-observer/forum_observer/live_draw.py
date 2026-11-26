@@ -20,6 +20,7 @@ def normalize_live_draws(payload, now=None):
         raise ValueError("empty live results")
     now=now or datetime.now(timezone.utc)
     accepted={}
+    conflicts=set()
     for row in rows[:80]:
         if not isinstance(row,dict):continue
         issue=str(row.get("issue",""))
@@ -35,7 +36,7 @@ def normalize_live_draws(payload, now=None):
             zodiac=row["specialZodiac"]
             if not (isinstance(numbers,list) and len(numbers)==7 and
                     all(str(n).isdigit() and 1<=int(n)<=49 for n in numbers) and
-                    int(numbers[-1])==special and year_pet in ZODIACS and zodiac in ZODIACS):
+                    len({int(n) for n in numbers})==7 and int(numbers[-1])==special and year_pet in ZODIACS and zodiac in ZODIACS):
                 continue
             index=ZODIACS.index(year_pet)
             order=list(reversed(ZODIACS[:index+1]))+list(reversed(ZODIACS[index+1:]))
@@ -43,10 +44,16 @@ def normalize_live_draws(payload, now=None):
             if expected!=zodiac:continue
         except (ValueError,KeyError,TypeError):
             continue
-        accepted[issue]={"issue":issue,"special_zodiac":zodiac,
-                         "open_time":when.isoformat(),
-                         "actual_source":"smart-ledger:/api/results"}
-    return list(accepted.values())
+        record={"issue":issue,"special_zodiac":zodiac,
+                "special_number":f"{special:02d}",
+                "numbers":"".join(f"{int(number):02d}" for number in numbers[:-1]),
+                "open_time":when.isoformat(), "date":when.isoformat(),
+                "special_wave_color":row.get("waveColor", ""),
+                "actual_source":"smart-ledger:/api/results"}
+        if issue in accepted and accepted[issue]!=record:
+            conflicts.add(issue)
+        accepted[issue]=record
+    return [record for issue,record in accepted.items() if issue not in conflicts]
 
 
 def fetch_live_draws(url,timeout=12):

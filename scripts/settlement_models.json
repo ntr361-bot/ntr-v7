@@ -1,0 +1,17 @@
+{
+  "daily_first_issue": "2026197",
+  "runtime_first_issue": "2026278",
+  "models": [
+    {"id":"v65-50", "label":"50期", "daily":"v65_50", "legacy_daily":"50", "version":"V6.5", "periods":50},
+    {"id":"v65-100", "label":"100期", "daily":"v65_100", "legacy_daily":"100", "version":"V6.5", "periods":100},
+    {"id":"v65-all", "label":"全部历史", "daily":"v65_all", "legacy_daily":"all", "version":"V6.5", "periods_min":101},
+    {"id":"v65-auto", "label":"自动学习V6.5", "daily":"v65_auto", "legacy_daily":"auto", "version":"v65_auto"},
+    {"id":"v7", "label":"整合V7", "version":"v7"},
+    {"id":"v7-auto", "label":"自动学习V7", "version":"v7_auto"},
+    {"id":"special-rule", "label":"特别规律", "daily_section":"special_rule"},
+    {"id":"comprehensive", "label":"综合评分", "daily_section":"comprehensive_score"},
+    {"id":"ensemble", "label":"集成预测", "daily_section":"ensemble"},
+    {"id":"forum-observer", "label":"118论坛模型", "archive":"archive", "first_issue":"2026282"},
+    {"id":"forum49", "label":"49论坛模型", "archive":"forum49", "first_issue":"2026295"}
+  ]
+}

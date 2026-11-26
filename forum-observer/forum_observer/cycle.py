@@ -28,6 +28,67 @@ def write_once(path,obj):
             return False
     return True
 
+def verified_snapshot(folder):
+    snap=json.loads((folder/'snapshot.json').read_text(encoding='utf-8'))
+    check=dict(snap)
+    digest=check.pop('digest',None)
+    calculated=hashlib.sha256(json.dumps(check,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+    if digest!=calculated or str(snap.get('issue'))!=folder.name:
+        raise ValueError('immutable snapshot identity or digest mismatch for '+folder.name)
+    return snap
+
+
+def settlement_record(snap, actual, *, strict=False):
+    issue=str(snap['issue'])
+    digest=snap['digest']
+    drawn_at=draw_time(actual)
+    raw_frozen=snap.get('frozen_at') or (None if strict else snap.get('fetched_at'))
+    if not raw_frozen:
+        raise ValueError('snapshot_freeze_time_missing')
+    snap_at=datetime.fromisoformat(raw_frozen)
+    if drawn_at is None or snap_at.utcoffset() is None or snap_at>=drawn_at:
+        raise ValueError('snapshot_not_provably_pre_draw')
+    zodiac=actual.get('special_zodiac')
+    if zodiac not in ZODIACS:
+        raise ValueError('invalid_actual_zodiac')
+    if strict:
+        captured=datetime.fromisoformat(snap['fetched_at'])
+        ordered=sorted(snap['ranking'],key=lambda row:row['rank'])
+        if (captured.utcoffset() is None or captured>snap_at
+                or [row['rank'] for row in ordered]!=list(range(1,13))
+                or set(row['zodiac'] for row in ordered)!=set(ZODIACS)
+                or any(snap[f'top{size}']!=[row['zodiac'] for row in ordered[:size]]
+                       for size in (1,3,6))):
+            raise ValueError('invalid_frozen_ranking_or_capture_time')
+    rank=next((v['rank'] for v in snap['ranking'] if v['zodiac']==zodiac),None)
+    if rank is None:
+        raise ValueError('rank missing for actual zodiac')
+    return {
+        'issue':issue,'actual':zodiac,'actual_source':actual.get('actual_source','site/data/history.json'),
+        'drawn_at':drawn_at.isoformat(),'snapshot_digest':digest,
+        'snapshot_at':snap['fetched_at'],'rank':rank,
+        'top1_hit':zodiac in snap['top1'],
+        'top3_hit':zodiac in snap['top3'],
+        'top6_hit':zodiac in snap['top6'],
+        'classification':'experimental_unverified_leaderboard'}
+
+
+def public_issue(issue, saved, settlement):
+    return {
+        'issue':issue,'classification':saved.get('classification'),
+        'frozen_at':saved.get('frozen_at') or saved.get('fetched_at'),
+        'freeze_time_source':('snapshot_frozen_at' if saved.get('frozen_at')
+                              else 'legacy_collection_time_fallback'),
+        'ranking':saved.get('ranking',[]),'top3':saved.get('top3',[]),
+        'top6':saved.get('top6',[]),'digest':saved.get('digest'),
+        'quality_status':saved.get('quality_status',
+            saved.get('freeze_classification','legacy_unclassified')),
+        'valid_materials':saved.get('valid_materials'),
+        'minimum_valid_materials':saved.get('minimum_valid_materials'),
+        'settlement':settlement
+    }
+
+
 def draw_time(record):
     raw=str(record.get('open_time') or record.get('date') or '').strip()
     try:
@@ -70,7 +131,7 @@ def persist_completed_threads(folder, status):
     return len(additions)
 
 
-def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer',before_snapshot=None,freeze_receipt=None):
+def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=False,finalize=False,model_id='forum-observer',before_snapshot=None,freeze_receipt=None,allow_settlement=True,valid_snapshots=None):
     """Publish reports immediately or freeze an explicitly selected current draft.
 
     Existing callers retain the original immediate-freeze behavior. Production
@@ -301,37 +362,21 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
     for folder in sorted((archive/'issues').glob('20?????')) if (archive/'issues').exists() else []:
         snap_path=folder/'snapshot.json'
         if not snap_path.exists():continue
-        snap=json.loads(snap_path.read_text(encoding='utf-8'))
-        issue=str(snap['issue'])
-        check=dict(snap);digest=check.pop('digest',None)
-        calculated=hashlib.sha256(json.dumps(check,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
-        if digest!=calculated:raise ValueError('immutable snapshot digest mismatch for '+issue)
+        if valid_snapshots is not None and folder.name not in valid_snapshots:
+            continue
+        snap=verified_snapshot(folder) if valid_snapshots is None else valid_snapshots[folder.name]
+        issue=folder.name
         actual=by_issue.get(issue)
-        if actual and not (folder/'settlement.json').exists():
-            drawn_at=draw_time(actual)
-            # A report may have been collected before the draw but frozen later.
-            # The real immutable freeze timestamp, when present, is what proves
-            # the prediction existed before the verified draw.
-            snap_at=datetime.fromisoformat(snap.get('frozen_at') or snap['fetched_at'])
-            if (drawn_at is None or snap_at.tzinfo is None
-                    or snap_at>=drawn_at):
-                atomic(folder/'settlement-blocked.json',{'issue':issue,'reason':'snapshot_not_provably_pre_draw'})
-                continue
-            zodiac=actual.get('special_zodiac')
-            if zodiac not in ZODIACS:
-                atomic(folder/'settlement-blocked.json',{'issue':issue,'reason':'invalid_actual_zodiac'})
-                continue
-            rank=next((v['rank'] for v in snap['ranking'] if v['zodiac']==zodiac),None)
-            if rank is None:raise ValueError('rank missing for actual zodiac')
-            if write_once(folder/'settlement.json',{
-                'issue':issue,'actual':zodiac,'actual_source':actual.get('actual_source','site/data/history.json'),
-                'drawn_at':drawn_at.isoformat(),'snapshot_digest':digest,
-                'snapshot_at':snap['fetched_at'],'rank':rank,
-                'top1_hit':zodiac in snap['top1'],
-                'top3_hit':zodiac in snap['top3'],
-                'top6_hit':zodiac in snap['top6'],
-                'classification':'experimental_unverified_leaderboard'}):
-                new_settlements += 1
+        if actual and not (folder/'settlement.json').exists() and allow_settlement:
+            try:
+                result=settlement_record(snap,actual)
+            except ValueError as error:
+                if str(error) not in ('snapshot_not_provably_pre_draw','invalid_actual_zodiac'):
+                    raise
+                atomic(folder/'settlement-blocked.json',{'issue':issue,'reason':str(error)})
+            else:
+                if write_once(folder/'settlement.json',result):
+                    new_settlements += 1
         settlement=folder/'settlement.json'
         summary.append({
             'issue':issue,'actual':actual.get('special_zodiac') if actual else None,
@@ -352,8 +397,9 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
         issue_dir=archive/'issues'/current_issue
         snap_path=issue_dir/'snapshot.json'
         settlement_path=issue_dir/'settlement.json'
-        snap=json.loads(snap_path.read_text(encoding='utf-8')) if snap_path.exists() else None
-        settled=json.loads(settlement_path.read_text(encoding='utf-8')) if settlement_path.exists() else None
+        snap=(valid_snapshots.get(current_issue) if valid_snapshots is not None else
+              json.loads(snap_path.read_text(encoding='utf-8')) if snap_path.exists() else None)
+        settled=json.loads(settlement_path.read_text(encoding='utf-8')) if snap and settlement_path.exists() else None
         result={
             'schema_version':1,'model':model_id,
             'classification':'experimental_unverified_leaderboard',
@@ -391,21 +437,13 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             sp=folder/'snapshot.json'
             if not sp.exists():
                 continue
-            saved=json.loads(sp.read_text(encoding='utf-8'))
+            if valid_snapshots is not None and folder.name not in valid_snapshots:
+                continue
+            saved=(valid_snapshots[folder.name] if valid_snapshots is not None else
+                   json.loads(sp.read_text(encoding='utf-8')))
             st=folder/'settlement.json'
-            atomic(public_dir/'issues'/(folder.name+'.json'),{
-                'issue':folder.name,'classification':saved.get('classification'),
-                'frozen_at':saved.get('frozen_at') or saved.get('fetched_at'),
-                'freeze_time_source':('snapshot_frozen_at' if saved.get('frozen_at')
-                                      else 'legacy_collection_time_fallback'),
-                'ranking':saved.get('ranking',[]),'top3':saved.get('top3',[]),
-                'top6':saved.get('top6',[]),'digest':saved.get('digest'),
-                'quality_status':saved.get('quality_status',
-                    saved.get('freeze_classification','legacy_unclassified')),
-                'valid_materials':saved.get('valid_materials'),
-                'minimum_valid_materials':saved.get('minimum_valid_materials'),
-                'settlement':json.loads(st.read_text(encoding='utf-8')) if st.exists() else None
-            })
+            atomic(public_dir/'issues'/(folder.name+'.json'),public_issue(folder.name,saved,
+                   json.loads(st.read_text(encoding='utf-8')) if st.exists() else None))
             report_src = folder / 'report.md'
             if report_src.exists():
                 dest = public_dir / 'issues' / folder.name / 'report.md'
@@ -421,6 +459,7 @@ if __name__=='__main__':
     p.add_argument('--history',default='../site/data/history.json')
     p.add_argument('--public',default=None)
     p.add_argument('--defer-freeze',action='store_true',help='Publish a replaceable report immediately; defer immutable freeze')
+    p.add_argument('--no-settlement',action='store_true',help='Publish without settling')
     p.add_argument('--finalize',action='store_true',help='Freeze eligible current-issue draft as a write-once snapshot')
     p.add_argument('--model-id',default='forum-observer',
                    help='Public feed model id (49论坛模型 uses forum49); default unchanged for 118')
@@ -438,4 +477,4 @@ if __name__=='__main__':
         except Exception as error:
             print('Live result unavailable; using verified committed V7 history only:',error)
     defer=a.defer_freeze or not a.finalize
-    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,model_id=a.model_id))
+    print('settled records:',sync(a.out,a.archive,a.history,a.public,live_draws=live,defer_freeze=defer,finalize=a.finalize,model_id=a.model_id,allow_settlement=not a.no_settlement))

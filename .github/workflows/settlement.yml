@@ -1,0 +1,110 @@
+name: Unified model settlement
+run-name: Unified settlement · ${{ inputs.issue || github.event.schedule || 'manual' }}
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Optional archive issue for the status report (YYYYNNN)
+        type: string
+        required: false
+  schedule:
+    # Beijing time 21:40, 21:50, and 22:10.
+    - cron: '40,50 13 * * *'
+    - cron: '10 14 * * *'
+  push:
+    branches: [main]
+    paths: ['.github/workflows/settlement.yml']
+  pull_request:
+    paths:
+      - '.github/workflows/settlement.yml'
+      - 'scripts/*settlement*'
+      - 'forum-observer/forum_observer/cycle.py'
+      - 'forum-observer/forum_observer/live_draw.py'
+
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('settlement-pr-{0}', github.ref) || 'unified-model-settlement' }}
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s scripts -v
+      - run: python -m unittest discover -s tests -p 'test_*cycle*.py' -v
+        working-directory: forum-observer
+  settle:
+    needs: checks
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: windows-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      SETTLEMENT_ISSUE: ${{ inputs.issue }}
+      SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
+      PYTHONUTF8: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: python -m pip install tzdata
+      - name: Reconcile original predictions and publish git artifacts
+        shell: pwsh
+        run: |
+          function Ensure-Success { if ($LASTEXITCODE -ne 0) { throw "Command failed ($LASTEXITCODE)" } }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          $arguments = @('--apply')
+          if ($env:SETTLEMENT_ISSUE) { $arguments += @('--issue', $env:SETTLEMENT_ISSUE) }
+          for ($attempt = 1; $attempt -le 4; $attempt++) {
+            git fetch origin main; Ensure-Success
+            git reset --hard origin/main; Ensure-Success
+            dotnet build PredictionRunner/PredictionRunner.csproj -c Release; Ensure-Success
+            python scripts/settlement.py @arguments; Ensure-Success
+            git add site/data/history.json site/data/daily-records site/data/runtime-state.json site/data/prediction-traces site/data/forum-observer site/data/forum49 site/data/settlement forum-observer/archive forum-observer/forum49; Ensure-Success
+            git commit -m 'chore(settlement): reconcile verified draws'; Ensure-Success
+            git push origin HEAD:main
+            if ($LASTEXITCODE -eq 0) { exit 0 }
+            Start-Sleep -Seconds ($attempt * 3)
+          }
+          throw 'main advanced repeatedly; settlement will retry from current main'
+      - name: Read committed settlements back through the production ledger
+        shell: pwsh
+        run: |
+          for ($attempt = 1; $attempt -le 4; $attempt++) {
+            git fetch origin main
+            if ($LASTEXITCODE -ne 0) { throw 'Could not refresh main for read-back' }
+            git reset --hard origin/main
+            if ($LASTEXITCODE -ne 0) { throw 'Could not check out committed data for read-back' }
+            python scripts/settlement.py --verify-ledger
+            if ($LASTEXITCODE -ne 0) { throw 'Could not generate ledger read-back receipt' }
+            $receipt = Get-Content site/data/settlement/latest.json -Raw | ConvertFrom-Json
+            if ($receipt.ledger_sync.state -eq 'failed' -and $attempt -lt 4) {
+              Start-Sleep -Seconds (15 * $attempt)
+              continue
+            }
+            git add site/data/settlement
+            git commit -m 'chore(settlement): record production ledger verification'
+            if ($LASTEXITCODE -ne 0) { throw 'Could not commit ledger read-back receipt' }
+            git push origin HEAD:main
+            if ($LASTEXITCODE -eq 0) {
+              "Issue $($receipt.issue): $($receipt.settled_count)/$($receipt.expected_count) settled, production ledger $($receipt.ledger_sync.state)" >> $env:GITHUB_STEP_SUMMARY
+              if ($receipt.ledger_sync.state -eq 'failed') { throw 'Production ledger read-back failed; next run retries synchronization' }
+              exit 0
+            }
+          }
+          throw 'Could not publish the ledger read-back receipt after concurrent changes'
