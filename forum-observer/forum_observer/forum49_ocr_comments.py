@@ -166,11 +166,18 @@ def main():
                 retain_duplicate_sources=True)
     diagnostics["ocr_counts"] = counts
     combined = {
-        **body, "issue": args.issue, "comment_diagnostics": diagnostics,
+        "test_only": True, "used_for_freeze": False, "issue": args.issue,
+        "generated_at": body.get("generated_at"),
+        "issue_post_coverage": body.get("issue_post_coverage"),
+        "comment_diagnostics": diagnostics,
         "images": body["images"] + images,
         "download_failures": body.get("download_failures", []) + failures,
     }
     summary = summarize(combined, args.issue)
+    sampled = summary["coverage"]["unique_images"]
+    recognized = summary["coverage"]["images_with_ocr_text"]
+    combined.update(sampled=sampled, recognized=recognized,
+                    success_rate=recognized / sampled if sampled else None)
     (args.out / "report.json").write_text(json.dumps(combined, ensure_ascii=False, indent=2), encoding="utf-8")
     (args.out / "shadow.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     text = markdown(summary)
