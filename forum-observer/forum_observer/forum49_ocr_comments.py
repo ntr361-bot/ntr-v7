@@ -124,7 +124,12 @@ def discover_comments(issue, ids, diagnostics, *, pages, read_article=read_artic
                     if replies is None:
                         break
                     parent = replies.get("firstLevelComment") or {}
-                    if str(parent.get("id")) != parent_id or not public_comment(parent, article_id, "3"):
+                    # listLatest already proved the parent public. The reply API
+                    # returns only a reduced parent record, so bind it by both IDs.
+                    if (str(parent.get("id")) != parent_id
+                            or str(parent.get("relatedId")) != article_id
+                            or str(parent.get("status", 1)) != "1"
+                            or str(parent.get("type", 3)) != "3"):
                         counts["unverified_reply_pages"] += 1
                         break
                     for reply in replies.get("list") or []:

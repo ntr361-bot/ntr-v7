@@ -29,7 +29,7 @@ class CommentImageTests(unittest.TestCase):
                                  comment(29, url=BODY_IMAGE), comment(30, secondLevelCount=2,
                                      subCommentList=[comment(31, kind=6)])]}
             if endpoint == "listSecondComment":
-                return {"firstLevelComment": comment(30), "list": [
+                return {"firstLevelComment": {"id": 30, "relatedId": 42}, "list": [
                     comment(31, kind=6), comment(32, kind=6),
                     comment(33, kind=6, related=77)], "moreSecondComments": False}
             self.fail(f"unexpected comment endpoint: {endpoint}")
@@ -41,6 +41,18 @@ class CommentImageTests(unittest.TestCase):
         self.assertEqual(diagnostics["counts"]["unverified_comment_rows"], 3)
         self.assertEqual(requests[1][1]["commentId"], "30")
         self.assertEqual(diagnostics["counts"]["rejected_image_urls"], 1)
+
+    def test_reply_page_has_to_match_verified_parent(self):
+        def read(endpoint, **params):
+            if endpoint == "listLatest":
+                return {"list": [comment(30, secondLevelCount=1)]}
+            return {"firstLevelComment": {"id": 9, "relatedId": 42},
+                    "list": [comment(31, kind=6)]}
+        diagnostics = {}
+        rows = list(discover_comments("2026330", ["42"], diagnostics, pages=1,
+                                     read_article=article, read_comment=read))
+        self.assertEqual([row["comment_id"] for row in rows], ["30"])
+        self.assertEqual(diagnostics["counts"]["unverified_reply_pages"], 1)
 
     def test_rejects_paid_or_other_period_posts_before_reading_comments(self):
         def read(endpoint, *, articleId):
