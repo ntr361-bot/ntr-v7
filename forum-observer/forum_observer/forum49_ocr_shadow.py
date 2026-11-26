@@ -13,8 +13,9 @@ from zoneinfo import ZoneInfo
 PERIOD = re.compile(r"(?<!\d)(?:(20\d{2})\s*年?\s*)?(?:第\s*)?(\d\s*\d\s*\d)\s*期")
 ZODIACS = "鼠牛虎兔龙蛇马羊猴鸡狗猪"
 MIN_ZODIACS = 6
-COUNTS = {"六": 6, "七": 7, "八": 8, "九": 9, "十": 10, "十一": 11, "十二": 12}
+COUNTS = {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9, "十": 10, "十一": 11, "十二": 12}
 RECOMMENDATION = re.compile(r"(?<![\d一二三四五六七八九十])(十二|十一|十|九|八|七|六|1[0-2]|[6-9])肖(?:中特|王)?|必中肖|推荐(?:生肖|肖)?")
+KILL = re.compile(r"🔪(?:([一二两三四五六七八九十1-9])(?:生)?肖)?|杀号|杀码|([一二两三四五六七八九十1-9])肖杀特|杀(?:掉|除)?([一二两三四五六七八九十1-9])(?:生)?肖|杀(?:特|生)?肖(?:好中)?")
 BRACKETS = "【】[]〖〗「」『』()《》"
 PICKS = re.compile(f"[{ZODIACS}](?:[、,·+／/]*[{ZODIACS}])*")
 NON_RECOMMENDATION = re.compile(r"杀|杀码|前后|家野|四季|生肖对照|生肖表|图例")
@@ -51,31 +52,42 @@ def inspect_lines(lines: list, issue: str) -> tuple[list[str], list[dict]]:
         text = re.sub(r"\s+", "", text)
         if not text.strip(BRACKETS + ":：·•●"):
             continue
-        label = RECOMMENDATION.search(text)
+        kill_label = KILL.search(text)
+        label = kill_label or RECOMMENDATION.search(text)
         prior, pending = pending, None
-        if SHELL.search(text) or NON_RECOMMENDATION.search(text) or DRAW_RESULT.search(text):
+        if SHELL.search(text) or DRAW_RESULT.search(text):
+            continue
+        if kill_label is not None and kill_label[0] in {"杀号", "杀码"}:
+            continue
+        if kill_label is None and NON_RECOMMENDATION.search(text):
             continue
         if label:
-            raw_count = label[1]
+            mode = "kill" if kill_label else "recommend"
+            raw_count = next((group for group in label.groups() if group), None)
             expected = int(raw_count) if raw_count and raw_count.isdecimal() else COUNTS.get(raw_count)
             payload = text[label.end():]
         elif prior is not None and number - prior[0] <= 2:
-            expected = prior[1]
+            _, expected, mode = prior
             payload = text
         else:
             continue
         payload = re.split(r"开[奖：:]?|[+＋]\d", payload, maxsplit=1)[0].strip(BRACKETS + ":：·•●")
         if not payload and label:
-            pending = (number, expected)
+            pending = (number, expected, mode)
             continue
         if not PICKS.fullmatch(payload):
             continue
         picks = list(dict.fromkeys(symbol for symbol in payload if symbol in ZODIACS))
-        if len(picks) < MIN_ZODIACS or (expected is not None and len(picks) != expected):
+        if expected is not None and len(picks) != expected:
+            continue
+        excluded = picks if mode == "kill" else []
+        recommended = [symbol for symbol in ZODIACS if symbol not in excluded] if excluded else picks
+        if len(recommended) < MIN_ZODIACS:
             continue
         candidates.append({
             "line": number, "period_line": anchor, "text": line["text"],
-            "confidence": line.get("confidence"), "zodiacs": picks,
+            "confidence": line.get("confidence"), "mode": mode,
+            "zodiacs": recommended, "excluded_zodiacs": excluded,
         })
     return sorted(periods), candidates
 
@@ -121,10 +133,12 @@ def summarize(report: dict, issue: str) -> dict:
         "images_without_period_marker": states["no_period"],
         "images_without_ocr_text": states["no_text"],
         "images_with_review_candidates": sum(bool(row["candidates"]) for row in evidence),
+        "images_with_kill_candidates": sum(any(x["mode"] == "kill" for x in row["candidates"])
+                                           for row in evidence),
         "failed_downloads": len(report.get("download_failures", [])),
     }
     return {
-        "schema_version": 2, "min_recommended_zodiacs": MIN_ZODIACS, "issue": issue, "mode": "forum49_image_shadow",
+        "schema_version": 3, "min_recommended_zodiacs": MIN_ZODIACS, "issue": issue, "mode": "forum49_image_shadow",
         "test_only": True, "used_for_freeze": False, "source_generated_at": report.get("generated_at"),
         "coverage": figures, "images": evidence,
     }
@@ -141,12 +155,13 @@ def markdown(result: dict) -> str:
         "images_without_period_marker": "有文字但无期号的图片",
         "images_without_ocr_text": "无 OCR 文字的图片",
         "images_with_review_candidates": "有至少 6 个明确推荐生肖的候选图片",
+        "images_with_kill_candidates": "有明确杀肖候选的图片（包含在上项）",
         "failed_downloads": "下载失败链接",
     }
     output = [
         f"# 49 论坛 {result['issue']} 期图片影子统计", "",
         f"北京时间 {datetime.now(ZoneInfo('Asia/Shanghai')):%Y-%m-%d %H:%M:%S}。",
-        "图片须有目标期号，并明确推荐至少 6 个不同生肖。候选供人工复核，统计不参与正式预测。", "",
+        "图片须有目标期号，并明确推荐至少 6 个不同生肖。明确杀 1 至 6 肖时，按排除后剩余的生肖记录。影子统计保留同一作者的多份资料，图片按 SHA-256 去重。候选供人工复核，统计不参与正式预测。", "",
         "| 项目 | 数量 |", "|---|---:|",
     ]
     for name, value in result["coverage"].items():
@@ -163,7 +178,10 @@ def markdown(result: dict) -> str:
             text = candidate["text"].replace("\n", " ").replace("\r", " ")
             safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             safe = re.sub(r"([\\`*_\[\]])", r"\\\1", safe)
-            output.append(f"  - 第 {candidate['line']} 行 · {safe}")
+            suffix = ""
+            if candidate["mode"] == "kill":
+                suffix = f" · 排除 {''.join(candidate['excluded_zodiacs'])}，余 {len(candidate['zodiacs'])} 肖"
+            output.append(f"  - 第 {candidate['line']} 行 · {safe}{suffix}")
     return "\n".join(output) + "\n"
 
 

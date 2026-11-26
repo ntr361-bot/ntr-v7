@@ -35,8 +35,19 @@ class ShadowSummaryTests(unittest.TestCase):
                            "330期六肖:鼠牛虎兔龙蛇开奖：蛇26",
                            "330期必中肖【猪蛇鸡兔猴鼠龙虎马】")
         _, candidates = inspect_lines(lines, "2026330")
-        self.assertEqual([row["line"] for row in candidates], [1, 2, 11])
-        self.assertEqual([len(row["zodiacs"]) for row in candidates], [6, 6, 9])
+        self.assertEqual([row["line"] for row in candidates], [1, 2, 6, 11])
+        self.assertEqual([len(row["zodiacs"]) for row in candidates], [6, 6, 6, 9])
+
+    def test_kill_requires_clear_zodiacs_and_six_remaining(self):
+        lines = recognized("330期绝杀一肖", "【羊】", "330期杀肖好中【兔】",
+                           "330期七肖杀特【鼠牛虎兔龙蛇马】",
+                           "330期杀六肖【鼠牛虎兔龙蛇】", "330期杀三肖【鼠牛】",
+                           "330期杀码【12】", "330期杀号【虎】", "330期一肖杀特【马】")
+        _, candidates = inspect_lines(lines, "2026330")
+        self.assertEqual([row["line"] for row in candidates], [2, 3, 5, 9])
+        self.assertEqual([len(row["zodiacs"]) for row in candidates], [11, 11, 6, 11])
+        self.assertEqual(candidates[0]["excluded_zodiacs"], ["羊"])
+        self.assertNotIn("羊", candidates[0]["zodiacs"])
 
     def test_sha256_dedup_keeps_source_links_and_distinguishes_missing_text(self):
         def image(digest, url, lines):
@@ -57,9 +68,21 @@ class ShadowSummaryTests(unittest.TestCase):
             "images_with_ocr_text": 3, "images_showing_target_issue": 1,
             "images_showing_other_issues_only": 1, "images_without_period_marker": 1,
             "images_without_ocr_text": 1, "images_with_review_candidates": 1,
-            "failed_downloads": 1,
+            "images_with_kill_candidates": 0, "failed_downloads": 1,
         })
         self.assertEqual(len(result["images"][0]["source_urls"]), 2)
+
+    def test_keeps_multiple_images_and_candidate_rows_from_the_same_author(self):
+        common = {"source_url": "https://example.com/post/1", "author": "same"}
+        report = {"test_only": True, "used_for_freeze": False, "images": [
+            dict(common, sha256="a" * 64, image_url="https://example.com/img/1",
+                 lines=recognized("330期六肖:鼠牛虎兔龙蛇", "330期🔪【马】")),
+            dict(common, sha256="b" * 64, image_url="https://example.com/img/2",
+                 lines=recognized("330期九肖:龙狗羊鸡猪猴牛马虎")),
+        ]}
+        images = summarize(report, "2026330")["images"]
+        self.assertEqual([len(row["candidates"]) for row in images], [2, 1])
+        self.assertEqual(images[0]["candidates"][1]["excluded_zodiacs"], ["马"])
 
     def test_rejects_formal_report_and_mismatched_issue(self):
         with self.assertRaises(ValueError):
