@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026330",
+  "state": "collecting_effectively",
+  "run_id": "45805557018",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
+  "updated_at": "2026-11-26T10:57:51.981759+00:00",
+  "error": null,
+  "valid_materials": 34,
+  "valid_authors": 34,
+  "successful_post_opens": 154,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 449,
+      "attempted": 102,
+      "opened": 101,
+      "extracted": 101,
+      "completed": 101
+    }
+  },
+  "article_texts_extracted": 154,
+  "article_details_completed": 154,
+  "last_verified_post": {
+    "author": "湘之印",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11346616&type=3",
+    "verified_at": "2026-11-26T10:57:51.585499+00:00",
+    "text_length": 175,
+    "text_sha256": "c3a8a0d7e42550f1f48dfdac1024908f5b21bc9e7a89b062db25ea9f248b6902"
+  },
+  "last_attempted_post": {
+    "author": "亿安来",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343802&type=3",
+    "attempt_index": 155
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-26T10:56:45.376485+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 154,
+  "stage": "detail: 亿安来 杀三肖",
+  "progress_updated_at": "2026-11-26T10:57:51.831281+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
