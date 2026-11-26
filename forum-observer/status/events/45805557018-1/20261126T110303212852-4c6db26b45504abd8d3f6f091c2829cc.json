@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026330",
+  "state": "report_published",
+  "run_id": "45805557018",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
+  "updated_at": "2026-11-26T11:03:03.212852+00:00",
+  "error": null,
+  "valid_materials": 86,
+  "valid_authors": 86,
+  "successful_post_opens": 502,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 449,
+      "attempted": 449,
+      "opened": 449,
+      "extracted": 449,
+      "completed": 449
+    }
+  },
+  "article_texts_extracted": 502,
+  "article_details_completed": 502,
+  "last_verified_post": {
+    "author": "盛世唐朝",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
+    "verified_at": "2026-11-26T11:02:51.521665+00:00",
+    "text_length": 262,
+    "text_sha256": "34e862d3e09a315eb3175bb6ee624471a91cf6c93e04db11375c085ab5546d42"
+  },
+  "last_attempted_post": {
+    "author": "盛世唐朝",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
+    "attempt_index": 502
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-26T10:56:45.376485+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 502,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-26T11:02:52.453101+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": false,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+}
