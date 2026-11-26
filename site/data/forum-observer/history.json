@@ -4,7 +4,7 @@
   "classification": "experimental_unverified_leaderboard",
   "settled_count": 42,
   "top3_hits": 15,
-  "top6_hits": 24,
+  "top6_hits": 25,
   "settlements": [
     {
       "issue": "2026285",
@@ -992,7 +992,7 @@
     },
     {
       "issue": "2026330",
-      "actual": null,
+      "actual": "蛇",
       "top3": [
         "鸡",
         "羊",
@@ -1007,8 +1007,8 @@
         "蛇"
       ],
       "top3_hit": false,
-      "top6_hit": false,
-      "rank": null,
+      "top6_hit": true,
+      "rank": 6,
       "frozen_at": "2026-11-26T21:04:49.210357+08:00",
       "quality_status": "meets_minimum_samples",
       "valid_materials": 86,
