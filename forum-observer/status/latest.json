@@ -1,67 +1,31 @@
 {
   "schema_version": 2,
   "issue": "2026330",
-  "state": "report_published",
-  "run_id": "45706825421",
+  "state": "starting",
+  "run_id": "45805557018",
   "attempt": 1,
-  "event": "schedule",
+  "event": "workflow_dispatch",
   "test_only": false,
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45706825421",
-  "updated_at": "2026-11-25T21:48:54.719014+00:00",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
+  "updated_at": "2026-11-26T10:54:07.073304+00:00",
   "error": null,
-  "valid_materials": 57,
-  "valid_authors": 57,
-  "successful_post_opens": 373,
-  "article_details": {
-    "featured": {
-      "queued": 34,
-      "attempted": 34,
-      "opened": 34,
-      "extracted": 34,
-      "completed": 34
-    },
-    "ordinary": {
-      "queued": 339,
-      "attempted": 339,
-      "opened": 339,
-      "extracted": 339,
-      "completed": 339
-    }
-  },
-  "article_texts_extracted": 373,
-  "article_details_completed": 373,
-  "last_verified_post": {
-    "author": "盛世唐朝",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
-    "verified_at": "2026-11-25T21:48:46.138843+00:00",
-    "text_length": 262,
-    "text_sha256": "34e862d3e09a315eb3175bb6ee624471a91cf6c93e04db11375c085ab5546d42"
-  },
-  "last_attempted_post": {
-    "author": "盛世唐朝",
-    "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
-    "attempt_index": 373
-  },
-  "priority_audit": {
-    "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": {
-      "at": "2026-11-25T21:44:50.320628+00:00",
-      "featured_queued": 34,
-      "featured_attempted": 34,
-      "featured_completed": 34
-    },
-    "violation_count": 0,
-    "state": "verified"
-  },
-  "raw_count": 373,
-  "stage": "browser_closing",
-  "progress_updated_at": "2026-11-25T21:48:46.829130+00:00",
-  "collection_status": "ready_observation",
+  "valid_materials": null,
+  "valid_authors": null,
+  "successful_post_opens": null,
+  "article_details": null,
+  "article_texts_extracted": null,
+  "article_details_completed": null,
+  "last_verified_post": null,
+  "last_attempted_post": null,
+  "priority_audit": null,
+  "raw_count": null,
+  "stage": null,
+  "progress_updated_at": null,
+  "collection_status": null,
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": false,
-    "unextracted_current_posts": 0
+    "truncated": null,
+    "unextracted_current_posts": null
   },
-  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
+  "coverage_label": null
 }
