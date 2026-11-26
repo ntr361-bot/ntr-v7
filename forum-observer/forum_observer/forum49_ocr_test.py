@@ -47,20 +47,22 @@ def retry(operation, *, backoff=time.sleep):
 
 
 def collect_and_recognize(candidates, scratch, database, worker, *,
-                          download=download_image, limit=SAMPLE_SIZE):
+                          download=download_image, limit=SAMPLE_SIZE, retain_duplicate_sources=False):
     database.execute("""CREATE TABLE IF NOT EXISTS results (
         engine TEXT, sha256 TEXT, lines TEXT NOT NULL, PRIMARY KEY (engine, sha256)
     )""")
     rows, download_failures = [], []
     counts = Counter()
-    seen_urls, seen_hashes = set(), set()
+    seen_urls, seen_hashes = {}, set()
     path = scratch / "image"
     for candidate in candidates:
         url, source = candidate["image_url"], candidate["source_url"]
         if url in seen_urls:
             counts["duplicate_urls"] += 1
+            if retain_duplicate_sources and seen_urls[url]:
+                rows.append({**candidate, "sha256": seen_urls[url], "status": "duplicate", "lines": []})
             continue
-        seen_urls.add(url)
+        seen_urls[url] = None
         started = time.monotonic()
 
         def fetch(_):
@@ -75,8 +77,11 @@ def collect_and_recognize(candidates, scratch, database, worker, *,
             download_failures.append({**candidate, "elapsed_seconds": elapsed(started),
                                       "download_errors": download_errors})
             continue
+        seen_urls[url] = digest
         if digest in seen_hashes:
             counts["duplicate_sha256"] += 1
+            if retain_duplicate_sources:
+                rows.append({**candidate, "sha256": digest, "status": "duplicate", "lines": []})
             continue
         seen_hashes.add(digest)
         download_seconds = elapsed(started)
@@ -109,7 +114,7 @@ def collect_and_recognize(candidates, scratch, database, worker, *,
             "ocr_errors": ocr_errors,
             "failure_reason": ocr_errors[-1]["reason"] if not lines else None,
         })
-        if len(rows) >= limit:
+        if limit is not None and len(seen_hashes) >= limit:
             break
     return rows, download_failures, counts
 

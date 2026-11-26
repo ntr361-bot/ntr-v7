@@ -104,9 +104,13 @@ def summarize(report: dict, issue: str) -> dict:
         digest = row["sha256"]
         if not SHA256.fullmatch(digest):
             raise ValueError("invalid image SHA-256")
-        group = groups.setdefault(digest, {"source_urls": set(), "image_urls": set(), "ocr_rows": []})
+        group = groups.setdefault(digest, {
+            "source_urls": set(), "image_urls": set(), "ocr_rows": [], "comment_refs": set(),
+        })
         group["source_urls"].add(row["source_url"])
         group["image_urls"].add(row["image_url"])
+        if row.get("comment_id"):
+            group["comment_refs"].add((row["source_url"], str(row["comment_id"]), row["image_url"]))
         if row.get("lines"):
             group["ocr_rows"].append(row["lines"])
     evidence = []
@@ -118,6 +122,8 @@ def summarize(report: dict, issue: str) -> dict:
         evidence.append({
             "sha256": digest, "source_urls": sorted(group["source_urls"]),
             "image_urls": sorted(group["image_urls"]), "state": state,
+            "comment_sources": [{"source_url": post, "comment_id": cid, "image_url": url}
+                                for post, cid, url in sorted(group["comment_refs"])],
             "image_period_markers": periods, "ocr_line_count": len(lines),
             "candidates": candidates,
         })
@@ -174,6 +180,8 @@ def markdown(result: dict) -> str:
         urls = [f"[来源帖 {i}]({url})" for i, url in enumerate(row["source_urls"], 1)]
         urls += [f"[原图 {i}]({url})" for i, url in enumerate(row["image_urls"], 1)]
         output.append("- " + " · ".join(urls))
+        for ref in row["comment_sources"]:
+            output.append(f"  - 评论 {ref['comment_id']} · [所在帖]({ref['source_url']})")
         for candidate in row["candidates"]:
             text = candidate["text"].replace("\n", " ").replace("\r", " ")
             safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
