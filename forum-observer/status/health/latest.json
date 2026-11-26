@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-26T04:02:33.012877+08:00",
-  "updated_at": "2026-11-26T04:02:33.012877+08:00",
-  "issue": "2026330",
+  "checked_at": "2026-11-27T03:44:47.563278+08:00",
+  "updated_at": "2026-11-27T03:44:47.563278+08:00",
+  "issue": "2026331",
   "mode": "probe",
   "state": "attention",
   "probes": {
@@ -20,17 +20,17 @@
   "archive_audit": {},
   "last_30_manual_operations": {
     "scope": "last_30_ledger_manual_dispatches; success=parent_verified_committed_evidence",
-    "sample_size": 7,
-    "completed": 7,
-    "verified": 4,
-    "failed_or_cancelled": 3,
+    "sample_size": 9,
+    "completed": 9,
+    "verified": 5,
+    "failed_or_cancelled": 4,
     "in_progress": 0,
-    "verified_rate_pct": 57.1,
-    "mean_completed_minutes": 22.7,
+    "verified_rate_pct": 55.6,
+    "mean_completed_minutes": 20.1,
     "by_target": {
       "both": {
-        "total": 6,
-        "verified": 4
+        "total": 8,
+        "verified": 5
       },
       "49": {
         "total": 1,
@@ -40,26 +40,26 @@
     "sample_complete": false,
     "by_model": {
       "118": {
-        "requested": 6,
-        "started": 6,
-        "unmatched": 0,
-        "collection_attempts": 5,
-        "effective_collections": 4,
-        "archived_reports": 4,
-        "startup_rate_pct": 100.0,
-        "effective_collection_rate_pct": 80.0,
-        "report_archive_rate_pct": 80.0
-      },
-      "49": {
-        "requested": 7,
-        "started": 7,
+        "requested": 8,
+        "started": 8,
         "unmatched": 0,
         "collection_attempts": 6,
-        "effective_collections": 4,
-        "archived_reports": 4,
+        "effective_collections": 5,
+        "archived_reports": 5,
         "startup_rate_pct": 100.0,
-        "effective_collection_rate_pct": 66.7,
-        "report_archive_rate_pct": 66.7
+        "effective_collection_rate_pct": 83.3,
+        "report_archive_rate_pct": 83.3
+      },
+      "49": {
+        "requested": 9,
+        "started": 9,
+        "unmatched": 0,
+        "collection_attempts": 7,
+        "effective_collections": 5,
+        "archived_reports": 5,
+        "startup_rate_pct": 100.0,
+        "effective_collection_rate_pct": 71.4,
+        "report_archive_rate_pct": 71.4
       }
     }
   },
