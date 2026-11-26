@@ -1,0 +1,24 @@
+{
+  "issue": "2026330",
+  "model": "forum-observer",
+  "phase": "manual",
+  "run_id": "45825571573",
+  "run_attempt": 1,
+  "failures": [
+    "Command '['git', 'push', 'origin', 'HEAD:refs/heads/main']' returned non-zero exit status 1.",
+    "HTTP Error 404: Not Found",
+    "HTTP Error 404: Not Found",
+    "HTTP Error 404: Not Found"
+  ],
+  "snapshot_path": "forum-observer/archive/issues/2026330/snapshot.json",
+  "ledger_sync": "ledger_readback_failed",
+  "retry_count": 1,
+  "source": "manual",
+  "report_generated_at": "2026-11-26T11:02:52.453101+00:00",
+  "report_sha256": "f64c39144f64e83e826e61e410d4f49e4a1d372ea157224e662e65155b55ccd5",
+  "frozen_by_run_id": "45825571573",
+  "frozen_at": "2026-11-26T21:04:49.210357+08:00",
+  "digest": "9f70071747cc2d59226d021d7fb087138928cfb718d3df71cded3d18ac2cb38c",
+  "frozen_report_sha256": "58dfe498f0e792bb589dc4b596cc0b680555da4500eee7c41b6392967c805b17",
+  "ledger_retry_count": 2
+}
