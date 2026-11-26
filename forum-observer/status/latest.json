@@ -1,17 +1,17 @@
 {
   "schema_version": 2,
   "issue": "2026330",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "45805557018",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
-  "updated_at": "2026-11-26T11:02:09.724258+00:00",
+  "updated_at": "2026-11-26T11:02:53.153653+00:00",
   "error": null,
-  "valid_materials": 79,
-  "valid_authors": 79,
-  "successful_post_opens": 459,
+  "valid_materials": 86,
+  "valid_authors": 86,
+  "successful_post_opens": 502,
   "article_details": {
     "featured": {
       "queued": 53,
@@ -22,26 +22,26 @@
     },
     "ordinary": {
       "queued": 449,
-      "attempted": 407,
-      "opened": 406,
-      "extracted": 406,
-      "completed": 406
+      "attempted": 449,
+      "opened": 449,
+      "extracted": 449,
+      "completed": 449
     }
   },
-  "article_texts_extracted": 459,
-  "article_details_completed": 459,
+  "article_texts_extracted": 502,
+  "article_details_completed": 502,
   "last_verified_post": {
-    "author": "港澳六叔",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11344182&type=3",
-    "verified_at": "2026-11-26T11:02:08.487994+00:00",
-    "text_length": 750,
-    "text_sha256": "dd8ef7492aaa26c51a91c0a29fe56e24e50e45731fee4e677667c2c669c4fc70"
+    "author": "盛世唐朝",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
+    "verified_at": "2026-11-26T11:02:51.521665+00:00",
+    "text_length": 262,
+    "text_sha256": "34e862d3e09a315eb3175bb6ee624471a91cf6c93e04db11375c085ab5546d42"
   },
   "last_attempted_post": {
-    "author": "萌你一身血",
+    "author": "盛世唐朝",
     "is_featured": false,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11344283&type=3",
-    "attempt_index": 460
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11343801&type=3",
+    "attempt_index": 502
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -54,14 +54,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 459,
-  "stage": "detail: 萌你一身血 五肖中特",
-  "progress_updated_at": "2026-11-26T11:02:08.968972+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 502,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-26T11:02:52.453101+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
     "detail_errors": 0,
-    "truncated": null,
+    "truncated": false,
     "unextracted_current_posts": 0
   },
-  "coverage_label": null
+  "coverage_label": "当期帖子正文详情：抽样检查，评论采集已关闭"
 }
