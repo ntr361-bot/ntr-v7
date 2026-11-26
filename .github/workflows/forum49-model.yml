@@ -6,7 +6,7 @@ run-name: ${{ inputs.request_id && format('Forum 49 {0} manual#{1}', inputs.mode
 # own archive forum-observer/forum49/ and feed site/data/forum49/.
 #   mode=collect : explicit request -> replaceable current-issue draft (never a freeze).
 #   mode=freeze  : explicit request -> immutable current-issue draft
-#   mode=settle  : settle snapshots from verified draw history; never collects
+#   mode=settle  : forward legacy manual requests to unified settlement
 # Never touches 118's archive/feed, D1 or formal V7.
 on:
   workflow_dispatch:
@@ -114,7 +114,7 @@ jobs:
         run: |
           python -m forum_observer.cycle --out forum49-out --archive forum49 \
             --history ../site/data/history.json --public ../site/data/forum49 \
-            --defer-freeze --model-id forum49
+            --defer-freeze --no-settlement --model-id forum49
 
       - name: Enforce eligible current-issue draft after collection
         # The collector can exit 0 with zero qualifying posts. Without a
@@ -235,36 +235,19 @@ jobs:
   settle:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'settle' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_ISSUE: ${{ inputs.issue }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Settle from verified draw history (never collects or freezes)
-        run: |
-          python -m forum_observer.cycle \
-            --out forum49-no-collection \
-            --archive forum49 \
-            --history ../site/data/history.json \
-            --public ../site/data/forum49 \
-            --model-id forum49
-      - name: Record 49 author history from verified frozen evidence only
-        continue-on-error: true
-        run: python -m forum_observer.author_profiles --archive forum49
-      - name: Commit settlement
+      - name: Forward legacy manual settlement to the unified entry
+        working-directory: .
         shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add forum49/ ../site/data/forum49/
-          if git diff --cached --quiet; then echo "no new settlement"; exit 0; fi
-          git commit -m "chore(forum49): settle 49论坛模型 from verified draw history"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main || true
-          done
-          exit 1
+          args=()
+          if [ -n "$TARGET_ISSUE" ]; then args+=(-f "issue=$TARGET_ISSUE"); fi
+          gh workflow run settlement.yml --repo "$GITHUB_REPOSITORY" --ref main "${args[@]}"
 
   freeze:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')) }}

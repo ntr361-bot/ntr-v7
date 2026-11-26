@@ -109,7 +109,7 @@ jobs:
         if: steps.collection-gate.outputs.reason != 'manual_test_after_freeze'
         env:
           FORUM_COLLECTION_ROUND: ${{ steps.collection-gate.outputs.collection_round }}
-        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --defer-freeze
+        run: python -m forum_observer.cycle --out out --archive archive --history ../site/data/history.json --public ../site/data/forum-observer --defer-freeze --no-settlement
 
       - name: Record author history from verified frozen evidence only
         # Separate append-only author memory; no scraping, score updates or frozen edits.

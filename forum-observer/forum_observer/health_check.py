@@ -327,7 +327,7 @@ def merge_findings(mode, new_findings, previous_findings):
     """
     if mode == "all":
         return sorted(set(new_findings))
-    preserve = ("118_audit_", "49_audit_") if mode == "probe" else ("118_probe_", "49_probe_")
+    preserve = ("118_audit_", "49_audit_", "settlement_audit_") if mode == "probe" else ("118_probe_", "49_probe_")
     return sorted(set(new_findings) |
                   {f for f in previous_findings if f.startswith(preserve)})
 
@@ -355,7 +355,27 @@ def update_alert(github, findings, previous_findings, report):
                        data={"state": "closed"})
 
 
-def run(mode, publish=True, github=None, now=None, root=Path(".")):
+def settlement_audit(path, issue):
+    if not path.exists():
+        return {"state": "receipt_missing"}
+    try:
+        saved = json.loads(path.read_text(encoding="utf-8"))
+        if saved.get("issue") != issue:
+            return {"state": "receipt_stale", "issue": saved.get("issue")}
+        return {
+            "state": "verified",
+            "issue": issue, "run_url": saved["run_url"],
+            "settled_count": saved["settled_count"], "expected_count": saved["expected_count"],
+            "ledger_sync": saved["ledger_sync"]["state"],
+            "pending": {row["id"]: row.get("reason", row["state"]) for row in saved["models"]
+                        if row["state"] != "settled"},
+            "historical_findings": saved.get("historical_findings", {}),
+        }
+    except (OSError, ValueError, KeyError, TypeError):
+        return {"state": "invalid_receipt"}
+
+
+def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_receipt=None):
     if mode not in ("probe", "audit", "all"):
         raise ValueError("mode must be probe, audit, all")
     now = (now or datetime.now(TZ)).astimezone(TZ)
@@ -369,6 +389,16 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
     audits = safe_snapshot_audit(github, issue) if mode in ("audit", "all") else {}
     stats = fetch_manual_sample(github)
     current_findings = findings_for(mode, probes, audits, stats)
+    settlement = {}
+    if settlement_receipt and mode in ("audit", "all"):
+        settlement = settlement_audit(settlement_receipt, issue)
+        if settlement["state"] != "verified":
+            current_findings.append("settlement_audit_" + settlement["state"])
+        else:
+            if settlement["ledger_sync"] != "verified":
+                current_findings.append("settlement_audit_ledger_" + settlement["ledger_sync"])
+            current_findings.extend("settlement_audit_" + model + "_" + why
+                                    for model, why in settlement["pending"].items())
     previous_record = {}
     if publish:
         _, previous_record = github.content(HEALTH_DIR + "latest.json")
@@ -383,6 +413,7 @@ def run(mode, publish=True, github=None, now=None, root=Path(".")):
         "state": "attention" if findings else "healthy",
         "probes": probes,
         "archive_audit": audits,
+        "settlement_audit": settlement,
         "last_30_manual_operations": stats,
         "current_check_findings": current_findings,
         "findings": findings,
@@ -416,8 +447,9 @@ def main():
     parser.add_argument("--mode", choices=("probe", "audit", "all"), default="all")
     parser.add_argument("--publish", action="store_true",
                         help="Write health-only status and deduplicated issue")
+    parser.add_argument("--settlement-receipt", type=Path)
     args = parser.parse_args()
-    report = run(args.mode, publish=args.publish)
+    report = run(args.mode, publish=args.publish, settlement_receipt=args.settlement_receipt)
     if report["findings"]:
         print("::warning::Forum health requires attention: " + ", ".join(report["findings"]))
         return 1 if args.publish else 0

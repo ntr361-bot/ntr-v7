@@ -71,10 +71,10 @@ class SettlementTests(unittest.TestCase):
 
     def test_formal_runner_cannot_generate_or_refresh(self):
         with patch.object(service.subprocess, "run") as run:
-            service.run_formal()
+            service.run_formal({ISSUE})
         args = [call.args[0] for call in run.call_args_list]
         self.assertEqual(args[0][-2:], ["--rebuild-db", "--rebuild-only"])
-        self.assertEqual(args[1][-1:], ["--settle-only"])
+        self.assertEqual(args[1][-3:-1], ["--settle-only", "--settlement-issues"])
         self.assertTrue(all("--generate-all" not in call and "--refresh-data" not in call for call in args))
 
     def test_sync_retry_is_read_only(self):

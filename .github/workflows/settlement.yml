@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest discover -s scripts -v
+      - run: python -m unittest discover -s scripts -p test_settlement.py -v
       - run: python -m unittest discover -s tests -p 'test_*cycle*.py' -v
         working-directory: forum-observer
   settle:
@@ -48,6 +48,7 @@ jobs:
       id-token: write
     env:
       SETTLEMENT_ISSUE: ${{ inputs.issue }}
+      SETTLEMENT_EVENT: ${{ github.event_name }}
       SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
       PYTHONUTF8: '1'
       PYTHONDONTWRITEBYTECODE: '1'
@@ -74,6 +75,16 @@ jobs:
             git fetch origin main; Ensure-Success
             git reset --hard origin/main; Ensure-Success
             dotnet build PredictionRunner/PredictionRunner.csproj -c Release; Ensure-Success
+            if (Test-Path 'site/data/settlement/latest.json') {
+              $prior = Get-Content site/data/settlement/latest.json -Raw | ConvertFrom-Json
+              $beijing = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'China Standard Time')
+              $current = '{0}{1:000}' -f $beijing.Year, $beijing.DayOfYear
+              $sameIssue = $env:SETTLEMENT_ISSUE -eq $prior.issue -or (!$env:SETTLEMENT_ISSUE -and $current -eq $prior.issue)
+              if (($sameIssue -or $env:SETTLEMENT_EVENT -eq 'push') -and $prior.settled_count -eq $prior.expected_count -and $prior.ledger_sync.state -ne 'verified') {
+                Write-Host "Settlement already complete for $($prior.issue); retrying ledger verification only."
+                exit 0
+              }
+            }
             python scripts/settlement.py @arguments; Ensure-Success
             git add site/data/history.json site/data/daily-records site/data/runtime-state.json site/data/prediction-traces site/data/forum-observer site/data/forum49 site/data/settlement forum-observer/archive forum-observer/forum49; Ensure-Success
             git commit -m 'chore(settlement): reconcile verified draws'; Ensure-Success

@@ -206,7 +206,7 @@ def create_snapshot(model, archive, folder, issue, manual, journal, clock, live)
         return guard(issue, manual, timestamp(status["draw_at"]), clock, live)
 
     sync("unused-freeze-output", archive, HISTORY, Path("../site/data") / model,
-         finalize=True, model_id=model, before_snapshot=before_write, freeze_receipt=provenance)
+         finalize=True, model_id=model, allow_settlement=False, before_snapshot=before_write, freeze_receipt=provenance)
     snap, _ = check_snapshot(archive, issue, folder)
     git("add", "--", str(archive), f"../site/data/{model}")
     git("commit", "-m", f"chore(forum): freeze {model} {issue} run {journal['run_id']}")
@@ -261,7 +261,7 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
                 raise FreezeError("ledger_feed_repair_would_replace_newer_issue")
             public = Path("../site/data") / model
             sync("unused-freeze-output", archive, HISTORY, public,
-                 defer_freeze=True, model_id=model)
+                 defer_freeze=True, model_id=model, allow_settlement=False)
             verify_feed(model, issue, snap, report, local_read)
             git("add", "--", str(public))
             git("commit", "-m", f"chore(forum): repair {model} ledger feed {issue}")

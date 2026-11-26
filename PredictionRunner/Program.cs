@@ -85,9 +85,12 @@ try
 
     if (arguments.ContainsKey("settle-only"))
     {
-        DailyPredictionAutomation.VerifyPublishedPredictions(dailyOutputDirectory);
+        IReadOnlySet<long>? eligibleIssues = arguments.TryGetValue("settlement-issues", out string? issuesPath)
+            ? File.ReadAllLines(issuesPath!).Select(long.Parse).ToHashSet()
+            : null;
+        DailyPredictionAutomation.VerifyPublishedPredictions(dailyOutputDirectory, eligibleIssues);
         DailyPredictionAutomation.UpdateManifest(dailyOutputDirectory);
-        int settled = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
+        int settled = PublishedSettlementReconciliation.Apply(dailyOutputDirectory, eligibleIssues);
         PredictionTraceArchive.Export(Path.Combine(repositoryRoot, "site", "data", "prediction-traces", "history.json.gz"));
         CloudHistoryAutomation.Export(Path.Combine(repositoryRoot, "site", "data", "history.json"));
         WriteRuntimeState(repositoryRoot);
@@ -98,13 +101,17 @@ try
 
     if (arguments.ContainsKey("generate-all"))
     {
+        bool skipSettlement = arguments.ContainsKey("skip-settlement");
         DailyPredictionAutomation.GenerateMissing(outputDirectory, dailyOutputDirectory,
             issue, startIssue, arguments.ContainsKey("force"), arguments.ContainsKey("dry-run"),
-            preserveFrozen: arguments.ContainsKey("preserve-frozen"));
+            preserveFrozen: arguments.ContainsKey("preserve-frozen"), settleExisting: !skipSettlement);
         if (!arguments.ContainsKey("dry-run"))
         {
-            int settlements = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
-            Console.WriteLine($"[INFO] 已同步 {settlements} 条历史预测结算状态（不重算预测、不重放学习）");
+            if (!skipSettlement)
+            {
+                int settlements = PublishedSettlementReconciliation.Apply(dailyOutputDirectory);
+                Console.WriteLine($"[INFO] 已同步 {settlements} 条历史预测结算状态（不重算预测、不重放学习）");
+            }
             string traceArchive = Path.Combine(repositoryRoot, "site", "data", "prediction-traces", "history.json.gz");
             int traces = PredictionTraceArchive.Export(traceArchive);
             Console.WriteLine($"[INFO] 已归档 {traces} 条不可变 Live Trace");
@@ -164,6 +171,11 @@ static Dictionary<string, string?> ParseArguments(string[] values)
                 break;
             case "--force": parsed["force"] = null; break;
             case "--settle-only": parsed["settle-only"] = null; break;
+            case "--skip-settlement": parsed["skip-settlement"] = null; break;
+            case "--settlement-issues":
+                if (++i >= values.Length) throw new ArgumentException("--settlement-issues requires a file");
+                parsed["settlement-issues"] = values[i];
+                break;
             case "--preserve-frozen": parsed["preserve-frozen"] = null; break;
             case "--dry-run": parsed["dry-run"] = null; break;
             case "--refresh-data": parsed["refresh-data"] = null; break;

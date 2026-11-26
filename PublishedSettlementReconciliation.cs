@@ -9,7 +9,7 @@ namespace 六合分析软件;
 /// </summary>
 public static class PublishedSettlementReconciliation
 {
-    public static int Apply(string dailyRecordsDirectory)
+    public static int Apply(string dailyRecordsDirectory, IReadOnlySet<long>? eligibleIssues = null)
     {
         if (!Directory.Exists(dailyRecordsDirectory)) return 0;
         DatabaseHelper.InitializeDatabase();
@@ -22,6 +22,8 @@ public static class PublishedSettlementReconciliation
                      .Where(path => long.TryParse(Path.GetFileNameWithoutExtension(path), out _))
                      .OrderBy(path => Path.GetFileName(path), StringComparer.Ordinal))
         {
+            if (eligibleIssues is not null && !eligibleIssues.Contains(long.Parse(Path.GetFileNameWithoutExtension(file))))
+                continue;
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(file));
             JsonElement root = document.RootElement;
             string issue = root.GetProperty("issue").ToString();
@@ -41,12 +43,12 @@ public static class PublishedSettlementReconciliation
                 matches[0].SpecialZodiac != zodiac)
                 throw new InvalidDataException($"Verified daily record conflicts with original draw: {issue}");
 
-            changed += ReconcileIssue(issue, number, zodiac);
+            changed += ReconcileIssue(issue, number, zodiac, eligibleIssues is not null);
         }
         return changed;
     }
 
-    private static int ReconcileIssue(string issue, string number, string zodiac)
+    private static int ReconcileIssue(string issue, string number, string zodiac, bool independent)
     {
         int updated = 0;
         using (SQLiteConnection connection = DatabaseHelper.GetConnection())
@@ -68,51 +70,58 @@ public static class PublishedSettlementReconciliation
 
             foreach (var row in entries)
             {
-                bool hit3 = row.top3.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Contains(zodiac, StringComparer.Ordinal);
-                bool hit6 = row.top6.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Contains(zodiac, StringComparer.Ordinal);
-                string result3 = hit3 ? "命中" : "未命中";
-                string result6 = hit6 ? "命中" : "未命中";
-                if ((!string.IsNullOrWhiteSpace(row.number) && row.number != number) ||
-                    (!string.IsNullOrWhiteSpace(row.zodiac) && row.zodiac != zodiac) ||
-                    (row.hit3 != "" && row.hit3 != "未开奖" && row.hit3 != result3) ||
-                    (row.hit6 != "" && row.hit6 != "未开奖" && row.hit6 != result6))
-                    throw new InvalidDataException($"Cannot change an already frozen settlement: {issue}, row {row.id}");
-
-                int rank = 0;
-                if (!string.IsNullOrWhiteSpace(row.ranking))
+                try
                 {
-                    string[] ranking = JsonSerializer.Deserialize<string[]>(row.ranking)
-                        ?? throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
-                    rank = Array.IndexOf(ranking, zodiac) + 1;
-                    // V7's historical issued rank can contain eleven zodiac entries.
-                    // A missing actual zodiac is genuinely unranked (0); never rewrite
-                    // or fabricate a twelfth item in an immutable prediction.
-                    if (ranking.Length < 6 || ranking.Length > 12 ||
-                        ranking.Distinct(StringComparer.Ordinal).Count() != ranking.Length)
-                        throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
+                    bool hit3 = row.top3.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                        .Contains(zodiac, StringComparer.Ordinal);
+                    bool hit6 = row.top6.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                        .Contains(zodiac, StringComparer.Ordinal);
+                    string result3 = hit3 ? "命中" : "未命中";
+                    string result6 = hit6 ? "命中" : "未命中";
+                    if ((!string.IsNullOrWhiteSpace(row.number) && row.number != number) ||
+                        (!string.IsNullOrWhiteSpace(row.zodiac) && row.zodiac != zodiac) ||
+                        (row.hit3 != "" && row.hit3 != "未开奖" && row.hit3 != result3) ||
+                        (row.hit6 != "" && row.hit6 != "未开奖" && row.hit6 != result6))
+                        throw new InvalidDataException($"Cannot change an already frozen settlement: {issue}, row {row.id}");
+
+                    int rank = 0;
+                    if (!string.IsNullOrWhiteSpace(row.ranking))
+                    {
+                        string[] ranking = JsonSerializer.Deserialize<string[]>(row.ranking)
+                            ?? throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
+                        rank = Array.IndexOf(ranking, zodiac) + 1;
+                        // V7's historical issued rank can contain eleven zodiac entries.
+                        // A missing actual zodiac is genuinely unranked (0); never rewrite
+                        // or fabricate a twelfth item in an immutable prediction.
+                        if (ranking.Length < 6 || ranking.Length > 12 ||
+                            ranking.Distinct(StringComparer.Ordinal).Count() != ranking.Length)
+                            throw new InvalidDataException($"Invalid frozen ranking: {issue}, row {row.id}");
+                    }
+                    if (row.rank > 0 && rank > 0 && row.rank != rank)
+                        throw new InvalidDataException($"Frozen actual rank conflict: {issue}, row {row.id}");
+
+                    if (row.number == number && row.zodiac == zodiac &&
+                        row.hit3 == result3 && row.hit6 == result6 && (rank == 0 || row.rank == rank))
+                        continue;
+
+                    using var update = new SQLiteCommand(
+                        @"UPDATE PredictionHistory
+                          SET ActualNumber=@number, ActualZodiac=@zodiac,
+                              HitResult=@hit3, Top6HitResult=@hit6,
+                              ActualRank=CASE WHEN @rank>0 AND ActualRank=0 THEN @rank ELSE ActualRank END
+                          WHERE Id=@id", connection, transaction);
+                    update.Parameters.AddWithValue("@number", number);
+                    update.Parameters.AddWithValue("@zodiac", zodiac);
+                    update.Parameters.AddWithValue("@hit3", result3);
+                    update.Parameters.AddWithValue("@hit6", result6);
+                    update.Parameters.AddWithValue("@rank", rank);
+                    update.Parameters.AddWithValue("@id", row.id);
+                    updated += update.ExecuteNonQuery();
                 }
-                if (row.rank > 0 && rank > 0 && row.rank != rank)
-                    throw new InvalidDataException($"Frozen actual rank conflict: {issue}, row {row.id}");
-
-                if (row.number == number && row.zodiac == zodiac &&
-                    row.hit3 == result3 && row.hit6 == result6 && (rank == 0 || row.rank == rank))
-                    continue;
-
-                using var update = new SQLiteCommand(
-                    @"UPDATE PredictionHistory
-                      SET ActualNumber=@number, ActualZodiac=@zodiac,
-                          HitResult=@hit3, Top6HitResult=@hit6,
-                          ActualRank=CASE WHEN @rank>0 AND ActualRank=0 THEN @rank ELSE ActualRank END
-                      WHERE Id=@id", connection, transaction);
-                update.Parameters.AddWithValue("@number", number);
-                update.Parameters.AddWithValue("@zodiac", zodiac);
-                update.Parameters.AddWithValue("@hit3", result3);
-                update.Parameters.AddWithValue("@hit6", result6);
-                update.Parameters.AddWithValue("@rank", rank);
-                update.Parameters.AddWithValue("@id", row.id);
-                updated += update.ExecuteNonQuery();
+                catch (Exception error) when (independent && (error is InvalidDataException or JsonException))
+                {
+                    Console.Error.WriteLine($"Settlement retained unchanged for {issue}, row {row.id}: {error.Message}");
+                }
             }
             transaction.Commit();
         }

@@ -213,17 +213,37 @@ def formal_status(models, first, runtime_first, issues, draws, conflicts):
                 runtime_verified = all(row.get("actualNumber") == number and row.get("actualZodiac") == zodiac
                                        and row.get("hitResult") in ("命中", "未命中")
                                        and row.get("top6HitResult") in ("命中", "未命中") for row in rows)
-                result[issue] = entry("settled" if verified and runtime_verified else "ready",
-                                      actual=zodiac, special_number=number)
+                if verified and runtime_verified:
+                    result[issue] = entry("settled", actual=zodiac, special_number=number)
+                    continue
+                try:
+                    frozen = datetime.fromisoformat(daily["generated_at"])
+                    if (daily.get("status") != "success" or frozen.utcoffset() is None or
+                            frozen >= cycle.draw_time(draw)):
+                        raise ValueError("formal_snapshot_not_provably_pre_draw")
+                    if verification.get("status") == "verified" and (
+                            verification.get("actual_number") != number or verification.get("actual_zodiac") != zodiac):
+                        raise ValueError("formal_existing_settlement_conflict")
+                except (ValueError, KeyError, TypeError) as error:
+                    result[issue] = entry("failed", str(error))
+                    continue
+                result[issue] = entry("ready", actual=zodiac, special_number=number,
+                                      freeze_digest=digest({"issue": issue, "generated_at": daily["generated_at"],
+                                                            "model": model_data, "rows": [
+                                          {key: row.get(key) for key in ("modelVersion", "analysisPeriods", "predictZodiac",
+                                                                        "top6Zodiac", "finalRankingJson")} for row in rows]}))
     return results
 
 
-def run_formal():
+def run_formal(eligible):
     command = ["dotnet", "run", "--project", "PredictionRunner/PredictionRunner.csproj",
                "--configuration", "Release", "--no-build", "--"]
     with TemporaryDirectory() as private_database:
         env = {**os.environ, "LIUHE_DATA_DIR": private_database}
-        for args in (["--rebuild-db", "--rebuild-only"], ["--settle-only"]):
+        issues = Path(private_database) / "eligible-issues.txt"
+        issues.write_text("\n".join(sorted(eligible)), encoding="utf-8")
+        for args in (["--rebuild-db", "--rebuild-only"],
+                     ["--settle-only", "--settlement-issues", str(issues)]):
             subprocess.run(command + args, cwd=ROOT, env=env, check=True)
 
 
@@ -308,18 +328,21 @@ def run(args):
     formal = [model for model in models if "archive" not in model]
     first = config["daily_first_issue"]
     formal_results = formal_status(formal, first, config["runtime_first_issue"], issues, draws, conflicts)
-    if args.apply and any(row["state"] == "ready" for rows in formal_results.values() for row in rows.values()):
+    eligible = {issue for rows in formal_results.values() for issue, row in rows.items() if row["state"] == "ready"}
+    if args.apply and eligible:
         original_formal = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
         try:
-            if conflicts:
-                raise ValueError("draw_source_conflict")
             update_history(history, draws)
-            run_formal()
+            run_formal(eligible)
             newer = load(history_file)
             old = {row["issue"]: draw_identity(row) for row in history["records"]}
             if {row["issue"]: draw_identity(row) for row in newer["records"]} != old:
                 raise ValueError("formal_runner_changed_verified_draws")
             formal_results = formal_status(formal, first, config["runtime_first_issue"], issues, draws, conflicts)
+            for outcomes in formal_results.values():
+                for outcome in outcomes.values():
+                    if outcome["state"] == "ready":
+                        outcome.update(entry("failed", "formal_row_retained_unsettled"))
         except (subprocess.CalledProcessError, OSError, ValueError, KeyError) as error:
             subprocess.run(["git", "restore", "--source", original_formal, "--",
                             "site/data/history.json", "site/data/daily-records", "site/data/runtime-state.json",
@@ -399,7 +422,13 @@ def verify_ledger(report):
             for model in formal:
                 live_model, live_rows = targets(model, daily, actual_rows)
                 expected_model, target_rows = targets(model, expected_daily, expected_rows)
-                if live_model != expected_model or live_rows != target_rows or daily.get("verification") != expected_daily.get("verification"):
+                fields = ("issue", "modelVersion", "analysisPeriods", "predictZodiac", "top6Zodiac",
+                          "finalRankingJson", "actualNumber", "actualZodiac", "hitResult",
+                          "top6HitResult", "actualRank")
+                live_results = [tuple(row.get(field) for field in fields) for row in live_rows]
+                expected_results = [tuple(row.get(field) for field in fields) for row in target_rows]
+                if (live_model != expected_model or live_results != expected_results
+                        or daily.get("verification") != expected_daily.get("verification")):
                     errors[model["id"]] = "formal_ledger_readback_mismatch"
                 else:
                     verified.append(model["id"])

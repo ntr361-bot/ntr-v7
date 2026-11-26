@@ -147,7 +147,7 @@ public static class DailyPredictionAutomation
 
     public static IReadOnlyList<long> GenerateMissing(string predictionDirectory, string outputDirectory,
         long? requestedIssue = null, long? startIssue = null, bool force = false, bool dryRun = false,
-        bool preserveFrozen = false)
+        bool preserveFrozen = false, bool settleExisting = true)
     {
         if (preserveFrozen && force) throw new InvalidOperationException("Frozen production predictions cannot be forced");
         DatabaseHelper.InitializeDatabase();
@@ -183,8 +183,11 @@ public static class DailyPredictionAutomation
         {
             int upgraded = preserveFrozen ? 0 : UpgradeArchivedAutoLearning(outputDirectory);
             Console.WriteLine($"[INFO] 已将{upgraded}期云端200期旧卡片替换为自动学习记录");
-            int verified = VerifyPublishedPredictions(outputDirectory);
-            Console.WriteLine($"[INFO] 已写入{verified}期预测命中结果");
+            if (settleExisting)
+            {
+                int verified = VerifyPublishedPredictions(outputDirectory);
+                Console.WriteLine($"[INFO] 已写入{verified}期预测命中结果");
+            }
             UpdateManifest(outputDirectory);
         }
         return targets;
@@ -235,7 +238,7 @@ public static class DailyPredictionAutomation
         return updated;
     }
 
-    public static int VerifyPublishedPredictions(string directory)
+    public static int VerifyPublishedPredictions(string directory, IReadOnlySet<long>? eligibleIssues = null)
     {
         var draws = DatabaseHelper.GetLatestHistory(int.MaxValue)
             .Where(record => long.TryParse(record.Period, out _))
@@ -244,6 +247,7 @@ public static class DailyPredictionAutomation
 
         foreach (long issue in EnumerateIssues(directory).OrderBy(value => value))
         {
+            if (eligibleIssues is not null && !eligibleIssues.Contains(issue)) continue;
             if (!draws.TryGetValue(issue, out DatabaseHelper.HistoryRecord? draw)) continue;
             string path = Path.Combine(directory, $"{issue}.json");
             JsonObject root = JsonNode.Parse(File.ReadAllText(path))?.AsObject()

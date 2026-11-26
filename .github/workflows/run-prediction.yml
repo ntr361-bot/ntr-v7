@@ -154,16 +154,11 @@ jobs:
           SCHEDULED_RUN: ${{ github.event_name == 'schedule' }}
         run: python scripts/pipeline_guard.py plan
 
-      - name: Settle existing formal forecasts before generating next issue
-        if: ${{ inputs.dry_run != true }}
-        shell: pwsh
-        run: dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --settle-only
-
       - name: Generate only a missing next prediction
         if: ${{ inputs.dry_run != true && steps.plan.outputs.generate == 'true' }}
         shell: pwsh
         run: |
-          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --generate-all --preserve-frozen --issue '${{ steps.plan.outputs.target }}'
+          dotnet run --project PredictionRunner/PredictionRunner.csproj --configuration Release --no-build -- --generate-all --preserve-frozen --skip-settlement --issue '${{ steps.plan.outputs.target }}'
 
       - name: Production safety checks
         if: ${{ inputs.dry_run != true }}

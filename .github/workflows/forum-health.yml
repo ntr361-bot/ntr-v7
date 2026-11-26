@@ -4,9 +4,9 @@ on:
   schedule:
     # Beijing time 18:30 - cheap HTTP reachability probes before manual use.
     - cron: "30 10 * * *"
-    # Beijing time 22:15 - verify each forum's immutable archive, report,
+    # Beijing time 22:35 - verify settlement plus each forum's immutable archive,
     # and latest 30 completed ledger-manual operations after normal freeze.
-    - cron: "15 14 * * *"
+    - cron: "35 14 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -49,7 +49,7 @@ jobs:
           PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
         run: |
           if [ "$PUBLISH" = "true" ]; then
-            python -u -m forum_observer.health_check --mode "$RUN_MODE" --publish
+            python -u -m forum_observer.health_check --mode "$RUN_MODE" --settlement-receipt ../site/data/settlement/latest.json --publish
           else
-            python -u -m forum_observer.health_check --mode "$RUN_MODE"
+            python -u -m forum_observer.health_check --mode "$RUN_MODE" --settlement-receipt ../site/data/settlement/latest.json
           fi
