@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "forum49",
   "classification": "experimental_unverified_leaderboard",
-  "settled_count": 28,
+  "settled_count": 29,
   "top3_hits": 8,
   "top6_hits": 13,
   "settlements": [
@@ -676,6 +676,30 @@
       "frozen_at": "2026-11-24T21:10:32.250187+08:00",
       "quality_status": "meets_minimum_samples",
       "valid_materials": 176,
+      "minimum_valid_materials": 25
+    },
+    {
+      "issue": "2026330",
+      "actual": null,
+      "top3": [
+        "龙",
+        "鸡",
+        "马"
+      ],
+      "top6": [
+        "龙",
+        "鸡",
+        "马",
+        "兔",
+        "鼠",
+        "蛇"
+      ],
+      "top3_hit": false,
+      "top6_hit": false,
+      "rank": null,
+      "frozen_at": "2026-11-26T21:04:38.726481+08:00",
+      "quality_status": "meets_minimum_samples",
+      "valid_materials": 185,
       "minimum_valid_materials": 25
     }
   ]
