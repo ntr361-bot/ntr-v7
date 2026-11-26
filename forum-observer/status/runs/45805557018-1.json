@@ -1,46 +1,62 @@
 {
   "schema_version": 2,
   "issue": "2026330",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "45805557018",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
-  "updated_at": "2026-11-26T10:55:43.308499+00:00",
+  "updated_at": "2026-11-26T10:56:47.621739+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 13,
+  "valid_authors": 13,
+  "successful_post_opens": 57,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 449,
+      "attempted": 5,
+      "opened": 4,
+      "extracted": 4,
+      "completed": 4
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 57,
+  "article_details_completed": 57,
+  "last_verified_post": {
+    "author": "长青牛牛",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11345175&type=3",
+    "verified_at": "2026-11-26T10:56:47.557611+00:00",
+    "text_length": 62,
+    "text_sha256": "02391444b7e0b5fccfafd5765b7fc77442974baa06bc9eb25e7e2756224ea143"
+  },
+  "last_attempted_post": {
+    "author": "阳光下的真实",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11344425&type=3",
+    "attempt_index": 58
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-26T10:56:45.376485+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 72",
-  "progress_updated_at": "2026-11-26T10:55:42.828601+00:00",
+  "raw_count": 57,
+  "stage": "detail: 阳光下的真实 330期：家禽+野兽 已更新",
+  "progress_updated_at": "2026-11-26T10:56:47.607670+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
