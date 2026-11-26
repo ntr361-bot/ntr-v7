@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026330",
+  "state": "collecting_effectively",
+  "run_id": "45805557018",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45805557018",
+  "updated_at": "2026-11-26T11:00:00.390966+00:00",
+  "error": null,
+  "valid_materials": 58,
+  "valid_authors": 58,
+  "successful_post_opens": 316,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 449,
+      "attempted": 263,
+      "opened": 263,
+      "extracted": 263,
+      "completed": 263
+    }
+  },
+  "article_texts_extracted": 316,
+  "article_details_completed": 316,
+  "last_verified_post": {
+    "author": "南昌麻将",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11345069&type=3",
+    "verified_at": "2026-11-26T11:00:00.158873+00:00",
+    "text_length": 54,
+    "text_sha256": "ab01cf0ad0de66b69d1babdb558281601f85984baed511a687fc71e2159738a1"
+  },
+  "last_attempted_post": {
+    "author": "南昌麻将",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11345069&type=3",
+    "attempt_index": 316
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-26T10:56:45.376485+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 316,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-26T11:00:00.323255+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
