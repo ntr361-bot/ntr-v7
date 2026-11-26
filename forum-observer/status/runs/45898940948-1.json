@@ -7,51 +7,56 @@
   "event": "schedule",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45898940948",
-  "updated_at": "2026-11-26T21:35:09.284946+00:00",
+  "updated_at": "2026-11-26T21:36:12.981221+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 4,
+  "valid_materials": 12,
+  "valid_authors": 12,
+  "successful_post_opens": 109,
   "article_details": {
     "featured": {
       "queued": 15,
-      "attempted": 5,
-      "opened": 4,
-      "extracted": 4,
-      "completed": 4
+      "attempted": 15,
+      "opened": 15,
+      "extracted": 15,
+      "completed": 15
     },
     "ordinary": {
       "queued": 317,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 95,
+      "opened": 94,
+      "extracted": 94,
+      "completed": 94
     }
   },
-  "article_texts_extracted": 4,
-  "article_details_completed": 4,
+  "article_texts_extracted": 109,
+  "article_details_completed": 109,
   "last_verified_post": {
-    "author": "大家都中",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349489&type=3",
-    "verified_at": "2026-11-26T21:35:09.086186+00:00",
-    "text_length": 65,
-    "text_sha256": "4aa9dd64c0dd99cba4555614b698d179cc3bf4a783ad8fe6b4cbc810c26c6dca"
+    "author": "敢赌敢博",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349289&type=3",
+    "verified_at": "2026-11-26T21:36:12.765434+00:00",
+    "text_length": 42,
+    "text_sha256": "96bb1903824d03a4504995184a534987450f718e71e6a1ef9de9d682664b9124"
   },
   "last_attempted_post": {
-    "author": "大家都中",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349488&type=3",
-    "attempt_index": 5
+    "author": "氧宜多硅藻泥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349424&type=3",
+    "attempt_index": 110
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-26T21:35:15.162767+00:00",
+      "featured_queued": 15,
+      "featured_attempted": 15,
+      "featured_completed": 15
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 4,
-  "stage": "detail: 大家都中 澳门杀一尾：331期",
-  "progress_updated_at": "2026-11-26T21:35:09.091451+00:00",
+  "raw_count": 109,
+  "stage": "detail: 氧宜多硅藻泥 80组35码每5组统计",
+  "progress_updated_at": "2026-11-26T21:36:12.922443+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
