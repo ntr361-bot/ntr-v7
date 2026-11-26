@@ -215,6 +215,22 @@
     }
   },
   "ledger_sync": {
-    "state": "pending"
+    "state": "failed",
+    "verified_models": [
+      "v65-50",
+      "v65-100",
+      "v65-all",
+      "v65-auto",
+      "v7",
+      "v7-auto",
+      "special-rule",
+      "comprehensive",
+      "ensemble"
+    ],
+    "checked_at": "2026-11-26T16:18:32.691293+00:00",
+    "errors": {
+      "forum-observer": "HTTPError: HTTP Error 404: Not Found",
+      "forum49": "HTTPError: HTTP Error 404: Not Found"
+    }
   }
 }

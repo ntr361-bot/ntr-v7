@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "issue": "2026330",
+  "attempts": 1,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/45857043360",
+  "checked_at": "2026-11-26T16:16:53.955161+00:00",
+  "last_settlement_at": "2026-11-26T16:16:53.955161+00:00",
+  "draw_confirmed": true,
+  "expected_count": 11,
+  "settled_count": 11,
+  "models": [
+    {
+      "id": "v65-50",
+      "label": "50期",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "v65-100",
+      "label": "100期",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "v65-all",
+      "label": "全部历史",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "v65-auto",
+      "label": "自动学习V6.5",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "v7",
+      "label": "整合V7",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "v7-auto",
+      "label": "自动学习V7",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "special-rule",
+      "label": "特别规律",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "comprehensive",
+      "label": "综合评分",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "ensemble",
+      "label": "集成预测",
+      "state": "settled",
+      "actual": "蛇",
+      "special_number": "26"
+    },
+    {
+      "id": "forum-observer",
+      "label": "118论坛模型",
+      "state": "settled",
+      "digest": "9f70071747cc2d59226d021d7fb087138928cfb718d3df71cded3d18ac2cb38c",
+      "actual": "蛇",
+      "rank": 6,
+      "top6_hit": true,
+      "author_statistics": "settled"
+    },
+    {
+      "id": "forum49",
+      "label": "49论坛模型",
+      "state": "settled",
+      "digest": "96a1d9f6574d1abfe692977e6a476a4d30686d75edeada0b84bf04da3348063e",
+      "actual": "蛇",
+      "rank": 6,
+      "top6_hit": true,
+      "author_statistics": "settled"
+    }
+  ],
+  "new_forum_settlements": {
+    "forum-observer": 0,
+    "forum49": 1
+  },
+  "historical_findings": {
+    "v65-50": {
+      "2026233": "formal_snapshot_missing_or_ambiguous",
+      "2026234": "formal_snapshot_missing_or_ambiguous",
+      "2026235": "formal_snapshot_missing_or_ambiguous",
+      "2026236": "formal_snapshot_missing_or_ambiguous",
+      "2026237": "formal_snapshot_missing_or_ambiguous",
+      "2026238": "formal_snapshot_missing_or_ambiguous",
+      "2026239": "formal_snapshot_missing_or_ambiguous",
+      "2026240": "formal_snapshot_missing_or_ambiguous",
+      "2026241": "formal_snapshot_missing_or_ambiguous",
+      "2026242": "formal_snapshot_missing_or_ambiguous",
+      "2026243": "formal_snapshot_missing_or_ambiguous",
+      "2026244": "formal_snapshot_missing_or_ambiguous",
+      "2026245": "formal_snapshot_missing_or_ambiguous",
+      "2026246": "formal_snapshot_missing_or_ambiguous",
+      "2026247": "formal_snapshot_missing_or_ambiguous",
+      "2026248": "formal_snapshot_missing_or_ambiguous",
+      "2026249": "formal_snapshot_missing_or_ambiguous",
+      "2026250": "formal_snapshot_missing_or_ambiguous",
+      "2026251": "formal_snapshot_missing_or_ambiguous",
+      "2026252": "formal_snapshot_missing_or_ambiguous",
+      "2026253": "formal_snapshot_missing_or_ambiguous",
+      "2026254": "formal_snapshot_missing_or_ambiguous",
+      "2026255": "formal_snapshot_missing_or_ambiguous",
+      "2026256": "formal_snapshot_missing_or_ambiguous",
+      "2026257": "formal_snapshot_missing_or_ambiguous",
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "v65-100": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "v65-all": {
+      "2026233": "formal_snapshot_missing_or_ambiguous",
+      "2026234": "formal_snapshot_missing_or_ambiguous",
+      "2026235": "formal_snapshot_missing_or_ambiguous",
+      "2026236": "formal_snapshot_missing_or_ambiguous",
+      "2026237": "formal_snapshot_missing_or_ambiguous",
+      "2026238": "formal_snapshot_missing_or_ambiguous",
+      "2026239": "formal_snapshot_missing_or_ambiguous",
+      "2026240": "formal_snapshot_missing_or_ambiguous",
+      "2026241": "formal_snapshot_missing_or_ambiguous",
+      "2026242": "formal_snapshot_missing_or_ambiguous",
+      "2026243": "formal_snapshot_missing_or_ambiguous",
+      "2026244": "formal_snapshot_missing_or_ambiguous",
+      "2026245": "formal_snapshot_missing_or_ambiguous",
+      "2026246": "formal_snapshot_missing_or_ambiguous",
+      "2026247": "formal_snapshot_missing_or_ambiguous",
+      "2026248": "formal_snapshot_missing_or_ambiguous",
+      "2026249": "formal_snapshot_missing_or_ambiguous",
+      "2026250": "formal_snapshot_missing_or_ambiguous",
+      "2026251": "formal_snapshot_missing_or_ambiguous",
+      "2026252": "formal_snapshot_missing_or_ambiguous",
+      "2026253": "formal_snapshot_missing_or_ambiguous",
+      "2026254": "formal_snapshot_missing_or_ambiguous",
+      "2026255": "formal_snapshot_missing_or_ambiguous",
+      "2026256": "formal_snapshot_missing_or_ambiguous",
+      "2026257": "formal_snapshot_missing_or_ambiguous",
+      "2026258": "formal_snapshot_missing_or_ambiguous",
+      "2026259": "formal_snapshot_missing_or_ambiguous",
+      "2026260": "formal_snapshot_missing_or_ambiguous",
+      "2026261": "formal_snapshot_missing_or_ambiguous",
+      "2026262": "formal_snapshot_missing_or_ambiguous",
+      "2026263": "formal_snapshot_missing_or_ambiguous",
+      "2026264": "formal_snapshot_missing_or_ambiguous",
+      "2026265": "formal_snapshot_missing_or_ambiguous",
+      "2026266": "formal_snapshot_missing_or_ambiguous",
+      "2026267": "formal_snapshot_missing_or_ambiguous",
+      "2026268": "formal_snapshot_missing_or_ambiguous",
+      "2026269": "formal_snapshot_missing_or_ambiguous",
+      "2026270": "formal_snapshot_missing_or_ambiguous",
+      "2026271": "formal_snapshot_missing_or_ambiguous",
+      "2026272": "formal_snapshot_missing_or_ambiguous",
+      "2026273": "formal_snapshot_missing_or_ambiguous",
+      "2026274": "formal_snapshot_missing_or_ambiguous",
+      "2026275": "formal_snapshot_missing_or_ambiguous",
+      "2026276": "formal_snapshot_missing_or_ambiguous",
+      "2026277": "formal_snapshot_missing_or_ambiguous",
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "v65-auto": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "v7": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "v7-auto": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "special-rule": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "comprehensive": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "ensemble": {
+      "2026294": "formal_snapshot_missing_or_ambiguous"
+    },
+    "forum-observer": {
+      "2026282": "snapshot_missing",
+      "2026283": "snapshot_missing",
+      "2026284": "snapshot_missing",
+      "2026318": "snapshot_missing",
+      "2026325": "snapshot_missing",
+      "2026326": "snapshot_missing",
+      "2026327": "snapshot_missing"
+    },
+    "forum49": {
+      "2026316": "snapshot_missing",
+      "2026318": "snapshot_missing",
+      "2026319": "snapshot_missing",
+      "2026322": "snapshot_missing",
+      "2026325": "snapshot_missing",
+      "2026327": "snapshot_missing",
+      "2026329": "snapshot_missing"
+    }
+  },
+  "ledger_sync": {
+    "state": "failed",
+    "verified_models": [
+      "v65-50",
+      "v65-100",
+      "v65-all",
+      "v65-auto",
+      "v7",
+      "v7-auto",
+      "special-rule",
+      "comprehensive",
+      "ensemble"
+    ],
+    "checked_at": "2026-11-26T16:18:32.691293+00:00",
+    "errors": {
+      "forum-observer": "HTTPError: HTTP Error 404: Not Found",
+      "forum49": "HTTPError: HTTP Error 404: Not Found"
+    }
+  }
+}
