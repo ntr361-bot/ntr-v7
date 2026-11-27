@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46069331102",
+  "attempt": 1,
+  "event": "schedule",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46069331102",
+  "updated_at": "2026-11-27T21:20:22.507351+00:00",
+  "error": null,
+  "valid_materials": 16,
+  "valid_authors": 16,
+  "successful_post_opens": 103,
+  "article_details": {
+    "featured": {
+      "queued": 17,
+      "attempted": 17,
+      "opened": 17,
+      "extracted": 17,
+      "completed": 17
+    },
+    "ordinary": {
+      "queued": 352,
+      "attempted": 87,
+      "opened": 86,
+      "extracted": 86,
+      "completed": 86
+    }
+  },
+  "article_texts_extracted": 103,
+  "article_details_completed": 103,
+  "last_verified_post": {
+    "author": "火中取栗",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355164&type=3",
+    "verified_at": "2026-11-27T21:20:21.888346+00:00",
+    "text_length": 52,
+    "text_sha256": "29ab31a2988125e9fc7a0c1386b9273545f76618012823427ec14a5be3138bab"
+  },
+  "last_attempted_post": {
+    "author": "囫囵吞枣",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355163&type=3",
+    "attempt_index": 104
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-27T21:19:33.886185+00:00",
+      "featured_queued": 17,
+      "featured_attempted": 17,
+      "featured_completed": 17
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 103,
+  "stage": "detail: 囫囵吞枣 332期：精准单双",
+  "progress_updated_at": "2026-11-27T21:20:21.969850+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
