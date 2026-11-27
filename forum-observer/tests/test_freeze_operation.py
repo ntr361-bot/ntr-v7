@@ -157,6 +157,19 @@ class FreezeOperationTests(unittest.TestCase):
         self.assertEqual(journal["ledger_retry_count"], 1)
         self.assertEqual(journal["ledger_sync"], "verified_ledger_source")
 
+    def test_delayed_verification_never_creates_new_snapshot(self):
+        next_day = self.now.replace(day=25, hour=6)
+        journal = {"run_id": "late", "run_attempt": 1, "failures": []}
+        with patch.object(op, "create_snapshot") as writer:
+            with self.assertRaisesRegex(op.FreezeError, "missed_freeze_window"):
+                op.operate("forum49", "verify", self.issue, journal, clock=lambda: next_day)
+            writer.assert_not_called()
+        self.frozen("forum49")
+        with patch.object(op, "create_snapshot") as writer, patch.object(op, "verify_feed") as verify:
+            op.operate("forum49", "verify", self.issue, journal, clock=lambda: next_day)
+            writer.assert_not_called()
+            self.assertTrue(verify.call_args.kwargs["historical"])
+
     def test_live_results_require_matching_draw_and_block_current_placeholder(self):
         valid = {"lotteryId": 2032, "issue": "2026327",
                  "openTime": "2026-11-23 21:35:31", "openCode": "01,02,03,04,05,06,07"}

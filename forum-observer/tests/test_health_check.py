@@ -186,6 +186,27 @@ class HealthCheckTests(unittest.TestCase):
         missing = health.safe_snapshot_audit(FakeGithub(), "2026327")
         self.assertEqual(missing["49"]["state"], "draft_not_frozen")
 
+    def test_invalid_draft_does_not_hide_other_forum(self):
+        g = FakeGithub(snapshot("2026327"))
+        original = g.content
+        def bad(path):
+            if "/archive/issues/" in path:
+                raise ValueError("bad JSON")
+            return original(path)
+        g.content = bad
+        results = health.safe_snapshot_audit(g, "2026327")
+        self.assertEqual(results["118"]["state"], "archive_read_error")
+        self.assertEqual(results["49"]["state"], "frozen_verified")
+
+    def test_delayed_audit_checks_previous_issue(self):
+        g = FakeGithub(snapshot("2026327"))
+        with patch.object(health, "fetch_manual_sample",
+                          return_value={**health.manual_sample([]), "by_model": {}}):
+            report = health.run("audit", publish=False, github=g,
+                                now=datetime(2026, 11, 24, 6, 0, tzinfo=health.TZ))
+        self.assertEqual(report["issue"], "2026327")
+        self.assertEqual(report["archive_audit"]["118"]["state"], "frozen_verified")
+
     def test_small_sample_is_not_mislabeled_low_reliability(self):
         sample = health.manual_sample([parent(0, conclusion="failure")])
         self.assertNotIn("manual_verified_rate_below_80_pct",

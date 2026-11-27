@@ -140,7 +140,7 @@ def guard(issue, manual, draw_at, clock, live):
 
 
 def read_remote(path):
-    req = Request(RAW + path, headers={"Cache-Control": "no-cache",
+    req = Request(RAW + path + "?freeze_check=" + str(time.time_ns()), headers={"Cache-Control": "no-cache",
                   "User-Agent": "ntr-v7-forum-freeze/1"})
     with urlopen(req, timeout=8) as response:
         value = response.read(2_000_001)
@@ -149,17 +149,17 @@ def read_remote(path):
     return value
 
 
-def verify_feed(model, issue, snap, report, read=read_remote):
+def verify_feed(model, issue, snap, report, read=read_remote, *, historical=False):
     """Read back the same GitHub raw paths consumed by the production ledger."""
     prefix = f"site/data/{model}"
     saved = json.loads(read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/snapshot.json"))
-    latest = json.loads(read(f"{prefix}/latest.json"))
+    latest = {} if historical else json.loads(read(f"{prefix}/latest.json"))
     item = json.loads(read(f"{prefix}/issues/{issue}.json"))
     if (saved != snap or item.get("digest") != snap["digest"]
             or item.get("issue") != issue or item.get("ranking") != snap["ranking"]
             or item.get("frozen_at") != snap["frozen_at"]
-            or latest.get("model") != model or latest.get("issue") != issue
-            or latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]):
+            or (not historical and (latest.get("model") != model or latest.get("issue") != issue
+            or latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]))):
         raise FreezeError("ledger_feed_mismatch")
     if read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/report.md") != report:
         raise FreezeError("ledger_report_mismatch")
@@ -222,6 +222,7 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
     journal["snapshot_path"] = str(Path("forum-observer") / folder / "snapshot.json")
     journal["ledger_sync"] = "pending"
     manual = phase == "manual"
+    historical = current_issue(clock()) != issue
     for attempt in range(2):
         journal["retry_count"] = attempt
         git("fetch", "origin", "main")
@@ -230,11 +231,13 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
         git("reset", "--hard", "origin/main")
         try:
             if not (folder / "snapshot.json").exists():
+                if historical:
+                    raise FreezeError("missed_freeze_window_snapshot_missing")
                 create_snapshot(model, archive, folder, issue, manual, journal, clock, live)
             break
         except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as exc:
             journal["failures"].append(str(exc))
-            if attempt or (phase != "verify" and not isinstance(exc, subprocess.SubprocessError)):
+            if historical or attempt or (phase != "verify" and not isinstance(exc, subprocess.SubprocessError)):
                 raise
             check_window(issue, clock(), manual)
             time.sleep(3)
@@ -247,7 +250,7 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
                    report_sha256=provenance.get("report_sha256"))
     journal.update(frozen_at=snap["frozen_at"], digest=snap["digest"],
                    frozen_report_sha256=sha(report))
-    if phase == "verify":
+    if phase == "verify" and not historical:
         journal["ledger_sync"] = "ledger_readback_failed"
         # GitHub archive and public feed are normally one commit. Repair a
         # stale generated feed independently, keeping the frozen archive intact.
@@ -267,18 +270,18 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
             git("commit", "-m", f"chore(forum): repair {model} ledger feed {issue}")
             git("push", "origin", "HEAD:refs/heads/main")
             journal["ledger_feed_repaired"] = True
-    for attempt in range(3):
+    for attempt in range(5):
         journal["ledger_retry_count"] = attempt
         try:
-            verify_feed(model, issue, snap, report, read)
+            verify_feed(model, issue, snap, report, read, historical=historical)
             journal["ledger_sync"] = "verified_ledger_source"
             return
         except (ValueError, KeyError, OSError) as exc:
             journal["failures"].append(str(exc))
             journal["ledger_sync"] = "ledger_readback_failed"
-            if attempt == 2:
+            if attempt == 4:
                 raise
-            time.sleep(8)
+            time.sleep((3, 8, 15, 25)[attempt])
 
 
 def alert(github, journal):
@@ -308,7 +311,12 @@ def main():
     attempt = int(os.environ["GITHUB_RUN_ATTEMPT"])
     github = GitHub()
     run = github.request(f"actions/runs/{run_id}")
-    issue = current_issue(timestamp(run["created_at"]))
+    created = timestamp(run["created_at"])
+    # Scheduled 21:00/21:05 runs delayed into the next morning must audit
+    # the prior issue, never attempt to freeze the new issue early.
+    if args.phase != "manual" and (created.hour, created.minute) < (21, 0):
+        created -= timedelta(days=1)
+    issue = current_issue(created)
     journal = {"issue": issue, "model": args.model, "phase": args.phase,
                "run_id": run_id, "run_attempt": attempt, "failures": []}
     try:

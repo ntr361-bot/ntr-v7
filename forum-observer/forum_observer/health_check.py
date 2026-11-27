@@ -16,7 +16,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
@@ -253,31 +253,34 @@ def snapshot_audit(github, issue):
     """Check today's snapshot SHA256 and report, without touching any files."""
     results = {}
     for model, archive in (("118", "archive"), ("49", "forum49")):
-        root = f"forum-observer/{archive}/issues/{issue}"
-        _, snapshot = github.content(root + "/snapshot.json")
-        report = github.request("contents/" + root + "/report.md?ref=main")
-        # GitHub.content returns ({}, {}) for a genuine 404, but the report
-        # can be absent before a successful collection.
-        if not snapshot:
-            _, draft = github.content(root + "/draft-status.json")
+        try:
+            root = f"forum-observer/{archive}/issues/{issue}"
+            _, snapshot = github.content(root + "/snapshot.json")
+            report = github.request("contents/" + root + "/report.md?ref=main")
+            # GitHub.content returns ({}, {}) for a genuine 404, but the report
+            # can be absent before a successful collection.
+            if not snapshot:
+                _, draft = github.content(root + "/draft-status.json")
+                results[model] = {
+                    "state": "draft_not_frozen" if draft and report.get("sha")
+                             else "no_verified_snapshot",
+                    "report_present": bool(report.get("sha")),
+                    "draft_present": bool(draft),
+                }
+                continue
+            core = dict(snapshot)
+            actual_digest = core.pop("digest", None)
+            expected = hashlib.sha256(
+                json.dumps(core, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+            good = (snapshot.get("issue") == issue and actual_digest == expected
+                    and bool(snapshot.get("frozen_at")) and bool(report.get("sha")))
             results[model] = {
-                "state": "draft_not_frozen" if draft and report.get("sha")
-                         else "no_verified_snapshot",
+                "state": "frozen_verified" if good else "invalid_snapshot_or_report",
                 "report_present": bool(report.get("sha")),
-                "draft_present": bool(draft),
+                "digest_verified": actual_digest == expected,
             }
-            continue
-        core = dict(snapshot)
-        actual_digest = core.pop("digest", None)
-        expected = hashlib.sha256(
-            json.dumps(core, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
-        good = (snapshot.get("issue") == issue and actual_digest == expected
-                and bool(snapshot.get("frozen_at")) and bool(report.get("sha")))
-        results[model] = {
-            "state": "frozen_verified" if good else "invalid_snapshot_or_report",
-            "report_present": bool(report.get("sha")),
-            "digest_verified": actual_digest == expected,
-        }
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            results[model] = {"state": "archive_read_error", "error_type": type(error).__name__}
     return results
 
 
@@ -380,7 +383,10 @@ def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_re
         raise ValueError("mode must be probe, audit, all")
     now = (now or datetime.now(TZ)).astimezone(TZ)
     today = now.date().isoformat()
-    issue = current_issue(now)
+    # A delayed overnight audit belongs to the last completed draw day.
+    # Preflight always checks today's sources; never freeze here.
+    audit_day = now - timedelta(days=1) if mode == "audit" and (now.hour, now.minute) < (21, 32) else now
+    issue = current_issue(audit_day)
     github = github or GitHub()
     probes = {}
     if mode in ("probe", "all"):
