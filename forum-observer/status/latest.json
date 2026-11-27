@@ -7,51 +7,56 @@
   "event": "push",
   "test_only": false,
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46000115387",
-  "updated_at": "2026-11-27T12:39:56.043356+00:00",
+  "updated_at": "2026-11-27T12:40:59.408405+00:00",
   "error": null,
-  "valid_materials": 3,
-  "valid_authors": 3,
-  "successful_post_opens": 15,
+  "valid_materials": 25,
+  "valid_authors": 25,
+  "successful_post_opens": 123,
   "article_details": {
     "featured": {
       "queued": 51,
-      "attempted": 16,
-      "opened": 15,
-      "extracted": 15,
-      "completed": 15
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
     },
     "ordinary": {
       "queued": 495,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 72,
+      "opened": 72,
+      "extracted": 72,
+      "completed": 72
     }
   },
-  "article_texts_extracted": 15,
-  "article_details_completed": 15,
+  "article_texts_extracted": 123,
+  "article_details_completed": 123,
   "last_verified_post": {
-    "author": "中是情",
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349716&type=3",
-    "verified_at": "2026-11-27T12:39:55.853726+00:00",
-    "text_length": 88,
-    "text_sha256": "9754e15dd0a646d6e6a829a62f54bf256f64d97d2c646206ca3206dd7580938d"
+    "author": "一个人好",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354135&type=3",
+    "verified_at": "2026-11-27T12:40:59.284787+00:00",
+    "text_length": 8,
+    "text_sha256": "41c12223e1cd9df1ad83cf5a35384f427587dd65689b73637b96751d1d0e7d22"
   },
   "last_attempted_post": {
-    "author": "窝里马",
-    "is_featured": true,
-    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349040&type=3",
-    "attempt_index": 16
+    "author": "一个人好",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354135&type=3",
+    "attempt_index": 123
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-27T12:40:15.494263+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 15,
-  "stage": "detail: 窝里马 再接再厉",
-  "progress_updated_at": "2026-11-27T12:39:55.873200+00:00",
+  "raw_count": 123,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-27T12:40:59.354696+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
