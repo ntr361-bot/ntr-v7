@@ -45,7 +45,14 @@ class GitHub:
     def content(self, path):
         try:
             item = self.request('contents/' + path + '?ref=main')
-            return item, json.loads(base64.b64decode(item['content']))
+            # Contents API omits inline base64 for files above 1 MiB.
+            # Read the exact blob SHA instead of parsing an empty response.
+            source = item
+            if item.get('encoding') == 'none' or not item.get('content'):
+                source = self.request('git/blobs/' + item['sha'])
+            if source.get('encoding') != 'base64' or not source.get('content'):
+                raise ValueError('GitHub JSON content unavailable: ' + path)
+            return item, json.loads(base64.b64decode(source['content']))
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
                 return {}, {}
