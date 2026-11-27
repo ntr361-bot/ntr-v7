@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026331",
+  "state": "collecting_effectively",
+  "run_id": "46000115387",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46000115387",
+  "updated_at": "2026-11-27T12:45:14.878611+00:00",
+  "error": null,
+  "valid_materials": 71,
+  "valid_authors": 71,
+  "successful_post_opens": 380,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 495,
+      "attempted": 329,
+      "opened": 329,
+      "extracted": 329,
+      "completed": 329
+    }
+  },
+  "article_texts_extracted": 380,
+  "article_details_completed": 380,
+  "last_verified_post": {
+    "author": "稳如哈马比",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349391&type=3",
+    "verified_at": "2026-11-27T12:45:14.232892+00:00",
+    "text_length": 57,
+    "text_sha256": "368a69de10e743b98fda18fff67b0ce7eec377e904239f2def010d7000db417f"
+  },
+  "last_attempted_post": {
+    "author": "稳如哈马比",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349391&type=3",
+    "attempt_index": 380
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-27T12:40:15.494263+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 380,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-27T12:45:14.583437+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
