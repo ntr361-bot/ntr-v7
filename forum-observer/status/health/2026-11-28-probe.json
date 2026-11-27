@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-28T03:35:24.727171+08:00",
+  "updated_at": "2026-11-28T03:35:24.727171+08:00",
+  "issue": "2026332",
+  "mode": "probe",
+  "state": "attention",
+  "probes": {
+    "118": {
+      "state": "reachable",
+      "host": "x5k1pok.11852.com",
+      "http_status": 206
+    },
+    "49": {
+      "state": "reachable",
+      "host": "49217.com",
+      "http_status": 206
+    }
+  },
+  "archive_audit": {},
+  "settlement_audit": {},
+  "last_30_manual_operations": {
+    "scope": "last_30_ledger_manual_dispatches; success=parent_verified_committed_evidence",
+    "sample_size": 10,
+    "completed": 10,
+    "verified": 5,
+    "failed_or_cancelled": 5,
+    "in_progress": 0,
+    "verified_rate_pct": 50.0,
+    "mean_completed_minutes": 18.1,
+    "by_target": {
+      "both": {
+        "total": 9,
+        "verified": 5
+      },
+      "49": {
+        "total": 1,
+        "verified": 0
+      }
+    },
+    "sample_complete": false,
+    "by_model": {
+      "118": {
+        "requested": 9,
+        "started": 8,
+        "unmatched": 1,
+        "collection_attempts": 6,
+        "effective_collections": 5,
+        "archived_reports": 5,
+        "startup_rate_pct": 88.9,
+        "effective_collection_rate_pct": 83.3,
+        "report_archive_rate_pct": 83.3
+      },
+      "49": {
+        "requested": 10,
+        "started": 9,
+        "unmatched": 1,
+        "collection_attempts": 7,
+        "effective_collections": 5,
+        "archived_reports": 5,
+        "startup_rate_pct": 90.0,
+        "effective_collection_rate_pct": 71.4,
+        "report_archive_rate_pct": 71.4
+      }
+    }
+  },
+  "current_check_findings": [
+    "manual_verified_rate_below_80_pct"
+  ],
+  "findings": [
+    "118_audit_no_verified_snapshot",
+    "49_audit_no_verified_snapshot",
+    "manual_verified_rate_below_80_pct"
+  ],
+  "notes": "Probe only checks HTTP shell, not actual DOM parsing; reliability counts only completed verified parent workflows. No collector, freeze, V7 or D1 writes."
+}
