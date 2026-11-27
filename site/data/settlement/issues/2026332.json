@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "issue": "2026332",
-  "attempts": 1,
-  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46075966987",
-  "checked_at": "2026-11-27T22:21:21.417713+00:00",
+  "attempts": 2,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46078100833",
+  "checked_at": "2026-11-27T22:42:15.210935+00:00",
   "last_settlement_at": "2026-11-26T16:16:53.955161+00:00",
   "draw_confirmed": false,
   "expected_count": 11,
@@ -12,56 +12,56 @@
     {
       "id": "v65-50",
       "label": "50期",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "v65-100",
       "label": "100期",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "v65-all",
       "label": "全部历史",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "v65-auto",
       "label": "自动学习V6.5",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "v7",
       "label": "整合V7",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "v7-auto",
       "label": "自动学习V7",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "special-rule",
       "label": "特别规律",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "comprehensive",
       "label": "综合评分",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "ensemble",
       "label": "集成预测",
-      "state": "failed",
-      "reason": "formal_snapshot_missing_or_ambiguous"
+      "state": "waiting",
+      "reason": "draw_unconfirmed"
     },
     {
       "id": "forum-observer",
@@ -107,12 +107,10 @@
       "2026255": "formal_snapshot_missing_or_ambiguous",
       "2026256": "formal_snapshot_missing_or_ambiguous",
       "2026257": "formal_snapshot_missing_or_ambiguous",
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "v65-100": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "v65-all": {
       "2026233": "formal_snapshot_missing_or_ambiguous",
@@ -160,32 +158,25 @@
       "2026275": "formal_snapshot_missing_or_ambiguous",
       "2026276": "formal_snapshot_missing_or_ambiguous",
       "2026277": "formal_snapshot_missing_or_ambiguous",
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "v65-auto": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "v7": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "v7-auto": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "special-rule": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "comprehensive": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "ensemble": {
-      "2026294": "formal_snapshot_missing_or_ambiguous",
-      "2026332": "formal_snapshot_missing_or_ambiguous"
+      "2026294": "formal_snapshot_missing_or_ambiguous"
     },
     "forum-observer": {
       "2026282": "snapshot_missing",
