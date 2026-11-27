@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "issue": "2026331",
+  "state": "collecting_effectively",
+  "run_id": "46000115387",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46000115387",
+  "updated_at": "2026-11-27T12:44:11.053636+00:00",
+  "error": null,
+  "valid_materials": 65,
+  "valid_authors": 65,
+  "successful_post_opens": 326,
+  "article_details": {
+    "featured": {
+      "queued": 51,
+      "attempted": 51,
+      "opened": 51,
+      "extracted": 51,
+      "completed": 51
+    },
+    "ordinary": {
+      "queued": 495,
+      "attempted": 276,
+      "opened": 275,
+      "extracted": 275,
+      "completed": 275
+    }
+  },
+  "article_texts_extracted": 326,
+  "article_details_completed": 326,
+  "last_verified_post": {
+    "author": "叶落知秋",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349443&type=3",
+    "verified_at": "2026-11-27T12:44:09.661851+00:00",
+    "text_length": 52,
+    "text_sha256": "3c6a187a2f58218e4d76ccbb731f585139ba6d0d2e3eafc8d9475c443bd8da35"
+  },
+  "last_attempted_post": {
+    "author": "花容月貌",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11349442&type=3",
+    "attempt_index": 327
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-27T12:40:15.494263+00:00",
+      "featured_queued": 51,
+      "featured_attempted": 51,
+      "featured_completed": 51
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 326,
+  "stage": "detail: 花容月貌 331期：四肖中特",
+  "progress_updated_at": "2026-11-27T12:44:10.317401+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
