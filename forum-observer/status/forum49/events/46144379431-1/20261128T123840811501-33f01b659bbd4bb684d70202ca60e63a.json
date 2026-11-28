@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:38:40.811501+00:00",
+  "error": null,
+  "valid_materials": 145,
+  "valid_authors": 145,
+  "successful_post_opens": 613,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 417,
+      "opened": 417,
+      "extracted": 416,
+      "completed": 417
+    }
+  },
+  "article_texts_extracted": 612,
+  "article_details_completed": 613,
+  "last_verified_post": {
+    "author": "梅花露",
+    "url": "https://49217.com/#/corpusdetail?id=43066423&type=3",
+    "verified_at": "2026-11-28T12:38:40.166366+00:00",
+    "text_length": 31,
+    "text_sha256": "ead9945a5b94e3ce2da1c9509ce3f153af47ff560e392681d457a049473a6e6c"
+  },
+  "last_attempted_post": {
+    "author": "梅花露",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43066423&type=3",
+    "attempt_index": 613
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 612,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-28T12:38:40.602258+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 1
+  },
+  "coverage_label": null
+}
