@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:07:38.466193+00:00",
+  "error": null,
+  "valid_materials": 91,
+  "valid_authors": 91,
+  "successful_post_opens": 812,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 673,
+      "opened": 672,
+      "extracted": 672,
+      "completed": 672
+    }
+  },
+  "article_texts_extracted": 812,
+  "article_details_completed": 812,
+  "last_verified_post": {
+    "author": "想你湿",
+    "url": "https://49217.com/#/corpusdetail?id=43061502&type=3",
+    "verified_at": "2026-11-28T01:07:37.057583+00:00",
+    "text_length": 62,
+    "text_sha256": "d8a0401cd2b28f799335f0427c930f7904d8bd3615908077e16e2602888c2d55"
+  },
+  "last_attempted_post": {
+    "author": "出家人不打诳语",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43061909&type=3",
+    "attempt_index": 813
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 812,
+  "stage": "detail: 出家人不打诳语 专业杀尾",
+  "progress_updated_at": "2026-11-28T01:07:37.716966+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
