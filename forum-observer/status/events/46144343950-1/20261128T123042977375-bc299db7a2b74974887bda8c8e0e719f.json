@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144343950",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "118",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144343950",
+  "updated_at": "2026-11-28T12:30:42.977375+00:00",
+  "error": null,
+  "valid_materials": 80,
+  "valid_authors": 80,
+  "successful_post_opens": 443,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 391,
+      "opened": 390,
+      "extracted": 390,
+      "completed": 390
+    }
+  },
+  "article_texts_extracted": 443,
+  "article_details_completed": 443,
+  "last_verified_post": {
+    "author": "风萧萧易水寒",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354926&type=3",
+    "verified_at": "2026-11-28T12:30:42.501252+00:00",
+    "text_length": 62,
+    "text_sha256": "e74276d79ca41a2ae6d5cc759f76022767676b99d70ee83de6b33f90ae174584"
+  },
+  "last_attempted_post": {
+    "author": "踩着高跷看矮子",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354925&type=3",
+    "attempt_index": 444
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:25:26.884007+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 443,
+  "stage": "detail: 踩着高跷看矮子 香山伍肖",
+  "progress_updated_at": "2026-11-28T12:30:42.954192+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
