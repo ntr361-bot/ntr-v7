@@ -1,0 +1,22 @@
+{
+  "issue": "2026332",
+  "model": "forum49",
+  "phase": "manual",
+  "run_id": "46148732336",
+  "run_attempt": 1,
+  "failures": [
+    "Command '['git', 'push', 'origin', 'HEAD:refs/heads/main']' returned non-zero exit status 1."
+  ],
+  "snapshot_path": "forum-observer/forum49/issues/2026332/snapshot.json",
+  "ledger_sync": "verified_ledger_source",
+  "retry_count": 1,
+  "source": "manual",
+  "report_generated_at": "2026-11-28T12:45:33.903407+00:00",
+  "report_sha256": "82ffcc42d18df65baed59b990f03b03b3cd66bf47ea1e9187e3f7d488f8e7f86",
+  "frozen_by_run_id": "46148732336",
+  "frozen_at": "2026-11-28T21:16:09.191142+08:00",
+  "digest": "0108c8ff491579d6d8c45f0fbc697e8086bb17db79a0da94b4a4cac67d8ac8a8",
+  "frozen_report_sha256": "01762fa540b13e75931cc17195e6d38b7fad5a08d77dc17d144af2b16827100e",
+  "ledger_retry_count": 0,
+  "production_ledger_verified": true
+}
