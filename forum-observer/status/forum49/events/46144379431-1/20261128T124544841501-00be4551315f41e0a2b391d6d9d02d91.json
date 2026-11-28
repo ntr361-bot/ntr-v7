@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "report_published",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:45:44.841501+00:00",
+  "error": null,
+  "valid_materials": 214,
+  "valid_authors": 214,
+  "successful_post_opens": 892,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 696,
+      "opened": 696,
+      "extracted": 693,
+      "completed": 696
+    }
+  },
+  "article_texts_extracted": 889,
+  "article_details_completed": 892,
+  "last_verified_post": {
+    "author": "我是雷锋",
+    "url": "https://49217.com/#/corpusdetail?id=43062007&type=3",
+    "verified_at": "2026-11-28T12:45:32.147740+00:00",
+    "text_length": 79,
+    "text_sha256": "d8139eb46c1e05747b6416763d0f227a34d55d457d84c030215bcff9eb3ed28b"
+  },
+  "last_attempted_post": {
+    "author": "我是雷锋",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062007&type=3",
+    "attempt_index": 892
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 889,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-28T12:45:33.903407+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 3,
+    "truncated": true,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": "部分覆盖：超时或未完成"
+}
