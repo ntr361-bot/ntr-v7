@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144343950",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "118",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144343950",
+  "updated_at": "2026-11-28T12:27:31.096390+00:00",
+  "error": null,
+  "valid_materials": 50,
+  "valid_authors": 50,
+  "successful_post_opens": 234,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 182,
+      "opened": 181,
+      "extracted": 181,
+      "completed": 181
+    }
+  },
+  "article_texts_extracted": 234,
+  "article_details_completed": 234,
+  "last_verified_post": {
+    "author": "阴暗一号",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355229&type=3",
+    "verified_at": "2026-11-28T12:27:30.507427+00:00",
+    "text_length": 109,
+    "text_sha256": "6800d7d33b7b31082d860354f0f2c7f00779696ba411a95e8bfc52b57551fada"
+  },
+  "last_attempted_post": {
+    "author": "魔王子",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355219&type=3",
+    "attempt_index": 235
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:25:26.884007+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 234,
+  "stage": "detail: 魔王子 332🇲🇴",
+  "progress_updated_at": "2026-11-28T12:27:30.884629+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
