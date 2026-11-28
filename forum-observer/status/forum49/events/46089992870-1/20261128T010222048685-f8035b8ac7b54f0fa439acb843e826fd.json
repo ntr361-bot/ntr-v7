@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:02:22.048685+00:00",
+  "error": null,
+  "valid_materials": 62,
+  "valid_authors": 62,
+  "successful_post_opens": 515,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 375,
+      "opened": 375,
+      "extracted": 375,
+      "completed": 375
+    }
+  },
+  "article_texts_extracted": 515,
+  "article_details_completed": 515,
+  "last_verified_post": {
+    "author": "醉生忧愁",
+    "url": "https://49217.com/#/corpusdetail?id=43062640&type=3",
+    "verified_at": "2026-11-28T01:02:21.820020+00:00",
+    "text_length": 45,
+    "text_sha256": "03c119a0b149290364e290f81d210ecee2f2cc2d784e5fb2b8476159963717f5"
+  },
+  "last_attempted_post": {
+    "author": "醉生忧愁",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062640&type=3",
+    "attempt_index": 515
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 515,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-28T01:02:22.019636+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
