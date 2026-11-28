@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T00:59:11.714422+00:00",
+  "error": null,
+  "valid_materials": 48,
+  "valid_authors": 48,
+  "successful_post_opens": 294,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 155,
+      "opened": 154,
+      "extracted": 154,
+      "completed": 154
+    }
+  },
+  "article_texts_extracted": 294,
+  "article_details_completed": 294,
+  "last_verified_post": {
+    "author": "守护花眸",
+    "url": "https://49217.com/#/corpusdetail?id=43062850&type=3",
+    "verified_at": "2026-11-28T00:59:10.858361+00:00",
+    "text_length": 50,
+    "text_sha256": "c927f8e931101f234ea27706b8f7a4cf70fc854f5a360176958e9982d7dc3ed9"
+  },
+  "last_attempted_post": {
+    "author": "枫叶飘雪",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062849&type=3",
+    "attempt_index": 295
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 294,
+  "stage": "detail: 枫叶飘雪 五肖：",
+  "progress_updated_at": "2026-11-28T00:59:11.126663+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
