@@ -1,47 +1,58 @@
 {
   "schema_version": 2,
   "issue": "2026332",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "46144379431",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "model": "49",
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
-  "updated_at": "2026-11-28T12:28:00.908579+00:00",
+  "updated_at": "2026-11-28T12:29:05.079577+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 3,
+  "valid_authors": 3,
+  "successful_post_opens": 19,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 196,
+      "attempted": 20,
+      "opened": 19,
+      "extracted": 19,
+      "completed": 19
     },
     "ordinary": {
-      "queued": 0,
+      "queued": 696,
       "attempted": 0,
       "opened": 0,
       "extracted": 0,
       "completed": 0
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 19,
+  "article_details_completed": 19,
+  "last_verified_post": {
+    "author": "无敌小妹",
+    "url": "https://49217.com/#/corpusdetail?id=43061543&type=3",
+    "verified_at": "2026-11-28T12:29:04.751823+00:00",
+    "text_length": 221,
+    "text_sha256": "45eef31ee6de26eecb7009b5c993631bd6d46bc4dd756dc129c3eed7738c856f"
+  },
+  "last_attempted_post": {
+    "author": "欧阳修手机",
+    "is_featured": true,
+    "url": "https://49217.com/#/corpusdetail?id=43067638&type=3",
+    "attempt_index": 20
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
     "first_ordinary_attempt": null,
     "violation_count": 0,
     "state": "ordinary_not_started"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 170",
-  "progress_updated_at": "2026-11-28T12:28:00.639356+00:00",
+  "raw_count": 19,
+  "stage": "detail: 欧阳修手机 一周三肖",
+  "progress_updated_at": "2026-11-28T12:29:04.775277+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
