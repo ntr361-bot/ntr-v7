@@ -24,6 +24,17 @@ class ReliabilityRecoveryTests(unittest.TestCase):
         self.assertEqual(github.content("archive/draft-status.json"), (item, {"issue": self.issue}))
         github.request.assert_called_with("git/blobs/exact")
 
+    def test_forum49_has_a_finalization_grace_period_after_collection(self):
+        child = Mock(returncode=0)
+        child.poll.side_effect = [None, 0, 0]
+        with patch.dict("os.environ", {"FORUM_MODEL": "49", "F49_URL": "https://example.com"}, clear=True), \
+             patch.object(runtime, "safe_publish"), patch.object(runtime.threading, "Thread"), \
+             patch.object(runtime.subprocess, "Popen", return_value=child), \
+             patch.object(runtime.time, "monotonic", side_effect=[0, schedule.MAX_SECONDS + 1]), \
+             patch.object(runtime.time, "sleep"), patch.object(runtime, "read_json", return_value={}):
+            self.assertEqual(runtime.supervise(), 0)
+            child.terminate.assert_not_called()
+
     def test_corrupt_draft_allows_backup_retry_for_either_model(self):
         with TemporaryDirectory() as directory:
             folder = Path(directory, "issues", self.issue)

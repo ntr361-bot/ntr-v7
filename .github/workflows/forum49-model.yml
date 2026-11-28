@@ -47,7 +47,7 @@ on:
   schedule:
     # Existing automatic backup slots; delayed/manual collection is accepted all day.
     # 21:00 and 21:05 remain freeze backups.
-    - cron: "35 12 * * *"
+    - cron: "20 12 * * *"
     - cron: "0 13 * * *"
     - cron: "5 13 * * *"
 permissions:
