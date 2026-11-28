@@ -140,7 +140,7 @@ var tests = new (string Name, Action Run)[]
     ,("云端预测档案保留本地同等完整模型快照", CloudPredictionArchiveKeepsFullLocalSnapshots)
     ,("同构模型状态快照具有稳定哈希且学习事件冲突可检测", SymmetricModelStateSnapshotDetectsConflicts)
     ,("云端发布流程包含同构运行状态", CloudWorkflowPublishesSymmetricRuntimeState)
-    ,("定时状态未变化时跳过全量发布并保留失败重试", SyncWorkflowSkipsUnchangedScheduledPublication)
+    ,("账本同步读取生产数据并独立重试", SyncWorkflowVerifiesProductionLedger)
     ,("桌面同步读取同构运行状态", DesktopSyncReadsSymmetricRuntimeState)
     ,("同构状态冲突不会部分写入", SymmetricStateConflictDoesNotPartiallyMerge)
     ,("预测历史保留本地与云端来源", PredictionHistoryPreservesPredictionSource)
@@ -1489,19 +1489,24 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
     Assert(workflow.Contains("Authorization = \"Bearer $oidc\"", StringComparison.Ordinal) &&
            workflow.Contains("OAI-Sites-Authorization", StringComparison.Ordinal),
         "mobile-trigger polling must send both OIDC and Sites authorization headers");
-    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
-        "V7 publisher must refresh the isolated smart-ledger V7 copy");
+    Assert(workflow.Contains("Commit generated files", StringComparison.Ordinal) &&
+           !workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "V7 must publish through committed GitHub artifacts for the production ledger");
 }
 
 void V6CloudEndpointsAreConsistent()
 {
     const string desktopEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
-    const string publisherEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish";
     string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
     string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
     string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
     Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V7 desktop sync is not using the isolated V7 endpoint");
-    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V7 workflow is not publishing through the V7 OIDC endpoint");
+    string settlement = File.ReadAllText(Path.Combine(root, "scripts", "settlement.py"));
+    string verifier = File.ReadAllText(Path.Combine(root, "scripts", "verify_ledger_state.py"));
+    Assert(settlement.Contains("https://smart-ledger-cf.5rmwf2d5ff.workers.dev", StringComparison.Ordinal) &&
+           verifier.Contains("/api/v7-sync/desktop", StringComparison.Ordinal) &&
+           !workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "Committed V7 content must be verified through the production ledger API");
     Assert(!desktop.Contains("smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync", StringComparison.Ordinal),
         "V7 desktop sync still uses the V6 API");
     Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
@@ -2525,23 +2530,25 @@ void CloudWorkflowPublishesSymmetricRuntimeState()
     string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "run-prediction.yml"));
     Assert(workflow.Contains("runtime-state.json", StringComparison.Ordinal),
         "云端 workflow 没有生成或发布同构运行状态");
-    Assert(workflow.Contains("modelState", StringComparison.Ordinal),
-        "云端发布 payload 没有包含模型运行状态");
+    Assert(!workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "Cloudflare 账本从 GitHub 读取，预测任务不得向旧账本推送");
 }
 
-void SyncWorkflowSkipsUnchangedScheduledPublication()
+void SyncWorkflowVerifiesProductionLedger()
 {
-    string workflow = File.ReadAllText(Path.Combine(ProjectRoot(), ".github", "workflows", "sync-smart-ledger-state.yml"));
-    Assert(workflow.Contains("GITHUB_EVENT_NAME -eq 'schedule'", StringComparison.Ordinal) &&
-           workflow.Contains("head_sha -eq $env:GITHUB_SHA", StringComparison.Ordinal),
-        "unchanged detection must be limited to a previously successful publication of the same commit");
-    Assert(workflow.Contains("liveCheckManifest", StringComparison.Ordinal) &&
-           workflow.Contains("liveCheckForecast", StringComparison.Ordinal) &&
-           workflow.Contains("skipped full archive publish", StringComparison.Ordinal),
-        "scheduled no-op must verify the live latest forecast before skipping the archive publish");
-    Assert(workflow.Contains("Next hourly synchronization retries this snapshot", StringComparison.Ordinal) &&
-           workflow.Contains("Invoke-RequiredPublish", StringComparison.Ordinal),
-        "the scheduled no-op gate must preserve the existing publish retry path");
+    string root = ProjectRoot();
+    string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "sync-smart-ledger-state.yml"));
+    string verifier = File.ReadAllText(Path.Combine(root, "scripts", "verify_ledger_state.py"));
+    Assert(workflow.Contains("workflow_run:", StringComparison.Ordinal) &&
+           workflow.Contains("python scripts/verify_ledger_state.py", StringComparison.Ordinal),
+        "Production verification must run independently after the generating workflow");
+    Assert(verifier.Contains("/manifest", StringComparison.Ordinal) &&
+           verifier.Contains("/prediction?file=", StringComparison.Ordinal) &&
+           verifier.Contains("/runtime-state", StringComparison.Ordinal),
+        "Read-back must verify the production forecast and runtime state");
+    Assert(workflow.Contains("45 * * * *", StringComparison.Ordinal) &&
+           !workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "Hourly read-back must retry independently without a legacy publisher");
 }
 
 void DesktopSyncReadsSymmetricRuntimeState()

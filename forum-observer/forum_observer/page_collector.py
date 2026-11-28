@@ -1262,6 +1262,31 @@ def unparsed_evidence(posts):
     return rejected
 
 
+def open_forum(page, url, deadline):
+    """Retry short-lived navigation failures, keeping normal TLS validation."""
+    from playwright.sync_api import Error as BrowserError
+    for attempt in range(2):
+        try:
+            remaining_ms = int((deadline - time.monotonic()) * 1000)
+            if remaining_ms <= 0:
+                raise TimeoutError("forum navigation budget exhausted")
+            response = page.goto(url, wait_until="domcontentloaded", timeout=min(60_000, remaining_ms))
+        except BrowserError as error:
+            reason = str(error)
+            if attempt or not any(mark in reason for mark in (
+                    "ERR_TIMED_OUT", "ERR_CONNECTION_RESET", "ERR_CONNECTION_CLOSED",
+                    "ERR_NAME_NOT_RESOLVED", "Timeout")):
+                raise
+        else:
+            if response is None or response.status < 400:
+                return
+            if attempt or response.status not in (429, 500, 502, 503, 504):
+                raise ValueError(f"forum navigation HTTP {response.status}")
+        if deadline - time.monotonic() <= 3:
+            raise TimeoutError("forum navigation retry budget exhausted")
+        time.sleep(3)
+
+
 def collect_page(url,out,target_issue=None,target_category=None,policy=None):
     from playwright.sync_api import sync_playwright
     policy=dict(policy or {})
@@ -1314,7 +1339,7 @@ def collect_page(url,out,target_issue=None,target_category=None,policy=None):
                 'path':urlparse(request.url).path,'reason':request.failure},
                 ensure_ascii=False),flush=True))
             checkpoint('forum_navigation')
-            page.goto(url,wait_until='domcontentloaded',timeout=60000)
+            open_forum(page, url, deadline)
             checkpoint('forum_render_wait')
             page.get_by_role('tab',name='澳彩',exact=True).wait_for(state='visible',timeout=15000)
             page.get_by_role('tab',name='澳彩',exact=True).click()

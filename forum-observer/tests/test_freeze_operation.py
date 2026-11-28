@@ -172,7 +172,7 @@ class FreezeOperationTests(unittest.TestCase):
                              [{"issue": "2026327"}, {"issue": self.issue}])
 
     def test_after_deadline_or_missing_draw_state_never_writes(self):
-        for clock in (lambda: self.draw, lambda: self.now.replace(minute=20)):
+        for clock in (lambda: self.draw, lambda: self.now.replace(minute=31)):
             with self.assertRaisesRegex(op.FreezeError, "outside_safe_freeze_window"):
                 op.guard(self.issue, False, self.draw, clock, Mock())
         for data in ([], [{"issue": self.issue}]):

@@ -44,9 +44,9 @@ class Forum49Test(unittest.TestCase):
             with mock.patch('forum_observer.page_collector.collect_page', return_value=RESULT), \
                  mock.patch('forum_observer.report.render') as render, \
                  mock.patch.object(forum49, 'collection_budget', return_value=600), \
-                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '42'}):
+                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '42', 'GITHUB_RUN_ATTEMPT': '2'}):
                 rec = forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
-                target = d / 'arch/issues/2026295/run-42.json'
+                target = d / 'arch/issues/2026295/run-42-2.json'
                 self.assertTrue(rec['ok'])
                 self.assertEqual(rec['max_collection_seconds'], 600)
                 render.assert_called_once()
@@ -96,11 +96,11 @@ class Forum49Test(unittest.TestCase):
             (d / 'collector-config.json').write_text('{}')
             with mock.patch('forum_observer.page_collector.collect_page', side_effect=ValueError('no forum posts')), \
                  mock.patch.object(forum49, 'collection_budget', return_value=600), \
-                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '7'}):
+                 mock.patch.dict('os.environ', {'GITHUB_RUN_ID': '7', 'GITHUB_RUN_ATTEMPT': '2'}):
                 rec = forum49.run(forum49.DEFAULT_URL, '2026295', '澳门', d / 'out', d / 'arch', d / 'collector-config.json')
                 self.assertFalse(rec['ok'])
                 self.assertIn('no forum posts', rec['error'])
-                self.assertTrue((d / 'arch/issues/2026295/run-7.json').exists())
+                self.assertTrue((d / 'arch/issues/2026295/run-7-2.json').exists())
 
 
 class BudgetTest(unittest.TestCase):

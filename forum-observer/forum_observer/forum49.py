@@ -199,7 +199,10 @@ def run(url: str, issue: str | None, category: str | None, out: Path, archive: P
     record['finished_at'] = datetime.now(timezone.utc).isoformat()
     folder = archive / 'issues' / str(record.get('issue') or issue or 'unknown')
     folder.mkdir(parents=True, exist_ok=True)
-    target = folder / f"run-{record['run_id'] or started.strftime('%Y%m%dT%H%M%S')}.json"
+    run_key = record['run_id'] or started.strftime('%Y%m%dT%H%M%S%f')
+    attempt = os.environ.get('GITHUB_RUN_ATTEMPT')
+    filename = f'run-{run_key}-{attempt}.json' if attempt else f'run-{run_key}.json'
+    target = folder / filename
     if target.exists():
         raise SystemExit(f'refusing to overwrite {target}')
     target.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -218,7 +221,7 @@ def main(argv=None):
     ap.add_argument('--archive', type=Path, default=Path('forum49'))
     a = ap.parse_args(argv)
     record = run(a.url, a.issue or None, a.category or None, a.out, a.archive)
-    if not record.get('ok'):
+    if not record.get('ok') or not record.get('issue_matches_request'):
         raise SystemExit(1)
 
 

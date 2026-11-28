@@ -43,6 +43,7 @@ class ScheduleTests(unittest.TestCase):
                 "issue":issue,"status":"ready_observation","valid_materials":40,
                 "fetched_at":self.at(20,31).isoformat(),"collection_round":1
             }),encoding="utf-8")
+            (folder/"report.md").write_text("# verified report")
             self.assertEqual(decide(self.at(20,35),tmp,scheduled=True,requested_round='1')[3],
                              "current_round_already_completed")
             self.assertEqual(decide(self.at(20,40),tmp)[3],"current_round_already_completed")
@@ -100,6 +101,7 @@ class ScheduleTests(unittest.TestCase):
                     "fetched_at":stale.isoformat(),"collection_round":1
                 }),encoding="utf-8")
                 self.assertTrue(decide(self.at(20,20),tmp,scheduled=True,requested_round='1')[0])
+            (folder/"report.md").write_text("# verified report")
             # A manual collection from 20:00 is tonight's: automatic ones skip.
             evening=json.loads(path.read_text())
             evening["fetched_at"]=self.at(20,10).isoformat()
@@ -147,7 +149,8 @@ class ScheduleTests(unittest.TestCase):
         self.assertFalse(freeze_window_allowed(self.at(20, 59)))
         self.assertTrue(freeze_window_allowed(self.at(21, 0)))
         self.assertTrue(freeze_window_allowed(self.at(21, 15)))
-        self.assertFalse(freeze_window_allowed(self.at(21, 20)))
+        self.assertTrue(freeze_window_allowed(self.at(21, 20)))
+        self.assertFalse(freeze_window_allowed(self.at(21, 31)))
         self.assertFalse(freeze_window_allowed(self.at(1, 51, 13)))
 
     def test_completed_draft_skips_automatic_backups_but_manual_can_rerun(self):
@@ -159,6 +162,7 @@ class ScheduleTests(unittest.TestCase):
                 'issue':issue,'status':'ready_observation','valid_materials':27,
                 'fetched_at':self.at(20,31).isoformat(),'collection_round':1
             },ensure_ascii=False),encoding='utf-8')
+            (folder/"report.md").write_text("# verified report")
             self.assertEqual(decide(self.at(20,35),tmp)[3],
                              "current_round_already_completed")
             self.assertFalse(decide(self.at(20,50),tmp)[0])
@@ -203,27 +207,27 @@ class ScheduleTests(unittest.TestCase):
         self.assertNotIn("trigger(forum-audit):", freeze_job)
         self.assertNotIn("forum_observer.runtime supervise", freeze_job)
         # Nightly automation (user-authorized 2026-11-19): only the authorized
-        # cron slots exist — 20:20/20:25 collect, 21:00/21:05 freeze (Beijing).
+        # cron slots exist — 20:30 collect, 21:00/21:05 freeze (Beijing).
         self.assertIn("schedule:", workflow)
-        for cron in ('"20,25 12 * * *"', '"0 13 * * *"', '"5 13 * * *"'):
+        for cron in ('"30 12 * * *"', '"0 13 * * *"', '"5 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         for retired in ('0,5,10 12', '30,35,40 12'):
             self.assertNotIn(retired, workflow)
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("forum_observer.freeze_operation", workflow)
-        self.assertIn("--defer-freeze", workflow)
+        self.assertIn("forum_observer.publish_collection forum-observer", workflow)
         self.assertIn("any delayed or", workflow)
         self.assertNotIn("Reject delayed scheduled collection", workflow)
         self.assertNotIn("Align GPT collection trigger", workflow)
 
     def test_workflow_nightly_cron_matches_freeze_window(self):
-        """Nightly cron (user-authorized 2026-11-19): collect at 20:20/20:25,
+        """Nightly cron (user-authorized revised): collects at 20:30 as a backup,
         freeze at 21:00/21:05 Beijing; manual dispatch keeps working."""
         workflow = (Path(__file__).resolve().parents[2] / ".github" /
                     "workflows" / "forum-observer.yml").read_text(encoding="utf-8")
         self.assertIn("mode:", workflow)
         self.assertIn("freeze", workflow)
-        self.assertIn("github.event.schedule == '20,25 12 * * *'", workflow)
+        self.assertIn("github.event.schedule == '30 12 * * *'", workflow)
         self.assertIn("github.event.schedule == '0 13 * * *'", workflow)
         self.assertIn("github.event.schedule == '5 13 * * *'", workflow)
         # External freeze is gated in exactly the same pre-draw window as cron.
@@ -244,6 +248,7 @@ class ScheduleTests(unittest.TestCase):
             (folder / "draft-status.json").write_text(json.dumps({
                 "issue": issue, "status": "ready_observation", "valid_materials": 90,
                 "fetched_at": self.at(20, 38).isoformat()}), encoding="utf-8")
+            (folder/"report.md").write_text("# verified report")
             self.assertEqual(forum49_collect_gate(tmp, self.at(20, 40), True)[1],
                              "already_collected_tonight")
             # Manual dispatch keeps working at any time.
@@ -299,7 +304,7 @@ class ScheduleTests(unittest.TestCase):
 
     def test_forum49_workflow_keeps_manual_and_adds_nightly_cron(self):
         """Manual dispatch stays; nightly cron (user-authorized 2026-11-19) is
-        limited to 20:20/20:35 collect and 21:00/21:05 freeze (Beijing)."""
+        limited to 20:35 collect and 21:00/21:05 freeze (Beijing)."""
         workflow = (Path(__file__).resolve().parents[2] / ".github" /
                     "workflows" / "forum49-model.yml").read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
@@ -314,11 +319,11 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("forum-observer/triggers/forum49/**", workflow)
         self.assertIn("trigger(forum49-collect):", workflow)
         self.assertIn("github.event_name != 'workflow_dispatch' && 'true'", workflow)
-        self.assertIn("Enforce eligible current-issue draft after collection", workflow)
-        self.assertIn("collection did not publish a qualifying current-issue draft", workflow)
+        self.assertIn("Publish and verify committed current-run draft", workflow)
+        self.assertIn("forum_observer.publish_collection forum49", workflow)
         self.assertIn("trigger(forum49-freeze):", workflow)
         self.assertIn("forum_observer.freeze_operation forum49", workflow)
-        for cron in ('"20 12 * * *"', '"35 12 * * *"', '"0 13 * * *"', '"5 13 * * *"'):
+        for cron in ('"35 12 * * *"', '"0 13 * * *"', '"5 13 * * *"'):
             self.assertIn("- cron: " + cron, workflow)
         # Collect gate refuses the freeze crons; freeze job accepts only them.
         self.assertIn("github.event.schedule != '0 13 * * *'", workflow)

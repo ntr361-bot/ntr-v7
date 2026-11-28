@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 from .core import SCORING_RULE_VERSION, ZODIACS, verify_scored_result
-from .cycle import sync
+from .cycle import atomic_bytes, sync
 from .runtime import GitHub
 from .schedule import FREEZE_END, TZ, current_issue, snapshot_exists
 
@@ -18,6 +18,7 @@ ARCHIVES = {"forum-observer": "archive", "forum49": "forum49"}
 HISTORY = Path("../site/data/history.json")
 DRAW_SOURCE = "https://api.00853lhc.com/api/HistoryOpenInfo"
 RAW = "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/"
+LEDGER = "https://smart-ledger-cf.5rmwf2d5ff.workers.dev"
 EXCLUDED = "2026327"
 
 
@@ -43,14 +44,18 @@ def timestamp(value):
 def check_window(issue, now, manual):
     if current_issue(now) != issue or issue == EXCLUDED:
         raise FreezeError("wrong_or_excluded_issue")
+    now = now.astimezone(TZ)
     minute = (now.hour, now.minute)
     if minute < (21, 0) or minute >= ((21, 31) if manual else FREEZE_END):
         raise FreezeError("outside_safe_freeze_window")
 
 
 def load_draft(folder, issue, now):
-    status = read_json(folder / "draft-status.json")
-    report = (folder / "report.md").read_bytes()
+    return validate_draft(folder, issue, now, read_json(folder / "draft-status.json"),
+                          (folder / "report.md").read_bytes())
+
+
+def validate_draft(folder, issue, now, status, report):
     fetched = timestamp(status["fetched_at"])
     draw = timestamp(status["draw_at"])
     if (status.get("issue") != issue or fetched.date() != now.date()
@@ -82,6 +87,36 @@ def load_draft(folder, issue, now):
     if (round_dir / "report.md").read_bytes() != report:
         raise FreezeError("archived_report_mismatch")
     return status, report
+
+
+def restore_draft(folder, issue, now):
+    """Recover a pointer from its newest verified, committed collection copy."""
+    try:
+        return load_draft(folder, issue, now)
+    except (OSError, ValueError, KeyError, TypeError) as original:
+        for candidate in sorted((folder / "rounds").glob("*/draft-status.json"),
+                                key=lambda path: path.parent.name.split("-", 1)[-1], reverse=True):
+            try:
+                content = candidate.read_bytes()
+                status = json.loads(content)
+                report = (candidate.parent / "report.md").read_bytes()
+                run_id = status["collection_run_id"]
+                attempt = status["collection_run_attempt"]
+                if not str(run_id).isdecimal() or type(attempt) is not int:
+                    continue
+                receipt = read_json(folder / "collection-runs" / f"{run_id}-{attempt}.json")
+                if (receipt["issue"] != issue or receipt["round"] != candidate.parent.name
+                        or receipt["run_id"] != run_id or receipt["run_attempt"] != attempt
+                        or receipt["draft_sha256"] != sha(content)
+                        or receipt["report_sha256"] != sha(report)):
+                    continue
+                validate_draft(folder, issue, now, status, report)
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+            atomic_bytes(folder / "report.md", report)
+            atomic_bytes(folder / "draft-status.json", content)
+            return status, report
+        raise original
 
 
 def live_draw_state(now=None):
@@ -139,8 +174,8 @@ def guard(issue, manual, draw_at, clock, live):
     return now
 
 
-def read_remote(path):
-    req = Request(RAW + path, headers={"Cache-Control": "no-cache",
+def read_url(url):
+    req = Request(url, headers={"Cache-Control": "no-cache",
                   "User-Agent": "ntr-v7-forum-freeze/1"})
     with urlopen(req, timeout=8) as response:
         value = response.read(2_000_001)
@@ -149,8 +184,18 @@ def read_remote(path):
     return value
 
 
+def read_remote(path):
+    return read_url(RAW + path)
+
+
+def verify_ledger_freeze(model, issue, snapshot, read=read_url):
+    report = json.loads(read(f"{LEDGER}/api/settlement?model={model}&issue={issue}&phase=frozen"))
+    if report != {key: snapshot[key] for key in ("issue", "digest", "frozen_at", "top6")}:
+        raise FreezeError("production_ledger_freeze_mismatch")
+
+
 def verify_feed(model, issue, snap, report, read=read_remote):
-    """Read back the same GitHub raw paths consumed by the production ledger."""
+    """Verify archive, generated projection and deployed ledger read-back."""
     prefix = f"site/data/{model}"
     saved = json.loads(read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/snapshot.json"))
     latest = json.loads(read(f"{prefix}/latest.json"))
@@ -158,11 +203,14 @@ def verify_feed(model, issue, snap, report, read=read_remote):
     if (saved != snap or item.get("digest") != snap["digest"]
             or item.get("issue") != issue or item.get("ranking") != snap["ranking"]
             or item.get("frozen_at") != snap["frozen_at"]
-            or latest.get("model") != model or latest.get("issue") != issue
-            or latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]):
+            or latest.get("model") != model or str(latest.get("issue") or "") < issue
+            or (latest.get("issue") == issue and
+                (latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]))):
         raise FreezeError("ledger_feed_mismatch")
     if read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/report.md") != report:
         raise FreezeError("ledger_report_mismatch")
+    if read is read_remote:
+        verify_ledger_freeze(model, issue, snap)
 
 
 def check_snapshot(archive, issue, folder):
@@ -195,7 +243,7 @@ def git(*args):
 
 def create_snapshot(model, archive, folder, issue, manual, journal, clock, live):
     check_window(issue, clock(), manual)
-    status, report = load_draft(folder, issue, clock())
+    status, report = restore_draft(folder, issue, clock())
     provenance = {"source": "manual" if manual else "automatic",
                   "run_id": journal["run_id"], "run_attempt": journal["run_attempt"],
                   "report_generated_at": status["fetched_at"],
@@ -234,7 +282,7 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
             break
         except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as exc:
             journal["failures"].append(str(exc))
-            if attempt or (phase != "verify" and not isinstance(exc, subprocess.SubprocessError)):
+            if attempt:
                 raise
             check_window(issue, clock(), manual)
             time.sleep(3)
@@ -272,6 +320,8 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
         try:
             verify_feed(model, issue, snap, report, read)
             journal["ledger_sync"] = "verified_ledger_source"
+            if read is read_remote:
+                journal["production_ledger_verified"] = True
             return
         except (ValueError, KeyError, OSError) as exc:
             journal["failures"].append(str(exc))
@@ -299,6 +349,13 @@ def alert(github, journal):
             github.request(f"issues/{existing['number']}/comments", "POST", {"body": body})
 
 
+def requested_freeze_issue(created_at, phase, scheduled):
+    scheduled_minute = 5 if phase == "verify" else 0
+    if scheduled and (created_at.hour, created_at.minute) < (21, scheduled_minute):
+        created_at -= timedelta(days=1)
+    return current_issue(created_at)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("model", choices=ARCHIVES)
@@ -308,7 +365,11 @@ def main():
     attempt = int(os.environ["GITHUB_RUN_ATTEMPT"])
     github = GitHub()
     run = github.request(f"actions/runs/{run_id}")
-    issue = current_issue(timestamp(run["created_at"]))
+    issue = requested_freeze_issue(timestamp(run["created_at"]), args.phase,
+                                   run.get("event") == "schedule")
+    requested = os.environ.get("REQUESTED_ISSUE")
+    if requested and requested != issue:
+        raise FreezeError("freeze_request_issue_mismatch")
     journal = {"issue": issue, "model": args.model, "phase": args.phase,
                "run_id": run_id, "run_attempt": attempt, "failures": []}
     try:
@@ -316,7 +377,7 @@ def main():
     except Exception as exc:
         if not journal["failures"] or journal["failures"][-1] != str(exc):
             journal["failures"].append(str(exc))
-        if args.phase == "verify" and issue != EXCLUDED:
+        if args.phase != "manual" and issue != EXCLUDED:
             alert(github, journal)
         raise
     finally:
