@@ -16,14 +16,14 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
 from .forum49 import DEFAULT_URL as FORUM49_URL
 from .runtime import GitHub
-from .schedule import current_issue
+from .schedule import current_issue, freeze_window_allowed
 
 TZ = ZoneInfo("Asia/Shanghai")
 ALERT_TITLE = "论坛采集稳定性告警（118/49）"
@@ -254,18 +254,21 @@ def snapshot_audit(github, issue):
     results = {}
     for model, archive in (("118", "archive"), ("49", "forum49")):
         root = f"forum-observer/{archive}/issues/{issue}"
-        _, snapshot = github.content(root + "/snapshot.json")
-        report = github.request("contents/" + root + "/report.md?ref=main")
-        # GitHub.content returns ({}, {}) for a genuine 404, but the report
-        # can be absent before a successful collection.
-        if not snapshot:
-            _, draft = github.content(root + "/draft-status.json")
-            results[model] = {
-                "state": "draft_not_frozen" if draft and report.get("sha")
-                         else "no_verified_snapshot",
-                "report_present": bool(report.get("sha")),
-                "draft_present": bool(draft),
-            }
+        try:
+            _, snapshot = github.content(root + "/snapshot.json")
+            report = github.request("contents/" + root + "/report.md?ref=main")
+            if not snapshot:
+                _, draft = github.content(root + "/draft-status.json")
+                valid = (draft.get("issue") == issue and type(draft.get("valid_materials")) is int
+                         and draft["valid_materials"] > 0 and bool(report.get("sha")))
+                results[model] = {
+                    "state": "draft_not_frozen" if valid else "no_verified_snapshot",
+                    "report_present": bool(report.get("sha")),
+                    "draft_present": bool(draft),
+                }
+                continue
+        except (ValueError, KeyError, TypeError, AttributeError):
+            results[model] = {"state": "invalid_snapshot_or_draft"}
             continue
         core = dict(snapshot)
         actual_digest = core.pop("digest", None)
@@ -337,7 +340,7 @@ def update_alert(github, findings, previous_findings, report):
     issues = github.request("issues?state=open&per_page=100")
     open_alert = next((item for item in issues if
                        item.get("title") == ALERT_TITLE and "pull_request" not in item), None)
-    text = ("论坛健康检查结果（仅检查，不启动采集或冻结）：\n\n"
+    text = ("论坛健康检查结果：\n\n"
             + "\n".join("- " + finding for finding in findings)
             + "\n\n详见本仓库 forum-observer/status/health/latest.json")
     if findings:
@@ -365,6 +368,7 @@ def settlement_audit(path, issue):
         return {
             "state": "verified",
             "issue": issue, "run_url": saved["run_url"],
+            "verified_models": saved["ledger_sync"].get("verified_models", []),
             "settled_count": saved["settled_count"], "expected_count": saved["expected_count"],
             "ledger_sync": saved["ledger_sync"]["state"],
             "pending": {row["id"]: row.get("reason", row["state"]) for row in saved["models"]
@@ -375,23 +379,139 @@ def settlement_audit(path, issue):
         return {"state": "invalid_receipt"}
 
 
-def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_receipt=None):
+FORUM_WORKFLOWS = {"118": "forum-observer.yml", "49": "forum49-model.yml"}
+FORUM_FEEDS = {"118": "forum-observer", "49": "forum49"}
+
+
+def latest_scheduled_day(now, hour, minute):
+    scheduled = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    return now if now >= scheduled else now - timedelta(days=1)
+
+
+def issue_operations(github, date, issue, audits, settlement):
+    """Determine per-model milestones using actual Actions and archive receipts."""
+    midnight = date.replace(hour=0, minute=0, second=0, microsecond=0)
+    start = midnight.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    end = (midnight + timedelta(days=1) - timedelta(seconds=1)).astimezone(timezone.utc)
+    span = start + ".." + end.isoformat(timespec="seconds").replace("+00:00", "Z")
+    details = {}
+    for model, workflow in FORUM_WORKFLOWS.items():
+        archive = "archive" if model == "118" else "forum49"
+        base = f"forum-observer/{archive}/issues/{issue}"
+        items = github.request(f"actions/workflows/{workflow}/runs?per_page=100&created={span}").get("workflow_runs", [])
+        relevant = [r for r in items if "freeze" not in str(r.get("display_title", "")).lower()]
+        draft_runs, verified, failures = [], [], []
+        for row in relevant:
+            identifier = row["id"]
+            prefix = "forum49/" if model == "49" else ""
+            _, telemetry = github.content(
+                f"forum-observer/status/{prefix}runs/{identifier}-{row.get('run_attempt') or 1}.json")
+            if telemetry.get("issue") == issue and telemetry.get("state") != "skipped":
+                draft_runs.append(identifier)
+                if telemetry.get("state") in ("failed", "interrupted"):
+                    failures.append({"id": identifier, "reason": telemetry.get("error")})
+            if row.get("status") == "completed" and row.get("conclusion") == "success":
+                collected, archived = run_model_receipt(github, model, row, issue)
+                if collected and archived:
+                    verified.append(identifier)
+        _, result = github.content(f"{base}/settlement.json")
+        frozen = audits.get(model, {}).get("state") == "frozen_verified"
+        settled = frozen and result.get("issue") == issue and bool(result.get("snapshot_digest"))
+        synced = settled and FORUM_FEEDS[model] in settlement.get("verified_models", [])
+        details[model] = {
+            "started": bool(draft_runs or verified),
+            "collected": bool(verified),
+            "draft_saved": bool(verified),
+            "frozen": frozen,
+            "settled": settled,
+            "synced": synced,
+            "started_runs": draft_runs,
+            "verified_runs": verified,
+            "failures": failures,
+            "manual_requests": sum(" manual#" in str(r.get("display_title", "")) for r in items),
+        }
+    return details
+
+
+def rolling_acceptance(github, day, issue, operations, recoveries):
+    _, saved = github.content(HEALTH_DIR + "seven-issue.json")
+    days = dict(saved.get("issues") or {})
+    days[issue] = {"beijing_date": day, "models": operations, "recovery_dispatches": recoveries}
+    first = datetime.fromisoformat(day) - timedelta(days=6)
+    expected = [(first + timedelta(days=i)).date().isoformat() for i in range(7)]
+    days = {key: value for key, value in days.items() if value["beijing_date"] in expected}
+    metrics = {}
+    for model in FORUM_WORKFLOWS:
+        rows = [entry["models"][model] for entry in days.values() if model in entry["models"]]
+        counts = {step: sum(bool(row[step]) for row in rows)
+                  for step in ("started", "collected", "draft_saved", "frozen", "settled", "synced")}
+        metrics[model] = {
+            "observed_issues": len(rows),
+            "milestones": counts,
+            "rates_pct": {step: round(count * 100 / len(rows), 1) if rows else None
+                          for step, count in counts.items()},
+            "manual_requests": sum(row["manual_requests"] for row in rows),
+        }
+    return {
+        "schema_version": 1,
+        "issue": issue,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "issues": days,
+        "models": metrics,
+        "expected_beijing_dates": expected,
+        "recovery_dispatches": sum(len(row["recovery_dispatches"]) for row in days.values()),
+        "passed": len(days) == 7 and all(
+            value["observed_issues"] == 7 and all(count == 7 for count in value["milestones"].values())
+            for value in metrics.values()),
+    }
+
+
+def recover(github, now, issue, audits, settlement):
+    """One dispatch per existing check, using the guarded production entry."""
+    actions = []
+    if freeze_window_allowed(now) and issue == current_issue(now):
+        for model, workflow in FORUM_WORKFLOWS.items():
+            if audits.get(model, {}).get("state") != "draft_not_frozen":
+                continue
+            runs = github.request(f"actions/workflows/{workflow}/runs?per_page=15").get("workflow_runs", [])
+            if not any(r.get("status") != "completed" and "freeze" in str(r.get("display_title", "")).lower() for r in runs):
+                github.request(f"actions/workflows/{workflow}/dispatches", "POST",
+                               {"ref": "main", "inputs": {"mode": "freeze", "issue": issue}})
+                actions.append(f"{model}_freeze")
+    elif any(row["state"] == "frozen_verified" for row in audits.values()):
+        needs_retry = (settlement.get("state") != "verified"
+                       or settlement.get("ledger_sync") in ("pending", "failed")
+                       or any(reason == "draw_unconfirmed" for reason in settlement.get("pending", {}).values()))
+        if needs_retry:
+            runs = github.request("actions/workflows/settlement.yml/runs?per_page=10").get("workflow_runs", [])
+            if not any(r.get("status") != "completed" for r in runs):
+                github.request("actions/workflows/settlement.yml/dispatches", "POST",
+                               {"ref": "main", "inputs": {"issue": issue}})
+                actions.append("unified_settlement")
+    return actions
+
+
+def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_receipt=None,
+        scheduled_recovery=False):
     if mode not in ("probe", "audit", "all"):
         raise ValueError("mode must be probe, audit, all")
     now = (now or datetime.now(TZ)).astimezone(TZ)
-    today = now.date().isoformat()
-    issue = current_issue(now)
+    day = latest_scheduled_day(now, 22, 35) if scheduled_recovery and mode == "audit" else now
+    today = day.date().isoformat()
+    issue = current_issue(day)
     github = github or GitHub()
     probes = {}
     if mode in ("probe", "all"):
         for model, url in model_urls(root / "collector-config.json").items():
             probes[model] = probe_with_retry(url)
-    audits = safe_snapshot_audit(github, issue) if mode in ("audit", "all") else {}
+    compensation_slot = scheduled_recovery and freeze_window_allowed(now) and issue == current_issue(now)
+    audits = safe_snapshot_audit(github, issue) if mode in ("audit", "all") or compensation_slot else {}
     stats = fetch_manual_sample(github)
     current_findings = findings_for(mode, probes, audits, stats)
     settlement = {}
     if settlement_receipt and mode in ("audit", "all"):
-        settlement = settlement_audit(settlement_receipt, issue)
+        per_issue = settlement_receipt.parent / "issues" / f"{issue}.json"
+        settlement = settlement_audit(per_issue if per_issue.exists() else settlement_receipt, issue)
         if settlement["state"] != "verified":
             current_findings.append("settlement_audit_" + settlement["state"])
         else:
@@ -399,6 +519,21 @@ def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_re
                 current_findings.append("settlement_audit_ledger_" + settlement["ledger_sync"])
             current_findings.extend("settlement_audit_" + model + "_" + why
                                     for model, why in settlement["pending"].items())
+    recoveries = []
+    acceptance = {}
+    if scheduled_recovery and publish:
+        try:
+            if compensation_slot or mode == "audit":
+                recoveries = recover(github, now, issue, audits, settlement)
+        except (OSError, ValueError, KeyError) as error:
+            current_findings.append("recovery_dispatch_failed_" + type(error).__name__)
+        if mode == "audit":
+            try:
+                operations = issue_operations(github, day, issue, audits, settlement)
+                acceptance = rolling_acceptance(github, today, issue, operations, recoveries)
+                github.write(HEALTH_DIR + "seven-issue.json", acceptance, latest=True)
+            except (OSError, ValueError, KeyError, TypeError) as error:
+                current_findings.append("seven_issue_evidence_failed_" + type(error).__name__)
     previous_record = {}
     if publish:
         _, previous_record = github.content(HEALTH_DIR + "latest.json")
@@ -415,11 +550,13 @@ def run(mode, publish=True, github=None, now=None, root=Path("."), settlement_re
         "archive_audit": audits,
         "settlement_audit": settlement,
         "last_30_manual_operations": stats,
+        "recovery_dispatches": recoveries,
+        "seven_issue_review": acceptance,
         "current_check_findings": current_findings,
         "findings": findings,
         "notes": "Probe only checks HTTP shell, not actual DOM parsing; "
                  "reliability counts only completed verified parent workflows. "
-                 "No collector, freeze, V7 or D1 writes.",
+                 "Scheduled runs may dispatch existing guarded recovery workflows.",
     }
     print(json.dumps(report, indent=2, ensure_ascii=False), flush=True)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
@@ -448,8 +585,10 @@ def main():
     parser.add_argument("--publish", action="store_true",
                         help="Write health-only status and deduplicated issue")
     parser.add_argument("--settlement-receipt", type=Path)
+    parser.add_argument("--scheduled-recovery", action="store_true")
     args = parser.parse_args()
-    report = run(args.mode, publish=args.publish, settlement_receipt=args.settlement_receipt)
+    report = run(args.mode, publish=args.publish, settlement_receipt=args.settlement_receipt,
+        scheduled_recovery=args.scheduled_recovery)
     if report["findings"]:
         print("::warning::Forum health requires attention: " + ", ".join(report["findings"]))
         return 1 if args.publish else 0

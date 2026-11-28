@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 from .core import SCORING_RULE_VERSION, ZODIACS, verify_scored_result
-from .cycle import sync
+from .cycle import atomic_bytes, sync
 from .runtime import GitHub
 from .schedule import FREEZE_END, TZ, current_issue, snapshot_exists
 
@@ -43,14 +43,18 @@ def timestamp(value):
 def check_window(issue, now, manual):
     if current_issue(now) != issue or issue == EXCLUDED:
         raise FreezeError("wrong_or_excluded_issue")
+    now = now.astimezone(TZ)
     minute = (now.hour, now.minute)
     if minute < (21, 0) or minute >= ((21, 31) if manual else FREEZE_END):
         raise FreezeError("outside_safe_freeze_window")
 
 
 def load_draft(folder, issue, now):
-    status = read_json(folder / "draft-status.json")
-    report = (folder / "report.md").read_bytes()
+    return validate_draft(folder, issue, now, read_json(folder / "draft-status.json"),
+                          (folder / "report.md").read_bytes())
+
+
+def validate_draft(folder, issue, now, status, report):
     fetched = timestamp(status["fetched_at"])
     draw = timestamp(status["draw_at"])
     if (status.get("issue") != issue or fetched.date() != now.date()
@@ -82,6 +86,36 @@ def load_draft(folder, issue, now):
     if (round_dir / "report.md").read_bytes() != report:
         raise FreezeError("archived_report_mismatch")
     return status, report
+
+
+def restore_draft(folder, issue, now):
+    """Recover a pointer from its newest verified, committed collection copy."""
+    try:
+        return load_draft(folder, issue, now)
+    except (OSError, ValueError, KeyError, TypeError) as original:
+        for candidate in sorted((folder / "rounds").glob("*/draft-status.json"),
+                                key=lambda path: path.parent.name.split("-", 1)[-1], reverse=True):
+            try:
+                content = candidate.read_bytes()
+                status = json.loads(content)
+                report = (candidate.parent / "report.md").read_bytes()
+                run_id = status["collection_run_id"]
+                attempt = status["collection_run_attempt"]
+                if not str(run_id).isdecimal() or type(attempt) is not int:
+                    continue
+                receipt = read_json(folder / "collection-runs" / f"{run_id}-{attempt}.json")
+                if (receipt["issue"] != issue or receipt["round"] != candidate.parent.name
+                        or receipt["run_id"] != run_id or receipt["run_attempt"] != attempt
+                        or receipt["draft_sha256"] != sha(content)
+                        or receipt["report_sha256"] != sha(report)):
+                    continue
+                validate_draft(folder, issue, now, status, report)
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+            atomic_bytes(folder / "report.md", report)
+            atomic_bytes(folder / "draft-status.json", content)
+            return status, report
+        raise original
 
 
 def live_draw_state(now=None):
@@ -195,7 +229,7 @@ def git(*args):
 
 def create_snapshot(model, archive, folder, issue, manual, journal, clock, live):
     check_window(issue, clock(), manual)
-    status, report = load_draft(folder, issue, clock())
+    status, report = restore_draft(folder, issue, clock())
     provenance = {"source": "manual" if manual else "automatic",
                   "run_id": journal["run_id"], "run_attempt": journal["run_attempt"],
                   "report_generated_at": status["fetched_at"],
@@ -234,7 +268,7 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
             break
         except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as exc:
             journal["failures"].append(str(exc))
-            if attempt or (phase != "verify" and not isinstance(exc, subprocess.SubprocessError)):
+            if attempt:
                 raise
             check_window(issue, clock(), manual)
             time.sleep(3)
@@ -309,6 +343,9 @@ def main():
     github = GitHub()
     run = github.request(f"actions/runs/{run_id}")
     issue = current_issue(timestamp(run["created_at"]))
+    requested = os.environ.get("REQUESTED_ISSUE")
+    if requested and requested != issue:
+        raise FreezeError("freeze_request_issue_mismatch")
     journal = {"issue": issue, "model": args.model, "phase": args.phase,
                "run_id": run_id, "run_attempt": attempt, "failures": []}
     try:
@@ -316,7 +353,7 @@ def main():
     except Exception as exc:
         if not journal["failures"] or journal["failures"][-1] != str(exc):
             journal["failures"].append(str(exc))
-        if args.phase == "verify" and issue != EXCLUDED:
+        if args.phase != "manual" and issue != EXCLUDED:
             alert(github, journal)
         raise
     finally:

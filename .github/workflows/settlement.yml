@@ -45,11 +45,9 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: write
-      id-token: write
     env:
       SETTLEMENT_ISSUE: ${{ inputs.issue }}
       SETTLEMENT_EVENT: ${{ github.event_name }}
-      SITES_SIWC_BYPASS_TOKEN: ${{ secrets.SITES_SIWC_BYPASS_TOKEN }}
       PYTHONUTF8: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
@@ -64,29 +62,40 @@ jobs:
           dotnet-version: '10.0.x'
       - run: python -m pip install tzdata
       - name: Reconcile original predictions and publish git artifacts
+        id: reconcile
         shell: pwsh
         run: |
           function Ensure-Success { if ($LASTEXITCODE -ne 0) { throw "Command failed ($LASTEXITCODE)" } }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          $arguments = @('--apply')
-          if ($env:SETTLEMENT_ISSUE) { $arguments += @('--issue', $env:SETTLEMENT_ISSUE) }
+          $issue = $env:SETTLEMENT_ISSUE
+          if (!$issue) {
+            $local = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'China Standard Time')
+            if ($env:SETTLEMENT_EVENT -eq 'schedule' -and ($local.Hour * 60 + $local.Minute) -lt (21 * 60 + 40)) {
+              $local = $local.AddDays(-1)
+            }
+            $issue = '{0}{1:000}' -f $local.Year, $local.DayOfYear
+          }
+          if ($issue -notmatch '^20[0-9]{5}$') { throw 'Invalid settlement issue' }
+          "issue=$issue" >> $env:GITHUB_OUTPUT
+          $arguments = @('--apply', '--issue', $issue)
+          $issueReceipt = "site/data/settlement/issues/$issue.json"
+          dotnet build PredictionRunner/PredictionRunner.csproj -c Release; Ensure-Success
           for ($attempt = 1; $attempt -le 4; $attempt++) {
             git fetch origin main; Ensure-Success
             git reset --hard origin/main; Ensure-Success
-            dotnet build PredictionRunner/PredictionRunner.csproj -c Release; Ensure-Success
-            if (Test-Path 'site/data/settlement/latest.json') {
-              $prior = Get-Content site/data/settlement/latest.json -Raw | ConvertFrom-Json
-              $beijing = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'China Standard Time')
-              $current = '{0}{1:000}' -f $beijing.Year, $beijing.DayOfYear
-              $sameIssue = $env:SETTLEMENT_ISSUE -eq $prior.issue -or (!$env:SETTLEMENT_ISSUE -and $current -eq $prior.issue)
-              if (($sameIssue -or $env:SETTLEMENT_EVENT -eq 'push') -and $prior.settled_count -eq $prior.expected_count -and $prior.ledger_sync.state -ne 'verified') {
-                Write-Host "Settlement already complete for $($prior.issue); retrying ledger verification only."
+            if (Test-Path $issueReceipt) {
+              $prior = Get-Content $issueReceipt -Raw | ConvertFrom-Json
+              $historicalFailures = @($prior.historical_findings.PSObject.Properties.Name).Count
+              if ($prior.settled_count -eq $prior.expected_count -and $prior.ledger_sync.state -ne 'verified' -and !$historicalFailures) {
+                Write-Host "Settlement already complete for $issue; retrying ledger verification only."
                 exit 0
               }
             }
             python scripts/settlement.py @arguments; Ensure-Success
             git add site/data/history.json site/data/daily-records site/data/runtime-state.json site/data/prediction-traces site/data/forum-observer site/data/forum49 site/data/settlement forum-observer/archive forum-observer/forum49; Ensure-Success
+            git diff --cached --quiet
+            if ($LASTEXITCODE -eq 0) { exit 0 }
             git commit -m 'chore(settlement): reconcile verified draws'; Ensure-Success
             git push origin HEAD:main
             if ($LASTEXITCODE -eq 0) { exit 0 }
@@ -94,6 +103,8 @@ jobs:
           }
           throw 'main advanced repeatedly; settlement will retry from current main'
       - name: Read committed settlements back through the production ledger
+        env:
+          VERIFIED_ISSUE: ${{ steps.reconcile.outputs.issue }}
         shell: pwsh
         run: |
           for ($attempt = 1; $attempt -le 4; $attempt++) {
@@ -101,9 +112,9 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Could not refresh main for read-back' }
             git reset --hard origin/main
             if ($LASTEXITCODE -ne 0) { throw 'Could not check out committed data for read-back' }
-            python scripts/settlement.py --verify-ledger
+            python scripts/settlement.py --verify-ledger --issue $env:VERIFIED_ISSUE
             if ($LASTEXITCODE -ne 0) { throw 'Could not generate ledger read-back receipt' }
-            $receipt = Get-Content site/data/settlement/latest.json -Raw | ConvertFrom-Json
+            $receipt = Get-Content "site/data/settlement/issues/$env:VERIFIED_ISSUE.json" -Raw | ConvertFrom-Json
             if ($receipt.ledger_sync.state -eq 'failed' -and $attempt -lt 4) {
               Start-Sleep -Seconds (15 * $attempt)
               continue

@@ -19,10 +19,10 @@ on:
         type: boolean
         default: false
 
-# Only status/health/*.json and a deduplicated GitHub issue may be written.
-# Never dispatch a collector, run a formal model or mutate snapshot/D1/history.
+# Health writes only its own receipts and alerts. Scheduled recovery calls the
+# existing freeze and settlement entries, which enforce their own data guards.
 permissions:
-  actions: read
+  actions: write
   contents: write
   issues: write
 concurrency:
@@ -32,7 +32,7 @@ concurrency:
 jobs:
   health-only:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,10 +46,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_MODE: ${{ github.event_name == 'schedule' && (github.event.schedule == '30 10 * * *' && 'probe' || 'audit') || inputs.mode }}
+          SCHEDULED: ${{ github.event_name == 'schedule' }}
           PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
         run: |
-          if [ "$PUBLISH" = "true" ]; then
-            python -u -m forum_observer.health_check --mode "$RUN_MODE" --settlement-receipt ../site/data/settlement/latest.json --publish
-          else
-            python -u -m forum_observer.health_check --mode "$RUN_MODE" --settlement-receipt ../site/data/settlement/latest.json
-          fi
+          args=()
+          if [ "$PUBLISH" = "true" ]; then args+=(--publish); fi
+          if [ "$SCHEDULED" = "true" ]; then args+=(--scheduled-recovery); fi
+          python -u -m forum_observer.health_check --mode "$RUN_MODE" --settlement-receipt ../site/data/settlement/latest.json "${args[@]}"

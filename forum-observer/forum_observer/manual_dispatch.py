@@ -11,10 +11,11 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from .freeze_operation import check_window
 from .schedule import current_issue, decide, forum49_collect_gate, freeze_window_allowed, snapshot_exists
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -43,7 +44,7 @@ def api(path):
     for attempt in range(3):
         try:
             return json.loads(gh("api", path))
-        except (RuntimeError, json.JSONDecodeError) as exc:
+        except (RuntimeError, subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
             message = str(exc).lower()
             transient = any(mark in message for mark in (
                 "429", "502", "503", "504", "timeout", "timed out",
@@ -123,11 +124,23 @@ def matches_model_run(item, model):
     return path.endswith("/" + workflow) or (not path and item.get("name") == fixed_name)
 
 
-def assert_no_active_runs(repo, selected):
+def matches_mode(item, mode):
+    title = str(item.get("display_title") or "")
+    if item.get("event") == "schedule" and title.startswith(("Forum 118 scheduled", "Forum 49 scheduled")):
+        return title.endswith(" " + mode)
+    if title.startswith(("Forum 118 ", "Forum 49 ")):
+        return title.split()[2] == mode
+    # Legacy branch markers identify a freeze. Unknown older workflows
+    # conservatively reserve collection, while freeze has its own lock.
+    return mode == ("freeze" if "freeze" in title.lower() else "collect")
+
+
+def assert_no_active_runs(repo, selected, mode=None):
     runs = api(f"repos/{repo}/actions/runs?per_page=100").get("workflow_runs", [])
     for model in selected:
         active = [v for v in runs if matches_model_run(v, model)
-                  and v.get("status") not in ("completed", None)]
+                  and v.get("status") not in ("completed", None)
+                  and (mode is None or matches_mode(v, mode))]
         if active:
             v = active[0]
             raise RuntimeError(f"{model}: another run is still {v.get('status')}: {v.get('html_url')}")
@@ -154,7 +167,20 @@ def verify(repo, model, mode, issue, run):
     root = f"forum-observer/{folder}/issues/{issue}"
     if mode == "collect":
         attempt = int(run.get("run_attempt") or 1)
-        doc = json.loads(github_contents(repo, f"{root}/collection-runs/{run['id']}-{attempt}.json"))
+        try:
+            doc = json.loads(github_contents(repo, f"{root}/collection-runs/{run['id']}-{attempt}.json"))
+        except RuntimeError as exc:
+            if "404" not in str(exc):
+                raise
+            ns = "forum49/" if model == "49" else ""
+            telemetry = json.loads(github_contents(
+                repo, f"forum-observer/status/{ns}tests/runs/{run['id']}-{attempt}.json"))
+            if (telemetry.get("issue") == issue and telemetry.get("run_id") == str(run["id"])
+                    and telemetry.get("attempt") == attempt and telemetry.get("test_only") is True
+                    and telemetry.get("state") == "test_completed"
+                    and (telemetry.get("valid_materials") or 0) > 0):
+                return f"{model}: verified isolated observation, issue {issue}"
+            raise
         if (doc.get("issue") != issue
                 or str(doc.get("run_id")) != str(run["id"])
                 or doc.get("run_attempt") != attempt
@@ -162,7 +188,14 @@ def verify(repo, model, mode, issue, run):
                 or not doc.get("draft_published")
                 or not doc.get("report_published")):
             raise RuntimeError(f"{model}: committed collection receipt is invalid")
-        report = api(f"repos/{repo}/contents/{root}/report.md?ref=main")
+        if doc.get("round"):
+            if (doc.get("valid_authors") != doc["valid_materials"]
+                    or not doc.get("draft_sha256") or not doc.get("report_sha256")):
+                raise RuntimeError(f"{model}: incomplete collection integrity receipt")
+            report_path = f"{root}/rounds/{doc['round']}/report.md"
+        else:
+            report_path = f"{root}/report.md"
+        report = api(f"repos/{repo}/contents/{report_path}?ref=main")
         if not report.get("sha"):
             raise RuntimeError(f"{model}: report is missing")
         return f"{model}: verified {doc['valid_materials']} materials and report, issue {issue}"
@@ -189,42 +222,64 @@ def main():
     mode = os.environ.get("FORUM_MODE", "collect")
     request_id = os.environ["GITHUB_RUN_ID"]
     try:
-        selected, issue = preflight(target, mode, Path("."))
-        assert_no_active_runs(repo, selected)
+        parent = api(f"repos/{repo}/actions/runs/{request_id}")
+        now = datetime.now(TZ)
+        issue = current_issue(datetime.fromisoformat(parent["created_at"]))
+        if issue != current_issue(now):
+            raise ValueError("manual request belongs to a previous issue; submit a new request")
+        selected = checked_targets(target)
         summary(f"### Manual forum operation: {mode}, issue {issue}, target {target}")
+        errors = {}
+        dispatched = []
         for model in selected:
-            workflow = MODELS[model][0]
-            gh("workflow", "run", workflow, "--ref", "main",
-               "-f", f"mode={mode}", "-f", f"request_id={request_id}")
-            summary(f"Dispatched {model}; awaiting downstream verification (not yet successful).")
+            try:
+                if mode == "freeze":
+                    folder = Path(MODELS[model][2]) / "issues" / issue
+                    if (folder / "snapshot.json").exists():
+                        summary(verify(repo, model, mode, issue, {}))
+                        continue
+                    check_window(issue, now, True)
+                    # Validate or recover in the child from its fresh checkout.
+                    # A prior failure in either model must not block the other.
+                assert_no_active_runs(repo, [model], mode)
+                gh("workflow", "run", MODELS[model][0], "--ref", "main",
+                   "-f", f"mode={mode}", "-f", f"request_id={request_id}",
+                   "-f", f"issue={issue}")
+                dispatched.append(model)
+                summary(f"Dispatched {model}; awaiting downstream verification.")
+            except (RuntimeError, ValueError, OSError, subprocess.SubprocessError) as exc:
+                errors[model] = str(exc)
+                summary(f"- {model}: {exc}")
         started = time.monotonic()
-        done = {}
-        while len(done) != len(selected) and time.monotonic() - started < MAX_WAIT_SECONDS:
-            matched = find_runs(repo, request_id, selected)
+        pending = set(dispatched)
+        while pending and time.monotonic() - started < MAX_WAIT_SECONDS:
+            matched = find_runs(repo, request_id, pending)
             for model, run in matched.items():
-                if model in done or run.get("status") != "completed":
+                if run.get("status") != "completed":
                     continue
+                pending.remove(model)
                 link = run.get("html_url", "")
                 if run.get("conclusion") != "success":
-                    raise RuntimeError(f"{model} downstream run did not succeed: {link} ({run.get('conclusion')})")
-                # GitHub reports a completed run after its archive push. Retry
-                # eventual-consistency gaps without accepting older drafts.
-                last_error = None
-                for _ in range(6):
+                    errors[model] = f"downstream {run.get('conclusion')}: {link}"
+                    summary(f"- {model}: {errors[model]}")
+                    continue
+                for retry in range(6):
                     try:
                         evidence = verify(repo, model, mode, issue, run)
+                        summary(f"- {evidence} | {link}")
                         break
-                    except Exception as exc:
-                        last_error = exc
-                        time.sleep(5)
-                else:
-                    raise RuntimeError(f"{model}: Actions green but committed evidence missing: {last_error}; {link}")
-                done[model] = evidence
-                summary(f"- {evidence} | {link}")
-            if len(done) < len(selected):
+                    except (RuntimeError, ValueError, KeyError, OSError, subprocess.SubprocessError) as exc:
+                        if retry == 5:
+                            errors[model] = f"committed evidence missing: {exc}; {link}"
+                            summary(f"- {model}: {errors[model]}")
+                        else:
+                            time.sleep(5)
+            if pending:
                 time.sleep(POLL_SECONDS)
-        if len(done) != len(selected):
-            raise RuntimeError("Timed out awaiting real results: " + ", ".join(m for m in selected if m not in done))
+        if pending:
+            raise RuntimeError("Timed out awaiting real results: " + ", ".join(sorted(pending)))
+        if errors:
+            raise RuntimeError("; ".join(f"{model}: {reason}" for model, reason in errors.items()))
         summary("✅ All selected models passed the run-specific committed evidence checks.")
         return 0
     except Exception as exc:

@@ -26,9 +26,6 @@ on:
 permissions:
   actions: write
   contents: read
-concurrency:
-  group: manual-forum-operation
-  cancel-in-progress: false
 
 jobs:
   dispatch-and-verify:

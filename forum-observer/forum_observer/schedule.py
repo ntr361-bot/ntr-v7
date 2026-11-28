@@ -15,10 +15,10 @@ from zoneinfo import ZoneInfo
 TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
 # Existing backup cron identity is retained for compatibility; it is not a time gate.
-BACKUP_COLLECT_CRON = '20,25 12 * * *'
+BACKUP_COLLECT_CRON = '30 12 * * *'
 EVENING_START = (20, 0)
 FREEZE_START = (21, 0)
-FREEZE_END = (21, 20)
+FREEZE_END = (21, 31)
 MAX_SECONDS = 1800
 
 
@@ -110,13 +110,16 @@ def decide(now, archive, manual=False, scheduled=False, slot=None, requested_rou
         # Post-freeze observations run in test mode and never publish to the
         # formal archive, even if a delayed freeze has not produced a snapshot.
         return True, issue, MAX_SECONDS, "manual_test_after_freeze"
-    round_number = 1
     draft = Path(archive) / 'issues' / issue / 'draft-status.json'
     if not manual and draft.exists():
-        previous = json.loads(draft.read_text(encoding='utf-8'))
-        if (previous.get('issue') == issue
+        try:
+            previous = json.loads(draft.read_text(encoding='utf-8'))
+        except (OSError, ValueError):
+            previous = {}
+        if (isinstance(previous, dict) and previous.get('issue') == issue
                 and previous.get('status') == 'ready_observation'
-                and int(previous.get('valid_materials') or 0) > 0
+                and type(previous.get('valid_materials')) is int and previous['valid_materials'] > 0
+                and (draft.parent / 'report.md').is_file()
                 and draft_is_current_evening(previous, issue, local)):
             # Tonight's collection (automatic or a manual run from 20:00)
             # already produced a draft: automatic triggers never repeat it.
@@ -143,7 +146,10 @@ def forum49_collect_gate(archive, now, skip_if_collected):
         data = json.loads(draft.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         data = None
-    if data and data.get("status") == "ready_observation" and draft_is_current_evening(data, issue, local):
+    if (isinstance(data, dict) and data.get("status") == "ready_observation"
+            and type(data.get("valid_materials")) is int and data["valid_materials"] > 0
+            and (draft.parent / "report.md").is_file()
+            and draft_is_current_evening(data, issue, local)):
         return False, "already_collected_tonight", False
     return True, "automatic_collection", False
 
@@ -217,7 +223,7 @@ def main():
         print(json.dumps({"collect": collect, "reason": reason, "test_only": test}, ensure_ascii=False), flush=True)
         if a.github_output:
             with open(a.github_output, "a", encoding="utf-8") as f:
-                f.write(f"collect={str(collect).lower()}\nreason={reason}\ntest={str(test).lower()}\n")
+                f.write(f"collect={str(collect).lower()}\nreason={reason}\ntest={str(test).lower()}\nissue={current_issue(now)}\n")
         return 0
     if a.check_freeze_window:
         allowed = freeze_window_allowed(now, a.archive, manual=a.manual_freeze)

@@ -1,5 +1,6 @@
 """Independent append-only forum observation cycle. Never writes V7 files."""
 import argparse,hashlib,json,re,shutil,os
+from tempfile import NamedTemporaryFile
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -7,11 +8,22 @@ from .core import ZODIACS, SCORING_RULE_VERSION, verify_scored_result
 
 TZ=ZoneInfo('Asia/Shanghai')
 
-def atomic(path,obj):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    temp=path.with_suffix(path.suffix+'.tmp')
-    temp.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    temp.replace(path)
+def atomic_bytes(path, payload):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with NamedTemporaryFile(dir=path.parent, delete=False) as temp:
+        staged = Path(temp.name)
+        try:
+            temp.write(payload)
+            temp.flush()
+            os.fsync(temp.fileno())
+            temp.close()
+            staged.replace(path)
+        finally:
+            staged.unlink(missing_ok=True)
+
+
+def atomic(path, obj):
+    atomic_bytes(path, (json.dumps(obj, ensure_ascii=False, indent=2) + '\n').encode('utf-8'))
 
 def write_once(path,obj):
     if path.exists():return False
@@ -205,10 +217,13 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                 status['collection_round']=2 if (stamp.hour,stamp.minute)>=(20,30) else 1
             previous_path=archive/'issues'/issue/'draft-status.json'
             if previous_path.exists():
-                previous=json.loads(previous_path.read_text(encoding='utf-8'))
                 try:
+                    previous=json.loads(previous_path.read_text(encoding='utf-8'))
+                    if previous['issue'] != issue or not (previous_path.parent/'report.md').is_file():
+                        raise ValueError('incomplete previous draft')
+                    verify_scored_result(previous, min_materials=1)
                     previous_time=datetime.fromisoformat(previous['fetched_at'])
-                except (ValueError,TypeError,KeyError):
+                except (OSError,ValueError,TypeError,KeyError,AttributeError):
                     previous_time=None
                 if previous_time is not None and previous_time.tzinfo is not None and captured<=previous_time:
                     print('Older or duplicate collector result: preserved newest verified draft',flush=True)
@@ -244,9 +259,12 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             })
             round_report=out/issue/'report.md'
             if round_report.exists():
-                shutil.copyfile(round_report,round_folder/'report.md')
+                atomic_bytes(round_folder/'report.md', round_report.read_bytes())
             atomic(folder/'draft-status.json',status)
             if run_id.isdigit():
+                saved_draft = round_folder/'draft-status.json'
+                write_once(saved_draft, status)
+                authors = {p['author'] for p in status['parsed_predictions'] if p.get('counted_for_ranking')}
                 # Append-only, run-specific proof. A green skipped gate or
                 # stale draft from another run cannot satisfy manual acceptance.
                 write_once(folder/'collection-runs'/f'{run_id}-{attempt}.json',{
@@ -254,7 +272,10 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
                     'fetched_at':status['fetched_at'],
                     'valid_materials':status['valid_materials'],
                     'status':status['status'],'draft_published':True,
-                    'report_published':True
+                    'report_published':True, 'valid_authors':len(authors),
+                    'round':report_name,
+                    'draft_sha256':hashlib.sha256(saved_draft.read_bytes()).hexdigest(),
+                    'report_sha256':hashlib.sha256((round_folder/'report.md').read_bytes()).hexdigest()
                 })
         persist_completed_threads(folder, status)
         atomic(folder/'observation.json',{
@@ -268,7 +289,8 @@ def sync(out,archive,history,public_dir=None,live_draws=None,*,defer_freeze=Fals
             'fetched_at':status['fetched_at'],
             'questions':status.get('pending_rule_questions',[])})
         report=out/issue/'report.md'
-        if report.exists():shutil.copyfile(report,folder/'report.md')
+        if report.exists():
+            atomic_bytes(folder/'report.md', report.read_bytes())
         valid_count=int(status.get('valid_materials') or 0)
         standard_minimum=int(status.get('author_selection',{}).get('min_valid_materials',25))
         full_ranking=(len(status.get('ranking',[]))==12

@@ -1,6 +1,6 @@
 """Reconcile committed forecasts against one verified draw archive."""
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import argparse
 import hashlib
 import json
@@ -19,7 +19,7 @@ from forum_observer.core import ZODIACS
 
 DATA = ROOT / "site" / "data"
 STATUS = DATA / "settlement" / "latest.json"
-LEDGER = "https://smart-ledger-2026.ntr133.chatgpt.site"
+LEDGER = "https://smart-ledger-cf.5rmwf2d5ff.workers.dev"
 ISSUE_PATTERN = re.compile(r"20\d{5}")
 
 
@@ -256,9 +256,9 @@ def read_live(url, *, headers=None, body=None):
         return json.load(response)
 
 
-def upstream_draws(now):
+def upstream_draws(now, query_date=None):
     from forum_observer.freeze_operation import DRAW_SOURCE
-    date = now.astimezone(cycle.TZ).date()
+    date = query_date or now.astimezone(cycle.TZ).date()
     payload = read_live(f"{DRAW_SOURCE}?issueNum={date}&lotteryId=2032")
     if payload.get("code") != 0:
         raise ValueError("draw_source_unavailable")
@@ -281,37 +281,44 @@ def upstream_draws(now):
             for row in live_draw.normalize_live_draws({"records": rows}, now)]
 
 
-def bearer():
-    url = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_URL")
-    token = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN")
-    if not url or not token:
-        raise RuntimeError("actions_oidc_unavailable")
-    value = read_live(url + "&audience=smart-ledger-v7", headers={"Authorization": "Bearer " + token})["value"]
-    os.environ["FORUM_LEDGER_AUTH_BEARER"] = value
-    return value
+def target_date(now, scheduled=False):
+    local = now.astimezone(cycle.TZ)
+    if scheduled and (local.hour, local.minute) < (21, 40):
+        return local - timedelta(days=1)
+    return local
+
+
+def save_status(report):
+    issue = report["issue"]
+    cycle.atomic(STATUS.parent / "issues" / (issue + ".json"), report)
+    if not STATUS.exists() or load(STATUS)["issue"] <= issue:
+        cycle.atomic(STATUS, report)
 
 
 def run(args):
     now = datetime.now(timezone.utc)
-    target = args.issue or issue_at(now)
+    date = target_date(now, os.environ.get("SETTLEMENT_EVENT") == "schedule")
+    target = args.issue or issue_at(date)
     config = registry()
-    previous = load(STATUS) if STATUS.exists() else {}
+    status = STATUS.parent / "issues" / (target + ".json")
+    previous = load(status) if status.exists() else load(STATUS) if STATUS.exists() else {}
     history_file = DATA / "history.json"
     history = load(history_file)
     live = load(Path(args.live_fixture)) if args.live_fixture else []
-    if args.issue is None and now.astimezone(cycle.TZ).hour < 6:
-        from datetime import timedelta
-        target = issue_at(now - timedelta(days=1))
     if not args.live_fixture:
         try:
-            bearer()
             live = live_draw.fetch_live_draws(LEDGER + "/api/results")
         except (OSError, ValueError, KeyError, RuntimeError) as error:
-            print(f"Ledger draw unavailable ({type(error).__name__}); checking the same Macau upstream.")
+            print(f"Production ledger draw unavailable ({type(error).__name__}); checking the Macau upstream.")
+        if not any(row.get("issue") == target for row in live):
             try:
-                live = upstream_draws(now)
+                query_date = (datetime(int(target[:4]), 1, 1) +
+                              timedelta(days=int(target[-3:]) - 1)).date()
+                upstream = upstream_draws(now, query_date)
+                existing = {row["issue"] for row in live}
+                live.extend(row for row in upstream if row["issue"] not in existing)
             except (OSError, ValueError, KeyError, TypeError) as fallback_error:
-                print(f"Upstream draw unavailable ({type(fallback_error).__name__}); using committed history.")
+                print(f"Upstream draw unavailable ({type(fallback_error).__name__}); retaining verified draw evidence.")
     draws, conflicts = verified_draws(history, live, now)
     # Historical draw-backed issues plus the manual/current issue.
     issues = set(draws) | conflicts | {target}
@@ -375,14 +382,14 @@ def run(args):
         "ledger_sync": {"state": "pending"},
     }
     if args.apply:
-        cycle.atomic(STATUS, report)
+        save_status(report)
     return report
 
 
 def verify_ledger(report):
     # The current Cloudflare ledger reads the committed ntr-v7 files directly.
     # These are the production ledger's machine routes and its forum data sources.
-    base = "https://smart-ledger-cf.5rmwf2d5ff.workers.dev"
+    base = LEDGER
     issue = report["issue"]
     settled = {model["id"] for model in report["models"] if model["state"] == "settled"}
     if not settled:
@@ -448,10 +455,10 @@ if __name__ == "__main__":
     if arguments.apply and arguments.live_fixture:
         parser.error("fixture results are read-only")
     if arguments.verify_ledger:
-        report = load(STATUS)
+        path = STATUS.parent / "issues" / (arguments.issue + ".json") if arguments.issue else STATUS
+        report = load(path)
         report["ledger_sync"] = verify_ledger(report)
-        cycle.atomic(STATUS, report)
-        cycle.atomic(STATUS.parent / "issues" / (report["issue"] + ".json"), report)
+        save_status(report)
     else:
         report = run(arguments)
     print(json.dumps(report, ensure_ascii=False, indent=2))

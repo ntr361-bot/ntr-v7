@@ -14,7 +14,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .schedule import TZ, decide
+from .schedule import MAX_SECONDS, TZ, current_issue, decide, forum49_collect_gate
 from .trace import record as trace_record
 
 
@@ -45,7 +45,12 @@ class GitHub:
     def content(self, path):
         try:
             item = self.request('contents/' + path + '?ref=main')
-            return item, json.loads(base64.b64decode(item['content']))
+            # The Contents API returns encoding=none for files above 1 MiB.
+            # Fetch the exact immutable blob rather than a moving raw URL.
+            source = item if item.get('encoding') == 'base64' else self.request('git/blobs/' + item['sha'])
+            if source.get('encoding') != 'base64':
+                raise ValueError('unsupported GitHub blob encoding: ' + path)
+            return item, json.loads(base64.b64decode(source['content']))
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
                 return {}, {}
@@ -67,7 +72,10 @@ class GitHub:
                     current_order = (int(value.get('run_id')), int(value.get('attempt') or 1))
                 except (TypeError, ValueError):
                     previous_order = current_order = None
-                if previous_order and current_order and previous_order > current_order:
+                prior_issue, current = previous.get('issue'), value.get('issue')
+                if isinstance(prior_issue, str) and isinstance(current, str) and prior_issue > current:
+                    return
+                if same_issue and previous_order and current_order and previous_order > current_order:
                     return
                 if same_issue and (previous_order is None or previous_order == current_order) and previous.get('updated_at', '') > value['updated_at']:
                     return
@@ -143,30 +151,37 @@ def publish(state, error=None):
     elif os.environ.get('SCHEDULE_GATE_REASON') == 'manual_test_after_freeze':
         # Manual test collection after the freeze time: report under tests/.
         test_mode = issue
-    data = read_json('out/status.json')
+    model = os.environ.get('FORUM_MODEL', '118')
+    issue = os.environ.get('FORUM_GATE_ISSUE') or issue
+    out = Path('forum49-out' if model == '49' else 'out')
+    data = read_json(out / 'status.json')
     if state == 'starting':
         data = {}
     gate = os.environ.get('GATE_COLLECT')
     if data.get('issue') not in (None, issue):
         data = {}
-    snapshot = Path('archive/issues') / issue / 'snapshot.json'
+    snapshot = Path('forum49/issues' if model == '49' else 'archive/issues') / issue / 'snapshot.json'
     if state == 'finished' and not test_mode and os.environ.get('FINALIZE_CYCLE') == 'true':
         data = read_json(snapshot.parent / 'draft-status.json') or read_json(snapshot.parent / 'observation.json')
     if state == 'collecting':
         state = activity(data, now)
-    local = read_json('out/monitor/latest.json')
+    local = read_json(out / 'monitor/latest.json')
     if state != 'starting' and not data.get('stage') and local.get('issue') == issue and local.get('run_id') == os.environ.get('GITHUB_RUN_ID'):
         data = dict(data, stage=local.get('stage'))
     if state == 'finished':
-        if os.environ.get('JOB_STATUS') == 'failure':
+        receipt = snapshot.parent / 'collection-runs' / f"{os.environ.get('GITHUB_RUN_ID')}-{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}.json"
+        if os.environ.get('JOB_STATUS') == 'cancelled':
+            state, error = 'interrupted', 'Actions cancelled or workflow timeout'
+        elif os.environ.get('JOB_STATUS') == 'failure':
             state = 'failed'
-            error = error or os.environ.get('SCHEDULE_GATE_REASON') or read_json('out/collection-error.json').get('reason') or quality_failure_reason(data) or 'Workflow step failed before a specific collector error was available; inspect Actions steps'
+            error = error or read_json(out / 'collection-error.json').get('reason') or read_json(out / 'forum49-summary.json').get('error') or quality_failure_reason(data) or 'Workflow step failed before a specific collector error was available; inspect Actions steps'
         elif test_mode:
-            state = 'test_completed' if os.environ.get('OBSERVE_OUTCOME') == 'success' else 'test_incomplete'
+            state = 'test_completed' if (os.environ.get('OBSERVE_OUTCOME') == 'success'
+                                         and (data.get('valid_materials') or 0) > 0) else 'test_incomplete'
         elif os.environ.get('FINALIZE_CYCLE') == 'true':
             state = 'frozen' if snapshot.exists() else 'reported_no_freeze'
         elif os.environ.get('OBSERVE_OUTCOME') == 'success':
-            state = 'report_published' if (snapshot.parent / 'report.md').exists() else 'missing_report'
+            state = 'report_published' if receipt.exists() else 'missing_current_run_receipt'
         elif gate == 'false' or os.environ.get('OBSERVE_OUTCOME') == 'skipped':
             state = 'skipped'
         else:
@@ -175,17 +190,17 @@ def publish(state, error=None):
     record = {'schema_version': 2, 'issue': issue, 'state': state,
               'run_id': os.environ.get('GITHUB_RUN_ID', 'local'),
               'attempt': int(os.environ.get('GITHUB_RUN_ATTEMPT', '1')),
-              'event': os.environ.get('GITHUB_EVENT_NAME'), 'test_only': bool(test_mode),
+              'event': os.environ.get('GITHUB_EVENT_NAME'), 'test_only': bool(test_mode), 'model': model,
               'run_url': f"https://github.com/{os.environ.get('GITHUB_REPOSITORY', '')}/actions/runs/{os.environ.get('GITHUB_RUN_ID', '')}" if os.environ.get('GITHUB_RUN_ID') else None,
               'updated_at': now.isoformat(), 'error': error, **metrics(data)}
-    Path('out').mkdir(exist_ok=True)
-    Path('out/runtime.json').write_text(json.dumps(record, ensure_ascii=False, indent=2)+'\n')
-    trace_record('out/runtime-monitor', state, data=data, error=error, issue=issue)
+    out.mkdir(exist_ok=True)
+    (out / 'runtime.json').write_text(json.dumps(record, ensure_ascii=False, indent=2)+'\n')
+    trace_record(out / 'runtime-monitor', state, data=data, error=error, issue=issue)
     github = GitHub()
     # Append-only events retain intermediate states instead of just overwriting
     # the final status of a run. Local journal survives remote publication errors.
     event = now.strftime('%Y%m%dT%H%M%S%f') + '-' + uuid.uuid4().hex
-    namespace = 'tests/' if test_mode else ''
+    namespace = ('forum49/' if model == '49' else '') + ('tests/' if test_mode else '')
     github.write(f"forum-observer/status/{namespace}events/{record['run_id']}-{record['attempt']}/{event}.json", record)
     github.write(f"forum-observer/status/{namespace}runs/{record['run_id']}-{record['attempt']}.json", record, latest=True)
     github.write(f'forum-observer/status/{namespace}latest.json', record, latest=True)
@@ -198,12 +213,15 @@ def safe_publish(state, error=None):
     try:
         return publish(state, error)
     except Exception as exc:
-        trace_record('out/runtime-monitor', 'publication_failed', error=str(exc))
+        out = 'forum49-out' if os.environ.get('FORUM_MODEL') == '49' else 'out'
+        trace_record(Path(out) / 'runtime-monitor', 'publication_failed', error=str(exc))
         print('::warning::Runtime telemetry publication failed: ' + str(exc), flush=True)
 
 
 def supervise():
     # Recalculate at actual process start, after dependency installation/tests.
+    model = os.environ.get('FORUM_MODEL', '118')
+    out = Path('forum49-out' if model == '49' else 'out')
     safe_publish('starting')
     test_issue = os.environ.get('FORUM_TEST_ISSUE')
     if test_issue:
@@ -211,6 +229,10 @@ def supervise():
             safe_publish('failed', 'test issue must use YYYYNNN')
             return 2
         collect, issue, seconds, reason = True, test_issue, 1800, 'explicit_test_no_freeze'
+    elif model == '49':
+        now = datetime.now(TZ)
+        issue, seconds = current_issue(now), MAX_SECONDS
+        collect, reason, _ = forum49_collect_gate('forum49', now, False)
     else:
         collect, issue, seconds, reason = decide(
             datetime.now(TZ), 'archive',
@@ -218,6 +240,14 @@ def supervise():
             scheduled=os.environ.get('SCHEDULED_RUN') == 'true',
             slot=os.environ.get('FORUM_SCHEDULE_CRON'),
             requested_round=os.environ.get('FORUM_REQUESTED_ROUND'))
+    pinned = os.environ.get('FORUM_GATE_ISSUE')
+    if pinned and pinned != issue:
+        safe_publish('failed', 'collection_issue_changed_while_queued')
+        return 2
+    if (pinned and reason == 'manual_test_after_freeze'
+            and os.environ.get('SCHEDULE_GATE_REASON') != reason):
+        safe_publish('failed', 'formal_collection_crossed_freeze_cutoff; retry in observation mode')
+        return 2
     if not collect:
         print(f'Collection not started: {issue} {reason}', flush=True)
         safe_publish('skipped', reason)
@@ -226,6 +256,12 @@ def supervise():
         command = [sys.executable, '-u', '-m', 'forum_observer.auto',
                                     '--config', 'collector-config.json', '--out', 'out',
                                     '--max-collection-seconds', str(max(60, seconds - 30))]
+        if model == '49':
+            command = [sys.executable, '-u', '-m', 'forum_observer.forum49',
+                       '--url', os.environ['F49_URL'], '--issue', issue, '--category', '澳门',
+                       '--out', str(out), '--archive', str(out / 'run-evidence')]
+        elif pinned:
+            command.extend(('--issue', issue))
         if test_issue:
             command = [sys.executable, '-u', '-m', 'forum_observer.audit', '--config',
                        'collector-config.json', '--out', 'out', '--issue', test_issue]
@@ -255,7 +291,17 @@ def supervise():
                 return 124
             time.sleep(2)
         safe_publish('collected' if process.returncode == 0 else 'incomplete',
-                     (read_json('out/collection-error.json').get('reason') or quality_failure_reason(read_json('out/status.json'))) if process.returncode else None)
+                     (read_json(out / 'collection-error.json').get('reason')
+                      or read_json(out / 'forum49-summary.json').get('error')
+                      or quality_failure_reason(read_json(out / 'status.json'))) if process.returncode else None)
+        data = read_json(out / 'status.json')
+        if (model == '118' and pinned and process.returncode == 2
+                and not (out / 'collection-error.json').exists()
+                and data.get('issue') == issue and data.get('valid_materials', 0) > 0
+                and (out / issue / 'report.md').is_file()):
+            # The legacy collector returns 2 for a rendered under-25 report.
+            # The publisher independently validates eligibility.
+            return 0
         return process.returncode
     except BaseException as exc:
         safe_publish('interrupted', type(exc).__name__ + ': ' + str(exc))
