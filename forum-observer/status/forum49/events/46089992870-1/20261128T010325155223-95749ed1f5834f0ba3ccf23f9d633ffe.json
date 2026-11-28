@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:03:25.155223+00:00",
+  "error": null,
+  "valid_materials": 63,
+  "valid_authors": 63,
+  "successful_post_opens": 579,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 440,
+      "opened": 439,
+      "extracted": 439,
+      "completed": 439
+    }
+  },
+  "article_texts_extracted": 579,
+  "article_details_completed": 579,
+  "last_verified_post": {
+    "author": "孤者傲凡",
+    "url": "https://49217.com/#/corpusdetail?id=43062504&type=3",
+    "verified_at": "2026-11-28T01:03:24.038497+00:00",
+    "text_length": 125,
+    "text_sha256": "92ee9ada98de151e734c1d52d311f830c93564378bfc44cb6258f0d8031c549e"
+  },
+  "last_attempted_post": {
+    "author": "水中仴",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062503&type=3",
+    "attempt_index": 580
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 579,
+  "stage": "detail: 水中仴 332期：心水24码 赚钱的好地方！",
+  "progress_updated_at": "2026-11-28T01:03:24.506160+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
