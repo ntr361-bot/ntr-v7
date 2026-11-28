@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:41:52.401363+00:00",
+  "error": null,
+  "valid_materials": 175,
+  "valid_authors": 175,
+  "successful_post_opens": 749,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 553,
+      "opened": 553,
+      "extracted": 550,
+      "completed": 553
+    }
+  },
+  "article_texts_extracted": 746,
+  "article_details_completed": 749,
+  "last_verified_post": {
+    "author": "九万字耶",
+    "url": "https://49217.com/#/corpusdetail?id=43065548&type=3",
+    "verified_at": "2026-11-28T12:41:51.892626+00:00",
+    "text_length": 46,
+    "text_sha256": "58a6f59835bda8ea1c5c7d482d67310ee48be1e09824454e0cde422d49cd789a"
+  },
+  "last_attempted_post": {
+    "author": "九万字耶",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43065548&type=3",
+    "attempt_index": 749
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 746,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-28T12:41:52.357489+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
