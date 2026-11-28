@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144343950",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "118",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144343950",
+  "updated_at": "2026-11-28T12:28:35.249665+00:00",
+  "error": null,
+  "valid_materials": 60,
+  "valid_authors": 60,
+  "successful_post_opens": 306,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 253,
+      "opened": 253,
+      "extracted": 253,
+      "completed": 253
+    }
+  },
+  "article_texts_extracted": 306,
+  "article_details_completed": 306,
+  "last_verified_post": {
+    "author": "荆棘丛生",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355157&type=3",
+    "verified_at": "2026-11-28T12:28:34.905816+00:00",
+    "text_length": 54,
+    "text_sha256": "16e0baf46e15de8d9e9411cf0a59a1d1ba27c8a33e8b8d2a154b4d22ebd8d1ff"
+  },
+  "last_attempted_post": {
+    "author": "荆棘丛生",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11355157&type=3",
+    "attempt_index": 306
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:25:26.884007+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 306,
+  "stage": "detail_complete",
+  "progress_updated_at": "2026-11-28T12:28:35.107134+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
