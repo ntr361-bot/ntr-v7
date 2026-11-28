@@ -18,6 +18,7 @@ ARCHIVES = {"forum-observer": "archive", "forum49": "forum49"}
 HISTORY = Path("../site/data/history.json")
 DRAW_SOURCE = "https://api.00853lhc.com/api/HistoryOpenInfo"
 RAW = "https://raw.githubusercontent.com/ntr361-bot/ntr-v7/main/"
+LEDGER = "https://smart-ledger-cf.5rmwf2d5ff.workers.dev"
 EXCLUDED = "2026327"
 
 
@@ -173,8 +174,8 @@ def guard(issue, manual, draw_at, clock, live):
     return now
 
 
-def read_remote(path):
-    req = Request(RAW + path, headers={"Cache-Control": "no-cache",
+def read_url(url):
+    req = Request(url, headers={"Cache-Control": "no-cache",
                   "User-Agent": "ntr-v7-forum-freeze/1"})
     with urlopen(req, timeout=8) as response:
         value = response.read(2_000_001)
@@ -183,8 +184,18 @@ def read_remote(path):
     return value
 
 
+def read_remote(path):
+    return read_url(RAW + path)
+
+
+def verify_ledger_freeze(model, issue, snapshot, read=read_url):
+    report = json.loads(read(f"{LEDGER}/api/settlement?model={model}&issue={issue}&phase=frozen"))
+    if report != {key: snapshot[key] for key in ("issue", "digest", "frozen_at", "top6")}:
+        raise FreezeError("production_ledger_freeze_mismatch")
+
+
 def verify_feed(model, issue, snap, report, read=read_remote):
-    """Read back the same GitHub raw paths consumed by the production ledger."""
+    """Verify archive, generated projection and deployed ledger read-back."""
     prefix = f"site/data/{model}"
     saved = json.loads(read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/snapshot.json"))
     latest = json.loads(read(f"{prefix}/latest.json"))
@@ -197,6 +208,8 @@ def verify_feed(model, issue, snap, report, read=read_remote):
         raise FreezeError("ledger_feed_mismatch")
     if read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/report.md") != report:
         raise FreezeError("ledger_report_mismatch")
+    if read is read_remote:
+        verify_ledger_freeze(model, issue, snap)
 
 
 def check_snapshot(archive, issue, folder):
@@ -306,6 +319,8 @@ def operate(model, phase, issue, journal, *, clock=lambda: datetime.now(TZ),
         try:
             verify_feed(model, issue, snap, report, read)
             journal["ledger_sync"] = "verified_ledger_source"
+            if read is read_remote:
+                journal["production_ledger_verified"] = True
             return
         except (ValueError, KeyError, OSError) as exc:
             journal["failures"].append(str(exc))

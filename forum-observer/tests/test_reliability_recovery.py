@@ -70,6 +70,16 @@ class ReliabilityRecoveryTests(unittest.TestCase):
                 freeze_operation.restore_draft(folder, self.issue, self.now)
             self.assertFalse((folder / "draft-status.json").exists())
 
+    def test_deployed_ledger_freeze_must_match_snapshot(self):
+        snapshot = {"issue": self.issue, "digest": "one", "frozen_at": self.now.isoformat(),
+                    "top6": list("鼠牛虎兔龙蛇")}
+        read = Mock(return_value=json.dumps(snapshot))
+        freeze_operation.verify_ledger_freeze("forum49", self.issue, snapshot, read)
+        self.assertIn("phase=frozen", read.call_args.args[0])
+        read.return_value = json.dumps(dict(snapshot, digest="other"))
+        with self.assertRaisesRegex(freeze_operation.FreezeError, "production_ledger"):
+            freeze_operation.verify_ledger_freeze("forum49", self.issue, snapshot, read)
+
     def test_health_late_audit_and_seven_consecutive_real_days(self):
         self.assertEqual(health_check.latest_scheduled_day(
             datetime(2026, 11, 28, 6, 52, tzinfo=self.now.tzinfo), 22, 35).day, 27)
