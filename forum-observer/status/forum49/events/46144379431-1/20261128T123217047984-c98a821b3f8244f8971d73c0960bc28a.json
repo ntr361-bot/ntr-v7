@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:32:17.047984+00:00",
+  "error": null,
+  "valid_materials": 63,
+  "valid_authors": 63,
+  "successful_post_opens": 272,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 77,
+      "opened": 76,
+      "extracted": 76,
+      "completed": 76
+    }
+  },
+  "article_texts_extracted": 272,
+  "article_details_completed": 272,
+  "last_verified_post": {
+    "author": "港澳宁财神大迷弟",
+    "url": "https://49217.com/#/corpusdetail?id=43067738&type=3",
+    "verified_at": "2026-11-28T12:32:16.545076+00:00",
+    "text_length": 56,
+    "text_sha256": "ab0741b120593e4cdd990b598c0706ffc0d1d2f86c1e240a91599daeb14a4ed5"
+  },
+  "last_attempted_post": {
+    "author": "向着阳光",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43067740&type=3",
+    "attempt_index": 273
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 272,
+  "stage": "detail: 向着阳光 七肖中特",
+  "progress_updated_at": "2026-11-28T12:32:16.898934+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
