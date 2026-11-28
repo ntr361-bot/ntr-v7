@@ -20,7 +20,7 @@ on:
   # Automatic collection backups remain at the existing slots; any delayed or
   # manual collection can start 24 hours. Freeze remains at 21:00/21:05.
   schedule:
-    - cron: "30 12 * * *"
+    - cron: "25 12 * * *"
     - cron: "0 13 * * *"
     - cron: "5 13 * * *"
   # Legacy collection markers may still arrive.
@@ -60,7 +60,7 @@ jobs:
         id: collection-gate
         # Existing backup schedule and manual/GPT triggers may enter at any time; snapshots remain immutable.
         # Audit/settlement/reconciliation triggers must never collect new evidence.
-        if: (github.event_name == 'workflow_dispatch' && inputs.mode != 'freeze') || (github.event_name == 'schedule' && github.event.schedule == '30 12 * * *') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
+        if: (github.event_name == 'workflow_dispatch' && inputs.mode != 'freeze') || (github.event_name == 'schedule' && github.event.schedule == '25 12 * * *') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')))
         env:
           MANUAL_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum-collect-manual):')) }}
           SCHEDULED_RUN: ${{ github.event_name == 'schedule' || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum-collect-1):') || startsWith(github.event.head_commit.message, 'trigger(forum-collect-2):'))) }}
