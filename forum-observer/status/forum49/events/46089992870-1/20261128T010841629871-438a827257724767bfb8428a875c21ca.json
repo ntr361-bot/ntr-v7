@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:08:41.629871+00:00",
+  "error": null,
+  "valid_materials": 94,
+  "valid_authors": 94,
+  "successful_post_opens": 865,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 726,
+      "opened": 725,
+      "extracted": 725,
+      "completed": 725
+    }
+  },
+  "article_texts_extracted": 865,
+  "article_details_completed": 865,
+  "last_verified_post": {
+    "author": "羔冷暴躁月",
+    "url": "https://49217.com/#/corpusdetail?id=43061777&type=3",
+    "verified_at": "2026-11-28T01:08:40.877896+00:00",
+    "text_length": 21,
+    "text_sha256": "d825fe03d4788fb5feeb2b3172ea803f44653ed784d761deece8fd739fdaee7a"
+  },
+  "last_attempted_post": {
+    "author": "财富六码",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43061783&type=3",
+    "attempt_index": 866
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 865,
+  "stage": "detail: 财富六码 【财富⑥码】一直在路上 【灭庄⑥码】",
+  "progress_updated_at": "2026-11-28T01:08:41.581487+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
