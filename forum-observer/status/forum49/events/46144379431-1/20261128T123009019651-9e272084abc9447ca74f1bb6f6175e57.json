@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:30:09.019651+00:00",
+  "error": null,
+  "valid_materials": 27,
+  "valid_authors": 27,
+  "successful_post_opens": 117,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 118,
+      "opened": 117,
+      "extracted": 117,
+      "completed": 117
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 0,
+      "opened": 0,
+      "extracted": 0,
+      "completed": 0
+    }
+  },
+  "article_texts_extracted": 117,
+  "article_details_completed": 117,
+  "last_verified_post": {
+    "author": "百达翡丽",
+    "url": "https://49217.com/#/corpusdetail?id=43065701&type=3",
+    "verified_at": "2026-11-28T12:30:08.597881+00:00",
+    "text_length": 48,
+    "text_sha256": "a21992e66155df5120f43d13e0830322ca3b512c4e3ecd490fac3e7f6570c956"
+  },
+  "last_attempted_post": {
+    "author": "冰美式一大杯",
+    "is_featured": true,
+    "url": "https://49217.com/#/corpusdetail?id=43061526&type=3",
+    "attempt_index": 118
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": null,
+    "violation_count": 0,
+    "state": "ordinary_not_started"
+  },
+  "raw_count": 117,
+  "stage": "detail: 冰美式一大杯 花花💌三期⑯码🦩‹不固定杀肖›",
+  "progress_updated_at": "2026-11-28T12:30:08.843183+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
