@@ -1,47 +1,63 @@
 {
   "schema_version": 2,
   "issue": "2026332",
-  "state": "collecting_unverified",
+  "state": "collecting_effectively",
   "run_id": "46089996323",
   "attempt": 1,
   "event": "push",
   "test_only": false,
   "model": "118",
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089996323",
-  "updated_at": "2026-11-28T00:51:59.865064+00:00",
+  "updated_at": "2026-11-28T00:53:03.589793+00:00",
   "error": null,
-  "valid_materials": 0,
-  "valid_authors": 0,
-  "successful_post_opens": 0,
+  "valid_materials": 15,
+  "valid_authors": 15,
+  "successful_post_opens": 94,
   "article_details": {
     "featured": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 17,
+      "attempted": 17,
+      "opened": 17,
+      "extracted": 17,
+      "completed": 17
     },
     "ordinary": {
-      "queued": 0,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "queued": 352,
+      "attempted": 78,
+      "opened": 77,
+      "extracted": 77,
+      "completed": 77
     }
   },
-  "article_texts_extracted": 0,
-  "article_details_completed": 0,
-  "last_verified_post": null,
-  "last_attempted_post": null,
+  "article_texts_extracted": 94,
+  "article_details_completed": 94,
+  "last_verified_post": {
+    "author": "龙婆婆",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354971&type=3",
+    "verified_at": "2026-11-28T00:53:03.259396+00:00",
+    "text_length": 398,
+    "text_sha256": "53a73445fad93259badd0546a1ea1e23a2639181c9c31aa2883230fb95e81b3f"
+  },
+  "last_attempted_post": {
+    "author": "随风大哥哥",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354562&type=3",
+    "attempt_index": 95
+  },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:52:17.559713+00:00",
+      "featured_queued": 17,
+      "featured_attempted": 17,
+      "featured_completed": 17
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 0,
-  "stage": "forum_scan: 68",
-  "progress_updated_at": "2026-11-28T00:51:59.615126+00:00",
+  "raw_count": 94,
+  "stage": "detail: 随风大哥哥 上岸七肖",
+  "progress_updated_at": "2026-11-28T00:53:03.374263+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
