@@ -8,51 +8,56 @@
   "test_only": false,
   "model": "49",
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
-  "updated_at": "2026-11-28T00:57:05.275185+00:00",
+  "updated_at": "2026-11-28T00:58:08.610809+00:00",
   "error": null,
-  "valid_materials": 19,
-  "valid_authors": 19,
-  "successful_post_opens": 120,
+  "valid_materials": 35,
+  "valid_authors": 35,
+  "successful_post_opens": 212,
   "article_details": {
     "featured": {
       "queued": 140,
-      "attempted": 121,
-      "opened": 120,
-      "extracted": 120,
-      "completed": 120
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
     },
     "ordinary": {
       "queued": 833,
-      "attempted": 0,
-      "opened": 0,
-      "extracted": 0,
-      "completed": 0
+      "attempted": 73,
+      "opened": 72,
+      "extracted": 72,
+      "completed": 72
     }
   },
-  "article_texts_extracted": 120,
-  "article_details_completed": 120,
+  "article_texts_extracted": 212,
+  "article_details_completed": 212,
   "last_verified_post": {
-    "author": "我是大神来了",
-    "url": "https://49217.com/#/corpusdetail?id=43061786&type=3",
-    "verified_at": "2026-11-28T00:57:05.112233+00:00",
-    "text_length": 1031,
-    "text_sha256": "0bdec91a206c28b4f34b29999f11fdb69185cc4eee12dac8b72dc035df915b81"
+    "author": "鱼儿宝",
+    "url": "https://49217.com/#/corpusdetail?id=43062940&type=3",
+    "verified_at": "2026-11-28T00:58:07.812855+00:00",
+    "text_length": 27,
+    "text_sha256": "c8519194696b3c27804b3c8dd82acad173071017c0f27bff24f49c839723fbf4"
   },
   "last_attempted_post": {
-    "author": "功夫女足",
-    "is_featured": true,
-    "url": "https://49217.com/#/corpusdetail?id=43061739&type=3",
-    "attempt_index": 121
+    "author": "天天艳阳天",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062958&type=3",
+    "attempt_index": 213
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
-    "first_ordinary_attempt": null,
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
     "violation_count": 0,
-    "state": "ordinary_not_started"
+    "state": "verified"
   },
-  "raw_count": 120,
-  "stage": "detail: 功夫女足 金牌六肖",
-  "progress_updated_at": "2026-11-28T00:57:05.229649+00:00",
+  "raw_count": 212,
+  "stage": "detail: 天天艳阳天 三头中特",
+  "progress_updated_at": "2026-11-28T00:58:08.025702+00:00",
   "collection_status": "incomplete_observation",
   "quality_summary": {
     "detail_errors": 0,
