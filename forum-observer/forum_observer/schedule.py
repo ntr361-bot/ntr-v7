@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo
 TZ = ZoneInfo("Asia/Shanghai")
 CUTOFF_HOUR, CUTOFF_MINUTE = 21, 0
 # Existing backup cron identity is retained for compatibility; it is not a time gate.
-BACKUP_COLLECT_CRON = '30 12 * * *'
+BACKUP_COLLECT_CRON = '25 12 * * *'
 EVENING_START = (20, 0)
 FREEZE_START = (21, 0)
 FREEZE_END = (21, 31)

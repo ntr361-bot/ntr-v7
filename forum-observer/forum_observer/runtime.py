@@ -231,7 +231,9 @@ def supervise():
         collect, issue, seconds, reason = True, test_issue, 1800, 'explicit_test_no_freeze'
     elif model == '49':
         now = datetime.now(TZ)
-        issue, seconds = current_issue(now), MAX_SECONDS
+        # The 49 collector uses the full configured budget before rendering the
+        # observation. Leave time to flush its report and run evidence.
+        issue, seconds = current_issue(now), MAX_SECONDS + 60
         collect, reason, _ = forum49_collect_gate('forum49', now, False)
     else:
         collect, issue, seconds, reason = decide(
