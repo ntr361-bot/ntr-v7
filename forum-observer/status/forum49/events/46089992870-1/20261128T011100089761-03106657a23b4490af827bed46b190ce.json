@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collected",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:11:00.089761+00:00",
+  "error": null,
+  "valid_materials": 107,
+  "valid_authors": 107,
+  "successful_post_opens": 973,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 833,
+      "opened": 833,
+      "extracted": 833,
+      "completed": 833
+    }
+  },
+  "article_texts_extracted": 973,
+  "article_details_completed": 973,
+  "last_verified_post": {
+    "author": "清影觅",
+    "url": "https://49217.com/#/corpusdetail?id=43061712&type=3",
+    "verified_at": "2026-11-28T01:10:57.184973+00:00",
+    "text_length": 62,
+    "text_sha256": "b3959f5e5aca7d9f512617ae3940d2d506aeaec2da0a1f9fd8dc1d752e2248c4"
+  },
+  "last_attempted_post": {
+    "author": "清影觅",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43061712&type=3",
+    "attempt_index": 973
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 973,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-28T01:10:58.455086+00:00",
+  "collection_status": "ready_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": true,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": "部分覆盖：超时或未完成"
+}
