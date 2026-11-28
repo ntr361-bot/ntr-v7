@@ -1,0 +1,23 @@
+{
+  "issue": "2026332",
+  "model": "forum-observer",
+  "phase": "manual",
+  "run_id": "46148728520",
+  "run_attempt": 1,
+  "failures": [
+    "HTTP Error 404: Not Found",
+    "HTTP Error 404: Not Found"
+  ],
+  "snapshot_path": "forum-observer/archive/issues/2026332/snapshot.json",
+  "ledger_sync": "verified_ledger_source",
+  "retry_count": 0,
+  "source": "manual",
+  "report_generated_at": "2026-11-28T12:32:19.069141+00:00",
+  "report_sha256": "e91e88c7be68639852f8e8cdd45178cbbb0e17348960a7276cc907bc05058807",
+  "frozen_by_run_id": "46148728520",
+  "frozen_at": "2026-11-28T21:16:00.929655+08:00",
+  "digest": "a86e72c3716db502f6fa9f6ce95c0713fa0f7f9c5510da472754ca3330297be2",
+  "frozen_report_sha256": "75dbe4ea029ec9344f24af3d9f89987963fd0cafc9f1f163c68669bc9228f635",
+  "ledger_retry_count": 2,
+  "production_ledger_verified": true
+}
