@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144343950",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "118",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144343950",
+  "updated_at": "2026-11-28T12:26:26.626853+00:00",
+  "error": null,
+  "valid_materials": 37,
+  "valid_authors": 37,
+  "successful_post_opens": 155,
+  "article_details": {
+    "featured": {
+      "queued": 53,
+      "attempted": 53,
+      "opened": 53,
+      "extracted": 53,
+      "completed": 53
+    },
+    "ordinary": {
+      "queued": 487,
+      "attempted": 103,
+      "opened": 102,
+      "extracted": 102,
+      "completed": 102
+    }
+  },
+  "article_texts_extracted": 155,
+  "article_details_completed": 155,
+  "last_verified_post": {
+    "author": "一跟就中",
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11358565&type=3",
+    "verified_at": "2026-11-28T12:26:26.244571+00:00",
+    "text_length": 9,
+    "text_sha256": "5e79f826dbce35936461c23709caf3ebd746489bb4d86882d81652a7dd958710"
+  },
+  "last_attempted_post": {
+    "author": "刘爸爸",
+    "is_featured": false,
+    "url": "https://x5k1pok.11852.com:8443/#/corpusdetail?id=11354591&type=3",
+    "attempt_index": 156
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:25:26.884007+00:00",
+      "featured_queued": 53,
+      "featured_attempted": 53,
+      "featured_completed": 53
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 155,
+  "stage": "detail: 刘爸爸 332期：「挑战杀肖」🐂🐎🐑🐔🐶🐷🐲🐍🐯🐭🐰🐒",
+  "progress_updated_at": "2026-11-28T12:26:26.376848+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
