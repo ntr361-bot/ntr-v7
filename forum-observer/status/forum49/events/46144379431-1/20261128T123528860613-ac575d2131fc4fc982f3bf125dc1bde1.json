@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:35:28.860613+00:00",
+  "error": null,
+  "valid_materials": 105,
+  "valid_authors": 105,
+  "successful_post_opens": 462,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 267,
+      "opened": 266,
+      "extracted": 266,
+      "completed": 266
+    }
+  },
+  "article_texts_extracted": 462,
+  "article_details_completed": 462,
+  "last_verified_post": {
+    "author": "屠龙无悔",
+    "url": "https://49217.com/#/corpusdetail?id=43067156&type=3",
+    "verified_at": "2026-11-28T12:35:27.779383+00:00",
+    "text_length": 34,
+    "text_sha256": "6fdd56f6054b3e45b1a21c2fcedf1b942174025631d7f27a8044280f3d5a2f1c"
+  },
+  "last_attempted_post": {
+    "author": "李知恩大王",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43066924&type=3",
+    "attempt_index": 463
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 462,
+  "stage": "detail: 李知恩大王 332",
+  "progress_updated_at": "2026-11-28T12:35:28.416220+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
