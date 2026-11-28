@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:44:00.335246+00:00",
+  "error": null,
+  "valid_materials": 196,
+  "valid_authors": 196,
+  "successful_post_opens": 833,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 638,
+      "opened": 637,
+      "extracted": 634,
+      "completed": 637
+    }
+  },
+  "article_texts_extracted": 830,
+  "article_details_completed": 833,
+  "last_verified_post": {
+    "author": "耶耶别别",
+    "url": "https://49217.com/#/corpusdetail?id=43065120&type=3",
+    "verified_at": "2026-11-28T12:43:58.937910+00:00",
+    "text_length": 2014,
+    "text_sha256": "0cc947b3253862f955f0188192ae5b72a6aeb1d4c03c0ecc3d360edd6aba8048"
+  },
+  "last_attempted_post": {
+    "author": "专搞平",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43065050&type=3",
+    "attempt_index": 834
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 830,
+  "stage": "detail: 专搞平 332期平特肖，计划投30期了平特一直盈利",
+  "progress_updated_at": "2026-11-28T12:43:59.943462+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 3
+  },
+  "coverage_label": null
+}
