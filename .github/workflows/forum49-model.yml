@@ -1,12 +1,12 @@
 name: 49论坛模型 collection
-run-name: ${{ inputs.request_id && format('Forum 49 {0} manual#{1}', inputs.mode, inputs.request_id) || '49论坛模型 collection' }}
+run-name: ${{ inputs.request_id && format('Forum 49 {0} manual#{1}', inputs.mode, inputs.request_id) || (github.event_name == 'workflow_dispatch' && format('Forum 49 {0}', inputs.mode || 'collect')) || (github.event_name == 'schedule' && format('Forum 49 scheduled {0}', (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *') && 'freeze' || 'collect')) || '49论坛模型 collection' }}
 # 49图库 高手论坛 (Macau only).
 # Reuses the 118论坛模型 collector, parser and freeze/settle cycle unchanged
 # (>=6 zodiac, kill-zodiac, one material per author; AGENTS.md 1-10), with its
 # own archive forum-observer/forum49/ and feed site/data/forum49/.
 #   mode=collect : explicit request -> replaceable current-issue draft (never a freeze).
 #   mode=freeze  : explicit request -> immutable current-issue draft
-#   mode=settle  : settle snapshots from verified draw history; never collects
+#   mode=settle  : forward legacy manual requests to unified settlement
 # Never touches 118's archive/feed, D1 or formal V7.
 on:
   workflow_dispatch:
@@ -47,16 +47,12 @@ on:
   schedule:
     # Existing automatic backup slots; delayed/manual collection is accepted all day.
     # 21:00 and 21:05 remain freeze backups.
-    - cron: "20 12 * * *"
     - cron: "35 12 * * *"
     - cron: "0 13 * * *"
     - cron: "5 13 * * *"
 permissions:
   contents: write
   actions: read
-concurrency:
-  group: forum49-archive
-  cancel-in-progress: false
 defaults:
   run:
     working-directory: forum-observer
@@ -65,7 +61,10 @@ jobs:
     # Collection, freeze and settlement are separate jobs.
     if: ${{ (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'settle') || (github.event_name == 'push' && (startsWith(github.event.head_commit.message, 'trigger(forum49-collect):') || startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')))) && !((github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):'))) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 95
+    timeout-minutes: 85
+    concurrency:
+      group: forum49-collection
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,6 +81,13 @@ jobs:
           F49_SKIP_IF_COLLECTED: ${{ github.event_name != 'workflow_dispatch' && 'true' || inputs.skip_if_collected || 'false' }}
         run: python -m forum_observer.schedule --archive forum49 --github-output "$GITHUB_OUTPUT" --forum49-collect-gate
 
+      - name: Match dispatcher issue
+        if: inputs.issue != ''
+        env:
+          REQUESTED_ISSUE: ${{ inputs.issue }}
+          CURRENT_ISSUE: ${{ steps.collection-gate.outputs.issue }}
+        run: test "$REQUESTED_ISSUE" = "$CURRENT_ISSUE"
+
       - name: Install browser
         if: steps.collection-gate.outputs.collect == 'true'
         run: |
@@ -92,99 +98,46 @@ jobs:
         if: steps.collection-gate.outputs.collect == 'true'
         run: python -m compileall -q forum_observer
 
-      - name: Isolate archive for post-freeze test collection
-        if: steps.collection-gate.outputs.test == 'true'
-        run: |
-          echo "::notice title=49论坛模型 test::post-freeze collection; test only (artifact), no formal draft/freeze/commit"
-          rm -rf /tmp/forum49-test && cp -r forum49 /tmp/forum49-test
-
-      - name: Collect (no limit on post count; stops at issue boundary)
+      - name: Collect (current issue)
         id: collect
+        timeout-minutes: 35
         if: steps.collection-gate.outputs.collect == 'true'
         env:
-          F49_ISSUE: ${{ inputs.issue }}
+          F49_ISSUE: ${{ steps.collection-gate.outputs.issue }}
           F49_URL: ${{ inputs.url || 'https://49217.com/#/forum' }}
-          F49_ARCHIVE: ${{ steps.collection-gate.outputs.test == 'true' && '/tmp/forum49-test' || 'forum49' }}
-        run: |
-          python -u -m forum_observer.forum49 --url "$F49_URL" --issue "$F49_ISSUE" --category 澳门 --out forum49-out --archive "$F49_ARCHIVE"
+          FORUM_MODEL: '49'
+          GH_TOKEN: ${{ github.token }}
+          FORUM_GATE_ISSUE: ${{ steps.collection-gate.outputs.issue }}
+          SCHEDULE_GATE_REASON: ${{ steps.collection-gate.outputs.reason }}
+        run: python -u -m forum_observer.runtime supervise
 
-      - name: Publish pre-freeze draft (no freeze; refused at/after 21:00)
+      - name: Publish and verify committed current-run draft
         id: draft
         if: steps.collect.outcome == 'success' && steps.collection-gate.outputs.test != 'true'
-        run: |
-          python -m forum_observer.cycle --out forum49-out --archive forum49 \
-            --history ../site/data/history.json --public ../site/data/forum49 \
-            --defer-freeze --model-id forum49
-
-      - name: Enforce eligible current-issue draft after collection
-        # The collector can exit 0 with zero qualifying posts. Without a
-        # complete verified draft that is NOT a successful nightly collection.
-        if: steps.collection-gate.outputs.collect == 'true' && steps.collection-gate.outputs.test != 'true'
-        id: verify-draft
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          from datetime import datetime
-          from pathlib import Path
-          from zoneinfo import ZoneInfo
-          now = datetime.now(ZoneInfo('Asia/Shanghai'))
-          issue = f"{now.year}{now.timetuple().tm_yday:03d}"
-          path = Path('forum49/issues') / issue / 'draft-status.json'
-          try:
-              row = json.loads(path.read_text(encoding='utf-8'))
-              captured = datetime.fromisoformat(row['fetched_at'])
-              ok = (row.get('issue') == issue
-                    and captured.tzinfo is not None
-                    and captured.astimezone(ZoneInfo('Asia/Shanghai')).date() == now.date()
-                    and int(row.get('valid_materials') or 0) > 0
-                    and row.get('status') in ('ready_observation', 'incomplete_observation')
-                    and len(row.get('ranking') or []) == 12
-                    and len(row.get('top3') or []) == 3
-                    and len(row.get('top6') or []) == 6)
-          except (OSError, ValueError, TypeError, KeyError) as exc:
-              print('::error title=49论坛模型 draft::missing or invalid current-issue draft:', exc)
-              raise SystemExit(2)
-          receipt=Path('forum49/issues') / issue / 'collection-runs' / (os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '.json')
-          try:
-              verified=json.loads(receipt.read_text(encoding='utf-8'))
-              ok=ok and (verified.get('issue') == issue
-                  and str(verified.get('run_id')) == os.environ['GITHUB_RUN_ID']
-                  and verified.get('run_attempt') == int(os.environ['GITHUB_RUN_ATTEMPT'])
-                  and int(verified.get('valid_materials') or 0)>0
-                  and verified.get('draft_published') is True
-                  and verified.get('report_published') is True)
-          except (OSError, ValueError, TypeError, KeyError):
-              ok=False
-          if not ok:
-              print('::error title=49论坛模型 draft::collection did not publish a qualifying current-issue draft from this run')
-              raise SystemExit(2)
-          print('Verified 49 current-run receipt:', receipt, 'valid_materials:', row['valid_materials'])
-          PY
-
-      - name: Record 49 author history from verified frozen evidence only
-        if: ${{ always() && steps.collection-gate.outputs.test != 'true' }}
-        continue-on-error: true
-        run: python -m forum_observer.author_profiles --archive forum49
-
-      - name: Archive independent forum data only
-        if: ${{ always() && steps.collection-gate.outputs.test != 'true' }}
-        shell: bash
+        env:
+          ISSUE: ${{ steps.collection-gate.outputs.issue }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add forum49/ ../site/data/forum49/
-          if git diff --cached --quiet; then
-            echo "No forum49 archive changes"
-            exit 0
-          fi
-          git commit -m "chore(forum49): 49论坛模型 cycle ${GITHUB_RUN_ID}"
-          for attempt in 1 2 3 4 5; do
-            git fetch origin main
-            if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main || true
-          done
-          exit 1
+          python -m forum_observer.publish_collection forum49 forum49-out "$ISSUE"
+
+      - name: Check isolated observation evidence
+        if: steps.collection-gate.outputs.test == 'true'
+        env:
+          ISSUE: ${{ steps.collection-gate.outputs.issue }}
+        run: python -m forum_observer.publish_collection forum49 forum49-out "$ISSUE" --observation
+
+      - name: Publish independent monitor status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORUM_MODEL: '49'
+          FORUM_GATE_ISSUE: ${{ steps.collection-gate.outputs.issue }}
+          OBSERVE_OUTCOME: ${{ steps.collect.outcome }}
+          JOB_STATUS: ${{ job.status }}
+          GATE_COLLECT: ${{ steps.collection-gate.outputs.collect }}
+          SCHEDULE_GATE_REASON: ${{ steps.collection-gate.outputs.reason }}
+        run: python -m forum_observer.runtime finished
 
       - name: Scrapling side-by-side check (isolated; never affects collection)
         if: ${{ always() && inputs.scrapling_check == 'true' && steps.collect.outcome == 'success' }}
@@ -195,7 +148,7 @@ jobs:
           /tmp/scrapling-venv/bin/pip install -q "scrapling[fetchers]"
           /tmp/scrapling-venv/bin/python -m playwright install chromium
           /tmp/scrapling-venv/bin/scrapling install || echo "scrapling install step unavailable; continuing"
-          /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800 --archive "${{ steps.collection-gate.outputs.test == 'true' && '/tmp/forum49-test' || 'forum49' }}"
+          /tmp/scrapling-venv/bin/python -u -m forum_observer.forum49_scrapling --budget-seconds 1800 --archive "forum49"
 
       - name: Report (annotations + summary)
         if: always()
@@ -203,7 +156,6 @@ jobs:
           COLLECT_GATE: ${{ steps.collection-gate.outputs.reason }}
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           DRAFT_OUTCOME: ${{ steps.draft.outcome }}
-          VERIFIED_DRAFT: ${{ steps.verify-draft.outcome }}
         run: |
           python - <<'PY'
           import json, os
@@ -219,7 +171,7 @@ jobs:
           else:
               print('::notice title=49论坛模型::no summary (gate may have skipped collect)')
           state = dict(collection_gate=os.environ.get('COLLECT_GATE'), collect_outcome=os.environ.get('COLLECT_OUTCOME'),
-                       draft_outcome=os.environ.get('DRAFT_OUTCOME'), verified_draft=os.environ.get('VERIFIED_DRAFT'))
+                       draft_outcome=os.environ.get('DRAFT_OUTCOME'))
           print('::notice title=49论坛模型 gates::'+esc(json.dumps(state, ensure_ascii=False)))
           Path(os.environ.get('GITHUB_STEP_SUMMARY','/dev/stdout')).write_text(
               '## 49论坛模型 cycle status\n\n' + '\n'.join(f'- {key}: {value}' for key, value in state.items()) + '\n')
@@ -235,41 +187,27 @@ jobs:
   settle:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'settle' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_ISSUE: ${{ inputs.issue }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Settle from verified draw history (never collects or freezes)
-        run: |
-          python -m forum_observer.cycle \
-            --out forum49-no-collection \
-            --archive forum49 \
-            --history ../site/data/history.json \
-            --public ../site/data/forum49 \
-            --model-id forum49
-      - name: Record 49 author history from verified frozen evidence only
-        continue-on-error: true
-        run: python -m forum_observer.author_profiles --archive forum49
-      - name: Commit settlement
+      - name: Forward legacy manual settlement to the unified entry
+        working-directory: .
         shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add forum49/ ../site/data/forum49/
-          if git diff --cached --quiet; then echo "no new settlement"; exit 0; fi
-          git commit -m "chore(forum49): settle 49论坛模型 from verified draw history"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main || true
-          done
-          exit 1
+          args=()
+          if [ -n "$TARGET_ISSUE" ]; then args+=(-f "issue=$TARGET_ISSUE"); fi
+          gh workflow run settlement.yml --repo "$GITHUB_REPOSITORY" --ref main "${args[@]}"
 
   freeze:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'freeze') || (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '5 13 * * *')) || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'trigger(forum49-freeze):')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 7
+    concurrency:
+      group: forum49-freeze
+      cancel-in-progress: false
     permissions:
       contents: write
       actions: read
@@ -284,6 +222,7 @@ jobs:
       - name: Freeze or verify committed snapshot and ledger source
         env:
           GH_TOKEN: ${{ github.token }}
+          REQUESTED_ISSUE: ${{ inputs.issue }}
           FREEZE_PHASE: ${{ github.event_name != 'schedule' && 'manual' || (github.event.schedule == '5 13 * * *' && 'verify' || 'auto') }}
         run: |
           set -euo pipefail
