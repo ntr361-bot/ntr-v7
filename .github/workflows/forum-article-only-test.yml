@@ -49,7 +49,7 @@ jobs:
                     data:li.dataset,
                     html:li.outerHTML.slice(0,2200)
                   }))""")
-                  print('CARD_DOM_PROBE '+json.dumps(cards,ensure_ascii=False))
+                  print('CARD_DOM_PROBE '+json.dumps(cards,ensure_ascii=True))
                   state=page.locator('.forum-list > li').first.evaluate("""li=>{
                     const output=[];
                     for(let el=li,depth=0;el&&depth<12;el=el.parentElement,depth++){
@@ -65,7 +65,7 @@ jobs:
                     }
                     return output;
                   }""")
-                  print('VUE_CARD_PROBE '+json.dumps(state,ensure_ascii=False)[:13000])
+                  print('VUE_CARD_PROBE '+json.dumps(state,ensure_ascii=True)[:13000])
                   data=page.locator('.forum-list > li').first.evaluate("""li=>{
                     let el=li;
                     while(el && !Array.isArray(el.__vue__?.$data?.list))el=el.parentElement;
@@ -78,13 +78,13 @@ jobs:
                         sampleKeys:Object.keys(x).filter(k=>/name|user|title|member|period|article|type/i.test(k))
                       }))};
                   }""")
-                  print('ARTICLE_ID_PROBE '+json.dumps(data,ensure_ascii=False)[:11000])
+                  print('ARTICLE_ID_PROBE '+json.dumps(data,ensure_ascii=True)[:11000])
 
                   if cards:
                       page.locator('.forum-list > li .formtitle').first.click(timeout=2500)
                       page.wait_for_timeout(1600)
                       print('CARD_NAV_PROBE '+json.dumps({'url':page.url,
-                          'text':page.locator('body').inner_text(timeout=2000)[:1200]},ensure_ascii=False))
+                          'text':page.locator('body').inner_text(timeout=2000)[:1200]},ensure_ascii=True))
               finally:browser.close()
           PY
       - name: Collect ten article details and verify isolation
