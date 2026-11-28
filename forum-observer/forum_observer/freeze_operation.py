@@ -203,8 +203,9 @@ def verify_feed(model, issue, snap, report, read=read_remote):
     if (saved != snap or item.get("digest") != snap["digest"]
             or item.get("issue") != issue or item.get("ranking") != snap["ranking"]
             or item.get("frozen_at") != snap["frozen_at"]
-            or latest.get("model") != model or latest.get("issue") != issue
-            or latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]):
+            or latest.get("model") != model or str(latest.get("issue") or "") < issue
+            or (latest.get("issue") == issue and
+                (latest.get("frozen") is not True or latest.get("snapshot_digest") != snap["digest"]))):
         raise FreezeError("ledger_feed_mismatch")
     if read(f"forum-observer/{ARCHIVES[model]}/issues/{issue}/report.md") != report:
         raise FreezeError("ledger_report_mismatch")
@@ -348,6 +349,13 @@ def alert(github, journal):
             github.request(f"issues/{existing['number']}/comments", "POST", {"body": body})
 
 
+def requested_freeze_issue(created_at, phase, scheduled):
+    scheduled_minute = 5 if phase == "verify" else 0
+    if scheduled and (created_at.hour, created_at.minute) < (21, scheduled_minute):
+        created_at -= timedelta(days=1)
+    return current_issue(created_at)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("model", choices=ARCHIVES)
@@ -357,7 +365,8 @@ def main():
     attempt = int(os.environ["GITHUB_RUN_ATTEMPT"])
     github = GitHub()
     run = github.request(f"actions/runs/{run_id}")
-    issue = current_issue(timestamp(run["created_at"]))
+    issue = requested_freeze_issue(timestamp(run["created_at"]), args.phase,
+                                   run.get("event") == "schedule")
     requested = os.environ.get("REQUESTED_ISSUE")
     if requested and requested != issue:
         raise FreezeError("freeze_request_issue_mismatch")

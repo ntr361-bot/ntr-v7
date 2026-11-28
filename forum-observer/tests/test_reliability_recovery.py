@@ -94,6 +94,15 @@ class ReliabilityRecoveryTests(unittest.TestCase):
                 github, day.date().isoformat(), schedule.current_issue(day), models, [])
             self.assertEqual(saved["passed"], step == 6)
 
+    def test_overnight_scheduled_freeze_reports_the_original_issue(self):
+        after_midnight = self.now.replace(hour=5, minute=53)
+        self.assertEqual(freeze_operation.requested_freeze_issue(after_midnight, "auto", True),
+                         "2026331")
+        self.assertEqual(freeze_operation.requested_freeze_issue(after_midnight, "manual", False),
+                         self.issue)
+        self.assertEqual(freeze_operation.requested_freeze_issue(self.now, "verify", True),
+                         self.issue)
+
     def test_health_recovers_freeze_only_before_safe_cutoff(self):
         github = Mock()
         github.request.return_value = {"workflow_runs": []}
