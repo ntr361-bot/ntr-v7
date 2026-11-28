@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T01:10:48.097942+00:00",
+  "error": null,
+  "valid_materials": 107,
+  "valid_authors": 107,
+  "successful_post_opens": 965,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 826,
+      "opened": 825,
+      "extracted": 825,
+      "completed": 825
+    }
+  },
+  "article_texts_extracted": 965,
+  "article_details_completed": 965,
+  "last_verified_post": {
+    "author": "小年华",
+    "url": "https://49217.com/#/corpusdetail?id=43061727&type=3",
+    "verified_at": "2026-11-28T01:10:46.702743+00:00",
+    "text_length": 43,
+    "text_sha256": "78aeca6397c92469a919e1715b548572e755c159cc3b3c72339b0c6b799c5c91"
+  },
+  "last_attempted_post": {
+    "author": "搬起石头",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43061726&type=3",
+    "attempt_index": 966
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 965,
+  "stage": "detail: 搬起石头 四肖中特",
+  "progress_updated_at": "2026-11-28T01:10:47.458867+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
