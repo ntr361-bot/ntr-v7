@@ -1,18 +1,18 @@
 {
   "schema_version": 2,
   "issue": "2026332",
-  "state": "collecting_effectively",
+  "state": "collected",
   "run_id": "46144379431",
   "attempt": 1,
   "event": "workflow_dispatch",
   "test_only": false,
   "model": "49",
   "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
-  "updated_at": "2026-11-28T12:45:04.734506+00:00",
+  "updated_at": "2026-11-28T12:45:35.459075+00:00",
   "error": null,
-  "valid_materials": 208,
-  "valid_authors": 208,
-  "successful_post_opens": 874,
+  "valid_materials": 214,
+  "valid_authors": 214,
+  "successful_post_opens": 892,
   "article_details": {
     "featured": {
       "queued": 196,
@@ -23,26 +23,26 @@
     },
     "ordinary": {
       "queued": 696,
-      "attempted": 679,
-      "opened": 678,
-      "extracted": 675,
-      "completed": 678
+      "attempted": 696,
+      "opened": 696,
+      "extracted": 693,
+      "completed": 696
     }
   },
-  "article_texts_extracted": 871,
-  "article_details_completed": 874,
+  "article_texts_extracted": 889,
+  "article_details_completed": 892,
   "last_verified_post": {
-    "author": "释然吖",
-    "url": "https://49217.com/#/corpusdetail?id=43063421&type=3",
-    "verified_at": "2026-11-28T12:45:03.282731+00:00",
-    "text_length": 189,
-    "text_sha256": "eee5eee608c9cb0b3d0652cabe6614f0e5c3896a4b7a1cae678731b8bc1ebe2b"
+    "author": "我是雷锋",
+    "url": "https://49217.com/#/corpusdetail?id=43062007&type=3",
+    "verified_at": "2026-11-28T12:45:32.147740+00:00",
+    "text_length": 79,
+    "text_sha256": "d8139eb46c1e05747b6416763d0f227a34d55d457d84c030215bcff9eb3ed28b"
   },
   "last_attempted_post": {
-    "author": "立马有前途",
+    "author": "我是雷锋",
     "is_featured": false,
-    "url": "https://49217.com/#/corpusdetail?id=43063879&type=3",
-    "attempt_index": 875
+    "url": "https://49217.com/#/corpusdetail?id=43062007&type=3",
+    "attempt_index": 892
   },
   "priority_audit": {
     "policy": "featured_article_before_ordinary",
@@ -55,14 +55,14 @@
     "violation_count": 0,
     "state": "verified"
   },
-  "raw_count": 871,
-  "stage": "detail: 立马有前途 双色",
-  "progress_updated_at": "2026-11-28T12:45:04.318782+00:00",
-  "collection_status": "incomplete_observation",
+  "raw_count": 889,
+  "stage": "browser_closing",
+  "progress_updated_at": "2026-11-28T12:45:33.903407+00:00",
+  "collection_status": "ready_observation",
   "quality_summary": {
-    "detail_errors": 0,
-    "truncated": null,
+    "detail_errors": 3,
+    "truncated": true,
     "unextracted_current_posts": 3
   },
-  "coverage_label": null
+  "coverage_label": "部分覆盖：超时或未完成"
 }
