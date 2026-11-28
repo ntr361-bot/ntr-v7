@@ -1489,19 +1489,24 @@ void CloudWorkflowUsesSingleDailyRunAndFailedRetry()
     Assert(workflow.Contains("Authorization = \"Bearer $oidc\"", StringComparison.Ordinal) &&
            workflow.Contains("OAI-Sites-Authorization", StringComparison.Ordinal),
         "mobile-trigger polling must send both OIDC and Sites authorization headers");
-    Assert(workflow.Contains("https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish", StringComparison.Ordinal),
-        "V7 publisher must refresh the isolated smart-ledger V7 copy");
+    Assert(workflow.Contains("Commit generated files", StringComparison.Ordinal) &&
+           !workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "V7 must publish through committed GitHub artifacts for the production ledger");
 }
 
 void V6CloudEndpointsAreConsistent()
 {
     const string desktopEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/desktop";
-    const string publisherEndpoint = "https://smart-ledger-2026.ntr133.chatgpt.site/api/v7-sync/publish";
     string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
     string desktop = File.ReadAllText(Path.Combine(root, "CloudPredictionSyncService.cs"));
     string workflow = File.ReadAllText(Path.Combine(root, ".github", "workflows", "run-prediction.yml"));
     Assert(desktop.Contains(desktopEndpoint, StringComparison.Ordinal), "V7 desktop sync is not using the isolated V7 endpoint");
-    Assert(workflow.Contains(publisherEndpoint, StringComparison.Ordinal), "V7 workflow is not publishing through the V7 OIDC endpoint");
+    string settlement = File.ReadAllText(Path.Combine(root, "scripts", "settlement.py"));
+    string verifier = File.ReadAllText(Path.Combine(root, "scripts", "verify_ledger_state.py"));
+    Assert(settlement.Contains("https://smart-ledger-cf.5rmwf2d5ff.workers.dev", StringComparison.Ordinal) &&
+           verifier.Contains("/api/v7-sync/desktop", StringComparison.Ordinal) &&
+           !workflow.Contains("/api/v7-sync/publish", StringComparison.Ordinal),
+        "Committed V7 content must be verified through the production ledger API");
     Assert(!desktop.Contains("smart-ledger-2026.ntr133.chatgpt.site/api/v6-sync", StringComparison.Ordinal),
         "V7 desktop sync still uses the V6 API");
     Assert(!desktop.Contains("ntr361-smart-ledger.5rmwf2d5ff.workers.dev", StringComparison.Ordinal),
