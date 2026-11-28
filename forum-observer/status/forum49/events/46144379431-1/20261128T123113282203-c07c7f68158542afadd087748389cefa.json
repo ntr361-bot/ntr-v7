@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46144379431",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46144379431",
+  "updated_at": "2026-11-28T12:31:13.282203+00:00",
+  "error": null,
+  "valid_materials": 47,
+  "valid_authors": 47,
+  "successful_post_opens": 198,
+  "article_details": {
+    "featured": {
+      "queued": 196,
+      "attempted": 196,
+      "opened": 196,
+      "extracted": 196,
+      "completed": 196
+    },
+    "ordinary": {
+      "queued": 696,
+      "attempted": 3,
+      "opened": 2,
+      "extracted": 2,
+      "completed": 2
+    }
+  },
+  "article_texts_extracted": 198,
+  "article_details_completed": 198,
+  "last_verified_post": {
+    "author": "青龙好汉",
+    "url": "https://49217.com/#/corpusdetail?id=43067822&type=3",
+    "verified_at": "2026-11-28T12:31:12.548383+00:00",
+    "text_length": 279,
+    "text_sha256": "e537f73d2f384aa7f36e3973e9b6951d251ca67a99de62075516af72e021a9c9"
+  },
+  "last_attempted_post": {
+    "author": "出家人不打诳语",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43061889&type=3",
+    "attempt_index": 199
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T12:31:11.057684+00:00",
+      "featured_queued": 196,
+      "featured_attempted": 196,
+      "featured_completed": 196
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 198,
+  "stage": "detail: 出家人不打诳语 六肖中特",
+  "progress_updated_at": "2026-11-28T12:31:12.848919+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
