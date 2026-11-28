@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "issue": "2026332",
+  "state": "collecting_effectively",
+  "run_id": "46089992870",
+  "attempt": 1,
+  "event": "push",
+  "test_only": false,
+  "model": "49",
+  "run_url": "https://github.com/ntr361-bot/ntr-v7/actions/runs/46089992870",
+  "updated_at": "2026-11-28T00:58:08.610809+00:00",
+  "error": null,
+  "valid_materials": 35,
+  "valid_authors": 35,
+  "successful_post_opens": 212,
+  "article_details": {
+    "featured": {
+      "queued": 140,
+      "attempted": 140,
+      "opened": 140,
+      "extracted": 140,
+      "completed": 140
+    },
+    "ordinary": {
+      "queued": 833,
+      "attempted": 73,
+      "opened": 72,
+      "extracted": 72,
+      "completed": 72
+    }
+  },
+  "article_texts_extracted": 212,
+  "article_details_completed": 212,
+  "last_verified_post": {
+    "author": "鱼儿宝",
+    "url": "https://49217.com/#/corpusdetail?id=43062940&type=3",
+    "verified_at": "2026-11-28T00:58:07.812855+00:00",
+    "text_length": 27,
+    "text_sha256": "c8519194696b3c27804b3c8dd82acad173071017c0f27bff24f49c839723fbf4"
+  },
+  "last_attempted_post": {
+    "author": "天天艳阳天",
+    "is_featured": false,
+    "url": "https://49217.com/#/corpusdetail?id=43062958&type=3",
+    "attempt_index": 213
+  },
+  "priority_audit": {
+    "policy": "featured_article_before_ordinary",
+    "first_ordinary_attempt": {
+      "at": "2026-11-28T00:57:18.022687+00:00",
+      "featured_queued": 140,
+      "featured_attempted": 140,
+      "featured_completed": 140
+    },
+    "violation_count": 0,
+    "state": "verified"
+  },
+  "raw_count": 212,
+  "stage": "detail: 天天艳阳天 三头中特",
+  "progress_updated_at": "2026-11-28T00:58:08.025702+00:00",
+  "collection_status": "incomplete_observation",
+  "quality_summary": {
+    "detail_errors": 0,
+    "truncated": null,
+    "unextracted_current_posts": 0
+  },
+  "coverage_label": null
+}
